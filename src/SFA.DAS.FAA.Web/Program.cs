@@ -1,25 +1,57 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+var rootConfiguration = builder.Configuration.LoadConfiguration();
+
+builder.Services.AddOptions();
+builder.Services.Configure<FindAnApprenticeshipConfiguration>(rootConfiguration.GetSection(nameof(FindAnApprenticeshipConfiguration)));
+builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<FindAnApprenticeshipConfiguration>>().Value);
+
+builder.Services.AddServiceRegistration();
+builder.Services.AddAuthenticationServices();
+
+builder.Services.AddLogging();
+builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
+
+builder.Services.AddHealthChecks();
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+
+}).AddMvc(options =>
+{
+    //options.Filters.Add(new GoogleAnalyticsFilter());
+    if (!rootConfiguration.IsDev())
+    {
+        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+    }
+
+});
+
+
+builder.Services.AddDataProtection(rootConfiguration);
+
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseDeveloperExceptionPage();
+
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseHealthChecks("/ping");
 
 app.UseRouting();
 
-app.UseAuthorization();
-
-app.MapRazorPages();
+app.UseEndpoints(endpointBuilder =>
+{
+    endpointBuilder.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Service}/{action=Index}/{id?}");
+});
 
 app.Run();
