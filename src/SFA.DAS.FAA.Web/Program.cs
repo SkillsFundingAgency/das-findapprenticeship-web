@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Domain.Configuration;
+using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var rootConfiguration = builder.Configuration.LoadConfiguration();
 
 builder.Services.AddOptions();
-builder.Services.Configure<FindAnApprenticeshipConfiguration>(rootConfiguration.GetSection(nameof(FindAnApprenticeshipConfiguration)));
-builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<FindAnApprenticeshipConfiguration>>().Value);
-
-builder.Services.AddServiceRegistration();
-builder.Services.AddAuthenticationServices();
+builder.Services.Configure<FindAnApprenticeshipWebConfiguration>(rootConfiguration.GetSection(nameof(FindAnApprenticeshipWebConfiguration)));
+builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<FindAnApprenticeshipWebConfiguration>>().Value);
 
 builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
