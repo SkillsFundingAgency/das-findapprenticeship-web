@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.DataProtection;
-using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.FAA.Domain.Configuration;
+using StackExchange.Redis;
 
 namespace SFA.DAS.FAA.Web.AppStart;
 
@@ -23,7 +23,7 @@ public static class AddDataProtectionExtensions
                 .Connect(configurationOptions);
 
             services.AddDataProtection()
-                .SetApplicationName("das-employer")
+                .SetApplicationName("das-apprentice")
                 .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
         }
     }
