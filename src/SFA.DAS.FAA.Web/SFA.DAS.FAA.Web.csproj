@@ -25,6 +25,7 @@
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
     <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="9.1.0" />
+    <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
   </ItemGroup>
 
   <ItemGroup>
