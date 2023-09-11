@@ -75,11 +75,11 @@
             </div>
         </div>
     </header>
-
-
-@RenderBody()
-
-
+<div class="govuk-width-container ">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+            @RenderBody()
+        </main>
+</div>
 
     <footer class="govuk-footer">
         <div class="govuk-width-container ">
@@ -120,8 +120,7 @@
         window.GOVUKFrontend.initAll();
         window.DASFrontend.initAll();
     </script>
-    <partial name="_ZendeskWidget" />
-    <partial name="GoogleAnalyticsInfo" />
+
 </body>
 
 </html>
