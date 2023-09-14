@@ -3,53 +3,53 @@
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl govuk-!-margin-bottom-3">Search apprenticeships</h1>
             <p class="govuk-body-l govuk-!-margin-top-0 das-!-color-dark-grey">10,408 apprenticeships currently listed</p>
+        </div>
+    </div>
+    <div class="govuk-grid-row das-highlight">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-grid-column-one-half">
+                <div class="govuk-form-group">
+                    <h1 class="govuk-label-wrapper">
+                        <label class="govuk-label govuk-label--m" for="Keyword">
+                            What
+                        </label>
+                    </h1>
+                    <div id="event-name-hint" class="govuk-hint">
+                        Enter a job or company
+                    </div>
+                    <input class="govuk-input" id="Keyword" name="Keyword" type="Keyword" aria-describedby="event-name-hint">
+                </div>
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <div class="govuk-form-group">
+                    <h1 class="govuk-label-wrapper">
+                        <label class="govuk-label govuk-label--m" for="where">
+                            Where
+                        </label>
+                    </h1>
+                    <div id="event-name-hint" class="govuk-hint">
+                        Enter a city or postcode
+                    </div>
+                    <input class="govuk-input" id="where" name="event-name" type="where" aria-describedby="event-name-hint">
+                </div>
+            </div>
 
-            <div class="das-highlight">
-                <div class="govuk-grid-column-one-half">
-                                <div class="govuk-form-group">
-                                    <h1 class="govuk-label-wrapper">
-                                        <label class="govuk-label govuk-label--m" for="Keyword">
-                                            What
-                                        </label>
-                                    </h1>
-                                    <div id="event-name-hint" class="govuk-hint">
-                                        Enter a job or company
-                                    </div>
-                                    <input class="govuk-input" id="Keyword" name="Keyword" type="Keyword" aria-describedby="event-name-hint">
-                                </div>
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <div class="govuk-grid-column-one-half">
+                        <form class="form" action="search-listing" method="post">
+                            <div class="govuk-button-group" href="search-listing">
+                                <button class="govuk-button" data-module="govuk-button">
+                                    Search
+                                </button>
+                                <a class="govuk-link" href="#">Browse by your interests instead</a>
                             </div>
-                            <div class="govuk-grid-column-one-half">
-                                <div class="govuk-form-group">
-                                    <h1 class="govuk-label-wrapper">
-                                        <label class="govuk-label govuk-label--m" for="where">
-                                            Where
-                                        </label>
-                                    </h1>
-                                    <div id="event-name-hint" class="govuk-hint">
-                                        Enter a city or postcode
-                                    </div>
-                                    <input class="govuk-input" id="where" name="event-name" type="where" aria-describedby="event-name-hint">
-                                </div>
-                            </div>
+                        </form>
 
-
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-full">
-                        <div class="govuk-grid-column-one-half">
-                            <form class="form" action="search-listing" method="post">
-                                <div class="govuk-button-group" href="search-listing">
-                                    <button class="govuk-button" data-module="govuk-button">
-                                        Search
-                                    </button>
-                                    <a class="govuk-link" href="#">Browse by your interests instead</a>
-                                </div>
-                            </form>
-
-                        </div>
                     </div>
                 </div>
-                </div>
+            </div>
         </div>
-     </div>
+    </div>
 </main>
-
