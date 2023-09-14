@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Web.Infrastructure;
 
-namespace SFA.DAS.FAA.Web.Controllers
+namespace SFA.DAS.FAA.Web.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }
+
