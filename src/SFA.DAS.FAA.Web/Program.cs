@@ -10,7 +10,7 @@ var rootConfiguration = builder.Configuration.LoadConfiguration();
 
 builder.Services.AddOptions();
 builder.Services.Configure<FindAnApprenticeshipWebConfiguration>(rootConfiguration.GetSection(nameof(FindAnApprenticeshipWebConfiguration)));
-builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<FindAnApprenticeshipWebConfiguration>>().Value);
+builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<FindAnApprenticeshipWebConfiguration>>()!.Value);
 
 builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
