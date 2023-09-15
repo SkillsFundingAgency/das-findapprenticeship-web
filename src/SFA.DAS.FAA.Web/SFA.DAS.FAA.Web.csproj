@@ -20,4 +20,8 @@
     <ProjectReference Include="..\SFA.DAS.FAA.Domain\SFA.DAS.FAA.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
