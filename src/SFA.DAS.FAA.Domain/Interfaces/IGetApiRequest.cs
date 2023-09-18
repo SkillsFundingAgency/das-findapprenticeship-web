@@ -2,5 +2,5 @@
 
 public interface IGetApiRequest
 {
-    string GetUrl { get; }
+    string GetUrl { get;}
 }

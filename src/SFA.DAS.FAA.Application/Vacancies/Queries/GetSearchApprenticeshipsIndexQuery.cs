@@ -3,7 +3,7 @@ using MediatR;
 
 namespace SFA.DAS.FAA.Application.Vacancies.Queries;
 
-public class GetVacanciesQuery : IRequest<GetVacanciesResult>
+public class GetSearchApprenticeshipsIndexQuery : IRequest<GetSearchApprenticeshipsIndexResult>
 {
     public int Total { get; set; }
 }

@@ -3,7 +3,7 @@
 
 namespace SFA.DAS.FAA.Domain.Vacancies
 {
-    public class Vacancy
+    public class SearchApprenticeshipsIndex
     {
         [JsonProperty("total")]
         public int Total { get; set; }

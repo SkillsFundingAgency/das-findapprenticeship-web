@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.FAA.Application.Vacancies.Queries
 {
-    public class GetVacanciesResult
+    public class GetSearchApprenticeshipsIndexResult
     {
         public int Total { get; set; }
     }
