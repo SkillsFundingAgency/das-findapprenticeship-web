@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-
-namespace SFA.DAS.FAA.Domain.Vacancies
+namespace SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex
 {
     public class SearchApprenticeshipsIndex
     {

@@ -1,8 +1,6 @@
-﻿using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
-using SFA.DAS.FAA.Domain.Interfaces;
+﻿using SFA.DAS.FAA.Domain.Interfaces;
 
-namespace SFA.DAS.FAA.Domain.Vacancies;
+namespace SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 
 public class GetSearchApprenticeshipsIndexApiRequest : IGetApiRequest
 {
