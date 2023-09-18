@@ -21,7 +21,7 @@ public class SearchApprenticeshipsController : Controller
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(GetSearchApprenticeshipsIndexRequest request )
     {
-        var result = await _mediator.Send(new GetVacanciesQuery());
+        var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery());
 
         var viewModel = new VacanciesViewModel
         {
