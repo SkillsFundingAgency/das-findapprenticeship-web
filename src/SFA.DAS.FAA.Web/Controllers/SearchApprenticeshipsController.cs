@@ -6,18 +6,18 @@ using SFA.DAS.FAA.Application.Vacancies.Queries;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class HomeController : Controller
+public class SearchApprenticeshipsController : Controller
 {
     private readonly IMediator _mediator;
 
-    public HomeController
+    public SearchApprenticeshipsController
     (IMediator mediator
     )
     {
         _mediator = mediator;
     }
-        
-    
+
+
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(GetVacanciesRequest request )
     {
