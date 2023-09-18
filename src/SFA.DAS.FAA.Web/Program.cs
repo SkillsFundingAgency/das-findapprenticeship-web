@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -19,7 +20,7 @@ builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<FindAnApprenticeshi
 builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
-services.AddMediatR(typeof(GetSearchApprenticeshipsIndexQueryHandler));
+builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
 
 builder.Services.AddHealthChecks();
 
