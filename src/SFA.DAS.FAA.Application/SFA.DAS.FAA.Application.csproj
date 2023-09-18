@@ -10,4 +10,8 @@
     <PackageReference Include="MediatR" Version="12.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.FAA.Domain\SFA.DAS.FAA.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

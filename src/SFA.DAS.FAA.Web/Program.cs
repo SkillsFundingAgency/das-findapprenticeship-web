@@ -10,6 +10,8 @@ var rootConfiguration = builder.Configuration.LoadConfiguration();
 
 builder.Services.AddOptions();
 builder.Services.Configure<FindAnApprenticeshipWebConfiguration>(rootConfiguration.GetSection(nameof(FindAnApprenticeshipWebConfiguration)));
+builder.Services.Configure<FindAnApprenticeshipApi>(rootConfiguration.GetSection(nameof(FindAnApprenticeshipApi)));
+
 builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<FindAnApprenticeshipWebConfiguration>>()!.Value);
 
 builder.Services.AddLogging();
