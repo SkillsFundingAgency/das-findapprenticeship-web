@@ -42,40 +42,6 @@ public class ApiClient : IApiClient
         return default;
     }
 
-    public async Task<TResponse> Post<TResponse, TPostData>(IPostApiRequest<TPostData> request)
-    {
-        AddHeaders();
-
-        var stringContent = request.Data != null ? new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json") : null;
-
-        var response = await _httpClient.PostAsync(request.PostUrl, stringContent)
-            .ConfigureAwait(false);
-
-        response.EnsureSuccessStatusCode();
-
-        var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        return JsonConvert.DeserializeObject<TResponse>(json);
-    }
-
-    public async Task Delete(IDeleteApiRequest request)
-    {
-        AddHeaders();
-        var response = await _httpClient.DeleteAsync(request.DeleteUrl)
-            .ConfigureAwait(false);
-
-        response.EnsureSuccessStatusCode();
-    }
-
-    public async Task<int> Ping()
-    {
-        AddHeaders();
-
-        var result = await _httpClient.GetAsync($"{_config.PingUrl}ping");
-
-        return (int)result.StatusCode;
-    }
-
-
     private void AddHeaders()
     {
         _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config.Key);

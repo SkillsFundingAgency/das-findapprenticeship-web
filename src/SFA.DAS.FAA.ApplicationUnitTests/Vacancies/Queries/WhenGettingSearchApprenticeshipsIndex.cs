@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 using SFA.DAS.FAA.Application.Vacancies.Queries;
 using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.Interfaces;
@@ -9,12 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Vacancies.Queries
 {
     public class WhenGettingSearchApprenticeshipsIndex
     {
-        [TestMethod]
+        [Test]
         public async Task Then_Result_Is_Returned()
         {
             // Arrange
