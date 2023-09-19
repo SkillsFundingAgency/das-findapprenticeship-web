@@ -1,6 +1,6 @@
 using FluentAssertions;
 using System.Net;
-using AutoFixture.Xunit2;
+using AutoFixture.NUnit3;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             //Arrange
             var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
             configMock.Setup(x => x.Value).Returns(config);
-            var getTestRequest = new GetTestRequest("https://test.local");
+            var getTestRequest = new GetTestRequest();
             
             var response = new HttpResponseMessage
             {
@@ -45,9 +45,10 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             FindAnApprenticeshipApi config)
         {
             //Arrange
+            //"https://test.local"
             var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
             configMock.Setup(x => x.Value).Returns(config);
-            var getTestRequest = new GetTestRequest("https://test.local");
+            var getTestRequest = new GetTestRequest();
             var response = new HttpResponseMessage
             {
                 Content = new StringContent(""),
@@ -70,7 +71,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             //Arrange
             var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
             configMock.Setup(x => x.Value).Returns(config);
-            var getTestRequest = new GetTestRequest("https://test.local");
+            var getTestRequest = new GetTestRequest();
             var response = new HttpResponseMessage
             {
                 Content = new StringContent(""),
@@ -90,10 +91,6 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
 
         private class GetTestRequest : IGetApiRequest
         {
-            public GetTestRequest (string baseUrl)
-            {
-                BaseUrl = baseUrl;
-            }
             public string BaseUrl { get; }
             public string GetUrl => $"{BaseUrl}/test-url/get";
         }
