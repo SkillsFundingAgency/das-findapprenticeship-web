@@ -41,58 +41,59 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             actual.Should().BeEquivalentTo(testObject);
         }
         
-        //[Test, AutoData]
-        //public void Then_If_It_Is_Not_Successful_An_Exception_Is_Thrown(
-        //    FindAnApprenticeshipApi config)
-        //{
-        //    //Arrange
-        //    //"https://test.local"
-        //    var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
-        //    configMock.Setup(x => x.Value).Returns(config);
-        //    var getTestRequest = new GetTestRequest();
-        //    var response = new HttpResponseMessage
-        //    {
-        //        Content = new StringContent(""),
-        //        StatusCode = HttpStatusCode.BadRequest
-        //    };
+        [Test, AutoData]
+        public void Then_If_It_Is_Not_Successful_An_Exception_Is_Thrown(
+            FindAnApprenticeshipApi config)
+        {
+            //Arrange
+            config.BaseUrl = $"https://{config.BaseUrl}";
+            var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
+            configMock.Setup(x => x.Value).Returns(config);
+            var getTestRequest = new GetTestRequest();
+            var response = new HttpResponseMessage
+            {
+                Content = new StringContent(""),
+                StatusCode = HttpStatusCode.BadRequest
+            };
             
-        //    var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key, HttpMethod.Get);
-        //    var client = new HttpClient(httpMessageHandler.Object);
-        //    var apiClient = new ApiClient(client, configMock.Object);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + getTestRequest.GetUrl), config.Key, HttpMethod.Get);
+            var client = new HttpClient(httpMessageHandler.Object);
+            var apiClient = new ApiClient(client, configMock.Object);
             
-        //    //Act Assert
-        //    Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(getTestRequest));
+            //Act Assert
+            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(getTestRequest));
             
-        //}
+        }
         
-        //[Test, AutoData]
-        //public async Task Then_If_It_Is_Not_Found_Default_Is_Returned(
-        //    FindAnApprenticeshipApi config)
-        //{
-        //    //Arrange
-        //    var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
-        //    configMock.Setup(x => x.Value).Returns(config);
-        //    var getTestRequest = new GetTestRequest();
-        //    var response = new HttpResponseMessage
-        //    {
-        //        Content = new StringContent(""),
-        //        StatusCode = HttpStatusCode.NotFound
-        //    };
+        [Test, AutoData]
+        public async Task Then_If_It_Is_Not_Found_Default_Is_Returned(
+            FindAnApprenticeshipApi config)
+        {
+            //Arrange
+            config.BaseUrl = $"https://{config.BaseUrl}";
+            var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
+            configMock.Setup(x => x.Value).Returns(config);
+            var getTestRequest = new GetTestRequest();
+            var response = new HttpResponseMessage
+            {
+                Content = new StringContent(""),
+                StatusCode = HttpStatusCode.NotFound
+            };
             
-        //    var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key, HttpMethod.Get);
-        //    var client = new HttpClient(httpMessageHandler.Object);
-        //    var apiClient = new ApiClient(client, configMock.Object);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + getTestRequest.GetUrl), config.Key, HttpMethod.Get);
+            var client = new HttpClient(httpMessageHandler.Object);
+            var apiClient = new ApiClient(client, configMock.Object);
             
-        //    //Act Assert
-        //    var actual = await apiClient.Get<List<string>>(getTestRequest);
+            //Act Assert
+            var actual = await apiClient.Get<List<string>>(getTestRequest);
 
-        //    actual.Should().BeNull();
+            actual.Should().BeNull();
 
-        //}
+        }
 
         private class GetTestRequest : IGetApiRequest
         {
-            public string GetUrl => $"/test-url/get";
+            public string GetUrl => "/test-url/get";
         }
         
         

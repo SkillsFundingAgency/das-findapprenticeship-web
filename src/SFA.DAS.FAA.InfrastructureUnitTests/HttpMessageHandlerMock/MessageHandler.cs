@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.HttpMessageHandlerMock
                         && c.Headers.GetValues("Ocp-Apim-Subscription-Key").First().Equals(key)
                         && c.Headers.Contains("X-Version")
                         && c.Headers.GetValues("X-Version").First().Equals("1")
-                        && c.RequestUri.AbsoluteUri.Equals(url)),
+                        && c.RequestUri.AbsoluteUri.Equals(url.AbsoluteUri)),
                     ItExpr.IsAny<CancellationToken>()
                 )
                 .ReturnsAsync((HttpRequestMessage request, CancellationToken token) => response);
