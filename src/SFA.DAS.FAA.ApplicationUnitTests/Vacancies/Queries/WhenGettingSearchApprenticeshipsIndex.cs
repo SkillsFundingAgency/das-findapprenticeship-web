@@ -14,9 +14,9 @@ namespace SFA.DAS.FAA.Application.UnitTests.Vacancies.Queries
         {
             // Arrange
             var apiClientMock = new Mock<IApiClient>();
-            var configMock = new Mock<FindAnApprenticeshipApi>();
+            var configMock = new Mock<FindAnApprenticeshipOuterApi>();
 
-            var handler = new GetSearchApprenticeshipsIndexQueryHandler(apiClientMock.Object, configMock.Object);
+            var handler = new GetSearchApprenticeshipsIndexQueryHandler(apiClientMock.Object);
 
             // Mock the response from the API client
             var expectedResponse = new SearchApprenticeshipsApiResponse { Total = 42 };

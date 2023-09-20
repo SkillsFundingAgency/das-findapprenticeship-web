@@ -8,8 +8,8 @@ public static class AddDataProtectionExtensions
 {
     public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
     {
-        var config = configuration.GetSection(nameof(FindAnApprenticeshipWebConfiguration))
-            .Get<FindAnApprenticeshipWebConfiguration>();
+        var config = configuration.GetSection(nameof(FindAnApprenticeship))
+            .Get<FindAnApprenticeship>();
 
         if (config != null 
             && !string.IsNullOrEmpty(config.DataProtectionKeysDatabase) 

@@ -17,11 +17,11 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
         [Test, AutoData]
         public async Task Then_The_Endpoint_Is_Called_With_Authentication_Header_And_Data_Returned(
             List<string> testObject, 
-            FindAnApprenticeshipApi config)
+            FindAnApprenticeshipOuterApi config)
         {
             //Arrange
             config.BaseUrl = $"https://{config.BaseUrl}";
-            var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
+            var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
             configMock.Setup(x => x.Value).Returns(config);
             var getTestRequest = new GetTestRequest();
             
@@ -43,11 +43,11 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
         
         [Test, AutoData]
         public void Then_If_It_Is_Not_Successful_An_Exception_Is_Thrown(
-            FindAnApprenticeshipApi config)
+            FindAnApprenticeshipOuterApi config)
         {
             //Arrange
             config.BaseUrl = $"https://{config.BaseUrl}";
-            var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
+            var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
             configMock.Setup(x => x.Value).Returns(config);
             var getTestRequest = new GetTestRequest();
             var response = new HttpResponseMessage
@@ -67,11 +67,11 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
         
         [Test, AutoData]
         public async Task Then_If_It_Is_Not_Found_Default_Is_Returned(
-            FindAnApprenticeshipApi config)
+            FindAnApprenticeshipOuterApi config)
         {
             //Arrange
             config.BaseUrl = $"https://{config.BaseUrl}";
-            var configMock = new Mock<IOptions<FindAnApprenticeshipApi>>();
+            var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
             configMock.Setup(x => x.Value).Returns(config);
             var getTestRequest = new GetTestRequest();
             var response = new HttpResponseMessage

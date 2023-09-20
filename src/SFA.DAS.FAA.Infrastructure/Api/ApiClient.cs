@@ -10,9 +10,9 @@ namespace SFA.DAS.FAA.Infrastructure.Api;
 public class ApiClient : IApiClient
 {
     private readonly HttpClient _httpClient;
-    private readonly FindAnApprenticeshipApi _config;
+    private readonly FindAnApprenticeshipOuterApi _config;
 
-    public ApiClient(HttpClient httpClient, IOptions<FindAnApprenticeshipApi> config)
+    public ApiClient(HttpClient httpClient, IOptions<FindAnApprenticeshipOuterApi> config)
     {
         _httpClient = httpClient;
         _config = config.Value;
