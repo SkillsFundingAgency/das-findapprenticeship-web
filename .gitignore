@@ -354,3 +354,4 @@ MigrationBackup/
 src/.idea/.idea.SFA.DAS.FAA/.idea/
 
 src/SFA.DAS.FAA.ApplicationUnitTests/.DS_Store
+/src/SFA.DAS.FAA.Web/appsettings.Development.json
