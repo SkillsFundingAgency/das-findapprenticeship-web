@@ -9,7 +9,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.HttpMessageHandlerMock
 {
     public static class MessageHandler
     {
-        public static Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, string url, string key, HttpMethod httpMethod)
+        public static Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, Uri url, string key, HttpMethod httpMethod)
         {
             var httpMessageHandler = new Mock<HttpMessageHandler>();
             httpMessageHandler.Protected()
