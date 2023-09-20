@@ -9,5 +9,5 @@ public class GetSearchApprenticeshipsIndexApiRequest : IGetApiRequest
     {
     }
 
-    public string GetUrl => $"/searchApprenticeships";
+    public string GetUrl => $"/searchapprenticeships";
 }

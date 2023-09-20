@@ -21,7 +21,7 @@ public static class MockApiServer
         
         var server = StandAloneApp.Start(settings);
         
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/searchapprentices"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/searchapprenticeships"))
             .UsingGet()
         ).RespondWith(
             Response.Create()
