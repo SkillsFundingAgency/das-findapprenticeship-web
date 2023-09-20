@@ -60,6 +60,9 @@
         "utcValue": {
             "type": "string",
             "defaultValue": "[utcNow()]"
+        },
+        "cdnUrl": {
+            "type": "string"
         }
     },
     "variables": {
@@ -67,7 +70,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "configNames": "SFA.DAS.FAA"
+        "configNames": "SFA.DAS.FindApprenticeship.Web"
     },
     "resources": [
         {
@@ -161,6 +164,10 @@
                                     "value": "[parameters('environmentName')]"
                                 },
                                 {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
+                                },
+                                {
                                     "name": "ConfigurationStorageConnectionString",
                                     "value": "[parameters('configurationStorageConnectionString')]"
                                 },
@@ -183,6 +190,10 @@
                                 {
                                     "name": "LoggingRedisKey",
                                     "value": "[parameters('loggingRedisKey')]"
+                                },
+                                {
+                                    "name": "Cdn:Url",
+                                    "value": "[parameters('cdnUrl')]"
                                 }
                             ]
                         }
