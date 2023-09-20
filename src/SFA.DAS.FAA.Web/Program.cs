@@ -1,9 +1,5 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Vacancies.Queries;
-using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Extensions;
 
@@ -12,14 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 var rootConfiguration = builder.Configuration.LoadConfiguration();
 
 builder.Services.AddOptions();
-builder.Services.Configure<FindAnApprenticeshipWebConfiguration>(rootConfiguration.GetSection(nameof(FindAnApprenticeshipWebConfiguration)));
-builder.Services.Configure<FindAnApprenticeshipApi>(rootConfiguration.GetSection(nameof(FindAnApprenticeshipApi)));
-
-builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<FindAnApprenticeshipWebConfiguration>>()!.Value);
+builder.Services.AddConfigurationOptions(rootConfiguration);
 
 builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
+builder.Services.AddServiceRegistration();
 builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
 
 builder.Services.AddHealthChecks();
