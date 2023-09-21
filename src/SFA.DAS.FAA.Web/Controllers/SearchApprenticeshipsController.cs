@@ -10,16 +10,14 @@ public class SearchApprenticeshipsController : Controller
 {
     private readonly IMediator _mediator;
 
-    public SearchApprenticeshipsController
-    (IMediator mediator
-    )
+    public SearchApprenticeshipsController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
 
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index(GetSearchApprenticeshipsIndexRequest request )
+    public async Task<IActionResult> Index()
     {
         var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery());
 
