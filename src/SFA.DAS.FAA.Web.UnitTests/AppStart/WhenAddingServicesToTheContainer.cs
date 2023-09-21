@@ -42,8 +42,8 @@ public class WhenAddingServicesToTheContainer
         {
             InitialData = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("FindAnApprenticeshipApi:BaseUrl", "https://test.com/"),
-                new KeyValuePair<string, string>("FindAnApprenticeshipApi:Key", "123edc"),
+                new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:BaseUrl", "https://test.com/"),
+                new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:Key", "123edc"),
                 new KeyValuePair<string, string>("EnvironmentName", "test"),
             }
         };
