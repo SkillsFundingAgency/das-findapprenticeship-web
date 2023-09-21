@@ -23,7 +23,7 @@ public class SearchApprenticeshipsController : Controller
     {
         var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery());
 
-        var viewModel = new VacanciesViewModel
+        var viewModel = new SearchApprenticeshipsViewModel
         {
             Total = result.Total
         };
