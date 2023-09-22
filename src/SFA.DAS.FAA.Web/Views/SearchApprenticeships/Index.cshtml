@@ -8,54 +8,47 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl govuk-!-margin-bottom-3">Search apprenticeships</h1>
-            <p class="govuk-body-l govuk-!-margin-top-0 das-!-color-dark-grey">@Model.TotalText</p>
+            <p class="govuk-hint govuk-!-font-size-24">@Model.TotalText</p>
         </div>
     </div>
-    <div class="govuk-grid-row das-highlight">
-        <div class="govuk-grid-column-two-thirds">
-            <div class="govuk-grid-column-one-half">
-                <div class="govuk-form-group">
-                    <h1 class="govuk-label-wrapper">
-                        <label class="govuk-label govuk-label--m" for="Keyword">
-                            What
-                        </label>
-                    </h1>
-                    <div id="event-name-hint" class="govuk-hint">
-                        Enter a job or company
-                    </div>
-                    <input class="govuk-input" id="Keyword" name="Keyword" type="Keyword" aria-describedby="event-name-hint">
-                </div>
-            </div>
-            <div class="govuk-grid-column-one-half">
-                <div class="govuk-form-group">
-                    <h1 class="govuk-label-wrapper">
-                        <label class="govuk-label govuk-label--m" for="where">
-                            Where
-                        </label>
-                    </h1>
-                    <div id="event-name-hint" class="govuk-hint">
-                        Enter a city or postcode
-                    </div>
-                    <input class="govuk-input" id="where" name="event-name" type="where" aria-describedby="event-name-hint">
-                </div>
-            </div>
-
-
+    <div class="das-highlight">
+        <form class="form" action="search-listing" method="post">
             <div class="govuk-grid-row">
-                <div class="govuk-grid-column-full">
-                    <div class="govuk-grid-column-one-half">
-                        <form class="form" action="search-listing" method="post">
-                            <div class="govuk-button-group" href="search-listing">
-                                <button class="govuk-button" data-module="govuk-button">
-                                    Search
-                                </button>
-                                <a asp-route="@RouteNames.Vacancies" a class="govuk-link">Browse by your interests instead</a>
-                            </div>
-                        </form>
-
+                <div class="govuk-grid-column-one-third">
+                    <div class="govuk-form-group">
+                        <h1 class="govuk-label-wrapper">
+                            <label class="govuk-label govuk-label--m" for="what">
+                                What
+                            </label>
+                        </h1>
+                        <div id="what-hint" class="govuk-hint">
+                            Enter a job or company
+                        </div>
+                        <input class="govuk-input" id="what" name="what" type="text" aria-describedby="what-hint">
+                    </div>
+                </div>
+                <div class="govuk-grid-column-one-third">
+                    <div class="govuk-form-group">
+                        <h1 class="govuk-label-wrapper">
+                            <label class="govuk-label govuk-label--m" for="where">
+                                Where
+                            </label>
+                        </h1>
+                        <div id="where-hint" class="govuk-hint">
+                            Enter a city or postcode
+                        </div>
+                        <input class="govuk-input" id="where" name="where" type="text" aria-describedby="where-hint">
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="govuk-button-group" href="search-listing">
+                <button class="govuk-button" data-module="govuk-button">
+                    Search
+                </button>
+                <a asp-route="@RouteNames.Vacancies" class="govuk-link govuk-link--no-visited-state">Browse by your
+                    interests
+                    instead</a>
+            </div>
+        </form>
     </div>
 </main>
