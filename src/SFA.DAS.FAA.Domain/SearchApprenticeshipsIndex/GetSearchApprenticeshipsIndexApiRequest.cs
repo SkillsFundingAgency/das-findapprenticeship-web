@@ -4,10 +4,5 @@ namespace SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 
 public class GetSearchApprenticeshipsIndexApiRequest : IGetApiRequest
 {
-
-    public GetSearchApprenticeshipsIndexApiRequest()
-    {
-    }
-
-    public string GetUrl => $"/searchapprenticeships";
+    public string GetUrl => "searchapprenticeships";
 }

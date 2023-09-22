@@ -1,10 +1,14 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@model SFA.DAS.FAA.Web.Models.VacanciesViewModel
+@model SFA.DAS.FAA.Web.Models.SearchApprenticeshipsViewModel
+@{
+    ViewBag.Title = "Find an apprenticeship – GOV.UK";
+}
+
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl govuk-!-margin-bottom-3">Search apprenticeships</h1>
-            <p class="govuk-body-l govuk-!-margin-top-0 das-!-color-dark-grey">@Model.Total apprenticeships currently listed</p>
+            <p class="govuk-body-l govuk-!-margin-top-0 das-!-color-dark-grey">@Model.TotalText</p>
         </div>
     </div>
     <div class="govuk-grid-row das-highlight">
