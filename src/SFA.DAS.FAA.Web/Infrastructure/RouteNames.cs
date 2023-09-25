@@ -3,5 +3,5 @@
 public static class RouteNames
 {
     public const string ServiceStartDefault = "default";
-    public const string Vacancies = "Vacancies";
+    public const string BrowseByInterests = "browse-by-interests";
 }

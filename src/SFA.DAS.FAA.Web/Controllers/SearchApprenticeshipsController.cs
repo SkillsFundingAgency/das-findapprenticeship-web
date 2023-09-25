@@ -25,5 +25,11 @@ public class SearchApprenticeshipsController : Controller
 
         return View(viewModel);
     }
+
+    [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
+    public async Task<IActionResult> BrowseByInterests()
+    {
+        return View();
+    }
 }
 
