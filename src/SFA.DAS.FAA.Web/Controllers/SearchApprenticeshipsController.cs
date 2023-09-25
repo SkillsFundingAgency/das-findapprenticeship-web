@@ -31,5 +31,27 @@ public class SearchApprenticeshipsController : Controller
     {
         return View();
     }
+
+    [HttpPost]
+    [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
+    public async Task<IActionResult> BrowseByInterests(BrowseByInterestViewModel model)
+
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(new BrowseByInterestViewModel()
+            {
+                ErrorDictionary = ModelState
+                    .Where(x => x.Value is { Errors.Count: > 0 })
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
+                    ),
+                SelectedInterests = model.SelectedInterests
+            });
+        }
+
+        return View(model);
+    }
 }
 
