@@ -5,8 +5,9 @@ namespace SFA.DAS.FAA.Web.Models;
 public class BrowseByInterestViewModel : ViewModelBase
 {
     [Required(ErrorMessage = "Select at least one job catagory you're interested in")]
-    public List<string> SelectedInterests { get; set; }
+    public ICollection<string> SelectedSector { get; set; }
 
-    public string SelectedInterestsError => GetErrorMessage(nameof(SelectedInterests));
+    public string SelectedInterestsError => GetErrorMessage(nameof(SelectedSector));
 
+    public string Sector { get; }
 }

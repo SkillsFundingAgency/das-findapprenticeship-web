@@ -47,7 +47,7 @@ public class SearchApprenticeshipsController : Controller
                         kvp => kvp.Key,
                         kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
                     ),
-                SelectedInterests = model.SelectedInterests
+                sector = model.sector
             });
         }
 
