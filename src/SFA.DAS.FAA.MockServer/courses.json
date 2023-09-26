@@ -1,0 +1,51 @@
+{
+  "routes": [
+    {
+      "route": "Agriculture, environmental and animal care"
+    },
+    {
+      "route": "Business and administration"
+    },
+    {
+      "route": "Care services"
+    },
+    {
+      "route": "Catering and hospitality"
+    },
+    {
+      "route": "Construction"
+    },
+    {
+      "route": "Creative and design"
+    },
+    {
+      "route": "Digital"
+    },
+    {
+      "route": "Education and childcare"
+    },
+    {
+      "route": "Engineering and manufacturing"
+    },
+    {
+      "route": "Hair and beauty"
+    },
+    {
+      "route": "Health and science"
+    },
+    {
+      "route": "Legal, finance and accounting"
+    },
+    {
+      "route": "Protective services"
+    },
+    {
+      "route": "Sales, marketing and procurement"
+    },
+    {
+      "route": "Transport and logistics"
+    }
+  ],
+  
+
+}
