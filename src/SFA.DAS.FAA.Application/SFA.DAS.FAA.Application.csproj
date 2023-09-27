@@ -14,4 +14,8 @@
     <ProjectReference Include="..\SFA.DAS.FAA.Domain\SFA.DAS.FAA.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Vacancies\Queries\" />
+  </ItemGroup>
+
 </Project>

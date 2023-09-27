@@ -1,5 +1,6 @@
 ﻿using System.Xml.Schema;
-using SFA.DAS.FAA.Application.Vacancies.Queries;
+using SFA.DAS.FAA.Application.Queries;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 
 namespace SFA.DAS.FAA.Web.Models;
 

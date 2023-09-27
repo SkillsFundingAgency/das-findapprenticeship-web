@@ -1,7 +1,6 @@
-﻿using System.Net;
-using MediatR;
+﻿using MediatR;
 
-namespace SFA.DAS.FAA.Application.Vacancies.Queries;
+namespace SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 
 public class GetSearchApprenticeshipsIndexQuery : IRequest<GetSearchApprenticeshipsIndexResult>
 {

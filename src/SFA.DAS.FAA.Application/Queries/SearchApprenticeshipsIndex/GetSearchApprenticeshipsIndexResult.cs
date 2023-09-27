@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.FAA.Application.Vacancies.Queries
+﻿namespace SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex
 {
     public class GetSearchApprenticeshipsIndexResult
     {

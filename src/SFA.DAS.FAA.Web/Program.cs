@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Vacancies.Queries;
+using SFA.DAS.FAA.Application.Queries;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Extensions;
 

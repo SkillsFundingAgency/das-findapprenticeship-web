@@ -29,6 +29,8 @@ public class SearchApprenticeshipsController : Controller
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
     public async Task<IActionResult> BrowseByInterests()
     {
+        var result = await _mediator.Send(new GetBrowseByInterestsQuery());
+
         return View();
     }
 

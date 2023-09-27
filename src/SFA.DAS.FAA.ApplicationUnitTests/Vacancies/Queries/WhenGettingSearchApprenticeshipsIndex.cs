@@ -1,9 +1,10 @@
 ﻿using Moq;
-using SFA.DAS.FAA.Application.Vacancies.Queries;
 using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 using NUnit.Framework;
+using SFA.DAS.FAA.Application.Queries;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Vacancies.Queries
 {

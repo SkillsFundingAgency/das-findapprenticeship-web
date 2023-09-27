@@ -2,7 +2,7 @@
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 
-namespace SFA.DAS.FAA.Application.Vacancies.Queries;
+namespace SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 
 public class GetSearchApprenticeshipsIndexQueryHandler : IRequestHandler<GetSearchApprenticeshipsIndexQuery, GetSearchApprenticeshipsIndexResult>
 {
