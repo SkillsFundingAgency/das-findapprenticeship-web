@@ -14,21 +14,20 @@ public class WhenGettingBrowseByInterests
     {
         // Arrange
         var apiClientMock = new Mock<IApiClient>();
-        var query = new GetBrowseByInterestsQuery(); // You need to provide any required input here
+        var query = new GetBrowseByInterestsQuery();
         var handler = new GetBrowseByInterestsQueryHandler(apiClientMock.Object);
 
-        var apiResponse = new BrowseByInterestsApiResponse
-        {
-            Routes = new List<Route>()
-        };
+        var expectedResponse = new BrowseByInterestsApiResponse();
         apiClientMock.Setup(client => client.Get<BrowseByInterestsApiResponse>(It.IsAny<GetBrowseByInterestsApiRequest>()))
-            .ReturnsAsync(apiResponse);
+            .ReturnsAsync(expectedResponse);
+
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
+        Assert.AreEqual(expectedResponse.Routes, result.Routes);
 
     }
 }

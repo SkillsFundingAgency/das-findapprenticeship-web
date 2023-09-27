@@ -3,12 +3,13 @@ using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
+using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries
 {
     public class WhenGettingSearchApprenticeshipsIndex
     {
-        [Test]
+        [Test, MoqAutoData]
         public async Task Then_Result_Is_Returned()
         {
             // Arrange
@@ -17,7 +18,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries
             var handler = new GetSearchApprenticeshipsIndexQueryHandler(apiClientMock.Object);
 
             // Mock the response from the API client
-            var expectedResponse = new SearchApprenticeshipsApiResponse { Total = 42 };
+            var expectedResponse = new SearchApprenticeshipsApiResponse();
             apiClientMock.Setup(client => client.Get<SearchApprenticeshipsApiResponse>(It.IsAny<GetSearchApprenticeshipsIndexApiRequest>()))
                 .ReturnsAsync(expectedResponse);
 
