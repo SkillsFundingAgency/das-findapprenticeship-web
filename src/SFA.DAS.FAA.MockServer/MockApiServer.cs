@@ -33,6 +33,18 @@ public static class MockApiServer
             .WithStatusCode(200)
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("locations.json"));
+        
+        server.Given(Request.Create().WithPath(s=>Regex.IsMatch(s, "/browseapprenticeships"))
+            .UsingGet()
+            ).RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("routes.json"));
+
         return server;
+
+
+            
     }
 }

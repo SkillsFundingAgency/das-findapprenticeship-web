@@ -1,4 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
+@Model SFA.DAS.FAA.WEb.Models.BrowseByInterestViewModel
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial model="@ViewData.ModelState" name="_ValidationSummary" />
@@ -8,7 +10,17 @@
     <div class="govuk-grid-column-two-thirds">
         <a href="#" class="govuk-back-link">Back</a>
         <form class="form" action="@RouteNames.BrowseByInterests" controller="SearchApprenticeshipsController" method="POST">
-
+            <div class="govuk-checkboxes govuk-checkboxes--small">
+                @foreach (var route in Model.Routes)
+                {
+                    <div class="govuk-checkboxes__item">
+                        <input @(route.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@route.Id" name="routes" type="checkbox" value="@route.Route">
+                        <label class="govuk-label govuk-checkboxes__label" for="route-@route.Id">
+                            @route.Route
+                        </label>
+                    </div>
+                }
+            </div>
 
             <button class="govuk-button" data-module="govuk-button">Continue</button>
 
