@@ -5,6 +5,7 @@ using MediatR;
 using SFA.DAS.FAA.Application.Queries;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Domain.BrowseByInterests;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -32,6 +33,8 @@ public class SearchApprenticeshipsController : Controller
     public async Task<IActionResult> BrowseByInterests()
     {
         var result = await _mediator.Send(new GetBrowseByInterestsQuery());
+
+        var viewModel = (BrowseByInterestViewModel)result;
 
         return View();
     }
