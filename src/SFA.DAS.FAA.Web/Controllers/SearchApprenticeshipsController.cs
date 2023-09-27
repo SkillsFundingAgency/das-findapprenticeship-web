@@ -36,7 +36,7 @@ public class SearchApprenticeshipsController : Controller
 
         var viewModel = (BrowseByInterestViewModel)result;
 
-        return View();
+        return View(viewModel);
     }
 
     //[HttpPost]
