@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 
 public class GetBrowseByInterestsResult
 {
-    public List<Route> Routes { get; set; }
+    public List<RouteResponse> Routes { get; set; }
 
 
 }

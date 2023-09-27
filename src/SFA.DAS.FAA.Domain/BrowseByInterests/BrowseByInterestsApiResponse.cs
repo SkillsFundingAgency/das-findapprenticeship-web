@@ -1,6 +1,14 @@
-﻿namespace SFA.DAS.FAA.Domain.BrowseByInterests;
+﻿using Newtonsoft.Json;
+
+namespace SFA.DAS.FAA.Domain.BrowseByInterests;
 
 public class BrowseByInterestsApiResponse
 {
-    public List<Route> Routes { get; set; }
+    public List<RouteResponse> Routes { get; set; }
+}
+
+public class RouteResponse
+{
+    [JsonProperty("route")]
+    public string Route { get; set; }
 }

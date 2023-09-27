@@ -42,6 +42,7 @@ public class SearchApprenticeshipsControllerTests
         var actual = await controller.BrowseByInterests() as ViewResult;
 
         Assert.IsNotNull(actual);
-        actual!.Model.Should().BeEquivalentTo((BrowseByInterestViewModel)result);
+        var actualModel = actual!.Model as BrowseByInterestViewModel;
+        actualModel.Should().BeEquivalentTo((BrowseByInterestViewModel)result);
     }
 }

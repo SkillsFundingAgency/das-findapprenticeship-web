@@ -11,18 +11,18 @@ public class BrowseByInterestViewModel : ViewModelBase
     {
         return new BrowseByInterestViewModel()
         {
-            Routes = (List<RouteViewModel>)source.Routes.Select(Route => new RouteViewModel()
+            Routes = source.Routes.Select(r => new RouteViewModel
             {
                 Selected = false,
-                Route = Route.Routes,
-                Id = Guid.NewGuid()
-            })
+                Route = r.Route,
+                //Id = r.Id
+            }).ToList()
         };
     }
     public class RouteViewModel
     {
         public bool Selected { get; set; }
         public string Route { get; set; }
-        public Guid Id { get; set; }
+        //public Guid Id { get; set; }
     }
 }
