@@ -15,7 +15,7 @@ public class BrowseByInterestViewModel : ViewModelBase
             {
                 Selected = false,
                 Route = r.Route,
-                //Id = r.Id
+                Id = Guid.NewGuid()
             }).ToList()
         };
     }
@@ -23,6 +23,6 @@ public class BrowseByInterestViewModel : ViewModelBase
     {
         public bool Selected { get; set; }
         public string Route { get; set; }
-        //public Guid Id { get; set; }
+        public Guid Id { get; set; }
     }
 }
