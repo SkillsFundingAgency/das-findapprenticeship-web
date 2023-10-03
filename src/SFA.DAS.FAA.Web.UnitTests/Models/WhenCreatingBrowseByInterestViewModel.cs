@@ -33,8 +33,8 @@ public class WhenCreatingBrowseByInterestViewModel
     }
 
     [Test]
-    [TestCase("1")]
-    public void Then_The_Route_Object_Is_Built_Correctly(string routeId)
+    [TestCase(1, "Agriculture, environmental and animal care")]
+    public void Then_The_Route_Object_Is_Built_Correctly(int routeId, string route)
     {
         routeObject expectedRouteObject = new routeObject
         {
@@ -49,14 +49,14 @@ public class WhenCreatingBrowseByInterestViewModel
         {
             new RouteViewModel
             {
-                Id = 1,
-                Route = "Agriculture, environmental and animal care"
+                Id = routeId,
+                Route = route
             }
         };
         
         viewModel.allocateRouteGroup();
 
-        routeObject actualRouteObject = viewModel.agriculutreEnvironmentalAndAnimalCareDictionary[routeId];
+        routeObject actualRouteObject = viewModel.agriculutreEnvironmentalAndAnimalCareDictionary[routeId.ToString()];
 
  
         Assert.AreEqual(expectedRouteObject.routeId, actualRouteObject.routeId);
@@ -64,4 +64,31 @@ public class WhenCreatingBrowseByInterestViewModel
         Assert.AreEqual(expectedRouteObject.displayText, actualRouteObject.displayText);
         Assert.AreEqual(expectedRouteObject.hintText, actualRouteObject.hintText);
     }
+
+    [Test]
+    public void Then_The_Route_Object_Is_Added_To_A_Dictionary()
+    {
+        // Arrange
+        var viewModel = new BrowseByInterestViewModel();
+        viewModel.Routes = new List<BrowseByInterestViewModel.RouteViewModel>
+        {
+            new RouteViewModel { Id = 2, Route = "Business Administration" },
+            new RouteViewModel { Id = 14, Route = "Sales and Marketing" },
+            new RouteViewModel { Id = 12, Route = "Legal, Finance, Accounting" }
+        };
+
+        // Act
+        viewModel.allocateRouteGroup();
+
+        // Assert
+        Assert.IsTrue(viewModel.businessSalesandLegalDictionary.ContainsKey("2"));
+        Assert.IsTrue(viewModel.businessSalesandLegalDictionary.ContainsKey("14"));
+        Assert.IsTrue(viewModel.businessSalesandLegalDictionary.ContainsKey("12"));
+
+        // You can also assert the values if needed
+        Assert.AreEqual("Business Administration", viewModel.businessSalesandLegalDictionary["2"].routeName);
+        Assert.AreEqual("Sales and Marketing", viewModel.businessSalesandLegalDictionary["14"].routeName);
+        Assert.AreEqual("Legal, Finance, Accounting", viewModel.businessSalesandLegalDictionary["12"].routeName);
+    }
+
 }
