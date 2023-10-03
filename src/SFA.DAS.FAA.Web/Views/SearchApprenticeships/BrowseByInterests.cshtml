@@ -6,25 +6,46 @@
         <partial model="@ViewData.ModelState" name="_ValidationSummary" />
     </div>
 </div>
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <a href="#" class="govuk-back-link">Back</a>
-        <form class="form" action="@RouteNames.BrowseByInterests" controller="SearchApprenticeshipsController" method="POST">
-            <div class="govuk-checkboxes govuk-checkboxes--small">
-                @foreach (var route in Model.Routes)
-                {
-                    <div class="govuk-checkboxes__item">
-                        <input @(route.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@route.Id" name="routes" type="checkbox" value="@route.Route">
-                        <label class="govuk-label govuk-checkboxes__label" for="route-@route.Id">
-                            @route.Route
-                        </label>
+<div class="govuk-width-container ">
+    <a class="govuk-back-link" href="search-page-02.html">Back</a>
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+    <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form class="form" method="post">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <span class="govuk-caption-l">Question 1 of 2</span>
+                                <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Browse by your interests</h1>
+                            </legend>
+                            <p class="govuk-body style govuk-hint">Select all the job categories that interest you.</p>
+
+                            <div class="govuk-!-padding-bottom-3"></div>
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                @foreach (var route in Model.Routes)
+                                {
+                                    <div class="govuk-checkboxes__item">
+                                        <input @(route.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@route.Id" name="routes" type="checkbox" value="@route.Route">
+                                        <label class="govuk-label govuk-checkboxes__label" for="route-@route.Id">
+                                            @route.Id,  @route.Route
+                                        </label>
+                                    </div>
+                                }
+
+                            </div>
+                        </fieldset>
                     </div>
-                }
+
+
+
+                    <button class="govuk-button" data-module="govuk-button">Continue</button>
+
+                </form>
+
             </div>
+        </div>
 
-            <button class="govuk-button" data-module="govuk-button">Continue</button>
 
-        </form>
-
-    </div>
+    </main>
 </div>

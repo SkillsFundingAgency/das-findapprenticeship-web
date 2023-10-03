@@ -11,4 +11,6 @@ public class RouteResponse
 {
     [JsonProperty("route")]
     public string Route { get; set; }
+    [JsonProperty]
+    public Guid Id { get; set; }
 }
