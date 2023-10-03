@@ -25,7 +25,7 @@ public class BrowseByInterestViewModel : ViewModelBase
     {
         public bool Selected { get; set; }
         public string Route { get; set; }
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 
     public class routeObject
@@ -36,16 +36,16 @@ public class BrowseByInterestViewModel : ViewModelBase
         public string hintText { get; set; }
     }
 
-    Dictionary<string, routeObject> agriculutreEnvironmentalAndAnimalCareDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> businessSalesandLegalDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> careHealthAndScienceDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> cateringAndHospitalityDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> constructionEngineeringAndBuildingsDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> creativeAndDesignDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> digitalDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> educationAndEarlyYearsDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> protectiveServicesDictionary = new Dictionary<string, routeObject>();
-    Dictionary<string, routeObject> transportAndLogisticsDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> agriculutreEnvironmentalAndAnimalCareDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> businessSalesandLegalDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> careHealthAndScienceDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> cateringAndHospitalityDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> constructionEngineeringAndBuildingsDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> creativeAndDesignDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> digitalDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> educationAndEarlyYearsDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> protectiveServicesDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> transportAndLogisticsDictionary = new Dictionary<string, routeObject>();
 
     public void allocateRouteGroup()
     {
