@@ -58,17 +58,6 @@ public class SearchApprenticeshipsController : Controller
                     ),
                 Routes = model.Routes,
 
-                //agricultureEnvironmentalAndAnimalCareDictionary = model.agricultureEnvironmentalAndAnimalCareDictionary,
-                //businessSalesAndLegalDictionary = model.businessSalesAndLegalDictionary,
-                //careHealthAndScienceDictionary = model.careHealthAndScienceDictionary,
-                //cateringAndHospitalityDictionary = model.cateringAndHospitalityDictionary,
-                //constructionEngineeringAndBuildingsDictionary = model.constructionEngineeringAndBuildingsDictionary,
-                //creativeAndDesignDictionary = model.creativeAndDesignDictionary,
-                //digitalDictionary = model.digitalDictionary,
-                //educationAndEarlyYearsDictionary = model.educationAndEarlyYearsDictionary,
-                //protectiveServicesDictionary = model.protectiveServicesDictionary,
-                //transportAndLogisticsDictionary = model.transportAndLogisticsDictionary,
-
             };
             viewModel.allocateRouteGroup();
             return View(viewModel);
