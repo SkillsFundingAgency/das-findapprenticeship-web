@@ -20,19 +20,10 @@
                                 <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Browse by your interests</h1>
                             </legend>
                             <p class="govuk-body style govuk-hint">Select all the job categories that interest you.</p>
-
                             <div class="govuk-!-padding-bottom-3"></div>
+                            
                             <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                                @foreach (var route in Model.Routes)
-                                {
-                                    <div class="govuk-checkboxes__item">
-                                        <input @(route.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@route.Id" name="routes" type="checkbox" value="@route.Route">
-                                        <label class="govuk-label govuk-checkboxes__label" for="route-@route.Id">
-                                            @route.Id,  @route.Route
-                                        </label>
-                                    </div>
-                                }
-
+                                @Html.Partial("_BrowseByInterestsPartial")
                             </div>
                         </fieldset>
                     </div>

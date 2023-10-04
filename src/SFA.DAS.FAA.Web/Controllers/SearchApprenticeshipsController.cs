@@ -36,6 +36,8 @@ public class SearchApprenticeshipsController : Controller
 
         var viewModel = (BrowseByInterestViewModel)result;
 
+        viewModel.allocateRouteGroup();
+
         return View(viewModel);
     }
 
