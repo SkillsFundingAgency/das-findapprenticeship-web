@@ -7,6 +7,8 @@ namespace SFA.DAS.FAA.Web.Models;
 
 public class BrowseByInterestViewModel : ViewModelBase
 {
+    [Required(ErrorMessage = "Select at least one job category you're interested in")]
+    public List<int> SelectedRouteIds { get; set; } = new List<int>();
     public List<RouteViewModel> Routes { get; set; }
 
     public static implicit operator BrowseByInterestViewModel(GetBrowseByInterestsResult source)
