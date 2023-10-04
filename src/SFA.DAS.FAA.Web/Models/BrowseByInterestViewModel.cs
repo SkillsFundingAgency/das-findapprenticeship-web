@@ -9,6 +9,8 @@ public class BrowseByInterestViewModel : ViewModelBase
 {
     [Required(ErrorMessage = "Select at least one job category you're interested in")]
     public List<int> SelectedRouteIds { get; set; } = new List<int>();
+
+    public string selectedRoutesError => GetErrorMessage(nameof(SelectedRouteIds));
     public List<RouteViewModel> Routes { get; set; }
 
     public static implicit operator BrowseByInterestViewModel(GetBrowseByInterestsResult source)
@@ -38,8 +40,8 @@ public class BrowseByInterestViewModel : ViewModelBase
         public string hintText { get; set; }
     }
 
-    public Dictionary<string, routeObject> agriculutreEnvironmentalAndAnimalCareDictionary = new Dictionary<string, routeObject>();
-    public Dictionary<string, routeObject> businessSalesandLegalDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> agricultureEnvironmentalAndAnimalCareDictionary = new Dictionary<string, routeObject>();
+    public Dictionary<string, routeObject> businessSalesAndLegalDictionary = new Dictionary<string, routeObject>();
     public Dictionary<string, routeObject> careHealthAndScienceDictionary = new Dictionary<string, routeObject>();
     public Dictionary<string, routeObject> cateringAndHospitalityDictionary = new Dictionary<string, routeObject>();
     public Dictionary<string, routeObject> constructionEngineeringAndBuildingsDictionary = new Dictionary<string, routeObject>();
@@ -64,7 +66,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                         displayText = route.Route,
                         hintText = "Farmer, horticulture, vet and similar"
                     };
-                    agriculutreEnvironmentalAndAnimalCareDictionary.Add(route.Id.ToString(), agriculture);
+                    agricultureEnvironmentalAndAnimalCareDictionary.Add(route.Id.ToString(), agriculture);
                     break;
 
                 case "2":
@@ -75,7 +77,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                         displayText = route.Route,
                         hintText = "Administrator, project manager, human resources and similar"
                     };
-                    businessSalesandLegalDictionary.Add(route.Id.ToString(), businessAdministration);
+                    businessSalesAndLegalDictionary.Add(route.Id.ToString(), businessAdministration);
                     break;
 
                 case "14":
@@ -86,7 +88,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                         displayText = "Sales and marketing",
                         hintText = "Sales manager, digital marketer and similar"
                     };
-                    businessSalesandLegalDictionary.Add(route.Id.ToString(), salesMarkerting);
+                    businessSalesAndLegalDictionary.Add(route.Id.ToString(), salesMarkerting);
                     break;
 
                 case "12":
@@ -97,7 +99,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                         displayText = route.Route,
                         hintText = "Financial advisor, payroll assistant, solicitor and similar"
                     };
-                    businessSalesandLegalDictionary.Add(route.Id.ToString(), legalFinanceAccounting);
+                    businessSalesAndLegalDictionary.Add(route.Id.ToString(), legalFinanceAccounting);
                     break;
 
                 case "10":

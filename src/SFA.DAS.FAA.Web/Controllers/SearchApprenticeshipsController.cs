@@ -48,7 +48,7 @@ public class SearchApprenticeshipsController : Controller
     {
         if (!model.SelectedRouteIds.Any())
         {
-            return View(new BrowseByInterestViewModel()
+            var viewModel = new BrowseByInterestViewModel()
             {
                 ErrorDictionary = ModelState
                     .Where(x => x.Value is { Errors.Count: > 0 })
@@ -56,8 +56,22 @@ public class SearchApprenticeshipsController : Controller
                         kvp => kvp.Key,
                         kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
                     ),
-                Routes = model.Routes
-            });
+                Routes = model.Routes,
+
+                //agricultureEnvironmentalAndAnimalCareDictionary = model.agricultureEnvironmentalAndAnimalCareDictionary,
+                //businessSalesAndLegalDictionary = model.businessSalesAndLegalDictionary,
+                //careHealthAndScienceDictionary = model.careHealthAndScienceDictionary,
+                //cateringAndHospitalityDictionary = model.cateringAndHospitalityDictionary,
+                //constructionEngineeringAndBuildingsDictionary = model.constructionEngineeringAndBuildingsDictionary,
+                //creativeAndDesignDictionary = model.creativeAndDesignDictionary,
+                //digitalDictionary = model.digitalDictionary,
+                //educationAndEarlyYearsDictionary = model.educationAndEarlyYearsDictionary,
+                //protectiveServicesDictionary = model.protectiveServicesDictionary,
+                //transportAndLogisticsDictionary = model.transportAndLogisticsDictionary,
+
+            };
+            viewModel.allocateRouteGroup();
+            return View(viewModel);
         }
 
         return View(model);

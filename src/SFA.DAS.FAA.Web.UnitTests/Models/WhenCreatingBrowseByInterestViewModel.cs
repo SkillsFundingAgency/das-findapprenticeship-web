@@ -56,7 +56,7 @@ public class WhenCreatingBrowseByInterestViewModel
         
         viewModel.allocateRouteGroup();
 
-        routeObject actualRouteObject = viewModel.agriculutreEnvironmentalAndAnimalCareDictionary[routeId.ToString()];
+        routeObject actualRouteObject = viewModel.agricultureEnvironmentalAndAnimalCareDictionary[routeId.ToString()];
 
  
         Assert.AreEqual(expectedRouteObject.routeId, actualRouteObject.routeId);
@@ -81,14 +81,14 @@ public class WhenCreatingBrowseByInterestViewModel
         viewModel.allocateRouteGroup();
 
         // Assert
-        Assert.IsTrue(viewModel.businessSalesandLegalDictionary.ContainsKey("2"));
-        Assert.IsTrue(viewModel.businessSalesandLegalDictionary.ContainsKey("14"));
-        Assert.IsTrue(viewModel.businessSalesandLegalDictionary.ContainsKey("12"));
+        Assert.IsTrue(viewModel.businessSalesAndLegalDictionary.ContainsKey("2"));
+        Assert.IsTrue(viewModel.businessSalesAndLegalDictionary.ContainsKey("14"));
+        Assert.IsTrue(viewModel.businessSalesAndLegalDictionary.ContainsKey("12"));
 
         // You can also assert the values if needed
-        Assert.AreEqual("Business Administration", viewModel.businessSalesandLegalDictionary["2"].routeName);
-        Assert.AreEqual("Sales and Marketing", viewModel.businessSalesandLegalDictionary["14"].routeName);
-        Assert.AreEqual("Legal, Finance, Accounting", viewModel.businessSalesandLegalDictionary["12"].routeName);
+        Assert.AreEqual("Business Administration", viewModel.businessSalesAndLegalDictionary["2"].routeName);
+        Assert.AreEqual("Sales and Marketing", viewModel.businessSalesAndLegalDictionary["14"].routeName);
+        Assert.AreEqual("Legal, Finance, Accounting", viewModel.businessSalesAndLegalDictionary["12"].routeName);
     }
 
 }
