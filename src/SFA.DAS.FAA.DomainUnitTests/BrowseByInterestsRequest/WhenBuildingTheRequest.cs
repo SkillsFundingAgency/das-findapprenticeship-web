@@ -12,6 +12,6 @@ public class WhenBuildingTheRequest
     {
         var actual = new GetBrowseByInterestsApiRequest();
 
-        actual.GetUrl.Should().Be("browseapprenticeships");
+        actual.GetUrl.Should().Be("searchapprenticeships/browsebyinterests");
     }
 }

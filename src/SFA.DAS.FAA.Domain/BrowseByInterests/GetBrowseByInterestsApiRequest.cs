@@ -4,5 +4,5 @@ namespace SFA.DAS.FAA.Domain.BrowseByInterests;
 
 public class GetBrowseByInterestsApiRequest : IGetApiRequest
 {
-    public string GetUrl => "browseapprenticeships";
+    public string GetUrl => "searchapprenticeships/browsebyinterests";
 }

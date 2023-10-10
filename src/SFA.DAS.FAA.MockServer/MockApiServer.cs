@@ -34,7 +34,7 @@ public static class MockApiServer
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("locations.json"));
         
-        server.Given(Request.Create().WithPath(s=>Regex.IsMatch(s, "/browseapprenticeships"))
+        server.Given(Request.Create().WithPath(s=>Regex.IsMatch(s, "/searchapprenticeships/browsebyinterests"))
             .UsingGet()
             ).RespondWith(
             Response.Create()
