@@ -1,59 +1,93 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.BrowseByInterestViewModel
 
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial model="@ViewData.ModelState" name="_ValidationSummary" />
-    </div>
-</div>
-<div class="govuk-width-container ">
-    <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
-    <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                <form class="form" method="post">
-                    <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
-                        <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <span class="govuk-caption-l">Question 1 of 2</span>
-                                <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Browse by your interests</h1>
+        <form class="form" method="post">
+            <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
+                <span class="govuk-caption-l">Question 1 of 2</span>
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Browse by your interests</h1>
+                    </legend>
+                    @if (ViewData.ModelState.ErrorCount > 0)
+                    {
+                        <span class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @ViewData.ModelState.Values.First().Errors.First().ErrorMessage
+                        </span>
+                    }
+                    <p class="govuk-hint">Select all the job categories that interest you.</p>
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Agriculture, environment
+                                and animal care</legend>
+                            <partial model="@Model.AgricultureEnvironmentalAndAnimalCareDictionary"
+                                name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Business, sales and legal
                             </legend>
-                            @if (ViewData.ModelState.ErrorCount > 0)
-                            {
-                            	<span class="govuk-error-message">
-                            		<span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState.Values.First().Errors.First().ErrorMessage
-                            	</span>
-                            }
-                            <p class="govuk-body style govuk-hint">Select all the job categories that interest you.</p>
-                            <div class="govuk-!-padding-bottom-3"></div>
-                            
-                            <div class="govuk-checkboxes" data-module="govuk-checkboxes" >
-                                <h2 class="govuk-heading-m">Agriculture, environment and animal care</h2>
-                                <partial model="@Model.AgricultureEnvironmentalAndAnimalCareDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Business, sales and legal</h2>
-                                <partial model="@Model.BusinessSalesAndLegalDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Care, health and science</h2>
-                                <partial model="@Model.CareHealthAndScienceDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Catering and hospitality</h2>
-                                <partial model="@Model.CateringAndHospitalityDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Construction, engineering and buildings</h2>
-                                <partial model="@Model.ConstructionEngineeringAndBuildingsDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Creative and design</h2>
-                                <partial model="@Model.CreativeAndDesignDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Digital</h2>
-                                <partial model="@Model.DigitalDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Education and early years</h2>
-                                <partial model="@Model.EducationAndEarlyYearsDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Protective services (emergency and uniformed services)</h2>
-                                <partial model="@Model.ProtectiveServicesDictionary" name="_BrowseByInterestsPartial"/>
-                                <h2 class="govuk-heading-m">Transport and logistics</h2>
-                                <partial model="@Model.TransportAndLogisticsDictionary" name="_BrowseByInterestsPartial"/>
-                            </div>
+                            <partial model="@Model.BusinessSalesAndLegalDictionary" name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Care, health and science
+                            </legend>
+                            <partial model="@Model.CareHealthAndScienceDictionary" name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Catering and hospitality
+                            </legend>
+                            <partial model="@Model.CateringAndHospitalityDictionary" name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Construction, engineering
+                                and buildings</legend>
+                            <partial model="@Model.ConstructionEngineeringAndBuildingsDictionary"
+                                name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Creative and design
+                            </legend>
+                            <partial model="@Model.CreativeAndDesignDictionary" name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Digital</legend>
+                            <partial model="@Model.DigitalDictionary" name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Education and early years
+                            </legend>
+                            <partial model="@Model.EducationAndEarlyYearsDictionary" name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Protective services
+                                (emergency and uniformed services)</legend>
+                            <partial model="@Model.ProtectiveServicesDictionary" name="_BrowseByInterestsPartial" />
+                        </fieldset>
+
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Transport and logistics
+                            </legend>
+                            <partial model="@Model.TransportAndLogisticsDictionary" name="_BrowseByInterestsPartial" />
                         </fieldset>
                     </div>
-                    <button class="govuk-button" data-module="govuk-button">Continue</button>
-                </form>
+                </fieldset>
             </div>
-        </div>
-    </main>
+            <button class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+    </div>
 </div>

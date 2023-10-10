@@ -81,8 +81,9 @@
             </div>
         </div>
     </header>
-    <div class="govuk-width-container ">
-        <main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-width-container">
+        @RenderSection("BackLink", required: false)
+        <main class="govuk-main-wrapper" id="main-content" role="main">
             @RenderBody()
         </main>
     </div>

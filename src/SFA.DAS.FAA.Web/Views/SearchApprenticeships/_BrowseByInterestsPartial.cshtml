@@ -1,17 +1,18 @@
 ﻿@using SFA.DAS.FAA.Web.Models
 @model Dictionary<string, BrowseByInterestViewModel.RouteObject>
 
-
-@foreach (var routeObj in Model)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.RouteId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.RouteId")>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.RouteId">
-            @routeObj.Value.DisplayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.HintText
+<div class="govuk-!-margin-bottom-6">
+    @foreach (var routeObj in Model)
+    {
+        <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="route-@routeObj.Value.RouteId" name="SelectedRouteIds"
+                type="checkbox" value="@routeObj.Value.RouteId" />
+            <label class="govuk-label govuk-checkboxes__label" for="route-@routeObj.Value.RouteId">
+                @routeObj.Value.DisplayText
+            </label>
+            <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
+                @routeObj.Value.HintText
+            </div>
         </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
+    }
+</div>
