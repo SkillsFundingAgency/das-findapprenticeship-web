@@ -7,11 +7,10 @@
     </div>
 </div>
 <div class="govuk-width-container ">
-    <a class="govuk-back-link" href="search-page-02.html">Back</a>
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
-    <div class="govuk-grid-row">
+    <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+        <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
-
                 <form class="form" method="post">
                     <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
@@ -23,17 +22,32 @@
                             <div class="govuk-!-padding-bottom-3"></div>
                             
                             <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                                @Html.Partial("_BrowseByInterestsPartial")
+                                <h2 class="govuk-heading-m">Agriculture, environment and animal care</h2>
+                                <partial model="@Model.AgricultureEnvironmentalAndAnimalCareDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Business, sales and legal</h2>
+                                <partial model="@Model.BusinessSalesAndLegalDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Care, health and science</h2>
+                                <partial model="@Model.CareHealthAndScienceDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Catering and hospitality</h2>
+                                <partial model="@Model.CateringAndHospitalityDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Construction, engineering and buildings</h2>
+                                <partial model="@Model.ConstructionEngineeringAndBuildingsDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Creative and design</h2>
+                                <partial model="@Model.CreativeAndDesignDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Digital</h2>
+                                <partial model="@Model.DigitalDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Education and early years</h2>
+                                <partial model="@Model.EducationAndEarlyYearsDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Protective services (emergency and uniformed services)</h2>
+                                <partial model="@Model.ProtectiveServicesDictionary" name="_BrowseByInterestsPartial"/>
+                                <h2 class="govuk-heading-m">Transport and logistics</h2>
+                                <partial model="@Model.TransportAndLogisticsDictionary" name="_BrowseByInterestsPartial"/>
                             </div>
                         </fieldset>
                     </div>
                     <button class="govuk-button" data-module="govuk-button">Continue</button>
-
                 </form>
-
             </div>
         </div>
-
-
     </main>
 </div>

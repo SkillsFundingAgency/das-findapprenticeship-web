@@ -36,30 +36,28 @@ public class SearchApprenticeshipsController : Controller
 
         var viewModel = (BrowseByInterestViewModel)result;
 
-        viewModel.allocateRouteGroup();
+        viewModel.AllocateRouteGroup();
 
         return View(viewModel);
     }
 
     [HttpPost]
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests(BrowseByInterestViewModel model)
-
+    public async Task<IActionResult> BrowseByInterests(BrowseByInterestRequestViewModel model)
     {
-        if (!model.SelectedRouteIds.Any())
+        if (!ModelState.IsValid)
         {
-            var viewModel = new BrowseByInterestViewModel()
-            {
-                ErrorDictionary = ModelState
+            var result = await _mediator.Send(new GetBrowseByInterestsQuery());
+
+            var viewModel = (BrowseByInterestViewModel)result;
+            viewModel.ErrorDictionary = ModelState
                     .Where(x => x.Value is { Errors.Count: > 0 })
                     .ToDictionary(
                         kvp => kvp.Key,
                         kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
-                    ),
-                Routes = model.Routes,
+                    );
 
-            };
-            viewModel.allocateRouteGroup();
+            viewModel.AllocateRouteGroup();
             return View(viewModel);
         }
 

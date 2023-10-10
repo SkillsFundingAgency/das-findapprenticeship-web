@@ -1,153 +1,16 @@
 ﻿@using SFA.DAS.FAA.Web.Models
-@model SFA.DAS.FAA.Web.Models.BrowseByInterestViewModel
-@{
-}
+@model Dictionary<string, BrowseByInterestViewModel.RouteObject>
 
-<h2 class="govuk-heading-m">Agriculture, environment and animal care</h2>
-@foreach (var routeObj in Model.agricultureEnvironmentalAndAnimalCareDictionary)
+
+@foreach (var routeObj in Model)
 {
     <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId")>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
+        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.RouteId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.RouteId")>
+        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.RouteId">
+            @routeObj.Value.DisplayText
         </label>
         <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Business, sales and legal</h2>
-@foreach (var routeObj in Model.businessSalesAndLegalDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Care, health and science</h2>
-@foreach (var routeObj in Model.careHealthAndScienceDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Catering and hospitality</h2>
-@foreach (var routeObj in Model.cateringAndHospitalityDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Construction, engineering and buildings</h2>
-@foreach (var routeObj in Model.constructionEngineeringAndBuildingsDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Creative and design</h2>
-@foreach (var routeObj in Model.creativeAndDesignDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Digital</h2>
-@foreach (var routeObj in Model.digitalDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Education and early years</h2>
-@foreach (var routeObj in Model.educationAndEarlyYearsDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Protective services (emergency and uniformed services)</h2>
-@foreach (var routeObj in Model.protectiveServicesDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
-        </div>
-    </div>
-}
-<div class="govuk-!-padding-bottom-5"></div>
-
-<h2 class="govuk-heading-m">Transport and logistics</h2>
-@foreach (var routeObj in Model.transportAndLogisticsDictionary)
-{
-    <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="route-@routeObj.Value.routeId" name="SelectedRouteIds" type="checkbox" value="@routeObj.Value.routeId" )>
-        <label class="govuk-label govuk-checkboxes__label" for="@routeObj.Value.routeId">
-            @routeObj.Value.displayText
-        </label>
-        <div id="agriculture-item-hint" class="govuk-hint govuk-checkboxes__hint">
-            @routeObj.Value.hintText
+            @routeObj.Value.HintText
         </div>
     </div>
 }
