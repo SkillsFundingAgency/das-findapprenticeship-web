@@ -12,16 +12,22 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
                 <form class="form" method="post">
-                    <div class="govuk-form-group">
+                    <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
                         <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <span class="govuk-caption-l">Question 1 of 2</span>
                                 <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Browse by your interests</h1>
                             </legend>
+                            @if (ViewData.ModelState.ErrorCount > 0)
+                            {
+                            	<span class="govuk-error-message">
+                            		<span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState.Values.First().Errors.First().ErrorMessage
+                            	</span>
+                            }
                             <p class="govuk-body style govuk-hint">Select all the job categories that interest you.</p>
                             <div class="govuk-!-padding-bottom-3"></div>
                             
-                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes" >
                                 <h2 class="govuk-heading-m">Agriculture, environment and animal care</h2>
                                 <partial model="@Model.AgricultureEnvironmentalAndAnimalCareDictionary" name="_BrowseByInterestsPartial"/>
                                 <h2 class="govuk-heading-m">Business, sales and legal</h2>
