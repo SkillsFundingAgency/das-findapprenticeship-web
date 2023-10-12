@@ -63,5 +63,12 @@ public class SearchApprenticeshipsController : Controller
 
         return View(model);
     }
+
+    [Route("location", Name = RouteNames.Location)]
+    public async Task<IActionResult> Location()
+    {
+        return View();
+    }
+
 }
 
