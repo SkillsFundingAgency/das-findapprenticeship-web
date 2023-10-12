@@ -61,7 +61,7 @@ public class SearchApprenticeshipsController : Controller
             return View(viewModel);
         }
 
-        return View(model);
+        return RedirectToAction(nameof(Location));
     }
 
     [Route("location", Name = RouteNames.Location)]

@@ -1,11 +1,11 @@
-﻿<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.BrowseByInterests">Back</a>
+}
 
-
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-
-
-
             <div class="govuk-form-group">
                 <form class="form" action="search-listing" method="post">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -54,9 +54,6 @@
                         </fieldset>
                     </div>
                     <div class="govuk-!-padding-bottom-3"></div>
-
-
-
                     <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
 
                 </form>
