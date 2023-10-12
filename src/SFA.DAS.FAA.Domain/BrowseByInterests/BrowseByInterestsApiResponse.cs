@@ -9,8 +9,8 @@ public class BrowseByInterestsApiResponse
 
 public class RouteResponse
 {
-    [JsonProperty("route")]
-    public string Route { get; set; }
-    [JsonProperty]
+    [JsonProperty("name")]
+    public string Name { get; set; }
+    [JsonProperty("id")]
     public int Id { get; set; }
 }

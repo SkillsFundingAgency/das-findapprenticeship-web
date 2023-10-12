@@ -34,7 +34,7 @@ public class BrowseByInterestViewModel : ViewModelBase
             Routes = source.Routes.Select(r => new RouteViewModel
             {
                 Selected = false,
-                Route = r.Route,
+                Route = r.Name,
                 Id = r.Id
             }).ToList()
         };

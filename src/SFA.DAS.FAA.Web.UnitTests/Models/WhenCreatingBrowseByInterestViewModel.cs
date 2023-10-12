@@ -17,7 +17,7 @@ public class WhenCreatingBrowseByInterestViewModel
 
         var source = new GetBrowseByInterestsResult()
         {
-            Routes = routeList.Select(route => new RouteResponse { Route = route }).ToList()
+            Routes = routeList.Select(route => new RouteResponse { Name = route }).ToList()
         };
 
         var actual = (BrowseByInterestViewModel)source;
