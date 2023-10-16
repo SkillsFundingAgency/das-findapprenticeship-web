@@ -30,7 +30,7 @@ public class SearchApprenticeshipsController : Controller
     }
 
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests()
+    public async Task<IActionResult> BrowseByInterests([FromQuery] List<int>? routeIds)
     {
         var result = await _mediator.Send(new GetBrowseByInterestsQuery());
 
@@ -61,13 +61,14 @@ public class SearchApprenticeshipsController : Controller
             return View(viewModel);
         }
 
-        return RedirectToAction(nameof(Location));
+        return RedirectToRoute(RouteNames.Location, new { RouteIds = model.SelectedRouteIds });
     }
 
     [Route("location", Name = RouteNames.Location)]
-    public async Task<IActionResult> Location()
+    public async Task<IActionResult> Location([FromQuery] List<int>? routeIds)
     {
-        return View();
+        var viewModel = new LocationViewModel(routeIds);
+        return View(viewModel);
     }
 
 }

@@ -1,6 +1,8 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models;
+@model LocationViewModel
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.BrowseByInterests">Back</a>
+    <a class="govuk-back-link" asp-route=@Model.BackUrl>Back</a>
 }
 
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
