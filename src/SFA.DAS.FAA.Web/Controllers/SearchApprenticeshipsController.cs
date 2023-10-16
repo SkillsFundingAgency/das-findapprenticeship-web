@@ -2,10 +2,8 @@
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using MediatR;
-using SFA.DAS.FAA.Application.Queries;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.Domain.BrowseByInterests;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -30,7 +28,7 @@ public class SearchApprenticeshipsController : Controller
     }
 
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests([FromQuery] List<int>? routeIds)
+    public async Task<IActionResult> BrowseByInterests([FromQuery] List<string>? routeIds)
     {
         var result = await _mediator.Send(new GetBrowseByInterestsQuery());
 
@@ -65,7 +63,7 @@ public class SearchApprenticeshipsController : Controller
     }
 
     [Route("location", Name = RouteNames.Location)]
-    public async Task<IActionResult> Location([FromQuery] List<int>? routeIds)
+    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds)
     {
         var viewModel = new LocationViewModel(routeIds);
         return View(viewModel);
