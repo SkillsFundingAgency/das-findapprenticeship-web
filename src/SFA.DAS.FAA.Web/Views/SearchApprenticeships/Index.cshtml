@@ -1,0 +1,52 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.SearchApprenticeshipsViewModel
+@{
+    ViewBag.Title = "Find an apprenticeship – GOV.UK";
+}
+
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-3">Search apprenticeships</h1>
+            <p class="govuk-hint govuk-!-font-size-24">@Model.TotalText</p>
+        </div>
+    </div>
+    <div class="das-highlight">
+        <form class="form" action="search-listing" method="post">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-one-third">
+                    <div class="govuk-form-group">
+                        <h1 class="govuk-label-wrapper">
+                            <label class="govuk-label govuk-label--m" for="what">
+                                What
+                            </label>
+                        </h1>
+                        <div id="what-hint" class="govuk-hint">
+                            Enter a job or company
+                        </div>
+                        <input class="govuk-input" id="what" name="what" type="text" aria-describedby="what-hint">
+                    </div>
+                </div>
+                <div class="govuk-grid-column-one-third">
+                    <div class="govuk-form-group">
+                        <h1 class="govuk-label-wrapper">
+                            <label class="govuk-label govuk-label--m" for="where">
+                                Where
+                            </label>
+                        </h1>
+                        <div id="where-hint" class="govuk-hint">
+                            Enter a city or postcode
+                        </div>
+                        <input class="govuk-input" id="where" name="where" type="text" aria-describedby="where-hint">
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group" href="search-listing">
+                <button class="govuk-button" data-module="govuk-button">
+                    Search
+                </button>
+                <a asp-route="@RouteNames.BrowseByInterests" class="govuk-link govuk-link--no-visited-state">Browse by your interests instead</a>
+            </div>
+        </form>
+    </div>
+</main>

@@ -1,0 +1,40 @@
+{
+  "locations": [
+    {
+      "location": {
+        "geoPoint": [
+          51.289916,
+          -0.773876
+        ]
+      },
+      "name": "Cove and Southwood, Hampshire"
+    },
+    {
+      "location": {
+        "geoPoint": [
+          52.659518,
+          -2.136343
+        ]
+      },
+      "name": "Cove and Southwood, Hampshire"
+    },
+    {
+      "location": {
+        "geoPoint": [
+          52.454072,
+          -1.505398
+        ]
+      },
+      "name": "M4 7EF"
+    },
+    {
+      "location": {
+        "geoPoint": [
+          52.328888,
+          -0.447294
+        ]
+      },
+      "name": "NN6 0JD"
+    }
+  ]
+}
