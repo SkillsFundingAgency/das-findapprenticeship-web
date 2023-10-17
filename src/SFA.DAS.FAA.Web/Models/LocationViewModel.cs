@@ -7,15 +7,25 @@ public class LocationViewModel
     public LocationViewModel(List<string>? selectedRouteIds)
     {
         SelectedRouteIds = selectedRouteIds;
-        BackUrl = CreateBackUrl();
+        RouteData = GetRouteData();
     }
     public List<string>? SelectedRouteIds { get; set; }
-    public string BackUrl { get; set; } = null!;
+    public Dictionary<string,string> RouteData { get; set; }
 
-    private string CreateBackUrl()
+    private Dictionary<string,string> GetRouteData()
     {
-        if (SelectedRouteIds == null) { return string.Empty; }
-        var backUrl = RouteNames.BrowseByInterests + "?RouteIds=" + string.Join("&RouteIds=", SelectedRouteIds.ToArray());
-        return backUrl;
+        var result = new Dictionary<string, string>();
+
+        if (SelectedRouteIds is null)
+        {
+            return result;
+        }
+        for (var i = 0; i < SelectedRouteIds.Count; i++)
+        {
+            var selectedRouteId = SelectedRouteIds[i];
+            result.Add($"routeIds[{i}]", selectedRouteId.ToString());
+        }
+
+        return result;
     }
 }
