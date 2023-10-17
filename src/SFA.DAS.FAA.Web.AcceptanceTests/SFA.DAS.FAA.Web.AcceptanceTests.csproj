@@ -34,9 +34,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\SFA.DAS.FAA.Domain\SFA.DAS.FAA.Domain.csproj" />
 		<ProjectReference Include="..\SFA.DAS.FAA.MockServer\SFA.DAS.FAA.MockServer.csproj" />
+		<ProjectReference Include="..\SFA.DAS.FAA.Web\SFA.DAS.FAA.Web.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-		<InternalsVisibleTo Include="SFA.DAS.FAA.Web.AcceptanceTests" />
-	</ItemGroup>
-
 </Project>

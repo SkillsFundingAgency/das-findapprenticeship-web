@@ -6,8 +6,10 @@ using Moq;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.MockServer;
+using SFA.DAS.FAA.Web.Controllers;
 using TechTalk.SpecFlow;
 using WireMock.Server;
+
 
 namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 
@@ -19,7 +21,7 @@ public sealed class TestEnvironmentManagement
     private static IWireMockServer _staticApiServer;
     private Mock<IApiClient> _mockApiClient;
     private static TestServer _server;
-    private CustomWebApplicationFactory<Web.Program> _webApp;
+    private CustomWebApplicationFactory<SearchApprenticeshipsController> _webApp;
 
     public TestEnvironmentManagement(ScenarioContext context)
     {
@@ -30,7 +32,7 @@ public sealed class TestEnvironmentManagement
     public void StartWebApp()
     {
         _staticApiServer = MockApiServer.Start();
-        _webApp = new CustomWebApplicationFactory<Program>();
+        _webApp = new CustomWebApplicationFactory<SearchApprenticeshipsController>();
 
         _server = _webApp.Server;
 
@@ -51,7 +53,7 @@ public sealed class TestEnvironmentManagement
         _server = new TestServer(new WebHostBuilder()
             .ConfigureTestServices(services => ConfigureTestServices(services, _mockApiClient))
             .UseEnvironment(Environments.Development)
-            .UseStartup<Program>()
+            .UseStartup<SearchApprenticeshipsController>()
             .UseConfiguration(ConfigBuilder.GenerateConfiguration()));
 
         _staticClient = _server.CreateClient();
