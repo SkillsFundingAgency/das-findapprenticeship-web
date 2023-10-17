@@ -34,7 +34,7 @@ public class SearchApprenticeshipsController : Controller
 
         var viewModel = (BrowseByInterestViewModel)result;
 
-        viewModel.AllocateRouteGroup();
+        viewModel.AllocateRouteGroup(routeIds);
 
         return View(viewModel);
     }

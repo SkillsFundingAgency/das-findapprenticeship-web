@@ -15,7 +15,7 @@ public class LocationViewModel
     private string CreateBackUrl()
     {
         if (SelectedRouteIds == null) { return string.Empty; }
-        var backUrl = RouteNames.BrowseByInterests + "?routeIds=" + string.Join("&routeIds=", SelectedRouteIds.ToArray());
+        var backUrl = RouteNames.BrowseByInterests + "?RouteIds=" + string.Join("&RouteIds=", SelectedRouteIds.ToArray());
         return backUrl;
     }
 }
