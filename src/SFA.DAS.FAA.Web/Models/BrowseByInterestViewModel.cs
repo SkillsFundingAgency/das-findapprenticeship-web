@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 
 namespace SFA.DAS.FAA.Web.Models;
@@ -42,16 +41,16 @@ public class BrowseByInterestViewModel : ViewModelBase
     public class RouteViewModel
     {
         public bool Selected { get; set; }
-        public string Route { get; set; }
+        public string Route { get; set; } = null!;
         public int Id { get; set; }
     }
 
     public class RouteObject
     {
-        public string RouteId { get; set; }
-        public string RouteName { get; set; }
-        public string DisplayText { get; set; }
-        public string HintText { get; set; }
+        public string RouteId { get; set; } = null!;
+        public string RouteName { get; set; } = null!;
+        public string DisplayText { get; set; } = null!;
+        public string HintText { get; set; } = null!;
         public bool PreviouslySelected { get; set; }
     }
 

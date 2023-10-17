@@ -28,7 +28,7 @@ public class SearchApprenticeshipsController : Controller
     }
 
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests([FromQuery] List<string>? routeIds)
+    public async Task<IActionResult> BrowseByInterests([FromQuery] List<string>? routeIds = null)
     {
         var result = await _mediator.Send(new GetBrowseByInterestsQuery());
 
@@ -56,6 +56,7 @@ public class SearchApprenticeshipsController : Controller
                     );
 
             viewModel.AllocateRouteGroup();
+
             return View(viewModel);
         }
 
