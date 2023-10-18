@@ -64,23 +64,24 @@ public class SearchApprenticeshipsController : Controller
     }
 
     [Route("location", Name = RouteNames.Location)]
-    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds)
+    public IActionResult Location([FromQuery] List<string>? routeIds)
     {
-        var viewModel = new LocationViewModel(routeIds);
+        var viewModel = new LocationViewModel() { SelectedRouteIds = routeIds };
         return View(viewModel);
     }
 
     [HttpPost]
     [Route("location", Name = RouteNames.Location)]
-    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds, LocationViewModel model)
+    public IActionResult Location([FromQuery] List<string>? routeIds, LocationViewModel model)
     {
-        if (model.cityOrPostcodeSelected == null && model.allOfEngland == null)
+        model.SelectedRouteIds = routeIds;
+        if (model.CityOrPostcodeSelected == null && model.AllOfEnglandSelected == null)
         {
-            ModelState.AddModelError(string.Empty, "Select if you want to enter a city or postcode or if you want to search across all of England");
+            ModelState.AddModelError("CityOrPostcodeSelected", "Select if you want to enter a city or postcode or if you want to search across all of England");
         }
-        else if ((bool)model.cityOrPostcodeSelected && model.cityOrPostcode == null)
+        else if (model.CityOrPostcodeSelected == true && model.CityOrPostcode == null)
         {
-            ModelState.AddModelError(string.Empty, "Enter a city or postcode");
+            ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
         }
 
         if (!ModelState.IsValid)
@@ -97,6 +98,4 @@ public class SearchApprenticeshipsController : Controller
 
         return View(model);
     }
-
 }
-
