@@ -75,11 +75,8 @@ public class SearchApprenticeshipsController : Controller
     public IActionResult Location([FromQuery] List<string>? routeIds, LocationViewModel model)
     {
         model.SelectedRouteIds = routeIds;
-        if (model.AllOfEnglandSelected == null)
-        {
-            ModelState.AddModelError("location", "Select if you want to enter a city or postcode or if you want to search across all of England");
-        }
-        else if (model.AllOfEnglandSelected == false && model.CityOrPostcode == null)
+
+        if (model.NationalSearch == false && model.CityOrPostcode == null)
         {
             ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
         }

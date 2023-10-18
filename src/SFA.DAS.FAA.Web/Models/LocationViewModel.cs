@@ -1,8 +1,11 @@
-﻿namespace SFA.DAS.FAA.Web.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SFA.DAS.FAA.Web.Models;
 
 public class LocationViewModel : ViewModelBase
 {
-    public bool? AllOfEnglandSelected { get; set; }
+    [Required(ErrorMessage = "Select if you want to enter a city or postcode or if you want to search across all of England")]
+    public bool? NationalSearch { get; set; }
     public string? CityOrPostcode { get; set; }
     public int? Distance { get; set; }
     public List<string>? SelectedRouteIds { get; set; }

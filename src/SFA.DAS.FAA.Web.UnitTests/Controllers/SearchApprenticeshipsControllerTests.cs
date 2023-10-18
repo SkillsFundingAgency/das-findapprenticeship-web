@@ -45,38 +45,16 @@ public class SearchApprenticeshipsControllerTests
         actualModel.Should().BeEquivalentTo((BrowseByInterestViewModel)result);
     }
 
-    [Test, MoqInlineAutoData(false, null)]
-    [MoqInlineAutoData(true, true)]
-    [MoqInlineAutoData(true, false)]
-    public void AndNoLocationIsSelected_ThenThereIsValidationError(
-        bool isValid,
-        bool? allOfEnglandSelected,
-        LocationViewModel model,
-        [Greedy] SearchApprenticeshipsController controller)
-    {
-        model.AllOfEnglandSelected = allOfEnglandSelected;
-
-        var actual = controller.Location(null, model) as ViewResult;
-
-        actual!.ViewData.ModelState.IsValid.Should().Be(isValid);
-        if (isValid == false)
-        {
-            actual.ViewData.ModelState.ErrorCount.Should().Be(1);
-            actual.ViewData.ModelState["location"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
-            actual.ViewData.ModelState["location"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("Select if you want to enter a city or postcode or if you want to search across all of England");
-        }
-    }
-
     [Test, MoqInlineAutoData(false, false, null)]
     [MoqInlineAutoData(true, false)]
     public void AndCityOrPostcodeIsSelected_AndNoCityOrPostcodeValueInputted_ThenThereIsValidationError(
         bool isValid,
-        bool? allOfEnglandSelected,
+        bool? nationalSearch,
         string? cityOrPostcodeValue,
         LocationViewModel model,
         [Greedy] SearchApprenticeshipsController controller)
     {
-        model.AllOfEnglandSelected = allOfEnglandSelected;
+        model.NationalSearch = nationalSearch;
         model.CityOrPostcode = cityOrPostcodeValue;
 
         var actual = controller.Location(null, model) as ViewResult;

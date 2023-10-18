@@ -11,19 +11,19 @@
         <div class="govuk-form-group">
             <form class="form" method="post">
                 <div
-                    class="govuk-form-group @((ViewData.ModelState["radio-btn"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+                    class="govuk-form-group @((ViewData.ModelState["NationalSearch"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="location-hint">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <span class="govuk-caption-l">Question 2 of 2</span>
                             <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
                         </legend>
-                        <span asp-validation-for="AllOfEnglandSelected" class="govuk-error-message"></span>
+                        <span asp-validation-for="NationalSearch" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" name="localOrNational" asp-for="AllOfEnglandSelected"
-                                    type="radio" value="true" aria-controls="conditional-location"
+                                <input class="govuk-radios__input" asp-for="NationalSearch"
+                                    type="radio" value="false" aria-controls="conditional-location"
                                     aria-expanded="false">
-                                <label class="govuk-label govuk-radios__label" asp-for="AllOfEnglandSelected">
+                                <label class="govuk-label govuk-radios__label" asp-for="NationalSearch">
                                     Enter a city or postcode
                                 </label>
                             </div>
@@ -54,9 +54,9 @@
                             </div>
 
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" name="localOrNational"
-                                    asp-for="@Model.AllOfEnglandSelected" type="radio" value="true">
-                                <label class="govuk-label govuk-radios__label" asp-for="@Model.AllOfEnglandSelected">
+                                <input class="govuk-radios__input"
+                                    asp-for="NationalSearch" type="radio" value="true">
+                                <label class="govuk-label govuk-radios__label" asp-for="NationalSearch">
                                     Search across all of England
                                 </label>
                             </div>
