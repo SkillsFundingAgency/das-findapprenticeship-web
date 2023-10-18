@@ -77,7 +77,7 @@ public class SearchApprenticeshipsController : Controller
         model.SelectedRouteIds = routeIds;
         if (model.CityOrPostcodeSelected == null && model.AllOfEnglandSelected == null)
         {
-            ModelState.AddModelError("CityOrPostcodeSelected", "Select if you want to enter a city or postcode or if you want to search across all of England");
+            ModelState.AddModelError("radio-btn", "Select if you want to enter a city or postcode or if you want to search across all of England");
         }
         else if (model.CityOrPostcodeSelected == true && model.CityOrPostcode == null)
         {
