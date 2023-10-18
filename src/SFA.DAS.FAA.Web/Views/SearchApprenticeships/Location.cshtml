@@ -5,36 +5,40 @@
     <a class="govuk-back-link" asp-route="@RouteNames.BrowseByInterests" asp-all-route-data="@Model.RouteData">Back</a>
 }
 
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <partial model="@ViewData.ModelState" name="_ValidationSummary" />
-            <div class="govuk-form-group">
-                <form class="form" method="post" id="CityOrPostcodeSelected">
-                    <div class="govuk-form-group @((ViewData.ModelState["radio-btn"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
-                        <fieldset class="govuk-fieldset" aria-describedby="location-hint">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <span class="govuk-caption-l">Question 2 of 2</span>
-                                <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
-                            </legend>
-                            <span asp-validation-for="CityOrPostcodeSelected" class="govuk-error-message"></span>
-                            <div class="govuk-radios" data-module="govuk-radios">
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" asp-for="CityOrPostcodeSelected" type="radio" value="true" aria-controls="conditional-location" aria-expanded="true" id="radio-btn">
-                                    <label class="govuk-label govuk-radios__label" for="CityOrPostcodeSelected">
-                                        Enter a city or postcode
-                                    </label>
-                                </div>
-                                <div class="govuk-radios__conditional" id="conditional-location">
-                                    <div class="govuk-form-group @((ViewData.ModelState["CityOrPostcode"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+        <div class="govuk-form-group">
+            <form class="form" method="post">
+                <div
+                    class="govuk-form-group @((ViewData.ModelState["radio-btn"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+                    <fieldset class="govuk-fieldset" aria-describedby="location-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <span class="govuk-caption-l">Question 2 of 2</span>
+                            <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
+                        </legend>
+                        <span asp-validation-for="CityOrPostcodeSelected" class="govuk-error-message"></span>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" name="localOrNational"
+                                    asp-for="CityOrPostcodeSelected" type="radio" value="true"
+                                    aria-controls="conditional-location" aria-expanded="false">
+                                <label class="govuk-label govuk-radios__label" asp-for="CityOrPostcodeSelected">
+                                    Enter a city or postcode
+                                </label>
+                            </div>
+                            <div class="govuk-radios__conditional" id="conditional-location">
+                                <div
+                                    class="govuk-form-group @((ViewData.ModelState["CityOrPostcode"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                                     <label class="govuk-label" for="CityOrPostcode">
                                         City or postcode
                                     </label>
                                     <span asp-validation-for="CityOrPostcode" class="govuk-error-message"></span>
-                                    <input class="govuk-input govuk-!-width-one-third" asp-for="CityOrPostcode" type="text" spellcheck="false" autocomplete="postcode">
-                                    </div>
-                                    <div class="govuk-!-padding-bottom-0.5"></div>
-                                    <label class="govuk-label" for="Distance" value="@Model.Distance">
+                                    <input class="govuk-input govuk-input--width-10" asp-for="CityOrPostcode"
+                                        type="text" spellcheck="false" autocomplete="postal-code">
+                                </div>
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" asp-for="@Model.Distance">
                                         Distance you can travel
                                     </label>
                                     <select class="govuk-select" asp-for="@Model.Distance">
@@ -47,20 +51,22 @@
                                         <option value="40">40 miles</option>
                                     </select>
                                 </div>
-
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" asp-for="@Model.AllOfEnglandSelected" type="radio" value="true" data-aria-controls="conditional-location-2" id="radio-btn">
-                                    <label class="govuk-label govuk-radios__label" for="AllOfEnglandSelected">
-                                        Search across all of England
-                                    </label>
-                                </div>
                             </div>
-                        </fieldset>
-                    </div>
-                    <div class="govuk-!-padding-bottom-3"></div>
+
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" name="localOrNational"
+                                    asp-for="@Model.AllOfEnglandSelected" type="radio" value="true">
+                                <label class="govuk-label govuk-radios__label" asp-for="@Model.AllOfEnglandSelected">
+                                    Search across all of England
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="govuk-button-group">
                     <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
-</main>
+</div>
