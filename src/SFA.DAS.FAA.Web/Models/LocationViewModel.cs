@@ -2,7 +2,6 @@
 
 public class LocationViewModel : ViewModelBase
 {
-    public bool? CityOrPostcodeSelected { get; set; }
     public bool? AllOfEnglandSelected { get; set; }
     public string? CityOrPostcode { get; set; }
     public int? Distance { get; set; }
