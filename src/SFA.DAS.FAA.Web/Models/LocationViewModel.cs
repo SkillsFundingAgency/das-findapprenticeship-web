@@ -1,6 +1,4 @@
-﻿using SFA.DAS.FAA.Web.Infrastructure;
-
-namespace SFA.DAS.FAA.Web.Models;
+﻿namespace SFA.DAS.FAA.Web.Models;
 
 public class LocationViewModel
 {

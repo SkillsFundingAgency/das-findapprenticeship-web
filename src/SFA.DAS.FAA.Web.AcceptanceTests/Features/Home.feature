@@ -22,7 +22,7 @@ So that it is clear what actions I can take
 	| Field | Value |
 	|SelectedRouteIds         | 1             |
 	Then a http status code of 200 is returned
-	And I am redirected to the url: /location
+	And I am redirected to the following url: /location
 
 @WireMockServer
 	Scenario: Browse by interests with validation failure
@@ -33,6 +33,6 @@ So that it is clear what actions I can take
 
 @WireMockServer
 	Scenario: Navigate to the location page
-	When I navigate to the url: /location
+	When I navigate to the following url: /location
 	Then a http status code of 200 is returned
 	And the page content includes the following: What is your location?

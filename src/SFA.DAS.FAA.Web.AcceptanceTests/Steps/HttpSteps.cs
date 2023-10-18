@@ -38,8 +38,8 @@ public sealed class HttpSteps
         _context.Set(response, ContextKeys.HttpResponse);
     }
 
-    [Then("an http status code of (.*) is returned")]
-    public void ThenAnHttpStatusCodeIsReturned(int httpStatusCode)
+    [Then("a http status code of (.*) is returned")]
+    public void ThenAHttpStatusCodeIsReturned(int httpStatusCode)
     {
         if (!_context.TryGetValue<HttpResponseMessage>(ContextKeys.HttpResponse, out var result))
         {
@@ -47,5 +47,15 @@ public sealed class HttpSteps
         }
 
         result.StatusCode.Should().Be((HttpStatusCode)httpStatusCode);
+    }
+
+    //not sure if this is right
+
+    [Then("I am redirected to the following url: (.*)")]
+    public async Task ThenIAmRedirectedToTheFollowingUrl(string url)
+    {
+        var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
+        var response = await client.GetAsync(url);
+        _context.Set(response, ContextKeys.HttpResponse);
     }
 }

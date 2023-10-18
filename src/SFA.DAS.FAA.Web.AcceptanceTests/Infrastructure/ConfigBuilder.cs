@@ -16,11 +16,11 @@ public static class ConfigBuilder
                     new KeyValuePair<string, string>("ConfigNames", "SFA.DAS.FindApprenticeships.Web"),
                     new KeyValuePair<string, string>("EnvironmentName", "DEV"),
                     new KeyValuePair<string, string>("Version", "1.0"),
+                    new KeyValuePair<string, string>("FindAnApprenticeship:BaseUrl", "https://localhost:7276"),
                     new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:BaseUrl", "https://localhost:5003"),
                     new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:Key", " ")
             }
         };
-
         var provider = new MemoryConfigurationProvider(configSource);
         return new ConfigurationRoot(new List<IConfigurationProvider>() { provider });
     }
