@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.Controllers;
@@ -19,15 +18,15 @@ public class SearchApprenticeshipsControllerTests
     public async Task Then_The_Mediator_Query_Is_Called_And_Index_View_Returned(
         GetSearchApprenticeshipsIndexResult result,
         [Frozen] Mock<IMediator> mediator,
-        [Greedy]SearchApprenticeshipsController controller)
+        [Greedy] SearchApprenticeshipsController controller)
     {
         mediator.Setup(x => x.Send(It.IsAny<GetSearchApprenticeshipsIndexQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-        
+
         var actual = await controller.Index() as ViewResult;
 
         Assert.IsNotNull(actual);
-        actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel) result);
+        actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result);
     }
 
     [Test, MoqAutoData]
@@ -44,5 +43,52 @@ public class SearchApprenticeshipsControllerTests
         Assert.IsNotNull(actual);
         var actualModel = actual!.Model as BrowseByInterestViewModel;
         actualModel.Should().BeEquivalentTo((BrowseByInterestViewModel)result);
+    }
+
+    [Test, MoqInlineAutoData(false, null, null)]
+    [MoqInlineAutoData(true, true, false)]
+    [MoqInlineAutoData(true, false, true)]
+    public void AndNoLocationIsSelected_ThenThereIsValidationError(
+        bool isValid,
+        bool? cityOrPostcodeSelected,
+        bool? allOfEnglandSelected,
+        LocationViewModel model,
+        [Greedy] SearchApprenticeshipsController controller)
+    {
+        model.CityOrPostcodeSelected = cityOrPostcodeSelected;
+        model.AllOfEnglandSelected = allOfEnglandSelected;
+
+        var actual = controller.Location(null, model) as ViewResult;
+
+        actual!.ViewData.ModelState.IsValid.Should().Be(isValid);
+        if (isValid == false)
+        {
+            actual.ViewData.ModelState.ErrorCount.Should().Be(1);
+            actual.ViewData.ModelState["radio-btn"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
+            actual.ViewData.ModelState["radio-btn"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("Select if you want to enter a city or postcode or if you want to search across all of England");
+        }
+    }
+
+    [Test, MoqInlineAutoData(false, true, null)]
+    [MoqInlineAutoData(true, true)]
+    public void AndCityOrPostcodeIsSelected_AndNoCityOrPostcodeValueInputted_ThenThereIsValidationError(
+        bool isValid,
+        bool? cityOrPostcodeSelected,
+        string? cityOrPostcodeValue,
+        LocationViewModel model,
+        [Greedy] SearchApprenticeshipsController controller)
+    {
+        model.CityOrPostcodeSelected = cityOrPostcodeSelected;
+        model.CityOrPostcode = cityOrPostcodeValue;
+
+        var actual = controller.Location(null, model) as ViewResult;
+
+        actual!.ViewData.ModelState.IsValid.Should().Be(isValid);
+        if (isValid == false)
+        {
+            actual.ViewData.ModelState.ErrorCount.Should().Be(1);
+            actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
+            actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("Enter a city or postcode");
+        }
     }
 }
