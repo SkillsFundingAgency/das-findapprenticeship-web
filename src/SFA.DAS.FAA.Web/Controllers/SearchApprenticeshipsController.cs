@@ -75,11 +75,11 @@ public class SearchApprenticeshipsController : Controller
     public IActionResult Location([FromQuery] List<string>? routeIds, LocationViewModel model)
     {
         model.SelectedRouteIds = routeIds;
-        if (model.CityOrPostcodeSelected == null && model.AllOfEnglandSelected == null)
+        if (model.AllOfEnglandSelected == null)
         {
-            ModelState.AddModelError("radio-btn", "Select if you want to enter a city or postcode or if you want to search across all of England");
+            ModelState.AddModelError("location", "Select if you want to enter a city or postcode or if you want to search across all of England");
         }
-        else if (model.CityOrPostcodeSelected == true && model.CityOrPostcode == null)
+        else if (model.AllOfEnglandSelected == false && model.CityOrPostcode == null)
         {
             ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
         }
