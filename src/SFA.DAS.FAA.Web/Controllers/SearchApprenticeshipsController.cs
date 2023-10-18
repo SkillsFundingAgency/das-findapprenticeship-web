@@ -70,5 +70,33 @@ public class SearchApprenticeshipsController : Controller
         return View(viewModel);
     }
 
+    [HttpPost]
+    [Route("location", Name = RouteNames.Location)]
+    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds, LocationViewModel model)
+    {
+        if (model.cityOrPostcodeSelected == null && model.allOfEngland == null)
+        {
+            ModelState.AddModelError(string.Empty, "Select if you want to enter a city or postcode or if you want to search across all of England");
+        }
+        else if ((bool)model.cityOrPostcodeSelected && model.cityOrPostcode == null)
+        {
+            ModelState.AddModelError(string.Empty, "Enter a city or postcode");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            model.ErrorDictionary = ModelState
+                .Where(x => x.Value is { Errors.Count: > 0 })
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
+                );
+
+            return View(model);
+        }
+
+        return View(model);
+    }
+
 }
 

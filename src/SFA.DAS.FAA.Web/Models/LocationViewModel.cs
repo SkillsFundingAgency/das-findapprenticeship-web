@@ -1,8 +1,22 @@
-﻿namespace SFA.DAS.FAA.Web.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
-public class LocationViewModel
+namespace SFA.DAS.FAA.Web.Models;
+
+public class LocationViewModel : ViewModelBase
 {
-    public LocationViewModel(List<string>? selectedRouteIds)
+    [BindProperty]
+    public bool? cityOrPostcodeSelected { get; set; }
+    [BindProperty]
+    public bool? allOfEngland { get; set; }
+    [BindProperty]
+    public string? cityOrPostcode { get; set; }
+    [BindProperty]
+    public string distance { get; set; }
+
+
+
+    public LocationViewModel(List<string>? selectedRouteIds = null)
     {
         SelectedRouteIds = selectedRouteIds;
         RouteData = GetRouteData();

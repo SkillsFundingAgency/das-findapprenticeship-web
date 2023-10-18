@@ -8,8 +8,9 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+                <partial model="@ViewData.ModelState" name="_ValidationSummary" />
             <div class="govuk-form-group">
-                <form class="form" action="search-listing" method="post">
+                <form class="form" method="post">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <span class="govuk-caption-l">Question 2 of 2</span>
                         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
@@ -19,7 +20,7 @@
                         <fieldset class="govuk-fieldset" aria-describedby="location-hint">
                             <div class="govuk-radios" data-module="govuk-radios">
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="location" name="location" type="radio" value="postcode" aria-controls="conditional-location" aria-expanded="true">
+                                    <input class="govuk-radios__input" id="location" name="location" type="radio" value="postcode" aria-controls="conditional-location" aria-expanded="true" asp-for="cityOrPostcodeSelected">
                                     <label class="govuk-label govuk-radios__label" for="location">
                                         Enter a city or postcode
                                     </label>
@@ -29,10 +30,10 @@
                                         <label class="govuk-label" for="location-by-postcode">
                                             City or postcode
                                         </label>
-                                        <input class="govuk-input govuk-!-width-one-third" id="location-by-postcode" name="location-by-postcode" type="postcode" spellcheck="false" autocomplete="postcode">
+                                        <input class="govuk-input govuk-!-width-one-third" id="location-by-postcode" name="location-by-postcode" type="postcode" spellcheck="false" autocomplete="postcode" asp-for="cityOrPostcode">
                                     </div>
                                     <div class="govuk-form-group">
-                                        <label class="govuk-label" for="sort">
+                                        <label class="govuk-label" for="sort" asp-for="distance">
                                             Distance you can travel
                                         </label>
                                         <select class="govuk-select" id="sort" name="sort">
@@ -47,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="location-2" name="location" type="radio" value="england" data-aria-controls="conditional-location-2">
+                                    <input class="govuk-radios__input" id="location-2" name="location" type="radio" value="england" data-aria-controls="conditional-location-2" asp-for="allOfEngland">
                                     <label class="govuk-label govuk-radios__label" for="location-2">
                                         Search across all of England
                                     </label>
