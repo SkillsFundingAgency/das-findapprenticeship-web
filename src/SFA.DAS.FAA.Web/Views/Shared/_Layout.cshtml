@@ -25,38 +25,16 @@
 
     <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
 
-    <!-- Google Tag Manager -->
-    <script>
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-');
-
-    </script>
-    <!-- End Google Tag Manager -->
-
 </head>
 
-<body class="govuk-template__body " data-shortlistcount="@(ViewData["ShortlistItemCount"] ?? 0)">
-
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-" height="0" width="0"
-            style="display: none; visibility: hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
+<body class="govuk-template__body">
 
     <script>
         document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>
-
+    <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <header class="govuk-header" data-module="govuk-header" id="top">
         <div class="govuk-header__container govuk-width-container">
-
             <div class="govuk-header__logo">
                 <a href="https://www.gov.uk/" class="govuk-header__link govuk-header__link--homepage">
                     <span class="govuk-header__logotype">
@@ -81,12 +59,14 @@
             </div>
         </div>
     </header>
+
     <div class="govuk-width-container">
         @RenderSection("BackLink", required: false)
         <main class="govuk-main-wrapper" id="main-content" role="main">
             @RenderBody()
         </main>
     </div>
+
     <footer class="govuk-footer">
         <div class="govuk-width-container ">
             <div class="govuk-footer__meta">
@@ -114,7 +94,7 @@
     </footer>
 
     <script src="libs/govuk-frontend/all.js"></script>
-    <script src="/js/site.js" no-cdn></script>
+    <script src="~/js/site.js" no-cdn></script>
     <script>
         window.GOVUKFrontend.initAll();
     </script>
