@@ -20,9 +20,8 @@
                         <span asp-validation-for="NationalSearch" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" asp-for="NationalSearch"
-                                    type="radio" value="false" aria-controls="conditional-location"
-                                    aria-expanded="false">
+                                <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="false"
+                                    aria-controls="conditional-location" aria-expanded="false" id="NationalSearch">
                                 <label class="govuk-label govuk-radios__label" asp-for="NationalSearch">
                                     Enter a city or postcode
                                 </label>
@@ -54,9 +53,9 @@
                             </div>
 
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input"
-                                    asp-for="NationalSearch" type="radio" value="true">
-                                <label class="govuk-label govuk-radios__label" asp-for="NationalSearch">
+                                <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="true"
+                                    id="NationalSearch-National">
+                                <label class="govuk-label govuk-radios__label" for="NationalSearch-National">
                                     Search across all of England
                                 </label>
                             </div>
