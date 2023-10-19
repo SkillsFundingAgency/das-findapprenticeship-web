@@ -5,64 +5,59 @@
     <a class="govuk-back-link" asp-route="@RouteNames.BrowseByInterests" asp-all-route-data="@Model.RouteData">Back</a>
 }
 
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <div class="govuk-form-group">
-                <form class="form" action="search-listing" method="post">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-form-group">
+            <form class="form" method="post">
+                <fieldset class="govuk-fieldset" aria-describedby="location-hint">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <span class="govuk-caption-l">Question 2 of 2</span>
                         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
                     </legend>
-
-                    <div class="govuk-form-group">
-                        <fieldset class="govuk-fieldset" aria-describedby="location-hint">
-                            <div class="govuk-radios" data-module="govuk-radios">
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="location" name="location" type="radio" value="postcode" aria-controls="conditional-location" aria-expanded="true">
-                                    <label class="govuk-label govuk-radios__label" for="location">
-                                        Enter a city or postcode
-                                    </label>
-                                </div>
-                                <div class="govuk-radios__conditional" id="conditional-location">
-                                    <div class="govuk-form-group">
-                                        <label class="govuk-label" for="location-by-postcode">
-                                            City or postcode
-                                        </label>
-                                        <input class="govuk-input govuk-!-width-one-third" id="location-by-postcode" name="location-by-postcode" type="postcode" spellcheck="false" autocomplete="postcode">
-                                    </div>
-                                    <div class="govuk-form-group">
-                                        <label class="govuk-label" for="sort">
-                                            Distance you can travel
-                                        </label>
-                                        <select class="govuk-select" id="sort" name="sort">
-                                            <option value="published">2 miles</option>
-                                            <option value="published">5 miles</option>
-                                            <option value="updated" selected="">10 miles</option>
-                                            <option value="views">15 miles</option>
-                                            <option value="comments">20 miles</option>
-                                            <option value="comments">30 miles</option>
-                                            <option value="comments">40 miles</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="location-2" name="location" type="radio" value="england" data-aria-controls="conditional-location-2">
-                                    <label class="govuk-label govuk-radios__label" for="location-2">
-                                        Search across all of England
-                                    </label>
-                                </div>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="false"
+                                   aria-controls="conditional-location" aria-expanded="false" id="NationalSearch">
+                            <label class="govuk-label govuk-radios__label" asp-for="NationalSearch">
+                                Enter a city or postcode
+                            </label>
+                        </div>
+                        <div class="govuk-radios__conditional" id="conditional-location">
+                            <label class="govuk-label" for="CityOrPostcode">
+                                City or postcode
+                            </label>
+                            <input class="govuk-input govuk-input--width-10" asp-for="CityOrPostcode"
+                                   type="text" spellcheck="false" autocomplete="postal-code">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" asp-for="@Model.Distance">
+                                    Distance you can travel
+                                </label>
+                                <select class="govuk-select" asp-for="@Model.Distance">
+                                    <option value="2">2 miles</option>
+                                    <option value="5">5 miles</option>
+                                    <option value="10" selected>10 miles</option>
+                                    <option value="15">15 miles</option>
+                                    <option value="20">20 miles</option>
+                                    <option value="30">30 miles</option>
+                                    <option value="40">40 miles</option>
+                                </select>
                             </div>
-                        </fieldset>
+                        </div>
+
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="true"
+                                   id="NationalSearch-National">
+                            <label class="govuk-label govuk-radios__label" for="NationalSearch-National">
+                                Search across all of England
+                            </label>
+                        </div>
                     </div>
-                    <div class="govuk-!-padding-bottom-3"></div>
+                </fieldset>
+                <div class="govuk-!-padding-bottom-3"></div>
+                <div class="govuk-button-group">
                     <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
-
-                </form>
-
-            </div>
+                </div>
+            </form>
         </div>
-
-
     </div>
-</main>
+</div>

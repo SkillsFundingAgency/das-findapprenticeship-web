@@ -7,6 +7,9 @@ public class LocationViewModel
         SelectedRouteIds = selectedRouteIds;
         RouteData = GetRouteData();
     }
+    public bool? NationalSearch { get; set; }
+    public string? CityOrPostcode { get; set; }
+    public int? Distance { get; set; }
     public List<string>? SelectedRouteIds { get; set; }
     public Dictionary<string,string> RouteData { get; set; }
 
