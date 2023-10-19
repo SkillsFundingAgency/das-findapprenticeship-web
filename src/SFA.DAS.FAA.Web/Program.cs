@@ -48,6 +48,8 @@ app.UseHealthChecks("/ping");
 
 app.UseRouting();
 
+app.UseStaticFiles();
+
 app.UseEndpoints(endpointBuilder =>
 {
     endpointBuilder.MapControllerRoute(
