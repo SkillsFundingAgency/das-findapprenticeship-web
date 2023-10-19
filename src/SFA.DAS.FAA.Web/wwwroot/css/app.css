@@ -1,3 +1,16 @@
 .govuk-error-message:empty {
   display: none;
 }
+
+.faa-home-panel {
+  background: #f3f2f1;
+  margin: 30px -15px 0;
+  padding: 15px;
+}
+
+@media (min-width: 40.0625em) {
+  .faa-home-panel {
+    margin: 50px 0 0;
+    padding: 30px;
+  }
+}

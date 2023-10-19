@@ -11,10 +11,10 @@
             <p class="govuk-hint govuk-!-font-size-24">@Model.TotalText</p>
         </div>
     </div>
-    <div class="das-highlight">
+    <div class="faa-home-panel">
         <form class="form" action="search-listing" method="post">
             <div class="govuk-grid-row">
-                <div class="govuk-grid-column-one-third">
+                <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div class="govuk-form-group">
                         <h1 class="govuk-label-wrapper">
                             <label class="govuk-label govuk-label--m" for="what">
@@ -27,7 +27,7 @@
                         <input class="govuk-input" id="what" name="what" type="text" aria-describedby="what-hint">
                     </div>
                 </div>
-                <div class="govuk-grid-column-one-third">
+                <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div class="govuk-form-group">
                         <h1 class="govuk-label-wrapper">
                             <label class="govuk-label govuk-label--m" for="where">
@@ -41,11 +41,12 @@
                     </div>
                 </div>
             </div>
-            <div class="govuk-button-group" href="search-listing">
+            <div class="govuk-button-group govuk-!-margin-bottom-0" href="search-listing">
                 <button class="govuk-button" data-module="govuk-button">
                     Search
                 </button>
-                <a asp-route="@RouteNames.BrowseByInterests" class="govuk-link govuk-link--no-visited-state">Browse by your interests instead</a>
+                <a asp-route="@RouteNames.BrowseByInterests" class="govuk-link govuk-link--no-visited-state">Browse by
+                    your interests instead</a>
             </div>
         </form>
     </div>
