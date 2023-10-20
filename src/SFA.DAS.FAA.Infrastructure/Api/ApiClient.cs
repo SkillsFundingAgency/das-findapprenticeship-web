@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Domain.Configuration;
 using System.Net;
-using System.Text;
 using SFA.DAS.FAA.Domain.Interfaces;
 using Newtonsoft.Json;
 

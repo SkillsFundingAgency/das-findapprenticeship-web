@@ -5,7 +5,6 @@ using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
 using WireMock.Settings;
-using WireMock.Types;
 
 namespace SFA.DAS.FAA.MockServer;
 
@@ -45,7 +44,7 @@ public static class MockApiServer
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/searchbylocation")).UsingGet()).RespondWith(Response.Create()
             .WithStatusCode(200)
             .WithHeader("Content-Type", "application/json")
-            .WithBodyFromFile("locations-search.json"));
+            .WithBodyFromFile("location-search.json"));
 
         return server;
 
