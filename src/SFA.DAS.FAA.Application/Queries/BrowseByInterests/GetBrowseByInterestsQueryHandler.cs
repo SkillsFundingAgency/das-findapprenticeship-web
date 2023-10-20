@@ -1,8 +1,6 @@
 ﻿using MediatR;
-using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 
 namespace SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 

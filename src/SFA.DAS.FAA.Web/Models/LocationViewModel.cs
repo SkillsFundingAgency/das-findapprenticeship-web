@@ -10,6 +10,7 @@ public class LocationViewModel : ViewModelBase
     public int? Distance { get; set; }
     public List<string>? SelectedRouteIds { get; set; }
     public Dictionary<string, string> RouteData { get => GetRouteData(); }
+    public LocationsBySearchViewModel? Locations { get; set; }
 
     private Dictionary<string, string> GetRouteData()
     {

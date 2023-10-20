@@ -34,7 +34,7 @@
                                     </label>
                                     <span asp-validation-for="CityOrPostcode" class="govuk-error-message"></span>
                                     <input class="govuk-input govuk-input--width-10" asp-for="CityOrPostcode"
-                                        type="text" spellcheck="false" autocomplete="postal-code">
+                                           type="search" spellcheck="false" autocomplete="postal-code" data-submit-on-selection="true">
                                 </div>
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" asp-for="@Model.Distance">
