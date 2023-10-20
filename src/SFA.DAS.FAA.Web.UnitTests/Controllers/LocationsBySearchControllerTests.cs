@@ -9,6 +9,7 @@ using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
+using static SFA.DAS.FAA.Domain.LocationsBySearch.GetLocationsBySearchApiResponse;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers;
 public class LocationsBySearchControllerTests
@@ -16,19 +17,22 @@ public class LocationsBySearchControllerTests
     [Test, MoqAutoData]
     public async Task Then_The_Query_Is_Sent_And_Data_Retrieved_And_Json_Returned(
     string searchTerm,
-    GetLocationsBySearchQueryResult response,
+    List<LocationItem> locationItems,
+    [Greedy] GetLocationsBySearchQueryResult response,
     [Frozen] Mock<IMediator> mediator,
     [Greedy] LocationsController controller)
     {
+        response.LocationItems = locationItems;
         mediator.Setup(x => x.Send(It.Is<GetLocationsBySearchQuery>(l => l.SearchTerm.Equals(searchTerm)), It.IsAny<CancellationToken>())).ReturnsAsync(response);
 
         var actual = await controller.Locations(searchTerm);
+        var actualJsonResult = actual as JsonResult;
 
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
-            actual.As<JsonResult>().Should().NotBeNull();
-            actual.As<LocationsBySearchViewModel>().Locations.Should().NotBeNull();
+            actualJsonResult.Should().NotBeNull();
+            ((LocationViewModel)actualJsonResult.Value).Locations.Should().NotBeNull();
         }
     }
 }
