@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.Models;
 

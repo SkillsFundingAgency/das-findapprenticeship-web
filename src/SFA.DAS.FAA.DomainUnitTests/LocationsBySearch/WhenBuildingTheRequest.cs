@@ -11,6 +11,6 @@ public class WhenBuildingTheRequest
     {
         var actual = new GetLocationsBySearchApiRequest(searchTerm);
 
-        actual.GetUrl.Should().Be($"locations/locationbysearch?searchTerm={searchTerm}");
+        actual.GetUrl.Should().Be($"locations/searchbylocation?searchTerm={searchTerm}");
     }
 }
