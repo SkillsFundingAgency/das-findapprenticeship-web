@@ -1,40 +1,949 @@
 {
   "locations": [
     {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": null,
       "location": {
-        "geoPoint": [
-          51.289916,
-          -0.773876
+        "coordinates": [
+          53.4804758348624,
+          -2.24441498165138
         ]
       },
-      "name": "Cove and Southwood, Hampshire"
+      "districtName": "Manchester",
+      "outcode": "M2",
+      "country": "England"
     },
     {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1AB",
       "location": {
-        "geoPoint": [
-          52.659518,
-          -2.136343
+        "coordinates": [
+          53.481581,
+          -2.241662
         ]
       },
-      "name": "Cove and Southwood, Hampshire"
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
     },
     {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1AE",
       "location": {
-        "geoPoint": [
-          52.454072,
-          -1.505398
+        "coordinates": [
+          53.48179,
+          -2.243981
         ]
       },
-      "name": "M4 7EF"
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
     },
     {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1AF",
       "location": {
-        "geoPoint": [
-          52.328888,
-          -0.447294
+        "coordinates": [
+          53.481782,
+          -2.243785
         ]
       },
-      "name": "NN6 0JD"
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1AQ",
+      "location": {
+        "coordinates": [
+          53.480633,
+          -2.243736
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1BB",
+      "location": {
+        "coordinates": [
+          53.481662,
+          -2.241753
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1DA",
+      "location": {
+        "coordinates": [
+          53.481905,
+          -2.241679
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1DH",
+      "location": {
+        "coordinates": [
+          53.481614,
+          -2.242368
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1DL",
+      "location": {
+        "coordinates": [
+          53.482121,
+          -2.240336
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1DW",
+      "location": {
+        "coordinates": [
+          53.482144,
+          -2.242431
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1EE",
+      "location": {
+        "coordinates": [
+          53.482282,
+          -2.24091
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1EN",
+      "location": {
+        "coordinates": [
+          53.481248,
+          -2.241826
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1EW",
+      "location": {
+        "coordinates": [
+          53.480204,
+          -2.242407
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1FB",
+      "location": {
+        "coordinates": [
+          53.481499,
+          -2.241237
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1HB",
+      "location": {
+        "coordinates": [
+          53.481909,
+          -2.243879
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1HL",
+      "location": {
+        "coordinates": [
+          53.48162,
+          -2.244389
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1HN",
+      "location": {
+        "coordinates": [
+          53.481773,
+          -2.243393
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1HW",
+      "location": {
+        "coordinates": [
+          53.481668,
+          -2.242958
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1HX",
+      "location": {
+        "coordinates": [
+          53.482672,
+          -2.243624
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1JR",
+      "location": {
+        "coordinates": [
+          53.481935,
+          -2.243258
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "M2 1NL",
+      "location": {
+        "coordinates": [
+          53.481333,
+          -2.244463
+        ]
+      },
+      "districtName": "",
+      "outcode": "M2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": null,
+      "location": {
+        "coordinates": [
+          50.8178843046357,
+          -1.07740986887417
+        ]
+      },
+      "districtName": "Portsmouth",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AA",
+      "location": {
+        "coordinates": [
+          50.813835,
+          -1.078264
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AB",
+      "location": {
+        "coordinates": [
+          50.813876,
+          -1.076645
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AD",
+      "location": {
+        "coordinates": [
+          50.813599,
+          -1.078155
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AF",
+      "location": {
+        "coordinates": [
+          50.813756,
+          -1.079856
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AG",
+      "location": {
+        "coordinates": [
+          50.813912,
+          -1.074345
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AH",
+      "location": {
+        "coordinates": [
+          50.813709,
+          -1.073696
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AJ",
+      "location": {
+        "coordinates": [
+          50.814125,
+          -1.070579
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AL",
+      "location": {
+        "coordinates": [
+          50.814147,
+          -1.068904
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AN",
+      "location": {
+        "coordinates": [
+          50.81413,
+          -1.067882
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AP",
+      "location": {
+        "coordinates": [
+          50.813836,
+          -1.065006
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AQ",
+      "location": {
+        "coordinates": [
+          50.813968,
+          -1.072342
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AR",
+      "location": {
+        "coordinates": [
+          50.813861,
+          -1.079286
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AS",
+      "location": {
+        "coordinates": [
+          50.813862,
+          -1.065886
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AT",
+      "location": {
+        "coordinates": [
+          50.814509,
+          -1.079571
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AU",
+      "location": {
+        "coordinates": [
+          50.813887,
+          -1.067859
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AW",
+      "location": {
+        "coordinates": [
+          50.814099,
+          -1.066279
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AX",
+      "location": {
+        "coordinates": [
+          50.813878,
+          -1.070286
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AY",
+      "location": {
+        "coordinates": [
+          50.822185,
+          -1.074536
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0AZ",
+      "location": {
+        "coordinates": [
+          50.817408,
+          -1.076348
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "PO2 0BF",
+      "location": {
+        "coordinates": [
+          50.816795,
+          -1.078589
+        ]
+      },
+      "districtName": "",
+      "outcode": "PO2",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": null,
+      "location": {
+        "coordinates": [
+          51.4120259579697,
+          0.0209045868358445
+        ]
+      },
+      "districtName": "Bromley",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AA",
+      "location": {
+        "coordinates": [
+          51.401546,
+          0.015415
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AB",
+      "location": {
+        "coordinates": [
+          51.406333,
+          0.015208
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AE",
+      "location": {
+        "coordinates": [
+          51.404543,
+          0.014195
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AF",
+      "location": {
+        "coordinates": [
+          51.401392,
+          0.014948
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AG",
+      "location": {
+        "coordinates": [
+          51.401392,
+          0.014948
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AH",
+      "location": {
+        "coordinates": [
+          51.400441,
+          0.01739
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AJ",
+      "location": {
+        "coordinates": [
+          51.400489,
+          0.018833
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AL",
+      "location": {
+        "coordinates": [
+          51.406549,
+          0.01313
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AN",
+      "location": {
+        "coordinates": [
+          51.406625,
+          0.017591
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1AP",
+      "location": {
+        "coordinates": [
+          51.406101,
+          0.018287
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1BQ",
+      "location": {
+        "coordinates": [
+          51.408058,
+          0.015874
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1BW",
+      "location": {
+        "coordinates": [
+          51.398997,
+          0.016165
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1BY",
+      "location": {
+        "coordinates": [
+          51.408116,
+          0.010898
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1DD",
+      "location": {
+        "coordinates": [
+          51.403891,
+          0.016582
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1DE",
+      "location": {
+        "coordinates": [
+          51.408562,
+          0.01059
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1DG",
+      "location": {
+        "coordinates": [
+          51.409191,
+          0.010068
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1DJ",
+      "location": {
+        "coordinates": [
+          51.40389,
+          0.016608
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1DL",
+      "location": {
+        "coordinates": [
+          51.409192,
+          0.010042
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1DN",
+      "location": {
+        "coordinates": [
+          51.40389,
+          0.016608
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
+    },
+    {
+      "localAuthorityName": null,
+      "countyName": null,
+      "locationName": null,
+      "postcode": "BR1 1DP",
+      "location": {
+        "coordinates": [
+          51.398997,
+          0.016165
+        ]
+      },
+      "districtName": "",
+      "outcode": "BR1",
+      "country": "England"
     }
   ]
 }
