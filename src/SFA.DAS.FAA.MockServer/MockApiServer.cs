@@ -41,7 +41,7 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("routes.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/searchbylocation")).UsingGet()).RespondWith(Response.Create()
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations?searchTerm=")).UsingGet()).RespondWith(Response.Create()
             .WithStatusCode(200)
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("location-search.json"));
