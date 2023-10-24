@@ -1,4 +1,4 @@
-﻿const locationInputs = document.querySelectorAll(".faa-location");
+﻿const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
 const apiUrl = "/locations";
 
 if (locationInputs.length > 0) {
