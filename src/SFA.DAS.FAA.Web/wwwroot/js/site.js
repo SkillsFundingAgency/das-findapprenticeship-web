@@ -3,7 +3,8 @@ const apiUrl = "/locations";
 
 if (locationInputs.length > 0) {
   for (let i = 0; i < locationInputs.length; i++) {
-    const input = locationInputs[i];
+      const input = locationInputs[i];
+      console.log('line 7:' + input);
     const container = document.createElement("div");
 
     container.className = "das-autocomplete-wrap";
