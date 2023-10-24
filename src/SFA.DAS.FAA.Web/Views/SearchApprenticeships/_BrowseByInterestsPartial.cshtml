@@ -6,7 +6,7 @@
     {
         <div class="govuk-checkboxes__item">
             <input class="govuk-checkboxes__input" id="route-@routeObj.Value.RouteId" name="SelectedRouteIds"
-                type="checkbox" value="@routeObj.Value.RouteId" />
+                type="checkbox" value="@routeObj.Value.RouteId" checked="@routeObj.Value.PreviouslySelected" />
             <label class="govuk-label govuk-checkboxes__label" for="route-@routeObj.Value.RouteId">
                 @routeObj.Value.DisplayText
             </label>

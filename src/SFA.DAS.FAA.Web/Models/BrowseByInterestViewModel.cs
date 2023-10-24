@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 
 namespace SFA.DAS.FAA.Web.Models;
@@ -15,7 +14,6 @@ public class BrowseByInterestRequestViewModel : BrowseByInterestViewModel
 public class BrowseByInterestViewModel : ViewModelBase
 {
     public List<RouteViewModel> Routes { get; set; } = new();
-
     public Dictionary<string, RouteObject> AgricultureEnvironmentalAndAnimalCareDictionary { get; set; } = new();
     public Dictionary<string, RouteObject> BusinessSalesAndLegalDictionary { get; set; } = new();
     public Dictionary<string, RouteObject> CareHealthAndScienceDictionary { get; set; } = new();
@@ -42,21 +40,20 @@ public class BrowseByInterestViewModel : ViewModelBase
     public class RouteViewModel
     {
         public bool Selected { get; set; }
-        public string Route { get; set; }
+        public string Route { get; set; } = null!;
         public int Id { get; set; }
     }
 
     public class RouteObject
     {
-        public string RouteId { get; set; }
-        public string RouteName { get; set; }
-        public string DisplayText { get; set; }
-        public string HintText { get; set; }
+        public string RouteId { get; set; } = null!;
+        public string RouteName { get; set; } = null!;
+        public string DisplayText { get; set; } = null!;
+        public string HintText { get; set; } = null!;
+        public bool PreviouslySelected { get; set; }
     }
 
-    
-
-    public void AllocateRouteGroup()
+    public void AllocateRouteGroup(List<string>? previouslySelectedValues = null)
     {
         foreach (var route in Routes)
         {
@@ -68,7 +65,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Farmer, horticulture, vet and similar"
+                        HintText = "Farmer, horticulture, vet and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     AgricultureEnvironmentalAndAnimalCareDictionary.Add(route.Id.ToString(), agriculture);
                     break;
@@ -79,7 +77,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Administrator, project manager, human resources and similar"
+                        HintText = "Administrator, project manager, human resources and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     BusinessSalesAndLegalDictionary.Add(route.Id.ToString(), businessAdministration);
                     break;
@@ -90,7 +89,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = "Sales and marketing",
-                        HintText = "Sales manager, digital marketer and similar"
+                        HintText = "Sales manager, digital marketer and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     BusinessSalesAndLegalDictionary.Add(route.Id.ToString(), salesMarkerting);
                     break;
@@ -101,7 +101,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Financial advisor, payroll assistant, solicitor and similar"
+                        HintText = "Financial advisor, payroll assistant, solicitor and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     BusinessSalesAndLegalDictionary.Add(route.Id.ToString(), legalFinanceAccounting);
                     break;
@@ -112,7 +113,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Hairdresser, barber, holistic therapist and similar"
+                        HintText = "Hairdresser, barber, holistic therapist and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     CareHealthAndScienceDictionary.Add(route.Id.ToString(), hairBeauty);
                     break;
@@ -123,7 +125,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Social worker, play therapist, adult carer and similar"
+                        HintText = "Social worker, play therapist, adult carer and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     CareHealthAndScienceDictionary.Add(route.Id.ToString(), careServices);
                     break;
@@ -134,7 +137,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Ambulance worker, sports coach, clinical scientist and similar"
+                        HintText = "Ambulance worker, sports coach, clinical scientist and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     CareHealthAndScienceDictionary.Add(route.Id.ToString(), healthScience);
                     break;
@@ -145,7 +149,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Chef, baker, hospitality team member and similar"
+                        HintText = "Chef, baker, hospitality team member and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     CateringAndHospitalityDictionary.Add(route.Id.ToString(), cateringHospitality);
                     break;
@@ -156,7 +161,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Bricklayer, smart home technician, architect and similar"
+                        HintText = "Bricklayer, smart home technician, architect and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     ConstructionEngineeringAndBuildingsDictionary.Add(route.Id.ToString(), construction);
                     break;
@@ -167,7 +173,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Autocare technician, welder, rail engineer and similar"
+                        HintText = "Autocare technician, welder, rail engineer and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     ConstructionEngineeringAndBuildingsDictionary.Add(route.Id.ToString(), engineeringManufacturing);
                     break;
@@ -178,7 +185,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Music technologist, camera technician, graphic designer and similar"
+                        HintText = "Music technologist, camera technician, graphic designer and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     CreativeAndDesignDictionary.Add(route.Id.ToString(), creativeDesign);
                     break;
@@ -189,7 +197,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Cyber security officer, software engineer, data scientist and similar"
+                        HintText = "Cyber security officer, software engineer, data scientist and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     DigitalDictionary.Add(route.Id.ToString(), digital);
                     break;
@@ -200,7 +209,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = "Education and early years",
-                        HintText = "Teaching assistant, early years educator and similar"
+                        HintText = "Teaching assistant, early years educator and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     EducationAndEarlyYearsDictionary.Add(route.Id.ToString(), education);
                     break;
@@ -211,7 +221,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = "Protective services (emergency and uniformed services)",
-                        HintText = "Security, firefighter, coastguard and similar"
+                        HintText = "Security, firefighter, coastguard and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     ProtectiveServicesDictionary.Add(route.Id.ToString(), protectiveServices);
                     break;
@@ -222,13 +233,23 @@ public class BrowseByInterestViewModel : ViewModelBase
                         RouteId = route.Id.ToString(),
                         RouteName = route.Route,
                         DisplayText = route.Route,
-                        HintText = "Aviation ground handler, train driver, fleet manager and similar"
+                        HintText = "Aviation ground handler, train driver, fleet manager and similar",
+                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
                     TransportAndLogisticsDictionary.Add(route.Id.ToString(), transportLogistics);
                     break;
             }
-
         }
+
+    }
+
+    private static bool SetPreviouslySelected(List<string>? previouslySelectedValues, int routeId)
+    {
+        if (previouslySelectedValues != null && previouslySelectedValues.Contains(routeId.ToString()))
+        {
+            return true;
+        }
+        return false;
     }
 
 }
