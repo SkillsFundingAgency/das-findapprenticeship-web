@@ -32,7 +32,7 @@ if (locationInputs.length > 0) {
             defaultValue: input.value,
             displayMenu: "overlay",
             showNoOptionsFound: false,
-            minLength: 3,
+            minLength: 2,
             source: getSuggestions,
             placeholder: "",
             confirmOnBlur: false,
