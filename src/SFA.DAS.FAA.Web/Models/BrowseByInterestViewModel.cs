@@ -14,7 +14,6 @@ public class BrowseByInterestRequestViewModel : BrowseByInterestViewModel
 public class BrowseByInterestViewModel : ViewModelBase
 {
     public List<RouteViewModel> Routes { get; set; } = new();
-    public List<string>? PreviousRouteIds { get; set; }
     public Dictionary<string, RouteObject> AgricultureEnvironmentalAndAnimalCareDictionary { get; set; } = new();
     public Dictionary<string, RouteObject> BusinessSalesAndLegalDictionary { get; set; } = new();
     public Dictionary<string, RouteObject> CareHealthAndScienceDictionary { get; set; } = new();
