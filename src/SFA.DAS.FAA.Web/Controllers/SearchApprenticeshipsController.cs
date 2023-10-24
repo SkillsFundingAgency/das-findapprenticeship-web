@@ -4,7 +4,6 @@ using SFA.DAS.FAA.Web.Models;
 using MediatR;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -73,21 +72,14 @@ public class SearchApprenticeshipsController : Controller
 
     [HttpPost]
     [Route("location", Name = RouteNames.Location)]
-    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds, LocationViewModel model)
+    public IActionResult Location([FromQuery] List<string>? routeIds, LocationViewModel model)
     {
         model.SelectedRouteIds = routeIds;
 
-        var isLocationValid = await _mediator.Send(new GetLocationsBySearchQuery() { SearchTerm = model.CityOrPostcode });
-
-        if (isLocationValid.LocationItems.Any(l => l.Name == model.CityOrPostcode) == false) 
+        if (model.NationalSearch == false && model.CityOrPostcode == null)
         {
-            ModelState.AddModelError("CityOrPostcode", "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+            ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
         }
-
-        //if (model.NationalSearch == false && model.CityOrPostcode == null)
-        //{
-        //    ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
-        //}
 
         if (model.Locations == null && model.CityOrPostcode != null)
         {

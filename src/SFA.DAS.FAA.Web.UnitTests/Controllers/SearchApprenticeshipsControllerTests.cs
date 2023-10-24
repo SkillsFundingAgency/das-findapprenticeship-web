@@ -45,26 +45,26 @@ public class SearchApprenticeshipsControllerTests
         actualModel.Should().BeEquivalentTo((BrowseByInterestViewModel)result);
     }
 
-    //[Test, MoqInlineAutoData(false, false, null)]
-    //[MoqInlineAutoData(true, false)]
-    //public async Task AndCityOrPostcodeIsSelected_AndNoCityOrPostcodeValueInputted_ThenThereIsValidationError(
-    //    bool isValid,
-    //    bool? nationalSearch,
-    //    string? cityOrPostcodeValue,
-    //    LocationViewModel model,
-    //    [Greedy] SearchApprenticeshipsController controller)
-    //{
-    //    model.NationalSearch = nationalSearch;
-    //    model.CityOrPostcode = cityOrPostcodeValue;
+    [Test, MoqInlineAutoData(false, false, null)]
+    [MoqInlineAutoData(true, false)]
+    public void AndCityOrPostcodeIsSelected_AndNoCityOrPostcodeValueInputted_ThenThereIsValidationError(
+        bool isValid,
+        bool? nationalSearch,
+        string? cityOrPostcodeValue,
+        LocationViewModel model,
+        [Greedy] SearchApprenticeshipsController controller)
+    {
+        model.NationalSearch = nationalSearch;
+        model.CityOrPostcode = cityOrPostcodeValue;
 
-    //    var actual = await controller.Location(null, model) as ViewResult;
+        var actual = controller.Location(null, model) as ViewResult;
 
-    //    actual!.ViewData.ModelState.IsValid.Should().Be(isValid);
-    //    if (isValid == false)
-    //    {
-    //        actual.ViewData.ModelState.ErrorCount.Should().Be(1);
-    //        actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
-    //        actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("Enter a city or postcode");
-    //    }
-    //}
+        actual!.ViewData.ModelState.IsValid.Should().Be(isValid);
+        if (isValid == false)
+        {
+            actual.ViewData.ModelState.ErrorCount.Should().Be(1);
+            actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
+            actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("Enter a city or postcode");
+        }
+    }
 }
