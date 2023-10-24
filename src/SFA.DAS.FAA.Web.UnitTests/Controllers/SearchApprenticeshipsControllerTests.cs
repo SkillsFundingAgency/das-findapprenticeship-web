@@ -47,7 +47,7 @@ public class SearchApprenticeshipsControllerTests
 
     [Test, MoqInlineAutoData(false, false, null)]
     [MoqInlineAutoData(true, false)]
-    public void AndCityOrPostcodeIsSelected_AndNoCityOrPostcodeValueInputted_ThenThereIsValidationError(
+    public async Task AndCityOrPostcodeIsSelected_AndNoCityOrPostcodeValueInputted_ThenThereIsValidationError(
         bool isValid,
         bool? nationalSearch,
         string? cityOrPostcodeValue,
@@ -57,7 +57,7 @@ public class SearchApprenticeshipsControllerTests
         model.NationalSearch = nationalSearch;
         model.CityOrPostcode = cityOrPostcodeValue;
 
-        var actual = controller.Location(null, model) as ViewResult;
+        var actual = await controller.Location(null, model) as ViewResult;
 
         actual!.ViewData.ModelState.IsValid.Should().Be(isValid);
         if (isValid == false)
