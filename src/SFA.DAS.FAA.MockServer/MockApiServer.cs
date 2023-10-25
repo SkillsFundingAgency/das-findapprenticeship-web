@@ -17,23 +17,23 @@ public static class MockApiServer
             Port = 5003,
             Logger = new WireMockConsoleLogger()
         };
-        
+
         var server = StandAloneApp.Start(settings);
-        
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/searchapprenticeships"))
+
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships"))
             .UsingGet()
         ).RespondWith(
             Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("search-apprentices-index.json"));
-        
-        server.Given(Request.Create().WithPath(s=>Regex.IsMatch(s, @"/locations")).UsingGet()).RespondWith(Response.Create()
+
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, @"/locations")).UsingGet()).RespondWith(Response.Create()
             .WithStatusCode(200)
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("locations.json"));
-        
-        server.Given(Request.Create().WithPath(s=>Regex.IsMatch(s, "/searchapprenticeships/browsebyinterests"))
+
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterests"))
             .UsingGet()
             ).RespondWith(
             Response.Create()
@@ -41,14 +41,21 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("routes.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations?searchTerm=")).UsingGet()).RespondWith(Response.Create()
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations?searchTerm="))
+            .UsingGet())
+            .RespondWith(Response.Create()
             .WithStatusCode(200)
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("location-search.json"));
 
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/geopoint?postcode="))
+        .UsingGet())
+            .RespondWith(
+            Response.Create()
+            .WithStatusCode(200)
+            .WithHeader("Content-Type", "application/json")
+            .WithBodyFromFile("geopoint.json"));
+
         return server;
-
-
-            
     }
 }
