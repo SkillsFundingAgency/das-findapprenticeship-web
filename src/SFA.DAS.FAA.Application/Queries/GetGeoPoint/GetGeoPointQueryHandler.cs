@@ -16,9 +16,9 @@ public class GetGeoPointQueryHandler : IRequestHandler<GetGeoPointQuery, GetGeoP
 
         return new GetGeoPointQueryResult()
         {
-            PostCode = result.GeoPoint.Postcode,
-            Latitude = result.GeoPoint.Latitude,
-            Longitude = result.GeoPoint.Longitude
+            PostCode = result?.GeoPoint?.Postcode,
+            Latitude = result?.GeoPoint?.Latitude,
+            Longitude = result?.GeoPoint?.Longitude
         };
     }
 }
