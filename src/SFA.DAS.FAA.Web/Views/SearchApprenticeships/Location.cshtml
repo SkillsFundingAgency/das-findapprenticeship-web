@@ -29,7 +29,7 @@
                             <div class="govuk-radios__conditional" id="conditional-location">
                                 <div
                                     class="govuk-form-group @((ViewData.ModelState["CityOrPostcode"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
-                                    <input type="hidden" name="userSelectedSuggestion" id="userSelectedSuggestion" value="false">
+                                    <input type="hidden" asp-for="SuggestedLocationSelected" value="false">
                                     <label class="govuk-label" for="CityOrPostcode">
                                         City or postcode
                                     </label>

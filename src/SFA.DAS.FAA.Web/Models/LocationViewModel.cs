@@ -8,6 +8,7 @@ public class LocationViewModel : ViewModelBase
     public bool? NationalSearch { get; set; }
     public string? CityOrPostcode { get; set; }
     public int? Distance { get; set; }
+    public bool SuggestedLocationSelected { get; set; }
     public List<string>? SelectedRouteIds { get; set; }
     public Dictionary<string, string> RouteData { get => GetRouteData(); }
     public LocationsBySearchViewModel? Locations { get; set; }

@@ -77,12 +77,11 @@ public class SearchApprenticeshipsController : Controller
     {
         model.SelectedRouteIds = routeIds;
 
-        // check if user selected an option from the suggestions list -> we don't need a validation check
         if (model.NationalSearch == false && model.CityOrPostcode == null)
         {
             ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
         }
-        else if (model.NationalSearch == false && model.CityOrPostcode != null)
+        else if (model.NationalSearch == false && model.CityOrPostcode != null && !model.SuggestedLocationSelected)
         {
             var locationResult = await _mediator.Send(new GetGeoPointQuery() { PostCode = model.CityOrPostcode });
 
