@@ -4,6 +4,7 @@ using SFA.DAS.FAA.Web.Models;
 using MediatR;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Application.Queries.GetGeoPoint;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -72,9 +73,16 @@ public class SearchApprenticeshipsController : Controller
 
     [HttpPost]
     [Route("location", Name = RouteNames.Location)]
-    public IActionResult Location([FromQuery] List<string>? routeIds, LocationViewModel model)
+    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds, LocationViewModel model)
     {
         model.SelectedRouteIds = routeIds;
+
+        var result = await _mediator.Send(new GetGeoPointQuery() { PostCode = model.CityOrPostcode});
+
+        // check if user selected an option from the suggestions list -> we don't need a validation check
+        // otherwise if they did not select from the suggesstions (wrote their own input) -> validation check
+
+        // !! if their input is not a postcode and is a place name the geo point result will always be null
 
         if (model.NationalSearch == false && model.CityOrPostcode == null)
         {

@@ -25,7 +25,7 @@ public class LocationsBySearchControllerTests
         response.LocationItems = locationItems;
         mediator.Setup(x => x.Send(It.Is<GetLocationsBySearchQuery>(l => l.SearchTerm.Equals(searchTerm)), It.IsAny<CancellationToken>())).ReturnsAsync(response);
 
-        var actual = await controller.Locations(searchTerm);
+        var actual = await controller.LocationsBySearch(searchTerm);
         var actualJsonResult = actual as JsonResult;
 
         using (new AssertionScope())
