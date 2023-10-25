@@ -78,14 +78,13 @@ public class SearchApprenticeshipsController : Controller
         model.SelectedRouteIds = routeIds;
 
         // check if user selected an option from the suggestions list -> we don't need a validation check
-        var locationResult = await _mediator.Send(new GetGeoPointQuery() { PostCode = model.CityOrPostcode});
+        var locationResult = await _mediator.Send(new GetGeoPointQuery() { PostCode = model.CityOrPostcode });
 
         if (model.NationalSearch == false && model.CityOrPostcode == null)
         {
             ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
         }
-
-        if (model.CityOrPostcode != null && !locationResult.Latitude.HasValue)
+        else if (!locationResult.Latitude.HasValue)
         {
             ModelState.AddModelError("CityOrPostcode", "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
         }
