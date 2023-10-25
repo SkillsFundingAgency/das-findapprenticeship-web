@@ -84,7 +84,7 @@ public class SearchApprenticeshipsController : Controller
         {
             ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
         }
-        else if (!locationResult.Latitude.HasValue)
+        else if (model.NationalSearch == false &&model.CityOrPostcode != null && !locationResult.Latitude.HasValue)
         {
             ModelState.AddModelError("CityOrPostcode", "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
         }
