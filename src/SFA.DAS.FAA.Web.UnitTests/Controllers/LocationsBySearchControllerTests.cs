@@ -32,7 +32,7 @@ public class LocationsBySearchControllerTests
         {
             actual.Should().NotBeNull();
             actualJsonResult.Should().NotBeNull();
-            ((LocationViewModel)actualJsonResult.Value).Locations.Should().NotBeNull();
+            ((LocationViewModel)actualJsonResult!.Value!).Locations.Should().NotBeNull();
         }
     }
 }
