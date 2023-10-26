@@ -46,21 +46,21 @@ public class SearchApprenticeshipsControllerTests
         actualModel.Should().BeEquivalentTo((BrowseByInterestViewModel)result);
     }
 
-    [Test, MoqInlineAutoData(false, false, false, null)]
-    //[MoqInlineAutoData(true, false, true)]
-    // add this test case back in when the JavaScript can revert the suggestedLocationSelected flag value from true to false
+    [Test, MoqInlineAutoData(false, false, null)]
+    [MoqInlineAutoData(true, false)]
     public async Task AndCityOrPostcodeIsSelected_AndNoCityOrPostcodeValueInputted_ThenThereIsValidationError(
         bool isValid,
         bool? nationalSearch,
-        bool suggestedLocationSelected,
         string? cityOrPostcodeValue,
         LocationViewModel model,
-        [Greedy] SearchApprenticeshipsController controller)
+        GetGeoPointQueryResult queryResult,
+        Mock<IMediator> mediator)
     {
         model.ErrorDictionary.Clear();
         model.NationalSearch = nationalSearch;
         model.CityOrPostcode = cityOrPostcodeValue;
-        model.SuggestedLocationSelected = suggestedLocationSelected;
+        mediator.Setup(m => m.Send(It.IsAny<GetGeoPointQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(queryResult);
+        var controller = new SearchApprenticeshipsController(mediator.Object);
 
         var actual = await controller.Location(null, model) as ViewResult;
 
@@ -74,40 +74,41 @@ public class SearchApprenticeshipsControllerTests
     }
 
 
-    [Test, MoqInlineAutoData(false, false, false)]
-    [MoqInlineAutoData(true, false, true)]
-    [MoqInlineAutoData(true, false, false)]
-    public async Task AndCityOrPostCodeFilledIn_ButUserDidNotSelectAnAutoSuggestion_ThenThereIsValidationError(
-        bool isValid,
-        bool? nationalSearch,
-        bool suggestedLocationSelected,
-        string cityOrPostcodeValue,
-        LocationViewModel model,
-        GetGeoPointQueryResult queryResult,
-        [Frozen] Mock<IMediator> mediator
-        )
-    {
-        model.ErrorDictionary.Clear();
-        model.NationalSearch = nationalSearch;
-        model.CityOrPostcode = cityOrPostcodeValue;
-        model.SuggestedLocationSelected = suggestedLocationSelected;
-        if (isValid == false)
-        {
-            mediator.Setup(m => m.Send(It.IsAny<GetGeoPointQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new GetGeoPointQueryResult() { PostCode = null, Latitude = null, Longitude = null});
-        }
-        else
-        {
-            mediator.Setup(m => m.Send(It.IsAny<GetGeoPointQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(queryResult);
-        }
-        var controller = new SearchApprenticeshipsController(mediator.Object);
-        var actual = await controller.Location(null, model) as ViewResult;
+    // This test will need to be added back in when the suggestedLocationSelected flag is used in the controller again.
+    //[Test, MoqInlineAutoData(false, false, false)]
+    //[MoqInlineAutoData(true, false, true)]
+    //[MoqInlineAutoData(true, false, false)]
+    //public async Task AndCityOrPostCodeFilledIn_ButUserDidNotSelectAnAutoSuggestion_ThenThereIsValidationError(
+    //    bool isValid,
+    //    bool? nationalSearch,
+    //    bool suggestedLocationSelected,
+    //    string cityOrPostcodeValue,
+    //    LocationViewModel model,
+    //    GetGeoPointQueryResult queryResult,
+    //    [Frozen] Mock<IMediator> mediator
+    //    )
+    //{
+    //    model.ErrorDictionary.Clear();
+    //    model.NationalSearch = nationalSearch;
+    //    model.CityOrPostcode = cityOrPostcodeValue;
+    //    model.SuggestedLocationSelected = suggestedLocationSelected;
+    //    if (isValid == false)
+    //    {
+    //        mediator.Setup(m => m.Send(It.IsAny<GetGeoPointQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new GetGeoPointQueryResult() { PostCode = null, Latitude = null, Longitude = null});
+    //    }
+    //    else
+    //    {
+    //        mediator.Setup(m => m.Send(It.IsAny<GetGeoPointQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(queryResult);
+    //    }
+    //    var controller = new SearchApprenticeshipsController(mediator.Object);
+    //    var actual = await controller.Location(null, model) as ViewResult;
 
-        actual!.ViewData.ModelState.IsValid.Should().Be(isValid);
-        if (isValid == false)
-        {
-            actual.ViewData.ModelState.ErrorCount.Should().Be(1);
-            actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
-            actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
-        }
-    }
+    //    actual!.ViewData.ModelState.IsValid.Should().Be(isValid);
+    //    if (isValid == false)
+    //    {
+    //        actual.ViewData.ModelState.ErrorCount.Should().Be(1);
+    //        actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
+    //        actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+    //    }
+    //}
 }
