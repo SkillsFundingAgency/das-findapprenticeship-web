@@ -15,15 +15,11 @@
   }
 }
 
-.autocomplete__input {
-  max-width: 10em;
-}
-
 .autocomplete__menu {
   border-top: 2px solid #0b0c0c;
   margin-top: -2px;
 }
 
 .autocomplete__wrapper {
-    max-width: 10em;
+  max-width: 11.5em;
 }
