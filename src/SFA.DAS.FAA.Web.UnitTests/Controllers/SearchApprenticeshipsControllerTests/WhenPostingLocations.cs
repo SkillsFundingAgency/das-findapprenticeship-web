@@ -12,6 +12,7 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 public class WhenPostingLocations
 {
+    [Test, MoqAutoData]
     public async Task AndModelStateIsInvalid_ModelIsReturned(
         LocationViewModel locationViewModel,
         List<string>? routeIds,

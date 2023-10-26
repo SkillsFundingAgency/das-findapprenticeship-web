@@ -31,6 +31,7 @@ public class LocationsBySearchControllerTests
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
+            actualJsonResult!.Value.Should().BeOfType<LocationViewModel>();
             actualJsonResult.Should().NotBeNull();
             ((LocationViewModel)actualJsonResult!.Value!).Locations.Should().NotBeNull();
         }
