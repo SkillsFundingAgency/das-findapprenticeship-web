@@ -47,7 +47,8 @@ public class SearchApprenticeshipsControllerTests
     }
 
     [Test, MoqInlineAutoData(false, false, false, null)]
-    [MoqInlineAutoData(true, false, true)]
+    //[MoqInlineAutoData(true, false, true)]
+    // add this test case back in when the JavaScript can revert the suggestedLocationSelected flag value from true to false
     public async Task AndCityOrPostcodeIsSelected_AndNoCityOrPostcodeValueInputted_ThenThereIsValidationError(
         bool isValid,
         bool? nationalSearch,

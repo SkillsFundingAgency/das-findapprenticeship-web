@@ -81,7 +81,7 @@ public class SearchApprenticeshipsController : Controller
         {
             ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
         }
-        else if (model.NationalSearch == false && model.CityOrPostcode != null && !model.SuggestedLocationSelected)
+        else if (model.NationalSearch == false && model.CityOrPostcode != null)
         {
             var locationResult = await _mediator.Send(new GetGeoPointQuery() { PostCode = model.CityOrPostcode });
 
