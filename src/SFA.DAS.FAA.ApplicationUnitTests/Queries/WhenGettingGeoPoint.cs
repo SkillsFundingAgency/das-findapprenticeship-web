@@ -26,6 +26,7 @@ public class WhenGettingGeoPoint
         using (new AssertionScope())
         {
             result.Should().NotBeNull();
+            result.Should().BeOfType<GetGeoPointQueryResult>();
             result.PostCode.Should().BeEquivalentTo(expectedResponse.GeoPoint.Postcode);
             result.Latitude.Should().Be(expectedResponse.GeoPoint.Latitude);
             result.Longitude.Should().Be(expectedResponse.GeoPoint.Longitude);

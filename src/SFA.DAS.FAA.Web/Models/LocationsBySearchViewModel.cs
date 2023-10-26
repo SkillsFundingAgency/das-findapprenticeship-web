@@ -2,12 +2,12 @@
 
 public class LocationsBySearchViewModel
 {
-    public List<LocationBySearchViewModel> Locations { get; set; }
+    public List<LocationBySearchViewModel>? Locations { get; set; }
 }
 
 public class LocationBySearchViewModel 
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     public static implicit operator LocationBySearchViewModel(Domain.LocationsBySearch.GetLocationsBySearchApiResponse.LocationItem source)
     {

@@ -23,7 +23,7 @@ public class LocationsController : Controller
 
         var model = new LocationViewModel
         {
-            Locations = new LocationsBySearchViewModel { Locations = result.LocationItems.Select(c => (LocationBySearchViewModel)c).ToList() }
+            Locations = new LocationsBySearchViewModel { Locations = result.LocationItems?.Select(c => (LocationBySearchViewModel)c).ToList() }
         };
 
         return new JsonResult(model);
