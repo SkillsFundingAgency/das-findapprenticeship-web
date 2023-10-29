@@ -11,7 +11,7 @@ public class GetGeoPointQueryHandler : IRequestHandler<GetGeoPointQuery, GetGeoP
 
     public async Task<GetGeoPointQueryResult> Handle(GetGeoPointQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetGeoPointApiRequest(query.PostCode);
+        var request = new GetGeoPointApiRequest(query.LocationName);
         var result = await _apiClient.Get<GetGeoPointApiResponse>(request);
 
         return new GetGeoPointQueryResult()
