@@ -11,7 +11,7 @@
         <div class="govuk-form-group">
             <form class="form" method="post">
                 <div
-                    class="govuk-form-group @((ViewData.ModelState["NationalSearch"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+                    class="govuk-form-group @(ViewData.ModelState["NationalSearch"]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="location-hint">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <span class="govuk-caption-l">Question 2 of 2</span>
@@ -34,7 +34,7 @@
                                         City or postcode
                                     </label>
                                     <span asp-validation-for="CityOrPostcode" class="govuk-error-message"></span>
-                                    <input class="govuk-input govuk-input--width-10 faa-location-autocomplete" asp-for="CityOrPostcode"
+                                    <input class="govuk-input govuk-input--width-10 faa-location-autocomplete" asp-for="CityOrPostcode" id="CityOrPostcode"
                                            type="search" spellcheck="false" autocomplete="postal-code" data-track-user-selected="SuggestedLocationSelected">
                                 </div>
                                 <div class="govuk-form-group">
