@@ -41,14 +41,14 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("routes.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations?searchTerm="))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/searchbylocation"))
             .UsingGet())
             .RespondWith(Response.Create()
             .WithStatusCode(200)
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("location-search.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/geopoint?postcode="))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/geopoint"))
         .UsingGet())
             .RespondWith(
             Response.Create()
