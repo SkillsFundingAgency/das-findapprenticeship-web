@@ -103,6 +103,13 @@ public class SearchApprenticeshipsController : Controller
             return View(model);
         }
 
-        return View(model);
+        return RedirectToRoute(SearchResults());
+    }
+
+    [Route("search-results", Name = RouteNames.SearchResults)]
+    public async Task<IActionResult> SearchResults()
+    {
+
+        return View();
     }
 }
