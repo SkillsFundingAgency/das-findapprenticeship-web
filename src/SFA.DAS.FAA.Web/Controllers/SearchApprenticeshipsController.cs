@@ -103,11 +103,12 @@ public class SearchApprenticeshipsController : Controller
             return View(model);
         }
 
-        return RedirectToRoute(SearchResults());
+        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.CityOrPostcode : null });
+
     }
 
     [Route("search-results", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults()
+    public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location)
     {
 
         return View();
