@@ -14,13 +14,6 @@ public static class ConfigurationExtensions
 
         if (!config["EnvironmentName"]!.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
         {
-
-#if DEBUG
-            configBuilder
-                .AddJsonFile("appsettings.json", true)
-                .AddJsonFile("appsettings.Development.json", true);
-#endif
-
             configBuilder.AddAzureTableStorage(options =>
                 {
                     options.ConfigurationKeys = config["ConfigNames"]!.Split(",");

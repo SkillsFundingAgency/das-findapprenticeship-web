@@ -6,7 +6,7 @@ public class LocationViewModel : ViewModelBase
 {
     [Required(ErrorMessage = "Select if you want to enter a city or postcode or if you want to search across all of England")]
     public bool? NationalSearch { get; set; }
-    public string? CityOrPostcode { get; set; }
+    public string? SearchTerm { get; set; }
     public int? Distance { get; set; }
     public bool SuggestedLocationSelected { get; set; }
     public List<string>? SelectedRouteIds { get; set; }

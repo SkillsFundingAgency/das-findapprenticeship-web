@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using MediatR;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Application.Queries.GetGeoPoint;
+using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -77,29 +78,25 @@ public class SearchApprenticeshipsController : Controller
     {
         model.SelectedRouteIds = routeIds;
 
-        if (model.NationalSearch == false && model.CityOrPostcode == null)
+        if (model.NationalSearch == false)
         {
-            ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");
-        }
-        else if (model.NationalSearch == false && model.CityOrPostcode != null)
-        {
-            var locationResult = await _mediator.Send(new GetGeoPointQuery() { PostCode = model.CityOrPostcode });
-
-            if (!locationResult.Latitude.HasValue)
+            if (string.IsNullOrEmpty(model.SearchTerm))
             {
-                ModelState.AddModelError("CityOrPostcode", "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+                ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");    
+            }
+            else
+            {
+                var locationResult = await _mediator.Send(new GetLocationsBySearchQuery { SearchTerm = model.SearchTerm });
+
+                if (!locationResult.LocationItems.Any())
+                {
+                    ModelState.AddModelError("CityOrPostcode", "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+                }
             }
         }
 
         if (!ModelState.IsValid)
         {
-            model.ErrorDictionary = ModelState
-                .Where(x => x.Value is { Errors.Count: > 0 })
-                .ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
-                );
-
             return View(model);
         }
 
