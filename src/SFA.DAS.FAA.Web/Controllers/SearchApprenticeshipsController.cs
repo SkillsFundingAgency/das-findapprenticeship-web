@@ -95,7 +95,7 @@ public class SearchApprenticeshipsController : Controller
             return View(model);
         }
 
-        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.CityOrPostcode : null });
+        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.SearchTerm : null });
 
     }
 
