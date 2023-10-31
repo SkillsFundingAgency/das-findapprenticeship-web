@@ -16,14 +16,17 @@ public class LocationsBySearchControllerTests
 {
     [Test, MoqAutoData]
     public async Task Then_The_Query_Is_Sent_And_Data_Retrieved_And_Json_Returned(
-    string searchTerm,
-    List<LocationItem> locationItems,
-    [Greedy] GetLocationsBySearchQueryResult response,
-    [Frozen] Mock<IMediator> mediator,
-    [Greedy] LocationsController controller)
+        string searchTerm,
+        List<LocationItem> locationItems,
+        GetLocationsBySearchQueryResult response,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] LocationsController controller)
     {
         response.LocationItems = locationItems;
-        mediator.Setup(x => x.Send(It.Is<GetLocationsBySearchQuery>(l => l.SearchTerm.Equals(searchTerm)), It.IsAny<CancellationToken>())).ReturnsAsync(response);
+        mediator.Setup(x => x.Send(
+            It.Is<GetLocationsBySearchQuery>(l => l.SearchTerm.Equals(searchTerm)),
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(response);
 
         var actual = await controller.LocationsBySearch(searchTerm);
         var actualJsonResult = actual as JsonResult;

@@ -1,5 +1,11 @@
-﻿namespace SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
+﻿using SFA.DAS.FAA.Domain.LocationsBySearch;
+
+namespace SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 public class GetLocationsBySearchQueryResult
 {
-    public IEnumerable<Domain.LocationsBySearch.GetLocationsBySearchApiResponse.LocationItem>? LocationItems { get; set; }
+    public IEnumerable<GetLocationsBySearchApiResponse.LocationItem> LocationItems
+    {
+        get;
+        set;
+    } = new List<GetLocationsBySearchApiResponse.LocationItem>();
 }

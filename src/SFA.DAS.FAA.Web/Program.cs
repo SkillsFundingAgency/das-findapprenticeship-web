@@ -5,7 +5,8 @@ using SFA.DAS.FAA.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var rootConfiguration = builder.Configuration.LoadConfiguration();
+var isIntegrationTest = builder.Environment.EnvironmentName.Equals("IntegrationTest", StringComparison.CurrentCultureIgnoreCase);
+var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTest);
 
 builder.Services.AddOptions();
 builder.Services.AddConfigurationOptions(rootConfiguration);
@@ -24,7 +25,7 @@ builder.Services.Configure<RouteOptions>(options =>
 }).AddMvc(options =>
 {
     //options.Filters.Add(new GoogleAnalyticsFilter());
-    if (!rootConfiguration.IsDev())
+    if (!isIntegrationTest)
     {
         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
     }
