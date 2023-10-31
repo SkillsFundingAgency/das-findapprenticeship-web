@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using MediatR;
@@ -47,16 +47,11 @@ public class SearchApprenticeshipsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            //TODO - no coverage
             var result = await _mediator.Send(new GetBrowseByInterestsQuery());
 
             var viewModel = (BrowseByInterestViewModel)result;
-            viewModel.ErrorDictionary = ModelState
-                    .Where(x => x.Value is { Errors.Count: > 0 })
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
-                    );
-
+            
             viewModel.AllocateRouteGroup();
 
             return View(viewModel);
@@ -82,7 +77,7 @@ public class SearchApprenticeshipsController : Controller
         {
             if (string.IsNullOrEmpty(model.SearchTerm))
             {
-                ModelState.AddModelError("CityOrPostcode", "Enter a city or postcode");    
+                ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a city or postcode");    
             }
             else
             {
@@ -90,7 +85,7 @@ public class SearchApprenticeshipsController : Controller
 
                 if (!locationResult.LocationItems.Any())
                 {
-                    ModelState.AddModelError("CityOrPostcode", "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+                    ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
                 }
             }
         }

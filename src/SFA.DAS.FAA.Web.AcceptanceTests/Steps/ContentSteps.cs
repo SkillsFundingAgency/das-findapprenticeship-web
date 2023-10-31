@@ -1,26 +1,31 @@
-﻿//using FluentAssertions;
-//using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
-//using TechTalk.SpecFlow;
+﻿using FluentAssertions;
+using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
+using TechTalk.SpecFlow;
 
-//namespace SFA.DAS.FAA.Web.AcceptanceTests.Steps;
+namespace SFA.DAS.FAA.Web.AcceptanceTests.Steps;
 
-//[Binding]
-//public sealed class ContentSteps
-//{
-//    private readonly ScenarioContext _context;
+[Binding]
+public sealed class ContentSteps
+{
+    private readonly ScenarioContext _context;
 
-//    public ContentSteps(ScenarioContext context)
-//    {
-//        _context = context;
-//    }
+    public ContentSteps(ScenarioContext context)
+    {
+        _context = context;
+    }
 
-//    [Then("the page content includes the following: (.*)")]
-//    public async Task ThenThePageContentIncludesTheFollowing(string expectedContent)
-//    {
-//        var response = _context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
+    [Then("the page content includes the following: (.*)")]
+    public async Task ThenThePageContentIncludesTheFollowing(string expectedContent)
+    {
+        var response = _context.Get<string>(ContextKeys.HttpResponseContent);
 
-//        var actualContent = await response.Content.ReadAsStringAsync();
+        response.Should().Contain(expectedContent);
+    }
+    [Then("the page redirect content includes the following: (.*)")]
+    public async Task ThenThePageRedirectContentIncludesTheFollowing(string expectedContent)
+    {
+        var response = _context.Get<string>(ContextKeys.HttpResponseRedirectContent);
 
-//        actualContent.Should().Contain(expectedContent);
-//    }
-//}
+        response.Should().Contain(expectedContent);
+    }
+}

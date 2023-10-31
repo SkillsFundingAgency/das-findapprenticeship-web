@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Web.AppStart;
 
 public static class ConfigurationExtensions
 {
-    public static IConfigurationRoot LoadConfiguration(this IConfiguration config)
+    public static IConfigurationRoot LoadConfiguration(this IConfiguration config, bool isIntegrationTest)
     {
         var configBuilder = new ConfigurationBuilder()
             .AddConfiguration(config)
@@ -12,7 +12,7 @@ public static class ConfigurationExtensions
             .AddEnvironmentVariables();
 
 
-        if (!config["EnvironmentName"]!.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+        if (!isIntegrationTest)
         {
             configBuilder.AddAzureTableStorage(options =>
                 {

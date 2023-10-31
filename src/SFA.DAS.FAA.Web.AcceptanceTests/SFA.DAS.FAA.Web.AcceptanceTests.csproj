@@ -4,9 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-
 		<IsPackable>false</IsPackable>
-		<PreserveCompilationContext>true</PreserveCompilationContext>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -28,11 +26,9 @@
 		<PackageReference Include="SpecFlow" Version="3.9.74" />
 		<PackageReference Include="SpecFlow.NUnit" Version="3.9.74" />
 		<PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
-		<PackageReference Include="WireMock.Net.Abstractions" Version="1.5.39" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SFA.DAS.FAA.Domain\SFA.DAS.FAA.Domain.csproj" />
 		<ProjectReference Include="..\SFA.DAS.FAA.MockServer\SFA.DAS.FAA.MockServer.csproj" />
 		<ProjectReference Include="..\SFA.DAS.FAA.Web\SFA.DAS.FAA.Web.csproj" />
 	</ItemGroup>
