@@ -4,5 +4,5 @@ namespace SFA.DAS.FAA.Domain.SearchResults;
 
 public class GetSearchResultsApiRequest : IGetApiRequest
 {
-    public string GetUrl => "apprenticeshipresults";
+    public string GetUrl => "vacancies";
 }
