@@ -1,6 +1,8 @@
-﻿namespace SFA.DAS.FAA.Domain.SearchResults;
+﻿using SFA.DAS.FAA.Domain.Interfaces;
 
-public class GetSearchResultsApiRequest
+namespace SFA.DAS.FAA.Domain.SearchResults;
+
+public class GetSearchResultsApiRequest : IGetApiRequest
 {
     public string GetUrl => "apprenticeshipresults";
 }

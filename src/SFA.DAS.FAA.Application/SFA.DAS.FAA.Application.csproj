@@ -14,8 +14,4 @@
     <ProjectReference Include="..\SFA.DAS.FAA.Domain\SFA.DAS.FAA.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Queries\GetSearchResults\" />
-  </ItemGroup>
-
 </Project>
