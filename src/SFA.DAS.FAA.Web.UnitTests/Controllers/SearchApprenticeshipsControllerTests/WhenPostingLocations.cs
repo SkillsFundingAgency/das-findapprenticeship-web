@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.GetGeoPoint;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models;

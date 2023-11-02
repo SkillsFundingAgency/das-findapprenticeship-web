@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.AppStart;
-using SFA.DAS.FAA.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +13,6 @@ builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
 builder.Services.AddServiceRegistration();
-builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
 
 builder.Services.AddHealthChecks();
 

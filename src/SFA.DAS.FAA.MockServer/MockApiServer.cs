@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
 using WireMock.Logging;
-using WireMock.Matchers;
 using WireMock.Net.StandAlone;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
