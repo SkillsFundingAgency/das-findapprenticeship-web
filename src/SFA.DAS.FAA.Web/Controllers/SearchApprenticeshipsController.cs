@@ -6,6 +6,7 @@ using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Application.Queries.GetGeoPoint;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
+using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -102,11 +103,14 @@ public class SearchApprenticeshipsController : Controller
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location)
     {
+        var result = await _mediator.Send(new GetSearchResultsQuery());
+
         var viewmodel = new SearchResultsViewModel()
         {
             SelectedRouteIds = routeIds,
             NationalSearch = (location == null),
-            location = location
+            location = location,
+            Total = result.Total
         };
 
         return View(viewmodel);
