@@ -1,4 +1,8 @@
-﻿namespace SFA.DAS.FAA.Web.Models;
+﻿using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
+using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using static SFA.DAS.FAA.Web.Models.BrowseByInterestViewModel;
+
+namespace SFA.DAS.FAA.Web.Models;
 
 public class SearchResultsViewModel
 {
@@ -13,6 +17,14 @@ public class SearchResultsViewModel
     private string GetTotalMessage()
     {
         var totalAsText = Total.ToString("N0");
-        return (Total == 0 ? "No" : totalAsText + "apprenticeship" + (Total != 1 ? "s" : "") + "found";
+        return (Total == 0 ? "No" : totalAsText) + "apprenticeship" + (Total != 1 ? "s" : "") + "found";
+    }
+
+    public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
+    {
+        return new SearchResultsViewModel()
+        {
+            Total = source.Total
+        };
     }
 }
