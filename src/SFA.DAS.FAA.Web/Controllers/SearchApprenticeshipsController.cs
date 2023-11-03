@@ -103,7 +103,13 @@ public class SearchApprenticeshipsController : Controller
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location)
     {
-        var result = await _mediator.Send(new GetSearchResultsQuery());
+        
+        var result = await _mediator.Send(new GetSearchResultsQuery
+        {
+            location = location,
+            SelectedRouteIds = routeIds,
+            NationalSearch = (location == null),
+        });
 
         var viewmodel = (SearchResultsViewModel)result;
         viewmodel.SelectedRouteIds = routeIds;
