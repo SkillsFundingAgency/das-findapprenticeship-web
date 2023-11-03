@@ -1,19 +1,19 @@
-﻿namespace SFA.DAS.FAA.Web.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class LocationViewModel
+namespace SFA.DAS.FAA.Web.Models;
+
+public class LocationViewModel : ViewModelBase
 {
-    public LocationViewModel(List<string>? selectedRouteIds)
-    {
-        SelectedRouteIds = selectedRouteIds;
-        RouteData = GetRouteData();
-    }
+    [Required(ErrorMessage = "Select if you want to enter a city or postcode or if you want to search across all of England")]
     public bool? NationalSearch { get; set; }
-    public string? CityOrPostcode { get; set; }
+    public string? SearchTerm { get; set; }
     public int? Distance { get; set; }
+    public bool SuggestedLocationSelected { get; set; }
     public List<string>? SelectedRouteIds { get; set; }
-    public Dictionary<string,string> RouteData { get; set; }
+    public Dictionary<string, string> RouteData { get => GetRouteData(); }
+    public LocationsBySearchViewModel? Locations { get; set; }
 
-    private Dictionary<string,string> GetRouteData()
+    private Dictionary<string, string> GetRouteData()
     {
         var result = new Dictionary<string, string>();
 

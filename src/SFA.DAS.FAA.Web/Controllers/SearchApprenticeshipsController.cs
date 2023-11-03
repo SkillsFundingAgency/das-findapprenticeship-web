@@ -4,6 +4,7 @@ using SFA.DAS.FAA.Web.Models;
 using MediatR;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -45,16 +46,11 @@ public class SearchApprenticeshipsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            //TODO - no coverage
             var result = await _mediator.Send(new GetBrowseByInterestsQuery());
 
             var viewModel = (BrowseByInterestViewModel)result;
-            viewModel.ErrorDictionary = ModelState
-                    .Where(x => x.Value is { Errors.Count: > 0 })
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
-                    );
-
+            
             viewModel.AllocateRouteGroup();
 
             return View(viewModel);
@@ -64,11 +60,40 @@ public class SearchApprenticeshipsController : Controller
     }
 
     [Route("location", Name = RouteNames.Location)]
-    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds)
+    public IActionResult Location([FromQuery] List<string>? routeIds)
     {
-        var viewModel = new LocationViewModel(routeIds);
+        var viewModel = new LocationViewModel() { SelectedRouteIds = routeIds };
         return View(viewModel);
     }
 
-}
+    [HttpPost]
+    [Route("location", Name = RouteNames.Location)]
+    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds, LocationViewModel model)
+    {
+        model.SelectedRouteIds = routeIds;
 
+        if (model.NationalSearch == false)
+        {
+            if (string.IsNullOrEmpty(model.SearchTerm))
+            {
+                ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a city or postcode");    
+            }
+            else
+            {
+                var locationResult = await _mediator.Send(new GetLocationsBySearchQuery { SearchTerm = model.SearchTerm });
+
+                if (!locationResult.LocationItems.Any())
+                {
+                    ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+                }
+            }
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        return View(model);
+    }
+}

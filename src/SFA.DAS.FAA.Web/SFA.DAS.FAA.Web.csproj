@@ -27,4 +27,10 @@
     <ProjectReference Include="..\SFA.DAS.FAA.Infrastructure\SFA.DAS.FAA.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

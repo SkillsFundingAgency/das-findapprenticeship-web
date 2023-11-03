@@ -7,53 +7,62 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <partial model="@ViewData.ModelState" name="_ValidationSummary" />
         <div class="govuk-form-group">
             <form class="form" method="post">
-                <fieldset class="govuk-fieldset" aria-describedby="location-hint">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <span class="govuk-caption-l">Question 2 of 2</span>
-                        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
-                    </legend>
-                    <div class="govuk-radios" data-module="govuk-radios">
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="false"
-                                   aria-controls="conditional-location" aria-expanded="false" id="NationalSearch">
-                            <label class="govuk-label govuk-radios__label" asp-for="NationalSearch">
-                                Enter a city or postcode
-                            </label>
-                        </div>
-                        <div class="govuk-radios__conditional" id="conditional-location">
-                            <label class="govuk-label" for="CityOrPostcode">
-                                City or postcode
-                            </label>
-                            <input class="govuk-input govuk-input--width-10" asp-for="CityOrPostcode"
-                                   type="text" spellcheck="false" autocomplete="postal-code">
-                            <div class="govuk-form-group">
-                                <label class="govuk-label" asp-for="@Model.Distance">
-                                    Distance you can travel
+                <div
+                    class="govuk-form-group @(ViewData.ModelState[nameof(Model.NationalSearch)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "govuk-form-group--error" : "")">
+                    <fieldset class="govuk-fieldset" aria-describedby="location-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <span class="govuk-caption-l">Question 2 of 2</span>
+                            <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
+                        </legend>
+                        <span asp-validation-for="NationalSearch" class="govuk-error-message"></span>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="false"
+                                    aria-controls="conditional-location" aria-expanded="false" id="NationalSearch">
+                                <label class="govuk-label govuk-radios__label" asp-for="NationalSearch">
+                                    Enter a city or postcode
                                 </label>
-                                <select class="govuk-select" asp-for="@Model.Distance">
-                                    <option value="2">2 miles</option>
-                                    <option value="5">5 miles</option>
-                                    <option value="10" selected>10 miles</option>
-                                    <option value="15">15 miles</option>
-                                    <option value="20">20 miles</option>
-                                    <option value="30">30 miles</option>
-                                    <option value="40">40 miles</option>
-                                </select>
+                            </div>
+                            <div class="govuk-radios__conditional" id="conditional-location">
+                                <div
+                                    class="govuk-form-group @((ViewData.ModelState[nameof(Model.SearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+                                    <input type="hidden" asp-for="SuggestedLocationSelected" value="false">
+                                    <label class="govuk-label" for="SearchTerm">
+                                        City or postcode
+                                    </label>
+                                    <span asp-validation-for="SearchTerm" class="govuk-error-message"></span>
+                                    <input class="govuk-input govuk-input--width-10 faa-location-autocomplete" asp-for="SearchTerm" id="SearchTerm"
+                                           type="search" spellcheck="false" autocomplete="postal-code" data-track-user-selected="SuggestedLocationSelected">
+                                </div>
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" asp-for="@Model.Distance">
+                                        Distance you can travel
+                                    </label>
+                                    <select class="govuk-select" asp-for="@Model.Distance">
+                                        <option value="2">2 miles</option>
+                                        <option value="5">5 miles</option>
+                                        <option value="10" selected>10 miles</option>
+                                        <option value="15">15 miles</option>
+                                        <option value="20">20 miles</option>
+                                        <option value="30">30 miles</option>
+                                        <option value="40">40 miles</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="true"
+                                    id="NationalSearch-National">
+                                <label class="govuk-label govuk-radios__label" for="NationalSearch-National">
+                                    Search across all of England
+                                </label>
                             </div>
                         </div>
-
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="true"
-                                   id="NationalSearch-National">
-                            <label class="govuk-label govuk-radios__label" for="NationalSearch-National">
-                                Search across all of England
-                            </label>
-                        </div>
-                    </div>
-                </fieldset>
-                <div class="govuk-!-padding-bottom-3"></div>
+                    </fieldset>
+                </div>
                 <div class="govuk-button-group">
                     <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
                 </div>
