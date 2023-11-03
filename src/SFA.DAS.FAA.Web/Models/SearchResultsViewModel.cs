@@ -22,7 +22,7 @@ public class SearchResultsViewModel
     private string GetTotalMessage(int total)
     {
         var totalAsText = Total.ToString("N0");
-        return (Total == 0 ? "No" : totalAsText) + "apprenticeship" + (Total != 1 ? "s" : "") + "found";
+        return (Total == 0 ? "No" : totalAsText) + " apprenticeship" + (Total != 1 ? "s" : "") + " found";
     }
 
 

@@ -9,7 +9,7 @@ public class WhenCreatingSearchResultsViewModel
 {
 
     [Test]
-    [TestCase(0, "0 apprenticeships found")]
+    [TestCase(0, "No apprenticeships found")]
     [TestCase(1, "1 apprenticeship found")]
     [TestCase(2, "2 apprenticeships found")]
     [TestCase(2034, "2,034 apprenticeships found")]
