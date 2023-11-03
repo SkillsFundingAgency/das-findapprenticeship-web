@@ -108,7 +108,7 @@ public class SearchApprenticeshipsController : Controller
         {
             location = location,
             SelectedRouteIds = routeIds,
-            NationalSearch = (location == null),
+            NationalSearch = (location == null)
         });
 
         var viewmodel = (SearchResultsViewModel)result;
