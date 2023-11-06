@@ -80,6 +80,16 @@ public static class MockApiServer
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("vacancies.json"));
+        
+        
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies"))
+                .WithParam(MatchLocationParamManchester)
+                .UsingGet())             
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)  
+                .WithHeader("Content-Type", "application/json")  
+                .WithBody("{\n  \"totalFound\": 0\n}")
+            );
 
         return server;
     }
@@ -87,5 +97,10 @@ public static class MockApiServer
     private static bool MatchLocationParamCoventry(IDictionary<string, WireMockList<string>> arg)
     {
         return arg.ContainsKey("searchTerm") && arg["searchTerm"].Count != 0 && arg["searchTerm"][0].Equals("Coventry", StringComparison.CurrentCultureIgnoreCase);        
+    }
+
+    private static bool MatchLocationParamManchester(IDictionary<string, WireMockList<string>> arg)
+    {
+        return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Equals("Manchester", StringComparison.CurrentCultureIgnoreCase);
     }
 }
