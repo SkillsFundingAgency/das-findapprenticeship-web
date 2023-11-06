@@ -63,7 +63,13 @@
                         </div>
                     </fieldset>
                 </div>
+<<<<<<< HEAD
                     <button class="govuk-button" data-module="govuk-button">Search Apprenticeships</button>
+=======
+                <div class="govuk-button-group">
+                    <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
+                </div>
+>>>>>>> b82dee8c5d42eec2a428c727c41d8a132acee646
             </form>
         </div>
     </div>
