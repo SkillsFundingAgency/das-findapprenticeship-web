@@ -102,7 +102,7 @@ public class SearchApprenticeshipsController : Controller
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location)
     {
-        var viewmodel = new SearchResultsViewModel()
+        var viewmodel = new SearchResultsViewModel
         {
             SelectedRouteIds = routeIds,
             NationalSearch = (location == null),

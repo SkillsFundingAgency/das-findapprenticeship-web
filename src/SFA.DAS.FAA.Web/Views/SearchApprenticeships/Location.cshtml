@@ -52,7 +52,7 @@
                                     </select>
                                 </div>
                             </div>
-
+    
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="true"
                                     id="NationalSearch-National">
@@ -64,9 +64,7 @@
                     </fieldset>
                 </div>
                 <div class="govuk-button-group">
-                    <a asp-route="@RouteNames.SearchResults" role="button" class="govuk-button data-module="govuk-button">
-                            Search apprenticeships
-                    </a>
+                    <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
                 </div>
             </form>
         </div>
