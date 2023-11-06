@@ -1,8 +1,14 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.SearchResultsViewModel
-
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    @if (Model.SelectedRouteIds.Any())
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.Location" asp-all-route-data="@Model.RouteData">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">
