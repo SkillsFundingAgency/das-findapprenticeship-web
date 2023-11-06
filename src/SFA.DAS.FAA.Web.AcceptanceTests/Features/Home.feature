@@ -49,9 +49,7 @@ Scenario: Location search no location found
 	  | SuggestedLocationSelected | true     |
 	Then a http status code of 200 is returned
 	And I am redirected to the following url: /location
-	And the page content includes the following: There is a problem
-	And the page content includes the following: We don&#x27;t recognise this city or postcode. Check what you&#x27;ve entered or enter a different location that&#x27;s nearby
-	
+	And the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
 
 	
 @WireMockServer
@@ -60,8 +58,7 @@ Scenario: Location search no option selected
 	  | Field          | Value    |
 	Then a http status code of 200 is returned
 	And I am redirected to the following url: /location
-	And the page content includes the following: There is a problem
-	And the page content includes the following: Select if you want to enter a city or postcode 
+	And the page content includes the following error: Select if you want to enter a city or postcode
 	
 @WireMockServer
 Scenario: Location search option selected no postcode
@@ -70,5 +67,4 @@ Scenario: Location search option selected no postcode
 	  | NationalSearch | false |
 	Then a http status code of 200 is returned
 	And I am redirected to the following url: /location
-	And the page content includes the following: There is a problem
-	And the page content includes the following: Enter a city or postcode 
+	And the page content includes the following error: Enter a city or postcode 
