@@ -88,7 +88,7 @@ public static class MockApiServer
             .RespondWith(Response.Create()
                 .WithStatusCode(200)  
                 .WithHeader("Content-Type", "application/json")  
-                .WithBody("{\n  \"totalFound\": 0\n}")
+                .WithBody("{\n \"totalFound\": 0 \n}")
             );
 
         return server;
