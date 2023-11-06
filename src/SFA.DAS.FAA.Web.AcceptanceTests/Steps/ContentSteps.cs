@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Web;
+using FluentAssertions;
 using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
 
@@ -18,9 +19,10 @@ public sealed class ContentSteps
     public async Task ThenThePageContentIncludesTheFollowingError(string expectedContent)
     {
         var response = _context.Get<string>(ContextKeys.HttpResponseContent);
+        var decodedResponse = HttpUtility.HtmlDecode(response);
 
-        response.Should().Contain(expectedContent);
-        response.Should().Contain("There is a problem");
+        decodedResponse.Should().Contain(expectedContent);
+        decodedResponse.Should().Contain("There is a problem");
     }
 
     [Then("the page redirect content includes the following: (.*)")]
