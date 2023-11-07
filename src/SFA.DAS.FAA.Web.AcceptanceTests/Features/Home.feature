@@ -68,3 +68,22 @@ Scenario: Location search option selected no postcode
 	Then a http status code of 200 is returned
 	And I am redirected to the following url: /location
 	And the page content includes the following error: Enter a city or postcode 
+
+@WireMockServer
+Scenario: Navigate to search results page with no filters
+	When I post to the following url: /search-results
+	  | Field          | Value |
+	  | NationalSearch | true |
+	Then a http status code of 200 is returned
+	And the page content includes the following: 173 apprenticeships found
+
+	@WireMockServer
+Scenario: Navigate to search results page with no results found
+	When I post to the following url: /search-results
+	  | Field          | Value |
+	  | NationalSearch | false |
+	  |	location       | Manchester |
+	Then a http status code of 200 is returned
+	And the page content includes the following: No apprenticeships found
+
+
