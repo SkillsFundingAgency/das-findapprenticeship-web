@@ -4,7 +4,6 @@ using SFA.DAS.FAA.Web.Models;
 using MediatR;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.Application.Queries.GetGeoPoint;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 
 namespace SFA.DAS.FAA.Web.Controllers;
