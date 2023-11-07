@@ -72,25 +72,23 @@ public static class MockApiServer
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("geopoint.json"));
 
+
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies"))
+                .WithParam(MatchLocationParamManchester)
+                .UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("{\n \"totalFound\": 0 \n}")
+            );
+
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies"))
                 .UsingGet())
             .RespondWith(
                 Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("vacancies.json")); // - use this line when you need to get 174 search results
-                  //.WithBody("{\n \"totalFound\": 0 \n}")); // - use this line when you need to get 0 search results
-
-
-        // TODO - add in later once the vacancies api has parameters setup
-        //server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies"))
-        //        .WithParam(MatchLocationParamManchester)
-        //        .UsingGet())             
-        //    .RespondWith(Response.Create()
-        //        .WithStatusCode(200)  
-        //        .WithHeader("Content-Type", "application/json")  
-        //        .WithBody("{\n \"totalFound\": 0 \n}")
-        //    );
+                    .WithBodyFromFile("vacancies.json")); 
 
         return server;
     }

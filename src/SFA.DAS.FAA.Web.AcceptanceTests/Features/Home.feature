@@ -71,17 +71,14 @@ Scenario: Location search option selected no postcode
 
 @WireMockServer
 Scenario: Navigate to search results page with no filters
-	When I post to the following url: /search-results
-	  | Field          | Value |
-	  | NationalSearch | true |
+	When I navigate to the following url: /search-results
 	Then a http status code of 200 is returned
 	And the page content includes the following: 173 apprenticeships found
 
-	@WireMockServer
+@WireMockServer
 Scenario: Navigate to search results page with no results found
-	When I post to the following url: /search-results
+	When I navigate to the following url: /search-results
 	  | Field          | Value |
-	  | NationalSearch | false |
 	  |	location       | Manchester |
 	Then a http status code of 200 is returned
 	And the page content includes the following: No apprenticeships found
