@@ -77,9 +77,7 @@ Scenario: Navigate to search results page with no filters
 
 @WireMockServer
 Scenario: Navigate to search results page with no results found
-	When I navigate to the following url: /search-results
-	  | Field          | Value |
-	  |	location       | Manchester |
+	When I navigate to the following url: /search-results?location=manchester
 	Then a http status code of 200 is returned
 	And the page content includes the following: No apprenticeships found
 

@@ -1,18 +1,17 @@
-﻿using FluentAssertions;
+﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.SearchResults;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.SearchResults;
 
 public class WhenBuildingTheRequest
 {
-    [Test, MoqAutoData]
+    [Test, AutoData]
     public void Then_The_Url_Is_Correctly_Constructed(string location, List<string> routes, int distance)
     {
         var actual = new GetSearchResultsApiRequest(location, routes, distance);
 
-        actual.GetUrl.Should().Be($"vacancies?location={location}?routes={routes}?distance={distance}");
+        actual.GetUrl.Should().Be($"vacancies?location={location}&routes={routes}&distance={distance}");
     }
 }

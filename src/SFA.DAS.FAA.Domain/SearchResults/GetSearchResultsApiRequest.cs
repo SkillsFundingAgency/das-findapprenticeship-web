@@ -14,5 +14,5 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         _distance = distance;
     }
 
-    public string GetUrl => $"vacancies?location={_location}?routes={_routes}?distance={_distance}";
+    public string GetUrl => $"vacancies?location={_location}&routes={_routes}&distance={_distance}";
 }
