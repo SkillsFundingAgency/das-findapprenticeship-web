@@ -3,6 +3,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using MediatR;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
+using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 
@@ -80,9 +81,9 @@ public class SearchApprenticeshipsController : Controller
             }
             else
             {
-                var locationResult = await _mediator.Send(new GetLocationsBySearchQuery { SearchTerm = model.SearchTerm });
+                var locationResult = await _mediator.Send(new GetBrowseByInterestsLocationQuery { LocationSearchTerm = model.SearchTerm });
 
-                if (!locationResult.LocationItems.Any())
+                if (locationResult.Location == null)
                 {
                     ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
                 }
