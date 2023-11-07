@@ -14,7 +14,7 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
     }
     public async Task<GetSearchResultsResult> Handle(GetSearchResultsQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetSearchResultsApiRequest();
+        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance);
         var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
         return new GetSearchResultsResult()
         {

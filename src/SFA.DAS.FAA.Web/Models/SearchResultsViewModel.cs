@@ -13,6 +13,7 @@ public class SearchResultsViewModel : ViewModelBase
     public string? WhatSearchTerm { get; set; }
     public int Total { get; set; }
     public string TotalMessage { get; private set; }
+    public int? Distance { get; set; }
 
     public SearchResultsViewModel(int total)
     {

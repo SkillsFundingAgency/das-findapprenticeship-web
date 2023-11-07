@@ -17,10 +17,11 @@ public class WhenGettingSearchResults
     public async Task Then_TheViewModelRoutesAndLocationAreSet_AndViewReturned(
         List<string>? routeIds,
         string? location,
+        int distance,
         [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
     {
         // Act
-        var result = await controller.SearchResults(routeIds, location);
+        var result = await controller.SearchResults(routeIds, location, distance);
 
         // Assert
         result.Should().BeAssignableTo<ViewResult>();
@@ -31,6 +32,7 @@ public class WhenGettingSearchResults
         var viewModel = viewResult.Model as SearchResultsViewModel;
         viewModel.SelectedRouteIds.Should().Equal(routeIds);
         viewModel.Location.Should().BeEquivalentTo(location);
+        viewModel.Distance.Should().Be(distance);
     }
 
     [Test, MoqAutoData]
@@ -39,18 +41,20 @@ public class WhenGettingSearchResults
         [Frozen] Mock<IMediator> mediator,
         List<string>? routeIds,
         string? location,
+        int distance,
         [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
     {
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(routeIds, location) as ViewResult;
+        var actual = await controller.SearchResults(routeIds, location, distance) as ViewResult;
 
         Assert.IsNotNull(actual);
         var actualModel = actual!.Model as SearchResultsViewModel;
         actualModel.Total.Should().Be(((SearchResultsViewModel)result).Total);
         actualModel.SelectedRouteIds.Should().Equal(routeIds);
         actualModel.Location.Should().BeEquivalentTo(location);
+        actualModel.Distance.Should().Be(distance);
     }
 
 }

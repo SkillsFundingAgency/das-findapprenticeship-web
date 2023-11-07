@@ -96,25 +96,28 @@ public class SearchApprenticeshipsController : Controller
             return View(model);
         }
 
-        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.SearchTerm : null });
+        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.SearchTerm : null, distance = model.Distance });
 
     }
 
     [Route("search-results", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location)
+    public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location, [FromQuery] int? distance)
     {
         
         var result = await _mediator.Send(new GetSearchResultsQuery
         {
             Location = location,
             SelectedRouteIds = routeIds,
-            NationalSearch = (location == null)
+            NationalSearch = (location == null),
+            Distance = distance
+            
         });
 
         var viewmodel = (SearchResultsViewModel)result;
         viewmodel.SelectedRouteIds = routeIds;
         viewmodel.NationalSearch = (location == null);
         viewmodel.Location = location;
+        viewmodel.Distance = distance;
 
 
         return View(viewmodel);
