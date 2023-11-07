@@ -7,7 +7,7 @@ namespace SFA.DAS.FAA.Web.Models;
 public class SearchResultsViewModel : ViewModelBase
 {
     public bool NationalSearch { get; set; }
-    public string? location { get; set; }
+    public string? Location { get; set; }
     public List<string>? SelectedRouteIds { get; set; }
     
     public string? WhatSearchTerm { get; set; }
