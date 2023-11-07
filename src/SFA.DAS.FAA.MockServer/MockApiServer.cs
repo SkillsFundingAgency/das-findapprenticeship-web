@@ -1,6 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using WireMock.Logging;
-using WireMock.Matchers;
 using WireMock.Net.StandAlone;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -10,6 +10,7 @@ using WireMock.Types;
 
 namespace SFA.DAS.FAA.MockServer;
 
+[ExcludeFromCodeCoverage]
 public static class MockApiServer
 {
     public static IWireMockServer Start()
