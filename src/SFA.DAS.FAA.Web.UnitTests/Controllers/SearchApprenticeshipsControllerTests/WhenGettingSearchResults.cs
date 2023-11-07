@@ -30,7 +30,7 @@ public class WhenGettingSearchResults
 
         var viewModel = viewResult.Model as SearchResultsViewModel;
         viewModel.SelectedRouteIds.Should().Equal(routeIds);
-        viewModel.location.Should().BeEquivalentTo(location);
+        viewModel.Location.Should().BeEquivalentTo(location);
     }
 
     [Test, MoqAutoData]
@@ -50,7 +50,7 @@ public class WhenGettingSearchResults
         var actualModel = actual!.Model as SearchResultsViewModel;
         actualModel.Total.Should().Be(((SearchResultsViewModel)result).Total);
         actualModel.SelectedRouteIds.Should().Equal(routeIds);
-        actualModel.location.Should().BeEquivalentTo(location);
+        actualModel.Location.Should().BeEquivalentTo(location);
     }
 
 }

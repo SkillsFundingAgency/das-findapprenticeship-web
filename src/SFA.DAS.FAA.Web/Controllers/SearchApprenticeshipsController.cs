@@ -106,7 +106,7 @@ public class SearchApprenticeshipsController : Controller
         
         var result = await _mediator.Send(new GetSearchResultsQuery
         {
-            location = location,
+            Location = location,
             SelectedRouteIds = routeIds,
             NationalSearch = (location == null)
         });
@@ -114,7 +114,7 @@ public class SearchApprenticeshipsController : Controller
         var viewmodel = (SearchResultsViewModel)result;
         viewmodel.SelectedRouteIds = routeIds;
         viewmodel.NationalSearch = (location == null);
-        viewmodel.location = location;
+        viewmodel.Location = location;
 
 
         return View(viewmodel);
