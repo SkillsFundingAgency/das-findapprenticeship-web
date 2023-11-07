@@ -19,6 +19,9 @@
     <Content Include="location-search.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="browse-location-search.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="search-apprentices-index.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
