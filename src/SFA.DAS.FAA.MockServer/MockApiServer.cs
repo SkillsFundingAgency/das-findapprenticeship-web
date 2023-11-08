@@ -51,20 +51,20 @@ public static class MockApiServer
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("location-search.json"));
         
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/searchbylocation"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterestslocation"))
                 .WithParam(MatchLocationParamCoventry)
                 .UsingGet())
             .RespondWith(Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
-                .WithBody("{\n  \"locations\": []\n}"));
+                .WithBody("{}"));
         
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/searchbylocation"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterestslocation"))
                 .UsingGet())
             .RespondWith(Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
-                .WithBodyFromFile("location-search.json"));
+                .WithBodyFromFile("browse-location-search.json"));
         
         
 
@@ -81,6 +81,6 @@ public static class MockApiServer
     
     private static bool MatchLocationParamCoventry(IDictionary<string, WireMockList<string>> arg)
     {
-        return arg.ContainsKey("searchTerm") && arg["searchTerm"].Count != 0 && arg["searchTerm"][0].Equals("Coventry", StringComparison.CurrentCultureIgnoreCase);        
+        return arg.ContainsKey("locationSearchTerm") && arg["locationSearchTerm"].Count != 0 && arg["locationSearchTerm"][0].Equals("Coventry", StringComparison.CurrentCultureIgnoreCase);        
     }
 }

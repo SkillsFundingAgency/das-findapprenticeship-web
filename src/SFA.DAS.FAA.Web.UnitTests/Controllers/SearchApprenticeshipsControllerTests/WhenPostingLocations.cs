@@ -1,10 +1,10 @@
-﻿using AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
+using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
@@ -68,8 +68,8 @@ public class WhenPostingLocations
         model.ErrorDictionary.Clear();
         model.NationalSearch = false;
         model.SearchTerm = cityOrPostcodeValue;
-        mediator.Setup(m => m.Send(It.Is<GetLocationsBySearchQuery>(c => c.SearchTerm.Equals(model.SearchTerm)),
-            It.IsAny<CancellationToken>())).ReturnsAsync(new GetLocationsBySearchQueryResult());
+        mediator.Setup(m => m.Send(It.Is<GetBrowseByInterestsLocationQuery>(c => c.LocationSearchTerm.Equals(model.SearchTerm)),
+            It.IsAny<CancellationToken>())).ReturnsAsync(new GetBrowseByInterestsLocationQueryResult());
         
         var actual = await controller.Location(null, model) as ViewResult;
     
@@ -78,7 +78,7 @@ public class WhenPostingLocations
         actual.ViewData.ModelState.ErrorCount.Should().Be(1);
         actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
         actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
-    
+        mediator.Verify(x=>x.Send(It.IsAny<GetBrowseByInterestsLocationQuery>(), It.IsAny<CancellationToken>()), Times.Once);
     }
     
 }

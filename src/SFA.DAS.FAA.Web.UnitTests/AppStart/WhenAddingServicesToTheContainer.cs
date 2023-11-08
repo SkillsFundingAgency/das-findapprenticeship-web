@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
+using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
 using IConfiguration = Castle.Core.Configuration.IConfiguration;
@@ -16,9 +18,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.AppStart;
 public class WhenAddingServicesToTheContainer
 {
     [TestCase(typeof(IApiClient))]
-    [TestCase(typeof(IRequestHandler<GetLocationsBySearchQuery, GetLocationsBySearchQueryResult>))]
     [TestCase(typeof(IRequestHandler<GetBrowseByInterestsQuery, GetBrowseByInterestsResult>))]
+    [TestCase(typeof(IRequestHandler<GetBrowseByInterestsLocationQuery, GetBrowseByInterestsLocationQueryResult>))]
     [TestCase(typeof(IRequestHandler<GetLocationsBySearchQuery, GetLocationsBySearchQueryResult>))]
+    [TestCase(typeof(IRequestHandler<GetSearchApprenticeshipsIndexQuery, GetSearchApprenticeshipsIndexResult>))]
     public void Then_The_Dependencies_Are_Correctly_Resolved(Type toResolve)
     {
         var serviceCollection = new ServiceCollection();
