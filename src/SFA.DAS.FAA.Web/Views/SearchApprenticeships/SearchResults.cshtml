@@ -26,15 +26,15 @@
                             </a>
                         </h2>
                         <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.employerName</p>
-                        <p class="govuk-body" style="color: #505a5f">
+                        <p class="govuk-body govuk-hint">
                             @vacancy.vacancyLocation, @vacancy.vacancyPostCode
                         </p>
                         <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> TO DO</p>
-                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> Business administrator (Level 3)</p>
+                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.courseTitle (Level @vacancy.level)</p>
                         <p class="govuk-body"><b>Annual wage</b> £10,982.40</p>
-                        <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in 16 days (Tuesday 27 June)</p>
-                        <p class="govuk-body govuk-!-font-size-16" style="color: #505a5f">
-                            Posted 19 May
+                        <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">TODO </p>
+                        <p class="govuk-body govuk-!-font-size-16 govuk-hint">
+                            @vacancy.postedDate
                         </p>
                         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-5 govuk-!-margin-bottom-5 ">
                     </li>
