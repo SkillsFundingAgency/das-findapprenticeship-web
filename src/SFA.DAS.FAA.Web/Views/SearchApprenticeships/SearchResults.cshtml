@@ -14,5 +14,33 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2"> @Model.TotalMessage </h1>
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
+        <div class="das-search-results">
+            <ol class="das-search-results__list">
+                @foreach (var vacancy in Model.vacancies)
+                {
+                    <li class="das-search-results__list-item">
+                        <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+                            <a class="das-search-results__link" id="standard-274" href=#>
+                                @vacancy.title
+                            </a>
+                        </h2>
+                        <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.employerName</p>
+                        <p class="govuk-body" style="color: #505a5f">
+                            @vacancy.vacancyLocation, @vacancy.vacancyPostCode
+                        </p>
+                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> TO DO</p>
+                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> Business administrator (Level 3)</p>
+                        <p class="govuk-body"><b>Annual wage</b> £10,982.40</p>
+                        <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in 16 days (Tuesday 27 June)</p>
+                        <p class="govuk-body govuk-!-font-size-16" style="color: #505a5f">
+                            Posted 19 May
+                        </p>
+                        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-5 govuk-!-margin-bottom-5 ">
+                    </li>
+                }
+            </ol>
+        </div>
+
     </div>
 </div>

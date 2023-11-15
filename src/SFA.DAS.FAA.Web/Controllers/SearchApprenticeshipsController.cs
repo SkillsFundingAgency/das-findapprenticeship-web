@@ -118,6 +118,7 @@ public class SearchApprenticeshipsController : Controller
         viewmodel.NationalSearch = (location == null);
         viewmodel.Location = location;
         viewmodel.Distance = distance;
+        
 
 
         return View(viewmodel);

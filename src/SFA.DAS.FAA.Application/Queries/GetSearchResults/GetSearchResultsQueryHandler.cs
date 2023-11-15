@@ -18,7 +18,8 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
         var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
         return new GetSearchResultsResult()
         {
-            Total = response.Total
+            Total = response.Total,
+            Vacancies = response.Vacancies
         };
     }
 }
