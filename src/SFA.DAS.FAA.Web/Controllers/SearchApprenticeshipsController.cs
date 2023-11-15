@@ -118,8 +118,8 @@ public class SearchApprenticeshipsController : Controller
         viewmodel.NationalSearch = (location == null);
         viewmodel.Location = location;
         viewmodel.Distance = distance;
+        viewmodel.vacancies = result.Vacancies.Select(c => (VacanciesViewModel)c).ToList();
         
-
 
         return View(viewmodel);
     }
