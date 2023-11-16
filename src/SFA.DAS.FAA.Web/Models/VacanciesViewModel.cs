@@ -47,7 +47,7 @@ public class VacanciesViewModel
                         vacancies.address?.addressLine3 ??
                         vacancies.address?.addressLine2 ??
                         vacancies.address?.addressLine1 ?? string.Empty,
-        distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
+            distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
             daysUntilClosing = CalculateDaysUntilClosing(vacancies.closingDate)
 
         };

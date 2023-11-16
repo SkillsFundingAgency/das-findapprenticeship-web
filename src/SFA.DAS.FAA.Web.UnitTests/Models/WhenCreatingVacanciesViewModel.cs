@@ -6,6 +6,10 @@ using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 using System.Globalization;
+using System.Net;
+using AutoFixture.NUnit3;
+using Xunit;
+using TheoryAttribute = NUnit.Framework.TheoryAttribute;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 [TestFixture]
@@ -41,23 +45,55 @@ public class WhenCreatingVacanciesViewModel
         Assert.AreEqual(expectedPostedDate, actual.postedDate);
     }
 
-    [Test]
-    [TestCase("1","blablaLane","Morden", "London", "London")]
-    [TestCase("1", "blablaLane", "Morden", null, "Morden")]
-    [TestCase("1", "blablaLane",null,null, "blablaLane")]
-    [TestCase("1", null, null, null, "1")]
+    [Theory]
+    [MoqInlineAutoData("1","blablaLane","Morden", "London", "London")]
+    [MoqInlineAutoData("1", "blablaLane", "Morden", null, "Morden")]
+    [MoqInlineAutoData("1", "blablaLane",null,null, "blablaLane")]
+    [MoqInlineAutoData("1", null, null, null, "1")]
 
-    public async Task Then_The_Address_Is_Shown_Correctly(string addressLine1, string? addressLine2, string? addressLine3, string? AddressLine4, string expected)
+    public void Then_The_Address_Is_Shown_Correctly(string addressLine1, string? addressLine2, string? addressLine3, string? addressLine4, string expected,
+        [Frozen] Vacancies vacancies
+    )
     {
-        var vacanciesMock = new Mock<Vacancies>();
-        vacanciesMock.Setup(v => v.address.addressLine1).Returns(addressLine1);
-        vacanciesMock.Setup(v => v.address.addressLine2).Returns(addressLine2);
-        vacanciesMock.Setup(v => v.address.addressLine3).Returns(addressLine3);
-        vacanciesMock.Setup(v => v.address.addressLine4).Returns(AddressLine4);
+        vacancies.address.addressLine1 = addressLine1;
+        vacancies.address.addressLine2 = addressLine2;
+        vacancies.address.addressLine3 = addressLine3;
+        vacancies.address.addressLine4 = addressLine4;
 
-        var actual = (VacanciesViewModel)vacanciesMock.Object;
+        var source = vacancies;
+        var actual = (VacanciesViewModel)source;
+
 
         Assert.AreEqual(expected, actual.placeName);
+    }
+
+    [Test, MoqAutoData]
+    public async Task Then_The_Distance_Is_Shown_Correctly(Vacancies vacancies)
+    {
+
+        double distance = 10.87546346;
+        double expectedDistance = 10.9;
+
+        vacancies.distance = distance;
+        var source = vacancies;
+
+        var actual = (VacanciesViewModel)source;
+
+        Assert.AreEqual(expectedDistance, actual.distance);
+    }
+
+    [Test, MoqAutoData]
+    public async Task Then_DAys_Until_Advert_Closes_Is_Shown_Correctly(Vacancies vacancies)
+    {
+        DateTime closingDate = new DateTime(2023, 11, 30);
+        int expected = 14;
+
+        vacancies.closingDate = closingDate;
+        var source = vacancies;
+
+        var actual = (VacanciesViewModel)source;
+
+        Assert.AreEqual(expected, actual.daysUntilClosing);
     }
 
 }
