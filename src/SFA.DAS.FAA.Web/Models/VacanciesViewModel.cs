@@ -36,8 +36,8 @@ public class VacanciesViewModel
             vacancyPostCode = vacancies.address.postcode,
             courseTitle =  vacancies.course.title,
             wageAmount = vacancies.wage.wageAmount,
-            advertClosing = FormatDate(vacancies.closingDate),
-            postedDate = FormatDate(vacancies.postedDate),
+            advertClosing = FormatCloseDate(vacancies.closingDate),
+            postedDate = FormatPostDate(vacancies.postedDate),
             wageType = vacancies.wage.wageType,
             placeName = vacancies.address.addressLine4 != null ? vacancies.address.addressLine4 : vacancies.address.addressLine3,
             distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
@@ -57,11 +57,16 @@ public class VacanciesViewModel
         return null; 
     }
 
-    private static string FormatDate(DateTime? date)
+    private static string FormatCloseDate(DateTime? date)
     {
         return date.HasValue ? date.Value.ToString("dddd dd MMMM") : null;
 
     }
 
+    private static string FormatPostDate(DateTime? date)
+    {
+        return date.HasValue ? date.Value.ToString("dd MMMM") : null;
+
+    }
 
 }
