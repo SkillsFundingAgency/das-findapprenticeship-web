@@ -55,6 +55,8 @@ public class WhenGettingSearchResults
         actualModel.SelectedRouteIds.Should().Equal(routeIds);
         actualModel.Location.Should().BeEquivalentTo(location);
         actualModel.Distance.Should().Be(distance);
+        actualModel.vacancies.Should().NotBeNullOrEmpty();
+
     }
 
 }

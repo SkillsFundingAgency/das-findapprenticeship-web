@@ -32,5 +32,6 @@ public class WhenGettingSearchResults
         // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedResponse.Total, result.Total);
+        Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
     }
 }

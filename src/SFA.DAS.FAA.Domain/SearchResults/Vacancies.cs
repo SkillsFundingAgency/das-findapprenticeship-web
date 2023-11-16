@@ -6,17 +6,17 @@ namespace SFA.DAS.FAA.Domain.SearchResults;
 public class Vacancies
 {
     [JsonProperty("vacancyReference")] 
-    public int vacancyReference { get; private set; }
+    public int vacancyReference { get; set; }
     [JsonProperty("title")] 
-    public string title { get; private set; }
+    public string title { get; set; }
     [JsonProperty("employerName")] 
-    public string employerName { get; private set; }
+    public string employerName { get; set; }
     [JsonProperty("closingDate")] 
-    public DateTime closingDate { get; private set; }
+    public DateTime closingDate { get; set; }
     [JsonProperty("postedDate")] 
-    public DateTime postedDate { get; private set; }
+    public DateTime postedDate { get; set; }
     [JsonProperty("distance")]
-    public double? distance { get; private set; }
+    public double? distance { get; set; }
     [JsonProperty("course")]
     public Course course { get; set; }
     [JsonProperty("wage")]
@@ -46,6 +46,7 @@ public class Wage
 public class Address
 {
     public string addressLine1 { get; set; }
+    public string addressLine2 { get; set; }
     public string addressLine3 { get; set; }
     public string? addressLine4 { get; set; }
     public string postcode { get; set; }

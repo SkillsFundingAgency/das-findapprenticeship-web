@@ -9,6 +9,8 @@ public class VacanciesViewModel
     public string title { get; private set; }
 
     public string employerName { get; private set; }
+    public string addressLine1 { get; private set; }
+    public string? addressLine2 { get; private set; }
     public string addressLine3 { get; private set; }
     public string? addressLine4 { get; private set; }
     public string vacancyPostCode { get; private set;}
@@ -31,6 +33,8 @@ public class VacanciesViewModel
             vacancyReference = vacancies.vacancyReference,
             title = vacancies.title,
             employerName = vacancies.employerName,
+            addressLine1 = vacancies.address.addressLine1,
+            addressLine2 = vacancies.address.addressLine2,
             addressLine3 = vacancies.address.addressLine3,
             addressLine4 = vacancies.address.addressLine4,
             vacancyPostCode = vacancies.address.postcode,
@@ -39,8 +43,11 @@ public class VacanciesViewModel
             advertClosing = FormatCloseDate(vacancies.closingDate),
             postedDate = FormatPostDate(vacancies.postedDate),
             wageType = vacancies.wage.wageType,
-            placeName = vacancies.address.addressLine4 != null ? vacancies.address.addressLine4 : vacancies.address.addressLine3,
-            distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
+            placeName = vacancies.address?.addressLine4 ??
+                        vacancies.address?.addressLine3 ??
+                        vacancies.address?.addressLine2 ??
+                        vacancies.address?.addressLine1 ?? string.Empty,
+        distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
             daysUntilClosing = CalculateDaysUntilClosing(vacancies.closingDate)
 
         };
