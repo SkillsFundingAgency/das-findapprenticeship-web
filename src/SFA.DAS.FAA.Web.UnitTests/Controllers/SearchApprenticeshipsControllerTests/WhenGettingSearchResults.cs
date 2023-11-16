@@ -18,10 +18,11 @@ public class WhenGettingSearchResults
         List<string>? routeIds,
         string? location,
         int distance,
+        string searchTerm,
         [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
     {
         // Act
-        var result = await controller.SearchResults(routeIds, location, distance);
+        var result = await controller.SearchResults(routeIds, location, distance,searchTerm);
 
         // Assert
         result.Should().BeAssignableTo<ViewResult>();
@@ -38,16 +39,22 @@ public class WhenGettingSearchResults
     [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
         GetSearchResultsResult result,
-        [Frozen] Mock<IMediator> mediator,
         List<string>? routeIds,
         string? location,
         int distance,
+        string? searchTerm,
+        [Frozen] Mock<IMediator> mediator,
         [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
     {
-        mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()))
+        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c=>
+                c.SearchTerm!.Equals(searchTerm)
+                && c.Distance!.Equals(distance)
+                && c.Location!.Equals(location)
+                && c.SelectedRouteIds!.Equals(routeIds)
+                ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(routeIds, location, distance) as ViewResult;
+        var actual = await controller.SearchResults(routeIds, location, distance, searchTerm) as ViewResult;
 
         Assert.IsNotNull(actual);
         var actualModel = actual!.Model as SearchResultsViewModel;

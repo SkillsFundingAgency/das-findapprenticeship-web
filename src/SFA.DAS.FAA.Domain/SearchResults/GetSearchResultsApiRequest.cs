@@ -5,14 +5,17 @@ namespace SFA.DAS.FAA.Domain.SearchResults;
 public class GetSearchResultsApiRequest : IGetApiRequest
 {
     private readonly string? _location;
-    private readonly List<string>? _routes;
+    private string _routes;
     private readonly int? _distance;
-    public GetSearchResultsApiRequest(string? location, List<string>? routes, int? distance)
+    private readonly string? _searchTerm;
+
+    public GetSearchResultsApiRequest(string? location, List<string>? routes, int? distance, string? searchTerm)
     {
         _location = location;
-        _routes = routes;
+        _routes = routes != null ? string.Join("&routes=", routes) : "";
         _distance = distance;
+        _searchTerm = searchTerm;
     }
 
-    public string GetUrl => $"vacancies?location={_location}&routes={_routes}&distance={_distance}";
+    public string GetUrl => $"searchapprenticeships/searchResults?location={_location}&routes={_routes}&distance={_distance}&searchTerm={_searchTerm}";
 }
