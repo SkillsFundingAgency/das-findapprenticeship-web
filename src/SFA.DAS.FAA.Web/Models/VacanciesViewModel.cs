@@ -13,7 +13,7 @@ public class VacanciesViewModel
     public string? addressLine4 { get; private set; }
     public string vacancyPostCode { get; private set;}
     public string courseTitle { get;  private set; }
-    public string wage { get; private set;  }
+    public double wageAmount { get; private set;  }
     public string advertClosing { get; private set; }
     public string postedDate { get; private set; }
     public string wageType { get; private set; }
@@ -31,15 +31,15 @@ public class VacanciesViewModel
             vacancyReference = vacancies.vacancyReference,
             title = vacancies.title,
             employerName = vacancies.employerName,
-            addressLine3 = vacancies.addressLine3,
-            addressLine4 = vacancies.addressLine4,
-            vacancyPostCode = vacancies.vacancyPostCode,
-            courseTitle =  vacancies.courseTitle,
-            wage = vacancies.wage,
+            addressLine3 = vacancies.address.addressLine3,
+            addressLine4 = vacancies.address.addressLine4,
+            vacancyPostCode = vacancies.address.postcode,
+            courseTitle =  vacancies.course.title,
+            wageAmount = vacancies.wage.wageAmount,
             advertClosing = FormatDate(vacancies.closingDate),
             postedDate = FormatDate(vacancies.postedDate),
-            wageType = vacancies.wageType,
-            placeName = vacancies.addressLine4 != null ? vacancies.addressLine4 : vacancies.addressLine3,
+            wageType = vacancies.wage.wageType,
+            placeName = vacancies.address.addressLine4 != null ? vacancies.address.addressLine4 : vacancies.address.addressLine3,
             distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
             daysUntilClosing = CalculateDaysUntilClosing(vacancies.closingDate)
 

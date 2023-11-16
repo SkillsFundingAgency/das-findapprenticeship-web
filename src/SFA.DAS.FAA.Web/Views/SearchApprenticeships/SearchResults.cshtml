@@ -27,15 +27,20 @@
                         </h2>
                         <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.employerName</p>
                         <p class="govuk-body govuk-hint">
-                            @vacancy.vacancyLocation, @vacancy.vacancyPostCode
+                            @vacancy.placeName, @vacancy.vacancyPostCode
                         </p>
-                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> TO DO</p>
-                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.courseTitle (Level @vacancy.level)</p>
+                        @if (Model.NationalSearch == false)
+                        {
+                            <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.distance miles</p>
+                        }
+                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.courseTitle </p>
                         <p class="govuk-body"><b>Annual wage</b> £10,982.40</p>
                         <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">TODO </p>
+                        <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.daysUntilClosing days (@vacancy.advertClosing)</p>
                         <p class="govuk-body govuk-!-font-size-16 govuk-hint">
                             @vacancy.postedDate
                         </p>
+
                         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-5 govuk-!-margin-bottom-5 ">
                     </li>
                 }
