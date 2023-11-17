@@ -85,7 +85,7 @@ public class WhenCreatingVacanciesViewModel
     }
 
     [Test, MoqAutoData]
-    public async Task Then_DAys_Until_Advert_Closes_Is_Shown_Correctly(Vacancies vacancies)
+    public async Task Then_Days_Until_Advert_Closes_Is_Shown_Correctly(Vacancies vacancies)
     {
         DateTime closingDate = new DateTime(2023, 11, 30);
         int expected = 14;
