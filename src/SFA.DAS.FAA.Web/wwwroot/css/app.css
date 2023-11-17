@@ -23,3 +23,110 @@
 .autocomplete__wrapper {
   max-width: 11.5em;
 }
+
+/* Search results */
+
+.faa-filter {
+  border: 1px solid #b1b4b6;
+}
+
+@media (min-width: 40.0625em) {
+  .faa-filter {
+  }
+}
+
+.faa-filter__header {
+  padding: 15px;
+}
+
+@media (min-width: 40.0625em) {
+  .faa-filter__header {
+    padding: 20px;
+  }
+}
+
+.faa-filter__heading {
+  margin: 0;
+}
+
+.faa-filter__selected {
+  background: #f3f2f1;
+  padding: 15px;
+}
+
+@media (min-width: 40.0625em) {
+  .faa-filter__selected {
+    padding: 20px;
+  }
+}
+
+.faa-filter__selected-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.faa-filter__selected-heading {
+  margin: 0;
+}
+
+.faa-filter__selected-sub-heading {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.faa-filter__tag {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.2;
+  background-color: #fff;
+  border: 1px solid #0b0c0c;
+  color: #0b0c0c;
+  display: inline-block;
+  margin-top: 5px;
+  padding: 5px 7px;
+  padding-right: 30px;
+  text-decoration: none;
+  position: relative;
+}
+
+.faa-filter__tag:before,
+.faa-filter__tag:after {
+  content: "";
+  height: 15px;
+  width: 2px;
+  background: currentColor;
+  display: block;
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  transform: rotate(45deg);
+}
+
+.faa-filter__tag:before {
+  transform: rotate(135deg);
+}
+
+@media (min-width: 40.0625em) {
+  .faa-filter__tag {
+    font-size: 16px;
+    border-width: 2px;
+  }
+}
+
+.faa-filter__tag:hover {
+  background: #0b0c0c;
+  color: #fff;
+}
+
+.faa-filter__tag:focus,
+.faa-filter__tag:active {
+  outline: 3px solid transparent;
+  background: #fd0;
+  color: #0b0c0c;
+  box-shadow: 0 0 #fd0, 0 4px #0b0c0c;
+  border-color: #fd0;
+}

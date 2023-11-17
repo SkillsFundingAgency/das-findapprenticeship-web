@@ -11,7 +11,7 @@ public class SearchResultsViewModel : ViewModelBase
     
     public string? WhatSearchTerm { get; set; }
     public int Total { get; set; }
-    public string TotalMessage { get; private set; }
+    public string TotalMessage  =>$"{(Total == 0 ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
     public int? Distance { get; set; }
 
     public List<VacanciesViewModel> vacancies { get; set; }
@@ -19,15 +19,7 @@ public class SearchResultsViewModel : ViewModelBase
     public SearchResultsViewModel(int total)
     {
         Total = total;
-        TotalMessage = GetTotalMessage(total);
     }
-
-    private string GetTotalMessage(int total)
-    {
-        var totalAsText = Total.ToString("N0");
-        return (Total == 0 ? "No" : totalAsText) + " apprenticeship" + (Total != 1 ? "s" : "") + " found";
-    }
-
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
