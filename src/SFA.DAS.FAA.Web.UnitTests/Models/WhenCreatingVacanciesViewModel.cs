@@ -10,6 +10,8 @@ using System.Net;
 using AutoFixture.NUnit3;
 using Xunit;
 using TheoryAttribute = NUnit.Framework.TheoryAttribute;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Assert = NUnit.Framework.Assert;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 [TestFixture]
@@ -96,4 +98,23 @@ public class WhenCreatingVacanciesViewModel
         Assert.AreEqual(expected, actual.daysUntilClosing);
     }
 
+    [Theory]
+    [MoqInlineAutoData("custom", (double)20400, "£20,400.00")]
+    [MoqInlineAutoData("ApprenticeshipMinimum", null, "£10,158.72")]
+    [MoqInlineAutoData("NationalMinimum", null, "£10,982.40 to £21,673.60")]
+
+    public void Then_The_wage_Is_Shown_Correctly(string wageType,double? wageAmount, string expected,
+        [Frozen] Vacancies vacancies
+    )
+    {
+        vacancies.wage.wageType = wageType;
+        vacancies.wage.wageAmount = wageAmount;
+
+
+        var source = vacancies;
+        var actual = (VacanciesViewModel)source;
+
+            Assert.AreEqual(expected, actual.wage);
+
+    }
 }

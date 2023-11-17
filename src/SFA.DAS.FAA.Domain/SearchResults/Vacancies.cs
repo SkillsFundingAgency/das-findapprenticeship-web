@@ -36,7 +36,7 @@ public class Course
 
 public class Wage
 {
-    public double wageAmount { get; set; }
+    public double? wageAmount { get; set; }
     public string wageAdditionalInformation { get; set; }
     public string wageType { get; set; }
     public string workingWeekDescription { get; set; }

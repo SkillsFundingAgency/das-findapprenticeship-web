@@ -15,13 +15,14 @@ public class VacanciesViewModel
     public string? addressLine4 { get; private set; }
     public string vacancyPostCode { get; private set;}
     public string courseTitle { get;  private set; }
-    public double wageAmount { get; private set;  }
+    public double? wageAmount { get; private set;  }
     public string advertClosing { get; private set; }
     public string postedDate { get; private set; }
     public string wageType { get; private set; }
     public string placeName { get; private set; }
     public double? distance { get; private set; }
     public int? daysUntilClosing { get; private set; }
+    public string wage { get; private set; }
 
 
 
@@ -48,7 +49,8 @@ public class VacanciesViewModel
                         vacancies.address?.addressLine2 ??
                         vacancies.address?.addressLine1 ?? string.Empty,
             distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
-            daysUntilClosing = CalculateDaysUntilClosing(vacancies.closingDate)
+            daysUntilClosing = CalculateDaysUntilClosing(vacancies.closingDate),
+            wage = GetWage(vacancies.wage.wageType, vacancies.wage.wageAmount)
 
         };
     }
@@ -74,6 +76,22 @@ public class VacanciesViewModel
     {
         return date.HasValue ? date.Value.ToString("dd MMMM") : null;
 
+    }
+
+    private static string GetWage(string wageType, double? wageAmount)
+    {
+        switch (wageType)
+        {
+            case "Custom":
+                return wageAmount.HasValue ? wageAmount.Value.ToString("C") : "DefaultCurrency"; 
+
+            case "ApprenticeshipMinimum":
+                return "£10,158.72";
+
+            default:
+                 return "£10,982.40 to £21,673.60";
+
+        }
     }
 
 }
