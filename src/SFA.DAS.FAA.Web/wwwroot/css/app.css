@@ -35,12 +35,14 @@
   }
 }
 
-.faa-filter__header {
+.faa-filter__header,
+.faa-filter__body {
   padding: 15px;
 }
 
 @media (min-width: 40.0625em) {
-  .faa-filter__header {
+  .faa-filter__header,
+  .faa-filter__body {
     padding: 20px;
   }
 }
