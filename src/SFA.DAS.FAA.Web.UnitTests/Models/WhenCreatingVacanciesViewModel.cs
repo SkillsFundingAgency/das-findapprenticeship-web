@@ -99,7 +99,7 @@ public class WhenCreatingVacanciesViewModel
     }
 
     [Theory]
-    [MoqInlineAutoData("custom", (double)20400, "£20,400.00")]
+    [MoqInlineAutoData("Custom", (double)20400, "£20,400.00")]
     [MoqInlineAutoData("ApprenticeshipMinimum", null, "£10,158.72")]
     [MoqInlineAutoData("NationalMinimum", null, "£10,982.40 to £21,673.60")]
 

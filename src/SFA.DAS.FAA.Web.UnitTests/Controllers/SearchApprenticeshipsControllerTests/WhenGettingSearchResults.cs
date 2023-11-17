@@ -15,7 +15,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerT
 public class WhenGettingSearchResults
 {
     [Test, MoqAutoData]
-        string searchTerm,
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
         GetSearchResultsResult result,
         List<string>? routeIds,
