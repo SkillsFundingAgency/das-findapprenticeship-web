@@ -12,6 +12,7 @@ using Xunit;
 using TheoryAttribute = NUnit.Framework.TheoryAttribute;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Assert = NUnit.Framework.Assert;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 [TestFixture]
@@ -85,17 +86,18 @@ public class WhenCreatingVacanciesViewModel
     }
 
     [Test, MoqAutoData]
-    public async Task Then_Days_Until_Advert_Closes_Is_Shown_Correctly(Vacancies vacancies)
+    public async Task Then_Days_Until_Advert_Closes_Is_Shown_Correctly(VacanciesViewModel viewModel,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
     {
-        DateTime closingDate = new DateTime(2023, 11, 30);
-        int expected = 14;
+        DateTime comparisonDate = new DateTime(2023, 11, 16);
+        DateTime? closingDate = new DateTime(2023, 11, 30);
+        int? expected = 14;
 
-        vacancies.closingDate = closingDate;
-        var source = vacancies;
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(comparisonDate);
 
-        var actual = (VacanciesViewModel)source;
+        var actual = VacanciesViewModel.CalculateDaysUntilClosing(dateTimeService.Object, closingDate);
 
-        Assert.AreEqual(expected, actual.daysUntilClosing);
+        Assert.AreEqual(expected, actual);
     }
 
     [Theory]

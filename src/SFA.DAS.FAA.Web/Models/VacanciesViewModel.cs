@@ -1,10 +1,19 @@
 ﻿using Newtonsoft.Json;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.FAT.Web.Services;
 
 namespace SFA.DAS.FAA.Web.Models;
 
 public class VacanciesViewModel
 {
+    private readonly IDateTimeService dateTimeService;
+
+    public VacanciesViewModel(IDateTimeService dateTimeService)
+    {
+        this.dateTimeService = dateTimeService;
+    }
+
     public int vacancyReference { get; private set; }
     public string title { get; private set; }
 
@@ -29,7 +38,8 @@ public class VacanciesViewModel
 
     public static implicit operator VacanciesViewModel(Vacancies vacancies)
     {
-        return new VacanciesViewModel
+        IDateTimeService dateTimeService = new DateTimeService();
+        return new VacanciesViewModel (dateTimeService)
         {
             vacancyReference = vacancies.vacancyReference,
             title = vacancies.title,
@@ -49,17 +59,18 @@ public class VacanciesViewModel
                         vacancies.address?.addressLine2 ??
                         vacancies.address?.addressLine1 ?? string.Empty,
             distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
-            daysUntilClosing = CalculateDaysUntilClosing(vacancies.closingDate),
+            daysUntilClosing = CalculateDaysUntilClosing(dateTimeService, vacancies.closingDate),
             wage = GetWage(vacancies.wage.wageType, vacancies.wage.wageAmount)
 
         };
     }
 
-    private static int? CalculateDaysUntilClosing(DateTime? closingDate)
+    public static int? CalculateDaysUntilClosing(IDateTimeService dateTimeService, DateTime? closingDate)
     {
         if (closingDate.HasValue)
         {
-            TimeSpan timeUntilClosing = closingDate.Value.Date - DateTime.Now.Date;
+            DateTime currentDate = dateTimeService.GetDateTime();
+            TimeSpan timeUntilClosing = closingDate.Value.Date - currentDate;
             return (int)Math.Ceiling(timeUntilClosing.TotalDays);
         }
 
