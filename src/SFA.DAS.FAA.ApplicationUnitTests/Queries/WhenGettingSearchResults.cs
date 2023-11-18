@@ -1,4 +1,5 @@
 ﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
@@ -30,5 +31,7 @@ public class WhenGettingSearchResults
         // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedResponse.Total, result.Total);
+        result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
+        result.Location.Should().BeEquivalentTo(expectedResponse.Location);
     }
 }
