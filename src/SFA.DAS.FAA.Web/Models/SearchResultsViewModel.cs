@@ -9,7 +9,7 @@ public class SearchResultsViewModel : ViewModelBase
     public bool NationalSearch { get; set; }
     public string? Location { get; set; }
     public List<string>? SelectedRouteIds { get; set; }
-    public List<string>? SelectedRoutes { get; set; }
+    public List<string> SelectedRoutes { get; set; } = new List<string>();
     public List<RouteViewModel> Routes { get; set; }
     
     public string? WhatSearchTerm { get; set; }

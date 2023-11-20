@@ -17,7 +17,7 @@ public static class MockApiServer
     {
         var settings = new WireMockServerSettings
         {
-            Port = 5003,
+            Port = 5027,
             Logger = new WireMockConsoleLogger()
         };
 

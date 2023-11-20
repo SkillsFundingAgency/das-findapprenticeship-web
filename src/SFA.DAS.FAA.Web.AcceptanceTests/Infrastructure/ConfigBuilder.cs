@@ -17,7 +17,7 @@ public static class ConfigBuilder
                 new KeyValuePair<string, string>("EnvironmentName", "DEV"),
                 new KeyValuePair<string, string>("Version", "1.0"),
                 new KeyValuePair<string, string>("FindAnApprenticeship:BaseUrl", "https://localhost:7276"),
-                new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:BaseUrl", "http://localhost:5003"),
+                new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:BaseUrl", "http://localhost:5027"),
                 new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:Key", "")
             }
         };
