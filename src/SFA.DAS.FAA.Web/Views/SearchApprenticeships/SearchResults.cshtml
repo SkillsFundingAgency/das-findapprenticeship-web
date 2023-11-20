@@ -158,37 +158,40 @@
                 </div>
             </div>
     </div>
+    @if (Model.vacancies != null)
+    {
+     <div class="govuk-grid-column-two-thirds">
+                <hr class="govuk-section-break govuk-section-break--visible ">
+                <div class="das-search-results">
+                    <ol class="das-search-results__list">
+                        @foreach (var vacancy in Model.vacancies)
+                        {
+                            <li class="das-search-results__list-item">
+                                <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+                                    <a class="das-search-results__link" id="standard-274" href=#>
+                                        @vacancy.title
+                                    </a>
+                                </h2>
+                                <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.employerName</p>
+                                <p class="govuk-body govuk-hint">
+                                    @vacancy.placeName, @vacancy.vacancyPostCode
+                                </p>
+                                @if (Model.NationalSearch == false)
+                                {
+                                    <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.distance miles</p>
+                                }
+                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.courseTitle </p>
+                                <p class="govuk-body"><b>Annual wage</b> @vacancy.wage</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.daysUntilClosing days (@vacancy.advertClosing)</p>
+                                <p class="govuk-body govuk-!-font-size-16 govuk-hint">Posted @vacancy.postedDate
+                                </p>
+                            </li>
+                        }
+                    </ol>
+                </div>
 
-        <div class="govuk-grid-column-two-thirds">
-            <hr class="govuk-section-break govuk-section-break--visible ">
-            <div class="das-search-results">
-                <ol class="das-search-results__list">
-                    @foreach (var vacancy in Model.vacancies)
-                    {
-                        <li class="das-search-results__list-item">
-                            <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-                                <a class="das-search-results__link" id="standard-274" href=#>
-                                    @vacancy.title
-                                </a>
-                            </h2>
-                            <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.employerName</p>
-                            <p class="govuk-body govuk-hint">
-                                @vacancy.placeName, @vacancy.vacancyPostCode
-                            </p>
-                            @if (Model.NationalSearch == false)
-                            {
-                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.distance miles</p>
-                            }
-                            <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.courseTitle </p>
-                            <p class="govuk-body"><b>Annual wage</b> @vacancy.wage</p>
-                            <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.daysUntilClosing days (@vacancy.advertClosing)</p>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-hint">Posted @vacancy.postedDate
-                            </p>
-                        </li>
-                    }
-                </ol>
             </div>
-
-        </div>
+    }
+       
     </div>
 

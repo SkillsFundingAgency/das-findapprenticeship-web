@@ -116,7 +116,7 @@ public class SearchApprenticeshipsController : Controller
         viewmodel.NationalSearch = (location == null);
         viewmodel.Location = location;
         viewmodel.Distance = distance;
-        viewmodel.vacancies = result.Vacancies.Select(c => (VacanciesViewModel)c).OrderBy(v => v.distance).ThenByDescending(v => v.advertClosing)
+        viewmodel.vacancies = result.Vacancies?.Select(c => (VacanciesViewModel)c).OrderBy(v => v?.distance).ThenByDescending(v => v?.advertClosing)
             .ToList();
         
 
