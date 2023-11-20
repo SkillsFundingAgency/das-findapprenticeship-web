@@ -16,180 +16,179 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-        <div style="border: 1px solid #B1B4B6; padding: 20px;">
         <div class="faa-filter">
-            <div class="faa-filter__header">
-                <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
-            </div>
-            <div class="faa-filter__selected">
-                <div class="faa-filter__selected-header">
-                    <h3 class="govuk-heading-m faa-filter__selected-heading">Selected filters</h3>
-                    <a href="#" class="faa-filter__selected-action govuk-link govuk-link--no-visited-state">Clear <span
-                            class="govuk-visually-hidden">the selected filters</span></a>
+                <div class="faa-filter__header">
+                    <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
                 </div>
-                <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Where</h4>
-                <a class="faa-filter__tag" href="#">Sheffield (within 2 miles)</a>
-                <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Job category</h4>
-                <a class="faa-filter__tag" href="#">Agriculture, environmental and animal care</a>
-                <a class="faa-filter__tag" href="#">Business and administration</a>
-                <a class="faa-filter__tag" href="#">Digital</a>
-                <a class="faa-filter__tag" href="#">Digital</a>
-            </div>
-            <div class="faa-filter__body">
-
-                <div class="govuk-form-group">
-                    <label for="what" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
-                    <p class="govuk-hint">Enter a job or company</p>
-                    <input name="what" type="text" class="govuk-input" id="what" />
+                <div class="faa-filter__selected">
+                    <div class="faa-filter__selected-header">
+                        <h3 class="govuk-heading-m faa-filter__selected-heading">Selected filters</h3>
+                        <a href="#" class="faa-filter__selected-action govuk-link govuk-link--no-visited-state">Clear <span
+                                                                                                                          class="govuk-visually-hidden">the selected filters</span></a>
+                    </div>
+                    <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Where</h4>
+                    <a class="faa-filter__tag" href="#">Sheffield (within 2 miles)</a>
+                    <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Job category</h4>
+                    <a class="faa-filter__tag" href="#">Agriculture, environmental and animal care</a>
+                    <a class="faa-filter__tag" href="#">Business and administration</a>
+                    <a class="faa-filter__tag" href="#">Digital</a>
+                    <a class="faa-filter__tag" href="#">Digital</a>
                 </div>
+                <div class="faa-filter__body">
 
-                <div class="govuk-form-group">
-                    <label for="where" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
-                    <p class="govuk-hint">Enter a city or postcode</p>
-                    <input name="where" type="text" class="govuk-input" id="where" />
-                    <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
-                    <select class="govuk-select" id="within" name="within">
-                        <option value="2">2 miles</option>
-                        <option value="5">5 miles</option>
-                        <option value="10">10 miles</option>
-                        <option value="15">15 miles</option>
-                        <option value="20">20 miles</option>
-                        <option value="30">30 miles</option>
-                        <option value="40">40 miles</option>
-                        <option value="all">Across England</option>
-                    </select>
-                </div>
+                    <div class="govuk-form-group">
+                        <label for="what" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
+                        <p class="govuk-hint">Enter a job or company</p>
+                        <input name="what" type="text" class="govuk-input" id="what" />
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <label for="where" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
+                        <p class="govuk-hint">Enter a city or postcode</p>
+                        <input name="where" type="text" class="govuk-input" id="where" />
+                        <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
+                        <select class="govuk-select" id="within" name="within">
+                            <option value="2">2 miles</option>
+                            <option value="5">5 miles</option>
+                            <option value="10">10 miles</option>
+                            <option value="15">15 miles</option>
+                            <option value="20">20 miles</option>
+                            <option value="30">30 miles</option>
+                            <option value="40">40 miles</option>
+                            <option value="all">Across England</option>
+                        </select>
+                    </div>
 
 
-                <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
+                    <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
 
-                    <div class="govuk-accordion__section">
-                        <div class="govuk-accordion__section-header">
-                            <h2 class="govuk-accordion__section-heading">
-                                <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-level">
-                                    Apprenticeship level
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
-                            aria-labelledby="apprenticeship-filters-level">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-visually-hidden">Apprenticeship level</legend>
-                                <p class="govuk-hint">Select the level you want to apply for</p>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="level-2" name="levels"
-                                            type="checkbox" value="2" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="level-2">
-                                            Level 2
-                                        </label>
-                                        <div class="govuk-hint govuk-checkboxes__hint">
-                                            Equal to GCSEs
+                        <div class="govuk-accordion__section">
+                            <div class="govuk-accordion__section-header">
+                                <h2 class="govuk-accordion__section-heading">
+                                    <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-level">
+                                        Apprenticeship level
+                                    </span>
+                                </h2>
+                            </div>
+                            <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
+                                 aria-labelledby="apprenticeship-filters-level">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-visually-hidden">Apprenticeship level</legend>
+                                    <p class="govuk-hint">Select the level you want to apply for</p>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" id="level-2" name="levels"
+                                                   type="checkbox" value="2" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="level-2">
+                                                Level 2
+                                            </label>
+                                            <div class="govuk-hint govuk-checkboxes__hint">
+                                                Equal to GCSEs
+                                            </div>
+                                        </div>
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" id="level-3" name="levels"
+                                                   type="checkbox" value="3" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="level-3">
+                                                Level 3
+                                            </label>
+                                            <div class="govuk-hint govuk-checkboxes__hint">
+                                                Equal to A-levels
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="level-3" name="levels"
-                                            type="checkbox" value="3" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="level-3">
-                                            Level 3
-                                        </label>
-                                        <div class="govuk-hint govuk-checkboxes__hint">
-                                            Equal to A-levels
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="govuk-accordion__section">
+                            <div class="govuk-accordion__section-header">
+                                <h2 class="govuk-accordion__section-heading">
+                                    <span class="govuk-accordion__section-button"
+                                          id="apprenticeship-filters-heading-categories">
+                                        Job categories
+                                    </span>
+                                </h2>
+                            </div>
+                            <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
+                                 aria-labelledby="govuk-accordion__section-content">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-visually-hidden">Job categories</legend>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" id="cat1" name="categories"
+                                                   type="checkbox" value="1" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="cat1">
+                                                Agriculture, environmental and animal care
+                                            </label>
+                                        </div>
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" id="cat2" name="categories"
+                                                   type="checkbox" value="2" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="cat2">
+                                                Business and administration
+                                            </label>
                                         </div>
                                     </div>
-                                </div>
-                            </fieldset>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident</h2>
+                        <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
+                        <div class="govuk-checkboxes govuk-checkboxes--small">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="onlyshow" name="disability" type="checkbox"
+                                       value="yes" />
+                                <label class="govuk-label govuk-checkboxes__label" for="disability">
+                                    Only show Disability Confident employers
+                                </label>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="govuk-accordion__section">
-                        <div class="govuk-accordion__section-header">
-                            <h2 class="govuk-accordion__section-heading">
-                                <span class="govuk-accordion__section-button"
-                                    id="apprenticeship-filters-heading-categories">
-                                    Job categories
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
-                            aria-labelledby="govuk-accordion__section-content">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-visually-hidden">Job categories</legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="cat1" name="categories"
-                                            type="checkbox" value="1" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="cat1">
-                                            Agriculture, environmental and animal care
-                                        </label>
-                                    </div>
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="cat2" name="categories"
-                                            type="checkbox" value="2" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="cat2">
-                                            Business and administration
-                                        </label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
+
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
+
+                    <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
 
                 </div>
-
-                <div class="govuk-form-group">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident</h2>
-                    <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
-                    <div class="govuk-checkboxes govuk-checkboxes--small">
-                        <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="onlyshow" name="disability" type="checkbox"
-                                value="yes" />
-                            <label class="govuk-label govuk-checkboxes__label" for="disability">
-                                Only show Disability Confident employers
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-
-                <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
-
-                <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
-
             </div>
+    </div>
+
+        <div class="govuk-grid-column-two-thirds">
+            <hr class="govuk-section-break govuk-section-break--visible ">
+            <div class="das-search-results">
+                <ol class="das-search-results__list">
+                    @foreach (var vacancy in Model.vacancies)
+                    {
+                        <li class="das-search-results__list-item">
+                            <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+                                <a class="das-search-results__link" id="standard-274" href=#>
+                                    @vacancy.title
+                                </a>
+                            </h2>
+                            <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.employerName</p>
+                            <p class="govuk-body govuk-hint">
+                                @vacancy.placeName, @vacancy.vacancyPostCode
+                            </p>
+                            @if (Model.NationalSearch == false)
+                            {
+                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.distance miles</p>
+                            }
+                            <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.courseTitle </p>
+                            <p class="govuk-body"><b>Annual wage</b> @vacancy.wage</p>
+                            <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.daysUntilClosing days (@vacancy.advertClosing)</p>
+                            <p class="govuk-body govuk-!-font-size-16 govuk-hint">Posted @vacancy.postedDate
+                            </p>
+                        </li>
+                    }
+                </ol>
+            </div>
+
         </div>
     </div>
 
-
-    <div class="govuk-grid-column-two-thirds">
-        <hr class="govuk-section-break govuk-section-break--visible ">
-        <div class="das-search-results">
-            <ol class="das-search-results__list">
-                @foreach (var vacancy in Model.vacancies)
-                {
-                    <li class="das-search-results__list-item">
-                        <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-                            <a class="das-search-results__link" id="standard-274" href=#>
-                                @vacancy.title
-                            </a>
-                        </h2>
-                        <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.employerName</p>
-                        <p class="govuk-body govuk-hint">
-                            @vacancy.placeName, @vacancy.vacancyPostCode
-                        </p>
-                        @if (Model.NationalSearch == false)
-                        {
-                            <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.distance miles</p>
-                        }
-                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.courseTitle </p>
-                        <p class="govuk-body"><b>Annual wage</b> @vacancy.wage</p>
-                        <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.daysUntilClosing days (@vacancy.advertClosing)</p>
-                        <p class="govuk-body govuk-!-font-size-16 govuk-hint">Posted @vacancy.postedDate
-                        </p>
-                    </li>
-                }
-            </ol>
-        </div>
-
-    </div>
-</div>
