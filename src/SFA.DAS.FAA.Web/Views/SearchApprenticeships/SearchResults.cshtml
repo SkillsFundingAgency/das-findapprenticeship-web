@@ -26,7 +26,7 @@
                             class="govuk-visually-hidden">the selected filters</span></a>
                 </div>
                 <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Where</h4>
-                <a class="faa-filter__tag" href="#">Sheffield (within 2 miles)</a>
+                <a class="faa-filter__tag" href="#">@Model.Location @(Model.Distance == null ? "" : $"(within {Model.Distance} miles)")</a>
                 <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Job category</h4>
                 @foreach (var selectedRoute in Model.SelectedRoutes!)
                 {
@@ -47,14 +47,14 @@
                     <input name="where" type="text" class="govuk-input" id="where" value="@Model.Location" />
                     <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
                     <select class="govuk-select" id="within" name="within">
-                        <option value="2">2 miles</option>
-                        <option value="5">5 miles</option>
-                        <option value="10">10 miles</option>
-                        <option value="15">15 miles</option>
-                        <option value="20">20 miles</option>
-                        <option value="30">30 miles</option>
-                        <option value="40">40 miles</option>
-                        <option value="all">Across England</option>
+                        <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
+                        <option value="5" selected="@(Model.Distance == 5)" >5 miles</option>
+                        <option value="10" selected="@(Model.Distance == 10)" >10 miles</option>
+                        <option value="15" selected="@(Model.Distance == 15)" >15 miles</option>
+                        <option value="20" selected="@(Model.Distance == 20)" >20 miles</option>
+                        <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
+                        <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
+                        <option value="all" selected="@(Model.Distance == null)">Across England</option>
                     </select>
                 </div>
 
