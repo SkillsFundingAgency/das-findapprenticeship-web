@@ -9,23 +9,27 @@ public class SearchResultsViewModel : ViewModelBase
     public bool NationalSearch { get; set; }
     public string? Location { get; set; }
     public List<string>? SelectedRouteIds { get; set; }
+    public List<string>? SelectedRoutes { get; set; }
+    public List<RouteViewModel> Routes { get; set; }
     
     public string? WhatSearchTerm { get; set; }
     public int Total { get; set; }
     public string TotalMessage  =>$"{(Total == 0 ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
     public int? Distance { get; set; }
 
-    public SearchResultsViewModel(int total)
-    {
-        Total = total;
-    }
-
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
-        return new SearchResultsViewModel(source.Total);
+        return new SearchResultsViewModel
+        {
+            Total = source.Total,
+            Routes = source.Routes.Select(c=>(RouteViewModel)c).ToList(),
+            Location = source.Location?.LocationName
+        };
     }
     
     public Dictionary<string, string> RouteData { get => GetRouteData(); }
+    
+
     private Dictionary<string, string> GetRouteData()
     {
         var result = new Dictionary<string, string>();

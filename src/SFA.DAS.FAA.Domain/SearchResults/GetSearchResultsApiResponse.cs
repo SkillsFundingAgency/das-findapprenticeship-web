@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SFA.DAS.FAA.Domain.BrowseByInterests;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
@@ -10,7 +11,7 @@ public class GetSearchResultsApiResponse
     public Location? Location { get; set; }
 
     [JsonProperty("routes")]
-    public List<Route> Routes { get; set; }
+    public List<RouteResponse> Routes { get; set; }
 }
 
 public class Location
@@ -23,13 +24,4 @@ public class Location
 
     [JsonProperty("locationName")]
     public string LocationName { get; set; }
-}
-
-public partial class Route
-{
-    [JsonProperty("name")]
-    public string Name { get; set; }
-
-    [JsonProperty("id")]
-    public long Id { get; set; }
 }

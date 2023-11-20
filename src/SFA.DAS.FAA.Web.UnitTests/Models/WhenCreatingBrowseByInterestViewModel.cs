@@ -26,7 +26,7 @@ public class WhenCreatingBrowseByInterestViewModel
 
         for (int i = 0; i < routeList.Count; i++)
         {
-            Assert.AreEqual(routeList[i], actual.Routes[i].Route);
+            Assert.AreEqual(routeList[i], actual.Routes[i].Name);
         }
     }
 
@@ -50,7 +50,7 @@ public class WhenCreatingBrowseByInterestViewModel
             new RouteViewModel
             {
                 Id = routeId,
-                Route = route
+                Name = route
             }
         };
         
@@ -89,7 +89,7 @@ public class WhenCreatingBrowseByInterestViewModel
             new RouteViewModel
             {
                 Id = routeId,
-                Route = route
+                Name = route
             }
         };
 
@@ -113,16 +113,16 @@ public class WhenCreatingBrowseByInterestViewModel
         // Arrange
         var viewModel = new BrowseByInterestViewModel
         {
-            Routes = new List<BrowseByInterestViewModel.RouteViewModel>
+            Routes = new List<RouteViewModel>
             {
-                new RouteViewModel { Id = 2, Route = "Business Administration" },
-                new RouteViewModel { Id = 14, Route = "Sales and Marketing" },
-                new RouteViewModel { Id = 12, Route = "Legal, Finance, Accounting" }
+                new RouteViewModel { Id = 2, Name = "Business Administration" },
+                new RouteViewModel { Id = 14, Name = "Sales and Marketing" },
+                new RouteViewModel { Id = 12, Name = "Legal, Finance, Accounting" }
             }
         };
 
         // Act
-        viewModel.AllocateRouteGroup();
+        viewModel.AllocateRouteGroup();                     
 
         // Assert
         Assert.IsTrue(viewModel.BusinessSalesAndLegalDictionary.ContainsKey("2"));

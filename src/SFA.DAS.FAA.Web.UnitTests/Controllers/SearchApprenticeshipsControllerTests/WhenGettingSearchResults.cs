@@ -14,29 +14,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerT
 public class WhenGettingSearchResults
 {
     [Test, MoqAutoData]
-    public async Task Then_TheViewModelRoutesAndLocationAreSet_AndViewReturned(
-        List<string>? routeIds,
-        string? location,
-        int distance,
-        string searchTerm,
-        [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
-    {
-        // Act
-        var result = await controller.SearchResults(routeIds, location, distance,searchTerm);
-
-        // Assert
-        result.Should().BeAssignableTo<ViewResult>();
-        var viewResult = result as ViewResult;
-        viewResult.Should().NotBeNull();
-        viewResult.Model.Should().BeAssignableTo<SearchResultsViewModel>();
-
-        var viewModel = viewResult.Model as SearchResultsViewModel;
-        viewModel.SelectedRouteIds.Should().Equal(routeIds);
-        viewModel.Location.Should().BeEquivalentTo(location);
-        viewModel.Distance.Should().Be(distance);
-    }
-
-    [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
         GetSearchResultsResult result,
         List<string>? routeIds,

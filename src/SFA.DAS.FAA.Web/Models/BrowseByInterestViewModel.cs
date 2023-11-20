@@ -29,20 +29,10 @@ public class BrowseByInterestViewModel : ViewModelBase
     {
         return new BrowseByInterestViewModel()
         {
-            Routes = source.Routes.Select(r => new RouteViewModel
-            {
-                Selected = false,
-                Route = r.Name,
-                Id = r.Id
-            }).ToList()
+            Routes = source.Routes.Select(r => (RouteViewModel)r).ToList()
         };
     }
-    public class RouteViewModel
-    {
-        public bool Selected { get; set; }
-        public string Route { get; set; } = null!;
-        public int Id { get; set; }
-    }
+    
 
     public class RouteObject
     {
@@ -63,8 +53,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var agriculture = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Farmer, horticulture, vet and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -75,8 +65,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var businessAdministration = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Administrator, project manager, human resources and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -87,7 +77,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var salesMarkerting = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
+                        RouteName = route.Name,
                         DisplayText = "Sales and marketing",
                         HintText = "Sales manager, digital marketer and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
@@ -99,8 +89,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var legalFinanceAccounting = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Financial advisor, payroll assistant, solicitor and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -111,8 +101,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var hairBeauty = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Hairdresser, barber, holistic therapist and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -123,8 +113,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var careServices = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Social worker, play therapist, adult carer and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -135,8 +125,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var healthScience = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Ambulance worker, sports coach, clinical scientist and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -147,8 +137,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var cateringHospitality = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Chef, baker, hospitality team member and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -159,8 +149,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var construction = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Bricklayer, smart home technician, architect and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -171,8 +161,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var engineeringManufacturing = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Autocare technician, welder, rail engineer and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -183,8 +173,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var creativeDesign = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Music technologist, camera technician, graphic designer and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -195,8 +185,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var digital = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Cyber security officer, software engineer, data scientist and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
@@ -207,7 +197,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var education = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
+                        RouteName = route.Name,
                         DisplayText = "Education and early years",
                         HintText = "Teaching assistant, early years educator and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
@@ -219,7 +209,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var protectiveServices = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
+                        RouteName = route.Name,
                         DisplayText = "Protective services (emergency and uniformed services)",
                         HintText = "Security, firefighter, coastguard and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
@@ -231,8 +221,8 @@ public class BrowseByInterestViewModel : ViewModelBase
                     var transportLogistics = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
-                        RouteName = route.Route,
-                        DisplayText = route.Route,
+                        RouteName = route.Name,
+                        DisplayText = route.Name,
                         HintText = "Aviation ground handler, train driver, fleet manager and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
