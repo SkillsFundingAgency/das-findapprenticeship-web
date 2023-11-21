@@ -19,10 +19,6 @@ public class SearchResultsViewModel : ViewModelBase
 
     public List<VacanciesViewModel> vacancies { get; set; }
     
-    public SearchResultsViewModel(int total)
-    {
-        Total = total;
-    }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
