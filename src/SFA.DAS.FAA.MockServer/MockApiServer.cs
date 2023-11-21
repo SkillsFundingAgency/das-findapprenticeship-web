@@ -17,7 +17,7 @@ public static class MockApiServer
     {
         var settings = new WireMockServerSettings
         {
-            Port = 5003,
+            Port = 5027,
             Logger = new WireMockConsoleLogger()
         };
 
@@ -73,8 +73,7 @@ public static class MockApiServer
             .RespondWith(Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
-                .WithBody("{\n \"totalApprenticeshipCount\": 0 \n}")
-            );
+                .WithBodyFromFile("search-apprenticeships-no-results.json")); 
 
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults"))
                 .UsingGet())
@@ -82,7 +81,7 @@ public static class MockApiServer
                 Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("vacancies.json")); 
+                    .WithBodyFromFile("search-apprenticeships-results.json")); 
 
         return server;
     }

@@ -28,7 +28,10 @@
     <Content Include="routes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="vacancies.json">
+    <Content Include="search-apprenticeships-results.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="search-apprenticeships-no-results.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

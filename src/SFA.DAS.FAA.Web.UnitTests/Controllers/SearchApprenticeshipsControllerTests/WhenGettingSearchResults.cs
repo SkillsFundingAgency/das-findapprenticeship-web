@@ -24,6 +24,8 @@ public class WhenGettingSearchResults
         [Frozen] Mock<IMediator> mediator,
         [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
     {
+        routeIds = new List<string> { result.Routes.First().Id.ToString() };
+        
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c=>
                 c.SearchTerm!.Equals(searchTerm)
                 && c.Distance!.Equals(distance)
@@ -42,6 +44,11 @@ public class WhenGettingSearchResults
         actualModel.Distance.Should().Be(distance);
         actualModel.vacancies.Should().NotBeNullOrEmpty();
 
+        actualModel.SelectedRoutes.Should()
+            .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name).ToList());
+        actualModel.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First()).Selected.Should().BeTrue();
+        actualModel.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
+            .TrueForAll(x => x).Should().BeFalse();
     }
 
 }

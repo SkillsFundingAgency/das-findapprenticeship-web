@@ -19,7 +19,10 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
         return new GetSearchResultsResult
         {
             Total = response.Total,
+            Location = response.Location,
             Vacancies = response.Vacancies
+            Routes = response.Routes
+            
         };
     }
 }

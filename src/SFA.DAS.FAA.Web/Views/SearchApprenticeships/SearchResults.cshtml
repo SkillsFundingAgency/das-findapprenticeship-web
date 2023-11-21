@@ -29,10 +29,10 @@
                     <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Where</h4>
                     <a class="faa-filter__tag" href="#">Sheffield (within 2 miles)</a>
                     <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Job category</h4>
-                    <a class="faa-filter__tag" href="#">Agriculture, environmental and animal care</a>
-                    <a class="faa-filter__tag" href="#">Business and administration</a>
-                    <a class="faa-filter__tag" href="#">Digital</a>
-                    <a class="faa-filter__tag" href="#">Digital</a>
+                @foreach (var selectedRoute in Model.SelectedRoutes!)
+                {
+                    <a class="faa-filter__tag" href="#">@selectedRoute</a>    
+                }
                 </div>
                 <div class="faa-filter__body">
 
@@ -45,17 +45,17 @@
                     <div class="govuk-form-group">
                         <label for="where" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
                         <p class="govuk-hint">Enter a city or postcode</p>
-                        <input name="where" type="text" class="govuk-input" id="where" />
+                    <input name="where" type="text" class="govuk-input" id="where" value="@Model.Location" />
                         <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
                         <select class="govuk-select" id="within" name="within">
-                            <option value="2">2 miles</option>
-                            <option value="5">5 miles</option>
-                            <option value="10">10 miles</option>
-                            <option value="15">15 miles</option>
-                            <option value="20">20 miles</option>
-                            <option value="30">30 miles</option>
-                            <option value="40">40 miles</option>
-                            <option value="all">Across England</option>
+                        <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
+                        <option value="5" selected="@(Model.Distance == 5)" >5 miles</option>
+                        <option value="10" selected="@(Model.Distance == 10)" >10 miles</option>
+                        <option value="15" selected="@(Model.Distance == 15)" >15 miles</option>
+                        <option value="20" selected="@(Model.Distance == 20)" >20 miles</option>
+                        <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
+                        <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
+                        <option value="all" selected="@(Model.Distance == null)">Across England</option>
                         </select>
                     </div>
 
@@ -115,20 +115,16 @@
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-visually-hidden">Job categories</legend>
                                     <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    @foreach (var route in Model.Routes)
+                                    {
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="cat1" name="categories"
-                                                   type="checkbox" value="1" />
-                                            <label class="govuk-label govuk-checkboxes__label" for="cat1">
-                                                Agriculture, environmental and animal care
+                                            <input class="govuk-checkboxes__input" id="@($"cat@{route.Id}")" name="categories"
+                                                   type="checkbox" value="@route.Id" checked="@route.Selected"/>
+                                            <label class="govuk-label govuk-checkboxes__label" for="@($"cat@{route.Id}")">
+                                                @route.Name
                                             </label>
                                         </div>
-                                        <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="cat2" name="categories"
-                                                   type="checkbox" value="2" />
-                                            <label class="govuk-label govuk-checkboxes__label" for="cat2">
-                                                Business and administration
-                                            </label>
-                                        </div>
+                                    }
                                     </div>
                                 </fieldset>
                             </div>
