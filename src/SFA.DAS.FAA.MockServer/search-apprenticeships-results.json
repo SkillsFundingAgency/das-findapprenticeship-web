@@ -1,5 +1,4 @@
 {
-  "vacancies": [
   "location": {
     "lat": 52.629399,
     "lon": -1.12505,
@@ -67,6 +66,8 @@
       "name": "Transport and logistics"
     }
   ],
+    "vacancies":
+    [
     {
       "closingDate": "2023-12-15T00:00:00Z",
       "description": "We’d love to hear from you if you’re passionate about caring for children and contributing to their learning and development. Don’t worry if you don’t feel as if you have hit all the points mentioned below – remember everyone has to start somewhere and we’d love to support you in your development here at Bright Horizons as an apprentice.",
