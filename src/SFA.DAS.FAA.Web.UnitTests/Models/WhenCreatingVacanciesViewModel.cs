@@ -25,12 +25,12 @@ public class WhenCreatingVacanciesViewModel
         DateTime closingDate = new DateTime(2023, 11, 16) ;
         string expectedClosingDate = "Thursday 16 November";
 
-        vacancies.closingDate = closingDate;
+        vacancies.ClosingDate = closingDate;
         var source = vacancies;
 
         var actual = (VacanciesViewModel)source;
 
-        Assert.AreEqual(expectedClosingDate, actual.advertClosing);
+        Assert.AreEqual(expectedClosingDate, actual.AdvertClosing);
     }
 
     [Test, MoqAutoData]
@@ -40,12 +40,12 @@ public class WhenCreatingVacanciesViewModel
         DateTime postedDate = new DateTime(2023, 11, 16);
         string expectedPostedDate = "16 November";
 
-        vacancies.postedDate = postedDate;
+        vacancies.PostedDate = postedDate;
         var source = vacancies;
 
         var actual = (VacanciesViewModel)source;
 
-        Assert.AreEqual(expectedPostedDate, actual.postedDate);
+        Assert.AreEqual(expectedPostedDate, actual.PostedDate);
     }
 
     [Theory]
@@ -58,16 +58,16 @@ public class WhenCreatingVacanciesViewModel
         [Frozen] Vacancies vacancies
     )
     {
-        vacancies.address.addressLine1 = addressLine1;
-        vacancies.address.addressLine2 = addressLine2;
-        vacancies.address.addressLine3 = addressLine3;
-        vacancies.address.addressLine4 = addressLine4;
+        vacancies.Address.AddressLine1 = addressLine1;
+        vacancies.Address.AddressLine2 = addressLine2;
+        vacancies.Address.AddressLine3 = addressLine3;
+        vacancies.Address.AddressLine4 = addressLine4;
 
         var source = vacancies;
         var actual = (VacanciesViewModel)source;
 
 
-        Assert.AreEqual(expected, actual.placeName);
+        Assert.AreEqual(expected, actual.VacancyLocation);
     }
 
     [Test, MoqAutoData]
@@ -77,12 +77,12 @@ public class WhenCreatingVacanciesViewModel
         double distance = 10.87546346;
         double expectedDistance = 10.9;
 
-        vacancies.distance = distance;
+        vacancies.Distance = distance;
         var source = vacancies;
 
         var actual = (VacanciesViewModel)source;
 
-        Assert.AreEqual(expectedDistance, actual.distance);
+        Assert.AreEqual(expectedDistance, actual.Distance);
     }
 
     [Test, MoqAutoData]
@@ -109,14 +109,14 @@ public class WhenCreatingVacanciesViewModel
         [Frozen] Vacancies vacancies
     )
     {
-        vacancies.wage.wageType = wageType;
-        vacancies.wage.wageAmount = wageAmount;
+        vacancies.Wage.WageType = wageType;
+        vacancies.Wage.WageAmount = wageAmount;
 
 
         var source = vacancies;
         var actual = (VacanciesViewModel)source;
 
-            Assert.AreEqual(expected, actual.wage);
+            Assert.AreEqual(expected, actual.Wage);
 
     }
 }

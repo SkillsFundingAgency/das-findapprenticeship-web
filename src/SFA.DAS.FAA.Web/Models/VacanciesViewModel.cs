@@ -14,24 +14,24 @@ public class VacanciesViewModel
         this.dateTimeService = dateTimeService;
     }
 
-    public int vacancyReference { get; private set; }
-    public string title { get; private set; }
+    public int VacancyReference { get; private set; }
+    public string Title { get; private set; }
 
-    public string employerName { get; private set; }
-    public string addressLine1 { get; private set; }
-    public string? addressLine2 { get; private set; }
-    public string addressLine3 { get; private set; }
-    public string? addressLine4 { get; private set; }
-    public string vacancyPostCode { get; private set;}
-    public string courseTitle { get;  private set; }
-    public double? wageAmount { get; private set;  }
-    public string advertClosing { get; private set; }
-    public string postedDate { get; private set; }
-    public string wageType { get; private set; }
-    public string placeName { get; private set; }
-    public double? distance { get; private set; }
-    public int? daysUntilClosing { get; private set; }
-    public string wage { get; private set; }
+    public string EmployerName { get; private set; }
+    public string AddressLine1 { get; private set; }
+    public string? AddressLine2 { get; private set; }
+    public string AddressLine3 { get; private set; }
+    public string? AddressLine4 { get; private set; }
+    public string VacancyPostCode { get; private set;}
+    public string CourseTitle { get;  private set; }
+    public double? WageAmount { get; private set;  }
+    public string AdvertClosing { get; private set; }
+    public string PostedDate { get; private set; }
+    public string WageType { get; private set; }
+    public string VacancyLocation { get; private set; }
+    public double? Distance { get; private set; }
+    public int? DaysUntilClosing { get; private set; }
+    public string Wage { get; private set; }
 
 
 
@@ -41,26 +41,26 @@ public class VacanciesViewModel
         IDateTimeService dateTimeService = new DateTimeService();
         return new VacanciesViewModel (dateTimeService)
         {
-            vacancyReference = vacancies.vacancyReference,
-            title = vacancies.title,
-            employerName = vacancies.employerName,
-            addressLine1 = vacancies.address.addressLine1,
-            addressLine2 = vacancies.address.addressLine2,
-            addressLine3 = vacancies.address.addressLine3,
-            addressLine4 = vacancies.address.addressLine4,
-            vacancyPostCode = vacancies.address.postcode,
-            courseTitle =  vacancies.course.title,
-            wageAmount = vacancies.wage.wageAmount,
-            advertClosing = FormatCloseDate(vacancies.closingDate),
-            postedDate = FormatPostDate(vacancies.postedDate),
-            wageType = vacancies.wage.wageType,
-            placeName = vacancies.address?.addressLine4 ??
-                        vacancies.address?.addressLine3 ??
-                        vacancies.address?.addressLine2 ??
-                        vacancies.address?.addressLine1 ?? string.Empty,
-            distance = vacancies.distance.HasValue ? Math.Round(vacancies.distance.Value, 1) : (double?)null,
-            daysUntilClosing = CalculateDaysUntilClosing(dateTimeService, vacancies.closingDate),
-            wage = GetWage(vacancies.wage.wageType, vacancies.wage.wageAmount)
+            VacancyReference = vacancies.VacancyReference,
+            Title = vacancies.Title,
+            EmployerName = vacancies.EmployerName,
+            AddressLine1 = vacancies.Address.AddressLine1,
+            AddressLine2 = vacancies.Address.AddressLine2,
+            AddressLine3 = vacancies.Address.AddressLine3,
+            AddressLine4 = vacancies.Address.AddressLine4,
+            VacancyPostCode = vacancies.Address.Postcode,
+            CourseTitle =  vacancies.Course.Title,
+            WageAmount = vacancies.Wage.WageAmount,
+            AdvertClosing = FormatCloseDate(vacancies.ClosingDate),
+            PostedDate = FormatPostDate(vacancies.PostedDate),
+            WageType = vacancies.Wage.WageType,
+            VacancyLocation = vacancies.Address?.AddressLine4 ??
+                        vacancies.Address?.AddressLine3 ??
+                        vacancies.Address?.AddressLine2 ??
+                        vacancies.Address?.AddressLine1 ?? string.Empty,
+            Distance = vacancies.Distance.HasValue ? Math.Round(vacancies.Distance.Value, 1) : (double?)null,
+            DaysUntilClosing = CalculateDaysUntilClosing(dateTimeService, vacancies.ClosingDate),
+            Wage = GetWage(vacancies.Wage.WageType, vacancies.Wage.WageAmount)
 
         };
     }

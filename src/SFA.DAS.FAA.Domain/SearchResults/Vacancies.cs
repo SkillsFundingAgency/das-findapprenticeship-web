@@ -6,48 +6,45 @@ namespace SFA.DAS.FAA.Domain.SearchResults;
 public class Vacancies
 {
     [JsonProperty("vacancyReference")] 
-    public int vacancyReference { get; set; }
+    public int VacancyReference { get; set; }
     [JsonProperty("title")] 
-    public string title { get; set; }
+    public string Title { get; set; }
     [JsonProperty("employerName")] 
-    public string employerName { get; set; }
+    public string EmployerName { get; set; }
     [JsonProperty("closingDate")] 
-    public DateTime closingDate { get; set; }
+    public DateTime ClosingDate { get; set; }
     [JsonProperty("postedDate")] 
-    public DateTime postedDate { get; set; }
+    public DateTime PostedDate { get; set; }
     [JsonProperty("distance")]
-    public double? distance { get; set; }
+    public double? Distance { get; set; }
     [JsonProperty("course")]
-    public Course course { get; set; }
+    public Course Course { get; set; }
     [JsonProperty("wage")]
-    public Wage wage { get; set; }
+    public Wage Wage { get; set; }
     [JsonProperty("address")]
-    public Address address { get; set; }
+    public Address Address { get; set; }
 
 }
 
 public class Course
 {
-    public int larsCode { get; set; }
-    public string title { get; set; }
-    public int level { get; set; }
-    public string route { get; set; }
+    public string Title { get; set; }
+    public int Level { get; set; }
+    public string Route { get; set; }
 }
 
 public class Wage
 {
-    public double? wageAmount { get; set; }
-    public string wageAdditionalInformation { get; set; }
-    public string wageType { get; set; }
-    public string workingWeekDescription { get; set; }
-    public string wageUnit { get; set; }
+    public double? WageAmount { get; set; }
+    public string WageType { get; set; }
+    public string WageUnit { get; set; }
 }
 
 public class Address
 {
-    public string addressLine1 { get; set; }
-    public string addressLine2 { get; set; }
-    public string addressLine3 { get; set; }
-    public string? addressLine4 { get; set; }
-    public string postcode { get; set; }
+    public string AddressLine1 { get; set; }
+    public string AddressLine2 { get; set; }
+    public string AddressLine3 { get; set; }
+    public string? AddressLine4 { get; set; }
+    public string Postcode { get; set; }
 }

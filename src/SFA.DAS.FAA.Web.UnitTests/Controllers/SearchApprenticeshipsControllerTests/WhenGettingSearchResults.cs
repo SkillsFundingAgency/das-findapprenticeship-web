@@ -42,7 +42,7 @@ public class WhenGettingSearchResults
         actualModel.SelectedRouteIds.Should().Equal(routeIds);
         actualModel.Location.Should().BeEquivalentTo(location);
         actualModel.Distance.Should().Be(distance);
-        actualModel.vacancies.Should().NotBeNullOrEmpty();
+        actualModel.Vacancies.Should().NotBeNullOrEmpty();
 
         actualModel.SelectedRoutes.Should()
             .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name).ToList());
