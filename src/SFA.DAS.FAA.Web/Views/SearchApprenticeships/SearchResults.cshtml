@@ -165,21 +165,21 @@
                             <li class="das-search-results__list-item">
                                 <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
                                     <a class="das-search-results__link" id="standard-274" href=#>
-                                        @vacancy.title
+                                        @vacancy.Title
                                     </a>
                                 </h2>
-                                <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.employerName</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
                                 <p class="govuk-body govuk-hint">
-                                    @vacancy.placeName, @vacancy.vacancyPostCode
+                                    @vacancy.VacancyLocation, @vacancy.VacancyPostCode
                                 </p>
                                 @if (Model.NationalSearch == false)
                                 {
-                                    <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.distance miles</p>
+                                    <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.Distance miles</p>
                                 }
-                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.courseTitle </p>
-                                <p class="govuk-body"><b>Annual wage</b> @vacancy.wage</p>
-                                <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.daysUntilClosing days (@vacancy.advertClosing)</p>
-                                <p class="govuk-body govuk-!-font-size-16 govuk-hint">Posted @vacancy.postedDate
+                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle </p>
+                                <p class="govuk-body"><b>Annual wage</b> @vacancy.Wage</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.DaysUntilClosing days (@vacancy.AdvertClosing)</p>
+                                <p class="govuk-body govuk-!-font-size-16 govuk-hint">Posted @vacancy.PostedDate
                                 </p>
                             </li>
                         }
