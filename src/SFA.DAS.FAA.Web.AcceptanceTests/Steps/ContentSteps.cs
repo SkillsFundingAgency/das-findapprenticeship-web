@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Web;
+using FluentAssertions;
 using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
 
@@ -14,17 +15,28 @@ public sealed class ContentSteps
         _context = context;
     }
 
-    [Then("the page content includes the following: (.*)")]
-    public async Task ThenThePageContentIncludesTheFollowing(string expectedContent)
+    [Then("the page content includes the following error: (.*)")]
+    public async Task ThenThePageContentIncludesTheFollowingError(string expectedContent)
     {
         var response = _context.Get<string>(ContextKeys.HttpResponseContent);
+        var decodedResponse = HttpUtility.HtmlDecode(response);
 
-        response.Should().Contain(expectedContent);
+        decodedResponse.Should().Contain(expectedContent);
+        decodedResponse.Should().Contain("There is a problem");
     }
+
     [Then("the page redirect content includes the following: (.*)")]
     public async Task ThenThePageRedirectContentIncludesTheFollowing(string expectedContent)
     {
         var response = _context.Get<string>(ContextKeys.HttpResponseRedirectContent);
+
+        response.Should().Contain(expectedContent);
+    }
+
+    [Then("the page content includes the following: (.*)")]
+    public async Task ThenThePageContentIncludesTheFollowing(string expectedContent)
+    {
+        var response = _context.Get<string>(ContextKeys.HttpResponseContent);
 
         response.Should().Contain(expectedContent);
     }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using MediatR;
@@ -6,6 +6,7 @@ using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
+using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -95,19 +96,33 @@ public class SearchApprenticeshipsController : Controller
             return View(model);
         }
 
-        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.SearchTerm : null });
+        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.SearchTerm : null, distance = model.Distance });
 
     }
 
     [Route("search-results", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location)
+    public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location, [FromQuery] int? distance, [FromQuery]string? searchTerm)
     {
-        var viewmodel = new SearchResultsViewModel
+        var result = await _mediator.Send(new GetSearchResultsQuery
         {
+            Location = location,
             SelectedRouteIds = routeIds,
-            NationalSearch = (location == null),
-            location = location
-        };
+            Distance = distance,
+            SearchTerm = searchTerm
+        });
+
+        var viewmodel = (SearchResultsViewModel)result;
+        viewmodel.SelectedRouteIds = routeIds;
+        viewmodel.NationalSearch = (location == null);
+        viewmodel.Location = location;
+        viewmodel.Distance = distance;
+        viewmodel.SelectedRoutes =
+            routeIds != null ? result.Routes.Where(c => routeIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
+
+        foreach (var route in viewmodel.Routes.Where(route => routeIds!.Contains(route.Id.ToString())))
+        {
+            route.Selected = true;
+        }
 
         return View(viewmodel);
     }

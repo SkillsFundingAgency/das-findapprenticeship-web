@@ -2,7 +2,7 @@
 
 using SFA.DAS.FAA.MockServer;
 
-Console.WriteLine("Mock Server starting on http://localhost:5003");
+Console.WriteLine("Mock Server starting on http://localhost:5027");
 
 MockApiServer.Start();
 

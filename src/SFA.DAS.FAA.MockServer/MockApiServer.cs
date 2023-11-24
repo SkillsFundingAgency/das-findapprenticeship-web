@@ -17,7 +17,7 @@ public static class MockApiServer
     {
         var settings = new WireMockServerSettings
         {
-            Port = 5003,
+            Port = 5027,
             Logger = new WireMockConsoleLogger()
         };
 
@@ -66,21 +66,33 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("browse-location-search.json"));
         
-        
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/geopoint"))
-        .UsingGet())
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults"))
+                .WithParam(MatchLocationParamManchester)
+                .UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("search-apprenticeships-no-results.json")); 
+
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults"))
+                .UsingGet())
             .RespondWith(
-            Response.Create()
-            .WithStatusCode(200)
-            .WithHeader("Content-Type", "application/json")
-            .WithBodyFromFile("geopoint.json"));
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("search-apprenticeships-results.json")); 
 
         return server;
     }
-    
+
     private static bool MatchLocationParamCoventry(IDictionary<string, WireMockList<string>> arg)
     {
         return arg.ContainsKey("locationSearchTerm") && arg["locationSearchTerm"].Count != 0 && arg["locationSearchTerm"][0].Equals("Coventry", StringComparison.CurrentCultureIgnoreCase);        
+    }
+
+    private static bool MatchLocationParamManchester(IDictionary<string, WireMockList<string>> arg)
+    {
+        return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Equals("Manchester", StringComparison.CurrentCultureIgnoreCase);
     }
 }
