@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                    <div class="govuk-form-group">
+                    <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                         <h1 class="govuk-label-wrapper">
                             <label class="govuk-label govuk-label--m" for="WhereSearchTerm">
                                 Where
