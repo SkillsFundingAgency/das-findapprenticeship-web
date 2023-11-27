@@ -34,7 +34,18 @@ public class SearchApprenticeshipsController : Controller
     [Route("", Name = RouteNames.ServiceStartDefault)]
     public async Task<IActionResult> Index(SearchApprenticeshipsViewModel model)
     {
+        var locationResult = await _mediator.Send(new GetIndexLocationQuery { LocationSearchTerm = model.WhereSearchTerm });
 
+        if (locationResult.Location == null)
+        {
+            ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+        }
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        return RedirectToRoute(RouteNames.SearchResults, new { location = model.WhereSearchTerm});
     }
 
 
