@@ -116,9 +116,11 @@ public class SearchApprenticeshipsController : Controller
         viewmodel.NationalSearch = (location == null);
         viewmodel.Location = location;
         viewmodel.Distance = distance;
+        viewmodel.Vacancies = result.Vacancies?.Select(c => (VacanciesViewModel)c).OrderBy(v => v?.Distance).ThenByDescending(v => v?.AdvertClosing)
+            .ToList();
         viewmodel.SelectedRoutes =
             routeIds != null ? result.Routes.Where(c => routeIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
-
+        
         foreach (var route in viewmodel.Routes.Where(route => routeIds!.Contains(route.Id.ToString())))
         {
             route.Selected = true;
