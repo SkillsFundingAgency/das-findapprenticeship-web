@@ -30,6 +30,15 @@ public class SearchApprenticeshipsController : Controller
         return View(viewModel);
     }
 
+    [HttpPost]
+    [Route("", Name = RouteNames.ServiceStartDefault)]
+    public async Task<IActionResult> Index(SearchApprenticeshipsViewModel model)
+    {
+
+    }
+
+
+
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
     public async Task<IActionResult> BrowseByInterests([FromQuery] List<string>? routeIds = null)
     {
@@ -82,7 +91,7 @@ public class SearchApprenticeshipsController : Controller
             }
             else
             {
-                var locationResult = await _mediator.Send(new GetBrowseByInterestsLocationQuery { LocationSearchTerm = model.SearchTerm });
+                var locationResult = await _mediator.Send(new GetBrowseByInterestsLocationQuery{ LocationSearchTerm = model.SearchTerm });
 
                 if (locationResult.Location == null)
                 {
