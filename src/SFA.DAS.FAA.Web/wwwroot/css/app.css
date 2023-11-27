@@ -20,6 +20,14 @@
   margin-top: -2px;
 }
 
+.autocomplete__wrapper {
+  max-width: 11.5em;
+}
+
+.page--faa-homepage .autocomplete__wrapper {
+  max-width: 100%;
+}
+
 /* Search results */
 
 .faa-filter {
