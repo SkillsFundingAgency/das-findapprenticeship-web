@@ -5,6 +5,7 @@ namespace SFA.DAS.FAA.Web.Models;
 public class SearchApprenticeshipsViewModel
 {
     public string? TotalText { get; set; }
+    public string? WhereSearchTerm { get; set; }
 
     public static implicit operator SearchApprenticeshipsViewModel(GetSearchApprenticeshipsIndexResult source)
     {

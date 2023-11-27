@@ -30,14 +30,15 @@
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div class="govuk-form-group">
                         <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--m" for="where">
+                            <label class="govuk-label govuk-label--m" for="WhereSearchTerm">
                                 Where
                             </label>
                         </h1>
                         <div id="where-hint" class="govuk-hint">
                             Enter a city or postcode
                         </div>
-                        <input class="govuk-input" id="where" name="where" type="text" aria-describedby="where-hint">
+                        <input class="govuk-input govuk-input--width-10 faa-location-autocomplete" asp-for="WhereSearchTerm" id="SearchTerm"
+                               type="search" spellcheck="false" autocomplete="postal-code">
                     </div>
                 </div>
             </div>
