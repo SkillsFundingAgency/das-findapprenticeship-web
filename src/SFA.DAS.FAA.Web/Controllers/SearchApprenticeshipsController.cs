@@ -49,7 +49,7 @@ public class SearchApprenticeshipsController : Controller
             return View(viewModel);
         }
 
-        return RedirectToRoute(RouteNames.SearchResults, new { location = model.WhereSearchTerm});
+        return RedirectToRoute(RouteNames.SearchResults, new { location = model.WhereSearchTerm, distance = model.Distance});
     }
 
 
