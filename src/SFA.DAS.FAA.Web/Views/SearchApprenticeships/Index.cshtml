@@ -21,11 +21,11 @@
 
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div class="govuk-form-group">
-                        <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--m" for="what">
-                                What
-                            </label>
-                        </h1>
+
+                        <label class="govuk-label govuk-label--m" for="what">
+                            What
+                        </label>
+
                         <div id="what-hint" class="govuk-hint">
                             Enter a job or company
                         </div>
@@ -33,24 +33,22 @@
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                    <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
-                        <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--m" for="WhereSearchTerm">
-                                Where
-                            </label>
-                        </h1>
+                    <div
+                        class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+
+                        <label class="govuk-label govuk-label--m" for="WhereSearchTerm">
+                            Where
+                        </label>
                         <div id="where-hint" class="govuk-hint">
                             Enter a city or postcode
                         </div>
-                        <input class="govuk-input govuk-input--width-10 faa-location-autocomplete" asp-for="WhereSearchTerm" id="SearchTerm"
-                               type="search" spellcheck="false" autocomplete="postal-code">
+                        <input class="govuk-input faa-location-autocomplete" asp-for="WhereSearchTerm" id="SearchTerm"
+                            type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
                     </div>
                 </div>
             </div>
             <div class="govuk-button-group govuk-!-margin-bottom-0" href="search-listing">
-                <div class="govuk-button-group">
-                    <button class="govuk-button" data-module="govuk-button">Search</button>
-                </div>
+                <button class="govuk-button" data-module="govuk-button">Search</button>
                 <a asp-route="@RouteNames.BrowseByInterests" class="govuk-link govuk-link--no-visited-state">Browse by
                     your interests instead</a>
             </div>

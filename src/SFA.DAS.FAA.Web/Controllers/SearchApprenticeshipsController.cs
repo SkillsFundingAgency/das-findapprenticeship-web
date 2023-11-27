@@ -46,7 +46,7 @@ public class SearchApprenticeshipsController : Controller
 
             var viewModel = (SearchApprenticeshipsViewModel)result;
 
-            return View(viewM);
+            return View(viewModel);
         }
 
         return RedirectToRoute(RouteNames.SearchResults, new { location = model.WhereSearchTerm});
