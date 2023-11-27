@@ -7,13 +7,18 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+
             <h1 class="govuk-heading-xl govuk-!-margin-bottom-3">Search apprenticeships</h1>
             <p class="govuk-hint govuk-!-font-size-24">@Model.TotalText</p>
         </div>
     </div>
+
     <div class="faa-home-panel">
+
         <form class="form" method="post">
             <div class="govuk-grid-row">
+
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div class="govuk-form-group">
                         <h1 class="govuk-label-wrapper">
