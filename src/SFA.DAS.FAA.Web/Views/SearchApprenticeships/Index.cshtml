@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="faa-home-panel">
-        <form class="form" action="search-listing" method="post">
+        <form class="form" method="post">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div class="govuk-form-group">
@@ -43,9 +43,9 @@
                 </div>
             </div>
             <div class="govuk-button-group govuk-!-margin-bottom-0" href="search-listing">
-                <a asp-route="@RouteNames.SearchResults" role="button" class="govuk-button" data-module="govuk-button">
-                    Search
-                </a>
+                <div class="govuk-button-group">
+                    <button class="govuk-button" data-module="govuk-button">Search</button>
+                </div>
                 <a asp-route="@RouteNames.BrowseByInterests" class="govuk-link govuk-link--no-visited-state">Browse by
                     your interests instead</a>
             </div>

@@ -12,5 +12,5 @@ public class IndexLocationApiRequest : IGetApiRequest
         _searchTerm = HttpUtility.UrlEncode(searchTerm);
     }
 
-    public string GetUrl => $"searchapprenticeships?locationSearchTerm={_searchTerm}";
+    public string GetUrl => $"searchapprenticeships/indexlocation?locationSearchTerm={_searchTerm}";
 }
