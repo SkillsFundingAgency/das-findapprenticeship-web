@@ -1,16 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+﻿using Moq;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
-using System.Globalization;
-using System.Net;
 using AutoFixture.NUnit3;
-using Xunit;
-using TheoryAttribute = NUnit.Framework.TheoryAttribute;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -49,10 +42,10 @@ public class WhenCreatingVacanciesViewModel
     }
 
     [Theory]
-    [MoqInlineAutoData("1","blablaLane","Morden", "London", "London")]
-    [MoqInlineAutoData("1", "blablaLane", "Morden", null, "Morden")]
-    [MoqInlineAutoData("1", "blablaLane",null,null, "blablaLane")]
-    [MoqInlineAutoData("1", null, null, null, "1")]
+    [InlineAutoData("1","blablaLane","Morden", "London", "London")]
+    [InlineAutoData("1", "blablaLane", "Morden", null, "Morden")]
+    [InlineAutoData("1", "blablaLane",null,null, "blablaLane")]
+    [InlineAutoData("1", null, null, null, "1")]
 
     public void Then_The_Address_Is_Shown_Correctly(string addressLine1, string? addressLine2, string? addressLine3, string? addressLine4, string expected,
         [Frozen] Vacancies vacancies
@@ -101,22 +94,22 @@ public class WhenCreatingVacanciesViewModel
     }
 
     [Theory]
-    [MoqInlineAutoData("Custom", (double)20400, "£20,400.00")]
-    [MoqInlineAutoData("ApprenticeshipMinimum", null, "£10,158.72")]
-    [MoqInlineAutoData("NationalMinimum", null, "£10,982.40 to £21,673.60")]
+    [InlineAutoData(4, (double)20400, "£20,400.00")]
+    [InlineAutoData(2, null, "£10,158.72")]
+    [InlineAutoData(3, null, "£10,982.40 to £21,673.60")]
 
-    public void Then_The_wage_Is_Shown_Correctly(string wageType,double? wageAmount, string expected,
+    public void Then_The_wage_Is_Shown_Correctly(int wageType,string wageAmount, string expected,
         [Frozen] Vacancies vacancies
     )
     {
-        vacancies.Wage.WageType = wageType;
-        vacancies.Wage.WageAmount = wageAmount;
+        vacancies.WageType = wageType;
+        vacancies.WageAmount = wageAmount;
 
 
         var source = vacancies;
         var actual = (VacanciesViewModel)source;
 
-            Assert.AreEqual(expected, actual.Wage);
+        Assert.AreEqual(expected, actual.Wage);
 
     }
 }

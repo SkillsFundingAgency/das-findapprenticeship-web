@@ -24,15 +24,16 @@ public class VacanciesViewModel
     public string? AddressLine4 { get; private set; }
     public string VacancyPostCode { get; private set;}
     public string CourseTitle { get;  private set; }
-    public double? WageAmount { get; private set;  }
+    public string WageAmount { get; private set;  }
     public string AdvertClosing { get; private set; }
     public string PostedDate { get; private set; }
-    public string WageType { get; private set; }
+    public int WageType { get; private set; }
     public string VacancyLocation { get; private set; }
     public double? Distance { get; private set; }
     public int? DaysUntilClosing { get; private set; }
     public string Wage { get; private set; }
-
+    public string ApprenticeshipLevel { get; private set; }
+    public int CourseId { get; set; }
 
 
 
@@ -93,16 +94,20 @@ public class VacanciesViewModel
     {
         switch (wageType)
         {
-            case "Custom":
+            //Custom
+            case "4":
                 return wageAmount.HasValue ? wageAmount.Value.ToString("C") : "DefaultCurrency"; 
 
-            case "ApprenticeshipMinimum":
+            //Apprenticeship Minimum
+            case "2":
                 return "£10,158.72";
 
+            //3, National Minimum
             default:
                  return "£10,982.40 to £21,673.60";
 
         }
     }
+
 
 }

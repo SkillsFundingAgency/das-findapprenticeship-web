@@ -1,50 +1,56 @@
-﻿using Newtonsoft.Json;
-using SFA.DAS.FAA.Domain.BrowseByInterestsLocation;
+﻿using System.Text.Json.Serialization;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
 public class Vacancies
 {
-    [JsonProperty("vacancyReference")] 
-    public int VacancyReference { get; set; }
-    [JsonProperty("title")] 
-    public string Title { get; set; }
-    [JsonProperty("employerName")] 
-    public string EmployerName { get; set; }
-    [JsonProperty("closingDate")] 
+    [JsonPropertyName("id")]
+    public long Id { get; set; }
+    
+    [JsonPropertyName("apprenticeshipLevel")]
+    public string ApprenticeshipLevel { get; set; }
+
+    [JsonPropertyName("closingDate")]
     public DateTime ClosingDate { get; set; }
-    [JsonProperty("postedDate")] 
+
+    [JsonPropertyName("employerName")]
+    public string EmployerName { get; set; }
+
+    [JsonPropertyName("postedDate")]
     public DateTime PostedDate { get; set; }
-    [JsonProperty("distance")]
-    public double? Distance { get; set; }
-    [JsonProperty("course")]
-    public Course Course { get; set; }
-    [JsonProperty("wage")]
-    public Wage Wage { get; set; }
-    [JsonProperty("address")]
+
+    [JsonPropertyName("title")]
+    public string Title { get; set; }
+
+    [JsonPropertyName("vacancyReference")]
+    public string VacancyReference { get; set; }
+
+    [JsonPropertyName("subCategory")]
+    public string CourseTitle { get; set; }
+    [JsonPropertyName("standardLarsCode")]
+    public int CourseId { get; set; }
+    [JsonPropertyName("wageText")]
+    public string WageAmount { get; set; }
+    [JsonPropertyName("wageType")]
+    public int WageType { get; set; }
+
+    [JsonPropertyName("address")]
     public Address Address { get; set; }
 
-}
-
-public class Course
-{
-    public string Title { get; set; }
-    public int Level { get; set; }
-    public string Route { get; set; }
-}
-
-public class Wage
-{
-    public double? WageAmount { get; set; }
-    public string WageType { get; set; }
-    public string WageUnit { get; set; }
+    [JsonPropertyName("distance")]
+    public decimal? Distance { get; set; }
 }
 
 public class Address
 {
+    [JsonPropertyName("addressLine1")]
     public string AddressLine1 { get; set; }
+    [JsonPropertyName("addressLine2")]
     public string AddressLine2 { get; set; }
+    [JsonPropertyName("addressLine3")]
     public string AddressLine3 { get; set; }
-    public string? AddressLine4 { get; set; }
+    [JsonPropertyName("addressLine4")]
+    public string AddressLine4 { get; set; }
+    [JsonPropertyName("postcode")]
     public string Postcode { get; set; }
 }

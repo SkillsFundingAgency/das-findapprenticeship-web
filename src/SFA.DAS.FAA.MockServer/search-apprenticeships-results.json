@@ -1,570 +1,261 @@
 {
-  "location": {
-    "lat": 52.629399,
-    "lon": -1.12505,
-    "locationName": "Leicester, Leicestershire"
-  },
+  "location": [
+    {
+      "lat": 52.629399,
+      "lon": -1.12505,
+      "locationName": "Leicester, Leicestershire"
+    }
+  ],
+
+  "totalApprenticeshipCount": 339,
   "routes": [
     {
-      "id": 1,
-      "name": "Agriculture, environmental and animal care"
+      "name": "Agriculture, environmental and animal care",
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "Business and administration"
+      "name": "Business and administration",
+      "id": 2
     },
     {
-      "id": 3,
-      "name": "Care services"
+      "name": "Care services",
+      "id": 3
     },
     {
-      "id": 4,
-      "name": "Catering and hospitality"
+      "name": "Catering and hospitality",
+      "id": 4
     },
     {
-      "id": 5,
-      "name": "Construction and the built environment"
+      "name": "Construction and the built environment",
+      "id": 5
     },
     {
-      "id": 6,
-      "name": "Creative and design"
+      "name": "Creative and design",
+      "id": 6
     },
     {
-      "id": 7,
-      "name": "Digital"
+      "name": "Digital",
+      "id": 7
     },
     {
-      "id": 8,
-      "name": "Education and childcare"
+      "name": "Education and early years",
+      "id": 8
     },
     {
-      "id": 9,
-      "name": "Engineering and manufacturing"
+      "name": "Engineering and manufacturing",
+      "id": 9
     },
     {
-      "id": 10,
-      "name": "Hair and beauty"
+      "name": "Hair and beauty",
+      "id": 10
     },
     {
-      "id": 11,
-      "name": "Health and science"
+      "name": "Health and science",
+      "id": 11
     },
     {
-      "id": 12,
-      "name": "Legal, finance and accounting"
+      "name": "Legal, finance and accounting",
+      "id": 12
     },
     {
-      "id": 13,
-      "name": "Protective services"
+      "name": "Protective services",
+      "id": 13
     },
     {
-      "id": 14,
-      "name": "Sales, marketing and procurement"
+      "name": "Sales, marketing and procurement",
+      "id": 14
     },
     {
-      "id": 15,
-      "name": "Transport and logistics"
+      "name": "Transport and logistics",
+      "id": 15
     }
   ],
-    "vacancies":
-    [
+  "vacancies": [
     {
-      "closingDate": "2023-12-15T00:00:00Z",
-      "description": "We’d love to hear from you if you’re passionate about caring for children and contributing to their learning and development. Don’t worry if you don’t feel as if you have hit all the points mentioned below – remember everyone has to start somewhere and we’d love to support you in your development here at Bright Horizons as an apprentice.",
-      "employerName": "BRIGHT HORIZONS FAMILY SOLUTIONS LIMITED",
-      "hoursPerWeek": 40.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-11-16T09:11:43.55Z",
-      "providerName": "BABCOCK SKILLS DEVELOPMENT AND TRAINING LIMITED",
-      "startDate": "2024-01-02T00:00:00Z",
-      "title": "Childcare Apprenticeship",
-      "ukprn": 10037348,
-      "vacancyReference": "1000212594",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000212594",
-      "course": {
-        "larsCode": 430,
-        "title": "Early years educator (level 3)",
-        "level": 3,
-        "route": "Education and early years"
-      },
-      "wage": {
-        "wageAmount": 23321.0,
-        "wageAdditionalInformation": "£23,321.00",
-        "wageType": "Custom",
-        "workingWeekDescription": "Monday to Friday. Shift patterns vary between 7.30am and 6.00pm.",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 51.427683,
-        "lon": -0.431268
-      },
-      "address": {
-        "addressLine1": "Chertsey Road",
-        "addressLine3": "Sunbury-On-Thames",
-        "postcode": "TW16 7LN"
-      },
-      "employerWebsiteUrl": "https://www.brighthorizons.co.uk/",
-      "apprenticeshipLevel": "Advanced",
-      "expectedDuration": "18 Months"
+      "id": 1000012741,
+      "closingDate": "2024-01-31T00:00:00Z",
+      "employerName": "COSTCO WHOLESALE UK LIMITED",
+      "postedDate": "2023-11-28T13:27:11.014Z",
+      "title": "BInjKbWbuv_28Nov2023_13152458439 apprenticeship",
+      "vacancyReference": "1000012741",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£10,982.40 to £21,673.60",
+      "wageType": 3,
+      "addressLine1": "213",
+      "addressLine2": "Hartspring Lane",
+      "addressLine3": "Uk Home Office",
+      "addressLine4": "Watford",
+      "postCode": "WD25 8JS",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2023-12-06T00:00:00Z",
-      "description": "The HR Apprentice will provide a professional and confidential administration, data analysis and data integrity service. Supporting the HR/Payroll Team, the HR Apprentice will take an organised and proactive approach to assist in the achievements of HR KPIs and business objectives.",
-      "employerName": "FINHAM PARK MULTI-ACADEMY TRUST",
-      "hoursPerWeek": 37.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-11-15T16:35:04.641Z",
-      "providerName": "SCCU LTD",
-      "startDate": "2024-01-08T00:00:00Z",
-      "title": "Human Resources Apprentice",
-      "ukprn": 10036794,
-      "vacancyReference": "1000212609",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000212609",
-      "course": {
-        "larsCode": 191,
-        "title": "HR support (level 3)",
-        "level": 3,
-        "route": "Business and administration"
-      },
-      "wage": {
-        "wageAdditionalInformation": "£10,158.72",
-        "wageType": "ApprenticeshipMinimum",
-        "workingWeekDescription": "37 hours per week.\r\nAll Year Round with 28 days holiday entitlement.",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.397626,
-        "lon": -1.573551
-      },
-      "address": {
-        "addressLine1": "Torrington Avenue Coventry",
-        "postcode": "CV4 9WT"
-      },
-      "apprenticeshipLevel": "Advanced",
-      "expectedDuration": "21 Months"
+      "id": 1000012739,
+      "closingDate": "2024-01-31T00:00:00Z",
+      "employerName": "QwqlQxKKkP_EmployerName",
+      "postedDate": "2023-11-28T13:23:46.763Z",
+      "title": "lrLPXdrwcE_28Nov2023_13150153079 apprenticeship",
+      "vacancyReference": "1000012739",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£10,982.40 to £21,673.60",
+      "wageType": 3,
+      "addressLine1": "6th",
+      "addressLine2": "Floor",
+      "addressLine3": "32 Ludgate Hill",
+      "addressLine4": "London",
+      "postCode": "EC4M 7DR",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2023-11-23T00:00:00Z",
-      "description": "As Facilities Management Apprentice you will be part of the FM Operations team delivering key services to the corporate and housing portfolios. Whilst undertaking these duties you will be able to broaden your skills and knowledge of facilities management further by studying towards a nationally recognised IWFM qualification.",
-      "employerName": "Coventry City Council",
-      "hoursPerWeek": 37.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-11-09T16:33:39.775Z",
-      "providerName": "MERCURY TRAINING SERVICES LTD",
-      "startDate": "2024-01-15T00:00:00Z",
-      "title": "Facilities Management Apprentice",
-      "ukprn": 10023787,
-      "vacancyReference": "1000211047",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000211047",
-      "course": {
-        "larsCode": 440,
-        "title": "Facilities services operative (level 2)",
-        "level": 2,
-        "route": "Construction and the built environment"
-      },
-      "wage": {
-        "wageAmount": 14450.34,
-        "wageAdditionalInformation": "£14,450.34",
-        "wageType": "Custom",
-        "workingWeekDescription": "Monday to Friday 9am to 5pm",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.40709,
-        "lon": -1.507613
-      },
-      "address": {
-        "addressLine1": "Council House",
-        "addressLine2": "Earl Street",
-        "addressLine3": "Coventry",
-        "addressLine4": "West Midlands",
-        "postcode": "CV1 5RR"
-      },
-      "distance": 0.1408630975072499,
-      "employerContactPhone": "02476977102",
-      "employerContactName": "Zak Bhana",
-      "employerContactEmail": "zak.bhana@coventry.gov.uk",
-      "apprenticeshipLevel": "Intermediate",
-      "expectedDuration": "18 Months"
+      "id": 1000006993,
+      "closingDate": "2020-10-23T00:00:00Z",
+      "employerName": "ESFA LTD",
+      "postedDate": "2023-11-28T13:22:35.224Z",
+      "title": "urBSNfRUAS_20Aug2020_13062074962 apprenticeship",
+      "vacancyReference": "1000006993",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£9,464.00 to £18,137.60",
+      "wageType": 3,
+      "addressLine1": "43 Duke Street",
+      "addressLine2": "Edinburgh",
+      "postCode": "EH6 8HH",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2023-11-28T00:00:00Z",
-      "description": "An opportunity has arisen to become part of the team at this salon based in Coventry. We are a warm, friendly, professional service at Hair Lab. We are looking for a confident level 2 qualified hairdresser to join us for a level 3 Hairdressing Apprenticeship! Cleaning and tidying salon, greeting clients and working the reception, plus much more.",
-      "employerName": "Hair Lab",
-      "hoursPerWeek": 37.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-10-10T10:54:09.757Z",
-      "providerName": "HEART OF ENGLAND TRAINING LIMITED",
-      "startDate": "2023-11-30T00:00:00Z",
-      "title": "Level 3 Hairdressing Apprentice",
-      "ukprn": 10002976,
-      "vacancyReference": "1000204509",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000204509",
-      "course": {
-        "larsCode": 545,
-        "title": "Advanced and creative hair professional (level 3)",
-        "level": 3,
-        "route": "Hair and beauty"
-      },
-      "wage": {
-        "wageAdditionalInformation": "£10,158.72",
-        "wageType": "ApprenticeshipMinimum",
-        "workingWeekDescription": "You will be working 5 days between Monday - Saturday. Exact days and hours to be discussed at interview stage.",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.407638,
-        "lon": -1.514164
-      },
-      "address": {
-        "addressLine1": "1 Sherbourne Arcade, Lower Precinct",
-        "addressLine3": "Coventry",
-        "postcode": "CV1 1DN"
-      },
-      "distance": 0.15479676714576704,
-      "employerWebsiteUrl": "https://www.hairlabandbeautysalon.co.uk/",
-      "apprenticeshipLevel": "Advanced",
-      "expectedDuration": "12 Months"
+      "id": 1000012735,
+      "closingDate": "2024-01-31T00:00:00Z",
+      "employerName": "SPECIALIZED APPLIANCE SERVICE LTD",
+      "postedDate": "2023-11-28T13:17:31.019Z",
+      "title": "SygGvKpIPY_28Nov2023_13082928738 apprenticeship",
+      "vacancyReference": "1000012735",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£10,982.40 to £21,673.60",
+      "wageType": 3,
+      "addressLine1": "45",
+      "addressLine2": "Hill Top Road",
+      "addressLine3": "Grenoside",
+      "addressLine4": "Sheffield",
+      "postCode": "S35 8PE",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2023-12-18T00:00:00Z",
-      "description": "Are you looking to start your career in education? If so, we have the opportunity for you! At Positive Impact Academy we are looking for an enthusiastic teaching assistant apprentice to join our team! Apply Now!",
-      "employerName": "POSITIVE IMPACT GROUP LTD",
-      "hoursPerWeek": 37.5,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-11-14T12:23:05.601Z",
-      "providerName": "SCL EDUCATION & TRAINING LIMITED",
-      "startDate": "2024-01-02T00:00:00Z",
-      "title": "Teaching Assistant Apprenticeship",
-      "ukprn": 10043208,
-      "vacancyReference": "1000212149",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000212149",
-      "course": {
-        "larsCode": 297,
-        "title": "Teaching assistant (level 3)",
-        "level": 3,
-        "route": "Education and childcare"
-      },
-      "wage": {
-        "wageAdditionalInformation": "£10,296.00",
-        "wageType": "ApprenticeshipMinimum",
-        "workingWeekDescription": "Monday to Friday, shifts TBC.",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.412217,
-        "lon": -1.516936
-      },
-      "address": {
-        "addressLine1": "1 Mill Street",
-        "postcode": "CV1 4DF"
-      },
-      "distance": 0.39365222348840423,
-      "apprenticeshipLevel": "Advanced",
-      "expectedDuration": "18 Months"
+      "id": 1000012737,
+      "closingDate": "2024-01-31T00:00:00Z",
+      "employerName": "SPECIALIZED APPLIANCE SERVICE LTD",
+      "postedDate": "2023-11-28T13:17:29.625Z",
+      "title": "ZlvpXOaRXU_28Nov2023_13082962967 apprenticeship",
+      "vacancyReference": "1000012737",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£10,982.40 to £21,673.60",
+      "wageType": 3,
+      "addressLine1": "45",
+      "addressLine2": "Hill Top Road",
+      "addressLine3": "Grenoside",
+      "addressLine4": "Sheffield",
+      "postCode": "S35 8PE",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2023-11-30T00:00:00Z",
-      "description": "This is an exciting opportunity for an Accounts Apprentice to work in central Coventry at McGlone Wardzynski. The main aim of the role will be processing and supporting accounting routines whilst working towards an AAT qualification. This is an excellent opportunity for a smart and ambitious individual to join a friendly environment.",
-      "employerName": "MCGLONE WARDZYNSKI LIMITED",
-      "hoursPerWeek": 37.5,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-09-25T15:13:22.245Z",
-      "providerName": "COVENTRY AND WARWICKSHIRE CHAMBERS OF COMMERCE TRAINING LIMITED",
-      "startDate": "2023-12-01T00:00:00Z",
-      "title": "Accounts Apprentice",
-      "ukprn": 10001309,
-      "vacancyReference": "1000200999",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000200999",
-      "course": {
-        "larsCode": 488,
-        "title": "Accounts or finance assistant (level 2)",
-        "level": 2,
-        "route": "Legal, finance and accounting"
-      },
-      "wage": {
-        "wageAdditionalInformation": "£10,296.00",
-        "wageType": "ApprenticeshipMinimum",
-        "workingWeekDescription": "Monday to Friday 9am-5pm",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.404256,
-        "lon": -1.518513
-      },
-      "address": {
-        "addressLine1": "14 Queens Road",
-        "addressLine2": "Coventry",
-        "postcode": "CV1 3EG"
-      },
-      "distance": 0.425943460509654,
-      "employerWebsiteUrl": "https://www.mcglone-wardzynski.com/",
-      "apprenticeshipLevel": "Intermediate",
-      "expectedDuration": "12 Months"
+      "id": 1000012722,
+      "closingDate": "2024-01-31T00:00:00Z",
+      "employerName": "SPECIALIZED APPLIANCE SERVICE LTD",
+      "postedDate": "2023-11-28T08:49:31.043Z",
+      "title": "pXHnznargf_28Nov2023_08453384118 apprenticeship",
+      "vacancyReference": "1000012722",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£10,982.40 to £21,673.60",
+      "wageType": 3,
+      "addressLine1": "45",
+      "addressLine2": "Hill Top Road",
+      "addressLine3": "Grenoside",
+      "addressLine4": "Sheffield",
+      "postCode": "S35 8PE",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2023-11-29T00:00:00Z",
-      "description": "We have an exciting opportunity for an apprentice dental nurse to join our friendly dental practice. We would love you to join us as an apprentice dental nurse and start your exciting career in dental nursing. You'll be assisting other dental health professionals, providing chairside support and offering a high level of patient care.",
-      "employerName": "MR A S BHANDAL DENTAL SURGEON",
-      "hoursPerWeek": 40.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-07-17T07:42:11.256Z",
-      "providerName": "HARRIET ELLIS TRAINING SOLUTIONS LIMITED",
-      "startDate": "2023-11-30T00:00:00Z",
-      "title": "Dental Nurse Apprentice",
-      "ukprn": 10032857,
-      "vacancyReference": "1000183435",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000183435",
-      "course": {
-        "larsCode": 61,
-        "title": "Dental nurse (integrated) (level 3)",
-        "level": 3,
-        "route": "Health and science"
-      },
-      "wage": {
-        "wageAdditionalInformation": "£10,982.40",
-        "wageType": "ApprenticeshipMinimum",
-        "workingWeekDescription": "Monday - Friday 9.00am - 5.00pm",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.414814,
-        "lon": -1.514408
-      },
-      "address": {
-        "addressLine1": "1 LIGHT LANE",
-        "addressLine2": "COVENTRY",
-        "postcode": "CV1 4BQ"
-      },
-      "distance": 0.49435075476293927,
-      "apprenticeshipLevel": "Advanced",
-      "expectedDuration": "18 Months"
+      "id": 1000012718,
+      "closingDate": "2024-01-31T00:00:00Z",
+      "employerName": "eqxsGHfsvu_EmployerName",
+      "postedDate": "2023-11-28T08:44:20.844Z",
+      "title": "HgdVHCiRUA_28Nov2023_08383208180 apprenticeship",
+      "vacancyReference": "1000012718",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£10,982.40 to £21,673.60",
+      "wageType": 3,
+      "addressLine1": "6th",
+      "addressLine2": "Floor",
+      "addressLine3": "32 Ludgate Hill",
+      "addressLine4": "London",
+      "postCode": "EC4M 7DR",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2023-11-20T00:00:00Z",
-      "description": "This apprenticeship is a role within the Civil Service. To see full details of the apprenticeship click on ‘apply’ to go to the Civil Service Jobs website.",
-      "employerName": "DEPARTMENT FOR EDUCATION",
-      "hoursPerWeek": 37.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 2,
-      "postedDate": "2023-11-15T09:39:34.859Z",
-      "providerName": "To be confirmed",
-      "startDate": "2024-01-01T00:00:00Z",
-      "title": "Financial Operations Officer Apprenticeship",
-      "ukprn": 10033670,
-      "vacancyReference": "1000212302",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000212302",
-      "course": {
-        "larsCode": 196,
-        "title": "Business administrator (level 3)",
-        "level": 3,
-        "route": "Business and administration"
-      },
-      "wage": {
-        "wageAmount": 27790.0,
-        "wageAdditionalInformation": "£27,790.00",
-        "wageType": "Custom",
-        "workingWeekDescription": "Flexible working, Full-time, Job share, Part-time, Compressed Hours",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.400347,
-        "lon": -1.507885
-      },
-      "address": {
-        "addressLine1": "Cheylesmore House",
-        "addressLine2": "Quinton Road",
-        "addressLine3": "Coventry",
-        "postcode": "CV1 2WT"
-      },
-      "distance": 0.5444121062858046,
-      "apprenticeshipLevel": "Advanced",
-      "expectedDuration": "18 Months"
+      "id": 1000006990,
+      "closingDate": "2020-10-23T00:00:00Z",
+      "employerName": "ESFA LTD",
+      "postedDate": "2023-11-28T08:44:20.633Z",
+      "title": "BhIfpLukhY_20Aug2020_13014709033 apprenticeship",
+      "vacancyReference": "1000006990",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£9,464.00 to £18,137.60",
+      "wageType": 3,
+      "addressLine1": "43 Duke Street",
+      "addressLine2": "Edinburgh",
+      "postCode": "EH6 8HH",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2023-11-26T00:00:00Z",
-      "description": "This apprenticeship is a role within the Civil Service. To see full details of the apprenticeship click on ‘apply’ to go to the Civil Service Jobs website.",
-      "employerName": "DEPARTMENT FOR EDUCATION",
-      "hoursPerWeek": 37.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 6,
-      "postedDate": "2023-11-15T09:50:27.618Z",
-      "providerName": "To be confirmed",
-      "startDate": "2023-12-01T00:00:00Z",
-      "title": "Operational Delivery Officer - L3 Business Administrator Apprenticeship",
-      "ukprn": 10033670,
-      "vacancyReference": "1000212311",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000212311",
-      "course": {
-        "larsCode": 196,
-        "title": "Business administrator (level 3)",
-        "level": 3,
-        "route": "Business and administration"
-      },
-      "wage": {
-        "wageAmount": 27790.0,
-        "wageAdditionalInformation": "£27,790.00",
-        "wageType": "Custom",
-        "workingWeekDescription": "Click apply to see full details of the working week for this apprenticeship.",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.400347,
-        "lon": -1.507885
-      },
-      "address": {
-        "addressLine1": "Cheylesmore House",
-        "addressLine2": "Quinton Road",
-        "addressLine3": "Coventry",
-        "postcode": "CV1 2WT"
-      },
-      "distance": 0.5444121062858046,
-      "apprenticeshipLevel": "Advanced",
-      "expectedDuration": "12 Months"
+      "id": 1000012715,
+      "closingDate": "2024-01-31T00:00:00Z",
+      "employerName": "SPECIALIZED APPLIANCE SERVICE LTD",
+      "postedDate": "2023-11-28T08:43:47.862Z",
+      "title": "jTGviUSeUH_28Nov2023_08380867961 apprenticeship",
+      "vacancyReference": "1000012715",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£10,982.40 to £21,673.60",
+      "wageType": 3,
+      "addressLine1": "45",
+      "addressLine2": "Hill Top Road",
+      "addressLine3": "Grenoside",
+      "addressLine4": "Sheffield",
+      "postCode": "S35 8PE",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     },
     {
-      "closingDate": "2024-08-24T00:00:00Z",
-      "description": "This is a fabulous opportunity to earn while you learn and gain nationally recognised qualifications. MGTS has been developing Engineers of the future for over 50 years. We are looking for individuals that are looking to start their career in the world of Engineering.",
-      "employerName": "MIDLAND GROUP TRAINING SERVICES LTD",
-      "hoursPerWeek": 36.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 10,
-      "postedDate": "2023-11-08T12:26:39.639Z",
-      "providerName": "MIDLAND GROUP TRAINING SERVICES LIMITED",
-      "startDate": "2024-09-02T00:00:00Z",
-      "title": "Engineering Apprentice",
-      "ukprn": 10004355,
-      "vacancyReference": "1000209404",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000209404",
-      "course": {
-        "larsCode": 167,
-        "title": "Engineering technician (level 3)",
-        "level": 3,
-        "route": "Engineering and manufacturing"
-      },
-      "wage": {
-        "wageAmount": 13000.0,
-        "wageAdditionalInformation": "£13,000.00",
-        "wageType": "Custom",
-        "workingWeekDescription": "Monday - Thursday 8:00 - 16:00, Friday 8:00 - 12:30",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.405129,
-        "lon": -1.49667
-      },
-      "address": {
-        "addressLine1": "GULSON ROAD",
-        "addressLine2": "COVENTRY",
-        "postcode": "CV1 2JG"
-      },
-      "distance": 0.6192578432134863,
-      "employerWebsiteUrl": "https://www.mgts.co.uk/",
-      "apprenticeshipLevel": "Advanced",
-      "expectedDuration": "4 Years"
-    },
-    {
-      "closingDate": "2023-11-30T00:00:00Z",
-      "description": "A trade supplier apprentice is required for a leading electrical wholesaler. The candidate will start in the warehouse and learn all the products and the warehouse management and then move onto the sales counter and sales office. Fantastic career progression opportunity for the right candidate.",
-      "employerName": "EDA LEARNING AND DEVELOPMENT LIMITED",
-      "hoursPerWeek": 40.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-11-14T12:28:52.935Z",
-      "providerName": "LEARNING SKILLS PARTNERSHIP LTD",
-      "startDate": "2024-01-03T00:00:00Z",
-      "title": "Trade Supplier apprentice ( Coventry CV5)",
-      "ukprn": 10032740,
-      "vacancyReference": "1000212151",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000212151",
-      "course": {
-        "larsCode": 261,
-        "title": "Trade supplier (level 2)",
-        "level": 2,
-        "route": "Sales, marketing and procurement"
-      },
-      "wage": {
-        "wageAdditionalInformation": "£10,982.40 to £21,673.60",
-        "wageType": "NationalMinimum",
-        "workingWeekDescription": "Monday - Friday 8.00am - 5.00pm with a 1 hour lunch break.",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.406625,
-        "lon": -1.528213
-      },
-      "address": {
-        "addressLine1": "44 Shakleton Road",
-        "addressLine2": "Coventry",
-        "postcode": "CV5 6HU"
-      },
-      "distance": 0.7507841901386099,
-      "employerContactPhone": "07721239906",
-      "employerContactName": "Louise Sugars",
-      "employerContactEmail": "louise@edaapprenticeshipsplus.co.uk",
-      "apprenticeshipLevel": "Intermediate",
-      "expectedDuration": "18 Months"
-    },
-    {
-      "closingDate": "2023-12-15T00:00:00Z",
-      "description": "Looking for a career in early years? George Eliot are looking for an apprentice to join their experienced team. Based in Foleshill, the nursery focus on providing the best possible care and nurturing environment for all the children. Children have access to a range of materials such as sand, water and paints. Duties include caring for children 0-5.",
-      "employerName": "LITTLE BUNNIES CHILDCARE LIMITED",
-      "hoursPerWeek": 35.0,
-      "isDisabilityConfident": false,
-      "isNationalVacancy": false,
-      "numberOfPositions": 1,
-      "postedDate": "2023-11-10T11:58:58.796Z",
-      "providerName": "ASPIRATION TRAINING LIMITED",
-      "startDate": "2023-12-22T00:00:00Z",
-      "title": "Early Years Level 2 Apprenticeship - George Eliot Kindergarten",
-      "ukprn": 10000421,
-      "vacancyReference": "1000211300",
-      "vacancyUrl": "https://www.findapprenticeship.service.gov.uk/apprenticeship/reference/1000211300",
-      "course": {
-        "larsCode": 550,
-        "title": "Early years practitioner (level 2)",
-        "level": 2,
-        "route": "Education and early years"
-      },
-      "wage": {
-        "wageAdditionalInformation": "£9,609.60",
-        "wageType": "ApprenticeshipMinimum",
-        "workingWeekDescription": "Monday - Friday hours to be determined",
-        "wageUnit": "Annually"
-      },
-      "location": {
-        "lat": 52.419868,
-        "lon": -1.504045
-      },
-      "address": {
-        "addressLine1": "7 George Elliot Road",
-        "addressLine2": "Coventry",
-        "postcode": "CV1 4HT"
-      },
-      "distance": 0.8610232157686784,
-      "apprenticeshipLevel": "Intermediate",
-      "expectedDuration": "15 Months"
+      "id": 1000012713,
+      "closingDate": "2024-01-31T00:00:00Z",
+      "employerName": "UTuxQrsHtB_EmployerName",
+      "postedDate": "2023-11-28T08:37:36.631Z",
+      "title": "GVVdxXIEaG_28Nov2023_08310224488 apprenticeship",
+      "vacancyReference": "1000012713",
+      "courseTitle": "Abattoir worker",
+      "wageAmount": "£10,982.40 to £21,673.60",
+      "wageType": 3,
+      "addressLine1": "6th",
+      "addressLine2": "Floor",
+      "addressLine3": "32 Ludgate Hill",
+      "addressLine4": "London",
+      "postCode": "EC4M 7DR",
+      "courseLevel": 0,
+      "courseId": 274,
+      "apprenticeshipLevel": "1"
     }
-  ],
-  "total": 7649,
-  "totalFiltered": 394,
-  "totalPages": 40
+  ]
 }
