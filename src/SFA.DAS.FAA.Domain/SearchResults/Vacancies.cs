@@ -22,9 +22,6 @@ public class Vacancies
     [JsonPropertyName("title")]
     public string Title { get; set; }
 
-    [JsonPropertyName("vacancyReference")]
-    public string VacancyReference { get; set; }
-
     [JsonPropertyName("subCategory")]
     public string CourseTitle { get; set; }
     [JsonPropertyName("standardLarsCode")]
@@ -34,23 +31,25 @@ public class Vacancies
     [JsonPropertyName("wageType")]
     public int WageType { get; set; }
 
-    [JsonPropertyName("address")]
-    public Address Address { get; set; }
+    [JsonPropertyName("addressLine1")]
+    public string? AddressLine1 { get; set; }
+
+    [JsonPropertyName("addressLine2")]
+    public string? AddressLine2 { get; set; }
+
+    [JsonPropertyName("addressLine3")]
+    public string? AddressLine3 { get; set; }
+
+    [JsonPropertyName("addressLine4")]
+    public string? AddressLine4 { get; set; }
+
+    [JsonPropertyName("postcode")]
+    public string Postcode { get; set; }
 
     [JsonPropertyName("distance")]
     public decimal? Distance { get; set; }
+
+    [JsonPropertyName("courseLevel")]
+    public int CourseLevel { get; set; }
 }
 
-public class Address
-{
-    [JsonPropertyName("addressLine1")]
-    public string AddressLine1 { get; set; }
-    [JsonPropertyName("addressLine2")]
-    public string AddressLine2 { get; set; }
-    [JsonPropertyName("addressLine3")]
-    public string AddressLine3 { get; set; }
-    [JsonPropertyName("addressLine4")]
-    public string AddressLine4 { get; set; }
-    [JsonPropertyName("postcode")]
-    public string Postcode { get; set; }
-}

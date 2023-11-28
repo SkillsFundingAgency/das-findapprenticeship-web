@@ -51,10 +51,10 @@ public class WhenCreatingVacanciesViewModel
         [Frozen] Vacancies vacancies
     )
     {
-        vacancies.Address.AddressLine1 = addressLine1;
-        vacancies.Address.AddressLine2 = addressLine2;
-        vacancies.Address.AddressLine3 = addressLine3;
-        vacancies.Address.AddressLine4 = addressLine4;
+        vacancies.AddressLine1 = addressLine1;
+        vacancies.AddressLine2 = addressLine2;
+        vacancies.AddressLine3 = addressLine3;
+        vacancies.AddressLine4 = addressLine4;
 
         var source = vacancies;
         var actual = (VacanciesViewModel)source;
@@ -67,8 +67,8 @@ public class WhenCreatingVacanciesViewModel
     public async Task Then_The_Distance_Is_Shown_Correctly(Vacancies vacancies)
     {
 
-        double distance = 10.87546346;
-        double expectedDistance = 10.9;
+        decimal distance = 10.897366M;
+        decimal expectedDistance = 10.9M;
 
         vacancies.Distance = distance;
         var source = vacancies;
