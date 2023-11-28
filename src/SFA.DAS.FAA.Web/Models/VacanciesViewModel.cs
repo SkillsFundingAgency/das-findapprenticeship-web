@@ -7,13 +7,6 @@ namespace SFA.DAS.FAA.Web.Models;
 
 public class VacanciesViewModel
 {
-    private readonly IDateTimeService dateTimeService;
-
-    public VacanciesViewModel(IDateTimeService dateTimeService)
-    {
-        this.dateTimeService = dateTimeService;
-    }
-
     public string Title { get; private set; }
 
     public string EmployerName { get; private set; }
@@ -35,12 +28,9 @@ public class VacanciesViewModel
     public int CourseId { get; set; }
     public int CourseLevel { get; set; }
 
-
-
-    public static implicit operator VacanciesViewModel(Vacancies vacancies)
+    public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
-        IDateTimeService dateTimeService = new DateTimeService();
-        return new VacanciesViewModel (dateTimeService)
+        return new VacanciesViewModel(dateTimeService)
         {
             Title = vacancies.Title,
             EmployerName = vacancies.EmployerName,
@@ -49,15 +39,15 @@ public class VacanciesViewModel
             AddressLine3 = vacancies.AddressLine3,
             AddressLine4 = vacancies.AddressLine4,
             VacancyPostCode = vacancies.Postcode,
-            CourseTitle =  vacancies.CourseTitle,
+            CourseTitle = vacancies.CourseTitle,
             WageAmount = vacancies.WageAmount,
             AdvertClosing = FormatCloseDate(vacancies.ClosingDate),
             PostedDate = FormatPostDate(vacancies.PostedDate),
             WageType = vacancies.WageType,
             VacancyLocation = vacancies.AddressLine4 ??
-                        vacancies.AddressLine3 ??
-                        vacancies.AddressLine2 ??
-                        vacancies.AddressLine1 ?? string.Empty,
+                              vacancies.AddressLine3 ??
+                              vacancies.AddressLine2 ??
+                              vacancies.AddressLine1 ?? string.Empty,
             Distance = vacancies.Distance.HasValue ? Math.Round(vacancies.Distance.Value, 1) : null,
             DaysUntilClosing = CalculateDaysUntilClosing(dateTimeService, vacancies.ClosingDate),
             ApprenticeshipLevel = vacancies.ApprenticeshipLevel,
@@ -65,7 +55,6 @@ public class VacanciesViewModel
             CourseLevel = vacancies.CourseLevel
         };
     }
-
     public static int? CalculateDaysUntilClosing(IDateTimeService dateTimeService, DateTime? closingDate)
     {
         if (closingDate.HasValue)

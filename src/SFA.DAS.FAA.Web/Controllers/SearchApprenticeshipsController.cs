@@ -26,7 +26,7 @@ public class SearchApprenticeshipsController : Controller
         var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery());
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
-
+        
         return View(viewModel);
     }
 
