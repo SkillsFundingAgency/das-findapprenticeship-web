@@ -30,7 +30,7 @@ public class VacanciesViewModel
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
-        return new VacanciesViewModel(dateTimeService)
+        return new VacanciesViewModel
         {
             Title = vacancies.Title,
             EmployerName = vacancies.EmployerName,

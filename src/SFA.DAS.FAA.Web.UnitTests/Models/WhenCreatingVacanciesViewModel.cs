@@ -6,13 +6,13 @@ using AutoFixture.NUnit3;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.FAT.Web.Services;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
-[TestFixture]
 public class WhenCreatingVacanciesViewModel
 {
     [Test, MoqAutoData]
-    public async Task Then_The_Closing_Date_Is_Shown_Correctly(Vacancies vacancies)
+    public async Task Then_The_Closing_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
     {
 
         DateTime closingDate = new DateTime(2023, 11, 16) ;
@@ -21,13 +21,13 @@ public class WhenCreatingVacanciesViewModel
         vacancies.ClosingDate = closingDate;
         var source = vacancies;
 
-        var actual = (VacanciesViewModel)source;
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies); 
 
         Assert.AreEqual(expectedClosingDate, actual.AdvertClosing);
     }
 
     [Test, MoqAutoData]
-    public async Task Then_The_Posted_Date_Is_Shown_Correctly(Vacancies vacancies)
+    public async Task Then_The_Posted_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
 
         DateTime postedDate = new DateTime(2023, 11, 16);
@@ -36,19 +36,19 @@ public class WhenCreatingVacanciesViewModel
         vacancies.PostedDate = postedDate;
         var source = vacancies;
 
-        var actual = (VacanciesViewModel)source;
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
         Assert.AreEqual(expectedPostedDate, actual.PostedDate);
     }
 
-    [Theory]
-    [InlineAutoData("1","blablaLane","Morden", "London", "London")]
-    [InlineAutoData("1", "blablaLane", "Morden", null, "Morden")]
-    [InlineAutoData("1", "blablaLane",null,null, "blablaLane")]
-    [InlineAutoData("1", null, null, null, "1")]
+    [Test]
+    [MoqInlineAutoData("1","blablaLane","Morden", "London", "London")]
+    [MoqInlineAutoData("1", "blablaLane", "Morden", null, "Morden")]
+    [MoqInlineAutoData("1", "blablaLane",null,null, "blablaLane")]
+    [MoqInlineAutoData("1", null, null, null, "1")]
 
     public void Then_The_Address_Is_Shown_Correctly(string addressLine1, string? addressLine2, string? addressLine3, string? addressLine4, string expected,
-        [Frozen] Vacancies vacancies
+        Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService
     )
     {
         vacancies.AddressLine1 = addressLine1;
@@ -57,14 +57,14 @@ public class WhenCreatingVacanciesViewModel
         vacancies.AddressLine4 = addressLine4;
 
         var source = vacancies;
-        var actual = (VacanciesViewModel)source;
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
 
         Assert.AreEqual(expected, actual.VacancyLocation);
     }
 
     [Test, MoqAutoData]
-    public async Task Then_The_Distance_Is_Shown_Correctly(Vacancies vacancies)
+    public async Task Then_The_Distance_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
 
         decimal distance = 10.897366M;
@@ -73,7 +73,7 @@ public class WhenCreatingVacanciesViewModel
         vacancies.Distance = distance;
         var source = vacancies;
 
-        var actual = (VacanciesViewModel)source;
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
         Assert.AreEqual(expectedDistance, actual.Distance);
     }
@@ -93,13 +93,13 @@ public class WhenCreatingVacanciesViewModel
         Assert.AreEqual(expected, actual);
     }
 
-    [Theory]
-    [InlineAutoData(4, (double)20400, "£20,400.00")]
-    [InlineAutoData(2, null, "£10,158.72")]
-    [InlineAutoData(3, null, "£10,982.40 to £21,673.60")]
+    [Test]
+    [MoqInlineAutoData(4, (double)20400, "£20,400.00")]
+    [MoqInlineAutoData(2, null, "£10,158.72")]
+    [MoqInlineAutoData(3, null, "£10,982.40 to £21,673.60")]
 
     public void Then_The_wage_Is_Shown_Correctly(int wageType,string wageAmount, string expected,
-        [Frozen] Vacancies vacancies
+        Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService
     )
     {
         vacancies.WageType = wageType;
@@ -107,7 +107,7 @@ public class WhenCreatingVacanciesViewModel
 
 
         var source = vacancies;
-        var actual = (VacanciesViewModel)source;
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
         Assert.AreEqual(expected, actual.Wage);
 
