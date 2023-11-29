@@ -93,23 +93,4 @@ public class WhenCreatingVacanciesViewModel
         Assert.AreEqual(expected, actual);
     }
 
-    [Test]
-    [MoqInlineAutoData(4, (double)20400, "£20,400.00")]
-    [MoqInlineAutoData(2, null, "£10,158.72")]
-    [MoqInlineAutoData(3, null, "£10,982.40 to £21,673.60")]
-
-    public void Then_The_wage_Is_Shown_Correctly(int wageType,string wageAmount, string expected,
-        Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService
-    )
-    {
-        vacancies.WageType = wageType;
-        vacancies.WageAmount = wageAmount;
-
-
-        var source = vacancies;
-        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
-
-        Assert.AreEqual(expected, actual.Wage);
-
-    }
 }

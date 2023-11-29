@@ -119,7 +119,8 @@ public class SearchApprenticeshipsController : Controller
         viewmodel.NationalSearch = (location == null);
         viewmodel.Location = location;
         viewmodel.Distance = distance;
-        viewmodel.Vacancies = result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(_dateTimeService, c)).ToList() ;
+        viewmodel.Vacancies = result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(_dateTimeService, c))
+            .ToList();
         viewmodel.SelectedRoutes =
             routeIds != null ? result.Routes.Where(c => routeIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
         
