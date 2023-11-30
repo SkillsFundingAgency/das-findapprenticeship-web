@@ -6,7 +6,6 @@ using AutoFixture.NUnit3;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAT.Web.Services;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 public class WhenCreatingVacanciesViewModel
@@ -15,11 +14,10 @@ public class WhenCreatingVacanciesViewModel
     public async Task Then_The_Closing_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
     {
 
-        DateTime closingDate = new DateTime(2023, 11, 16) ;
-        string expectedClosingDate = "Thursday 16 November";
+        var closingDate = new DateTime(2023, 11, 16) ;
+        var expectedClosingDate = "Thursday 16 November";
 
         vacancies.ClosingDate = closingDate;
-        var source = vacancies;
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies); 
 
@@ -30,11 +28,10 @@ public class WhenCreatingVacanciesViewModel
     public async Task Then_The_Posted_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
 
-        DateTime postedDate = new DateTime(2023, 11, 16);
-        string expectedPostedDate = "16 November";
+        var postedDate = new DateTime(2023, 11, 16);
+        var expectedPostedDate = "16 November";
 
         vacancies.PostedDate = postedDate;
-        var source = vacancies;
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
@@ -56,7 +53,6 @@ public class WhenCreatingVacanciesViewModel
         vacancies.AddressLine3 = addressLine3;
         vacancies.AddressLine4 = addressLine4;
 
-        var source = vacancies;
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
 
@@ -67,11 +63,10 @@ public class WhenCreatingVacanciesViewModel
     public async Task Then_The_Distance_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
 
-        decimal distance = 10.897366M;
-        decimal expectedDistance = 10.9M;
+        var distance = 10.897366M;
+        var expectedDistance = 10.9M;
 
         vacancies.Distance = distance;
-        var source = vacancies;
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
@@ -82,9 +77,9 @@ public class WhenCreatingVacanciesViewModel
     public async Task Then_Days_Until_Advert_Closes_Is_Shown_Correctly(VacanciesViewModel viewModel,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
-        DateTime comparisonDate = new DateTime(2023, 11, 16);
-        DateTime? closingDate = new DateTime(2023, 11, 30);
-        int? expected = 14;
+        var comparisonDate = new DateTime(2023, 11, 16);
+        var closingDate = new DateTime(2023, 11, 30);
+        var expected = 14;
 
         dateTimeService.Setup(x => x.GetDateTime()).Returns(comparisonDate);
 
