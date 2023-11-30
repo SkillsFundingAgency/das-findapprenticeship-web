@@ -1,0 +1,18 @@
+﻿@model SFA.DAS.FAA.Web.Models.PaginationViewModel
+
+<span class="das-flex-space-around app-pagination-nav das-pagination-links">
+    @if (Model.LinkItems.Count > 1)
+    {
+        @foreach (var link in Model.LinkItems)
+        {
+            if (link.HasLink)
+            {
+                <a href="@link.Url" class="govuk-link govuk-body">@link.Text</a>
+            }
+            else
+            {
+                <span class="govuk-body">@link.Text</span>
+            }
+        }
+    }
+</span>
