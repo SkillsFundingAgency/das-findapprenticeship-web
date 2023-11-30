@@ -7,64 +7,54 @@ namespace SFA.DAS.FAA.Web.Models;
 
 public class VacanciesViewModel
 {
-    private readonly IDateTimeService dateTimeService;
-
-    public VacanciesViewModel(IDateTimeService dateTimeService)
-    {
-        this.dateTimeService = dateTimeService;
-    }
-
-    public int VacancyReference { get; private set; }
     public string Title { get; private set; }
 
     public string EmployerName { get; private set; }
-    public string AddressLine1 { get; private set; }
+    public string? AddressLine1 { get; private set; }
     public string? AddressLine2 { get; private set; }
-    public string AddressLine3 { get; private set; }
+    public string? AddressLine3 { get; private set; }
     public string? AddressLine4 { get; private set; }
     public string VacancyPostCode { get; private set;}
     public string CourseTitle { get;  private set; }
-    public double? WageAmount { get; private set;  }
+    public string WageAmount { get; private set;  }
     public string AdvertClosing { get; private set; }
     public string PostedDate { get; private set; }
-    public string WageType { get; private set; }
+    public int WageType { get; private set; }
     public string VacancyLocation { get; private set; }
-    public double? Distance { get; private set; }
+    public decimal? Distance { get; private set; }
     public int? DaysUntilClosing { get; private set; }
-    public string Wage { get; private set; }
+    public string ApprenticeshipLevel { get; private set; }
+    public int CourseId { get; set; }
+    public int CourseLevel { get; set; }
 
-
-
-
-    public static implicit operator VacanciesViewModel(Vacancies vacancies)
+    public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
-        IDateTimeService dateTimeService = new DateTimeService();
-        return new VacanciesViewModel (dateTimeService)
+        return new VacanciesViewModel
         {
-            VacancyReference = vacancies.VacancyReference,
             Title = vacancies.Title,
             EmployerName = vacancies.EmployerName,
-            AddressLine1 = vacancies.Address.AddressLine1,
-            AddressLine2 = vacancies.Address.AddressLine2,
-            AddressLine3 = vacancies.Address.AddressLine3,
-            AddressLine4 = vacancies.Address.AddressLine4,
-            VacancyPostCode = vacancies.Address.Postcode,
-            CourseTitle =  vacancies.Course.Title,
-            WageAmount = vacancies.Wage.WageAmount,
+            AddressLine1 = vacancies.AddressLine1,
+            AddressLine2 = vacancies.AddressLine2,
+            AddressLine3 = vacancies.AddressLine3,
+            AddressLine4 = vacancies.AddressLine4,
+            VacancyPostCode = vacancies.Postcode,
+            CourseTitle = vacancies.CourseTitle,
+            WageAmount = vacancies.WageAmount,
             AdvertClosing = FormatCloseDate(vacancies.ClosingDate),
             PostedDate = FormatPostDate(vacancies.PostedDate),
-            WageType = vacancies.Wage.WageType,
-            VacancyLocation = vacancies.Address?.AddressLine4 ??
-                        vacancies.Address?.AddressLine3 ??
-                        vacancies.Address?.AddressLine2 ??
-                        vacancies.Address?.AddressLine1 ?? string.Empty,
-            Distance = vacancies.Distance.HasValue ? Math.Round(vacancies.Distance.Value, 1) : (double?)null,
+            WageType = vacancies.WageType,
+            VacancyLocation = !string.IsNullOrEmpty(vacancies.AddressLine4) ? vacancies.AddressLine4 :
+                !string.IsNullOrEmpty(vacancies.AddressLine3) ? vacancies.AddressLine3 :
+                !string.IsNullOrEmpty(vacancies.AddressLine2) ? vacancies.AddressLine2 :
+                !string.IsNullOrEmpty(vacancies.AddressLine1) ? vacancies.AddressLine1 :
+                string.Empty,
+            Distance = vacancies.Distance.HasValue ? Math.Round(vacancies.Distance.Value, 1) : null,
             DaysUntilClosing = CalculateDaysUntilClosing(dateTimeService, vacancies.ClosingDate),
-            Wage = GetWage(vacancies.Wage.WageType, vacancies.Wage.WageAmount)
-
+            ApprenticeshipLevel = vacancies.ApprenticeshipLevel,
+            CourseId = vacancies.CourseId,
+            CourseLevel = vacancies.CourseLevel
         };
     }
-
     public static int? CalculateDaysUntilClosing(IDateTimeService dateTimeService, DateTime? closingDate)
     {
         if (closingDate.HasValue)
@@ -87,22 +77,6 @@ public class VacanciesViewModel
     {
         return date.HasValue ? date.Value.ToString("dd MMMM") : null;
 
-    }
-
-    private static string GetWage(string wageType, double? wageAmount)
-    {
-        switch (wageType)
-        {
-            case "Custom":
-                return wageAmount.HasValue ? wageAmount.Value.ToString("C") : "DefaultCurrency"; 
-
-            case "ApprenticeshipMinimum":
-                return "£10,158.72";
-
-            default:
-                 return "£10,982.40 to £21,673.60";
-
-        }
     }
 
 }
