@@ -1,6 +1,4 @@
-using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
-using System.Reflection.Emit;
 
 namespace SFA.DAS.FAA.Web.Models;
 

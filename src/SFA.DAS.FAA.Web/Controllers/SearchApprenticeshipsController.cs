@@ -7,16 +7,19 @@ using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
 public class SearchApprenticeshipsController : Controller
 {
     private readonly IMediator _mediator;
+    private readonly IDateTimeService _dateTimeService;
 
-    public SearchApprenticeshipsController(IMediator mediator)
+    public SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService)
     {
         _mediator = mediator;
+        _dateTimeService = dateTimeService;
     }
 
 
@@ -26,7 +29,7 @@ public class SearchApprenticeshipsController : Controller
         var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery());
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
-
+        
         return View(viewModel);
     }
 
@@ -139,8 +142,9 @@ public class SearchApprenticeshipsController : Controller
         viewmodel.NationalSearch = (location == null);
         viewmodel.Location = location;
         viewmodel.Distance = distance;
-        viewmodel.Vacancies = result.Vacancies?.Select(c => (VacanciesViewModel)c)
-            .ToList();
+        viewmodel.Vacancies = result.Vacancies.Any()
+            ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(_dateTimeService, c)).ToList()
+            : new List<VacanciesViewModel>();
         viewmodel.SelectedRoutes =
             routeIds != null ? result.Routes.Where(c => routeIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
         

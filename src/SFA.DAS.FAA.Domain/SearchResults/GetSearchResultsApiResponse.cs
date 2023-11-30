@@ -5,7 +5,7 @@ namespace SFA.DAS.FAA.Domain.SearchResults;
 
 public class GetSearchResultsApiResponse
 {
-    [JsonProperty("totalFiltered")]
+    [JsonProperty("totalApprenticeshipCount")]
     public int Total { get; set; }
     [JsonProperty("vacancies")]
     public List <Vacancies> Vacancies { get; set; }
