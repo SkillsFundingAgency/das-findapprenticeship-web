@@ -50,7 +50,7 @@
         public static string GetUrl(string baseUrl, int page, int pageSize)
         {
 
-            var query = $"page={page}&pageSize={pageSize}";
+            var query = $"pageNumber={page}&pageSize={pageSize}";
             var hasQueryParameters = baseUrl.Contains('?');
 
             var queryToAppend = hasQueryParameters ? $"&{query}" : $"?{query}";

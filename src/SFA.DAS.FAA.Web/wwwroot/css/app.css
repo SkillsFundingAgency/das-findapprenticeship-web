@@ -133,3 +133,13 @@
   box-shadow: 0 0 #fd0, 0 4px #0b0c0c;
   border-color: #fd0;
 }
+
+.app-pagination-nav {
+    float: right;
+}
+
+.das-pagination-links > a, .das-pagination-links span {
+    height: 40px;
+    line-height: 40px;
+    margin-left: 15px;
+}
