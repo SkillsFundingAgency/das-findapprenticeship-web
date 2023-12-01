@@ -1,7 +1,10 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
@@ -26,9 +29,14 @@ public class WhenPostingIndex
     [Test, MoqAutoData]
     public async Task And_ThereIsNoValidationError_SearchResultsReturned(
         SearchApprenticeshipsViewModel viewModel,
+        CancellationToken cancellationToken,
+        GetIndexLocationQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
         [Greedy] SearchApprenticeshipsController controller)
     {
-        viewModel.WhereSearchTerm = "Manchester";
+        mediator.Setup(x => x.Send(It.IsAny<GetIndexLocationQuery>(), cancellationToken))
+            .ReturnsAsync(queryResult);
+
         var result = await controller.Index(viewModel) as ActionResult;
 
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.SearchResults);
