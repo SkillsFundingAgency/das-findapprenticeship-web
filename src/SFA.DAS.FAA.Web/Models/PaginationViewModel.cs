@@ -2,12 +2,13 @@
 {
     public class PaginationViewModel
     {
-        public const string PreviousText = "Previous";
-        public const string NextText = "Next";
         public int CurrentPage { get; init; }
         public int PageSize { get; init; }
         public int TotalPages { get; init; }
         public string BaseUrl { get; init; }
+
+        public string PrevUrl { get; set; }
+        public string NextUrl { get; set; }
 
         public List<LinkItem> LinkItems { get; set; } = new();
 
@@ -18,6 +19,8 @@
             PageSize = pageSize;
             TotalPages = totalPages;
             BaseUrl = baseUrl;
+            PrevUrl = "";
+            NextUrl = "";
 
             if (totalPages == 0) return;
 
@@ -28,7 +31,7 @@
 
             var range = Enumerable.Range(startPage, 6);
 
-            if (currentPage > 1) LinkItems.Add(new LinkItem(GetUrl(baseUrl, currentPage - 1, pageSize), PreviousText));
+            if (currentPage > 1) PrevUrl = GetUrl(baseUrl, currentPage - 1, pageSize);
 
             foreach (var r in range)
             {
@@ -37,7 +40,7 @@
                 if (r == totalPages) break;
             }
 
-            if (currentPage < totalPages) LinkItems.Add(new LinkItem(GetUrl(baseUrl, currentPage + 1, pageSize), NextText));
+            if (currentPage < totalPages) NextUrl = GetUrl(baseUrl, currentPage + 1, pageSize);
         }
 
         private static int CalculateStartPage(int currentPage, int totalPages)
