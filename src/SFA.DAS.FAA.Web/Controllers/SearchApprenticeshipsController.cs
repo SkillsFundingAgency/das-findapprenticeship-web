@@ -52,6 +52,8 @@ public class SearchApprenticeshipsController : Controller
             return View(viewModel);
         }
 
+        model.WhereSearchTerm = model.WhereSearchTerm ?? string.Empty;
+
         return RedirectToRoute(RouteNames.SearchResults, new { location = model.WhereSearchTerm, distance = model.Distance});
     }
 
