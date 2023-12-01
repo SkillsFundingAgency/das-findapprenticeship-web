@@ -1,18 +1,27 @@
 ﻿@model SFA.DAS.FAA.Web.Models.PaginationViewModel
 
-<span class="das-flex-space-around app-pagination-nav das-pagination-links">
-    @if (Model.LinkItems.Count > 1)
-    {
+
+@if (Model.LinkItems.Count > 1)
+{
+    <nav class="govuk-pagination" role="navigation" aria-label="results">
+    <ul class="govuk-pagination__list">
         @foreach (var link in Model.LinkItems)
-        {
-            if (link.HasLink)
             {
-                <a href="@link.Url" class="govuk-link govuk-body">@link.Text</a>
+                if (link.HasLink)
+                {
+                    <li class="govuk-pagination__item">
+                        <a class="govuk-link govuk-pagination__link" href="@link.Url" aria-label="Page @link.Text"></a>
+                    </li>
+                }
+                else
+                {
+                    <li class="govuk-pagination__item govuk-pagination__item--current">
+                        <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page @link.Text" aria-current="page">
+                            @link.Text
+                        </a>
+                    </li>
+                }
             }
-            else
-            {
-                <span class="govuk-body">@link.Text</span>
-            }
-        }
-    }
-</span>
+        </ul>
+    </nav>
+}

@@ -2,8 +2,8 @@
 {
     public class PaginationViewModel
     {
-        public const string PreviousText = "« Previous";
-        public const string NextText = "Next »";
+        public const string PreviousText = "Previous";
+        public const string NextText = "Next";
         public int CurrentPage { get; init; }
         public int PageSize { get; init; }
         public int TotalPages { get; init; }
