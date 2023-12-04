@@ -8,6 +8,7 @@ using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
+using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
@@ -16,6 +17,7 @@ public class WhenGettingSearchResults
 {
     [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
+        GetSearchResultsRequest request,
         GetSearchResultsResult result,
         List<string>? routeIds,
         string? location,
@@ -34,7 +36,7 @@ public class WhenGettingSearchResults
                 ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(routeIds, location, distance, searchTerm) as ViewResult;
+        var actual = await controller.SearchResults(request) as ViewResult;
 
         Assert.IsNotNull(actual);
         var actualModel = actual!.Model as SearchResultsViewModel;
