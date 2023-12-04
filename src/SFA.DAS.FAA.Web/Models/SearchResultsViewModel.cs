@@ -27,7 +27,7 @@ public class SearchResultsViewModel : ViewModelBase
         return new SearchResultsViewModel
         {
             Total = source.Total,
-            Routes = source.Routes.Select(c=>(RouteViewModel)c).ToList(),
+            Routes = source.Routes.Select(c => (RouteViewModel)c).ToList(),
             Location = source.Location?.LocationName,
             PageSize = source.PageSize,
             PageNumber = source.PageNumber,

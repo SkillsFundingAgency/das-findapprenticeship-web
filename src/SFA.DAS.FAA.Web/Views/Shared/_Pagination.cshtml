@@ -26,6 +26,12 @@
                         <a class="govuk-link govuk-pagination__link" href="@link.Url" aria-label="Page @link.Text">@link.Text</a>
                     </li>
                 }
+                else if (link.IsEllipsesLink)
+                {
+                    <li class="govuk-pagination__item govuk-pagination__item--ellipses">
+                        @link.Text
+                    </li>
+                }
                 else
                 {
                     <li class="govuk-pagination__item govuk-pagination__item--current">

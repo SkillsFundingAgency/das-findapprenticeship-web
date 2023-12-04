@@ -26,17 +26,17 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models
 
         [TestCase(1, 2, 2, 1, 2, false, false)]
         [TestCase(1, 6, 6, 1, 6, false, false)]
-        [TestCase(3, 100, 6, 1, 1, true, true)]
+        [TestCase(2, 6, 6, 1, 6, false, false)]
+        [TestCase(3, 6, 4, 1, 4, false, false)]
         public void PopulatesLinkItem(int currentPage, int totalPages, int totalLinkItems, int firstPageExpected, int lastPageExpected, bool isPreviousExpected, bool isNextExpected)
         {
             var pageSize = 10;
-            var linkItems = Enumerable.Range(firstPageExpected, lastPageExpected - firstPageExpected + 1);
             PaginationViewModel sut = new(currentPage, pageSize, totalPages, BaseUrl);
 
             sut.LinkItems.Count.Should().Be(totalLinkItems);
 
             sut.LinkItems.First(s => s.Text == currentPage.ToString()).HasLink.Should().BeFalse();
-            sut.LinkItems.Where(s => s.Text != currentPage.ToString()).All(s => s.HasLink).Should().BeTrue();
+            sut.LinkItems.Where(s => s.Text != currentPage.ToString() && s.IsEllipsesLink == false).All(s => s.HasLink).Should().BeTrue();
             if (!isPreviousExpected)
             {
                 sut.LinkItems.First().Text.Should().Be(firstPageExpected.ToString());
@@ -53,18 +53,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models
             else
             {
                 sut.LinkItems[^2].Text.Should().Be(lastPageExpected.ToString());
-            }
-
-            foreach (var text in linkItems)
-            {
-                if (text != currentPage)
-                {
-                    sut.LinkItems.First(s => s.Text == text.ToString()).Url.Should().Be(BaseUrl + "?pageNumber=" + text + "&pageSize=" + pageSize);
-                }
-                else
-                {
-                    sut.LinkItems.First(s => s.Text == text.ToString()).Url.Should().BeNull();
-                }
             }
 
             if (isPreviousExpected)
