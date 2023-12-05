@@ -11,8 +11,8 @@ So that it is clear what actions I can take
 	And the page content includes the following: Search apprenticeships
 	And the page content includes the following: 1,034 apprenticeships currently listed
 
-	@WireMockServer
-Scenario: Location search from home page no location found
+@WireMockServer
+	Scenario: Location search from home page no location found
 	When I post to the following url: /
 	  | Field                     | Value    |
 	  | WhereSearchTerm			  | Coventry |
@@ -22,14 +22,14 @@ Scenario: Location search from home page no location found
 	And the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
 
 @WireMockServer
-Scenario: Location search from home page no option selected
+	Scenario: Location search from home page no option selected
 	When I post to the following url: /
 	  | Field          | Value    |
 	Then a http status code of 302 is returned
 	And I am redirected to the following url: /search-results
 	
 @WireMockServer
-Scenario: Location search from home page with valid entry
+	Scenario: Location search from home page with valid entry
 	When I post to the following url: /
 	  | Field          | Value		|
 	  | WhereSearchTerm| Manchester |
