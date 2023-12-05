@@ -33,11 +33,12 @@ public class WhenPostingIndex
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SearchApprenticeshipsController controller)
     {
-        mediator.Setup(x => x.Send(It.IsAny<GetIndexLocationQuery>(), It.IsAny<CancellationToken>()))
+        mediator.Setup(x => x.Send(It.Is<GetIndexLocationQuery>(c => c.LocationSearchTerm!.Equals(viewModel.WhereSearchTerm)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var result = await controller.Index(viewModel) as ActionResult;
+        var result = await controller.Index(viewModel) as RedirectToRouteResult;
 
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.SearchResults);
+        result!.RouteName.Should().Be(RouteNames.SearchResults);
+        result.RouteValues!["location"].Should().Be(viewModel.WhereSearchTerm);
     }
 }
