@@ -7,6 +7,9 @@ public class GetSearchResultsApiResponse
 {
     [JsonProperty("totalApprenticeshipCount")]
     public int Total { get; set; }
+    [JsonProperty("vacancies")]
+    public List <Vacancies> Vacancies { get; set; }
+ 
     [JsonProperty("location")]
     public Location? Location { get; set; }
 

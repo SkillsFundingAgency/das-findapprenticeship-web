@@ -13,40 +13,41 @@
 
 <h1 class="govuk-heading-l govuk-!-margin-bottom-8"> @Model.TotalMessage </h1>
 
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
         <div class="faa-filter">
-            <div class="faa-filter__header">
-                <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
-            </div>
-            <div class="faa-filter__selected">
-                <div class="faa-filter__selected-header">
-                    <h3 class="govuk-heading-m faa-filter__selected-heading">Selected filters</h3>
-                    <a href="#" class="faa-filter__selected-action govuk-link govuk-link--no-visited-state">Clear <span
-                            class="govuk-visually-hidden">the selected filters</span></a>
+                <div class="faa-filter__header">
+                    <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
                 </div>
-                <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Where</h4>
-                <a class="faa-filter__tag" href="#">@Model.Location @(Model.Distance == null ? "" : $"(within {Model.Distance} miles)")</a>
-                <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Job category</h4>
+                <div class="faa-filter__selected">
+                    <div class="faa-filter__selected-header">
+                        <h3 class="govuk-heading-m faa-filter__selected-heading">Selected filters</h3>
+                        <a href="#" class="faa-filter__selected-action govuk-link govuk-link--no-visited-state">Clear <span
+                                                                                                                          class="govuk-visually-hidden">the selected filters</span></a>
+                    </div>
+                    <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Where</h4>
+                    <a class="faa-filter__tag" href="#">Sheffield (within 2 miles)</a>
+                    <h4 class="govuk-heading-s faa-filter__selected-sub-heading">Job category</h4>
                 @foreach (var selectedRoute in Model.SelectedRoutes!)
                 {
                     <a class="faa-filter__tag" href="#">@selectedRoute</a>    
                 }
-            </div>
-            <div class="faa-filter__body">
-
-                <div class="govuk-form-group">
-                    <label for="what" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
-                    <p class="govuk-hint">Enter a job or company</p>
-                    <input name="what" type="text" class="govuk-input" id="what" />
                 </div>
+                <div class="faa-filter__body">
 
-                <div class="govuk-form-group">
-                    <label for="where" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
-                    <p class="govuk-hint">Enter a city or postcode</p>
+                    <div class="govuk-form-group">
+                        <label for="what" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
+                        <p class="govuk-hint">Enter a job or company</p>
+                        <input name="what" type="text" class="govuk-input" id="what" />
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <label for="where" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
+                        <p class="govuk-hint">Enter a city or postcode</p>
                     <input name="where" type="text" class="govuk-input" id="where" value="@Model.Location" />
-                    <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
-                    <select class="govuk-select" id="within" name="within">
+                        <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
+                        <select class="govuk-select" id="within" name="within">
                         <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
                         <option value="5" selected="@(Model.Distance == 5)" >5 miles</option>
                         <option value="10" selected="@(Model.Distance == 10)" >10 miles</option>
@@ -55,65 +56,65 @@
                         <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
                         <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
                         <option value="all" selected="@(Model.Distance == null)">Across England</option>
-                    </select>
-                </div>
-
-
-                <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
-
-                    <div class="govuk-accordion__section">
-                        <div class="govuk-accordion__section-header">
-                            <h2 class="govuk-accordion__section-heading">
-                                <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-level">
-                                    Apprenticeship level
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
-                            aria-labelledby="apprenticeship-filters-level">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-visually-hidden">Apprenticeship level</legend>
-                                <p class="govuk-hint">Select the level you want to apply for</p>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="level-2" name="levels"
-                                            type="checkbox" value="2" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="level-2">
-                                            Level 2
-                                        </label>
-                                        <div class="govuk-hint govuk-checkboxes__hint">
-                                            Equal to GCSEs
-                                        </div>
-                                    </div>
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="level-3" name="levels"
-                                            type="checkbox" value="3" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="level-3">
-                                            Level 3
-                                        </label>
-                                        <div class="govuk-hint govuk-checkboxes__hint">
-                                            Equal to A-levels
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
+                        </select>
                     </div>
 
-                    <div class="govuk-accordion__section">
-                        <div class="govuk-accordion__section-header">
-                            <h2 class="govuk-accordion__section-heading">
-                                <span class="govuk-accordion__section-button"
-                                    id="apprenticeship-filters-heading-categories">
-                                    Job categories
-                                </span>
-                            </h2>
+
+                    <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
+
+                        <div class="govuk-accordion__section">
+                            <div class="govuk-accordion__section-header">
+                                <h2 class="govuk-accordion__section-heading">
+                                    <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-level">
+                                        Apprenticeship level
+                                    </span>
+                                </h2>
+                            </div>
+                            <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
+                                 aria-labelledby="apprenticeship-filters-level">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-visually-hidden">Apprenticeship level</legend>
+                                    <p class="govuk-hint">Select the level you want to apply for</p>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" id="level-2" name="levels"
+                                                   type="checkbox" value="2" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="level-2">
+                                                Level 2
+                                            </label>
+                                            <div class="govuk-hint govuk-checkboxes__hint">
+                                                Equal to GCSEs
+                                            </div>
+                                        </div>
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" id="level-3" name="levels"
+                                                   type="checkbox" value="3" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="level-3">
+                                                Level 3
+                                            </label>
+                                            <div class="govuk-hint govuk-checkboxes__hint">
+                                                Equal to A-levels
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
                         </div>
-                        <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
-                            aria-labelledby="govuk-accordion__section-content">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-visually-hidden">Job categories</legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
+
+                        <div class="govuk-accordion__section">
+                            <div class="govuk-accordion__section-header">
+                                <h2 class="govuk-accordion__section-heading">
+                                    <span class="govuk-accordion__section-button"
+                                          id="apprenticeship-filters-heading-categories">
+                                        Job categories
+                                    </span>
+                                </h2>
+                            </div>
+                            <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
+                                 aria-labelledby="govuk-accordion__section-content">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-visually-hidden">Job categories</legend>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
                                     @foreach (var route in Model.Routes)
                                     {
                                         <div class="govuk-checkboxes__item">
@@ -124,36 +125,69 @@
                                             </label>
                                         </div>
                                     }
-                                </div>
-                            </fieldset>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident</h2>
+                        <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
+                        <div class="govuk-checkboxes govuk-checkboxes--small">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="onlyshow" name="disability" type="checkbox"
+                                       value="yes" />
+                                <label class="govuk-label govuk-checkboxes__label" for="disability">
+                                    Only show Disability Confident employers
+                                </label>
+                            </div>
                         </div>
                     </div>
 
+
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
+
+                    <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
+
                 </div>
-
-                <div class="govuk-form-group">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident</h2>
-                    <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
-                    <div class="govuk-checkboxes govuk-checkboxes--small">
-                        <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="onlyshow" name="disability" type="checkbox"
-                                value="yes" />
-                            <label class="govuk-label govuk-checkboxes__label" for="disability">
-                                Only show Disability Confident employers
-                            </label>
-                        </div>
-                    </div>
+            </div>
+    </div>
+    @if (Model.Vacancies != null)
+    {
+     <div class="govuk-grid-column-two-thirds">
+                <hr class="govuk-section-break govuk-section-break--visible ">
+                <div class="das-search-results">
+                    <ol class="das-search-results__list">
+                        @foreach (var vacancy in Model.Vacancies)
+                        {
+                            <li class="das-search-results__list-item">
+                                <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+                                    <a class="das-search-results__link" id="standard-274" href=#>
+                                        @vacancy.Title
+                                    </a>
+                                </h2>
+                                <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
+                                <p class="govuk-body govuk-hint">
+                                    @vacancy.VacancyLocation, @vacancy.VacancyPostCode
+                                </p>
+                                @if (Model.NationalSearch == false)
+                                {
+                                    <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.Distance miles</p>
+                                }
+                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle (Level @vacancy.CourseLevel) </p>
+                                <p class="govuk-body"><b>Annual wage</b> @vacancy.WageAmount</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.DaysUntilClosing days (@vacancy.AdvertClosing)</p>
+                                <p class="govuk-body govuk-!-font-size-16 govuk-hint">Posted @vacancy.PostedDate
+                                </p>
+                            </li>
+                        }
+                    </ol>
                 </div>
-
-
-                <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
-
-                <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
 
             </div>
-        </div>
+    }
+       
     </div>
-    <div class="govuk-grid-column-two-thirds">
 
-    </div>
-</div>

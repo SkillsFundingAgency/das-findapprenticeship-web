@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -41,6 +42,8 @@ public class WhenGettingSearchResults
         actualModel.SelectedRouteIds.Should().Equal(routeIds);
         actualModel.Location.Should().BeEquivalentTo(location);
         actualModel.Distance.Should().Be(distance);
+        actualModel.Vacancies.Should().NotBeNullOrEmpty();
+
         actualModel.SelectedRoutes.Should()
             .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name).ToList());
         actualModel.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First()).Selected.Should().BeTrue();

@@ -1,6 +1,4 @@
-using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
-using static SFA.DAS.FAA.Web.Models.BrowseByInterestViewModel;
 
 namespace SFA.DAS.FAA.Web.Models;
 
@@ -16,6 +14,9 @@ public class SearchResultsViewModel : ViewModelBase
     public int Total { get; set; }
     public string TotalMessage  =>$"{(Total == 0 ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
     public int? Distance { get; set; }
+
+    public List<VacanciesViewModel> Vacancies { get; set; }
+    
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
