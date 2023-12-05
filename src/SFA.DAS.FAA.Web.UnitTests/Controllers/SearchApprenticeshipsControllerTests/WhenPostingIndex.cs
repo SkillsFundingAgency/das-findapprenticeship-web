@@ -29,12 +29,11 @@ public class WhenPostingIndex
     [Test, MoqAutoData]
     public async Task And_ThereIsNoValidationError_SearchResultsReturned(
         SearchApprenticeshipsViewModel viewModel,
-        CancellationToken cancellationToken,
         GetIndexLocationQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SearchApprenticeshipsController controller)
     {
-        mediator.Setup(x => x.Send(It.IsAny<GetIndexLocationQuery>(), cancellationToken))
+        mediator.Setup(x => x.Send(It.IsAny<GetIndexLocationQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
         var result = await controller.Index(viewModel) as ActionResult;
