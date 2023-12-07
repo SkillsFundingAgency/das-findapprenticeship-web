@@ -34,6 +34,12 @@
     <Content Include="search-apprenticeships-no-results.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="search-apprentices-index-location.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="search-apprentices-index-no-location-found.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
 </Project>
