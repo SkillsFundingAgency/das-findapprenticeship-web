@@ -24,7 +24,7 @@ public class SearchApprenticeshipsController : Controller
 
 
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index([FromQuery]string? whereSearchTerm = null, [FromQuery]string? whatSearchTerm = null)
+    public async Task<IActionResult> Index([FromQuery]string? whereSearchTerm = null, [FromQuery]string? whatSearchTerm = null, [FromQuery]int? search = null)
     {
         var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
@@ -38,6 +38,10 @@ public class SearchApprenticeshipsController : Controller
         else if( result.LocationSearched && result.Location !=null)
         {
             return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10"});
+        }
+        else if(search == 1)
+        {
+            return RedirectToRoute(RouteNames.SearchResults);
         }
         
         var viewModel = (SearchApprenticeshipsViewModel)result;

@@ -28,6 +28,23 @@ public class WhenGettingIndex
         Assert.IsNotNull(actual);
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result);
     }
+    
+    [Test, MoqAutoData]
+    public async Task Then_The_Mediator_Query_Is_Called_And_Search_View_Returned_When_Searched(
+        GetSearchApprenticeshipsIndexResult result,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] SearchApprenticeshipsController controller)
+    {
+        result.LocationSearched = false;
+        mediator.Setup(x => x.Send(It.IsAny<GetSearchApprenticeshipsIndexQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        var actual = await controller.Index(search:1) as RedirectToRouteResult;
+
+        Assert.IsNotNull(actual);
+        actual!.RouteName.Should().Be(RouteNames.SearchResults);
+    }
+
     [Test, MoqAutoData]
     public async Task ModelStateIsInvalid_ModelIsReturned(
         string whatSearchTerm,

@@ -17,6 +17,7 @@
     <div class="faa-home-panel">
 
         <form class="form" method="get">
+            <input type="hidden" name="search" value="1"/>
             <div class="govuk-grid-row">
 
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
@@ -44,7 +45,7 @@
                             Enter a city or postcode
                         </div>
                         <input class="govuk-input faa-location-autocomplete" asp-for="WhereSearchTerm" id="SearchTerm"
-                            type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
+                               type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
                     </div>
                 </div>
             </div>
