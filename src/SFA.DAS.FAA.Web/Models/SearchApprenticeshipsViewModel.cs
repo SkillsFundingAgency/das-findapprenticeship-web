@@ -6,6 +6,7 @@ public class SearchApprenticeshipsViewModel
 {
     public string? TotalText { get; set; }
     public string? WhereSearchTerm { get; set; }
+    public string? WhatSearchTerm { get; set; }
     public int? Distance { get; set; } = 10;
 
     public static implicit operator SearchApprenticeshipsViewModel(GetSearchApprenticeshipsIndexResult source)

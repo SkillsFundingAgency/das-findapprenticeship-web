@@ -28,7 +28,8 @@ public class SearchApprenticeshipsController : Controller
     {
         var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
-            LocationSearchTerm = whereSearchTerm
+            LocationSearchTerm = whereSearchTerm,
+            WhatSearchTerm = whatSearchTerm
         });
 
         if (result is { LocationSearched: true, Location: null })
