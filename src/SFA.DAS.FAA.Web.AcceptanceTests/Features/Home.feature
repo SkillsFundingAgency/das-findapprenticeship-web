@@ -13,26 +13,20 @@ So that it is clear what actions I can take
 
 @WireMockServer
 	Scenario: Location search from home page no location found
-	When I post to the following url: /
-	  | Field                     | Value    |
-	  | WhereSearchTerm			  | Coventry |
-
+	When I navigate to the following url: /?whereSearchTerm=Coventry
 	Then a http status code of 200 is returned
 	And I am redirected to the following url: /
 	And the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
 
 @WireMockServer
 	Scenario: Location search from home page no option selected
-	When I post to the following url: /
-	  | Field          | Value    |
-	Then a http status code of 302 is returned
+	When I navigate to the following url: /
+	Then a http status code of 200 is returned
 	And I am redirected to the following url: /search-results
 	
 @WireMockServer
 	Scenario: Location search from home page with valid entry
-	When I post to the following url: /
-	  | Field          | Value		|
-	  | WhereSearchTerm| Manchester |
+	When I navigate to the following url: /?whereSearchTerm=Manchester
 	Then a http status code of 302 is returned
 	And I am redirected to the following url: /search-results
 

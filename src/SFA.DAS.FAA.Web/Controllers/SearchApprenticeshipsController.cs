@@ -24,40 +24,26 @@ public class SearchApprenticeshipsController : Controller
 
 
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index([FromQuery]string? whereSearchTerm = null, [FromQuery]string? whatSearchTerm = null)
     {
-        var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery());
+        var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery
+        {
+            LocationSearchTerm = whereSearchTerm
+        });
 
+        if (result is { LocationSearched: true, Location: null })
+        {
+            ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+        }
+        else if( result.LocationSearched && result.Location !=null)
+        {
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10"});
+        }
+        
         var viewModel = (SearchApprenticeshipsViewModel)result;
         
         return View(viewModel);
     }
-
-    [HttpPost]
-    [Route("", Name = RouteNames.ServiceStartDefault)]
-    public async Task<IActionResult> Index(SearchApprenticeshipsViewModel model)
-    {
-        var locationResult = await _mediator.Send(new GetIndexLocationQuery { LocationSearchTerm = model.WhereSearchTerm });
-
-        if (locationResult.Location == null)
-        {
-            ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
-        }
-        if (!ModelState.IsValid)
-        {
-            var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery());
-
-            var viewModel = (SearchApprenticeshipsViewModel)result;
-
-            return View(viewModel);
-        }
-
-        model.WhereSearchTerm = model.WhereSearchTerm ?? string.Empty;
-
-        return RedirectToRoute(RouteNames.SearchResults, new { location = model.WhereSearchTerm, distance = model.Distance});
-    }
-
-
 
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
     public async Task<IActionResult> BrowseByInterests([FromQuery] List<string>? routeIds = null)
