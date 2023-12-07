@@ -1,4 +1,5 @@
 ﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
@@ -18,15 +19,17 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries
             GetSearchApprenticeshipsIndexQueryHandler handler)
         {
             // Arrange
-            apiClientMock.Setup(client => client.Get<SearchApprenticeshipsApiResponse>(It.IsAny<GetSearchApprenticeshipsIndexApiRequest>()))
+            apiClientMock.Setup(client =>
+                    client.Get<SearchApprenticeshipsApiResponse>(
+                        It.Is<GetSearchApprenticeshipsIndexApiRequest>(c =>
+                            c.GetUrl.Contains(query.LocationSearchTerm))))
                 .ReturnsAsync(expectedResponse);
 
             // Act
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedResponse.Total, result.Total);
+            result.Should().BeEquivalentTo(expectedResponse);
         }
     }
 }
