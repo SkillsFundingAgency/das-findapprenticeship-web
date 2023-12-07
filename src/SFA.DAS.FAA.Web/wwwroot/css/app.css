@@ -1,3 +1,7 @@
+.faa-template {
+  scroll-behavior: smooth;
+}
+
 .govuk-error-message:empty {
   display: none;
 }
@@ -134,12 +138,68 @@
   border-color: #fd0;
 }
 
-.app-pagination-nav {
-    float: right;
+/* Vacancy */
+
+.faa-vacancy__title {
+  margin-bottom: 10px;
 }
 
-.das-pagination-links > a, .das-pagination-links span {
-    height: 40px;
-    line-height: 40px;
-    margin-left: 15px;
+.faa-vacancy__organisation {
+  margin-bottom: 0;
+}
+
+.faa-vacancy__location {
+  margin-bottom: 30px;
+  color: #505a5f;
+}
+
+.faa-vacancy__closing-date {
+  margin: 0;
+}
+
+.faa-contents {
+  position: sticky;
+  top: 10px;
+}
+
+.faa-contents__list {
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.faa-contents__list > li {
+  margin-bottom: 10px;
+}
+
+.faa-contents__list-item {
+  margin-left: 25px;
+  padding-right: 25px;
+}
+
+.faa-contents__list-item:before {
+  color: #0b0c0c;
+  content: "—";
+  margin-left: -25px;
+  padding-right: 5px;
+}
+
+.faa-vacancy__section {
+  border-bottom: 1px solid #b1b4b6;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.faa-vacancy-actions {
+  margin: 20px 0 30px;
+}
+
+.faa-vacancy-actions__link {
+  margin-right: 20px;
+}
+
+.faa-vacancy-actions__icon {
+  max-height: 1em;
+  position: relative;
+  top: 3px;
+  margin-right: 3px;
 }

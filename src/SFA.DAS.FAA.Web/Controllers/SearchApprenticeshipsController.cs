@@ -140,4 +140,10 @@ public class SearchApprenticeshipsController : Controller
 
         return View(viewmodel);
     }
+
+    [Route("vacancy", Name = RouteNames.Vacancy)]
+    public IActionResult Vacancy()
+    {
+        return View();
+    }
 }
