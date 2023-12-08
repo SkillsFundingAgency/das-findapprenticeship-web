@@ -19,7 +19,8 @@ public class WhenCreatingSearchApprenticeshipsViewModel
         
         var actual = (SearchApprenticeshipsViewModel)source;
 
-        Assert.AreEqual(expectedText, actual.TotalText);
+        
+        Assert.That(actual.TotalText, Is.EqualTo(expectedText));
 
     }
 
