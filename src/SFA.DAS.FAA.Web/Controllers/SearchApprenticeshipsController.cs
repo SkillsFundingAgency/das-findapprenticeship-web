@@ -9,8 +9,10 @@ using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Reflection;
+using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Models.Vacancy;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -142,8 +144,14 @@ public class SearchApprenticeshipsController : Controller
     }
 
     [Route("vacancy", Name = RouteNames.Vacancy)]
-    public IActionResult Vacancy()
+    public async Task<IActionResult> Vacancy([FromQuery] string vacancyReference)
     {
-        return View();
+        var result = await _mediator.Send(new GetApprenticeshipVacancyQuery
+        {
+            VacancyReference = vacancyReference
+        });
+
+        var viewModel = new VacancyDetailsViewModel().MapToViewModel(_dateTimeService, result);
+        return View(viewModel);
     }
 }
