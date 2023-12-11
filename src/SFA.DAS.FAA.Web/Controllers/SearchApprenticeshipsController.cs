@@ -1,18 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
+using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
-using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
-using SFA.DAS.FAA.Application.Queries.GetSearchResults;
-using SFA.DAS.FAT.Domain.Interfaces;
-using System.Reflection;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
-using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Models.Vacancy;
+using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -20,11 +19,16 @@ public class SearchApprenticeshipsController : Controller
 {
     private readonly IMediator _mediator;
     private readonly IDateTimeService _dateTimeService;
+    private readonly IValidator<GetVacancyDetailsRequest> _validator;
 
-    public SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService)
+    public SearchApprenticeshipsController(
+        IMediator mediator,
+        IDateTimeService dateTimeService,
+        IValidator<GetVacancyDetailsRequest> validator)
     {
         _mediator = mediator;
         _dateTimeService = dateTimeService;
+        _validator = validator;
     }
 
 
@@ -143,15 +147,22 @@ public class SearchApprenticeshipsController : Controller
         return View(viewmodel);
     }
 
-    [Route("vacancy", Name = RouteNames.Vacancy)]
-    public async Task<IActionResult> Vacancy([FromQuery] string vacancyReference)
+    [Route("vacancy/{vacancyReference}", Name = RouteNames.Vacancy)]
+    public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
     {
+        var validation = await _validator.ValidateAsync(request);
+        if (!validation.IsValid)
+        {
+            //upcoming stories will be cover this section. 404 not found.
+        }
+
         var result = await _mediator.Send(new GetApprenticeshipVacancyQuery
         {
-            VacancyReference = vacancyReference
+            VacancyReference = request.VacancyReference
         });
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(_dateTimeService, result);
+
         return View(viewModel);
     }
 }

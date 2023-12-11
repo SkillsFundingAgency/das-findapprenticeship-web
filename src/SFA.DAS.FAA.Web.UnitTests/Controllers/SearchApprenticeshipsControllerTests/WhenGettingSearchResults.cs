@@ -1,5 +1,6 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -9,6 +10,7 @@ using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -21,6 +23,7 @@ public class WhenGettingSearchResults
         GetSearchResultsRequest request,
         GetSearchResultsResult result,
         List<string>? routeIds,
+        [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -30,7 +33,7 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, validator.Object)
         {
             Url = mockUrlHelper.Object
         };

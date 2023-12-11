@@ -1,21 +1,18 @@
 ﻿using SFA.DAS.FAT.Domain.Interfaces;
-using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Services
 {
-    public static class VacancyDetailsService
+    public static class VacancyDetailsHelperService
     {
         public static string GetWorkingHours(this string? duration)
         {
-            if (decimal.TryParse(duration, out var workHours))
-            {
-                var hrs = workHours.ToString("0.00", CultureInfo.InvariantCulture);
-                var parts = hrs.Split('.');
-                var minutes = int.Parse(parts[1]);
-                return minutes > 0 ? $"{parts[0]} hours {minutes} minutes" : $"{parts[0]} hours";
-            }
-           
-            return "0 hours";
+            if (!decimal.TryParse(duration, out var workHours)) return "0 hours";
+
+            var integerPart = (int)workHours;
+            var decimalPart = (double)(workHours - integerPart);
+            var minutes = Convert.ToInt32(decimalPart * 60);
+
+            return minutes > 0 ? $"{integerPart} hours {minutes} minutes" : $"{integerPart} hours";
         }
 
         public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate)
