@@ -1,0 +1,57 @@
+{
+  "id": 1000012013,
+  "title": "Apprentice for E2E no question",
+  "vacancyReference": "1000012013",
+  "longDescription": "<p>Write a few sentences about the apprenticeship to attract applicants. This information will appear under your vacancy title when applicants look through a list of vacancies</p>",
+  "outcomeDescription": "<p>Write a few sentences about the apprenticeship to attract applicants. This information will appear under your vacancy title when applicants look through a list of vacancies</p>",
+  "trainingDescription": "<p>Write a few sentences about the apprenticeship to attract applicants. This information will appear under your vacancy title when applicants look through a list of vacancies</p>",
+  "skills": [
+    "Communication skills"
+  ],
+  "startDate": "2026-01-23T00:00:00Z",
+  "closingDate": "2024-01-23T00:00:00Z",
+  "postedDate": "2023-10-23T11:07:49.73Z",
+  "wageType": 3,
+  "wageText": "£10,982.40 to £21,673.60",
+  "wageUnit": 4,
+  "courseId": 0,
+  "apprenticeshipLevel": "Advanced",
+  "category": "Organ builder",
+  "categoryCode": "SSAT1.UNKNOWN",
+  "subCategory": "Organ builder",
+  "subCategoryCode": "Organ builder",
+  "description": "Write a few sentences about the apprenticeship to attract applicants. This information will appear under your vacancy title when applicants look through a list of vacancies",
+  "hoursPerWeek": 40.0,
+  "isDisabilityConfident": false,
+  "isPositiveAboutDisability": false,
+  "isRecruitVacancy": false,
+  "location": {
+    "latitude": 0,
+    "longitude": 0
+  },
+  "numberOfPositions": 2,
+  "providerName": "BARKING AND DAGENHAM COLLEGE",
+  "standardLarsCode": 197,
+  "vacancyLocationType": 1,
+  "workingWeek": "Monday",
+  "expectedDuration": "18 Months",
+  "score": 0,
+  "ukprn": 10000528,
+  "employerName": "DUCATI 1974 LTD",
+  "employerDescription": "Write a few sentences about the apprenticeship to attract applicants. This information will appear under your vacancy title when applicants look through a list of vacancies",
+  "isEmployerAnonymous": false,
+  "qualifications": [
+    {
+      "qualificationType": "GCSE or equivalent",
+      "subject": "Maths",
+      "grade": "1",
+      "weighting": 0
+    }
+  ],
+  "address": {
+    "addressLine1": "23-27 Bolton Street",
+    "addressLine2": "Chorley",
+    "addressLine3": "Lancashire",
+    "postcode": "PR7 3AA"
+  }
+}
