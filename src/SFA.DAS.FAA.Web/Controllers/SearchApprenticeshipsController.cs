@@ -31,7 +31,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
         else if(search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults);
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = whatSearchTerm });
         }
         
         var viewModel = (SearchApprenticeshipsViewModel)result;
