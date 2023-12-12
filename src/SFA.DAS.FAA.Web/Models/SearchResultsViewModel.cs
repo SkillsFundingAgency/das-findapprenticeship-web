@@ -14,6 +14,7 @@ public class SearchResultsViewModel : ViewModelBase
     public int Total { get; set; }
     public string TotalMessage  =>$"{(Total == 0 ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
     public int? Distance { get; set; }
+    public string? SearchTerm { get; set; }
 
     public List<VacanciesViewModel> Vacancies { get; set; }
     

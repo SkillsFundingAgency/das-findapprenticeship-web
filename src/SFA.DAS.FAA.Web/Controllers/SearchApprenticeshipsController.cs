@@ -124,6 +124,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         viewmodel.NationalSearch = (location == null);
         viewmodel.Location = location;
         viewmodel.Distance = distance;
+        viewmodel.SearchTerm = searchTerm;
         viewmodel.Vacancies = result.Vacancies.Any()
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : new List<VacanciesViewModel>();
