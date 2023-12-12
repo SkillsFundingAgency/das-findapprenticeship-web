@@ -25,7 +25,7 @@ public class WhenGettingIndex
 
         var actual = await controller.Index() as ViewResult;
 
-        Assert.IsNotNull(actual);
+        Assert.That(actual, Is.Not.Null);
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result);
     }
     
@@ -41,7 +41,7 @@ public class WhenGettingIndex
 
         var actual = await controller.Index(search:1) as RedirectToRouteResult;
 
-        Assert.IsNotNull(actual);
+        Assert.That(actual, Is.Not.Null);
         actual!.RouteName.Should().Be(RouteNames.SearchResults);
     }
 

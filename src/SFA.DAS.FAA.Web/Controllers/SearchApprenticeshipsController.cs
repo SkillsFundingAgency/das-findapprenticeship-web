@@ -11,22 +11,12 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class SearchApprenticeshipsController : Controller
+public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService) : Controller
 {
-    private readonly IMediator _mediator;
-    private readonly IDateTimeService _dateTimeService;
-
-    public SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService)
-    {
-        _mediator = mediator;
-        _dateTimeService = dateTimeService;
-    }
-
-
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index([FromQuery]string? whereSearchTerm = null, [FromQuery]string? whatSearchTerm = null, [FromQuery]int? search = null)
     {
-        var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery
+        var result = await mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
             LocationSearchTerm = whereSearchTerm
         });
@@ -52,7 +42,7 @@ public class SearchApprenticeshipsController : Controller
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
     public async Task<IActionResult> BrowseByInterests([FromQuery] List<string>? routeIds = null)
     {
-        var result = await _mediator.Send(new GetBrowseByInterestsQuery());
+        var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
         var viewModel = (BrowseByInterestViewModel)result;
 
@@ -67,7 +57,7 @@ public class SearchApprenticeshipsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var result = await _mediator.Send(new GetBrowseByInterestsQuery());
+            var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
             var viewModel = (BrowseByInterestViewModel)result;
             
@@ -100,7 +90,7 @@ public class SearchApprenticeshipsController : Controller
             }
             else
             {
-                var locationResult = await _mediator.Send(new GetBrowseByInterestsLocationQuery{ LocationSearchTerm = model.SearchTerm });
+                var locationResult = await mediator.Send(new GetBrowseByInterestsLocationQuery{ LocationSearchTerm = model.SearchTerm });
 
                 if (locationResult.Location == null)
                 {
@@ -121,7 +111,7 @@ public class SearchApprenticeshipsController : Controller
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location, [FromQuery] int? distance, [FromQuery]string? searchTerm)
     {
-        var result = await _mediator.Send(new GetSearchResultsQuery
+        var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = location,
             SelectedRouteIds = routeIds,
@@ -135,7 +125,7 @@ public class SearchApprenticeshipsController : Controller
         viewmodel.Location = location;
         viewmodel.Distance = distance;
         viewmodel.Vacancies = result.Vacancies.Any()
-            ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(_dateTimeService, c)).ToList()
+            ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : new List<VacanciesViewModel>();
         viewmodel.SelectedRoutes =
             routeIds != null ? result.Routes.Where(c => routeIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
