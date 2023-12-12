@@ -28,8 +28,7 @@ public class SearchApprenticeshipsController : Controller
     {
         var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
-            LocationSearchTerm = whereSearchTerm,
-            WhatSearchTerm = whatSearchTerm
+            LocationSearchTerm = whereSearchTerm
         });
 
         if (result is { LocationSearched: true, Location: null })
@@ -38,7 +37,7 @@ public class SearchApprenticeshipsController : Controller
         }
         else if( result.LocationSearched && result.Location !=null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10"});
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = whatSearchTerm});
         }
         else if(search == 1)
         {
