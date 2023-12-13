@@ -14,7 +14,7 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
     }
     public async Task<GetSearchResultsResult> Handle(GetSearchResultsQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize);
+        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, query.Sort);
         var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
         return new GetSearchResultsResult
         {
@@ -24,7 +24,8 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             Routes = response.Routes,
             PageNumber = response.PageNumber,
             PageSize = response.PageSize,
-            TotalPages = response.TotalPages
+            TotalPages = response.TotalPages,
+            Sort = query.Sort ?? VacancySort.DistanceAsc.ToString()
         };
     }
 }

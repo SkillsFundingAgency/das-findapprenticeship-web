@@ -10,8 +10,9 @@ public class GetSearchResultsApiRequest : IGetApiRequest
     private readonly string? _searchTerm;
     private readonly int? _pageNumber;
     private readonly int? _pageSize;
+    private readonly string? _sort;
 
-    public GetSearchResultsApiRequest(string? location, List<string>? routes, int? distance, string? searchTerm, int? pageNumber, int? pageSize)
+    public GetSearchResultsApiRequest(string? location, List<string>? routes, int? distance, string? searchTerm, int? pageNumber, int? pageSize, string? sort)
     {
         _location = location;
         _routes = routes != null ? string.Join("&routes=", routes) : "";
@@ -19,7 +20,8 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         _searchTerm = searchTerm;
         _pageNumber = pageNumber;
         _pageSize = pageSize;
+        _sort = sort;
     }
 
-    public string GetUrl => $"searchapprenticeships/searchResults?location={_location}&routes={_routes}&distance={_distance}&searchTerm={_searchTerm}&pageNumber={_pageNumber}&pageSize={_pageSize}";
+    public string GetUrl => $"searchapprenticeships/searchResults?location={_location}&routes={_routes}&distance={_distance}&searchTerm={_searchTerm}&pageNumber={_pageNumber}&pageSize={_pageSize}&sort={_sort}";
 }

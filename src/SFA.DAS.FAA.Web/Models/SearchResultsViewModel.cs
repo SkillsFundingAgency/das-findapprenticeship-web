@@ -19,6 +19,7 @@ public class SearchResultsViewModel : ViewModelBase
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
+    public string Sort { get; set; }
     public PaginationViewModel PaginationViewModel { get; set; } = null!;
 
 
@@ -31,7 +32,8 @@ public class SearchResultsViewModel : ViewModelBase
             Location = source.Location?.LocationName,
             PageSize = source.PageSize,
             PageNumber = source.PageNumber,
-            TotalPages = source.TotalPages
+            TotalPages = source.TotalPages,
+            Sort = source.Sort
         };
     }
     

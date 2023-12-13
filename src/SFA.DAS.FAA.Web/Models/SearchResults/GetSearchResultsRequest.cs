@@ -10,6 +10,6 @@ namespace SFA.DAS.FAA.Web.Models.SearchResults
         [FromQuery] public int? Distance { get; set; }
         [FromQuery] public int? PageNumber { get; set; }
         [FromQuery] public int? PageSize { get; set; }
-
+        [FromQuery] public string? Sort {get; set; }
     }
 }
