@@ -14,11 +14,13 @@ public class GetSearchApprenticeshipsIndexQueryHandler : IRequestHandler<GetSear
     }
     public async Task<GetSearchApprenticeshipsIndexResult> Handle(GetSearchApprenticeshipsIndexQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetSearchApprenticeshipsIndexApiRequest();
+        var request = new GetSearchApprenticeshipsIndexApiRequest(query.LocationSearchTerm);
         var response = await _apiClient.Get<SearchApprenticeshipsApiResponse>(request);
         return new GetSearchApprenticeshipsIndexResult
         {
             Total = response.Total,
+            LocationSearched = response.LocationSearched,
+            Location = response.Location
         };
     }
 }

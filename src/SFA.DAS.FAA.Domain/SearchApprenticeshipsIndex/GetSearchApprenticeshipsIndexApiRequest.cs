@@ -1,8 +1,15 @@
-﻿using SFA.DAS.FAA.Domain.Interfaces;
+﻿using System.Web;
+using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 
 public class GetSearchApprenticeshipsIndexApiRequest : IGetApiRequest
 {
-    public string GetUrl => "searchapprenticeships";
+    private readonly string? _location;
+
+    public GetSearchApprenticeshipsIndexApiRequest(string? location)
+    {
+        _location = location;
+    }
+    public string GetUrl => $"searchapprenticeships?locationSearchTerm={HttpUtility.UrlEncode(_location)}";
 }

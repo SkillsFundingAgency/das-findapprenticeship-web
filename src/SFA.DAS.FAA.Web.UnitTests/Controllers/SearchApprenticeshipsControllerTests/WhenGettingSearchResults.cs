@@ -36,9 +36,9 @@ public class WhenGettingSearchResults
 
         var actual = await controller.SearchResults(routeIds, location, distance, searchTerm) as ViewResult;
 
-        Assert.IsNotNull(actual);
+        Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;
-        actualModel.Total.Should().Be(((SearchResultsViewModel)result).Total);
+        actualModel!.Total.Should().Be(((SearchResultsViewModel)result).Total);
         actualModel.SelectedRouteIds.Should().Equal(routeIds);
         actualModel.Location.Should().BeEquivalentTo(location);
         actualModel.Distance.Should().Be(distance);
@@ -46,7 +46,7 @@ public class WhenGettingSearchResults
 
         actualModel.SelectedRoutes.Should()
             .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name).ToList());
-        actualModel.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First()).Selected.Should().BeTrue();
+        actualModel.Routes.First(x => x.Id.ToString() == routeIds.First()).Selected.Should().BeTrue();
         actualModel.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
             .TrueForAll(x => x).Should().BeFalse();
     }

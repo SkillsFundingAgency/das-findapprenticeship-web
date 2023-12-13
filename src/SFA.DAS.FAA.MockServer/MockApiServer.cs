@@ -25,6 +25,24 @@ public static class MockApiServer
 
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships"))
             .UsingGet()
+            .WithParam(MatchSearchLocationManchester)
+        ).RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("search-apprentices-index-location.json"));
+        
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships"))
+            .UsingGet()
+            .WithParam(MatchSearchLocationCoventry)
+        ).RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("search-apprentices-index-no-location-found.json"));
+        
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships"))
+            .UsingGet()
         ).RespondWith(
             Response.Create()
                 .WithStatusCode(200)
@@ -52,7 +70,7 @@ public static class MockApiServer
             .WithBodyFromFile("location-search.json"));
         
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterestslocation"))
-                .WithParam(MatchLocationParamCoventry)
+                .WithParam(MatchSearchLocationCoventry)
                 .UsingGet())
             .RespondWith(Response.Create()
                 .WithStatusCode(200)
@@ -65,7 +83,9 @@ public static class MockApiServer
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("browse-location-search.json"));
+
         
+
 
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults"))
                 .WithParam(MatchLocationParamManchester)
@@ -86,9 +106,13 @@ public static class MockApiServer
         return server;
     }
 
-    private static bool MatchLocationParamCoventry(IDictionary<string, WireMockList<string>> arg)
+    private static bool MatchSearchLocationCoventry(IDictionary<string, WireMockList<string>> arg)
     {
         return arg.ContainsKey("locationSearchTerm") && arg["locationSearchTerm"].Count != 0 && arg["locationSearchTerm"][0].Equals("Coventry", StringComparison.CurrentCultureIgnoreCase);        
+    }
+    private static bool MatchSearchLocationManchester(IDictionary<string, WireMockList<string>> arg)
+    {
+        return arg.ContainsKey("locationSearchTerm") && arg["locationSearchTerm"].Count != 0 && arg["locationSearchTerm"][0].Equals("Manchester", StringComparison.CurrentCultureIgnoreCase);        
     }
 
     private static bool MatchLocationParamManchester(IDictionary<string, WireMockList<string>> arg)

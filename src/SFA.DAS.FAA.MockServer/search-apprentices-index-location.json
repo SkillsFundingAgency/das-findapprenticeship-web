@@ -1,0 +1,9 @@
+{
+  "totalApprenticeshipCount" : 1034,
+  "locationSearched": true,
+  "location": {
+    "lat": 52.629399,
+    "lon": -1.12505,
+    "locationName": "Leicester, Leicestershire"
+  }
+}
