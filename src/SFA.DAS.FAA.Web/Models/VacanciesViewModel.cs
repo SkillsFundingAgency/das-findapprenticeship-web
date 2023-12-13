@@ -14,6 +14,7 @@ public class VacanciesViewModel
     public string? AddressLine2 { get; private set; }
     public string? AddressLine3 { get; private set; }
     public string? AddressLine4 { get; private set; }
+
     public string VacancyPostCode { get; private set;}
     public string CourseTitle { get;  private set; }
     public string WageAmount { get; private set;  }

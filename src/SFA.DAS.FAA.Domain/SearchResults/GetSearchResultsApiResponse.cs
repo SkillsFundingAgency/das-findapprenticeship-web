@@ -7,14 +7,24 @@ public class GetSearchResultsApiResponse
 {
     [JsonProperty("totalApprenticeshipCount")]
     public int Total { get; set; }
+
     [JsonProperty("vacancies")]
-    public List <Vacancies> Vacancies { get; set; }
- 
+    public List<Vacancies> Vacancies { get; set; }
+
     [JsonProperty("location")]
     public Location? Location { get; set; }
 
     [JsonProperty("routes")]
     public List<RouteResponse> Routes { get; set; }
+
+    [JsonProperty("PageNumber")]
+    public int PageNumber { get; set; }
+
+    [JsonProperty("PageSize")]
+    public int PageSize { get; set; }
+
+    [JsonProperty("TotalPages")]
+    public int TotalPages { get; set; }
 }
 
 public class Location
