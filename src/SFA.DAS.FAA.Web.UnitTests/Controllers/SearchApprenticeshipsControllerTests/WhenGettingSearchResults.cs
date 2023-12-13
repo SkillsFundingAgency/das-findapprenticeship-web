@@ -41,7 +41,7 @@ public class WhenGettingSearchResults
 
         var actual = await controller.SearchResults(request) as ViewResult;
 
-        Assert.IsNotNull(actual);
+        Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;
         actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
         
