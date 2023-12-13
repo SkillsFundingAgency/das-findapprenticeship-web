@@ -64,14 +64,14 @@
                             </h2>
                         </div>
                         <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
-                             aria-labelledby="apprenticeship-filters-level">
+                            aria-labelledby="apprenticeship-filters-level">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-visually-hidden">Apprenticeship level</legend>
                                 <p class="govuk-hint">Select the level you want to apply for</p>
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     <div class="govuk-checkboxes__item">
                                         <input class="govuk-checkboxes__input" id="level-2" name="levels"
-                                               type="checkbox" value="2" />
+                                            type="checkbox" value="2" />
                                         <label class="govuk-label govuk-checkboxes__label" for="level-2">
                                             Level 2
                                         </label>
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="govuk-checkboxes__item">
                                         <input class="govuk-checkboxes__input" id="level-3" name="levels"
-                                               type="checkbox" value="3" />
+                                            type="checkbox" value="3" />
                                         <label class="govuk-label govuk-checkboxes__label" for="level-3">
                                             Level 3
                                         </label>
@@ -98,21 +98,22 @@
                         <div class="govuk-accordion__section-header">
                             <h2 class="govuk-accordion__section-heading">
                                 <span class="govuk-accordion__section-button"
-                                      id="apprenticeship-filters-heading-categories">
+                                    id="apprenticeship-filters-heading-categories">
                                     Job categories
                                 </span>
                             </h2>
                         </div>
                         <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
-                             aria-labelledby="govuk-accordion__section-content">
+                            aria-labelledby="govuk-accordion__section-content">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-visually-hidden">Job categories</legend>
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     @foreach (var route in Model.Routes)
                                     {
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="@($"cat@{route.Id}")" name="categories"
-                                                   type="checkbox" value="@route.Id" checked="@route.Selected" />
+                                            <input class="govuk-checkboxes__input" id="@($"cat@{route.Id}")"
+                                                name="categories" type="checkbox" value="@route.Id"
+                                                checked="@route.Selected" />
                                             <label class="govuk-label govuk-checkboxes__label" for="@($"cat@{route.Id}")">
                                                 @route.Name
                                             </label>
@@ -129,7 +130,7 @@
                     <div class="govuk-checkboxes govuk-checkboxes--small">
                         <div class="govuk-checkboxes__item">
                             <input class="govuk-checkboxes__input" id="onlyshow" name="disability" type="checkbox"
-                                   value="yes" />
+                                value="yes" />
                             <label class="govuk-label govuk-checkboxes__label" for="disability">
                                 Only show Disability Confident employers
                             </label>
@@ -147,18 +148,17 @@
     <div class="govuk-grid-column-two-thirds">
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
         <div class="icon-link-container" style="float:left; width:50%;">
-            <img src="/public/images/map-icon.png" width="30px" alt="Icon" class="icon"/>
-            <a href="map-02" class="link">Open map</a>
+            
         </div>
         <div style="float:right; width:50%;">
             <div class="govuk-form-group" style="text-align: right;">
-                <label for="sort">Sort results</label>
-                <select class="govuk-select" id="sort" name="sort">
-                    <option value="recent">Most recent</option>
-                    <option value="DistanceAsc" selected="">Distance</option>
-                    <option value="closing">Closing soon</option>
-                    <option value="salary-decending">Salary high to low</option>
-                    <option value="salary-accending">Salary low to high</option>
+                <label class="" for="sort-results">Sort results</label>
+                <select class="govuk-select form-control form-control-auto" id="sort-results" name="sort">
+                    <option value="AgeDesc" selected="@(Model.Sort == "AgeDesc")">Most recent</option>
+                    <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Distance</option>
+                    <option value="ClosingDesc" selected="@(Model.Sort == "ClosingDesc")">Closing soon</option>
+                    <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Salary high to low</option>
+                    <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")">Salary low to high</option>
                 </select>
             </div>
         </div>
@@ -183,16 +183,18 @@
                         {
                             <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.Distance miles</p>
                         }
-                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle (Level @vacancy.CourseLevel) </p>
+                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle (Level
+                            @vacancy.CourseLevel) </p>
                         <p class="govuk-body"><b>Annual wage</b> @vacancy.WageAmount</p>
-                        <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in @vacancy.DaysUntilClosing days (@vacancy.AdvertClosing)</p>
+                        <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in
+                            @vacancy.DaysUntilClosing days (@vacancy.AdvertClosing)</p>
                         <p class="govuk-body govuk-!-font-size-16 govuk-hint">
                             Posted @vacancy.PostedDate
                         </p>
                     </li>
                 }
             </ol>
-            <partial name="_Pagination" Model="@Model.PaginationViewModel" />
         </div>
     </div>
 </div>
+<partial name="_Pagination" Model="@Model.PaginationViewModel" />

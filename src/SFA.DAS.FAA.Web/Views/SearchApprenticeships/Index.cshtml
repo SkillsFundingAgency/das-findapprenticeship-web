@@ -4,23 +4,29 @@
     ViewBag.Title = "Find an apprenticeship – GOV.UK";
 }
 
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing page--faa-homepage" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+
             <h1 class="govuk-heading-xl govuk-!-margin-bottom-3">Search apprenticeships</h1>
             <p class="govuk-hint govuk-!-font-size-24">@Model.TotalText</p>
         </div>
     </div>
+
     <div class="faa-home-panel">
-        <form class="form" action="search-listing" method="post">
+
+        <form class="form" method="get">
+            <input type="hidden" name="search" value="1"/>
             <div class="govuk-grid-row">
+
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div class="govuk-form-group">
-                        <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--m" for="what">
-                                What
-                            </label>
-                        </h1>
+
+                        <label class="govuk-label govuk-label--m" for="what">
+                            What
+                        </label>
+
                         <div id="what-hint" class="govuk-hint">
                             Enter a job or company
                         </div>
@@ -28,23 +34,23 @@
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                    <div class="govuk-form-group">
-                        <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--m" for="where">
-                                Where
-                            </label>
-                        </h1>
+                    <div
+                        class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+
+                        <label class="govuk-label govuk-label--m" for="whereSearchTerm">
+                            Where
+                        </label>
+                        <span asp-validation-for="WhereSearchTerm" class="govuk-error-message"></span>
                         <div id="where-hint" class="govuk-hint">
                             Enter a city or postcode
                         </div>
-                        <input class="govuk-input" id="where" name="where" type="text" aria-describedby="where-hint">
+                        <input class="govuk-input faa-location-autocomplete" name="whereSearchTerm" id="whereSearchTerm"
+                                                       type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
                     </div>
                 </div>
             </div>
             <div class="govuk-button-group govuk-!-margin-bottom-0" href="search-listing">
-                <a asp-route="@RouteNames.SearchResults" role="button" class="govuk-button" data-module="govuk-button">
-                    Search
-                </a>
+                <button class="govuk-button" data-module="govuk-button">Search</button>
                 <a asp-route="@RouteNames.BrowseByInterests" class="govuk-link govuk-link--no-visited-state">Browse by
                     your interests instead</a>
             </div>

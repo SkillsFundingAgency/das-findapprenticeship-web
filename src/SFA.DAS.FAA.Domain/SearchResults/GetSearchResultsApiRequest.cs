@@ -10,9 +10,9 @@ public class GetSearchResultsApiRequest : IGetApiRequest
     private readonly string? _searchTerm;
     private readonly int? _pageNumber;
     private readonly int? _pageSize;
-    private readonly string? _sort;
+    private readonly VacancySort _sort;
 
-    public GetSearchResultsApiRequest(string? location, List<string>? routes, int? distance, string? searchTerm, int? pageNumber, int? pageSize, string? sort)
+    public GetSearchResultsApiRequest(string? location, List<string>? routes, int? distance, string? searchTerm, int? pageNumber, int? pageSize, VacancySort sort)
     {
         _location = location;
         _routes = routes != null ? string.Join("&routes=", routes) : "";
