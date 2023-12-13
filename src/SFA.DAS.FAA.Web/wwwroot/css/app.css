@@ -134,12 +134,17 @@
   border-color: #fd0;
 }
 
-.app-pagination-nav {
-    float: right;
+@media (min-width: 40.0625em) {
+  .faa-pagination-wrap {
+    display: flex;
+    justify-content: right;
+  }
 }
 
-.das-pagination-links > a, .das-pagination-links span {
-    height: 40px;
-    line-height: 40px;
-    margin-left: 15px;
+@media (min-width: 1020px) {
+  .faa-pagination-wrap {
+    display: block;
+    margin-left: 33%;
+    padding-left: 15px;
+  }
 }
