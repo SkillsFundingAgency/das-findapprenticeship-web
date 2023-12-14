@@ -1,7 +1,6 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -11,7 +10,6 @@ using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
-using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -28,9 +26,7 @@ public class WhenGettingSearchResults
         string? searchTerm,
         int pageNumber,
         int pageSize,
-        [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
-        [Frozen] Mock<IDateTimeService> dateTimeService
-        )
+        [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageSize = pageSize;
         result.PageNumber = pageNumber;
@@ -40,11 +36,11 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, validator.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
         {
             Url = mockUrlHelper.Object
         };
-        routeIds = new() { result.Routes.First().Id.ToString() };
+        routeIds = new() {result.Routes.First().Id.ToString()};
 
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
                 c.SearchTerm!.Equals(searchTerm)
@@ -70,7 +66,7 @@ public class WhenGettingSearchResults
         {
             Assert.That(actual, Is.Not.Null);
             var actualModel = actual!.Model as SearchResultsViewModel;
-            actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
+            actualModel?.Total.Should().Be(((SearchResultsViewModel) result).Total);
             actualModel?.SelectedRouteIds.Should().Equal(routeIds);
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.Distance.Should().Be(distance);
@@ -79,7 +75,8 @@ public class WhenGettingSearchResults
             actualModel?.Vacancies.Should().NotBeNullOrEmpty();
 
             actualModel?.SelectedRoutes.Should()
-                .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name).ToList());
+                .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)
+                    .ToList());
             actualModel?.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First())?.Selected.Should().BeTrue();
             actualModel?.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
                 .TrueForAll(x => x).Should().BeFalse();

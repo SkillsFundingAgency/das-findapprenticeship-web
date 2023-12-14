@@ -8,6 +8,6 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
 
         public GetApprenticeshipVacancyApiRequest(string vacancyReference) => _vacancyReference = vacancyReference;
 
-        public string GetUrl => $"searchapprenticeships/{_vacancyReference}";
+        public string GetUrl => $"vacancies/{_vacancyReference}";
     }
 }

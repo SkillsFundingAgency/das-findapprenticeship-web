@@ -12,7 +12,7 @@ namespace SFA.DAS.FAA.Domain.UnitTests.GetApprenticeshipVacancy
         {
             var actual = new GetApprenticeshipVacancyApiRequest(vacancyReference);
 
-            actual.GetUrl.Should().Be($"searchapprenticeships/{vacancyReference}");
+            actual.GetUrl.Should().Be($"vacancies/{vacancyReference}");
         }
     }
 }

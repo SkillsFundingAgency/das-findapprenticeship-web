@@ -27,6 +27,7 @@ public class VacanciesViewModel
     public string ApprenticeshipLevel { get; private set; }
     public int CourseId { get; set; }
     public int CourseLevel { get; set; }
+    public string VacancyReference { get; private set; }
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
@@ -53,7 +54,8 @@ public class VacanciesViewModel
             DaysUntilClosing = CalculateDaysUntilClosing(dateTimeService, vacancies.ClosingDate),
             ApprenticeshipLevel = vacancies.ApprenticeshipLevel,
             CourseId = vacancies.CourseId,
-            CourseLevel = vacancies.CourseLevel
+            CourseLevel = vacancies.CourseLevel,
+            VacancyReference = vacancies.VacancyReference
         };
     }
     public static int? CalculateDaysUntilClosing(IDateTimeService dateTimeService, DateTime? closingDate)

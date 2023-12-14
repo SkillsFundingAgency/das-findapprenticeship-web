@@ -9,7 +9,7 @@ using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
+namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
 
 public class WhenGettingVacancyDetails
 {
@@ -19,7 +19,7 @@ public class WhenGettingVacancyDetails
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
         [Frozen] Mock<IMediator> mediator,
-        [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
+        [Greedy] Web.Controllers.VacanciesController controller)
     {
         mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
@@ -32,6 +32,6 @@ public class WhenGettingVacancyDetails
         var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
 
         actualModel.Should().BeEquivalentTo(expected, options => options
-            .Excluding(x =>x.ClosingDate));
+            .Excluding(x => x.ClosingDate));
     }
 }

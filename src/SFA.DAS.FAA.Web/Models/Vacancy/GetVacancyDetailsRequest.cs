@@ -4,6 +4,6 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
     public class GetVacancyDetailsRequest
     {
-        [FromRoute] public string VacancyReference { get; set; }
+        [FromRoute] public required string VacancyReference { get; init; }
     }
 }

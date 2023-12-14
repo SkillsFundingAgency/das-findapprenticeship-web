@@ -1,21 +1,18 @@
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
-using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
-using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService, IValidator<GetVacancyDetailsRequest> validator) : Controller
+public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService) : Controller
 {
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index([FromQuery]string? whereSearchTerm = null, [FromQuery]string? whatSearchTerm = null, [FromQuery]int? search = null)
@@ -145,24 +142,5 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
 
         return View(viewmodel);
-    }
-
-    [Route("vacancy/{vacancyReference}", Name = RouteNames.Vacancy)]
-    public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
-    {
-        var validation = await validator.ValidateAsync(request);
-        if (!validation.IsValid)
-        {
-            //upcoming stories will be cover this section. 404 not found.
-        }
-
-        var result = await mediator.Send(new GetApprenticeshipVacancyQuery
-        {
-            VacancyReference = request.VacancyReference
-        });
-
-        var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
-
-        return View(viewModel);
     }
 }
