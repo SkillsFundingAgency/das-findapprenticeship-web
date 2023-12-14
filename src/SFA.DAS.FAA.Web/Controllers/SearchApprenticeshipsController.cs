@@ -15,28 +15,29 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class SearchApprenticeshipsController : Controller
+public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService, IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
-    private readonly IMediator _mediator;
-    private readonly IDateTimeService _dateTimeService;
-    private readonly IValidator<GetVacancyDetailsRequest> _validator;
-
-    public SearchApprenticeshipsController(
-        IMediator mediator,
-        IDateTimeService dateTimeService,
-        IValidator<GetVacancyDetailsRequest> validator)
-    {
-        _mediator = mediator;
-        _dateTimeService = dateTimeService;
-        _validator = validator;
-    }
-
-
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index([FromQuery]string? whereSearchTerm = null, [FromQuery]string? whatSearchTerm = null, [FromQuery]int? search = null)
     {
-        var result = await _mediator.Send(new GetSearchApprenticeshipsIndexQuery());
+        var result = await mediator.Send(new GetSearchApprenticeshipsIndexQuery
+        {
+            LocationSearchTerm = whereSearchTerm
+        });
 
+        if (result is { LocationSearched: true, Location: null })
+        {
+            ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+        }
+        else if( result.LocationSearched && result.Location !=null)
+        {
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10"});
+        }
+        else if(search == 1)
+        {
+            return RedirectToRoute(RouteNames.SearchResults);
+        }
+        
         var viewModel = (SearchApprenticeshipsViewModel)result;
         
         return View(viewModel);
@@ -45,7 +46,7 @@ public class SearchApprenticeshipsController : Controller
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
     public async Task<IActionResult> BrowseByInterests([FromQuery] List<string>? routeIds = null)
     {
-        var result = await _mediator.Send(new GetBrowseByInterestsQuery());
+        var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
         var viewModel = (BrowseByInterestViewModel)result;
 
@@ -60,8 +61,7 @@ public class SearchApprenticeshipsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            //TODO - no coverage
-            var result = await _mediator.Send(new GetBrowseByInterestsQuery());
+            var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
             var viewModel = (BrowseByInterestViewModel)result;
             
@@ -94,7 +94,7 @@ public class SearchApprenticeshipsController : Controller
             }
             else
             {
-                var locationResult = await _mediator.Send(new GetBrowseByInterestsLocationQuery { LocationSearchTerm = model.SearchTerm });
+                var locationResult = await mediator.Send(new GetBrowseByInterestsLocationQuery{ LocationSearchTerm = model.SearchTerm });
 
                 if (locationResult.Location == null)
                 {
@@ -117,7 +117,7 @@ public class SearchApprenticeshipsController : Controller
     {
         var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
 
-        var result = await _mediator.Send(new GetSearchResultsQuery
+        var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,
             SelectedRouteIds = request.RouteIds,
@@ -133,7 +133,7 @@ public class SearchApprenticeshipsController : Controller
         viewmodel.Location = request.Location;
         viewmodel.Distance = request.Distance;
         viewmodel.Vacancies = result.Vacancies.Any()
-            ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(_dateTimeService, c)).ToList()
+            ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : new List<VacanciesViewModel>();
         viewmodel.SelectedRoutes =
             request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
@@ -150,18 +150,18 @@ public class SearchApprenticeshipsController : Controller
     [Route("vacancy/{vacancyReference}", Name = RouteNames.Vacancy)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
     {
-        var validation = await _validator.ValidateAsync(request);
+        var validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)
         {
             //upcoming stories will be cover this section. 404 not found.
         }
 
-        var result = await _mediator.Send(new GetApprenticeshipVacancyQuery
+        var result = await mediator.Send(new GetApprenticeshipVacancyQuery
         {
             VacancyReference = request.VacancyReference
         });
 
-        var viewModel = new VacancyDetailsViewModel().MapToViewModel(_dateTimeService, result);
+        var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
 
         return View(viewModel);
     }

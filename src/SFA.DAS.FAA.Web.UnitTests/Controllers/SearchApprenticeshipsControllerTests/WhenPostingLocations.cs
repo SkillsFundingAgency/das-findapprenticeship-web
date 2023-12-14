@@ -36,7 +36,7 @@ public class WhenPostingLocations
     
         var actual = await controller.Location(null, model) as ViewResult;
         
-        Assert.IsNotNull(actual);
+        Assert.That(actual, Is.Not.Null);
         actual!.ViewData.ModelState.ErrorCount.Should().Be(1);
         actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
         actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("Enter a city or postcode");
@@ -52,7 +52,7 @@ public class WhenPostingLocations
     
         var actual = await controller.Location(null, model) as ViewResult;
         
-        Assert.IsNotNull(actual);
+        Assert.That(actual, Is.Not.Null);
         actual!.ViewData.ModelState.ErrorCount.Should().Be(1);
         actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
         actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("Enter a city or postcode");

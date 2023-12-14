@@ -11,7 +11,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models;
 public class WhenCreatingVacanciesViewModel
 {
     [Test, MoqAutoData]
-    public async Task Then_The_Closing_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
+    public void Then_The_Closing_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
     {
 
         var closingDate = new DateTime(2023, 11, 16) ;
@@ -21,11 +21,11 @@ public class WhenCreatingVacanciesViewModel
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies); 
 
-        Assert.AreEqual(expectedClosingDate, actual.AdvertClosing);
+        Assert.That(actual.AdvertClosing, Is.EqualTo(expectedClosingDate));
     }
 
     [Test, MoqAutoData]
-    public async Task Then_The_Posted_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    public void Then_The_Posted_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
 
         var postedDate = new DateTime(2023, 11, 16);
@@ -35,7 +35,7 @@ public class WhenCreatingVacanciesViewModel
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
-        Assert.AreEqual(expectedPostedDate, actual.PostedDate);
+        Assert.That(actual.PostedDate, Is.EqualTo(expectedPostedDate));
     }
 
     [Test]
@@ -55,12 +55,11 @@ public class WhenCreatingVacanciesViewModel
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
-
-        Assert.AreEqual(expected, actual.VacancyLocation);
+        Assert.That(actual.VacancyLocation, Is.EqualTo(expected));
     }
 
     [Test, MoqAutoData]
-    public async Task Then_The_Distance_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    public void Then_The_Distance_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
 
         var distance = 10.897366M;
@@ -70,11 +69,11 @@ public class WhenCreatingVacanciesViewModel
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
-        Assert.AreEqual(expectedDistance, actual.Distance);
+        Assert.That(actual.Distance, Is.EqualTo(expectedDistance));
     }
 
     [Test, MoqAutoData]
-    public async Task Then_Days_Until_Advert_Closes_Is_Shown_Correctly(VacanciesViewModel viewModel,
+    public void Then_Days_Until_Advert_Closes_Is_Shown_Correctly(VacanciesViewModel viewModel,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         var comparisonDate = new DateTime(2023, 11, 16);
@@ -85,7 +84,7 @@ public class WhenCreatingVacanciesViewModel
 
         var actual = VacanciesViewModel.CalculateDaysUntilClosing(dateTimeService.Object, closingDate);
 
-        Assert.AreEqual(expected, actual);
+        Assert.That(actual, Is.EqualTo(expected));
     }
 
 }

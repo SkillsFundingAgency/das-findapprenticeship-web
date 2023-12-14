@@ -9,30 +9,29 @@ using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests
+namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
+
+public class WhenGettingVacancyDetails
 {
-    public class WhenGettingVacancyDetails
+    [Test, MoqAutoData]
+    public async Task Then_The_Mediator_Query_Is_Called_And_Browse_By_Interests_View_Returned(
+        GetApprenticeshipVacancyQueryResult result,
+        GetVacancyDetailsRequest request,
+        IDateTimeService dateTimeService,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
     {
-        [Test, MoqAutoData]
-        public async Task Then_The_Mediator_Query_Is_Called_And_Browse_By_Interests_View_Returned(
-            GetApprenticeshipVacancyQueryResult result,
-            GetVacancyDetailsRequest request,
-            IDateTimeService dateTimeService,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
-        {
-            mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(result);
+        mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
 
-            var actual = await controller.Vacancy(request) as ViewResult;
+        var actual = await controller.Vacancy(request) as ViewResult;
 
-            Assert.IsNotNull(actual);
-            var actualModel = actual!.Model as VacancyDetailsViewModel;
+        Assert.That(actual, Is.Not.Null);
+        var actualModel = actual!.Model as VacancyDetailsViewModel;
 
-            var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
+        var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
 
-            actualModel.Should().BeEquivalentTo(expected, options => options
-                .Excluding(x =>x.ClosingDate));
-        }
+        actualModel.Should().BeEquivalentTo(expected, options => options
+            .Excluding(x =>x.ClosingDate));
     }
 }

@@ -22,8 +22,8 @@ public class WhenGettingBrowseByInterests
 
         var actual = await controller.BrowseByInterests() as ViewResult;
 
-        Assert.IsNotNull(actual);
+        Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as BrowseByInterestViewModel;
-        actualModel.Routes.Should().BeEquivalentTo(((BrowseByInterestViewModel)result).Routes);
+        actualModel!.Routes.Should().BeEquivalentTo(((BrowseByInterestViewModel)result).Routes);
     }
 }

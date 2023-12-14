@@ -2,7 +2,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
-using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.Models;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
@@ -21,7 +20,7 @@ public class WhenCreatingSearchResultsViewModel
 
         var actual = (SearchResultsViewModel)source;
 
-        Assert.AreEqual(expectedText, actual.TotalMessage);
+        Assert.That(actual.TotalMessage, Is.EqualTo(expectedText));
     }
 
     [Test, AutoData]
@@ -29,7 +28,7 @@ public class WhenCreatingSearchResultsViewModel
     {
         var actual = (SearchResultsViewModel)source;
 
-        actual.Location.Should().BeEquivalentTo(source.Location.LocationName);
+        actual.Location.Should().BeEquivalentTo(source.Location!.LocationName);
         actual.Routes.Should().BeEquivalentTo(source.Routes);
         
     }
