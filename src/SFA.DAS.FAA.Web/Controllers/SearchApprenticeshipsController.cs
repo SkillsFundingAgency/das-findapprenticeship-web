@@ -123,7 +123,8 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             Distance = request.Distance,
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
-            PageSize = request.PageSize
+            PageSize = request.PageSize,
+            Sort = request.Sort
         });
 
         var viewmodel = (SearchResultsViewModel)result;

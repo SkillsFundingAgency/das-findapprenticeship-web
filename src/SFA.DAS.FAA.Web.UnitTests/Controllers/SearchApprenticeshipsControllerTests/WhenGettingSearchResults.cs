@@ -1,11 +1,13 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
@@ -18,12 +20,19 @@ public class WhenGettingSearchResults
 {
     [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
-        GetSearchResultsRequest request,
         GetSearchResultsResult result,
         List<string>? routeIds,
+        string? location,
+        int distance,
+        string? searchTerm,
+        int pageNumber,
+        int pageSize,
+        VacancySort sort,
         [Frozen] Mock<IDateTimeService> dateTimeService)
-
     {
+        result.PageSize = pageSize;
+        result.PageNumber = pageNumber;
+        result.Sort = sort.ToString();
         var mediator = new Mock<IMediator>();
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
@@ -34,30 +43,48 @@ public class WhenGettingSearchResults
         {
             Url = mockUrlHelper.Object
         };
+        routeIds = new() {result.Routes.First().Id.ToString()};
 
-        routeIds = new List<string> { result.Routes.First().Id.ToString() };
-        
-        mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
+        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
+                c.SearchTerm!.Equals(searchTerm)
+                && c.Distance!.Equals(distance)
+                && c.Location!.Equals(location)
+                && c.SelectedRouteIds!.Equals(routeIds)
+                && c.PageNumber!.Equals(pageNumber)
+                && c.PageSize!.Equals(pageSize)
+            ), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(request) as ViewResult;
+        var actual = await controller.SearchResults(new GetSearchResultsRequest
+        {
+            Location = location,
+            Distance = distance,
+            RouteIds = routeIds,
+            SearchTerm = searchTerm,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            Sort = sort.ToString()
+        }) as ViewResult;
 
-        Assert.That(actual, Is.Not.Null);
-        var actualModel = actual!.Model as SearchResultsViewModel;
-        actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
-        
-        actualModel?.Location.Should().BeEquivalentTo(request.Location);
-        actualModel?.Distance.Should().Be(request.Distance);
-        actualModel?.Vacancies.Should().NotBeNullOrEmpty();
-        actualModel?.SelectedRouteIds?.Count.Should().Be(request.RouteIds?.Count);
+        using (new AssertionScope())
+        {
+            Assert.That(actual, Is.Not.Null);
+            var actualModel = actual!.Model as SearchResultsViewModel;
+            actualModel?.Total.Should().Be(((SearchResultsViewModel) result).Total);
+            actualModel?.SelectedRouteIds.Should().Equal(routeIds);
+            actualModel?.Location.Should().BeEquivalentTo(location);
+            actualModel?.Distance.Should().Be(distance);
+            actualModel?.PageNumber.Should().Be(pageNumber);
+            actualModel?.PageSize.Should().Be(pageSize);
+            actualModel?.Vacancies.Should().NotBeNullOrEmpty();
+            actualModel?.Sort.Should().Be(sort.ToString());
 
-        //TODO: Will be implemented in the upcoming stories.
-        //if (actualModel.SelectedRoutes != null)
-        //{
-        //    actualModel.SelectedRoutes.Should()
-        //        .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name).ToList());
-        //    actualModel.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First()).Selected.Should().BeTrue();
-        //    actualModel.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
-        //        .TrueForAll(x => x).Should().BeFalse();
-        //}
+            actualModel?.SelectedRoutes.Should()
+                .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)
+                    .ToList());
+            actualModel?.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First())?.Selected.Should().BeTrue();
+            actualModel?.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
+                .TrueForAll(x => x).Should().BeFalse();
+        }
     }
 }
