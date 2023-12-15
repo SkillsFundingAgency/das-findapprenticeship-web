@@ -18,7 +18,7 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             ? VacancySort.DistanceAsc
             : (VacancySort)Enum.Parse(typeof(VacancySort), query.Sort, true);
 
-        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, VacancySort.DistanceAsc); //TODO: when the sort filters are ready, we could remove the hard corded VacancySort.
+        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, sort);
         var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
 
         return new GetSearchResultsResult

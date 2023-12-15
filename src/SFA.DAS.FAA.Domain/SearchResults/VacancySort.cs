@@ -1,11 +1,10 @@
-﻿namespace SFA.DAS.FAA.Domain.SearchResults
+﻿namespace SFA.DAS.FAA.Domain.SearchResults;
+
+public enum VacancySort
 {
-    public enum VacancySort
-    {
-        AgeDesc,
-        DistanceAsc,
-        SalaryDesc,
-        SalaryAsc,
-        ClosingDesc
-    }
+    AgeDesc,
+    DistanceAsc,
+    SalaryDesc,
+    SalaryAsc,
+    ClosingDesc
 }
