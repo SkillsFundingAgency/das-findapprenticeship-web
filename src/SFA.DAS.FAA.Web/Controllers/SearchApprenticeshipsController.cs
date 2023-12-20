@@ -1,16 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
-using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
-using SFA.DAS.FAT.Domain.Interfaces;
-using System.Reflection;
-using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 

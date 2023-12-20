@@ -51,5 +51,8 @@ public class Vacancies
 
     [JsonPropertyName("courseLevel")]
     public int CourseLevel { get; set; }
+
+    [JsonPropertyName("vacancyReference")]
+    public string VacancyReference { get; set; }
 }
 
