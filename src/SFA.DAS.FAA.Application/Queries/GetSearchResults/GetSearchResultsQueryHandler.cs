@@ -14,15 +14,17 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
     }
     public async Task<GetSearchResultsResult> Handle(GetSearchResultsQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm);
+        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize);
         var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
         return new GetSearchResultsResult
         {
             Total = response.Total,
             Location = response.Location,
             Vacancies = response.Vacancies,
-            Routes = response.Routes
-            
+            Routes = response.Routes,
+            PageNumber = response.PageNumber,
+            PageSize = response.PageSize,
+            TotalPages = response.TotalPages
         };
     }
 }

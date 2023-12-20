@@ -8,6 +8,9 @@ using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
+using System.Reflection;
+using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAA.Web.Models.SearchResults;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -109,29 +112,34 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
     }
 
     [Route("search-results", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults([FromQuery] List<string>? routeIds, [FromQuery] string? location, [FromQuery] int? distance, [FromQuery]string? searchTerm)
+    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
+
         var result = await mediator.Send(new GetSearchResultsQuery
         {
-            Location = location,
-            SelectedRouteIds = routeIds,
-            Distance = distance,
-            SearchTerm = searchTerm
+            Location = request.Location,
+            SelectedRouteIds = request.RouteIds,
+            Distance = request.Distance,
+            SearchTerm = request.SearchTerm,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize
         });
 
         var viewmodel = (SearchResultsViewModel)result;
-        viewmodel.SelectedRouteIds = routeIds;
-        viewmodel.NationalSearch = (location == null);
-        viewmodel.Location = location;
-        viewmodel.Distance = distance;
+        viewmodel.SelectedRouteIds = request.RouteIds;
+        viewmodel.NationalSearch = request.Location == null;
+        viewmodel.Location = request.Location;
+        viewmodel.Distance = request.Distance;
         viewmodel.SearchTerm = searchTerm;
         viewmodel.Vacancies = result.Vacancies.Any()
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : new List<VacanciesViewModel>();
         viewmodel.SelectedRoutes =
-            routeIds != null ? result.Routes.Where(c => routeIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
-        
-        foreach (var route in viewmodel.Routes.Where(route => routeIds!.Contains(route.Id.ToString())))
+            request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
+        viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.PageSize, result.TotalPages, filterUrl);
+
+        foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
         {
             route.Selected = true;
         }
