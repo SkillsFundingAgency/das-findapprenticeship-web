@@ -124,12 +124,17 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             PageSize = request.PageSize
         });
 
+        if (result.VacancyReference != null)
+        {
+            RedirectToRoute(RouteNames.Vacancies, new { result.VacancyReference });
+        }
+
         var viewmodel = (SearchResultsViewModel)result;
         viewmodel.SelectedRouteIds = request.RouteIds;
         viewmodel.NationalSearch = request.Location == null;
         viewmodel.Location = request.Location;
         viewmodel.Distance = request.Distance;
-        viewmodel.SearchTerm = searchTerm;
+        viewmodel.SearchTerm = request.SearchTerm;
         viewmodel.Vacancies = result.Vacancies.Any()
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : new List<VacanciesViewModel>();

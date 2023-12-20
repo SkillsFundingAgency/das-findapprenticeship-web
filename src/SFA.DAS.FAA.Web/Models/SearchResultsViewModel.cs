@@ -21,6 +21,7 @@ public class SearchResultsViewModel : ViewModelBase
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
     public PaginationViewModel PaginationViewModel { get; set; } = null!;
+    public string? VacancyReference { get; set; }
 
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
@@ -32,7 +33,8 @@ public class SearchResultsViewModel : ViewModelBase
             Location = source.Location?.LocationName,
             PageSize = source.PageSize,
             PageNumber = source.PageNumber,
-            TotalPages = source.TotalPages
+            TotalPages = source.TotalPages,
+            VacancyReference =source.VacancyReference
         };
     }
     
