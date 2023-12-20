@@ -112,7 +112,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
-        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
+
 
         var result = await mediator.Send(new GetSearchResultsQuery
         {
@@ -126,8 +126,10 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
 
         if (result.VacancyReference != null)
         {
-            RedirectToRoute(RouteNames.Vacancies, new { result.VacancyReference });
+            return RedirectToRoute(RouteNames.Vacancies, new { result.VacancyReference });
         }
+
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
 
         var viewmodel = (SearchResultsViewModel)result;
         viewmodel.SelectedRouteIds = request.RouteIds;

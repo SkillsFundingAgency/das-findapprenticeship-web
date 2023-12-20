@@ -124,6 +124,6 @@ public class WhenGettingSearchResults
         // Assert
         Assert.That(actual, Is.Not.Null);
         actual!.RouteName.Should().Be(RouteNames.Vacancies);
-
+        actual.RouteValues["VacancyReference"].Should().Be(queryResult.VacancyReference);
     }
 }
