@@ -34,5 +34,6 @@ public class WhenGettingSearchResults
         Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
         result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
         result.Location.Should().BeEquivalentTo(expectedResponse.Location);
+        result.VacancyReference.Should().BeEquivalentTo(expectedResponse.VacancyReference);
     }
 }
