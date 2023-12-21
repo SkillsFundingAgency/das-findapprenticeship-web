@@ -1,4 +1,5 @@
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Web.Models.SearchResults;
 
 namespace SFA.DAS.FAA.Web.Models;
 
@@ -20,6 +21,10 @@ public class SearchResultsViewModel : ViewModelBase
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
     public PaginationViewModel PaginationViewModel { get; set; } = null!;
+    public SearchApprenticeshipFilterChoices FilterChoices { get; set; } = new SearchApprenticeshipFilterChoices();
+    public List<SelectedFilter> SelectedFilters { get; set; } = [];
+    public bool ShowFilterOptions => SelectedFilters.Any();
+    public string ClearSelectedFiltersLink { get; set; } = null!;
 
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)

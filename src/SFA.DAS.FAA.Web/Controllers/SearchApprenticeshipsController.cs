@@ -11,6 +11,8 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Reflection;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using System.Drawing;
+using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -123,7 +125,8 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             Distance = request.Distance,
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
-            PageSize = request.PageSize
+            PageSize = request.PageSize,
+            
         });
 
         var viewmodel = (SearchResultsViewModel)result;
@@ -135,14 +138,28 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : new List<VacanciesViewModel>();
         viewmodel.SelectedRoutes =
-            request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
+            request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
         viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.PageSize, result.TotalPages, filterUrl);
-
         foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
         {
             route.Selected = true;
         }
+        var filterChoices = PopulateFilterChoices(viewmodel.Routes);
+        viewmodel.FilterChoices = filterChoices;
+        viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.JobCategoryChecklistDetails.Lookups);
+        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
 
         return View(viewmodel);
     }
+
+    private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories)
+        => new()
+        {
+            JobCategoryChecklistDetails = new ChecklistDetails
+            {
+                Title = "RouteIds",
+                QueryStringParameterName = "routeIds",
+                Lookups = categories.OrderBy(x => x.Name).Select(category => new ChecklistLookup(category.Name, category.Id.ToString(), category.Selected)).ToList()
+            }
+        };
 }

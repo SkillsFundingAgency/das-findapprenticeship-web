@@ -6,11 +6,10 @@ namespace SFA.DAS.FAA.Application.Queries.GetSearchResults;
 public class GetSearchResultsResult
 {
     public int Total { get; set; }
-    public List<Vacancies> Vacancies { get; set; }
-    public List<RouteResponse> Routes { get; set; }
-    public Location? Location { get; set; }
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
-    public int TotalPages { get; set; }
+    public List<Vacancies> Vacancies { get; init; }
+    public List<RouteResponse> Routes { get; init; }
+    public Location? Location { get; init; }
+    public int PageNumber { get; init; }
+    public int PageSize { get; init; }
+    public int TotalPages { get; init; }
 }
-

@@ -24,7 +24,7 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             Routes = response.Routes,
             PageNumber = response.PageNumber,
             PageSize = response.PageSize,
-            TotalPages = response.TotalPages
+            TotalPages = response.TotalPages,
         };
     }
 }
