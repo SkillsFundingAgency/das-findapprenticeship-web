@@ -25,9 +25,6 @@ public class GetSearchResultsApiResponse
 
     [JsonProperty("TotalPages")]
     public int TotalPages { get; set; }
-
-    [JsonProperty("Categories")]
-    public List<string>? Categories { get; set; }
 }
 
 public class Location
