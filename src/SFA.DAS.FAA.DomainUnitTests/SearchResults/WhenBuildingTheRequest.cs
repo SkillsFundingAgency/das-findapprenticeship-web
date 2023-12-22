@@ -12,7 +12,7 @@ public class WhenBuildingTheRequest
     {
         var actual = new GetSearchResultsApiRequest(location, routes, distance, searchTerm, pageNumber, pageSize);
 
-        actual.GetUrl.Should().Be($"searchapprenticeships/searchResults?location={location}&routes={string.Join("&routes=",routes)}&distance={distance}&searchTerm={searchTerm}&pageNumber={pageNumber}&pageSize={pageSize}");
+        actual.GetUrl.Should().Be($"searchapprenticeships/searchResults?location={location}&routeIds={string.Join("&routeIds=", routes)}&distance={distance}&searchTerm={searchTerm}&pageNumber={pageNumber}&pageSize={pageSize}");
     }
 
     [Test]
@@ -20,6 +20,6 @@ public class WhenBuildingTheRequest
     {
         var actual = new GetSearchResultsApiRequest(null, null, null, null, null, null);
 
-        actual.GetUrl.Should().Be("searchapprenticeships/searchResults?location=&routes=&distance=&searchTerm=&pageNumber=&pageSize=");
+        actual.GetUrl.Should().Be("searchapprenticeships/searchResults?location=&routeIds=&distance=&searchTerm=&pageNumber=&pageSize=");
     }
 }

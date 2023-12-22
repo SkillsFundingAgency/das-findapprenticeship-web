@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 
 namespace SFA.DAS.FAA.Web.Services
@@ -35,7 +34,7 @@ namespace SFA.DAS.FAA.Web.Services
         private static string? BuildQueryString(IUrlHelper url, IEnumerable<string> queryParameters, string filterToRemove)
         {
             var queryParametersToBuild = queryParameters.Where(s => s != filterToRemove).ToList();
-            return queryParametersToBuild.Any() 
+            return queryParametersToBuild.Count > 0 
                 ? $"{url.RouteUrl(RouteNames.SearchResults)}?{string.Join('&', queryParametersToBuild)}" 
                 : url.RouteUrl(RouteNames.SearchResults);
         }
@@ -48,7 +47,7 @@ namespace SFA.DAS.FAA.Web.Services
             string parameterName,
             List<ChecklistLookup> lookups)
         {
-            if (selectedValues == null || !selectedValues.Any()) return;
+            if (selectedValues is not {Count: > 0}) return;
 
             var filter = new SelectedFilter
             {
@@ -57,9 +56,11 @@ namespace SFA.DAS.FAA.Web.Services
             };
 
             var index = 0;
-            foreach (var selectedValue in selectedValues.Select(selectedValue => lookups.First(l => l.Value == selectedValue)))
+            foreach (var selectedValue in selectedValues.Select(selectedValue => lookups.FirstOrDefault(l => l.Value == selectedValue)))
             {
-                filter.Filters.Add(BuildFilterItem(url, fullQueryParameters, $"{parameterName}={selectedValue.Value}", selectedValue.Name, ++index));
+                if (selectedValue != null)
+                    filter.Filters.Add(BuildFilterItem(url, fullQueryParameters,
+                        $"{parameterName}={selectedValue.Value}", selectedValue.Name, ++index));
             }
 
             filters.Add(filter);

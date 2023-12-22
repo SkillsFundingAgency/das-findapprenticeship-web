@@ -1,5 +1,6 @@
 @using SFA.DAS.FAA.Web.Infrastructure
-@model SFA.DAS.FAA.Web.Models.SearchResultsViewModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @section BackLink {
     @if (Model.SelectedRouteIds != null && Model.SelectedRouteIds.Any())
     {
