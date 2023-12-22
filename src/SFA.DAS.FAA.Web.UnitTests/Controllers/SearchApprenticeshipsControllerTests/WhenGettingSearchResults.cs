@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using MediatR;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
@@ -28,10 +29,12 @@ public class WhenGettingSearchResults
         string? searchTerm,
         int pageNumber,
         int pageSize,
+        VacancySort sort,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageSize = pageSize;
         result.PageNumber = pageNumber;
+        result.Sort = sort.ToString();
         var mediator = new Mock<IMediator>();
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
@@ -75,6 +78,7 @@ public class WhenGettingSearchResults
             actualModel?.PageNumber.Should().Be(pageNumber);
             actualModel?.PageSize.Should().Be(pageSize);
             actualModel?.Vacancies.Should().NotBeNullOrEmpty();
+            actualModel?.Sort.Should().Be(sort.ToString());
             actualModel?.SelectedRoutes.Should()
                 .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)
                     .ToList());

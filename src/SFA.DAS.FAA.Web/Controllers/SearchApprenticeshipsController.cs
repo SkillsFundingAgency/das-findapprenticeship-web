@@ -124,7 +124,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
             PageSize = request.PageSize,
-            
+            Sort = request.Sort
         });
 
         if (result.VacancyReference != null)
