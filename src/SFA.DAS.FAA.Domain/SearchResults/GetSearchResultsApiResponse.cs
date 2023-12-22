@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
@@ -28,6 +28,9 @@ public class GetSearchResultsApiResponse
 
     [JsonProperty("VacancyReference")]
     public string VacancyReference { get; set; }
+
+    [JsonProperty("Categories")]
+    public List<string>? Categories { get; set; }
 }
 
 public class Location
