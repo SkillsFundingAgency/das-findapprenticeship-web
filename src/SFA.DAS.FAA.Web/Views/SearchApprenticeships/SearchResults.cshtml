@@ -123,6 +123,30 @@
         </div>
     </div>
     <div class="govuk-grid-column-two-thirds">
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                &nbsp;
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <div class="faa-search-results-sort">
+                    <label class="govuk-label faa-search-results-sort__label" for="sort-results">Sort results</label>
+                    <select class="govuk-select faa-search-results-sort__select" id="sort-results" name="sort">
+                        <option value="AgeDesc" selected="@(Model.Sort == "AgeDesc")">Most recent</option>
+                        <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Distance</option>
+                        <option value="ClosingDesc" selected="@(Model.Sort == "ClosingDesc")">Closing soon</option>
+                        <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Salary high to low</option>
+                        <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")">Salary low to high</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
         <hr class="govuk-section-break govuk-section-break--visible">
         <div class="das-search-results">
             <ol class="das-search-results__list">
@@ -130,7 +154,7 @@
                 {
                     <li class="das-search-results__list-item">
                         <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-                            <a class="das-search-results__link" id="standard-274" href=#>
+                            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference" class="das-search-results__link" id="standard-274">
                                 @vacancy.Title
                             </a>
                         </h2>

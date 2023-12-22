@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.AppStart;
 
@@ -6,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 var isIntegrationTest = builder.Environment.EnvironmentName.Equals("IntegrationTest", StringComparison.CurrentCultureIgnoreCase);
 var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTest);
 
-builder.Services.AddOptions();
+builder.Services
+    .AddOptions()
+    .AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 builder.Services.AddConfigurationOptions(rootConfiguration);
 
 builder.Services.AddLogging();

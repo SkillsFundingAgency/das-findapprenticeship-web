@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchResults;
 
@@ -14,8 +14,13 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
     }
     public async Task<GetSearchResultsResult> Handle(GetSearchResultsQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize);
+        var sort = string.IsNullOrEmpty(query.Sort)
+            ? VacancySort.DistanceAsc
+            : (VacancySort)Enum.Parse(typeof(VacancySort), query.Sort, true);
+
+        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, sort);
         var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
+
         return new GetSearchResultsResult
         {
             Total = response.Total,
@@ -25,6 +30,8 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             PageNumber = response.PageNumber,
             PageSize = response.PageSize,
             TotalPages = response.TotalPages,
+            Sort = sort.ToString(),
+            VacancyReference = response.VacancyReference
         };
     }
 }
