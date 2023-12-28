@@ -3,6 +3,7 @@ using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Web.Models;
+using SFA.DAS.FAA.Web.Models.SearchResults;
 using static SFA.DAS.FAA.Web.Models.BrowseByInterestViewModel;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;

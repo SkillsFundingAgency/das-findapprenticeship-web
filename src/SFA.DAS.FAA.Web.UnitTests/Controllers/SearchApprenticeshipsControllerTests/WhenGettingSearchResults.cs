@@ -35,6 +35,7 @@ public class WhenGettingSearchResults
         result.PageSize = pageSize;
         result.PageNumber = pageNumber;
         result.Sort = sort.ToString();
+        result.VacancyReference = null;
         var mediator = new Mock<IMediator>();
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper

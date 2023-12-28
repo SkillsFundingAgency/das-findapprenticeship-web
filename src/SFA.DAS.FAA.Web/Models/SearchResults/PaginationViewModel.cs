@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.FAA.Web.Models
+﻿namespace SFA.DAS.FAA.Web.Models.SearchResults
 {
     public class PaginationViewModel
     {
@@ -28,7 +28,7 @@
 
             if (CurrentPage < totalPages) NextUrl = GetUrl(baseUrl, CurrentPage + 1, PageSize);
 
-            
+
             var delta = 3;
             if (TotalPages > 10)
             {
@@ -47,8 +47,8 @@
             var to = Math.Min(TotalPages, delta + 1);
             for (var index = 1; index <= to; index++)
             {
-                var url = index == CurrentPage 
-                    ? null 
+                var url = index == CurrentPage
+                    ? null
                     : GetUrl(baseUrl, index, PageSize);
                 LinkItems.Add(new LinkItem(url, index.ToString()));
             }
@@ -60,8 +60,8 @@
                 to = Math.Min(endIndex, TotalPages);
                 for (var index = from; index <= to; index++)
                 {
-                    var url = index == CurrentPage 
-                        ? null 
+                    var url = index == CurrentPage
+                        ? null
                         : GetUrl(baseUrl, index, PageSize);
                     LinkItems.Add(new LinkItem(url, index.ToString()));
                 }
