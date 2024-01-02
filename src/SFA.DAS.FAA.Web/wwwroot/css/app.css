@@ -142,6 +142,36 @@
   border-color: #fd0;
 }
 
+@media (min-width: 40.0625em) {
+  .faa-pagination-wrap {
+    display: flex;
+    justify-content: right;
+  }
+}
+
+@media (min-width: 1020px) {
+  .faa-pagination-wrap {
+    display: block;
+    margin-left: 33%;
+    padding-left: 15px;
+  }
+}
+
+.faa-search-results-sort {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 25px;
+}
+
+.faa-search-results-sort__label {
+  padding-right: 10px;
+}
+
+.faa-search-results-sort__select {
+  min-width: 1em;
+}
+
 /* Vacancy */
 
 .faa-vacancy__title {
