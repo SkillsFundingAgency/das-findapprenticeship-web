@@ -133,9 +133,9 @@
                 <div class="faa-search-results-sort">
                     <label class="govuk-label faa-search-results-sort__label" for="sort-results">Sort results</label>
                     <select class="govuk-select faa-search-results-sort__select" id="sort-results" name="sort">
-                        <option value="AgeDesc" selected="@(Model.Sort == "AgeDesc")">Most recent</option>
+                        <option value="AgeAsc" selected="@(Model.Sort == "AgeAsc")">Most recent</option>
                         <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Distance</option>
-                        <option value="ClosingDesc" selected="@(Model.Sort == "ClosingDesc")">Closing soon</option>
+                        <option value="ClosingAsc" selected="@(Model.Sort == "ClosingAsc")">Closing soon</option>
                         <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Salary high to low</option>
                         <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")">Salary low to high</option>
                     </select>
@@ -166,9 +166,8 @@
                         {
                             <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.Distance miles</p>
                         }
-                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle (Level
-                            @vacancy.CourseLevel) </p>
-                        <p class="govuk-body"><b>Annual wage</b> @vacancy.WageAmount</p>
+                        <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle</p>
+                        <p class="govuk-body"><b>Annual wage</b> @vacancy.WageText</p>
                         <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">Closes in
                             @vacancy.DaysUntilClosing days (@vacancy.AdvertClosing)</p>
                         <p class="govuk-body govuk-!-font-size-16 govuk-hint">

@@ -37,7 +37,9 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? TrainingDescription { get; init; }
         public List<string> Skills { get; init; } = new();
 
-
+        public string? CourseTitle { get; set; }
+        public string? ThingsToConsider { get; set; }
+        public string? OutcomeDescription { get; set; }
         public bool IsDisabilityConfident { get; init; }
 
         public List<Qualification>? EssentialQualifications { get; init; } = new();
@@ -59,6 +61,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 PositionsAvailable = source.Vacancy.NumberOfPositions,
 
                 WorkDescription = source.Vacancy.TrainingDescription,
+                ThingsToConsider = source.Vacancy.ThingsToConsider,
 
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
@@ -68,7 +71,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
 
                 TrainingProviderName = source.Vacancy.ProviderName,
                 TrainingDescription = source.Vacancy.TrainingDescription,
-
+                OutcomeDescription = source.Vacancy.OutcomeDescription,
+                
                 Skills = source.Vacancy.Skills.ToList(),
 
                 EmployerWebsite = source.Vacancy.EmployerWebsiteUrl,
@@ -78,6 +82,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 EmployerEmail = source.Vacancy.EmployerContactEmail,
                 EmployerPhone = source.Vacancy.EmployerContactPhone,
 
+                CourseTitle = $"{source.Vacancy.CourseTitle} (level {source.Vacancy.CourseLevel})",
+                
                 EssentialQualifications = source.Vacancy.Qualifications.Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
                 DesiredQualifications = source.Vacancy.Qualifications.Where(fil => fil.Weighting == Weighting.Desired).Select(l => (Qualification)l).ToList(),
             };

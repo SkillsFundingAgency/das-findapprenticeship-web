@@ -112,7 +112,7 @@
                             Training course
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            Business administration (Level 3)
+                            @Model.CourseTitle
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
@@ -161,7 +161,7 @@
                     allowing you to take the next step with confidence.
                 </p>
                 <h3 class="govuk-heading-s">What you’ll do at work</h3>
-                <p>TBC</p>
+                <p>@Html.Raw(Model.WorkDescription)</p>
                 <h3 class="govuk-heading-s">Where you’ll work</h3>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine1</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine2</p>
@@ -171,7 +171,7 @@
             </section>
             <section class="faa-vacancy__section" id="training">
                 <h2 class="govuk-heading-m">Training</h2>
-                @Html.Raw(Model.TrainingDescription)
+                <p>@Html.Raw(Model.TrainingDescription)</p>
                 <h3 class="govuk-heading-s">College or training organisation</h3>
                 <p>@Model.TrainingProviderName</p>
                 <h3 class="govuk-heading-s">Your training course</h3>
@@ -206,8 +206,12 @@
                 </details>
                 <h3 class="govuk-heading-s">Your training plan</h3>
                 <p>TBC</p>
-                <h3 class="govuk-heading-s">Additional training information</h3>
-                <p>TBC</p>
+                @if(!string.IsNullOrEmpty(Model.ThingsToConsider))
+                {
+                    <h3 class="govuk-heading-s">Additional training information</h3>
+                    <p>@Model.ThingsToConsider</p>
+                }
+                
             </section>
             <section class="faa-vacancy__section" id="requirements">
                 <h2 class="govuk-heading-m">Requirements</h2>
@@ -271,7 +275,7 @@
             <section class="faa-vacancy__section" id="after">
                 <h2 class="govuk-heading-m">After this apprenticeship</h2>
                 <p>
-                    TBC
+                    @Model.OutcomeDescription
                 </p>
             </section>
             <section class="faa-vacancy__section" id="question">

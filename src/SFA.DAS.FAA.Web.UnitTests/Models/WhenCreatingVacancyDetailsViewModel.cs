@@ -11,6 +11,22 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
 public class WhenCreatingVacancyDetailsViewModel
 {
+    // [Test, MoqAutoData]
+    // public void Then_The_Fields_Are_Mapped(GetApprenticeshipVacancyQueryResult vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
+    // {
+    //     var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+    //
+    //     actual.Should().BeEquivalentTo(vacancies.Vacancy, options=> options
+    //         .Excluding(c=>c.ClosingDate)
+    //         .Excluding(c=>c.PostedDate)
+    //         .Excluding(c=>c.Id)
+    //         .Excluding(c=>c.CourseTitle)
+    //         .Excluding(c=>c.Address.Postcode)
+    //     );
+    //     actual.CourseTitle.Should().Be($"{vacancies.Vacancy.CourseTitle} (level {vacancies.Vacancy.CourseLevel})");
+    //     //actual.VacancyPostCode.Should().Be(vacancies.Postcode);
+    // }
+    
     [Test]
     [MoqInlineAutoData(null, "0 hours")]
     [MoqInlineAutoData("0", "0 hours")]

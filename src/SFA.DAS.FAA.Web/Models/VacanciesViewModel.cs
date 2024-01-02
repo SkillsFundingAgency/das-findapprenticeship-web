@@ -28,6 +28,7 @@ public class VacanciesViewModel
     public int CourseId { get; set; }
     public int CourseLevel { get; set; }
     public string VacancyReference { get; private set; }
+    public string WageText { get; set; }
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
@@ -40,7 +41,7 @@ public class VacanciesViewModel
             AddressLine3 = vacancies.AddressLine3,
             AddressLine4 = vacancies.AddressLine4,
             VacancyPostCode = vacancies.Postcode,
-            CourseTitle = vacancies.CourseTitle,
+            CourseTitle = $"{vacancies.CourseTitle} (level {vacancies.CourseLevel})",
             WageAmount = vacancies.WageAmount,
             AdvertClosing = FormatCloseDate(vacancies.ClosingDate),
             PostedDate = FormatPostDate(vacancies.PostedDate),
@@ -55,9 +56,13 @@ public class VacanciesViewModel
             ApprenticeshipLevel = vacancies.ApprenticeshipLevel,
             CourseId = vacancies.CourseId,
             CourseLevel = vacancies.CourseLevel,
-            VacancyReference = vacancies.VacancyReference
+            VacancyReference = vacancies.VacancyReference,
+            WageText = vacancies.WageText
         };
     }
+
+    
+
     public static int? CalculateDaysUntilClosing(IDateTimeService dateTimeService, DateTime? closingDate)
     {
         if (closingDate.HasValue)

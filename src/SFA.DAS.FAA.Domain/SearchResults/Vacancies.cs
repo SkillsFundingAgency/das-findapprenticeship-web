@@ -22,7 +22,7 @@ public class Vacancies
     [JsonPropertyName("title")]
     public string Title { get; set; }
 
-    [JsonPropertyName("subCategory")]
+    [JsonPropertyName("courseTitle")]
     public string CourseTitle { get; set; }
     [JsonPropertyName("standardLarsCode")]
     public int CourseId { get; set; }
@@ -54,5 +54,7 @@ public class Vacancies
 
     [JsonPropertyName("vacancyReference")]
     public string VacancyReference { get; set; }
+    [JsonPropertyName("wageText")]
+    public string WageText { get; set; }
 }
 
