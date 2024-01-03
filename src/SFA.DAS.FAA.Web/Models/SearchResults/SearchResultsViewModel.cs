@@ -9,8 +9,6 @@ public class SearchResultsViewModel : ViewModelBase
     public List<string>? SelectedRouteIds { get; set; }
     public List<string> SelectedRoutes { get; set; } = new List<string>();
     public List<RouteViewModel> Routes { get; set; }
-
-    public string? WhatSearchTerm { get; set; }
     public int Total { get; set; }
     public string TotalMessage => $"{(Total == 0 ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
     public int? Distance { get; set; }
