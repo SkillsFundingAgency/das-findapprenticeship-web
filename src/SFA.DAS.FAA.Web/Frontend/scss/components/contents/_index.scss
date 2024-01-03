@@ -18,7 +18,7 @@
 }
 
 .faa-contents__list-item:before {
-  color: #0b0c0c;
+  color: $govuk-text-colour;
   content: "—";
   margin-left: -25px;
   padding-right: 5px;

@@ -6,7 +6,7 @@
   "author": "ESFA",
   "license": "ISC",
   "scripts": {
-    "sass-dev": "sass --watch --update --style=expanded scss/:../wwwroot/css",
+    "sass-dev": "sass -w --update --style=expanded --load-path=node_modules/govuk-frontend/dist scss:../wwwroot/css",
     "sass-prod": "sass --no-source-map --style=compressed scss/:../wwwroot/css"
   },
   "dependencies": {

@@ -8,7 +8,7 @@
 
 .faa-vacancy__location {
   margin-bottom: 30px;
-  color: #505a5f;
+  color: $govuk-secondary-text-colour;
 }
 
 .faa-vacancy__closing-date {
@@ -16,7 +16,7 @@
 }
 
 .faa-vacancy__section {
-  border-bottom: 1px solid #b1b4b6;
+  border-bottom: 1px solid $govuk-border-colour;
   padding-bottom: 20px;
   margin-bottom: 20px;
 }

@@ -1,5 +1,5 @@
 .faa-filter {
-  border: 1px solid #b1b4b6;
+  border: 1px solid $govuk-border-colour;
 }
 
 .faa-filter__header,
@@ -23,7 +23,7 @@
 }
 
 .faa-filter__selected {
-  background: #f3f2f1;
+  background: govuk-colour("light-grey");
   padding: 15px;
   margin-bottom: 15px;
 }
@@ -51,15 +51,9 @@
 }
 
 .faa-filter__tag {
-  font-family: "GDS Transport", arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.2;
   background-color: #fff;
-  border: 1px solid #0b0c0c;
-  color: #0b0c0c;
+  border: 1px solid govuk-colour("black");
+  color: $govuk-text-colour;
   display: inline-block;
   margin-top: 5px;
   padding: 5px 7px;
@@ -93,7 +87,7 @@
 }
 
 .faa-filter__tag:hover {
-  background: #0b0c0c;
+  background: govuk-colour("black");
   color: #fff;
 }
 
