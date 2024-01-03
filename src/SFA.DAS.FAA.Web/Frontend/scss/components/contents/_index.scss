@@ -1,6 +1,8 @@
 .faa-contents {
-  position: sticky;
-  top: 10px;
+  @include govuk-media-query(tablet) {
+    position: sticky;
+    top: 10px;
+  }
 }
 
 .faa-contents__list {

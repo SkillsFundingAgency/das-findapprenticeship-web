@@ -6,8 +6,8 @@
   "author": "ESFA",
   "license": "ISC",
   "scripts": {
-    "sass-dev": "sass --update --style=expanded --load-path=node_modules/govuk-frontend/dist scss:../wwwroot/css",
-    "sass-prod": "sass --no-source-map --style=compressed --load-path=node_modules/govuk-frontend/dist scss/:../wwwroot/css"
+    "develop": "sass --update --style=expanded --load-path=node_modules/govuk-frontend/dist Frontend/scss:wwwroot/css",
+    "build": "sass --no-source-map --quiet-deps --style=compressed --load-path=node_modules/govuk-frontend/dist Frontend/scss/:wwwroot/css"
   },
   "dependencies": {
     "govuk-frontend": "^5.0.0",
