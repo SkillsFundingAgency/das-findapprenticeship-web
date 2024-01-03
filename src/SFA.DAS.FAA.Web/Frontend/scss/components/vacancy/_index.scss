@@ -1,0 +1,75 @@
+.faa-vacancy__title {
+  margin-bottom: 10px;
+}
+
+.faa-vacancy__organisation {
+  margin-bottom: 0;
+}
+
+.faa-vacancy__location {
+  margin-bottom: 30px;
+  color: $govuk-secondary-text-colour;
+}
+
+.faa-vacancy__closing-date {
+  margin: 0;
+}
+
+.faa-vacancy__section {
+  border-bottom: 1px solid $govuk-border-colour;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.faa-vacancy-actions {
+  margin: 20px 0 30px;
+}
+
+.faa-vacancy-actions__link {
+  margin-right: 20px;
+}
+
+.faa-vacancy-actions__icon {
+  max-height: 1em;
+  position: relative;
+  top: 3px;
+  margin-right: 3px;
+}
+
+.faa-vacancy__section > h2:not([class]) {
+  @extend .govuk-heading-l;
+}
+
+.faa-vacancy__section > h3:not([class]) {
+  @extend .govuk-heading-m;
+}
+
+.faa-vacancy__section > h4:not([class]) {
+  @extend .govuk-heading-s;
+}
+
+.faa-vacancy__section > p:not([class]) {
+  @extend .govuk-body;
+  color: inherit;
+}
+
+.faa-vacancy__section > p:empty {
+  display: none;
+}
+
+.faa-vacancy__section > ul:not([class]) {
+  @extend .govuk-list;
+  @extend .govuk-list--bullet;
+  color: inherit;
+}
+
+.faa-vacancy__section > ul > li > p,
+.faa-vacancy__section > ol > li > p {
+  margin: 0;
+}
+
+.faa-vacancy__section > ol:not([class]) {
+  @extend .govuk-list;
+  @extend .govuk-list--number;
+  color: inherit;
+}
