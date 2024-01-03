@@ -26,6 +26,12 @@ namespace SFA.DAS.FAA.Web.Services
         private static List<string> BuildQueryParameters(GetSearchResultsRequest request)
         {
             var queryParameters = new List<string>();
+            if (!string.IsNullOrEmpty(request.SearchTerm))
+                queryParameters.Add($"searchTerm={request.SearchTerm}");
+            if (request.Distance is not null)
+                queryParameters.Add($"distance={request.Distance}");
+            if (!string.IsNullOrEmpty(request.Location))
+                queryParameters.Add($"location={request.Location}");
             if (request.RouteIds != null)
                 queryParameters.AddRange(request.RouteIds.Select(isActive => "routeIds=" + isActive));
             return queryParameters;
@@ -39,13 +45,13 @@ namespace SFA.DAS.FAA.Web.Services
                 : url.RouteUrl(RouteNames.SearchResults);
         }
         private static void AddFilterItems(
-            this List<SelectedFilter> filters,
+            this ICollection<SelectedFilter> filters,
             IUrlHelper url,
-            List<string> fullQueryParameters,
+            IReadOnlyCollection<string> fullQueryParameters,
             List<string>? selectedValues,
             string fieldName,
             string parameterName,
-            List<ChecklistLookup> lookups)
+            IReadOnlyCollection<ChecklistLookup> lookups)
         {
             if (selectedValues is not {Count: > 0}) return;
 
@@ -68,7 +74,7 @@ namespace SFA.DAS.FAA.Web.Services
 
         private static SearchApprenticeFilterItem BuildFilterItem(
             IUrlHelper url,
-            List<string> queryParameters,
+            IEnumerable<string> queryParameters,
             string filterToRemove,
             string filterValue,
             int filterFieldOrder)
