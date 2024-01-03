@@ -1,0 +1,16 @@
+{
+  "name": "find-an-apprenticeship-frontend",
+  "version": "1.0.0",
+  "description": "The frontend structure needed to style FAA",
+  "main": "index.js",
+  "author": "ESFA",
+  "license": "ISC",
+  "scripts": {
+    "sass-dev": "sass --watch --update --style=expanded scss/:../wwwroot/css",
+    "sass-prod": "sass --no-source-map --style=compressed scss/:../wwwroot/css"
+  },
+  "dependencies": {
+    "govuk-frontend": "^5.0.0",
+    "sass": "^1.69.7"
+  }
+}
