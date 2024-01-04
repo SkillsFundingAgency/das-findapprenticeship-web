@@ -24,7 +24,7 @@ public class Vacancies
 
     [JsonPropertyName("courseTitle")]
     public string CourseTitle { get; set; }
-    [JsonPropertyName("standardLarsCode")]
+    [JsonPropertyName("courseId")]
     public int CourseId { get; set; }
     [JsonPropertyName("wageText")]
     public string WageAmount { get; set; }
@@ -50,7 +50,7 @@ public class Vacancies
     public decimal? Distance { get; set; }
 
     [JsonPropertyName("courseLevel")]
-    public int CourseLevel { get; set; }
+    public string CourseLevel { get; set; }
 
     [JsonPropertyName("vacancyReference")]
     public string VacancyReference { get; set; }

@@ -26,7 +26,7 @@ public class VacanciesViewModel
     public int? DaysUntilClosing { get; private set; }
     public string ApprenticeshipLevel { get; private set; }
     public int CourseId { get; set; }
-    public int CourseLevel { get; set; }
+    public string CourseLevel { get; set; }
     public string VacancyReference { get; private set; }
     public string WageText { get; set; }
 

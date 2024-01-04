@@ -1,11 +1,13 @@
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 
 @{
-    ViewBag.Title = @Model.Title;
+    ViewBag.Title = Model.Title;
 }
 
 @section BackLink {
-    <a class="govuk-back-link" href="#">Back</a>
+    <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
 }
 
 <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
@@ -157,10 +159,7 @@
             <section class="faa-vacancy__section" id="work">
                 <h2 class="govuk-heading-m">Work</h2>
                 <p>
-                    At the end of this apprenticeship, you’ll have a recognised qualification for an in-demand job. This
-                    apprenticeship will introduce you to other business analysts, software developers, product owners
-                    and designers from across AOF and other businesses. You’ll have gained a huge amount of knowledge,
-                    allowing you to take the next step with confidence.
+                    @Model.CourseOverviewOfRole
                 </p>
                 <h3 class="govuk-heading-s">What you’ll do at work</h3>
                 <p>@Html.Raw(Model.WorkDescription)</p>
@@ -185,31 +184,16 @@
                         </span>
                     </summary>
                     <div class="govuk-details__text">
-                        <li>
-                            Skilled in the use of multiple IT packages and systems relevant to the organisation in order
-                            to: write
-                            letters or
-                            emails, create proposals, perform financial processes, record and analyse data. Examples
-                            include MS
-                            Office or equivalent
-                            packages. Able to choose the most appropriate IT solution to suit the business problem. Able
-                            to update
-                            and review
-                            databases, record information and produce data analysis where required.
-                        </li>
-                        <div class="govuk-!-padding-bottom-3"></div>
-                        <li>
-                            Produces accurate records and documents including: emails, letters, files, payments, reports
-                            and
-                            proposals. Makes
-                            recommendations for improvements and present solutions to management. Drafts correspondence,
-                            writes
-                            reports and able to
-                            review others' work. Maintains records and files, handles confidential information in
-                            compliance with
-                            the organisation's
-                            procedures. Coaches others in the processes required to complete these tasks.
-                        </li>
+                        @foreach(var skills in Model.CourseSkills)
+                        {
+                            <li>@skills</li>
+                            <div class="govuk-!-padding-bottom-3"></div>
+                        }
+                        @foreach(var skills in Model.CourseCoreDuties)
+                        {
+                            <li>@skills</li>
+                            <div class="govuk-!-padding-bottom-3"></div>
+                        }
                     </div>
                 </details>
                 <h3 class="govuk-heading-s">Your training plan</h3>
@@ -248,10 +232,10 @@
                 <h3 class="govuk-heading-s">Skills</h3>
                 <p>
                 <ul class="govuk-list govuk-list--bullet">
-                        @foreach (var skills in Model.Skills)
-                        {
-                        <li>@skills</li>
-                        }
+                    @foreach (var skills in Model.Skills)
+                    {
+                    <li>@skills</li>
+                    }
                 </ul>
                 </p>
                 <h3 class="govuk-heading-s">Other requirements</h3>
@@ -271,15 +255,15 @@
                 }
                 <h3 class="govuk-heading-s">Company benefits</h3>
                 <p>
-                <ul class="govuk-list govuk-list--bullet">
-                        @foreach (var skills in Model.Skills)
-                        {
+                    <ul class="govuk-list govuk-list--bullet">
                         <li>TBC</li>
-                        }
-                </ul>
+                    </ul>
                 </p>
-                <h3 class="govuk-heading-s">Disability Confident</h3>
-                <p>TBC</p>
+                @if (Model.IsDisabilityConfident)
+                {
+                    <h3 class="govuk-heading-s">Disability Confident</h3>
+                }
+                
             </section>
             <section class="faa-vacancy__section" id="after">
                 <h2 class="govuk-heading-m">After this apprenticeship</h2>

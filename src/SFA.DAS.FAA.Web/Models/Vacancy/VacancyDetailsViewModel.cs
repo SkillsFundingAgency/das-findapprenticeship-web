@@ -44,6 +44,13 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
 
         public List<Qualification>? EssentialQualifications { get; init; } = new();
         public List<Qualification>? DesiredQualifications { get; init; } = new();
+        public string? StandardPageUrl { get; set; }
+
+        public string? CourseOverviewOfRole { get; set; }
+
+        public List<string> CourseCoreDuties { get; set; } = new();
+
+        public List<string> CourseSkills { get; set; } = new();
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService, GetApprenticeshipVacancyQueryResult source)
         {
@@ -86,8 +93,16 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 
                 EssentialQualifications = source.Vacancy.Qualifications.Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
                 DesiredQualifications = source.Vacancy.Qualifications.Where(fil => fil.Weighting == Weighting.Desired).Select(l => (Qualification)l).ToList(),
+                
+                CourseSkills = source.Vacancy.CourseSkills,
+                CourseCoreDuties = source.Vacancy.CourseCoreDuties,
+                CourseOverviewOfRole = source.Vacancy.CourseOverviewOfRole,
+                StandardPageUrl = source.Vacancy.StandardPageUrl,
+                IsDisabilityConfident = source.Vacancy.IsDisabilityConfident
             };
         }
+
+        
     }
 
     public class Address
