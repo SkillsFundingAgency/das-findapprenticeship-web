@@ -1,0 +1,14 @@
+@media (min-width: 40.0625em) {
+  .faa-pagination-wrap {
+    display: flex;
+    justify-content: right;
+  }
+}
+
+@media (min-width: 1020px) {
+  .faa-pagination-wrap {
+    display: block;
+    margin-left: 33%;
+    padding-left: 15px;
+  }
+}

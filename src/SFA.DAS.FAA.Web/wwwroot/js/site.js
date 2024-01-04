@@ -58,3 +58,16 @@ if (locationInputs.length > 0) {
     }
   }
 }
+
+const sortSelect = document.getElementById("sort-results");
+
+if (sortSelect) {
+  sortSelect.addEventListener("change", (e) => {
+    const sortValue = e.target.value;
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    params.delete("sort");
+    params.append("sort", sortValue);
+    document.location.href = "?" + params.toString();
+  });
+}

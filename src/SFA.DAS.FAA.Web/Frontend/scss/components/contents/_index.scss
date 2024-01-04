@@ -1,0 +1,27 @@
+.faa-contents {
+  @include govuk-media-query(tablet) {
+    position: sticky;
+    top: 10px;
+  }
+}
+
+.faa-contents__list {
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.faa-contents__list > li {
+  margin-bottom: 10px;
+}
+
+.faa-contents__list-item {
+  margin-left: 25px;
+  padding-right: 25px;
+}
+
+.faa-contents__list-item:before {
+  color: $govuk-text-colour;
+  content: "—";
+  margin-left: -25px;
+  padding-right: 5px;
+}

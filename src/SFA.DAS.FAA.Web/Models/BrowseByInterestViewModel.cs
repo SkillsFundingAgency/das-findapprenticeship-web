@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
+using SFA.DAS.FAA.Web.Models.SearchResults;
 
 namespace SFA.DAS.FAA.Web.Models;
 

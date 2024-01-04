@@ -3,6 +3,7 @@ using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -10,6 +11,22 @@ using SFA.DAS.FAT.Domain.Interfaces;
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 public class WhenCreatingVacanciesViewModel
 {
+    [Test, MoqAutoData]
+    public void Then_The_Fields_Are_Mapped(Vacancies vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
+    {
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+
+        actual.Should().BeEquivalentTo(vacancies, options=> options
+            .Excluding(c=>c.ClosingDate)
+            .Excluding(c=>c.PostedDate)
+            .Excluding(c=>c.Id)
+            .Excluding(c=>c.CourseTitle)
+            .Excluding(c=>c.Postcode)
+            );
+        actual.CourseTitle.Should().Be($"{vacancies.CourseTitle} (level {vacancies.CourseLevel})");
+        actual.VacancyPostCode.Should().Be(vacancies.Postcode);
+    }
+    
     [Test, MoqAutoData]
     public void Then_The_Closing_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
     {

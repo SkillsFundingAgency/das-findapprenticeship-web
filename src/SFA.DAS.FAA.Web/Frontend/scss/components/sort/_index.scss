@@ -1,0 +1,14 @@
+.faa-search-results-sort {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 25px;
+}
+
+.faa-search-results-sort__label {
+  padding-right: 10px;
+}
+
+.faa-search-results-sort__select {
+  min-width: 1em;
+}
