@@ -15,11 +15,14 @@ namespace SFA.DAS.FAA.Web.Services
         public static List<SelectedFilter> Build(
             GetSearchResultsRequest request,
             IUrlHelper urlHelper,
-            IEnumerable<ChecklistLookup> categoriesLookups)
+            IEnumerable<ChecklistLookup> categoriesLookups,
+            IEnumerable<ChecklistLookup> levelsLookups
+            )
         {
             var filters = new List<SelectedFilter>();
             var fullQueryParameters = BuildQueryParameters(request);
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", categoriesLookups.ToList());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship Level", "levelIds", levelsLookups.ToList());
             return filters;
         }
 
@@ -34,6 +37,8 @@ namespace SFA.DAS.FAA.Web.Services
                 queryParameters.Add($"location={request.Location}");
             if (request.RouteIds != null)
                 queryParameters.AddRange(request.RouteIds.Select(isActive => "routeIds=" + isActive));
+            if (request.LevelIds != null)
+                queryParameters.AddRange(request.LevelIds.Select(isActive => "levelIds=" + isActive));
             return queryParameters;
         }
 

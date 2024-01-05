@@ -9,6 +9,7 @@ public class SearchResultsViewModel : ViewModelBase
     public List<string>? SelectedRouteIds { get; set; }
     public List<string> SelectedRoutes { get; set; } = new List<string>();
     public List<RouteViewModel> Routes { get; set; }
+    public List<LevelViewModel> Levels { get; set; }
     public int Total { get; set; }
     public string TotalMessage => $"{(Total == 0 ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
     public int? Distance { get; set; }
@@ -38,7 +39,8 @@ public class SearchResultsViewModel : ViewModelBase
             PageNumber = source.PageNumber,
             TotalPages = source.TotalPages,
             VacancyReference =source.VacancyReference,
-            Sort = source.Sort
+            Sort = source.Sort,
+            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList()
         };
     }
 

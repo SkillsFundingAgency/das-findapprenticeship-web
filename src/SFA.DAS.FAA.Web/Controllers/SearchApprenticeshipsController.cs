@@ -116,6 +116,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         {
             Location = request.Location,
             SelectedRouteIds = request.RouteIds,
+            SelectedLevelIds = request.LevelIds,
             Distance = request.Distance,
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
@@ -139,29 +140,38 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         viewmodel.Vacancies = result.Vacancies.Any()
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : new List<VacanciesViewModel>();
-        viewmodel.SelectedRoutes =
-            request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
+        viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
         viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.PageSize, result.TotalPages, filterUrl);
         foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
         {
             route.Selected = true;
         }
-        var filterChoices = PopulateFilterChoices(viewmodel.Routes);
+        foreach (var level in viewmodel.Levels.Where(level => request.LevelIds != null && request.LevelIds!.Contains(level.Id.ToString())))
+        {
+            level.Selected = true;
+        }
+        var filterChoices = PopulateFilterChoices(viewmodel.Routes, viewmodel.Levels);
         viewmodel.FilterChoices = filterChoices;
-        viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.JobCategoryChecklistDetails.Lookups);
+        viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.JobCategoryChecklistDetails.Lookups, filterChoices.CourseLevelsChecklistDetails.Lookups);
         viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
 
         return View(viewmodel);
     }
 
-    private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories)
+    private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
         => new()
         {
             JobCategoryChecklistDetails = new ChecklistDetails
             {
                 Title = "RouteIds",
                 QueryStringParameterName = "routeIds",
-                Lookups = categories.OrderBy(x => x.Name).Select(category => new ChecklistLookup(category.Name, category.Id.ToString(), category.Selected)).ToList()
+                Lookups = categories.OrderBy(x => x.Name).Select(category => new ChecklistLookup(category.Name, category.Id.ToString(), null, category.Selected)).ToList()
+            },
+            CourseLevelsChecklistDetails = new ChecklistDetails
+            {
+                Title = "LevelIds",
+                QueryStringParameterName = "levelIds",
+                Lookups = levels.OrderBy(x => x.Id).Select(level => new ChecklistLookup($"Level {level.Id}", level.Id.ToString(), $"Equal to {level.Name}", level.Selected)).ToList()
             }
         };
 }
