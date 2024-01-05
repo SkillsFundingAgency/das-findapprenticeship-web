@@ -19,47 +19,19 @@ namespace SFA.DAS.FAA.Web.Services
         {
             var filters = new List<SelectedFilter>();
             var fullQueryParameters = BuildQueryParameters(request);
-            if (!string.IsNullOrEmpty(request.SearchTerm))
-            {
-                filters.Add(new SelectedFilter
-                {
-                    FieldName = "What",
-                    FieldOrder = -1,
-                    Filters =
-                    [
-                        new()
-                        {
-                            ClearFilterLink = BuildQueryString(urlHelper, fullQueryParameters, [$"searchTerm={request.SearchTerm}"]),
-                            Order = 0,
-                            Value = $"{request.SearchTerm}"
-                        }
-                    ]
-                });
-            }
-            if (!string.IsNullOrEmpty(request.Location))
-            {
-                var distanceValue = request.Distance != null ? $"within {request.Distance} miles" : "Across England";
-                filters.Add(new SelectedFilter
-                {
-                    FieldName = "Where",
-                    FieldOrder = 0,
-                    Filters =
-                    [
-                        new()
-                        {
-                            ClearFilterLink = BuildQueryString(urlHelper, fullQueryParameters, [$"location={request.Location}",$"distance={(request.Distance == null ? "all" : request.Distance)}"]),
-                            Order = 0,
-                            Value = $"{request.Location} ({distanceValue})"
-                        }
-                    ]
-                });
-            }
+            
+            filters.AddSingleFieldSearchTerm(urlHelper, fullQueryParameters, "What",
+                request.SearchTerm,[$"searchTerm={request.SearchTerm}"]);
+            filters.AddSingleFieldSearchTerm(urlHelper, fullQueryParameters, "Where",
+                $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "Across England")})",
+                [$"location={request.Location}", $"distance={(request.Distance == null ? "all" : request.Distance)}"]);
             
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
             
             return filters;
         }
 
+        
         private static List<string> BuildQueryParameters(GetSearchResultsRequest request)
         {
             var queryParameters = new List<string>();
@@ -114,6 +86,34 @@ namespace SFA.DAS.FAA.Web.Services
 
             filters.Add(filter);
         }
+        
+        private static void AddSingleFieldSearchTerm(
+            this ICollection<SelectedFilter> filters, 
+            IUrlHelper urlHelper,
+            List<string> fullQueryParameters,
+            string fieldName,
+            string value,
+            List<string> filterToRemove)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                filters.Add(new SelectedFilter
+                {
+                    FieldName = fieldName,
+                    FieldOrder = -1,
+                    Filters =
+                    [
+                        new()
+                        {
+                            ClearFilterLink = BuildQueryString(urlHelper, fullQueryParameters, filterToRemove),
+                            Order = 0,
+                            Value = value
+                        }
+                    ]
+                });
+            }
+        }
+
 
         private static SearchApprenticeFilterItem BuildFilterItem(
             IUrlHelper url,
