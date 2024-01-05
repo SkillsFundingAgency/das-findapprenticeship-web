@@ -29,6 +29,8 @@ public class VacanciesViewModel
     public string CourseLevel { get; set; }
     public string VacancyReference { get; private set; }
     public string WageText { get; set; }
+    public bool IsClosingSoon { get; set; }
+    public bool IsNew { get; set; }
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
@@ -57,7 +59,9 @@ public class VacanciesViewModel
             CourseId = vacancies.CourseId,
             CourseLevel = vacancies.CourseLevel,
             VacancyReference = vacancies.VacancyReference,
-            WageText = vacancies.WageText
+            WageText = vacancies.WageText,
+            IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7), 
+            IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7) 
         };
     }
 
