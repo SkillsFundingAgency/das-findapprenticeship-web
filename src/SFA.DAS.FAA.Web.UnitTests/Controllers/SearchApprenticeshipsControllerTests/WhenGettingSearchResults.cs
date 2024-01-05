@@ -10,11 +10,9 @@ using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
-using System.Drawing.Printing;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -24,6 +22,7 @@ public class WhenGettingSearchResults
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
         GetSearchResultsResult result,
         List<string>? routeIds,
+        List<string>? levelIds,
         string? location,
         int distance,
         string? searchTerm,
@@ -46,7 +45,7 @@ public class WhenGettingSearchResults
         {
             Url = mockUrlHelper.Object
         };
-        routeIds = new() {result.Routes.First().Id.ToString()};
+        routeIds = [result.Routes.First().Id.ToString()];
 
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
                 c.SearchTerm!.Equals(searchTerm)
@@ -65,7 +64,8 @@ public class WhenGettingSearchResults
             RouteIds = routeIds,
             SearchTerm = searchTerm,
             PageNumber = pageNumber,
-            PageSize = pageSize
+            PageSize = pageSize,
+            LevelIds = levelIds
         }) as ViewResult;
 
         using (new AssertionScope())
@@ -86,12 +86,16 @@ public class WhenGettingSearchResults
             actualModel?.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First())?.Selected.Should().BeTrue();
             actualModel?.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
                 .TrueForAll(x => x).Should().BeFalse();
+            actualModel?.Levels.FirstOrDefault(x => x.Id.ToString() == levelIds.First())?.Selected.Should().BeTrue();
+            actualModel?.Levels.Where(x => x.Id.ToString() != levelIds.First()).Select(x => x.Selected).ToList()
+                .TrueForAll(x => x).Should().BeFalse();
         }
     }
 
     [Test, MoqAutoData]
     public async Task Then_When_Vacancy_Reference_Has_Value_It_Is_Redirected_To_Vacancy_Details(
         List<string>? routeIds,
+        List<string>? levelIds,
         string? location,
         int distance,
         string? searchTerm,
@@ -123,7 +127,8 @@ public class WhenGettingSearchResults
             RouteIds = routeIds,
             SearchTerm = searchTerm,
             PageNumber = pageNumber,
-            PageSize = pageSize
+            PageSize = pageSize,
+            LevelIds = levelIds, 
         }) as RedirectToRouteResult;
 
         // Assert

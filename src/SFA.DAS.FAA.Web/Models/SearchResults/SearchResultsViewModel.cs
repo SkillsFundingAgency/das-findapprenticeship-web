@@ -24,7 +24,7 @@ public class SearchResultsViewModel : ViewModelBase
     public string? VacancyReference { get; set; }
     public SearchApprenticeshipFilterChoices FilterChoices { get; set; } = new SearchApprenticeshipFilterChoices();
     public List<SelectedFilter> SelectedFilters { get; set; } = new();
-    public bool ShowFilterOptions => SelectedFilters.Any();
+    public bool ShowFilterOptions => SelectedFilters.Count != 0;
     public string ClearSelectedFiltersLink { get; set; } = null!;
 
 

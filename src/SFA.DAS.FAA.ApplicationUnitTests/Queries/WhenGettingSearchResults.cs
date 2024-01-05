@@ -39,6 +39,7 @@ public class WhenGettingSearchResults
             Assert.AreEqual(expectedResponse.TotalFound, result.Total);
             Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
+            result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
             result.PageNumber.Should().Be(expectedResponse.PageNumber);
             result.PageSize.Should().Be(expectedResponse.PageSize);
