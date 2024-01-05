@@ -20,9 +20,9 @@ namespace SFA.DAS.FAA.Web.Services
             var filters = new List<SelectedFilter>();
             var fullQueryParameters = BuildQueryParameters(request);
             
-            filters.AddSingleFieldSearchTerm(urlHelper, fullQueryParameters, "What",
+            filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "What",
                 request.SearchTerm,[$"searchTerm={request.SearchTerm}"]);
-            filters.AddSingleFieldSearchTerm(urlHelper, fullQueryParameters, "Where",
+            filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Where",
                 string.IsNullOrEmpty(request.Location) ? "" : $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "Across England")})",
                 [$"location={request.Location}", $"distance={(request.Distance == null ? "all" : request.Distance)}"]);
             
@@ -90,7 +90,7 @@ namespace SFA.DAS.FAA.Web.Services
             filters.Add(filter);
         }
         
-        private static void AddSingleFieldSearchTerm(
+        private static void AddSingleFilterItem(
             this ICollection<SelectedFilter> filters, 
             IUrlHelper urlHelper,
             List<string> fullQueryParameters,
