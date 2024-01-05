@@ -49,6 +49,9 @@ namespace SFA.DAS.FAA.Web.Services
                 
             if (request.RouteIds != null)
                 queryParameters.AddRange(request.RouteIds.Select(isActive => "routeIds=" + isActive));
+            
+            if (!string.IsNullOrEmpty(request.Sort))
+                queryParameters.Add($"sort={request.Sort}");
             return queryParameters;
         }
 

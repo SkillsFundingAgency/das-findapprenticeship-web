@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
@@ -219,6 +220,25 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             actual.First().FieldName.Should().Be("What");
             actual.First().Filters.First().Value.Should().Be("Software Developer");
             actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
+
+        }
+        
+        [Test]
+        public void Then_What_Search_Term_Is_Added_To_Filter_List_With_Sort()
+        {
+            var request = new GetSearchResultsRequest { RouteIds = [], SearchTerm = "Software Developer", Sort = VacancySort.AgeAsc.ToString()};
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(SearchResultsUrl);
+            
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+                new SearchApprenticeshipFilterChoices
+                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
+
+            actual.First().FieldName.Should().Be("What");
+            actual.First().Filters.First().Value.Should().Be("Software Developer");
+            actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults?sort=AgeAsc");
 
         }
         [TestCase(null,"Coventry (Across England)")]
