@@ -36,7 +36,7 @@ public class WhenGettingSearchResults
         using (new AssertionScope())
         {
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedResponse.Total, result.Total);
+            Assert.AreEqual(expectedResponse.TotalFound, result.Total);
             Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);

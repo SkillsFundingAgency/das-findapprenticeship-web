@@ -66,6 +66,10 @@
 
         public IEnumerable<VacancyQualificationApiResponse> Qualifications { get; init; }
         public AddressApiResponse Address { get; init; }
+        public List<string> CourseSkills { get; init; }
+        public List<string> CourseCoreDuties { get; init; }
+        public string? CourseOverviewOfRole { get; init; }
+        public string? StandardPageUrl { get; init; }
     }
 
     public class VacancyQualificationApiResponse

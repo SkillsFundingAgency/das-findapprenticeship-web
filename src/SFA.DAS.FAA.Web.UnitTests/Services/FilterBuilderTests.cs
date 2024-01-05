@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 
@@ -50,7 +51,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             if (routeId != null)
             {
-                var lookup = new ChecklistLookup(parameterName, routeId, true);
+                var lookup = new ChecklistLookup(parameterName, routeId, null,true);
 
                 categoriesLookups.Add(lookup);
 
@@ -63,7 +64,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns(SearchResultsUrl);
 
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, categoriesLookups);
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+                { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
 
             if (expectedNumberOfFilters == 0)
             {
@@ -115,7 +117,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns(SearchResultsUrl);
 
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, categoriesLookups);
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+                { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
 
             var firstItem = actual.First();
             firstItem.Filters.Count.Should().Be(2);
@@ -174,7 +177,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns(SearchResultsUrl);
 
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, categoriesLookups);
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+                new SearchApprenticeshipFilterChoices
+                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
 
             var firstItem = actual.First();
             firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
@@ -196,6 +201,43 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             filterThird.ClearFilterLink.Should().Be(SearchResultsUrl + expectedThird);
             filterThird.Order.Should().Be(3);
             filterThird.Value.Should().Be(parameterName);
+        }
+
+        [Test]
+        public void Then_What_Search_Term_Is_Added_To_Filter_List()
+        {
+            var request = new GetSearchResultsRequest { RouteIds = [], SearchTerm = "Software Developer"};
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(SearchResultsUrl);
+            
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+                new SearchApprenticeshipFilterChoices
+                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
+
+            actual.First().FieldName.Should().Be("What");
+            actual.First().Filters.First().Value.Should().Be("Software Developer");
+            actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
+
+        }
+        [TestCase(null,"Coventry (Across England)")]
+        [TestCase(10,"Coventry (within 10 miles)")]
+        public void Then_Where_With_Distance_Search_Term_Is_Added_To_Filter_List(int? distance, string expected)
+        {
+            var request = new GetSearchResultsRequest { RouteIds = [], Location = "Coventry", Distance = distance};
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(SearchResultsUrl);
+            
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+                new SearchApprenticeshipFilterChoices
+                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
+
+            actual.First().FieldName.Should().Be("Where");
+            actual.First().Filters.First().Value.Should().Be(expected);
+            actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
         }
     }
 }
