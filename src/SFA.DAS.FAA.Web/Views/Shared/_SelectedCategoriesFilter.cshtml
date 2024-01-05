@@ -1,6 +1,7 @@
 ﻿@model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @if (Model.ShowFilterOptions)
 {
+    <div class="faa-filter__selected">
     <div class="faa-filter__selected-header">
     <h3 class="govuk-heading-m faa-filter__selected-heading">Selected filters</h3>
     <a class="faa-filter__selected-action govuk-link govuk-link--no-visited-state"
@@ -14,4 +15,5 @@
             <a href="@filter.ClearFilterLink" title="@filter.Value" class="faa-filter__tag das-breakable">@filter.Value</a>
         }
     }
+    </div>
 }
