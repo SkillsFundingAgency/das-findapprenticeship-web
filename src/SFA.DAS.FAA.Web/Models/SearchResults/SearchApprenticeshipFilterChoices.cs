@@ -2,6 +2,6 @@
 {
     public class SearchApprenticeshipFilterChoices
     {
-        public ChecklistDetails JobCategoryChecklistDetails { get; set; } = new ChecklistDetails();
+        public ChecklistDetails JobCategoryChecklistDetails { get; set; } = new();
     }
 }

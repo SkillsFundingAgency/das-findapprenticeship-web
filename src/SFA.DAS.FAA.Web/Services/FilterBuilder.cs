@@ -9,17 +9,54 @@ namespace SFA.DAS.FAA.Web.Services
         public static string BuildFullQueryString(GetSearchResultsRequest request, IUrlHelper url)
         {
             var fullQueryParameters = BuildQueryParameters(request);
-            return BuildQueryString(url, fullQueryParameters, "none")!;
+            return BuildQueryString(url, fullQueryParameters, ["none"])!;
         }
 
         public static List<SelectedFilter> Build(
             GetSearchResultsRequest request,
             IUrlHelper urlHelper,
-            IEnumerable<ChecklistLookup> categoriesLookups)
+            SearchApprenticeshipFilterChoices filterChoices)
         {
             var filters = new List<SelectedFilter>();
             var fullQueryParameters = BuildQueryParameters(request);
-            filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", categoriesLookups.ToList());
+            if (!string.IsNullOrEmpty(request.SearchTerm))
+            {
+                filters.Add(new SelectedFilter
+                {
+                    FieldName = "What",
+                    FieldOrder = -1,
+                    Filters =
+                    [
+                        new()
+                        {
+                            ClearFilterLink = BuildQueryString(urlHelper, fullQueryParameters, [$"searchTerm={request.SearchTerm}"]),
+                            Order = 0,
+                            Value = $"{request.SearchTerm}"
+                        }
+                    ]
+                });
+            }
+            if (!string.IsNullOrEmpty(request.Location))
+            {
+                var distanceValue = request.Distance != null ? $"within {request.Distance} miles" : "Across England";
+                filters.Add(new SelectedFilter
+                {
+                    FieldName = "Where",
+                    FieldOrder = 0,
+                    Filters =
+                    [
+                        new()
+                        {
+                            ClearFilterLink = BuildQueryString(urlHelper, fullQueryParameters, [$"location={request.Location}",$"distance={(request.Distance == null ? "all" : request.Distance)}"]),
+                            Order = 0,
+                            Value = $"{request.Location} ({distanceValue})"
+                        }
+                    ]
+                });
+            }
+            
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
+            
             return filters;
         }
 
@@ -28,18 +65,24 @@ namespace SFA.DAS.FAA.Web.Services
             var queryParameters = new List<string>();
             if (!string.IsNullOrEmpty(request.SearchTerm))
                 queryParameters.Add($"searchTerm={request.SearchTerm}");
-            if (request.Distance is not null)
-                queryParameters.Add($"distance={request.Distance}");
+            
             if (!string.IsNullOrEmpty(request.Location))
+            {
                 queryParameters.Add($"location={request.Location}");
+                if (request.Distance is not null)
+                    queryParameters.Add($"distance={request.Distance}");
+                else
+                    queryParameters.Add("distance=all");
+            }
+                
             if (request.RouteIds != null)
                 queryParameters.AddRange(request.RouteIds.Select(isActive => "routeIds=" + isActive));
             return queryParameters;
         }
 
-        private static string? BuildQueryString(IUrlHelper url, IEnumerable<string> queryParameters, string filterToRemove)
+        private static string? BuildQueryString(IUrlHelper url, IEnumerable<string> queryParameters, List<string> filterToRemove)
         {
-            var queryParametersToBuild = queryParameters.Where(s => s != filterToRemove).ToList();
+            var queryParametersToBuild = queryParameters.Where(s => !filterToRemove.Contains(s)).ToList();
             return queryParametersToBuild.Count > 0 
                 ? $"{url.RouteUrl(RouteNames.SearchResults)}?{string.Join('&', queryParametersToBuild)}" 
                 : url.RouteUrl(RouteNames.SearchResults);
@@ -81,7 +124,7 @@ namespace SFA.DAS.FAA.Web.Services
             =>
                 new()
                 {
-                    ClearFilterLink = BuildQueryString(url, queryParameters, filterToRemove),
+                    ClearFilterLink = BuildQueryString(url, queryParameters, [filterToRemove]),
                     Order = filterFieldOrder,
                     Value = filterValue
                 };
