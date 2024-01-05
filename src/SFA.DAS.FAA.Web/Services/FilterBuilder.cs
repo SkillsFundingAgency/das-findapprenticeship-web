@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Web.Services
             filters.AddSingleFieldSearchTerm(urlHelper, fullQueryParameters, "What",
                 request.SearchTerm,[$"searchTerm={request.SearchTerm}"]);
             filters.AddSingleFieldSearchTerm(urlHelper, fullQueryParameters, "Where",
-                $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "Across England")})",
+                string.IsNullOrEmpty(request.Location) ? "" : $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "Across England")})",
                 [$"location={request.Location}", $"distance={(request.Distance == null ? "all" : request.Distance)}"]);
             
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
