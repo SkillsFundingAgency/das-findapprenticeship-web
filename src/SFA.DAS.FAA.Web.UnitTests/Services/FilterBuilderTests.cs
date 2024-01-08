@@ -402,5 +402,45 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             actual.First().Filters.First().Value.Should().Be(expected);
             actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
         }
+
+        [TestCase(true, "DisabilityConfident", "True")]
+        [TestCase(false, "DisabilityConfident", null)]
+        public void Then_DisabilityConfident_Filter_Is_Added_To_Filter_List(bool isDisabilityConfident, string expectedFieldName, string expectedFilterValue)
+        {
+            // Arrange
+            var request = new GetSearchResultsRequest { DisabilityConfident = isDisabilityConfident };
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(SearchResultsUrl);
+
+            // Act
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+                new SearchApprenticeshipFilterChoices
+                {
+                    JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() }
+                });
+
+            // Assert
+            if (isDisabilityConfident)
+            {
+                actual.Should().ContainSingle();
+                var disabilityConfidentFilter = actual.Single();
+
+                disabilityConfidentFilter.FieldName.Should().Be(expectedFieldName);
+                actual.Should().ContainSingle();
+
+                disabilityConfidentFilter.FieldName.Should().Be(expectedFieldName);
+                disabilityConfidentFilter.Filters.Should().HaveCount(1);
+                var filter = disabilityConfidentFilter.Filters.Single();
+                filter.Value.Should().Be(expectedFilterValue);
+                filter.ClearFilterLink.Should().Be("searchResults");
+            }
+            else
+            {
+                actual.Should().BeEmpty();
+            }
+        }
+
     }
 }
