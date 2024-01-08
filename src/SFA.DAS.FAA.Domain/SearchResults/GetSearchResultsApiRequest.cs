@@ -27,5 +27,5 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         _disabilityConfident = disabilityConfident;
     }
 
-    public string GetUrl => $"searchapprenticeships/searchResults?location={_location}&routeIds={_routes}&distance={_distance}&searchTerm={_searchTerm}&pageNumber={_pageNumber}&pageSize={_pageSize}&sort={_sort}&levelIds={_levels}&isDisabilityConfident{_disabilityConfident}";
+    public string GetUrl => $"searchapprenticeships/searchResults?location={_location}&routeIds={_routes}&distance={_distance}&searchTerm={_searchTerm}&pageNumber={_pageNumber}&pageSize={_pageSize}&sort={_sort}&levelIds={_levels}&isDisabilityConfident={_disabilityConfident}";
 }

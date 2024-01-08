@@ -20,6 +20,6 @@ public class WhenBuildingTheRequest
     {
         var actual = new GetSearchResultsApiRequest(null, null, null, null, null, null, null, VacancySort.DistanceAsc, false);
 
-        actual.GetUrl.Should().Be("searchapprenticeships/searchResults?location=&routeIds=&distance=&searchTerm=&pageNumber=&pageSize=&sort=DistanceAsc&levelIds=&isDisabilityConfident=false");
+        actual.GetUrl.Should().Be("searchapprenticeships/searchResults?location=&routeIds=&distance=&searchTerm=&pageNumber=&pageSize=&sort=DistanceAsc&levelIds=&isDisabilityConfident=False");
     }
 }
