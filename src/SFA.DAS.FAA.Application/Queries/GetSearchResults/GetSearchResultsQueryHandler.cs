@@ -33,6 +33,7 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             Sort = sort.ToString(),
             VacancyReference = response.VacancyReference,
             Levels = response.Levels,
+            DisabilityConfident = response.DisabilityConfident,
         };
     }
 }
