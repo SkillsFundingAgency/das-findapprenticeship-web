@@ -34,8 +34,11 @@ public class GetSearchResultsApiResponse
 
     [JsonProperty("Categories")]
     public List<string>? Categories { get; set; }
+
     [JsonProperty("levels")]
     public List<LevelResponse> Levels { get; set; }
+
+
 }
 
 public class Location

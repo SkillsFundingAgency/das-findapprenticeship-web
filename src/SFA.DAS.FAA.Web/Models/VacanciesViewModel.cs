@@ -31,6 +31,7 @@ public class VacanciesViewModel
     public string WageText { get; set; }
     public bool IsClosingSoon { get; set; }
     public bool IsNew { get; set; }
+    public bool IsDisabilityConfident { get; set; }
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
@@ -61,7 +62,8 @@ public class VacanciesViewModel
             VacancyReference = vacancies.VacancyReference,
             WageText = vacancies.WageText,
             IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7), 
-            IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7) 
+            IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
+            IsDisabilityConfident = vacancies.DisabilityConfident
         };
     }
 

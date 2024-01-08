@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
@@ -54,7 +55,11 @@ public class Vacancies
 
     [JsonPropertyName("vacancyReference")]
     public string VacancyReference { get; set; }
+
     [JsonPropertyName("wageText")]
     public string WageText { get; set; }
+
+    [JsonProperty("disabilityConfident")]
+    public bool DisabilityConfident { get; set; }
 }
 
