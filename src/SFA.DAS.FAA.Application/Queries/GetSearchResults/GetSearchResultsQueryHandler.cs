@@ -18,7 +18,7 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             ? VacancySort.DistanceAsc
             : (VacancySort)Enum.Parse(typeof(VacancySort), query.Sort, true);
 
-        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, sort);
+        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, sort);
         var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
 
         return new GetSearchResultsResult
@@ -31,7 +31,8 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             PageSize = response.PageSize,
             TotalPages = response.TotalPages,
             Sort = sort.ToString(),
-            VacancyReference = response.VacancyReference
+            VacancyReference = response.VacancyReference,
+            Levels = response.Levels,
         };
     }
 }

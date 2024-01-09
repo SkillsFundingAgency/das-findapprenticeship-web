@@ -6,6 +6,12 @@
     "lon": -1.12505,
     "locationName": "Leicester, Leicestershire"
   },
+  "levels": [
+    {
+      "name": "GCSE",
+      "id": 3
+    }
+  ],
   "routes": [
     {
       "name": "Agriculture, environmental and animal care",

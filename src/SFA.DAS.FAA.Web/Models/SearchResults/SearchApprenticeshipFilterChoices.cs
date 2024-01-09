@@ -3,5 +3,6 @@
     public class SearchApprenticeshipFilterChoices
     {
         public ChecklistDetails JobCategoryChecklistDetails { get; set; } = new ChecklistDetails();
+        public ChecklistDetails CourseLevelsChecklistDetails { get; set; } = new ChecklistDetails();
     }
 }

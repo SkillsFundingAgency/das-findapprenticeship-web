@@ -1,6 +1,4 @@
-﻿using SFA.DAS.FAA.Web.Models.SearchResults;
-
-namespace SFA.DAS.FAA.Web.Models
+﻿namespace SFA.DAS.FAA.Web.Models.SearchResults
 {
     public class ChecklistDetails
     {
