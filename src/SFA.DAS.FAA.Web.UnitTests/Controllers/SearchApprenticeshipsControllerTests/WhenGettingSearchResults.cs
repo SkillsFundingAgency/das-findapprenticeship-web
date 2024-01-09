@@ -74,6 +74,8 @@ public class WhenGettingSearchResults
             var actualModel = actual!.Model as SearchResultsViewModel;
             actualModel?.Total.Should().Be(((SearchResultsViewModel) result).Total);
             actualModel?.SelectedRouteIds.Should().Equal(routeIds);
+            actualModel?.SelectedRouteCount.Should().Be(routeIds.Count);
+            actualModel?.SelectedLevelCount.Should().Be(levelIds.Count);
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.Distance.Should().Be(distance);
             actualModel?.PageNumber.Should().Be(pageNumber);

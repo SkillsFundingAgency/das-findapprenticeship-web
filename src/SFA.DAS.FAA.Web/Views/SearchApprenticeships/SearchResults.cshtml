@@ -57,6 +57,10 @@
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-visually-hidden">Apprenticeship level</legend>
                                     <p class="govuk-hint">Select the level you want to apply for</p>
+                                    @if (Model.SelectedLevelCount != 0)
+                                    {
+                                        <div class="govuk-hint">@Model.SelectedLevelCount.ToString() selected</div>    
+                                    }
                                     <div class="govuk-checkboxes govuk-checkboxes--small">
                                         <partial name="_FilterDetails" Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
                                         <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3">
@@ -71,8 +75,7 @@
                         <div class="govuk-accordion__section">
                             <div class="govuk-accordion__section-header">
                                 <h2 class="govuk-accordion__section-heading">
-                                    <span class="govuk-accordion__section-button"
-                                          id="apprenticeship-filters-heading-categories">
+                                    <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-categories">
                                         Job categories
                                     </span>
                                 </h2>
@@ -81,6 +84,11 @@
                                  aria-labelledby="govuk-accordion__section-content">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-visually-hidden">Job categories</legend>
+                                    @if (Model.SelectedRouteCount != 0)
+                                    {
+                                        <div class="govuk-hint">@Model.SelectedRouteCount.ToString() selected</div>    
+                                    }
+                                    
                                     <div class="govuk-checkboxes govuk-checkboxes--small">
                                         <partial name="_FilterDetails" Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
                                     </div>
