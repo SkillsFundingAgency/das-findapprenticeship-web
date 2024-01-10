@@ -95,3 +95,15 @@
   position: relative;
   top: -6px;
 }
+
+.faa-filter__selected-hint {
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.js-enabled
+  .govuk-accordion__section-button:focus
+  .govuk-accordion__section-heading-text-focus
+  .faa-filter__selected-hint {
+  @include govuk-focused-text;
+}

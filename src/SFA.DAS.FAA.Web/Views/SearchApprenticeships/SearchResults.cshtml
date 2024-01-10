@@ -29,8 +29,9 @@
                     <div class="govuk-form-group">
                         <label for="location" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
                         <p class="govuk-hint">Enter a city or postcode</p>
-                        <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location" id="location"
-                               type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
+                        <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location"
+                            id="location" type="search" spellcheck="false" autocomplete="postal-code"
+                            aria-describedby="where-hint">
                         <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
                         <select class="govuk-select" id="within" name="distance">
                             <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
@@ -47,51 +48,59 @@
                         <div class="govuk-accordion__section">
                             <div class="govuk-accordion__section-header">
                                 <h2 class="govuk-accordion__section-heading">
-                                    <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-level">
+                                    <span class="govuk-accordion__section-button"
+                                        id="apprenticeship-filters-heading-level">
                                         Apprenticeship level
+                                        @if (Model.SelectedLevelCount != 0)
+                                        {
+                                            <span class="govuk-hint faa-filter__selected-hint" aria-hidden="true">
+                                                @Model.SelectedLevelCount.ToString() selected</span>
+                                        }
                                     </span>
+
                                 </h2>
+
                             </div>
                             <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
-                                 aria-labelledby="apprenticeship-filters-level">
+                                aria-labelledby="apprenticeship-filters-level">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-visually-hidden">Apprenticeship level</legend>
                                     <p class="govuk-hint">Select the level you want to apply for</p>
-                                    @if (Model.SelectedLevelCount != 0)
-                                    {
-                                        <div class="govuk-hint">@Model.SelectedLevelCount.ToString() selected</div>    
-                                    }
-                                    <div class="govuk-checkboxes govuk-checkboxes--small">
-                                        <partial name="_FilterDetails" Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
-                                        <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3">
-                                            <a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank" rel="external">
-                                                What qualification levels mean (opens in new tab)
-                                            </a>
-                                        </p>
-                                    </div>
+
+                                    <partial name="_FilterDetails"
+                                        Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
                                 </fieldset>
+                                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3">
+                                    <a class="govuk-link govuk-link--no-visited-state"
+                                        href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels"
+                                        target="_blank" rel="external">
+                                        What qualification levels mean (opens in new tab)
+                                    </a>
+                                </p>
                             </div>
                         </div>
                         <div class="govuk-accordion__section">
                             <div class="govuk-accordion__section-header">
                                 <h2 class="govuk-accordion__section-heading">
-                                    <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-categories">
+                                    <span class="govuk-accordion__section-button"
+                                        id="apprenticeship-filters-heading-categories">
                                         Job categories
                                     </span>
                                 </h2>
                             </div>
                             <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
-                                 aria-labelledby="govuk-accordion__section-content">
+                                aria-labelledby="govuk-accordion__section-content">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-visually-hidden">Job categories</legend>
                                     @if (Model.SelectedRouteCount != 0)
                                     {
-                                        <div class="govuk-hint">@Model.SelectedRouteCount.ToString() selected</div>    
+                                        <div class="govuk-hint">@Model.SelectedRouteCount.ToString() selected</div>
                                     }
-                                    
-                                    <div class="govuk-checkboxes govuk-checkboxes--small">
-                                        <partial name="_FilterDetails" Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
-                                    </div>
+
+
+                                    <partial name="_FilterDetails"
+                                        Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
+
                                 </fieldset>
                             </div>
                         </div>
@@ -102,7 +111,7 @@
                         <div class="govuk-checkboxes govuk-checkboxes--small">
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input" id="onlyshow" name="disability" type="checkbox"
-                                       value="yes" />
+                                    value="yes" />
                                 <label class="govuk-label govuk-checkboxes__label" for="disability">
                                     Only show Disability Confident employers
                                 </label>
@@ -144,17 +153,18 @@
                         {
                             <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
                                 Closing soon
-                            </strong>    
+                            </strong>
                         }
                         @if (vacancy.IsNew)
                         {
                             <strong class="govuk-tag govuk-!-margin-bottom-2">
                                 New
-                            </strong>    
+                            </strong>
                         }
-                        
+
                         <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-                            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference" class="das-search-results__link" id="standard-274">
+                            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference"
+                                class="das-search-results__link" id="standard-274">
                                 @vacancy.Title
                             </a>
                         </h2>
