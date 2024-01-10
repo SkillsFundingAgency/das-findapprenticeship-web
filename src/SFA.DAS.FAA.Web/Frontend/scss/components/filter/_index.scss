@@ -90,3 +90,8 @@
   box-shadow: 0 0 #fd0, 0 4px #0b0c0c;
   border-color: #fd0;
 }
+
+.faa-filter__checkbox-label + .govuk-checkboxes__hint {
+  position: relative;
+  top: -6px;
+}
