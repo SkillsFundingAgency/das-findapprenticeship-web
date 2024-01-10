@@ -86,9 +86,10 @@
                                         id="apprenticeship-filters-heading-categories">
                                         Job categories
                                         @if (Model.SelectedRouteCount != 0)
-                                    {
-                                        <span class="govuk-hint faa-filter__selected-hint" aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</div>
-                                    }
+                                        {
+                                            <span class="govuk-hint faa-filter__selected-hint"
+                                                aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</span>
+                                        }
                                     </span>
                                 </h2>
                             </div>
@@ -96,7 +97,7 @@
                                 aria-labelledby="govuk-accordion__section-content">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-visually-hidden">Job categories</legend>
-                                    
+
 
 
                                     <partial name="_FilterDetails"
