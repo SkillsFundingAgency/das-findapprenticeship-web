@@ -8,7 +8,10 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class VacanciesController(IMediator mediator, IDateTimeService dateTimeService, IValidator<GetVacancyDetailsRequest> validator) : Controller
+public class VacanciesController(
+    IMediator mediator,
+    IDateTimeService dateTimeService,
+    IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
     [Route("vacancies/{vacancyReference}", Name = RouteNames.Vacancies)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
@@ -25,7 +28,6 @@ public class VacanciesController(IMediator mediator, IDateTimeService dateTimeSe
         });
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
-
         return View(viewModel);
     }
 }
