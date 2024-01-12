@@ -154,6 +154,8 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
         var filterChoices = PopulateFilterChoices(viewmodel.Routes, viewmodel.Levels);
         viewmodel.FilterChoices = filterChoices;
+        viewmodel.SelectedLevelCount = request.LevelIds?.Count ?? 0;
+        viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
         viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
         viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
 

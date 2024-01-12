@@ -27,7 +27,8 @@ public class SearchResultsViewModel : ViewModelBase
     public bool ShowFilterOptions => SelectedFilters.Count != 0;
     public string ClearSelectedFiltersLink { get; set; } = null!;
     public bool DisabilityConfident { get; set; } = false; 
-
+    public int SelectedLevelCount { get; set; }
+    public int SelectedRouteCount { get; set; }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
