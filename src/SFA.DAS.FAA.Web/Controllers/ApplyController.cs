@@ -1,11 +1,7 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAT.Web.Services;
-using System.ComponentModel.DataAnnotations;
 using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 using SFA.DAS.FAA.Web.Models.Apply;
 
@@ -18,7 +14,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var query = new GetIndexQuery { VacancyReference = request.VacancyReference };
             var result = await mediator.Send(query);
-            var viewModel = (IndexViewModel) result;
+            var viewModel = IndexViewModel.Map(dateTimeService, result);
             return View(viewModel);
         }
     }
