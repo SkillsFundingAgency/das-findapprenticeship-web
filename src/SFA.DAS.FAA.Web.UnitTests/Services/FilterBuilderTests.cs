@@ -434,7 +434,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 disabilityConfidentFilter.Filters.Should().HaveCount(1);
                 var filter = disabilityConfidentFilter.Filters.Single();
                 filter.Value.Should().Be(expectedFilterValue);
-                filter.ClearFilterLink.Should().Be("searchResults");
+                filter.ClearFilterLink.Should().Be("searchResults?isDisabilityConfident=True");
             }
             else
             {
