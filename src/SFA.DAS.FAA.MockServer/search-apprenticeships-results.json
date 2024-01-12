@@ -93,7 +93,7 @@
       "courseLevel": 0,
       "courseId": 274,
       "apprenticeshipLevel": "1",
-      "disabilityConfident": "True"
+      "isDisabilityConfident": "True"
     },
     {
       "id": 1000012739,
