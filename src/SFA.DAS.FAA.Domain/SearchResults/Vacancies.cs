@@ -59,7 +59,7 @@ public class Vacancies
     [JsonPropertyName("wageText")]
     public string WageText { get; set; }
 
-    [JsonProperty("disabilityConfident")]
-    public bool DisabilityConfident { get; set; }
+    [JsonProperty("isDisabilityConfident")]
+    public bool IsDisabilityConfident { get; set; }
 }
 

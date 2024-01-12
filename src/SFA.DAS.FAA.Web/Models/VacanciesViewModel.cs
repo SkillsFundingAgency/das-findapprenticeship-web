@@ -63,7 +63,7 @@ public class VacanciesViewModel
             WageText = vacancies.WageText,
             IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7), 
             IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
-            IsDisabilityConfident = vacancies.DisabilityConfident
+            IsDisabilityConfident = vacancies.IsDisabilityConfident
         };
     }
 
