@@ -24,7 +24,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var request = new GetSearchResultsRequest
             {
                 SearchTerm = null,
-                PageSize = null,
                 PageNumber = null
             };
 

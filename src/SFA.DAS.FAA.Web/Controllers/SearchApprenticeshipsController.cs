@@ -5,10 +5,8 @@ using MediatR;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Reflection;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 
@@ -17,7 +15,7 @@ namespace SFA.DAS.FAA.Web.Controllers;
 public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService) : Controller
 {
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index([FromQuery]string? whereSearchTerm = null, [FromQuery]string? whatSearchTerm = null, [FromQuery]int? search = null)
+    public async Task<IActionResult> Index([FromQuery] string? whereSearchTerm = null, [FromQuery] string? whatSearchTerm = null, [FromQuery] int? search = null)
     {
         var result = await mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
@@ -28,17 +26,17 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         {
             ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
         }
-        else if( result.LocationSearched && result.Location !=null)
+        else if (result.LocationSearched && result.Location != null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10"});
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10" });
         }
-        else if(search == 1)
+        else if (search == 1)
         {
             return RedirectToRoute(RouteNames.SearchResults);
         }
-        
+
         var viewModel = (SearchApprenticeshipsViewModel)result;
-        
+
         return View(viewModel);
     }
 
@@ -63,7 +61,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
             var viewModel = (BrowseByInterestViewModel)result;
-            
+
             viewModel.AllocateRouteGroup();
 
             return View(viewModel);
@@ -89,11 +87,11 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         {
             if (string.IsNullOrEmpty(model.SearchTerm))
             {
-                ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a city or postcode");    
+                ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a city or postcode");
             }
             else
             {
-                var locationResult = await mediator.Send(new GetBrowseByInterestsLocationQuery{ LocationSearchTerm = model.SearchTerm });
+                var locationResult = await mediator.Send(new GetBrowseByInterestsLocationQuery { LocationSearchTerm = model.SearchTerm });
 
                 if (locationResult.Location == null)
                 {
@@ -114,6 +112,15 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
+        if (request.Distance <= 0)
+        {
+            request.Distance = null;
+        }
+        else if (request.PageNumber <= 0)
+        {
+            request.PageNumber = 1;
+        }
+
         var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
 
         var result = await mediator.Send(new GetSearchResultsQuery
@@ -123,7 +130,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             Distance = request.Distance,
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
-            PageSize = request.PageSize
+            PageSize = 10
         });
 
         var viewmodel = (SearchResultsViewModel)result;

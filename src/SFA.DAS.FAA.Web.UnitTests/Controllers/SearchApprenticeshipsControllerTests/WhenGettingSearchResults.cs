@@ -36,7 +36,7 @@ public class WhenGettingSearchResults
         };
 
         routeIds = new List<string> { result.Routes.First().Id.ToString() };
-        
+
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
 
         var actual = await controller.SearchResults(request) as ViewResult;
@@ -44,7 +44,7 @@ public class WhenGettingSearchResults
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;
         actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
-        
+
         actualModel?.Location.Should().BeEquivalentTo(request.Location);
         actualModel?.Distance.Should().Be(request.Distance);
         actualModel?.Vacancies.Should().NotBeNullOrEmpty();
@@ -59,5 +59,71 @@ public class WhenGettingSearchResults
         //    actualModel.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
         //        .TrueForAll(x => x).Should().BeFalse();
         //}
+    }
+
+    [Test, MoqAutoData]
+    public async Task And_The_Request_Distance_Is_Invalid_Then_It_Is_Defaulted_To_Null(
+        GetSearchResultsRequest request,
+        GetSearchResultsResult result,
+        List<string>? routeIds,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+
+    {
+        request.Distance = -5;
+        var mediator = new Mock<IMediator>();
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        {
+            Url = mockUrlHelper.Object
+        };
+
+        routeIds = new List<string> { result.Routes.First().Id.ToString() };
+
+        mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
+
+        var actual = await controller.SearchResults(request) as ViewResult;
+
+        Assert.That(actual, Is.Not.Null);
+        var actualModel = actual!.Model as SearchResultsViewModel;
+        actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
+
+        actualModel?.Distance.Should().BeNull();
+    }
+
+    [Test, MoqAutoData]
+    public async Task Then_The_Page_Size_Defaults_To_10(
+        GetSearchResultsRequest request,
+        GetSearchResultsResult result,
+        List<string>? routeIds,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+
+    {
+        result.PageSize = 10;
+        var mediator = new Mock<IMediator>();
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        {
+            Url = mockUrlHelper.Object
+        };
+
+        routeIds = new List<string> { result.Routes.First().Id.ToString() };
+
+        mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
+
+        var actual = await controller.SearchResults(request) as ViewResult;
+
+        Assert.That(actual, Is.Not.Null);
+        var actualModel = actual!.Model as SearchResultsViewModel;
+        actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
+
+        actualModel?.PageSize.Should().Be(10);
     }
 }
