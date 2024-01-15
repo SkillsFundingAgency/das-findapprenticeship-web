@@ -95,6 +95,40 @@ public class WhenGettingSearchResults
     }
 
     [Test, MoqAutoData]
+    public async Task And_The_Request_Page_Number_Is_Invalid_Then_It_Is_Set_To_One(
+        GetSearchResultsRequest request,
+        GetSearchResultsResult result,
+        List<string>? routeIds,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+
+    {
+        request.Distance = -5;
+        var mediator = new Mock<IMediator>();
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns("https://baseUrl");
+
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        {
+            Url = mockUrlHelper.Object
+        };
+
+        routeIds = new List<string> { result.Routes.First().Id.ToString()
+};
+
+        mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
+
+        var actual = await controller.SearchResults(request) as ViewResult;
+
+        Assert.That(actual, Is.Not.Null);
+        var actualModel = actual!.Model as SearchResultsViewModel;
+        actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
+
+        actualModel?.Distance.Should().BeNull();
+    }
+
+    [Test, MoqAutoData]
     public async Task Then_The_Page_Size_Defaults_To_10(
         GetSearchResultsRequest request,
         GetSearchResultsResult result,
@@ -102,7 +136,8 @@ public class WhenGettingSearchResults
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
-        result.PageSize = 10;
+        request.PageNumber = -5;
+        result.PageNumber = 1;
         var mediator = new Mock<IMediator>();
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
@@ -124,6 +159,6 @@ public class WhenGettingSearchResults
         var actualModel = actual!.Model as SearchResultsViewModel;
         actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
 
-        actualModel?.PageSize.Should().Be(10);
+        actualModel?.PageNumber.Should().Be(result.PageNumber);
     }
 }
