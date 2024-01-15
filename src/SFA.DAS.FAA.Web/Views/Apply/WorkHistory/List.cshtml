@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "_Layout";
+}
+@model SFA.DAS.FAA.Web.Models.Apply.WorkHistoryListViewModel
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Work history</span>
+        <h1 class="govuk-heading-l">Jobs</h1>
+        <p class="govuk-body">If you’ve worked before, you can add:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>your current job</li>
+            <li>previous jobs you’d like to mention</li>
+        </ul>
+        <p class="govuk-body">An apprenticeship can be your first job.</p>
+        <div class="govuk-!-padding-bottom-5"></div>
+        <form class="form" action="application-question-page-add-jobs" method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            Do you want to add any jobs?
+                        </h1>
+                    </legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        @foreach(var job in Model.Jobs)
+                        {
+                            <div class="govuk-radios__item">
+                                <input type="radio" asp-for="Gender" value="@gender" id="Gender@(gender)" />@gender<br />
+                                <input class="govuk-radios__input" id="add-qualifications-yes" name="add-qualifications" type="radio" value="yes">
+                                <label class="govuk-label govuk-radios__label" for="add-qualifications-yes">
+                                    @job
+                                </label>
+                            </div>    
+                        }
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

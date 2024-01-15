@@ -6,4 +6,9 @@ public static class RouteNames
     public const string BrowseByInterests = "browse-by-interests";
     public const string Location = "location";
     public const string SearchResults = "search-results";
+
+    public static class ApplyApprenticeship
+    {
+        public const string WorkHistory = nameof(WorkHistory);
+    }
 }
