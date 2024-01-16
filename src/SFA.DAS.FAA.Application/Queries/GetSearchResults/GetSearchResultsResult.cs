@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Domain.BrowseByInterests;
+using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.SearchResults;
 
 namespace SFA.DAS.FAA.Application.Queries.GetSearchResults;
@@ -12,5 +12,7 @@ public class GetSearchResultsResult
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
+    public string Sort { get; set; }
+    public string? VacancyReference { get; set; }
+    public List<LevelResponse> Levels { get; set; }
 }
-

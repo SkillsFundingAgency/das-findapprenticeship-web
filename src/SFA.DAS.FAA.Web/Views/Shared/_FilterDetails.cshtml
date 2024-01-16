@@ -1,0 +1,25 @@
+﻿@model SFA.DAS.FAA.Web.Models.SearchResults.ChecklistDetails
+@{
+    var counter = 0;
+}
+
+<div class="govuk-checkboxes govuk-checkboxes--small">
+    @foreach (var lookup in Model.Lookups)
+    {
+        <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="@Model.QueryStringParameterName-@counter"
+                name="@Model.QueryStringParameterName" type="checkbox" value="@lookup.Value" @lookup.Checked>
+            <label class="govuk-label govuk-checkboxes__label faa-filter__checkbox-label"
+                for="@Model.QueryStringParameterName-@counter">
+                @lookup.Name
+            </label>
+            @if (!string.IsNullOrEmpty(lookup.Hint))
+            {
+                <div class="govuk-hint govuk-checkboxes__hint">
+                    @lookup.Hint
+                </div>
+            }
+        </div>
+        counter++;
+    }
+</div>

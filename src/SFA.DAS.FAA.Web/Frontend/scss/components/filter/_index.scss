@@ -1,0 +1,109 @@
+.faa-filter {
+  border: 1px solid $govuk-border-colour;
+}
+
+.faa-filter__header,
+.faa-filter__body {
+  padding: 15px;
+  @include govuk-media-query(tablet) {
+    padding: 20px;
+  }
+}
+
+.faa-filter__heading {
+  margin: 0;
+}
+
+.faa-filter__body {
+  padding-top: 0;
+}
+
+.faa-filter__selected {
+  background: govuk-colour("light-grey");
+  padding: 15px;
+  margin-bottom: 15px;
+  @include govuk-media-query(tablet) {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.faa-filter__selected-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.faa-filter__selected-heading {
+  margin: 0;
+}
+
+.faa-filter__selected-sub-heading {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.faa-filter__tag {
+  @include govuk-font($size: 16);
+  background-color: #fff;
+  border: 1px solid govuk-colour("black");
+  color: $govuk-text-colour;
+  display: inline-block;
+  margin-top: 5px;
+  padding: 5px 7px;
+  padding-right: 30px;
+  text-decoration: none;
+  position: relative;
+  @include govuk-media-query(tablet) {
+    font-size: 16px;
+    border-width: 2px;
+  }
+}
+
+.faa-filter__tag:before,
+.faa-filter__tag:after {
+  content: "";
+  height: 15px;
+  width: 2px;
+  background: currentColor;
+  display: block;
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  transform: rotate(45deg);
+}
+
+.faa-filter__tag:before {
+  transform: rotate(135deg);
+}
+
+.faa-filter__tag:hover {
+  background: govuk-colour("black");
+  color: #fff;
+}
+
+.faa-filter__tag:focus,
+.faa-filter__tag:active {
+  outline: 3px solid transparent;
+  background: #fd0;
+  color: #0b0c0c;
+  box-shadow: 0 0 #fd0, 0 4px #0b0c0c;
+  border-color: #fd0;
+}
+
+.faa-filter__checkbox-label + .govuk-checkboxes__hint {
+  position: relative;
+  top: -6px;
+}
+
+.faa-filter__selected-hint {
+  margin-top: 5px;
+  display: table;
+}
+
+.js-enabled
+  .govuk-accordion__section-button:focus
+  .govuk-accordion__section-heading-text-focus
+  .faa-filter__selected-hint {
+  @include govuk-focused-text;
+}

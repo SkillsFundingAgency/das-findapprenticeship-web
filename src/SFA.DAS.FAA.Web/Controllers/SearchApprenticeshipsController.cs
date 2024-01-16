@@ -28,11 +28,11 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
         else if( result.LocationSearched && result.Location !=null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10"});
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = whatSearchTerm});
         }
         else if(search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults);
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = whatSearchTerm });
         }
         
         var viewModel = (SearchApprenticeshipsViewModel)result;
@@ -112,35 +112,68 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
-        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
-
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,
             SelectedRouteIds = request.RouteIds,
+            SelectedLevelIds = request.LevelIds,
             Distance = request.Distance,
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
-            PageSize = request.PageSize
+            PageSize = request.PageSize,
+            Sort = request.Sort
         });
+
+        if (result.VacancyReference != null)
+        {
+            return RedirectToRoute(RouteNames.Vacancies, new { result.VacancyReference });
+        }
+
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
 
         var viewmodel = (SearchResultsViewModel)result;
         viewmodel.SelectedRouteIds = request.RouteIds;
         viewmodel.NationalSearch = request.Location == null;
         viewmodel.Location = request.Location;
         viewmodel.Distance = request.Distance;
-        viewmodel.Vacancies = result.Vacancies.Any()
+        viewmodel.SearchTerm = request.SearchTerm;
+        viewmodel.Vacancies = result.Vacancies.Count != 0
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
-            : new List<VacanciesViewModel>();
-        viewmodel.SelectedRoutes =
-            request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
+            : [];
+        viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
         viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.PageSize, result.TotalPages, filterUrl);
-
         foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
         {
             route.Selected = true;
         }
+        foreach (var level in viewmodel.Levels.Where(level => request.LevelIds != null && request.LevelIds!.Contains(level.Id.ToString())))
+        {
+            level.Selected = true;
+        }
+        var filterChoices = PopulateFilterChoices(viewmodel.Routes, viewmodel.Levels);
+        viewmodel.FilterChoices = filterChoices;
+        viewmodel.SelectedLevelCount = request.LevelIds?.Count ?? 0;
+        viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
+        viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
+        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
 
         return View(viewmodel);
     }
+
+    private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
+        => new()
+        {
+            JobCategoryChecklistDetails = new ChecklistDetails
+            {
+                Title = "RouteIds",
+                QueryStringParameterName = "routeIds",
+                Lookups = categories.OrderBy(x => x.Name).Select(category => new ChecklistLookup(category.Name, category.Id.ToString(), null, category.Selected)).ToList()
+            },
+            CourseLevelsChecklistDetails = new ChecklistDetails
+            {
+                Title = "LevelIds",
+                QueryStringParameterName = "levelIds",
+                Lookups = levels.OrderBy(x => x.Id).Select(level => new ChecklistLookup($"Level {level.Id}", level.Id.ToString(), $"Equal to {level.Name}", level.Selected)).ToList()
+            }
+        };
 }

@@ -1,11 +1,17 @@
 {
   "totalApprenticeshipCount": 339,
-  "totalFound": 0,
+  "totalFound": 339,
   "location": {
     "lat": 52.629399,
     "lon": -1.12505,
     "locationName": "Leicester, Leicestershire"
   },
+  "levels": [
+    {
+      "name": "GCSE",
+      "id": 3
+    }
+  ],
   "routes": [
     {
       "name": "Agriculture, environmental and animal care",

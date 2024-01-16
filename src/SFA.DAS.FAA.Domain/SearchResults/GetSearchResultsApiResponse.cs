@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
@@ -8,6 +8,9 @@ public class GetSearchResultsApiResponse
     [JsonProperty("totalApprenticeshipCount")]
     public int Total { get; set; }
 
+    [JsonProperty("totalFound")]
+    public int TotalFound { get; set; }
+    
     [JsonProperty("vacancies")]
     public List<Vacancies> Vacancies { get; set; }
 
@@ -25,6 +28,14 @@ public class GetSearchResultsApiResponse
 
     [JsonProperty("TotalPages")]
     public int TotalPages { get; set; }
+
+    [JsonProperty("VacancyReference")]
+    public string VacancyReference { get; set; }
+
+    [JsonProperty("Categories")]
+    public List<string>? Categories { get; set; }
+    [JsonProperty("levels")]
+    public List<LevelResponse> Levels { get; set; }
 }
 
 public class Location

@@ -22,10 +22,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedUrl);
         }
 
-        [TestCase("", "0 hours")]
-        [TestCase(null, "0 hours")]
-        [TestCase("37", "37 hours")]
-        [TestCase("37.5", "37 hours 30 minutes")]
+        [TestCase("", "0 hours a week")]
+        [TestCase(null, "0 hours a week")]
+        [TestCase("37", "37 hours a week")]
+        [TestCase("37.5", "37 hours 30 minutes a week")]
         public void GetWorkingHours(string hours, string? expectedResult)
         {
             //sut
@@ -35,8 +35,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30/01/2000", "Closes in 29 (Sunday, 30, January at 11.59pm)")]
-        [TestCase("01/02/2000", "Closes on Tuesday, 01, February")]
+        [TestCase("30/01/2000", "Closes in 29 (Sunday 30 January at 11.59pm)")]
+        [TestCase("01/02/2000", "Closes on Tuesday 01 February")]
         public void GetClosingDate(string closingDate, string? expectedResult)
         {
             //arrange
@@ -66,8 +66,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30/01/2000", "Posted on 30 January")]
-        [TestCase("01/01/2000", "Posted on 01 January")]
+        [TestCase("30/01/2000", "Posted on 30 January 2000")]
+        [TestCase("01/01/2000", "Posted on 01 January 2000")]
         public void GetPostedDate(string postedDate, string? expectedResult)
         {
             //sut

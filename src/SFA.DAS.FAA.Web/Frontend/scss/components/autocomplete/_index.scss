@@ -1,0 +1,12 @@
+.autocomplete__menu {
+  border-top: 2px solid $govuk-input-border-colour;
+  margin-top: -2px;
+}
+
+.autocomplete__wrapper {
+  max-width: 11.5em;
+}
+
+.page--faa-homepage .autocomplete__wrapper {
+  max-width: 100%;
+}
