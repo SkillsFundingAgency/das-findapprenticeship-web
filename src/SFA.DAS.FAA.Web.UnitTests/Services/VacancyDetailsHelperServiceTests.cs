@@ -35,8 +35,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30/01/2000", "Closes in 29 (Sunday 30 January at 11.59pm)")]
-        [TestCase("01/02/2000", "Closes on Tuesday 01 February")]
+        [TestCase("30 Jan 2000", "Closes in 29 (Sunday 30 January at 11.59pm)")]
+        [TestCase("01 Feb 2000", "Closes on Tuesday 01 February")]
         public void GetClosingDate(string closingDate, string? expectedResult)
         {
             //arrange
@@ -50,9 +50,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30/01/2000", "Closing in 29 days")]
-        [TestCase("01/01/2000", "Closing in 0 day")]
-        [TestCase("02/01/2000", "Closing in 1 day")]
+        [TestCase("30 Jan 2000", "Closing in 29 days")]
+        [TestCase("01 Jan 2000", "Closing in 0 day")]
+        [TestCase("02 Jan 2000", "Closing in 1 day")]
         public void GetApplyNowClosingDate(string closingDate, string? expectedResult)
         {
             //arrange
@@ -66,8 +66,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30/01/2000", "Posted on 30 January 2000")]
-        [TestCase("01/01/2000", "Posted on 01 January 2000")]
+        [TestCase("30 Jan 2000", "Posted on 30 January 2000")]
+        [TestCase("01 Jan 2000", "Posted on 01 January 2000")]
         public void GetPostedDate(string postedDate, string? expectedResult)
         {
             //sut
@@ -77,8 +77,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30/01/2000", "Sunday 30 January")]
-        [TestCase("01/01/2000", "Saturday 01 January")]
+        [TestCase("30 Jan 2000", "Sunday 30 January")]
+        [TestCase("01 Jan 2000", "Saturday 01 January")]
         public void GetStartDate(string startDate, string? expectedResult)
         {
             //sut
