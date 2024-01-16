@@ -10,8 +10,9 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? Title { get; init; }
 
         public string? EmployerName { get; init; }
-        public string? EmployerEmail { get; init; }
-        public string? EmployerPhone { get; init; }
+        public string? EmployerContactName { get; init; }
+        public string? EmployerContactEmail { get; init; }
+        public string? EmployerContactPhone { get; init; }
         public string? EmployerDescription { get; init; }
         public string? EmployerWebsite { get; init; }
 
@@ -27,6 +28,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? StartDate { get; init; }
         public string? PostedDate { get; init; }
         public string? ClosingDate {get; init; }
+        public string? ApplyNowClosingDate { get; init; }
         public string? Duration { get; init; }
         public int PositionsAvailable { get; init; }
 
@@ -61,6 +63,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 WorkDescription = source.Vacancy.TrainingDescription,
 
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate),
+                ApplyNowClosingDate = VacancyDetailsHelperService.GetApplyNowClosingDate(dateTimeService, source.Vacancy.ClosingDate),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
                 StartDate = source.Vacancy.StartDate.GetStartDate(),
 
@@ -71,12 +74,13 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
 
                 Skills = source.Vacancy.Skills.ToList(),
 
-                EmployerWebsite = source.Vacancy.EmployerWebsiteUrl,
+                EmployerWebsite = VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy.EmployerWebsiteUrl),
                 EmployerDescription = source.Vacancy.EmployerDescription,
 
                 EmployerName = source.Vacancy.EmployerName,
-                EmployerEmail = source.Vacancy.EmployerContactEmail,
-                EmployerPhone = source.Vacancy.EmployerContactPhone,
+                EmployerContactName = source.Vacancy.EmployerContactName,
+                EmployerContactEmail = source.Vacancy.EmployerContactEmail,
+                EmployerContactPhone = source.Vacancy.EmployerContactPhone,
 
                 EssentialQualifications = source.Vacancy.Qualifications.Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
                 DesiredQualifications = source.Vacancy.Qualifications.Where(fil => fil.Weighting == Weighting.Desired).Select(l => (Qualification)l).ToList(),

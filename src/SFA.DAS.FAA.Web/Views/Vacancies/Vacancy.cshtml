@@ -280,14 +280,15 @@
                     The contact for this apprenticeship is:
                 </p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerName</p>
-                <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerEmail</p>
-                <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerPhone</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerContactName</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerContactEmail</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerContactPhone</p>
                 <p class="govuk-body">This reference code for this apprenticeship is @Model.VacancyReference.</p>
             </section>
             <section class="faa-vacancy__section" id="apply">
                 <h2 class="govuk-heading-m">Apply now</h2>
                 <p>
-                   @Model.ClosingDate
+                   @Model.ApplyNowClosingDate
                 </p>
                 <p class="govuk-body">When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create one at the same time as applying for this apprenticeship.</p>
                 <form class="form" action="#" method="post">

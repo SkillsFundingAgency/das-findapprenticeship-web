@@ -32,6 +32,7 @@ public class WhenGettingVacancyDetails
         var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
 
         actualModel.Should().BeEquivalentTo(expected, options => options
-            .Excluding(x => x.ClosingDate));
+            .Excluding(x => x.ClosingDate)
+            .Excluding(x => x.ApplyNowClosingDate));
     }
 }
