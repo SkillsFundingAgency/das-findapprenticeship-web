@@ -66,12 +66,12 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 TrainingDescription = source.Vacancy?.TrainingDescription,
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
                 Skills = source.Vacancy?.Skills.ToList(),
-                EmployerWebsite = VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy.EmployerWebsiteUrl),
+                EmployerWebsite = VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
                 EmployerDescription = source.Vacancy?.EmployerDescription,
                 EmployerName = source.Vacancy?.EmployerName,
-                EmployerContactName = source.Vacancy.EmployerContactName,
-                EmployerContactEmail = source.Vacancy.EmployerContactEmail,
-                EmployerContactPhone = source.Vacancy.EmployerContactPhone,
+                EmployerContactName = source.Vacancy?.EmployerContactName,
+                EmployerContactEmail = source.Vacancy?.EmployerContactEmail,
+                EmployerContactPhone = source.Vacancy?.EmployerContactPhone,
                 CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
                 EssentialQualifications = source.Vacancy?.Qualifications
                     .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification) l).ToList(),
@@ -81,7 +81,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 CourseCoreDuties = source.Vacancy?.CourseCoreDuties,
                 CourseOverviewOfRole = source.Vacancy?.CourseOverviewOfRole,
                 StandardPageUrl = source.Vacancy?.StandardPageUrl,
-                IsDisabilityConfident = source.Vacancy.IsDisabilityConfident
+                IsDisabilityConfident = source.Vacancy is {IsDisabilityConfident: true}
             };
         }
     }
