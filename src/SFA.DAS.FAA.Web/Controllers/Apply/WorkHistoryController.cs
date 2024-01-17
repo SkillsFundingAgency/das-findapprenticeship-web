@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -9,15 +10,15 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
 
         [HttpGet]
-        [Route("apprenticeship/apply/workhistory", Name = RouteNames.ApplyApprenticeship.WorkHistory)]
+        [Route("vacancies/{vacancyReference}/apply/workhistory", Name = RouteNames.ApplyApprenticeship.WorkHistory)]
         public IActionResult Get()
         {
-            return View(ViewPath);
+            return View(ViewPath, new WorkHistoryListViewModel());
         }
 
-        [HttpGet]
-        [Route("apprenticeship/apply/workhistory", Name = RouteNames.ApplyApprenticeship.WorkHistory)]
-        public IActionResult Post(Applicationse)
+        [HttpPost]
+        [Route("vacancies/{vacancyReference}/apply/workhistory", Name = RouteNames.ApplyApprenticeship.WorkHistory)]
+        public IActionResult Post(WorkHistoryListViewModel model)
         {
             return View(ViewPath);
         }

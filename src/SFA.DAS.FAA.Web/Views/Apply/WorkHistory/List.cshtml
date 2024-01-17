@@ -1,6 +1,7 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = "_LayoutApprentice";
 }
+@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Apply.WorkHistoryListViewModel
 
 <div class="govuk-grid-row">
@@ -14,7 +15,7 @@
         </ul>
         <p class="govuk-body">An apprenticeship can be your first job.</p>
         <div class="govuk-!-padding-bottom-5"></div>
-        <form class="form" action="application-question-page-add-jobs" method="post">
+        <form class="form" method="post">
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -26,12 +27,17 @@
                         @foreach(var job in Model.Jobs)
                         {
                             <div class="govuk-radios__item">
-                                <input type="radio" asp-for="Gender" value="@gender" id="Gender@(gender)" />@gender<br />
-                                <input class="govuk-radios__input" id="add-qualifications-yes" name="add-qualifications" type="radio" value="yes">
-                                <label class="govuk-label govuk-radios__label" for="add-qualifications-yes">
+                                <input class="govuk-radios__input" type="radio" asp-for="AddJob" value="@job" id="add-qualifications-@job" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="add-qualifications-@job">
                                     @job
                                 </label>
-                            </div>    
+                            </div>  
+                            @* <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="add-qualifications-yes" name="add-qualifications" type="radio" value="yes">
+                                <label class="govuk-label govuk-radios__label" for="add-qualifications-yes">
+                                    Yes
+                                </label>
+                            </div> *@
                         }
                     </div>
                 </fieldset>
