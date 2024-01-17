@@ -25,7 +25,9 @@ namespace SFA.DAS.FAA.Web.Services
             {
                 var timeUntilClosing = closingDate.Date - currentDate;
                 var days = (int) Math.Ceiling(timeUntilClosing.TotalDays);
-                return $"Closes in {days} ({closingDate:dddd dd MMMM} at 11.59pm)";
+                return days > 1
+                    ? $"Closes in {days} days ({closingDate:dddd dd MMMM} at 11.59pm)"
+                    : $"Closes in {days} day ({closingDate:dddd dd MMMM} at 11.59pm)";
             }
 
             return $"Closes on {closingDate:dddd dd MMMM}";
@@ -35,7 +37,7 @@ namespace SFA.DAS.FAA.Web.Services
         {
             var currentDate = dateTimeService.GetDateTime();
             var timeUntilClosing = closingDate.Date - currentDate;
-            var days = (int)Math.Ceiling(timeUntilClosing.TotalDays);
+            var days = (int) Math.Ceiling(timeUntilClosing.TotalDays);
             return days > 1 ? $"Closing in {days} days" : $"Closing in {days} day";
         }
 

@@ -17,7 +17,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         {
             //sut
             var result = VacancyDetailsHelperService.FormatEmployerWebsiteUrl(url);
-            
+
             //assert
             result.Should().Be(expectedUrl);
         }
@@ -35,7 +35,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30 Jan 2000", "Closes in 29 (Sunday 30 January at 11.59pm)")]
+        [TestCase("30 Jan 2000", "Closes in 29 days (Sunday 30 January at 11.59pm)")]
         [TestCase("01 Feb 2000", "Closes on Tuesday 01 February")]
         public void GetClosingDate(string closingDate, string? expectedResult)
         {
@@ -44,7 +44,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             mockDateTimeService.Setup(date => date.GetDateTime()).Returns(new DateTime(2000, 01, 01));
 
             //sut
-            var result = VacancyDetailsHelperService.GetClosingDate(mockDateTimeService.Object, Convert.ToDateTime(closingDate));
+            var result =
+                VacancyDetailsHelperService.GetClosingDate(mockDateTimeService.Object, Convert.ToDateTime(closingDate));
 
             //assert
             result.Should().Be(expectedResult);
@@ -60,8 +61,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             mockDateTimeService.Setup(date => date.GetDateTime()).Returns(new DateTime(2000, 01, 01));
 
             //sut
-            var result = VacancyDetailsHelperService.GetApplyNowClosingDate(mockDateTimeService.Object, Convert.ToDateTime(closingDate));
-            
+            var result =
+                VacancyDetailsHelperService.GetApplyNowClosingDate(mockDateTimeService.Object,
+                    Convert.ToDateTime(closingDate));
+
             //assert
             result.Should().Be(expectedResult);
         }
