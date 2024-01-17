@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Web.Services
 
             if(request.DisabilityConfident)
             {
-                queryParameters.Add($"isDisabilityConfident={request.DisabilityConfident}");
+                queryParameters.Add($"DisabilityConfident={request.DisabilityConfident}");
             }
             return queryParameters;
         }
