@@ -1,0 +1,178 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
+
+@{
+    Layout = "_LayoutApprentice";
+    ViewBag.Title = "Apply for";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+            aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                    Success
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <h3 class="govuk-notification-banner__heading">
+                    Account created. You can now start your application for this apprenticeship.
+                </h3>
+                <p class="govuk-body">You can change your account details at any point in <a
+                        class="govuk-notification-banner__link" href="#">Settings</a>.</p>
+            </div>
+        </div>
+
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Apply for Business Administration Apprentice</h1>
+        <p class="govuk-body-l faa-vacancy__location">King Recruitment</p>
+        <p class="govuk-body faa-vacancy__closing-date">Closes in 3 days (Friday 4 August at 11:59pm)</p>
+        <p class="govuk-body govuk-!-margin-bottom-7">
+            <a href="#" class="govuk-link" target="_blank">View vacancy (opens in new tab)</a>
+        </p>
+
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a class="govuk-link govuk-task-list__link" href="#"
+                        aria-describedby="company-details-1-status">Company Directors</a>
+                </div>
+                <div class="govuk-task-list__status" id="company-details-1-status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">
+                        Incomplete
+                    </strong>
+                </div>
+            </li>
+        </ul>
+
+        <h2 class="govuk-heading-m">Education history</h2>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        School, college and university qualifications
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Training courses
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-8">Work history</h2>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Jobs
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Volunteering and work experience
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-8">Application questions</h2>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        What are your skills and strengths?
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        What interests you about this apprenticeship?
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        How will you get to and from this vacancy every day if successful?
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        When you're balancing multiple projects, how do you keep yourself organised?
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-8">Interview adjustments</h2>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Request adjustments on your application
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-8">Disability Confidence</h2>
+        <p class="govuk-hint">This company has joined the government's Disability Confidence scheme.</p>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Interview under the Disability Confident scheme
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <strong class="govuk-tag govuk-tag--blue das-no-wrap">Not yet started</strong>
+                </div>
+            </li>
+        </ul>
+
+        <div class="govuk-button-group govuk-!-margin-top-8">
+            <button class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+            <a class="govuk-link" href="#">Save and finish later</a>
+        </div>
+
+    </div>
+</div>

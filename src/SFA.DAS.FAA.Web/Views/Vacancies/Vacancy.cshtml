@@ -1,0 +1,301 @@
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
+}
+
+<div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
+    <h1 class="govuk-heading-l faa-vacancy__title"><span itemprop="title">@Model.Title</span></h1>
+    <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
+    <p class="govuk-body-l faa-vacancy__location"><span itemprop="jobLocation">@Model.WorkLocation.AddressLine3,
+            @Model.WorkLocation.Postcode</span></p>
+    <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
+    <p class="govuk-body govuk-!-font-size-16" style="color:#505a5f">@Model.PostedDate</p>
+    <div class="faa-vacancy-actions">
+        <a href="#favs" class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
+                <path fill="currentColor"
+                    d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z" />
+            </svg>
+            Save to my favourites
+        </a>
+        <a href="#favs" class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
+                <path fill="currentColor"
+                    d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+            </svg>
+            Print
+        </a>
+    </div>
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third faa-contents">
+            <h2 class="govuk-body-s faa-contents__heading">
+                Contents
+            </h2>
+            <ul class="govuk-list govuk-!-font-size-16 faa-contents__list">
+                <li class="faa-contents__list-item">
+                    <a class="govuk-link faa-contents__link" href="#summary">
+                        Summary
+                    </a>
+                </li>
+                <li class="faa-contents__list-item">
+                    <a class="govuk-link faa-contents__link" href="#work">
+                        Work
+                    </a>
+                </li>
+                <li class="faa-contents__list-item">
+                    <a class="govuk-link faa-contents__link" href="#training">
+                        Training
+                    </a>
+                </li>
+                <li class="faa-contents__list-item">
+                    <a class="govuk-link faa-contents__link" href="#requirements">
+                        Requirements
+                    </a>
+                </li>
+                <li class="faa-contents__list-item">
+                    <a class="govuk-link faa-contents__link" href="#company">
+                        About this company
+                    </a>
+                </li>
+                <li class="faa-contents__list-item">
+                    <a class="govuk-link faa-contents__link" href="#after">
+                        After this apprenticeship
+                    </a>
+                </li>
+                <li class="faa-contents__list-item">
+                    <a class="govuk-link faa-contents__link" href="#question">
+                        Ask a question
+                    </a>
+                </li>
+                <li class="faa-contents__list-item">
+                    <a class="govuk-link faa-contents__link" href="#apply">
+                        Apply now
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+            <section class="faa-vacancy__section" id="summary">
+                <h2 class="govuk-heading-m">Summary</h2>
+                <p>
+                    @Model.VacancySummary
+                </p>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Annual wage
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.AnnualWage
+                            <p class="govuk-body govuk-!-font-size-14 govuk-!-margin-0">
+                                National Minimum Wage for a 20 year old
+                            </p>
+                            <p class="govuk-body govuk-!-font-size-14 govuk-!-margin-0">
+                                <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
+                                    rel="noreferrer noopener" target="_blank">
+                                    Minimum wage rates (opens in new
+                                    tab)
+                                </a>
+                            </p>
+                            <p class="govuk-body govuk-!-padding-top-3">
+                                The pay may be negotiated and may rise after a probation period
+                                has been successfully completed.
+                            </p>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Training course
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.CourseTitle
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Hours
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            Monday to Friday 8.30am to 5pm
+                            <p class="govuk-body govuk-!-font-size-14 govuk-!-margin-0">
+                                @Model.HoursPerWeek
+                            </p>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Possible start date
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <p class="govuk-body">@Model.StartDate</p>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Duration
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <p class="govuk-body">@Model.Duration</p>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Positions available
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <p class="govuk-body">@Model.PositionsAvailable</p>
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+            <section class="faa-vacancy__section" id="work">
+                <h2 class="govuk-heading-m">Work</h2>
+                <p>
+                    @Model.CourseOverviewOfRole
+                </p>
+                <h3 class="govuk-heading-s">What you’ll do at work</h3>
+                <p>@Html.Raw(Model.WorkDescription)</p>
+                <h3 class="govuk-heading-s">Where you’ll work</h3>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine1</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine2</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine3</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine4</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.Postcode</p>
+            </section>
+            <section class="faa-vacancy__section" id="training">
+                <h2 class="govuk-heading-m">Training</h2>
+                <p>@Html.Raw(Model.TrainingDescription)</p>
+                <h3 class="govuk-heading-s">College or training organisation</h3>
+                <p>@Model.TrainingProviderName</p>
+                <h3 class="govuk-heading-s">Your training course</h3>
+                <p>TBC</p>
+                <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
+                    <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text">
+                            Course contents
+                        </span>
+                    </summary>
+                    <div class="govuk-details__text">
+                        @foreach(var skills in Model.CourseSkills)
+                        {
+                            <li>@skills</li>
+                            <div class="govuk-!-padding-bottom-3"></div>
+                        }
+                        @foreach(var skills in Model.CourseCoreDuties)
+                        {
+                            <li>@skills</li>
+                            <div class="govuk-!-padding-bottom-3"></div>
+                        }
+                    </div>
+                </details>
+                <h3 class="govuk-heading-s">Your training plan</h3>
+                <p>TBC</p>
+                @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
+                {
+                    <h3 class="govuk-heading-s">Additional training information</h3>
+                    <p>@Model.ThingsToConsider</p>
+                }
+
+            </section>
+            <section class="faa-vacancy__section" id="requirements">
+                <h2 class="govuk-heading-m">Requirements</h2>
+                @if (Model.EssentialQualifications is { Count: > 0 })
+                {
+                    <h3 class="govuk-heading-s">Essential qualifications</h3>
+                    <p>@Model.EssentialQualifications.FirstOrDefault()?.QualificationType</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        @foreach (var qualification in Model.EssentialQualifications)
+                        {
+                            <li>@qualification.Subject (grade @qualification.Grade)</li>
+                        }
+                    </ul>
+                }
+                @if (Model.DesiredQualifications is { Count: > 0 })
+                {
+                    <h3 class="govuk-heading-s">Desirable qualifications</h3>
+                    <p>@Model.DesiredQualifications.FirstOrDefault()?.QualificationType</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        @foreach (var qualification in Model.DesiredQualifications)
+                        {
+                            <li>@qualification.Subject (grade @qualification.Grade)</li>
+                        }
+                    </ul>
+                }
+                <h3 class="govuk-heading-s">Skills</h3>
+                <p>
+                <ul class="govuk-list govuk-list--bullet">
+                    @foreach (var skills in Model.Skills)
+                    {
+                    <li>@skills</li>
+                    }
+                </ul>
+                </p>
+                <h3 class="govuk-heading-s">Other requirements</h3>
+                <p>TBC</p>
+            </section>
+            <section class="faa-vacancy__section" id="company">
+                <h2 class="govuk-heading-m">About this company</h2>
+                <p>
+                    @Html.Raw(Model.WorkDescription)
+                </p>
+                @if (!string.IsNullOrEmpty(Model.EmployerWebsite))
+                {
+                    <p class="govuk-body">
+                        <a href="@Model.EmployerWebsite" class="govuk-link" rel="noreferrer noopener"
+                            target="_blank">@Model.EmployerWebsite (opens in new tab)</a>
+                    </p>
+                }
+                <h3 class="govuk-heading-s">Company benefits</h3>
+                <p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>TBC</li>
+                    </ul>
+                </p>
+                @if (Model.IsDisabilityConfident)
+                {
+                    <h3 class="govuk-heading-s">Disability Confident</h3>
+                }
+                
+            </section>
+            <section class="faa-vacancy__section" id="after">
+                <h2 class="govuk-heading-m">After this apprenticeship</h2>
+                <p>
+                    @Html.Raw(Model.OutcomeDescription)
+                </p>
+            </section>
+            <section class="faa-vacancy__section" id="question">
+                <h2 class="govuk-heading-m">Ask a question</h2>
+                <p>
+                    The contact for this apprenticeship is:
+                </p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerName</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerEmail</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerPhone</p>
+                <p class="govuk-body">This reference code for this apprenticeship is @Model.VacancyReference.</p>
+            </section>
+            <section class="faa-vacancy__section faa-vacancy__section--last" id="apply">
+                <h2 class="govuk-heading-m">Apply now</h2>
+                <p>
+                    @Model.ClosingDate
+                </p>
+                <p class="govuk-body">When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create
+                    one at the same time as applying for this apprenticeship.</p>
+                <form class="form" action="@Url.ActionLink("index", "apply", new { Model.VacancyReference})" method="get">
+                    <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                        <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                            Apply for apprenticeship
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
