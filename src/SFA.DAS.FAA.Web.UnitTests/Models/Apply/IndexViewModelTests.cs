@@ -30,7 +30,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             result.WorkHistory.Jobs.Should().Be(source.WorkHistory.Jobs);
             result.WorkHistory.VolunteeringAndWorkExperience.Should().Be(source.WorkHistory.VolunteeringAndWorkExperience);
             result.ApplicationQuestions.SkillsAndStrengths.Should().Be(source.ApplicationQuestions.SkillsAndStrengths);
-            result.ApplicationQuestions.Travel.Should().Be(source.ApplicationQuestions.Travel);
+            result.ApplicationQuestions.AdditionalQuestion1.Should().Be(source.ApplicationQuestions.AdditionalQuestion1);
+            result.ApplicationQuestions.AdditionalQuestion2.Should().Be(source.ApplicationQuestions.AdditionalQuestion2);
+            result.ApplicationQuestions.AdditionalQuestion1Label.Should().Be(source.ApplicationQuestions.AdditionalQuestion1Label);
+            result.ApplicationQuestions.AdditionalQuestion2Label.Should().Be(source.ApplicationQuestions.AdditionalQuestion2Label);
             result.ApplicationQuestions.WhatInterestsYou.Should().Be(source.ApplicationQuestions.WhatInterestsYou);
             result.InterviewAdjustments.RequestAdjustments.Should().Be(source.InterviewAdjustments.RequestAdjustments);
             result.DisabilityConfidence.InterviewUnderDisabilityConfident.Should().Be(source.DisabilityConfidence.InterviewUnderDisabilityConfident);

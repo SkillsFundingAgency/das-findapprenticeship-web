@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Domain.Apply.GetIndex;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 
@@ -17,8 +18,8 @@ public class GetIndexQueryResult
 
     public class EducationHistorySection
     {
-        public string Qualifications { get; set; }
-        public string TrainingCourses { get; set; }
+        public SectionStatus Qualifications { get; set; }
+        public SectionStatus TrainingCourses { get; set; }
 
         public static implicit operator EducationHistorySection(GetIndexApiResponse.EducationHistorySection source)
         {
@@ -32,8 +33,8 @@ public class GetIndexQueryResult
 
     public class WorkHistorySection
     {
-        public string Jobs { get; set; }
-        public string VolunteeringAndWorkExperience { get; set; }
+        public SectionStatus Jobs { get; set; }
+        public SectionStatus VolunteeringAndWorkExperience { get; set; }
 
         public static implicit operator WorkHistorySection(GetIndexApiResponse.WorkHistorySection source)
         {
@@ -47,9 +48,12 @@ public class GetIndexQueryResult
 
     public class ApplicationQuestionsSection
     {
-        public string SkillsAndStrengths { get; set; }
-        public string WhatInterestsYou { get; set; }
-        public string Travel { get; set; }
+        public SectionStatus SkillsAndStrengths { get; set; }
+        public SectionStatus WhatInterestsYou { get; set; }
+        public SectionStatus AdditionalQuestion1 { get; set; }
+        public SectionStatus AdditionalQuestion2 { get; set; }
+        public string AdditionalQuestion1Label { get; set; }
+        public string AdditionalQuestion2Label { get; set; }
 
         public static implicit operator ApplicationQuestionsSection(GetIndexApiResponse.ApplicationQuestionsSection source)
         {
@@ -57,14 +61,17 @@ public class GetIndexQueryResult
             {
                 SkillsAndStrengths = source.SkillsAndStrengths,
                 WhatInterestsYou = source.WhatInterestsYou,
-                Travel = source.Travel
+                AdditionalQuestion1 = source.AdditionalQuestion1,
+                AdditionalQuestion2 = source.AdditionalQuestion2,
+                AdditionalQuestion1Label = source.AdditionalQuestion1Label,
+                AdditionalQuestion2Label = source.AdditionalQuestion2Label
             };
         }
     }
 
     public class InterviewAdjustmentsSection
     {
-        public string RequestAdjustments { get; set; }
+        public SectionStatus RequestAdjustments { get; set; }
 
         public static implicit operator InterviewAdjustmentsSection(GetIndexApiResponse.InterviewAdjustmentsSection source)
         {
@@ -76,7 +83,7 @@ public class GetIndexQueryResult
     }
     public class DisabilityConfidenceSection
     {
-        public string InterviewUnderDisabilityConfident { get; set; }
+        public SectionStatus InterviewUnderDisabilityConfident { get; set; }
 
         public static implicit operator DisabilityConfidenceSection(GetIndexApiResponse.DisabilityConfidenceSection source)
         {
