@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.GovUK.Auth.AppStart;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,15 @@ builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
 builder.Services.AddServiceRegistration();
+builder.Services.AddAuthenticationServices();
 
 builder.Services.AddHealthChecks();
+
+builder.Services.AddAndConfigureGovUkAuthentication(
+    rootConfiguration,
+    typeof(CandidateAccountPostAuthenticationClaimsHandler),
+    "",
+    "/service/account-details");
 
 builder.Services.Configure<RouteOptions>(options =>
 {

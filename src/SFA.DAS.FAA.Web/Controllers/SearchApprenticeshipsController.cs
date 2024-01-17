@@ -1,14 +1,15 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
-using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
-using SFA.DAS.FAA.Application.Queries.GetSearchResults;
-using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
-using SFA.DAS.FAA.Web.Models.SearchResults;
-using SFA.DAS.FAA.Web.Services;
+using MediatR;
+using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
+using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.GovUK.Auth.Services;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -28,11 +29,11 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
         else if( result.LocationSearched && result.Location !=null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = whatSearchTerm});
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10"});
         }
         else if(search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = whatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults);
         }
         
         var viewModel = (SearchApprenticeshipsViewModel)result;
@@ -112,6 +113,8 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
+
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,
@@ -120,30 +123,23 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             Distance = request.Distance,
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
-            PageSize = request.PageSize,
+            PageSize = request.PageSize
             Sort = request.Sort,
             DisabilityConfident = request.DisabilityConfident
         });
-
-        if (result.VacancyReference != null)
-        {
-            return RedirectToRoute(RouteNames.Vacancies, new { result.VacancyReference });
-        }
-
-        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
 
         var viewmodel = (SearchResultsViewModel)result;
         viewmodel.SelectedRouteIds = request.RouteIds;
         viewmodel.NationalSearch = request.Location == null;
         viewmodel.Location = request.Location;
         viewmodel.Distance = request.Distance;
-        viewmodel.SearchTerm = request.SearchTerm;
         viewmodel.Vacancies = result.Vacancies.Count != 0
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : [];
         viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
         viewmodel.DisabilityConfident = request.DisabilityConfident;
         viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.PageSize, result.TotalPages, filterUrl);
+
         foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
         {
             route.Selected = true;
@@ -153,22 +149,13 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             level.Selected = true;
         }
         var filterChoices = PopulateFilterChoices(viewmodel.Routes, viewmodel.Levels);
-        viewmodel.FilterChoices = filterChoices;
         viewmodel.SelectedLevelCount = request.LevelIds?.Count ?? 0;
         viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
         viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
-        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
 
         return View(viewmodel);
     }
-
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
-        => new()
-        {
-            JobCategoryChecklistDetails = new ChecklistDetails
-            {
-                Title = "RouteIds",
-                QueryStringParameterName = "routeIds",
                 Lookups = categories.OrderBy(x => x.Name).Select(category => new ChecklistLookup(category.Name, category.Id.ToString(), null, category.Selected)).ToList()
             },
             CourseLevelsChecklistDetails = new ChecklistDetails
@@ -176,6 +163,4 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
                 Title = "LevelIds",
                 QueryStringParameterName = "levelIds",
                 Lookups = levels.OrderBy(x => x.Id).Select(level => new ChecklistLookup($"Level {level.Id}", level.Id.ToString(), $"Equal to {level.Name}", level.Selected)).ToList()
-            }
-        };
 }
