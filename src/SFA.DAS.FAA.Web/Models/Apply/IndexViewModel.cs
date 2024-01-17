@@ -7,10 +7,11 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 {
     public class IndexViewModel
     {
-        public static IndexViewModel Map(IDateTimeService dateTimeService, GetIndexQueryResult source)
+        public static IndexViewModel Map(IDateTimeService dateTimeService, GetIndexRequest request, GetIndexQueryResult source)
         {
             return new IndexViewModel
             {
+                VacancyReference = request.VacancyReference,
                 ShowAccountCreatedBanner = false,
                 VacancyTitle = source.VacancyTitle,
                 EmployerName = source.EmployerName,
@@ -24,6 +25,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             };
         }
 
+        public string VacancyReference { get; set; }
         public bool ShowAccountCreatedBanner { get; set; }
         public string VacancyTitle { get; set; }
         public string EmployerName { get; set; }

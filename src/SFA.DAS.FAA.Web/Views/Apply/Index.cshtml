@@ -36,7 +36,9 @@
         <p class="govuk-body-l faa-vacancy__location">@Model.EmployerName</p>
         <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
         <p class="govuk-body govuk-!-margin-bottom-7">
-            <a href="#" class="govuk-link" target="_blank">View vacancy (opens in new tab)</a>
+            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="das-vacancy__link" target="_blank">
+                View vacancy (opens in new tab)
+            </a>
         </p>
 
         <h2 class="govuk-heading-m">Education history</h2>

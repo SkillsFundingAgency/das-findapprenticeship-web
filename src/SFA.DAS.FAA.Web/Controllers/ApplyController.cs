@@ -14,7 +14,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var query = new GetIndexQuery { VacancyReference = request.VacancyReference };
             var result = await mediator.Send(query);
-            var viewModel = IndexViewModel.Map(dateTimeService, result);
+            var viewModel = IndexViewModel.Map(dateTimeService, request, result);
             return View(viewModel);
         }
     }

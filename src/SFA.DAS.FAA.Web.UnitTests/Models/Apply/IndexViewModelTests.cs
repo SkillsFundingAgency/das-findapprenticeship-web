@@ -15,12 +15,14 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
     {
         [Test, MoqAutoData]
         public void Map_Returns_Expected_Result(
+            GetIndexRequest request,
             Mock<IDateTimeService> dateTimeService,
             GetIndexQueryResult source)
         {
-            var result = IndexViewModel.Map(dateTimeService.Object, source);
+            var result = IndexViewModel.Map(dateTimeService.Object, request, source);
 
             using var scope = new AssertionScope();
+            result.VacancyReference.Should().Be(request.VacancyReference);
             result.VacancyTitle.Should().Be(source.VacancyTitle);
             result.EmployerName.Should().Be(source.EmployerName);
             result.ClosingDate.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.ClosingDate));
