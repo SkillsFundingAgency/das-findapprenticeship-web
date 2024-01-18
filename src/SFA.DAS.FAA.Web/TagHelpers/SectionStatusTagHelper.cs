@@ -18,7 +18,7 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             var label = status.GetLabel();
 
             output.TagName = "strong";
-            output.Attributes.Add("class", $"govuk-tag das-no-wrap {cssClass}");
+            output.Attributes.Add("class", $"{cssClass}");
             output.Content.SetHtmlContent(label);
             output.TagMode = TagMode.StartTagAndEndTag;
         }

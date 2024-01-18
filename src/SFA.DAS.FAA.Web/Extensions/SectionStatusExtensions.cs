@@ -20,10 +20,10 @@ namespace SFA.DAS.FAA.Web.Extensions
         {
             return sectionStatus switch
             {
-                SectionStatus.NotStarted => "govuk-tag--blue",
-                SectionStatus.InProgress => "govuk-tag--grey",
-                SectionStatus.Completed => "govuk-tag--green",
-                SectionStatus.NotRequired => "govuk-tag--grey",
+                SectionStatus.NotStarted => "govuk-tag das-no-wrap govuk-tag--blue",
+                SectionStatus.InProgress => "govuk-tag das-no-wrap govuk-tag--light-blue",
+                SectionStatus.Completed => "govuk-body das-no-wrap",
+                SectionStatus.NotRequired => "govuk-tag das-no-wrap govuk-tag--grey",
                 _ => string.Empty
             };
         }
