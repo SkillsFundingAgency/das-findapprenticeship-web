@@ -98,10 +98,6 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
         {
             Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value,
             Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value,
-            //Accounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(
-            //    User.Claims.FirstOrDefault(c => c.Type.Equals(EmployerClaims.AccountsClaimsTypeIdentifier))?.Value)
-            //    .Select(c => c.Value)
-            //    .ToList(),
             ReturnUrl = returnUrl
         };
         return View(viewModel);
