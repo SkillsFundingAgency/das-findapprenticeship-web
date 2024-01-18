@@ -12,7 +12,12 @@ namespace SFA.DAS.FAA.Web.Controllers
     {
         public async Task<IActionResult> Index(GetIndexRequest request)
         {
-            var query = new GetIndexQuery { VacancyReference = request.VacancyReference };
+            var query = new GetIndexQuery
+            {
+                VacancyReference = request.VacancyReference,
+                ApplicantEmailAddress = "test@test.com" //to be sourced from claims or similar following auth.
+            };
+
             var result = await mediator.Send(query);
             var viewModel = IndexViewModel.Map(dateTimeService, request, result);
             return View(viewModel);
