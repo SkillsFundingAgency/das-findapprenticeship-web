@@ -17,8 +17,9 @@
 
 .faa-vacancy__section {
   border-bottom: 1px solid $govuk-border-colour;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  padding-top:20px;
 }
 
 .faa-vacancy__section--last {
@@ -29,6 +30,8 @@
 
 .faa-vacancy__section--first {
     border-bottom: none !important;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .faa-vacancy-actions {
@@ -82,4 +85,8 @@
   @extend .govuk-list;
   @extend .govuk-list--number;
   color: inherit;
+}
+
+.faa-vacancy-grey-text{
+    color: #505A5F;
 }

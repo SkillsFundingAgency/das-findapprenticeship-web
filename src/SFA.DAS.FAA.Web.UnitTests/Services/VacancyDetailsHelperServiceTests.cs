@@ -51,24 +51,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30 Jan 2000", "Closing in 29 days")]
-        [TestCase("01 Jan 2000", "Closing in 0 day")]
-        [TestCase("02 Jan 2000", "Closing in 1 day")]
-        public void GetApplyNowClosingDate(string closingDate, string? expectedResult)
-        {
-            //arrange
-            var mockDateTimeService = new Mock<IDateTimeService>();
-            mockDateTimeService.Setup(date => date.GetDateTime()).Returns(new DateTime(2000, 01, 01));
-
-            //sut
-            var result =
-                VacancyDetailsHelperService.GetApplyNowClosingDate(mockDateTimeService.Object,
-                    Convert.ToDateTime(closingDate));
-
-            //assert
-            result.Should().Be(expectedResult);
-        }
-
         [TestCase("30 Jan 2000", "Posted on 30 January 2000")]
         [TestCase("01 Jan 2000", "Posted on 01 January 2000")]
         public void GetPostedDate(string postedDate, string? expectedResult)

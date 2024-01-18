@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -22,8 +23,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? HoursPerWeek { get; init; }
         public string? StartDate { get; init; }
         public string? PostedDate { get; init; }
-        public string? ClosingDate {get; init; }
-        public string? ApplyNowClosingDate { get; init; }
+        public string? ClosingDate { get; init; }
         public string? Duration { get; init; }
         public int? PositionsAvailable { get; init; }
         public Address WorkLocation { get; init; } = new();
@@ -41,6 +41,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? CourseOverviewOfRole { get; init; }
         public List<string>? CourseCoreDuties { get; init; } = [];
         public List<string>? CourseSkills { get; init; } = [];
+        public List<LevelResponse> CourseLevels { get; init; } = [];
+        public string? CourseLevelMapper { get; init; }
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source)
@@ -57,7 +59,6 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 WorkDescription = source.Vacancy?.TrainingDescription,
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate),
-                ApplyNowClosingDate = VacancyDetailsHelperService.GetApplyNowClosingDate(dateTimeService, source.Vacancy.ClosingDate),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
                 StartDate = source.Vacancy.StartDate.GetStartDate(),
                 WorkLocation = source.Vacancy.Address,
@@ -66,7 +67,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 TrainingDescription = source.Vacancy?.TrainingDescription,
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
                 Skills = source.Vacancy?.Skills.ToList(),
-                EmployerWebsite = VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
+                EmployerWebsite =
+                    VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
                 EmployerDescription = source.Vacancy?.EmployerDescription,
                 EmployerName = source.Vacancy?.EmployerName,
                 EmployerContactName = source.Vacancy?.EmployerContactName,
@@ -74,14 +76,18 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 EmployerContactPhone = source.Vacancy?.EmployerContactPhone,
                 CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
                 EssentialQualifications = source.Vacancy?.Qualifications
-                    .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification) l).ToList(),
+                    .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
                 DesiredQualifications = source.Vacancy?.Qualifications.Where(fil => fil.Weighting == Weighting.Desired)
-                    .Select(l => (Qualification) l).ToList(),
+                    .Select(l => (Qualification)l).ToList(),
                 CourseSkills = source.Vacancy?.CourseSkills,
                 CourseCoreDuties = source.Vacancy?.CourseCoreDuties,
                 CourseOverviewOfRole = source.Vacancy?.CourseOverviewOfRole,
                 StandardPageUrl = source.Vacancy?.StandardPageUrl,
-                IsDisabilityConfident = source.Vacancy is {IsDisabilityConfident: true}
+                IsDisabilityConfident = source.Vacancy is { IsDisabilityConfident: true },
+                CourseLevels = source.Vacancy?.Levels,
+                CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) 
+                    ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
+                    : string.Empty
             };
         }
     }

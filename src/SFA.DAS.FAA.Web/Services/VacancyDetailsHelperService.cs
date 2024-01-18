@@ -33,14 +33,6 @@ namespace SFA.DAS.FAA.Web.Services
             return $"Closes on {closingDate:dddd dd MMMM}";
         }
 
-        public static string GetApplyNowClosingDate(IDateTimeService dateTimeService, DateTime closingDate)
-        {
-            var currentDate = dateTimeService.GetDateTime();
-            var timeUntilClosing = closingDate.Date - currentDate;
-            var days = (int) Math.Ceiling(timeUntilClosing.TotalDays);
-            return days > 1 ? $"Closing in {days} days" : $"Closing in {days} day";
-        }
-
         public static string? FormatEmployerWebsiteUrl(string? url)
         {
             if (string.IsNullOrEmpty(url)) return url;

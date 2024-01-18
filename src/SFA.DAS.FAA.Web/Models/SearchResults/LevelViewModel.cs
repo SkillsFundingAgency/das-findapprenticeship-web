@@ -10,10 +10,10 @@ public class LevelViewModel
         {
             Selected = false,
             Name = level.Name,
-            Id = level.Id
+            Id = level.Code
         };
     }
     public bool Selected { get; set; }
-    public string Name { get; set; } = null!;
-    public int Id { get; set; }
+    public string Name { get; init; } = null!;
+    public int Id { get; init; }
 }

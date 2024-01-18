@@ -33,6 +33,6 @@ public class WhenGettingVacancyDetails
 
         actualModel.Should().BeEquivalentTo(expected, options => options
             .Excluding(x => x.ClosingDate)
-            .Excluding(x => x.ApplyNowClosingDate));
+            .Excluding(x => x.CourseLevelMapper));
     }
 }

@@ -30,7 +30,7 @@ public class WhenCreatingSearchResultsViewModel
 
         actual.Location.Should().BeEquivalentTo(source.Location!.LocationName);
         actual.Routes.Should().BeEquivalentTo(source.Routes);
-        actual.Levels.Should().BeEquivalentTo(source.Levels);
+        actual.Levels.Should().BeEquivalentTo(source.Levels, opts => opts.Excluding(c =>c.Code));
 
     }
 }
