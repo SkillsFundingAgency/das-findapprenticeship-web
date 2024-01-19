@@ -28,6 +28,12 @@ namespace SFA.DAS.FAA.Web.Services
             
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship Level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
+            
+            if(request.DisabilityConfident)
+            {
+                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "DisabilityConfident", request.DisabilityConfident.ToString(),[$"DisabilityConfident={request.DisabilityConfident}"]);
+            }
+
             return filters;
         }
 
@@ -54,6 +60,11 @@ namespace SFA.DAS.FAA.Web.Services
                 queryParameters.Add($"sort={request.Sort}");
             if (request.LevelIds != null)
                 queryParameters.AddRange(request.LevelIds.Select(isActive => "levelIds=" + isActive));
+
+            if(request.DisabilityConfident)
+            {
+                queryParameters.Add($"DisabilityConfident={request.DisabilityConfident}");
+            }
             return queryParameters;
         }
 

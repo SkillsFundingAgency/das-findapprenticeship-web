@@ -112,9 +112,10 @@
                         <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
                         <div class="govuk-checkboxes govuk-checkboxes--small">
                             <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="onlyshow" name="disability" type="checkbox"
-                                    value="yes" />
-                                <label class="govuk-label govuk-checkboxes__label" for="disability">
+                                <input class="govuk-checkboxes__input" id="DisabilityConfident"
+                                    name="DisabilityConfident" type="checkbox" value="true"
+                                    checked="@Model.DisabilityConfident" />
+                                <label class="govuk-label govuk-checkboxes__label" asp-for="DisabilityConfident">
                                     Only show Disability Confident employers
                                 </label>
                             </div>
@@ -187,6 +188,11 @@
                         <p class="govuk-body govuk-!-font-size-16 govuk-hint">
                             Posted @vacancy.PostedDate
                         </p>
+                        @if (@vacancy.IsDisabilityConfident)
+                        {
+                            <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
+                                alt="Disability Confident" no-cdn />
+                        }
                     </li>
                 }
             </ol>

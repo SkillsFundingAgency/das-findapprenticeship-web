@@ -121,7 +121,8 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
             PageSize = request.PageSize,
-            Sort = request.Sort
+            Sort = request.Sort,
+            DisabilityConfident = request.DisabilityConfident
         });
 
         if (result.VacancyReference != null)
@@ -141,6 +142,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : [];
         viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
+        viewmodel.DisabilityConfident = request.DisabilityConfident;
         viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.PageSize, result.TotalPages, filterUrl);
         foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
         {

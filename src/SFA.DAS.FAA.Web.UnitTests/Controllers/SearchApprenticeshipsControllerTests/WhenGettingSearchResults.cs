@@ -28,6 +28,7 @@ public class WhenGettingSearchResults
         string? searchTerm,
         int pageNumber,
         int pageSize,
+        bool disabilityConfident,
         VacancySort sort,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
@@ -54,6 +55,7 @@ public class WhenGettingSearchResults
                 && c.SelectedRouteIds!.Equals(routeIds)
                 && c.PageNumber!.Equals(pageNumber)
                 && c.PageSize!.Equals(pageSize)
+                && c.DisabilityConfident!.Equals(disabilityConfident)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
@@ -65,7 +67,8 @@ public class WhenGettingSearchResults
             SearchTerm = searchTerm,
             PageNumber = pageNumber,
             PageSize = pageSize,
-            LevelIds = levelIds
+            LevelIds = levelIds,
+            DisabilityConfident = disabilityConfident,
         }) as ViewResult;
 
         using (new AssertionScope())
@@ -91,6 +94,7 @@ public class WhenGettingSearchResults
             actualModel?.Levels.FirstOrDefault(x => x.Id.ToString() == levelIds.First())?.Selected.Should().BeTrue();
             actualModel?.Levels.Where(x => x.Id.ToString() != levelIds.First()).Select(x => x.Selected).ToList()
                 .TrueForAll(x => x).Should().BeFalse();
+            actualModel.DisabilityConfident.Should().Be(disabilityConfident);
         }
     }
 
@@ -103,6 +107,7 @@ public class WhenGettingSearchResults
         string? searchTerm,
         int pageNumber,
         int pageSize,
+        bool disabilityConfident,
         GetSearchResultsResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SearchApprenticeshipsController controller)
@@ -118,6 +123,7 @@ public class WhenGettingSearchResults
                 && c.SelectedRouteIds!.Equals(routeIds)
                 && c.PageNumber!.Equals(pageNumber)
                 && c.PageSize!.Equals(pageSize)
+                && c.DisabilityConfident!.Equals(disabilityConfident)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
@@ -131,6 +137,7 @@ public class WhenGettingSearchResults
             PageNumber = pageNumber,
             PageSize = pageSize,
             LevelIds = levelIds, 
+            DisabilityConfident = disabilityConfident,
         }) as RedirectToRouteResult;
 
         // Assert
