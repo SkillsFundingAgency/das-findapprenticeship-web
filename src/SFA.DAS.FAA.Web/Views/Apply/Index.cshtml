@@ -1,18 +1,16 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Web.Extensions
 @model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
 
 @{
     Layout = "_LayoutApprentice";
-    ViewBag.Title = $"Apply for {Model.VacancyTitle}";
+    ViewBag.Title = $"Apply for {Model.VacancyTitle} – Find an apprenticeship – GOV.UK";
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         
         @if (Model.ShowAccountCreatedBanner)
         {
-
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
                  aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
@@ -155,7 +153,6 @@
         
         @if (Model.IsDisabilityConfident)
         {
-
             <h2 class="govuk-heading-m govuk-!-margin-top-8">Disability Confidence</h2>
             <p class="govuk-hint">This company has joined the government's Disability Confidence scheme.</p>
             <ul class="govuk-task-list">
@@ -170,13 +167,15 @@
                     </div>
                 </li>
             </ul>
-
         }
-
+        
         <div class="govuk-button-group govuk-!-margin-top-8">
-            <button class="govuk-button" data-module="govuk-button">
-                Continue
-            </button>
+            @if (Model.IsApplicationComplete)
+            {
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            }
             <a class="govuk-link" href="#">Save and finish later</a>
         </div>
 

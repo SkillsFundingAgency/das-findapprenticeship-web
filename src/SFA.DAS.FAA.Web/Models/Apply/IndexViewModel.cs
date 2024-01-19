@@ -32,12 +32,20 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public string ClosingDate { get; set; }
         public bool IsDisabilityConfident { get; set; }
 
+        public bool IsApplicationComplete => EducationHistory.TrainingCourses == SectionStatus.Completed &&
+                                             EducationHistory.Qualifications == SectionStatus.Completed &&
+                                             WorkHistory.VolunteeringAndWorkExperience == SectionStatus.Completed &&
+                                             WorkHistory.Jobs == SectionStatus.Completed &&
+                                             (!ApplicationQuestions.ShowAdditionalQuestion1 || ApplicationQuestions.AdditionalQuestion1 == SectionStatus.Completed) &&
+                                             (!ApplicationQuestions.ShowAdditionalQuestion2 || ApplicationQuestions.AdditionalQuestion2 == SectionStatus.Completed) &&
+                                             InterviewAdjustments.RequestAdjustments == SectionStatus.Completed &&
+                                             (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfident == SectionStatus.Completed);
 
-        public EducationHistorySection EducationHistory { get; set; }
-        public WorkHistorySection WorkHistory { get; set; }
-        public ApplicationQuestionsSection ApplicationQuestions { get; set; }
-        public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
-        public DisabilityConfidenceSection DisabilityConfidence { get; set; }
+        public EducationHistorySection EducationHistory { get; set; } = new();
+        public WorkHistorySection WorkHistory { get; set; } = new();
+        public ApplicationQuestionsSection ApplicationQuestions { get; set; } = new();
+        public InterviewAdjustmentsSection InterviewAdjustments { get; set; } = new();
+        public DisabilityConfidenceSection DisabilityConfidence { get; set; } = new();
 
         public class EducationHistorySection
         {
