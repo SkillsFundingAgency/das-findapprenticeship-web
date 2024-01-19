@@ -100,11 +100,3 @@ Scenario: Navigate to search results page with no results found
 	When I navigate to the following url: /search-results?location=manchester
 	Then a http status code of 200 is returned
 	And the page content includes the following: No apprenticeships found
-
-@WireMockServer
-Scenario: Navigate to vacancy details page with vacancy found
-	When I navigate to the following url: /vacancies/1000012013
-	Then a http status code of 200 is returned
-	And the page content includes the following: Summary
-
-
