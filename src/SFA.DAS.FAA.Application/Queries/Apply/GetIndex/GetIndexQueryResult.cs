@@ -1,0 +1,112 @@
+﻿using SFA.DAS.FAA.Domain.Apply.GetIndex;
+using SFA.DAS.FAA.Domain.Enums;
+
+namespace SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
+
+public class GetIndexQueryResult
+{
+    public string VacancyTitle { get; set; }
+    public string EmployerName { get; set; }
+    public DateTime ClosingDate { get; set; }
+    public bool IsDisabilityConfident { get; set; }
+
+    public EducationHistorySection EducationHistory { get; set; }
+    public WorkHistorySection WorkHistory { get; set; }
+    public ApplicationQuestionsSection ApplicationQuestions { get; set; }
+    public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
+    public DisabilityConfidenceSection DisabilityConfidence { get; set; }
+
+    public class EducationHistorySection
+    {
+        public SectionStatus Qualifications { get; set; }
+        public SectionStatus TrainingCourses { get; set; }
+
+        public static implicit operator EducationHistorySection(GetIndexApiResponse.EducationHistorySection source)
+        {
+            return new EducationHistorySection
+            {
+                Qualifications = source.Qualifications,
+                TrainingCourses = source.TrainingCourses
+            };
+        }
+    }
+
+    public class WorkHistorySection
+    {
+        public SectionStatus Jobs { get; set; }
+        public SectionStatus VolunteeringAndWorkExperience { get; set; }
+
+        public static implicit operator WorkHistorySection(GetIndexApiResponse.WorkHistorySection source)
+        {
+            return new WorkHistorySection
+            {
+                Jobs = source.Jobs,
+                VolunteeringAndWorkExperience = source.VolunteeringAndWorkExperience
+            };
+        }
+    }
+
+    public class ApplicationQuestionsSection
+    {
+        public SectionStatus SkillsAndStrengths { get; set; }
+        public SectionStatus WhatInterestsYou { get; set; }
+        public SectionStatus AdditionalQuestion1 { get; set; }
+        public SectionStatus AdditionalQuestion2 { get; set; }
+        public string AdditionalQuestion1Label { get; set; }
+        public string AdditionalQuestion2Label { get; set; }
+
+        public static implicit operator ApplicationQuestionsSection(GetIndexApiResponse.ApplicationQuestionsSection source)
+        {
+            return new ApplicationQuestionsSection
+            {
+                SkillsAndStrengths = source.SkillsAndStrengths,
+                WhatInterestsYou = source.WhatInterestsYou,
+                AdditionalQuestion1 = source.AdditionalQuestion1,
+                AdditionalQuestion2 = source.AdditionalQuestion2,
+                AdditionalQuestion1Label = source.AdditionalQuestion1Label,
+                AdditionalQuestion2Label = source.AdditionalQuestion2Label
+            };
+        }
+    }
+
+    public class InterviewAdjustmentsSection
+    {
+        public SectionStatus RequestAdjustments { get; set; }
+
+        public static implicit operator InterviewAdjustmentsSection(GetIndexApiResponse.InterviewAdjustmentsSection source)
+        {
+            return new InterviewAdjustmentsSection
+            {
+                RequestAdjustments = source.RequestAdjustments
+            };
+        }
+    }
+    public class DisabilityConfidenceSection
+    {
+        public SectionStatus InterviewUnderDisabilityConfident { get; set; }
+
+        public static implicit operator DisabilityConfidenceSection(GetIndexApiResponse.DisabilityConfidenceSection source)
+        {
+            return new DisabilityConfidenceSection
+            {
+                InterviewUnderDisabilityConfident = source.InterviewUnderDisabilityConfident
+            };
+        }
+    }
+
+    public static implicit operator GetIndexQueryResult(GetIndexApiResponse source)
+    {
+        return new GetIndexQueryResult
+        {
+            VacancyTitle = source.VacancyTitle,
+            EmployerName = source.EmployerName,
+            ClosingDate = source.ClosingDate,
+            IsDisabilityConfident = source.IsDisabilityConfident,
+            EducationHistory = source.EducationHistory,
+            WorkHistory = source.WorkHistory,
+            ApplicationQuestions = source.ApplicationQuestions,
+            InterviewAdjustments = source.InterviewAdjustments,
+            DisabilityConfidence = source.DisabilityConfidence
+        };
+    }
+}

@@ -7,4 +7,5 @@ public static class RouteNames
     public const string Location = "location";
     public const string SearchResults = "search-results";
     public const string Vacancies = "vacancies";
+    public const string Apply = "apply";
 }
