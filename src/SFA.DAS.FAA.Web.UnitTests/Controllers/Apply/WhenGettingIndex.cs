@@ -29,7 +29,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply
 
             Assert.That(actual, Is.Not.Null);
 
-            var expected = IndexViewModel.Map(dateTimeService, result);
+            var expected = IndexViewModel.Map(dateTimeService, request, result);
 
             var actualModel = actual.Model as IndexViewModel;
             actualModel.Should().BeEquivalentTo(expected, options => options
