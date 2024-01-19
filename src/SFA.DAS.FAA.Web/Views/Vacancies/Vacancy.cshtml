@@ -213,7 +213,7 @@
                 @if (Model.EssentialQualifications is { Count: > 0 })
                 {
                     <h3 class="govuk-heading-s">Essential qualifications</h3>
-                    <p>@Model.EssentialQualifications.FirstOrDefault()?.QualificationType</p>
+                    <p>@Model.EssentialQualifications.FirstOrDefault()?.QualificationType:</p>
                     <ul class="govuk-list govuk-list--bullet">
                         @foreach (var qualification in Model.EssentialQualifications)
                         {
@@ -224,7 +224,7 @@
                 @if (Model.DesiredQualifications is { Count: > 0 })
                 {
                     <h3 class="govuk-heading-s">Desirable qualifications</h3>
-                    <p>@Model.DesiredQualifications.FirstOrDefault()?.QualificationType</p>
+                    <p>@Model.DesiredQualifications.FirstOrDefault()?.QualificationType:</p>
                     <ul class="govuk-list govuk-list--bullet">
                         @foreach (var qualification in Model.DesiredQualifications)
                         {
