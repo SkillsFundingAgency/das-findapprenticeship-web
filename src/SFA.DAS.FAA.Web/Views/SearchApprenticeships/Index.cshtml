@@ -5,7 +5,7 @@
     ViewBag.Title = "Find an apprenticeship – GOV.UK";
 }
 
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing page--faa-homepage" id="main-content">
+<div class="page--faa-homepage">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <partial model="@ViewData.ModelState" name="_ValidationSummary" />
@@ -18,7 +18,7 @@
     <div class="faa-home-panel">
 
         <form class="form" method="get">
-            <input type="hidden" name="search" value="1"/>
+            <input type="hidden" name="search" value="1" />
             <div class="govuk-grid-row">
 
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
@@ -31,7 +31,8 @@
                         <div id="what-hint" class="govuk-hint">
                             Enter a job or company
                         </div>
-                        <input class="govuk-input" id="WhatSearchTerm" name="WhatSearchTerm" type="text" aria-describedby="what-hint">
+                        <input class="govuk-input" id="WhatSearchTerm" name="WhatSearchTerm" type="text"
+                            aria-describedby="what-hint">
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
@@ -46,7 +47,7 @@
                             Enter a city or postcode
                         </div>
                         <input class="govuk-input faa-location-autocomplete" name="WhereSearchTerm" id="WhereSearchTerm"
-                                                       type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
+                            type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
                     </div>
                 </div>
             </div>
@@ -57,4 +58,4 @@
             </div>
         </form>
     </div>
-</main>
+</div>
