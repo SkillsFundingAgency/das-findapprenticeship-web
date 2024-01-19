@@ -15,4 +15,5 @@ public class GetSearchResultsResult
     public string Sort { get; set; }
     public string? VacancyReference { get; set; }
     public List<LevelResponse> Levels { get; set; }
+    public bool DisabilityConfident { get; set; }
 }

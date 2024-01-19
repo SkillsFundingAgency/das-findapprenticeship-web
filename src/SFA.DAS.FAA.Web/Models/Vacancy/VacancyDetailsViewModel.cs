@@ -41,7 +41,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? CourseOverviewOfRole { get; init; }
         public List<string>? CourseCoreDuties { get; init; } = [];
         public List<string>? CourseSkills { get; init; } = [];
-        public List<LevelResponse> CourseLevels { get; init; } = [];
+        public List<LevelResponse>? CourseLevels { get; init; } = [];
         public string? CourseLevelMapper { get; init; }
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
@@ -85,7 +85,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 StandardPageUrl = source.Vacancy?.StandardPageUrl,
                 IsDisabilityConfident = source.Vacancy is { IsDisabilityConfident: true },
                 CourseLevels = source.Vacancy?.Levels,
-                CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) 
+                CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0 
                     ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
                     : string.Empty
             };
