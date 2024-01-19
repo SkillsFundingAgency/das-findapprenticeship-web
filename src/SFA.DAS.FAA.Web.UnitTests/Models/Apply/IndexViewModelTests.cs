@@ -57,7 +57,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             viewModel.ApplicationQuestions.AdditionalQuestion1Label = string.Empty;
             viewModel.ApplicationQuestions.AdditionalQuestion2Label = string.Empty;
             viewModel.ApplicationQuestions.AdditionalQuestion1 = SectionStatus.NotStarted;
-            viewModel.ApplicationQuestions.AdditionalQuestion1 = SectionStatus.NotStarted;
+            viewModel.ApplicationQuestions.AdditionalQuestion2 = SectionStatus.NotStarted;
 
             viewModel.IsApplicationComplete.Should().Be(true);
         }
@@ -72,7 +72,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             viewModel.IsApplicationComplete.Should().Be(true);
         }
 
-        private IndexViewModel CreateViewModel(bool isComplete = false)
+        private IndexViewModel CreateViewModel(bool isComplete = true)
         {
             var status = isComplete ? SectionStatus.Completed : SectionStatus.NotStarted;
 
