@@ -1,6 +1,6 @@
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 
-namespace SFA.DAS.FAA.Web.Models;
+namespace SFA.DAS.FAA.Web.Models.SearchResults;
 
 public class RouteViewModel
 {
