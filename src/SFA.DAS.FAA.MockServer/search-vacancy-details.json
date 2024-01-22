@@ -74,5 +74,31 @@
   ],
   "courseCoreDuties": [],
   "courseOverviewOfRole": "Managing project work and teams for businesses and other organisations.",
-  "standardPageUrl": "https://instituteforapprenticeships.org/apprenticeship-standards/associate-project-manager-v1-3"
+  "standardPageUrl": "https://instituteforapprenticeships.org/apprenticeship-standards/associate-project-manager-v1-3",
+  "levels": [
+    {
+      "code": 2,
+      "name": "GCSE"
+    },
+    {
+      "code": 3,
+      "name": "A level"
+    },
+    {
+      "code": 4,
+      "name": "higher national certificate (HNC)"
+    },
+    {
+      "code": 5,
+      "name": "higher national diploma (HND)"
+    },
+    {
+      "code": 6,
+      "name": "degree"
+    },
+    {
+      "code": 7,
+      "name": "master’s degree"
+    }
+  ]
 }

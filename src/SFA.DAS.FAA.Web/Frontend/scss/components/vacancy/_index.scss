@@ -17,14 +17,21 @@
 
 .faa-vacancy__section {
   border-bottom: 1px solid $govuk-border-colour;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
+  padding-bottom: 35px;
+  margin-bottom: 30px;
+  padding-top:20px;
 }
 
 .faa-vacancy__section--last {
   border-bottom: none;
   padding-bottom: 0;
   margin-bottom: 0;
+}
+
+.faa-vacancy__section--first {
+    border-bottom: none !important;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .faa-vacancy-actions {
@@ -78,4 +85,14 @@
   @extend .govuk-list;
   @extend .govuk-list--number;
   color: inherit;
+}
+
+.faa-disability-confident--srp {
+  width: 130px;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.faa-vacancy-grey-text{
+    color: #505A5F;
 }

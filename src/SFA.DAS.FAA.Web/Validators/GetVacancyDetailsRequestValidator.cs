@@ -7,7 +7,7 @@ namespace SFA.DAS.FAA.Web.Validators
     {
         public const string VacancyReferenceEmpty = "You must include a vacancy reference.";
         public const string VacancyReferenceTooShort = "The vacancy reference must be atleast 10 characters or more.";
-        public const string VacancyReferenceNotNumeric = "The vacancy reference must be a numeric & valid value.";
+        public const string VacancyReferenceNotValid = "The vacancy reference must be a valid value.";
 
         public GetVacancyDetailsRequestValidator()
         {
@@ -16,8 +16,9 @@ namespace SFA.DAS.FAA.Web.Validators
                 .NotNull()
                 .MinimumLength(10).WithMessage(VacancyReferenceTooShort);
 
-            RuleFor(a => a.VacancyReference).Must(x => int.TryParse(x, out var val) && val > 0)
-                .WithMessage(VacancyReferenceNotNumeric);
+            RuleFor(x => x.VacancyReference)
+                .Matches(@"^VAC\d{10}$")
+                .WithMessage(VacancyReferenceNotValid);
         }
     }
 }

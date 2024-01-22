@@ -1,0 +1,183 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
+
+@{
+    Layout = "_LayoutApprentice";
+    ViewBag.Title = $"Apply for {Model.VacancyTitle} – Find an apprenticeship – GOV.UK";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+        @if (Model.ShowAccountCreatedBanner)
+        {
+            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+                 aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Success
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        Account created. You can now start your application for this apprenticeship.
+                    </h3>
+                    <p class="govuk-body">You can change your account details at any point in
+                        <a
+                            class="govuk-notification-banner__link" href="#">Settings</a>.</p>
+                </div>
+            </div>
+
+        }
+
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Apply for @Model.VacancyTitle</h1>
+        <p class="govuk-body-l faa-vacancy__location">@Model.EmployerName</p>
+        <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
+        <p class="govuk-body govuk-!-margin-bottom-7">
+            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="das-vacancy__link" target="_blank">
+                View vacancy (opens in new tab)
+            </a>
+        </p>
+
+        <h2 class="govuk-heading-m">Education history</h2>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        School, college and university qualifications
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.EducationHistory.Qualifications"/>
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Training courses
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.EducationHistory.TrainingCourses"/>
+                </div>
+            </li>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-8">Work history</h2>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Jobs
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.WorkHistory.Jobs"/>
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Volunteering and work experience
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.WorkHistory.VolunteeringAndWorkExperience"/>
+                </div>
+            </li>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-8">Application questions</h2>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        What are your skills and strengths?
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.ApplicationQuestions.SkillsAndStrengths"/>
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        What interests you about this apprenticeship?
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.ApplicationQuestions.WhatInterestsYou" />
+                </div>
+            </li>
+            @if (Model.ApplicationQuestions.ShowAdditionalQuestion1)
+            {
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a href="#" class="govuk-link govuk-task-list__link">
+                            @Model.ApplicationQuestions.AdditionalQuestion1Label
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1"/>
+                    </div>
+                </li>
+            }
+            @if (Model.ApplicationQuestions.ShowAdditionalQuestion2)
+            {
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a href="#" class="govuk-link govuk-task-list__link">
+                            @Model.ApplicationQuestions.AdditionalQuestion2Label
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion2"/>
+                    </div>
+                </li>
+            }
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-8">Interview adjustments</h2>
+        <ul class="govuk-task-list">
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a href="#" class="govuk-link govuk-task-list__link">
+                        Request adjustments on your application
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.InterviewAdjustments.RequestAdjustments" />
+                </div>
+            </li>
+        </ul>
+        
+        @if (Model.IsDisabilityConfident)
+        {
+            <h2 class="govuk-heading-m govuk-!-margin-top-8">Disability Confidence</h2>
+            <p class="govuk-hint">This company has joined the government's Disability Confidence scheme.</p>
+            <ul class="govuk-task-list">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a href="#" class="govuk-link govuk-task-list__link">
+                            Interview under the Disability Confident scheme
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.DisabilityConfidence.InterviewUnderDisabilityConfident"/>
+                    </div>
+                </li>
+            </ul>
+        }
+        
+        <div class="govuk-button-group govuk-!-margin-top-8">
+            @if (Model.IsApplicationComplete)
+            {
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            }
+            <a class="govuk-link" href="#">Save and finish later</a>
+        </div>
+
+    </div>
+</div>

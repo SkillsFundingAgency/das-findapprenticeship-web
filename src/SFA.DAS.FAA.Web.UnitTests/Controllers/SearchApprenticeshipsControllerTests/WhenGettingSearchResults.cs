@@ -23,10 +23,12 @@ public class WhenGettingSearchResults
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
         GetSearchResultsResult result,
         List<string>? routeIds,
+        List<string>? levelIds,
         string? location,
         int distance,
         string? searchTerm,
         int pageNumber,
+        bool disabilityConfident,
         VacancySort sort,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
@@ -52,6 +54,7 @@ public class WhenGettingSearchResults
                 && c.SelectedRouteIds!.Equals(routeIds)
                 && c.PageNumber!.Equals(pageNumber)
                 && c.PageSize!.Equals(10)
+                && c.DisabilityConfident!.Equals(disabilityConfident)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
@@ -61,7 +64,9 @@ public class WhenGettingSearchResults
             Distance = distance,
             RouteIds = routeIds,
             SearchTerm = searchTerm,
-            PageNumber = pageNumber
+            PageNumber = pageNumber,
+            LevelIds = levelIds,
+            DisabilityConfident = disabilityConfident,
         }) as ViewResult;
 
         using (new AssertionScope())
@@ -70,6 +75,8 @@ public class WhenGettingSearchResults
             var actualModel = actual!.Model as SearchResultsViewModel;
             actualModel?.Total.Should().Be(((SearchResultsViewModel) result).Total);
             actualModel?.SelectedRouteIds.Should().Equal(routeIds);
+            actualModel?.SelectedRouteCount.Should().Be(routeIds.Count);
+            actualModel?.SelectedLevelCount.Should().Be(levelIds.Count);
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.Distance.Should().Be(distance);
             actualModel?.PageNumber.Should().Be(pageNumber);
@@ -82,17 +89,23 @@ public class WhenGettingSearchResults
             actualModel?.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First())?.Selected.Should().BeTrue();
             actualModel?.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
                 .TrueForAll(x => x).Should().BeFalse();
+            actualModel?.Levels.FirstOrDefault(x => x.Id.ToString() == levelIds.First())?.Selected.Should().BeTrue();
+            actualModel?.Levels.Where(x => x.Id.ToString() != levelIds.First()).Select(x => x.Selected).ToList()
+                .TrueForAll(x => x).Should().BeFalse();
+            actualModel.DisabilityConfident.Should().Be(disabilityConfident);
         }
     }
 
     [Test, MoqAutoData]
     public async Task Then_When_Vacancy_Reference_Has_Value_It_Is_Redirected_To_Vacancy_Details(
         List<string>? routeIds,
+        List<string>? levelIds,
         string? location,
         int distance,
         string? searchTerm,
         int pageNumber,
         int pageSize,
+        bool disabilityConfident,
         GetSearchResultsResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<IDateTimeService> dateTimeService)
@@ -109,6 +122,7 @@ public class WhenGettingSearchResults
                 && c.Location!.Equals(location)
                 && c.SelectedRouteIds!.Equals(routeIds)
                 && c.PageNumber!.Equals(pageNumber)
+                && c.DisabilityConfident!.Equals(disabilityConfident)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
         var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
@@ -123,7 +137,9 @@ public class WhenGettingSearchResults
             Distance = distance,
             RouteIds = routeIds,
             SearchTerm = searchTerm,
-            PageNumber = pageNumber
+            PageNumber = pageNumber,
+            LevelIds = levelIds, 
+            DisabilityConfident = disabilityConfident,
         }) as RedirectToRouteResult;
 
         // Assert

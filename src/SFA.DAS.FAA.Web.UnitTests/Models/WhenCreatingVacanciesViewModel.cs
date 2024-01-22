@@ -55,6 +55,53 @@ public class WhenCreatingVacanciesViewModel
         Assert.That(actual.PostedDate, Is.EqualTo(expectedPostedDate));
     }
 
+    [Test, MoqAutoData]
+    public void Then_Closing_Soon_Flag_Shown_If_Vacancy_Closes_In_Less_Than_Eight_Days(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        var closingDate = new DateTime(2023, 11, 16);
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(closingDate.AddDays(-7));
+        
+        vacancies.ClosingDate = closingDate;
+        
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+        actual.IsClosingSoon.Should().BeTrue();
+    }
+    [Test, MoqAutoData]
+    public void Then_Closing_Soon_Flag_Not_Shown_If_Vacancy_Closes_In_More_Than_Or_Equal_To_Eight_Days(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        var closingDate = new DateTime(2023, 11, 16);
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(closingDate.AddDays(-8));
+        
+        vacancies.ClosingDate = closingDate;
+        
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+        actual.IsClosingSoon.Should().BeFalse();
+    }
+    
+    [Test, MoqAutoData]
+    public void Then_New_Flag_Shown_If_Vacancy_Is_Less_Than_Eight_Days_Old(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        var postedDate = new DateTime(2023, 11, 16);
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(new DateTime(2023, 11, 16).AddDays(7));
+        
+        vacancies.PostedDate = postedDate;
+        
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+        actual.IsNew.Should().BeTrue();
+    }
+    
+    [Test, MoqAutoData]
+    public void Then_New_Flag_Not_Shown_If_Vacancy_Is_Greater_Than_Or_Equal_To_Eight_Days_Old(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        var postedDate = new DateTime(2023, 11, 16);
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(postedDate.AddDays(8));
+        
+        vacancies.PostedDate = postedDate;
+        
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+        actual.IsNew.Should().BeFalse();
+    }
+
     [Test]
     [MoqInlineAutoData("1","blablaLane","Morden", "London", "London")]
     [MoqInlineAutoData("1", "blablaLane", "Morden", null, "Morden")]

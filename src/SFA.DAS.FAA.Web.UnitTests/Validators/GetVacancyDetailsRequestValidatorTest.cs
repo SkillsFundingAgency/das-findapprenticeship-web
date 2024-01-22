@@ -7,18 +7,19 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators;
 
 public class GetVacancyDetailsRequestValidatorTest
 {
-    public const string VacancyReferenceEmpty = "You must include a vacancy reference.";
-    public const string VacancyReferenceTooShort = "The vacancy reference must be atleast 10 characters or more.";
-    public const string VacancyReferenceNotNumeric = "The vacancy reference must be a numeric & valid value.";
+    private const string VacancyReferenceEmpty = "You must include a vacancy reference.";
+    private const string VacancyReferenceTooShort = "The vacancy reference must be atleast 10 characters or more.";
+    private const string VacancyReferenceNotValid = "The vacancy reference must be a valid value.";
 
     [TestCase("0", VacancyReferenceTooShort, false)]
     [TestCase("123456789", VacancyReferenceTooShort, false)]
     [TestCase(null, VacancyReferenceEmpty, false)]
-    [TestCase("01234567890", null, true)]
+    [TestCase("01234567890", VacancyReferenceNotValid, false)]
+    [TestCase("VAC0123456789", "", true)]
     public async Task Validate_VacancyReference(string vacancyReference, string? errorMessage, bool isValid)
     {
         var model = new GetVacancyDetailsRequest
-            { VacancyReference = vacancyReference };
+            {VacancyReference = vacancyReference};
 
         var sut = new GetVacancyDetailsRequestValidator();
         var result = await sut.TestValidateAsync(model);
@@ -30,7 +31,7 @@ public class GetVacancyDetailsRequestValidatorTest
         }
         else
         {
-            result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldNotHaveValidationErrorFor(c => c.VacancyReference);
         }
     }
 }

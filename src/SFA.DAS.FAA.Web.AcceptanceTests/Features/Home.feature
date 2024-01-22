@@ -106,5 +106,3 @@ Scenario: Navigate to vacancy details page with vacancy found
 	When I navigate to the following url: /vacancies/1000012013
 	Then a http status code of 200 is returned
 	And the page content includes the following: Summary
-
-

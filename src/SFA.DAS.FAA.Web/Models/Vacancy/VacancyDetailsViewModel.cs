@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -8,110 +9,96 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
     public class VacancyDetailsViewModel
     {
         public string? Title { get; init; }
-
         public string? EmployerName { get; init; }
-        public string? EmployerEmail { get; init; }
-        public string? EmployerPhone { get; init; }
+        public string? EmployerContactName { get; init; }
+        public string? EmployerContactEmail { get; init; }
+        public string? EmployerContactPhone { get; init; }
         public string? EmployerDescription { get; init; }
         public string? EmployerWebsite { get; init; }
-
         public string? VacancyReference { get; init; }
         public string? VacancySummary { get; init; }
-        
         public string? AnnualWage { get; init; }
-
         public string? Levels { get; init; }
         public string? WorkingPattern { get; init; }
         public string? HoursPerWeek { get; init; }
-
         public string? StartDate { get; init; }
         public string? PostedDate { get; init; }
-        public string? ClosingDate {get; init; }
+        public string? ClosingDate { get; init; }
         public string? Duration { get; init; }
-        public int PositionsAvailable { get; init; }
-
+        public int? PositionsAvailable { get; init; }
         public Address WorkLocation { get; init; } = new();
         public string? WorkDescription { get; init; }
-
         public string? TrainingProviderName { get; init; }
         public string? TrainingDescription { get; init; }
-        public List<string> Skills { get; init; } = new();
+        public List<string>? Skills { get; init; } = [];
+        public string? CourseTitle { get; init; }
+        public string? ThingsToConsider { get; init; }
+        public string? OutcomeDescription { get; init; }
+        public bool IsDisabilityConfident { get; init; } = false;
+        public List<Qualification>? EssentialQualifications { get; init; } = [];
+        public List<Qualification>? DesiredQualifications { get; init; } = [];
+        public string? StandardPageUrl { get; init; }
+        public string? CourseOverviewOfRole { get; init; }
+        public List<string>? CourseCoreDuties { get; init; } = [];
+        public List<string>? CourseSkills { get; init; } = [];
+        public List<LevelResponse>? CourseLevels { get; init; } = [];
+        public string? CourseLevelMapper { get; init; }
 
-        public string? CourseTitle { get; set; }
-        public string? ThingsToConsider { get; set; }
-        public string? OutcomeDescription { get; set; }
-        public bool IsDisabilityConfident { get; init; }
-
-        public List<Qualification>? EssentialQualifications { get; init; } = new();
-        public List<Qualification>? DesiredQualifications { get; init; } = new();
-        public string? StandardPageUrl { get; set; }
-
-        public string? CourseOverviewOfRole { get; set; }
-
-        public List<string> CourseCoreDuties { get; set; } = new();
-
-        public List<string> CourseSkills { get; set; } = new();
-
-        public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService, GetApprenticeshipVacancyQueryResult source)
+        public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
+            GetApprenticeshipVacancyQueryResult source)
         {
             return new VacancyDetailsViewModel
             {
-                Title = source.Vacancy.Title,
-                VacancyReference = source.Vacancy.VacancyReference,
-
-                VacancySummary = source.Vacancy.Description,
-
-                AnnualWage = source.Vacancy.WageText,
-                HoursPerWeek = source.Vacancy.HoursPerWeek.ToString().GetWorkingHours(),
-
-                Duration = source.Vacancy.ExpectedDuration,
-                PositionsAvailable = source.Vacancy.NumberOfPositions,
-
-                WorkDescription = source.Vacancy.TrainingDescription,
-                ThingsToConsider = source.Vacancy.ThingsToConsider,
-
+                Title = source.Vacancy?.Title,
+                VacancyReference = source.Vacancy?.VacancyReference,
+                VacancySummary = source.Vacancy?.Description,
+                AnnualWage = source.Vacancy?.WageText,
+                HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
+                Duration = source.Vacancy?.ExpectedDuration,
+                PositionsAvailable = source.Vacancy?.NumberOfPositions,
+                WorkDescription = source.Vacancy?.TrainingDescription,
+                ThingsToConsider = source.Vacancy?.ThingsToConsider,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
                 StartDate = source.Vacancy.StartDate.GetStartDate(),
-
                 WorkLocation = source.Vacancy.Address,
-
-                TrainingProviderName = source.Vacancy.ProviderName,
-                TrainingDescription = source.Vacancy.TrainingDescription,
-                OutcomeDescription = source.Vacancy.OutcomeDescription,
-                
-                Skills = source.Vacancy.Skills.ToList(),
-
-                EmployerWebsite = source.Vacancy.EmployerWebsiteUrl,
-                EmployerDescription = source.Vacancy.EmployerDescription,
-
-                EmployerName = source.Vacancy.EmployerName,
-                EmployerEmail = source.Vacancy.EmployerContactEmail,
-                EmployerPhone = source.Vacancy.EmployerContactPhone,
-
-                CourseTitle = $"{source.Vacancy.CourseTitle} (level {source.Vacancy.CourseLevel})",
-                
-                EssentialQualifications = source.Vacancy.Qualifications.Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
-                DesiredQualifications = source.Vacancy.Qualifications.Where(fil => fil.Weighting == Weighting.Desired).Select(l => (Qualification)l).ToList(),
-                
-                CourseSkills = source.Vacancy.CourseSkills,
-                CourseCoreDuties = source.Vacancy.CourseCoreDuties,
-                CourseOverviewOfRole = source.Vacancy.CourseOverviewOfRole,
-                StandardPageUrl = source.Vacancy.StandardPageUrl,
-                IsDisabilityConfident = source.Vacancy.IsDisabilityConfident
+                WorkingPattern = source.Vacancy?.WorkingWeek,
+                TrainingProviderName = source.Vacancy?.ProviderName,
+                TrainingDescription = source.Vacancy?.TrainingDescription,
+                OutcomeDescription = source.Vacancy?.OutcomeDescription,
+                Skills = source.Vacancy?.Skills.ToList(),
+                EmployerWebsite =
+                    VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
+                EmployerDescription = source.Vacancy?.EmployerDescription,
+                EmployerName = source.Vacancy?.EmployerName,
+                EmployerContactName = source.Vacancy?.EmployerContactName,
+                EmployerContactEmail = source.Vacancy?.EmployerContactEmail,
+                EmployerContactPhone = source.Vacancy?.EmployerContactPhone,
+                CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
+                EssentialQualifications = source.Vacancy?.Qualifications
+                    .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
+                DesiredQualifications = source.Vacancy?.Qualifications.Where(fil => fil.Weighting == Weighting.Desired)
+                    .Select(l => (Qualification)l).ToList(),
+                CourseSkills = source.Vacancy?.CourseSkills,
+                CourseCoreDuties = source.Vacancy?.CourseCoreDuties,
+                CourseOverviewOfRole = source.Vacancy?.CourseOverviewOfRole,
+                StandardPageUrl = source.Vacancy?.StandardPageUrl,
+                IsDisabilityConfident = source.Vacancy is { IsDisabilityConfident: true },
+                CourseLevels = source.Vacancy?.Levels,
+                CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0 
+                    ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
+                    : string.Empty
             };
         }
-
-        
     }
 
     public class Address
     {
-        public string? AddressLine1 { get; init; }
-        public string? AddressLine2 { get; init; }
-        public string? AddressLine3 { get; init; }
-        public string? AddressLine4 { get; init; }
-        public string? Postcode { get; init; }
+        public string? AddressLine1 { get; private init; }
+        public string? AddressLine2 { get; private init; }
+        public string? AddressLine3 { get; private init; }
+        public string? AddressLine4 { get; private init; }
+        public string? Postcode { get; private init; }
 
         public static implicit operator Address(AddressApiResponse source)
         {
@@ -128,9 +115,9 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
 
     public class Qualification
     {
-        public string? QualificationType { get; init; }
-        public string? Subject { get; init; }
-        public string? Grade { get; init; }
+        public string? QualificationType { get; private init; }
+        public string? Subject { get; private init; }
+        public string? Grade { get; private init; }
         public Weighting Weighting { get; init; }
 
         public static implicit operator Qualification(VacancyQualificationApiResponse source)
