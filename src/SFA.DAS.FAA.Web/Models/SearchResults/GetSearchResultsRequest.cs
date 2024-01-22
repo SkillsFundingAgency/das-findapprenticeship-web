@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.FAA.Web.Models.SearchResults
 {
@@ -9,5 +9,6 @@ namespace SFA.DAS.FAA.Web.Models.SearchResults
         [FromQuery] public string? SearchTerm { get; set; }
         [FromQuery] public int? Distance { get; set; }
         [FromQuery] public int? PageNumber { get; set; }
+        [FromQuery] public string? Sort {get; set; }
     }
 }

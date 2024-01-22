@@ -1,14 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
-using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
-using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -32,7 +32,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
         else if (search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults);
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = whatSearchTerm });
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
@@ -121,8 +121,6 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             request.PageNumber = 1;
         }
 
-        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
-
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,
@@ -130,26 +128,49 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             Distance = request.Distance,
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
-            PageSize = 10
+            PageSize = 10,
+            Sort = request.Sort
         });
+
+        if (result.VacancyReference != null)
+        {
+            return RedirectToRoute(RouteNames.Vacancies, new { result.VacancyReference });
+        }
+
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
 
         var viewmodel = (SearchResultsViewModel)result;
         viewmodel.SelectedRouteIds = request.RouteIds;
         viewmodel.NationalSearch = request.Location == null;
         viewmodel.Location = request.Location;
         viewmodel.Distance = request.Distance;
+        viewmodel.SearchTerm = request.SearchTerm;
         viewmodel.Vacancies = result.Vacancies.Any()
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : new List<VacanciesViewModel>();
         viewmodel.SelectedRoutes =
             request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : new List<string>();
-        viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.PageSize, result.TotalPages, filterUrl);
-
+        viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.TotalPages, filterUrl);
         foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
         {
             route.Selected = true;
         }
+        var filterChoices = PopulateFilterChoices(viewmodel.Routes);
+        viewmodel.FilterChoices = filterChoices;
+        viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
+        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
 
         return View(viewmodel);
     }
+
+    private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories)
+        => new()
+        {
+            JobCategoryChecklistDetails = new ChecklistDetails
+            {
+                Title = "RouteIds",
+                QueryStringParameterName = "routeIds",
+                Lookups = categories.OrderBy(x => x.Name).Select(category => new ChecklistLookup(category.Name, category.Id.ToString(), category.Selected)).ToList()
+            }
+        };
 }

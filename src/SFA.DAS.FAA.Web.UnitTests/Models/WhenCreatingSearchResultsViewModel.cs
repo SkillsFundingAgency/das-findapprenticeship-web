@@ -3,7 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.Web.Models;
+using SFA.DAS.FAA.Web.Models.SearchResults;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 

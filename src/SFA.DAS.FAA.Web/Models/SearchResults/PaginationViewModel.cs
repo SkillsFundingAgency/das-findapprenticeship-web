@@ -1,19 +1,17 @@
-﻿namespace SFA.DAS.FAA.Web.Models
+﻿namespace SFA.DAS.FAA.Web.Models.SearchResults
 {
     public class PaginationViewModel
     {
         public int CurrentPage { get; init; }
-        public int PageSize { get; init; }
         public int TotalPages { get; init; }
         public string BaseUrl { get; init; }
         public string PrevUrl { get; set; }
         public string NextUrl { get; set; }
         public List<LinkItem> LinkItems { get; set; } = new();
 
-        public PaginationViewModel(int currentPage, int pageSize, int totalPages, string baseUrl)
+        public PaginationViewModel(int currentPage, int totalPages, string baseUrl)
         {
             CurrentPage = currentPage;
-            PageSize = pageSize;
             TotalPages = totalPages;
             BaseUrl = baseUrl;
             PrevUrl = "";
@@ -23,12 +21,12 @@
 
             if (CurrentPage > 1)
             {
-                PrevUrl = GetUrl(baseUrl, CurrentPage - 1, PageSize);
+                PrevUrl = GetUrl(baseUrl, CurrentPage - 1);
             }
 
-            if (CurrentPage < totalPages) NextUrl = GetUrl(baseUrl, CurrentPage + 1, PageSize);
+            if (CurrentPage < totalPages) NextUrl = GetUrl(baseUrl, CurrentPage + 1);
 
-            
+
             var delta = 3;
             if (TotalPages > 10)
             {
@@ -47,9 +45,9 @@
             var to = Math.Min(TotalPages, delta + 1);
             for (var index = 1; index <= to; index++)
             {
-                var url = index == CurrentPage 
-                    ? null 
-                    : GetUrl(baseUrl, index, PageSize);
+                var url = index == CurrentPage
+                    ? null
+                    : GetUrl(baseUrl, index);
                 LinkItems.Add(new LinkItem(url, index.ToString()));
             }
 
@@ -60,9 +58,9 @@
                 to = Math.Min(endIndex, TotalPages);
                 for (var index = from; index <= to; index++)
                 {
-                    var url = index == CurrentPage 
-                        ? null 
-                        : GetUrl(baseUrl, index, PageSize);
+                    var url = index == CurrentPage
+                        ? null
+                        : GetUrl(baseUrl, index);
                     LinkItems.Add(new LinkItem(url, index.ToString()));
                 }
             }
@@ -73,7 +71,7 @@
                 {
                     LinkItems.Insert(0, new LinkItem(null, "...", true));
                 }
-                LinkItems.Insert(0, new LinkItem(GetUrl(baseUrl, 1, PageSize), "1"));
+                LinkItems.Insert(0, new LinkItem(GetUrl(baseUrl, 1), "1"));
             }
 
             if (CurrentPage + 3 < TotalPages)
@@ -82,13 +80,13 @@
                 {
                     LinkItems.Add(new LinkItem(null, "...", true));
                 }
-                LinkItems.Add(new LinkItem(GetUrl(baseUrl, TotalPages, PageSize), totalPages.ToString()));
+                LinkItems.Add(new LinkItem(GetUrl(baseUrl, TotalPages), totalPages.ToString()));
             }
         }
 
-        public static string GetUrl(string baseUrl, int page, int pageSize)
+        public static string GetUrl(string baseUrl, int page)
         {
-            var query = $"pageNumber={page}&pageSize={pageSize}";
+            var query = $"pageNumber={page}";
             var hasQueryParameters = baseUrl.Contains('?');
 
             var queryToAppend = hasQueryParameters ? $"&{query}" : $"?{query}";
