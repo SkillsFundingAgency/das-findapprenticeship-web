@@ -2,18 +2,18 @@
 @if (Model.ShowFilterOptions)
 {
     <div class="faa-filter__selected">
-    <div class="faa-filter__selected-header">
-    <h3 class="govuk-heading-m faa-filter__selected-heading">Selected filters</h3>
-    <a class="faa-filter__selected-action govuk-link govuk-link--no-visited-state"
-        href="@Model.ClearSelectedFiltersLink">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
-</div>
-    @foreach (var filters in Model.SelectedFilters.OrderBy(x => x.FieldOrder))
-    {
-        <h4 class="govuk-heading-s faa-filter__selected-sub-heading">@filters.FieldName</h4>
-        @foreach (var filter in filters.Filters.OrderBy(x => x.Order))
+        <div class="faa-filter__selected-header">
+            <h3 class="govuk-heading-m faa-filter__selected-heading">Selected filters</h3>
+            <a class="faa-filter__selected-action govuk-link govuk-link--no-visited-state"
+               href="@Model.ClearSelectedFiltersLink">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
+        </div>
+        @foreach (var filters in Model.SelectedFilters.OrderBy(x => x.FieldOrder))
         {
-            <a href="@filter.ClearFilterLink" title="@filter.Value" class="faa-filter__tag das-breakable">@filter.Value</a>
+            <h4 class="govuk-heading-s faa-filter__selected-sub-heading">@filters.FieldName</h4>
+            @foreach (var filter in filters.Filters.OrderBy(x => x.Order))
+            {
+                <a href="@filter.ClearFilterLink" title="@filter.Value" class="faa-filter__tag das-breakable">@filter.Value</a>
+            }
         }
-    }
     </div>
 }

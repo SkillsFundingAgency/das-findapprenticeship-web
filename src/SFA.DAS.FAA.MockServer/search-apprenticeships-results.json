@@ -6,6 +6,12 @@
     "lon": -1.12505,
     "locationName": "Leicester, Leicestershire"
   },
+  "levels": [
+    {
+      "name": "GCSE",
+      "id": 3
+    }
+  ],
   "routes": [
     {
       "name": "Agriculture, environmental and animal care",
@@ -86,7 +92,8 @@
       "postCode": "WD25 8JS",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "isDisabilityConfident": "True"
     },
     {
       "id": 1000012739,
