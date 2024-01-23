@@ -18,15 +18,11 @@ builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
 builder.Services.AddServiceRegistration();
-builder.Services.AddAuthenticationServices();
+builder.Services.AddAuthenticationServices(rootConfiguration);
 
 builder.Services.AddHealthChecks();
 
-builder.Services.AddAndConfigureGovUkAuthentication(
-    rootConfiguration,
-    typeof(CandidateAccountPostAuthenticationClaimsHandler),
-    "",
-    "/service/account-details");
+
 
 builder.Services.Configure<RouteOptions>(options =>
 {

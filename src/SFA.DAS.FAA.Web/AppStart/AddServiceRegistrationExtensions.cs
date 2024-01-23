@@ -5,6 +5,7 @@ using SFA.DAS.FAA.Infrastructure.Api;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Services;
+using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.GovUK.Auth.Services;
 
 namespace SFA.DAS.FAA.Web.AppStart;
@@ -18,8 +19,13 @@ public static class AddServiceRegistrationExtension
         services.AddTransient<IDateTimeService, DateTimeService>();
     }
 
-    public static void AddAuthenticationServices(this IServiceCollection services)
+    public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddAndConfigureGovUkAuthentication(
+            configuration,
+            typeof(CandidateAccountPostAuthenticationClaimsHandler),
+            "",
+            "/service/account-details");
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, CandidateAccountPostAuthenticationClaimsHandler>();
         services.AddAuthorization(options =>

@@ -41,6 +41,7 @@ public class WhenAddingServicesToTheContainer
         serviceCollection.AddConfigurationOptions(configuration);
         serviceCollection.AddDistributedMemoryCache();
         serviceCollection.AddServiceRegistration();
+        serviceCollection.AddAuthenticationServices(configuration);
     }
 
     private static IConfigurationRoot GenerateConfiguration()
@@ -52,6 +53,11 @@ public class WhenAddingServicesToTheContainer
                 new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:BaseUrl", "https://test.com/"),
                 new KeyValuePair<string, string>("FindAnApprenticeshipOuterApi:Key", "123edc"),
                 new KeyValuePair<string, string>("EnvironmentName", "test"),
+                new KeyValuePair<string, string>("ResourceEnvironmentName", "local"),
+                new KeyValuePair<string, string>("StubAuth", "true"),
+                new KeyValuePair<string, string>("GovUkOidcConfiguration:BaseUrl","https://test-url"),
+                new KeyValuePair<string, string>("GovUkOidcConfiguration:ClientId","bd5f0343-7cd7-4ea9-8aa1-63ea8d16ce32"),
+                new KeyValuePair<string, string>("GovUkOidcConfiguration:KeyVaultIdentifier","urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=")
             }
         };
 
