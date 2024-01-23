@@ -3,7 +3,7 @@ using SFA.DAS.FAA.Domain.Configuration;
 using System.Net;
 using SFA.DAS.FAA.Domain.Interfaces;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace SFA.DAS.FAA.Infrastructure.Api;
 
@@ -35,7 +35,7 @@ public class ApiClient : IApiClient
         if (response.IsSuccessStatusCode)
         {
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonSerializer.Deserialize<TResponse>(json);
+            return JsonConvert.DeserializeObject<TResponse>(json);
         }
 
         response.EnsureSuccessStatusCode();
@@ -47,7 +47,7 @@ public class ApiClient : IApiClient
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Put, request.PutUrl)
         {
-            Content = new StringContent(JsonSerializer.Serialize(request.Data), Encoding.UTF8, "application/json"),
+            Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(request.Data), Encoding.UTF8, "application/json"),
             VersionPolicy = HttpVersionPolicy.RequestVersionOrLower
         };
         AddAuthenticationHeader(requestMessage);
@@ -62,7 +62,8 @@ public class ApiClient : IApiClient
         if (response.IsSuccessStatusCode)
         {
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonSerializer.Deserialize<TResponse>(json);
+            return JsonConvert.DeserializeObject<TResponse>(json);
+
         }
 
         response.EnsureSuccessStatusCode();
