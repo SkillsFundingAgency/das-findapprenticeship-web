@@ -12,8 +12,6 @@ using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAT.Domain.Interfaces;
-using IConfiguration = Castle.Core.Configuration.IConfiguration;
-
 namespace SFA.DAS.FAA.Web.UnitTests.AppStart;
 
 public class WhenAddingServicesToTheContainer
@@ -33,7 +31,7 @@ public class WhenAddingServicesToTheContainer
         var type = provider.GetService(toResolve);
         Assert.That(type, Is.Not.Null);
     }
-    
+
     private static void SetupServiceCollection(ServiceCollection serviceCollection)
     {
         var configuration = GenerateConfiguration();
@@ -43,9 +41,8 @@ public class WhenAddingServicesToTheContainer
         serviceCollection.AddConfigurationOptions(configuration);
         serviceCollection.AddDistributedMemoryCache();
         serviceCollection.AddServiceRegistration();
-        
     }
-    
+
     private static IConfigurationRoot GenerateConfiguration()
     {
         var configSource = new MemoryConfigurationSource

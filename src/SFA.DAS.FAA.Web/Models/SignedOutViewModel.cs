@@ -5,11 +5,10 @@ public class SignedOutViewModel
     private readonly string _environmentPart;
     private readonly string _domainPart;
 
-    //todo: get correct urls
     public SignedOutViewModel(string environment)
     {
-        _environmentPart = environment.ToLower() == "prd" ? "findanapprenticeship" : $"{environment.ToLower()}-eas.apprenticeships";
-        _domainPart = environment.ToLower() == "prd" ? "service" : "education";
+        _environmentPart = environment.ToLower() == "prd" ? "findapprenticeship" : $"{environment.ToLower()}-findapprenticeship";
+        _domainPart = environment.ToLower() == "prd" ? "education" : "apprenticeships.education";
     }
-    public string ServiceLink => $"https://accounts.{_environmentPart}.{_domainPart}.gov.uk";
+    public string ServiceLink => $"https://{_environmentPart}.{_domainPart}.gov.uk";
 }

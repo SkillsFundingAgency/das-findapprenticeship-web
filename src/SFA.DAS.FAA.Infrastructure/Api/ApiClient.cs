@@ -2,7 +2,8 @@
 using SFA.DAS.FAA.Domain.Configuration;
 using System.Net;
 using SFA.DAS.FAA.Domain.Interfaces;
-using Newtonsoft.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace SFA.DAS.FAA.Infrastructure.Api;
 
@@ -23,7 +24,7 @@ public class ApiClient : IApiClient
 
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, request.GetUrl);
         AddAuthenticationHeader(requestMessage);
-            
+
         var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
         if (response.StatusCode.Equals(HttpStatusCode.NotFound))
@@ -34,11 +35,37 @@ public class ApiClient : IApiClient
         if (response.IsSuccessStatusCode)
         {
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<TResponse>(json);
+            return JsonSerializer.Deserialize<TResponse>(json);
         }
 
         response.EnsureSuccessStatusCode();
 
+        return default;
+    }
+
+    public async Task<TResponse> Put<TResponse>(IPutApiRequest request)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Put, request.PutUrl)
+        {
+            Content = new StringContent(JsonSerializer.Serialize(request.Data), Encoding.UTF8, "application/json"),
+            VersionPolicy = HttpVersionPolicy.RequestVersionOrLower
+        };
+        AddAuthenticationHeader(requestMessage);
+
+        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+
+        if (response.StatusCode.Equals(HttpStatusCode.NotFound))
+        {
+            return default;
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonSerializer.Deserialize<TResponse>(json);
+        }
+
+        response.EnsureSuccessStatusCode();
         return default;
     }
 
