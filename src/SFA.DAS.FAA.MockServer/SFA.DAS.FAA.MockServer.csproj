@@ -45,7 +45,7 @@
     <Content Include="put-candidate.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="search-vacancy-details.json">
+    <Content Include="search-vacancy-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
