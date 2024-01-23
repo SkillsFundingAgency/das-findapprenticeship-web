@@ -112,9 +112,14 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
+        var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
         if (request.Distance <= 0)
         {
             request.Distance = null;
+        }
+        else if (request.Distance.HasValue && !validDistanceValues.Contains((int)request.Distance))
+        {
+            request.Distance = 10;
         }
         else if (request.PageNumber <= 0)
         {
