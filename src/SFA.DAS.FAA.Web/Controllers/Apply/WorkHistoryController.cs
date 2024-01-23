@@ -54,7 +54,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             await mediator.Send(command);
 
-            return RedirectToRoute(RouteNames.Apply, new GetIndexRequest { VacancyReference = request.VacancyReference });
+            return request.AddJob.Equals("Yes") 
+                ? RedirectToRoute("/") //TODO: Redirect the user to Add Job Page.
+                : RedirectToRoute(RouteNames.Apply, new GetIndexRequest { VacancyReference = request.VacancyReference });
         }
     }
 }

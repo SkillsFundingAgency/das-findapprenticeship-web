@@ -177,10 +177,11 @@
 
                 </div>
             </div>
-        </div </header>
-
+        </div>
+        </header>
+        
         <div class="govuk-width-container">
-        @RenderSection("BackLink", required: false)
+        @await RenderSectionAsync("BackLink", required: false)
             <main class="govuk-main-wrapper" id="main-content" role="main">
             @RenderBody()
             </main>
