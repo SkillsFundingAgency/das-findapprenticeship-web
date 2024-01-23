@@ -41,9 +41,9 @@ namespace SFA.DAS.FAA.Application.Services
         {
             var id = Guid.Empty;
 
-            var memberId = Get(SessionKeys.UserId);
+            var candidateId = Get(SessionKeys.CandidateId);
 
-            if (Guid.TryParse(memberId, out var newGuid))
+            if (Guid.TryParse(candidateId, out var newGuid))
             {
                 id = newGuid;
             }

@@ -2,6 +2,7 @@
 {
     public static class SessionKeys
     {
-        public static readonly string UserId = nameof(UserId);
+        public static readonly string CandidateId = nameof(CandidateId);
+        public static readonly string ApplicationId = nameof(ApplicationId);
     }
 }
