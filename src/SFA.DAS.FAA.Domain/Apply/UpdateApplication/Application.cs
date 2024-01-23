@@ -1,6 +1,6 @@
-﻿using SFA.DAS.FAA.Domain.Apply.UpsertApplication.Enums;
+﻿using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
 
-namespace SFA.DAS.FAA.Domain.Apply.UpsertApplication
+namespace SFA.DAS.FAA.Domain.Apply.UpdateApplication
 {
     public class Application
     {

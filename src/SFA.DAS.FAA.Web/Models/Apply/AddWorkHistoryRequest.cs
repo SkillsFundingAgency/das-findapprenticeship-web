@@ -8,6 +8,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         [FromRoute] public required Guid ApplicationId { get; init; }
         [BindProperty] public string AddJob { get; init; }
         public string[] Jobs = ["Yes", "No"];
-        public string? BackLinkUrl { get; init; }
+        public string? BackLinkUrl { get; set; }
     }
 }

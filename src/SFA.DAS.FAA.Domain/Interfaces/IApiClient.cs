@@ -4,5 +4,6 @@ namespace SFA.DAS.FAA.Domain.Interfaces
     {
         Task<TResponse> Get<TResponse>(IGetApiRequest request);
         Task<TResponse?> PatchWithResponseCode<TResponse>(IPatchApiRequest request);
+        Task<TResponse?> PostWithResponseCode<TResponse>(IPostApiRequest request);
     }
 }

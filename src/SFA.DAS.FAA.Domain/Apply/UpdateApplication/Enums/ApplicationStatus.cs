@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.FAA.Domain.Apply.UpsertApplication.Enums
+﻿namespace SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums
 {
     public enum ApplicationStatus
     {
