@@ -25,10 +25,18 @@ namespace SFA.DAS.FAA.Web.Controllers
                 LastName = lastName
             };
 
-            await mediator.Send(command);
+            try
+            {
+await mediator.Send(command);
+            }
+            catch
+            {
+                //add modelstate errors
+                return View();
+            }
 
             //TODO add correct route 
-            return RedirectToRoute("/"); //check if it has been sucessful? 
+            return RedirectToRoute("/");
             
         }
     }

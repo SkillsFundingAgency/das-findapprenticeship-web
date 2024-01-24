@@ -11,13 +11,15 @@ using System.Threading.Tasks;
 namespace SFA.DAS.FAA.Application.Commands.UserName
 {
     public class UpdateNameCommandHandler(IApiClient apiClient) 
-        : IRequestHandler<UpdateNameCommand>
+        : IRequestHandler<UpdateNameCommand, Unit>
     {
         public async Task<Unit> Handle(UpdateNameCommand request, CancellationToken cancellationToken)
         {
             var putRequest = new UpdateNameApiRequest(request.FirstName, request.LastName);
 
             var response = await apiClient.PostWithResponseCode<NullResponse>(putRequest);
+
+            //check response is not over 300
 
             return Unit.Value;
         }
