@@ -1,0 +1,36 @@
+﻿@model NameViewModel
+
+<div class="govuk-width-container">
+    <a class="govuk-back-link" href="../vacancy-page-02.html">Back</a>
+
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <span class="govuk-caption-l">Create an account</span>
+                <h1 class="govuk-heading-l">What is your name?</h1>
+                <p class="govuk-body">Write your name as you want it to appear on your applications.</p>
+                <form class="form" action="application-question-page-date-of-birth" method="post">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="FirstName">
+                            First name
+                        </label>
+                        <input class="govuk-input govuk-!-width-two-thirds" id="FirstName" name="FirstName" type="text">
+                    </div>
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="LastName">
+                            Last name
+                        </label>
+                        <input class="govuk-input govuk-!-width-two-thirds" id="LastName" name="LastName" type="text">
+                    </div>
+
+
+                    <div class="govuk-button-group" href="application-question-page-date-of-birth.html">
+                        <button class="govuk-button" data-module="govuk-button">
+                            Continue
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
