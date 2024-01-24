@@ -13,4 +13,10 @@ public static class RouteNames
     {
         public const string WorkHistory = nameof(WorkHistory);
     }
+    public const string SignOut = "sign-out";
+    public const string SignedOut = "signed-out";
+    public const string AccountUnavailable = "account-unavailable";
+    public const string StubAccountDetailsGet = "account-details-get";
+    public const string StubAccountDetailsPost = "account-details-post";
+    public const string StubSignedIn = "stub-signedin-get";
 }
