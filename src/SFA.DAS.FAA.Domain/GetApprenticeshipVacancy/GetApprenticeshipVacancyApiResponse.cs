@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
+﻿using SFA.DAS.FAA.Domain.SearchResults;
+
+namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
 {
     public class GetApprenticeshipVacancyApiResponse
     {
@@ -70,6 +72,7 @@
         public List<string> CourseCoreDuties { get; init; }
         public string? CourseOverviewOfRole { get; init; }
         public string? StandardPageUrl { get; init; }
+        public List<LevelResponse>? Levels { get; init; }
     }
 
     public class VacancyQualificationApiResponse

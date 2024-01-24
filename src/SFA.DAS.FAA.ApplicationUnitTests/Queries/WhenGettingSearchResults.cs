@@ -25,7 +25,7 @@ public class WhenGettingSearchResults
             : (VacancySort)Enum.Parse(typeof(VacancySort), query.Sort, true);
 
         // Mock the response from the API client
-        var expectedGetUrl = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, sort);
+        var expectedGetUrl = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, sort, query.DisabilityConfident);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
@@ -39,11 +39,12 @@ public class WhenGettingSearchResults
             Assert.AreEqual(expectedResponse.TotalFound, result.Total);
             Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
+            result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
             result.PageNumber.Should().Be(expectedResponse.PageNumber);
-            result.PageSize.Should().Be(expectedResponse.PageSize);
             result.Sort.Should().Be(sort.ToString());
             result.VacancyReference.Should().Be(expectedResponse.VacancyReference);
+            result.DisabilityConfident.Should().Be(expectedResponse.DisabilityConfident);
         }
     }
 }

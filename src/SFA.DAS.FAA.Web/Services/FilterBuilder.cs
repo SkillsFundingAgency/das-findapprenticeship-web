@@ -9,37 +9,68 @@ namespace SFA.DAS.FAA.Web.Services
         public static string BuildFullQueryString(GetSearchResultsRequest request, IUrlHelper url)
         {
             var fullQueryParameters = BuildQueryParameters(request);
-            return BuildQueryString(url, fullQueryParameters, "none")!;
+            return BuildQueryString(url, fullQueryParameters, ["none"])!;
         }
 
         public static List<SelectedFilter> Build(
             GetSearchResultsRequest request,
             IUrlHelper urlHelper,
-            IEnumerable<ChecklistLookup> categoriesLookups)
+            SearchApprenticeshipFilterChoices filterChoices)
         {
             var filters = new List<SelectedFilter>();
             var fullQueryParameters = BuildQueryParameters(request);
-            filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", categoriesLookups.ToList());
+            
+            filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "What",
+                request.SearchTerm,[$"searchTerm={request.SearchTerm}"]);
+            filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Where",
+                string.IsNullOrEmpty(request.Location) ? "" : $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "Across England")})",
+                [$"location={request.Location}", $"distance={(request.Distance == null ? "all" : request.Distance)}"]);
+            
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship Level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
+            
+            if(request.DisabilityConfident)
+            {
+                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "DisabilityConfident", request.DisabilityConfident.ToString(),[$"DisabilityConfident={request.DisabilityConfident}"]);
+            }
+
             return filters;
         }
 
+        
         private static List<string> BuildQueryParameters(GetSearchResultsRequest request)
         {
             var queryParameters = new List<string>();
             if (!string.IsNullOrEmpty(request.SearchTerm))
                 queryParameters.Add($"searchTerm={request.SearchTerm}");
-            if (request.Distance is not null)
-                queryParameters.Add($"distance={request.Distance}");
+            
             if (!string.IsNullOrEmpty(request.Location))
+            {
                 queryParameters.Add($"location={request.Location}");
+                if (request.Distance is not null)
+                    queryParameters.Add($"distance={request.Distance}");
+                else
+                    queryParameters.Add("distance=all");
+            }
+                
             if (request.RouteIds != null)
                 queryParameters.AddRange(request.RouteIds.Select(isActive => "routeIds=" + isActive));
+            
+            if (!string.IsNullOrEmpty(request.Sort))
+                queryParameters.Add($"sort={request.Sort}");
+            if (request.LevelIds != null)
+                queryParameters.AddRange(request.LevelIds.Select(isActive => "levelIds=" + isActive));
+
+            if(request.DisabilityConfident)
+            {
+                queryParameters.Add($"DisabilityConfident={request.DisabilityConfident}");
+            }
             return queryParameters;
         }
 
-        private static string? BuildQueryString(IUrlHelper url, IEnumerable<string> queryParameters, string filterToRemove)
+        private static string? BuildQueryString(IUrlHelper url, IEnumerable<string> queryParameters, List<string> filterToRemove)
         {
-            var queryParametersToBuild = queryParameters.Where(s => s != filterToRemove).ToList();
+            var queryParametersToBuild = queryParameters.Where(s => !filterToRemove.Contains(s)).ToList();
             return queryParametersToBuild.Count > 0 
                 ? $"{url.RouteUrl(RouteNames.SearchResults)}?{string.Join('&', queryParametersToBuild)}" 
                 : url.RouteUrl(RouteNames.SearchResults);
@@ -71,6 +102,34 @@ namespace SFA.DAS.FAA.Web.Services
 
             filters.Add(filter);
         }
+        
+        private static void AddSingleFilterItem(
+            this ICollection<SelectedFilter> filters, 
+            IUrlHelper urlHelper,
+            List<string> fullQueryParameters,
+            string fieldName,
+            string value,
+            List<string> filterToRemove)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                filters.Add(new SelectedFilter
+                {
+                    FieldName = fieldName,
+                    FieldOrder = -1,
+                    Filters =
+                    [
+                        new()
+                        {
+                            ClearFilterLink = BuildQueryString(urlHelper, fullQueryParameters, filterToRemove),
+                            Order = 0,
+                            Value = value
+                        }
+                    ]
+                });
+            }
+        }
+
 
         private static SearchApprenticeFilterItem BuildFilterItem(
             IUrlHelper url,
@@ -81,7 +140,7 @@ namespace SFA.DAS.FAA.Web.Services
             =>
                 new()
                 {
-                    ClearFilterLink = BuildQueryString(url, queryParameters, filterToRemove),
+                    ClearFilterLink = BuildQueryString(url, queryParameters, [filterToRemove]),
                     Order = filterFieldOrder,
                     Value = filterValue
                 };

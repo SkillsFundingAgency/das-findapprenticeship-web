@@ -18,107 +18,111 @@
             <div class="faa-filter__header">
                 <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
             </div>
-            <div class="faa-filter__selected">
-                <partial name="_SelectedCategoriesFilter" />
-            </div>
+            <partial name="_SelectedCategoriesFilter" />
             <div class="faa-filter__body">
                 <form asp-route="@RouteNames.SearchResults" method="GET">
-                <div class="govuk-form-group">
-                    <label for="SearchTerm" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
-                    <p class="govuk-hint">Enter a job or company</p>
-                    <input asp-for="SearchTerm" type="text" class="govuk-input" id="SearchTerm"/>
-                </div>
-                <div class="govuk-form-group">
-                    <label for="location" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
-                    <p class="govuk-hint">Enter a city or postcode</p>
-                    <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location" id="location"
-                                                                           type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
-                    <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
-                    <select class="govuk-select" id="within" name="distance">
-                        <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
-                        <option value="5" selected="@(Model.Distance == 5)">5 miles</option>
-                        <option value="10" selected="@(Model.Distance == 10)">10 miles</option>
-                        <option value="15" selected="@(Model.Distance == 15)">15 miles</option>
-                        <option value="20" selected="@(Model.Distance == 20)">20 miles</option>
-                        <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
-                        <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
-                        <option value="all" selected="@(Model.Distance == null)">Across England</option>
-                    </select>
-                </div>
-                <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
-                    <div class="govuk-accordion__section">
-                        <div class="govuk-accordion__section-header">
-                            <h2 class="govuk-accordion__section-heading">
-                                <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-level">
-                                    Apprenticeship level
-                                </span>
-                            </h2>
+                    <div class="govuk-form-group">
+                        <label for="SearchTerm" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
+                        <p class="govuk-hint">Enter a job or company</p>
+                        <input asp-for="SearchTerm" type="text" class="govuk-input" id="SearchTerm" />
+                    </div>
+                    <div class="govuk-form-group">
+                        <label for="location" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
+                        <p class="govuk-hint">Enter a city or postcode</p>
+                        <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location"
+                            id="location" type="search" spellcheck="false" autocomplete="postal-code"
+                            aria-describedby="where-hint">
+                        <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
+                        <select class="govuk-select" id="within" name="distance">
+                            <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
+                            <option value="5" selected="@(Model.Distance == 5)">5 miles</option>
+                            <option value="10" selected="@(Model.Distance == 10)">10 miles</option>
+                            <option value="15" selected="@(Model.Distance == 15)">15 miles</option>
+                            <option value="20" selected="@(Model.Distance == 20)">20 miles</option>
+                            <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
+                            <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
+                            <option value="all" selected="@(Model.Distance == null)">Across England</option>
+                        </select>
+                    </div>
+                    <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
+                        <div class="govuk-accordion__section">
+                            <div class="govuk-accordion__section-header">
+                                <h2 class="govuk-accordion__section-heading">
+                                    <span class="govuk-accordion__section-button"
+                                        id="apprenticeship-filters-heading-level">
+                                        Apprenticeship level
+                                        @if (Model.SelectedLevelCount != 0)
+                                        {
+                                            <span class="govuk-hint faa-filter__selected-hint" aria-hidden="true">
+                                                @Model.SelectedLevelCount.ToString() selected</span>
+                                        }
+                                    </span>
+
+                                </h2>
+
+                            </div>
+                            <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
+                                aria-labelledby="apprenticeship-filters-level">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-visually-hidden">Apprenticeship level</legend>
+                                    <p class="govuk-hint">Select the level you want to apply for</p>
+
+                                    <partial name="_FilterDetails"
+                                        Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
+                                </fieldset>
+                                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3">
+                                    <a class="govuk-link govuk-link--no-visited-state"
+                                        href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels"
+                                        target="_blank" rel="external">
+                                        What qualification levels mean (opens in new tab)
+                                    </a>
+                                </p>
+                            </div>
                         </div>
-                        <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
-                            aria-labelledby="apprenticeship-filters-level">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-visually-hidden">Apprenticeship level</legend>
-                                <p class="govuk-hint">Select the level you want to apply for</p>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="level-2" name="levels"
-                                            type="checkbox" value="2" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="level-2">
-                                            Level 2
-                                        </label>
-                                        <div class="govuk-hint govuk-checkboxes__hint">
-                                            Equal to GCSEs
-                                        </div>
-                                    </div>
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="level-3" name="levels"
-                                            type="checkbox" value="3" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="level-3">
-                                            Level 3
-                                        </label>
-                                        <div class="govuk-hint govuk-checkboxes__hint">
-                                            Equal to A-levels
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
+                        <div class="govuk-accordion__section">
+                            <div class="govuk-accordion__section-header">
+                                <h2 class="govuk-accordion__section-heading">
+                                    <span class="govuk-accordion__section-button"
+                                        id="apprenticeship-filters-heading-categories">
+                                        Job categories
+                                        @if (Model.SelectedRouteCount != 0)
+                                        {
+                                            <span class="govuk-hint faa-filter__selected-hint"
+                                                aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</span>
+                                        }
+                                    </span>
+                                </h2>
+                            </div>
+                            <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
+                                aria-labelledby="govuk-accordion__section-content">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-visually-hidden">Job categories</legend>
+
+
+
+                                    <partial name="_FilterDetails"
+                                        Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
+
+                                </fieldset>
+                            </div>
                         </div>
                     </div>
-                    <div class="govuk-accordion__section">
-                        <div class="govuk-accordion__section-header">
-                            <h2 class="govuk-accordion__section-heading">
-                                <span class="govuk-accordion__section-button"
-                                    id="apprenticeship-filters-heading-categories">
-                                    Job categories
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
-                            aria-labelledby="govuk-accordion__section-content">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-visually-hidden">Job categories</legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <partial name="_FilterDetails" Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
-                                </div>
-                            </fieldset>
+                    <div class="govuk-form-group">
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident</h2>
+                        <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
+                        <div class="govuk-checkboxes govuk-checkboxes--small">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="DisabilityConfident"
+                                    name="DisabilityConfident" type="checkbox" value="true"
+                                    checked="@Model.DisabilityConfident" />
+                                <label class="govuk-label govuk-checkboxes__label" asp-for="DisabilityConfident">
+                                    Only show Disability Confident employers
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="govuk-form-group">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident</h2>
-                    <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
-                    <div class="govuk-checkboxes govuk-checkboxes--small">
-                        <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="onlyshow" name="disability" type="checkbox"
-                                value="yes" />
-                            <label class="govuk-label govuk-checkboxes__label" for="disability">
-                                Only show Disability Confident employers
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
-                <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
+                    <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
                 </form>
             </div>
         </div>
@@ -148,8 +152,22 @@
                 @foreach (var vacancy in Model.Vacancies)
                 {
                     <li class="das-search-results__list-item">
+                        @if (vacancy.IsClosingSoon)
+                        {
+                            <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
+                                Closing soon
+                            </strong>
+                        }
+                        @if (vacancy.IsNew)
+                        {
+                            <strong class="govuk-tag govuk-!-margin-bottom-2">
+                                New
+                            </strong>
+                        }
+
                         <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-                            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference" class="das-search-results__link" id="standard-274">
+                            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference"
+                                class="das-search-results__link" id="standard-274">
                                 @vacancy.Title
                             </a>
                         </h2>
@@ -170,6 +188,11 @@
                         <p class="govuk-body govuk-!-font-size-16 govuk-hint">
                             Posted @vacancy.PostedDate
                         </p>
+                        @if (@vacancy.IsDisabilityConfident)
+                        {
+                            <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
+                                alt="Disability Confident" no-cdn />
+                        }
                     </li>
                 }
             </ol>

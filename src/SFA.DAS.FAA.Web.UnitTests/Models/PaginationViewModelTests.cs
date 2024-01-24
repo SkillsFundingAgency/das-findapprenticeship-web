@@ -9,18 +9,18 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models
     {
         public const string BaseUrl = @"http://baseUrl";
 
-        [TestCase("https://baseUrl.com", "https://baseUrl.com?pageNumber=2&pageSize=10")]
-        [TestCase("https://baseUrl.com?x=1", "https://baseUrl.com?x=1&pageNumber=2&pageSize=10")]
+        [TestCase("https://baseUrl.com", "https://baseUrl.com?pageNumber=2")]
+        [TestCase("https://baseUrl.com?x=1", "https://baseUrl.com?x=1&pageNumber=2")]
         public void CorrectlyAppendsToTheBaseUrl(string baseUrl, string expectedUrl)
         {
-            PaginationViewModel sut = new(1, 10, 2, baseUrl);
+            PaginationViewModel sut = new(1, 2, baseUrl);
             sut.LinkItems.Last().Url.Should().Be(expectedUrl);
         }
 
         [Test]
         public void ReturnsNoLinksWhenNoTotalPages()
         {
-            PaginationViewModel sut = new(1, 5, 0, BaseUrl);
+            PaginationViewModel sut = new(1, 0, BaseUrl);
             sut.LinkItems.Count.Should().Be(0);
         }
 
@@ -31,7 +31,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models
         public void PopulatesLinkItem(int currentPage, int totalPages, int totalLinkItems, int firstPageExpected, int lastPageExpected, bool isPreviousExpected, bool isNextExpected)
         {
             var pageSize = 10;
-            PaginationViewModel sut = new(currentPage, pageSize, totalPages, BaseUrl);
+            PaginationViewModel sut = new(currentPage, totalPages, BaseUrl);
 
             sut.LinkItems.Count.Should().Be(totalLinkItems);
 
@@ -57,7 +57,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models
 
             if (isPreviousExpected)
             {
-                sut.LinkItems.First(s => s.Text == "Previous").Url.Should().Be(BaseUrl + "?pageNumber=" + (currentPage - 1) + "&pageSize=" + pageSize);
+                sut.LinkItems.First(s => s.Text == "Previous").Url.Should().Be(BaseUrl + "?pageNumber=" + (currentPage - 1));
             }
             else
             {
@@ -66,7 +66,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models
 
             if (isNextExpected)
             {
-                sut.LinkItems.First(s => s.Text == "Next").Url.Should().Be(BaseUrl + "?pageNumber=" + (currentPage + 1) + "&pageSize=" + pageSize);
+                sut.LinkItems.First(s => s.Text == "Next").Url.Should().Be(BaseUrl + "?pageNumber=" + (currentPage + 1) );
             }
             else
             {
