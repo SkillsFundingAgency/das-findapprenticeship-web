@@ -1,4 +1,4 @@
-﻿Feature: Home
+Feature: Home
 
 As an FAA user
 I want a clear home page

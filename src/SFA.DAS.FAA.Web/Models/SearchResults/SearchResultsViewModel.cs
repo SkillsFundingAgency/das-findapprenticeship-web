@@ -9,6 +9,7 @@ public class SearchResultsViewModel : ViewModelBase
     public List<string>? SelectedRouteIds { get; set; }
     public List<string> SelectedRoutes { get; set; } = new List<string>();
     public List<RouteViewModel> Routes { get; set; }
+    public List<LevelViewModel> Levels { get; set; }
     public int Total { get; set; }
     public string TotalMessage => $"{(Total == 0 ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
     public int? Distance { get; set; }
@@ -16,16 +17,17 @@ public class SearchResultsViewModel : ViewModelBase
 
     public List<VacanciesViewModel> Vacancies { get; set; }
     public int PageNumber { get; set; }
-    public int PageSize { get; set; }
     public int TotalPages { get; set; }
     public string Sort { get; set; }
     public PaginationViewModel PaginationViewModel { get; set; } = null!;
     public string? VacancyReference { get; set; }
     public SearchApprenticeshipFilterChoices FilterChoices { get; set; } = new SearchApprenticeshipFilterChoices();
     public List<SelectedFilter> SelectedFilters { get; set; } = new();
-    public bool ShowFilterOptions => SelectedFilters.Any();
+    public bool ShowFilterOptions => SelectedFilters.Count != 0;
     public string ClearSelectedFiltersLink { get; set; } = null!;
-
+    public bool DisabilityConfident { get; set; } = false; 
+    public int SelectedLevelCount { get; set; }
+    public int SelectedRouteCount { get; set; }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
@@ -34,11 +36,11 @@ public class SearchResultsViewModel : ViewModelBase
             Total = source.Total,
             Routes = source.Routes.Select(c => (RouteViewModel)c).ToList(),
             Location = source.Location?.LocationName,
-            PageSize = source.PageSize,
             PageNumber = source.PageNumber,
             TotalPages = source.TotalPages,
             VacancyReference =source.VacancyReference,
-            Sort = source.Sort
+            Sort = source.Sort,
+            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList()
         };
     }
 
