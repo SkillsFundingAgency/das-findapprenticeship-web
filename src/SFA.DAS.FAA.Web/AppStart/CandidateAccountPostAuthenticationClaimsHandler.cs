@@ -32,10 +32,9 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
 
         //var requestData = new PutCandidateApiRequestData()
         //{
-        //    Email = email,
-        //    MobilePhone = mobile
+        //    Email = email
         //};
-        //var candidate = await _apiClient.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(Guid.NewGuid(), requestData));
+        //var candidate = await _apiClient.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
 
         //// add claims
 

@@ -7,10 +7,10 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Candidates;
 public class WhenBuildingPutCandidatesApiRequest
 {
     [Test, AutoData]
-    public void Then_The_Url_Is_Correctly_Constructed(Guid candidateId, object data)
+    public void Then_The_Url_Is_Correctly_Constructed(string govIdentifier, object data)
     {
-        var actual = new PutCandidateApiRequest(candidateId, data);
+        var actual = new PutCandidateApiRequest(govIdentifier, data);
 
-        actual.PutUrl.Should().Be($"candidates/{candidateId}");
+        actual.PutUrl.Should().Be($"candidates/{govIdentifier}");
     }
 }
