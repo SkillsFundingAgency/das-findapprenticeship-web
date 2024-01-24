@@ -63,9 +63,19 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
         [Test, MoqAutoData]
         public async Task Then_Request_With_ValidationError_Is_Called_And_View_Returned(
             AddWorkHistoryRequest request,
-            [Frozen] Mock<IValidator<AddWorkHistoryRequest>> validator,
-            [Greedy] WorkHistoryController controller)
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IValidator<AddWorkHistoryRequest>> validator)
         {
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+
+            var controller = new WorkHistoryController(mediator.Object, validator.Object)
+            {
+                Url = mockUrlHelper.Object
+            };
+
             var validationResult = new ValidationResult();
             validationResult.Errors.Add(new ValidationFailure("SomeProperty", "SomeError"));
 

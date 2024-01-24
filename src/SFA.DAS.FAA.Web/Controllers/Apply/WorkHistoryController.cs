@@ -19,11 +19,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var validation = await validator.ValidateAsync(request);
             if (!validation.IsValid)
             {
-                foreach (var validationFailure in validation.Errors)
+                foreach (var validationFailure in validation.Errors.Where(err => err.PropertyName != nameof(request.AddJob)))
                 {
                     request.ErrorDictionary.Add(validationFailure.PropertyName, validationFailure.ErrorMessage);
                 }
-                return View(ViewPath, request);
             }
 
             request.BackLinkUrl = Url.RouteUrl(RouteNames.Apply,
@@ -38,10 +37,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var validation = await validator.ValidateAsync(request);
             if (!validation.IsValid)
             {
-                if (validation.Errors.Exists(e => e.PropertyName == nameof(request.AddJob)))
+                foreach (var validationFailure in validation.Errors)
                 {
-                    request.ErrorDictionary.Add(nameof(request.AddJob), "Select if you want to add any jobs");
-                }
+                    request.ErrorDictionary.Add(validationFailure.PropertyName, validationFailure.ErrorMessage);
+                }                
                 return View(ViewPath, request);
             }
 
