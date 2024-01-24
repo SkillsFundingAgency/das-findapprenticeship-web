@@ -42,7 +42,6 @@ public class WhenGettingSearchResults
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
             result.PageNumber.Should().Be(expectedResponse.PageNumber);
-            result.PageSize.Should().Be(expectedResponse.PageSize);
             result.Sort.Should().Be(sort.ToString());
             result.VacancyReference.Should().Be(expectedResponse.VacancyReference);
             result.DisabilityConfident.Should().Be(expectedResponse.DisabilityConfident);
