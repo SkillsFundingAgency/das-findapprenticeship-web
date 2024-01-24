@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.FAA.Application.Commands.UserName
 {
-    public record UpdateNameCommand : IRequest<UpdateNameCommandResult>
+    public class UpdateNameCommand : IRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
