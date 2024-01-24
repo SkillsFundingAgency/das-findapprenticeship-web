@@ -8,4 +8,5 @@ public static class RouteNames
     public const string SearchResults = "search-results";
     public const string Vacancies = "vacancies";
     public const string Apply = "apply";
+    public const string UserName = "user-name";
 }
