@@ -22,7 +22,6 @@ public class ApiClient : IApiClient
 
     public async Task<TResponse> Get<TResponse>(IGetApiRequest request)
     {
-
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, request.GetUrl);
         AddAuthenticationHeader(requestMessage);
             
