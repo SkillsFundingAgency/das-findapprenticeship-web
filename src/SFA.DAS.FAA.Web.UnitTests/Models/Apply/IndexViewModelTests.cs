@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             var result = IndexViewModel.Map(dateTimeService.Object, request, source);
 
             using var scope = new AssertionScope();
-            result.VacancyReference.Should().Be(request.VacancyReference);
+            result.VacancyReference.Should().Be(source.VacancyReference);
             result.VacancyTitle.Should().Be(source.VacancyTitle);
             result.EmployerName.Should().Be(source.EmployerName);
             result.ClosingDate.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.ClosingDate));

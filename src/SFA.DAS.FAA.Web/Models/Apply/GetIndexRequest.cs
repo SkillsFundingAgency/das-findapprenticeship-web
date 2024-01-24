@@ -4,6 +4,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 {
     public class GetIndexRequest
     {
-        [FromRoute] public required string VacancyReference { get; init; }
+        [FromRoute] public required Guid ApplicationId { get; init; }
     }
 }

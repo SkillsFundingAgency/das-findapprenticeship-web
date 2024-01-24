@@ -15,7 +15,7 @@ public class GetIndexQueryHandler : IRequestHandler<GetIndexQuery, GetIndexQuery
 
     public async Task<GetIndexQueryResult> Handle(GetIndexQuery query, CancellationToken cancellationToken)
     {
-        var response = await _apiClient.Get<GetIndexApiResponse>(new GetIndexApiRequest(query.VacancyReference, query.ApplicantEmailAddress));
+        var response = await _apiClient.Get<GetIndexApiResponse>(new GetIndexApiRequest(query.ApplicationId, query.CandidateId));
         return response;
     }
 }

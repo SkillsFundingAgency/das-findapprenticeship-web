@@ -3,6 +3,8 @@ using SFA.DAS.FAA.Domain.Configuration;
 using System.Net;
 using SFA.DAS.FAA.Domain.Interfaces;
 using Newtonsoft.Json;
+using System.Text;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Infrastructure.Api;
 
@@ -40,6 +42,19 @@ public class ApiClient : IApiClient
         response.EnsureSuccessStatusCode();
 
         return default;
+    }
+
+    public async Task<TResponse?> PostWithResponseCode<TResponse>(IPostApiRequest request)
+    {
+        var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, request.PostUrl)
+        {
+            Content = stringContent,
+        };
+        AddAuthenticationHeader(requestMessage);
+        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        return JsonConvert.DeserializeObject<TResponse>(responseContent) ?? default;
     }
 
     private void AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
