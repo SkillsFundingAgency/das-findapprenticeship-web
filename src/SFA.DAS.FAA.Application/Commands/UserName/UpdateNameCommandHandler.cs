@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
+using SFA.DAS.FAA.Infrastructure.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,17 @@ using System.Threading.Tasks;
 namespace SFA.DAS.FAA.Application.Commands.UserName
 {
     public class UpdateNameCommandHandler(IApiClient apiClient) 
-        : IRequestHandler<UpdateNameCommand, UpdateNameCommandResult>
+        : IRequestHandler<UpdateNameCommand>
     {
-        public async Task <UpdateNameCommandHandler> Handle(UpdateNameCommand request, CancellationToken cancellationToken = default)
+        public async Task<Unit> Handle(UpdateNameCommand request, CancellationToken cancellationToken)
         {
-            var patchRequest = new UpdateNameApiRequest(request.FirstName, request.LastName);
+            var putRequest = new UpdateNameApiRequest(request.FirstName, request.LastName);
 
-            var response = await apiClient.PatchWithResponseCode; //Not sure what the response should be 
+            var response = await apiClient.PostWithResponseCode<NullResponse>(putRequest);
 
-            return new UpdateNameCommandResult
-            {
-                //not sure what the result should be either
-            };
+            return Unit.Value;
         }
+
     }
 
 }
