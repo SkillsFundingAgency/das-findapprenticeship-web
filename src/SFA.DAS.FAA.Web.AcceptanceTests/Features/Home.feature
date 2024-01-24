@@ -107,4 +107,10 @@ Scenario: Navigate to vacancy details page with vacancy found
 	Then a http status code of 200 is returned
 	And the page content includes the following: Summary
 
+@WireMockServer
+	Scenario: Navigate to the Add Job page
+	When I navigate to the following url: /vacancies/1000012013/apply/workhistory/93cc0e3f-6179-4542-893d-22f2b9a6df9a
+	Then a http status code of 200 is returned
+	And the page content includes the following: Work history
+
 
