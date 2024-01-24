@@ -26,7 +26,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             }
 
             request.BackLinkUrl = Url.RouteUrl(RouteNames.Apply,
-                new GetIndexRequest { VacancyReference = request.VacancyReference });
+                new GetIndexRequest { ApplicationId = request.ApplicationId});
             return View(ViewPath, request);
         }
 
@@ -56,7 +56,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return request.AddJob.Equals("Yes")
                 ? RedirectToRoute("/") //TODO: Redirect the user to Add Job Page.
-                : RedirectToRoute(RouteNames.Apply, new GetIndexRequest { VacancyReference = request.VacancyReference });
+                : RedirectToRoute(RouteNames.Apply, new GetIndexRequest { ApplicationId = request.ApplicationId });
         }
     }
 }

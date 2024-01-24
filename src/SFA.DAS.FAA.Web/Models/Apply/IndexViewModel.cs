@@ -11,7 +11,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         {
             return new IndexViewModel
             {
-                VacancyReference = request.VacancyReference,
+                VacancyReference = source.VacancyReference,
                 ShowAccountCreatedBanner = false,
                 VacancyTitle = source.VacancyTitle,
                 EmployerName = source.EmployerName,

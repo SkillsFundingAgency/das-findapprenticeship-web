@@ -4,6 +4,7 @@ using System.Net;
 using SFA.DAS.FAA.Domain.Interfaces;
 using Newtonsoft.Json;
 using System.Text;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Infrastructure.Api;
 
