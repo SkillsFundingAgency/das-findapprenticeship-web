@@ -9,4 +9,8 @@ public static class RouteNames
     public const string Vacancies = "vacancies";
     public const string Apply = "apply";
     public const string UserName = "user-name";
+    public static class ApplyApprenticeship
+    {
+        public const string WorkHistory = nameof(WorkHistory);
+    }
 }
