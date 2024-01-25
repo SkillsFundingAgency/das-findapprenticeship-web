@@ -19,9 +19,9 @@ namespace SFA.DAS.FAA.Application.Commands.UserName
 
             var putRequest = new UpdateNameApiRequest(request.FirstName, request.LastName,  tempCandidateId);
 
-            var response = await apiClient.Put<NullResponse>(putRequest);
+            var response = await apiClient.PutWithResponseCode<NullResponse>(putRequest);
 
-            if (response.StatusCode > 300)
+            if ((int)response.StatusCode > 300)
             {
                 throw new InvalidOperationException();
             }
