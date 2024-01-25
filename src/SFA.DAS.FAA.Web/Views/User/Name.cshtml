@@ -10,7 +10,14 @@
                 <h1 class="govuk-heading-l">What is your name?</h1>
                 <p class="govuk-body">Write your name as you want it to appear on your applications.</p>
                 <form class="form" method="post">
-                    <div class="govuk-form-group">
+                    <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
+                        @if (ViewData.ModelState.ErrorCount > 0)
+                        {
+                            <span class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span>
+                                @ViewData.ModelState.Values.First().Errors.First().ErrorMessage
+                            </span>
+                        }
                         <label class="govuk-label" for="FirstName">
                             First name
                         </label>

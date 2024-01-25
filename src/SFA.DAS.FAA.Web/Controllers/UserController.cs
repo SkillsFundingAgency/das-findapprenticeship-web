@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
@@ -27,11 +28,10 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             try
             {
-await mediator.Send(command);
+                await mediator.Send(command);
             }
-            catch
+            catch (InvalidOperationException e)
             {
-                //add modelstate errors
                 return View();
             }
 
