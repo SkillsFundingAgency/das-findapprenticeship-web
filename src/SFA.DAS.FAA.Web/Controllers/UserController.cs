@@ -38,6 +38,11 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
+            if (!ModelState.IsValid) 
+            {
+                return View(model);
+            }
+
             try
             {
                 var command = new UpdateNameCommand
