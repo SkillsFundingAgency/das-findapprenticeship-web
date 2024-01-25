@@ -5,6 +5,7 @@ using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.Controllers
@@ -30,6 +31,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("user-name", Name = RouteNames.UserName)]
         public async Task<IActionResult> Name(NameViewModel model) 
         {
+            if (!ModelState.IsValid) 
+            {
+                return View(model);
+            }
+
             if (!ModelState.IsValid) 
             {
                 return View(model);
