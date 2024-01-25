@@ -15,11 +15,16 @@ namespace SFA.DAS.FAA.Application.Commands.UserName
     {
         public async Task<Unit> Handle(UpdateNameCommand request, CancellationToken cancellationToken)
         {
-            var putRequest = new UpdateNameApiRequest(request.FirstName, request.LastName);
+            Guid tempCandidateId = Guid.NewGuid();
 
-            var response = await apiClient.PostWithResponseCode<NullResponse>(putRequest);
+            var putRequest = new UpdateNameApiRequest(request.FirstName, request.LastName,  tempCandidateId);
 
-            //check response is not over 300
+            var response = await apiClient.Put<NullResponse>(putRequest);
+
+            if (response.StatusCode > 300)
+            {
+                throw new InvalidOperationException();
+            }
 
             return Unit.Value;
         }
