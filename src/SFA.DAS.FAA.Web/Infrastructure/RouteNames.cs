@@ -11,6 +11,6 @@ public static class RouteNames
 
     public static class ApplyApprenticeship
     {
-        public const string WorkHistory = nameof(WorkHistory);
+        public const string Jobs = nameof(Jobs);
     }
 }

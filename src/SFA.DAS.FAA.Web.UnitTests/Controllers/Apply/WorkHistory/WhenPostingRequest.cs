@@ -1,8 +1,6 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -21,19 +19,14 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
         public async Task Then_The_Mediator_Command_Is_Called_And_RedirectRoute_Returned(
             UpdateApplicationCommandResult result,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<IValidator<AddWorkHistoryRequest>> validator,
             [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
         {
             //arrange
             var request = new AddWorkHistoryRequest
             {
-                VacancyReference = "01234567890",
                 ApplicationId = Guid.NewGuid(),
                 AddJob = "Yes",
             };
-
-            validator.Setup(x => x.ValidateAsync(request, CancellationToken.None))
-                .ReturnsAsync(new ValidationResult());
 
             mediator.Setup(x => x.Send(It.IsAny<UpdateApplicationCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);
@@ -46,19 +39,14 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
         public async Task Then_The_Mediator_Command_Is_Called_And_RedirectRoute_Returned_TaskList(
             UpdateApplicationCommandResult result,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<IValidator<AddWorkHistoryRequest>> validator,
             [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
         {
             //arrange
             var request = new AddWorkHistoryRequest
             {
-                VacancyReference = "01234567890",
                 ApplicationId = Guid.NewGuid(),
                 AddJob = "No",
             };
-
-            validator.Setup(x => x.ValidateAsync(request, CancellationToken.None))
-                .ReturnsAsync(new ValidationResult());
 
             mediator.Setup(x => x.Send(It.IsAny<UpdateApplicationCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);
@@ -76,20 +64,16 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             UpdateApplicationCommandResult result,
             AddWorkHistoryRequest request,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<IValidator<AddWorkHistoryRequest>> validator,
             [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
         {
-            var validationResult = new ValidationResult();
-            validationResult.Errors.Add(new ValidationFailure("SomeProperty", "SomeError"));
-
-            validator.Setup(x => x.ValidateAsync(request, CancellationToken.None))
-                .ReturnsAsync(validationResult);
+            controller.ModelState.AddModelError("SomeProperty", "SomeError");
 
             mediator.Setup(x => x.Send(It.IsAny<UpdateApplicationCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);
 
             var actual = await controller.Post(request) as ViewResult;
             actual.Should().NotBeNull();
+            controller.ModelState.Count.Should().BeGreaterThan(1);
         }
     }
 }

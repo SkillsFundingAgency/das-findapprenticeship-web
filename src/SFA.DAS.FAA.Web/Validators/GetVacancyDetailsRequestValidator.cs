@@ -5,9 +5,9 @@ namespace SFA.DAS.FAA.Web.Validators
 {
     public class GetVacancyDetailsRequestValidator : AbstractValidator<GetVacancyDetailsRequest>
     {
-        public const string VacancyReferenceEmpty = "You must include a vacancy reference.";
-        public const string VacancyReferenceTooShort = "The vacancy reference must be atleast 10 characters or more.";
-        public const string VacancyReferenceNotValid = "The vacancy reference must be a valid value.";
+        private const string VacancyReferenceEmpty = "You must include a vacancy reference.";
+        private const string VacancyReferenceTooShort = "The vacancy reference must be atleast 10 characters or more.";
+        private const string VacancyReferenceNotValid = "The vacancy reference must be a valid value.";
 
         public GetVacancyDetailsRequestValidator()
         {

@@ -5,9 +5,8 @@ namespace SFA.DAS.FAA.Application.Commands.UpdateApplication
 {
     public record UpdateApplicationCommand : IRequest<UpdateApplicationCommandResult>
     {
-        public required string VacancyReference { get; init; }
-        public Guid ApplicationId { get; init; }
-        public Guid CandidateId { get; init; }
+        public required Guid ApplicationId { get; init; }
+        public required Guid CandidateId { get; init; }
         public SectionStatus WorkHistorySectionStatus { get; init; }
     }
 }
