@@ -17,8 +17,7 @@
                     First name
                 </label>
                 <span asp-validation-for="FirstName" class="govuk-error-message"></span>
-                <input class="govuk-input govuk-!-width-two-thirds" id="FirstName" name="FirstName" type="text"
-                    value="@Model.FirstName">
+                <input class="govuk-input govuk-!-width-two-thirds" id="FirstName" name="FirstName" type="text">
             </div>
             <div
                 class="govuk-form-group @((ViewData.ModelState[nameof(Model.LastName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
@@ -27,8 +26,7 @@
                     Last name
                 </label>
                 <span asp-validation-for="LastName" class="govuk-error-message"></span>
-                <input class="govuk-input govuk-!-width-two-thirds" id="LastName" name="LastName" type="text"
-                    value="@Model.LastName">
+                <input class="govuk-input govuk-!-width-two-thirds" id="LastName" name="LastName" type="text">
             </div>
 
 
