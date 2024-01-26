@@ -37,7 +37,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             actual.Should().NotBeNull();
             actual?.Model.Should().NotBeNull();
 
-            var actualModel = actual?.Model as AddWorkHistoryRequest;
+            var actualModel = actual?.Model as AddWorkHistoryViewModel;
             actualModel?.ApplicationId.Should().Be(applicationId);
         }
     }
