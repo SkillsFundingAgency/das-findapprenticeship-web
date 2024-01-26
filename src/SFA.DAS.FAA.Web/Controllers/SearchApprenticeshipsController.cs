@@ -28,7 +28,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
         else if (result.LocationSearched && result.Location != null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10" });
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = whatSearchTerm });
         }
         else if (search == 1)
         {

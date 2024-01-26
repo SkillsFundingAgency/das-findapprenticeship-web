@@ -32,7 +32,8 @@ public sealed class TestEnvironmentManagement
     public void StartWebApp()
     {
         _staticApiServer = MockApiServer.Start();
-        var webApp = new CustomWebApplicationFactory<SearchApprenticeshipsController>().WithWebHostBuilder(c=>c.UseEnvironment("IntegrationTest"));
+        var webApp = new CustomWebApplicationFactory<SearchApprenticeshipsController>()
+            .WithWebHostBuilder(c=>c.UseEnvironment("IntegrationTest").UseConfiguration(ConfigBuilder.GenerateConfiguration()));
         _server = webApp.Server;
         _staticClient = _server
             .CreateClient();
