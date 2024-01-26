@@ -2,5 +2,5 @@
 
 public static class CustomClaims
 {
-    public static string CandidateId => "";
+    public static string CandidateId => "candidate-id";
 }

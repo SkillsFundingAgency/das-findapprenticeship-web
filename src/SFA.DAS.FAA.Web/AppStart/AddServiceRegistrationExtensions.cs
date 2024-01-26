@@ -40,7 +40,7 @@ public static class AddServiceRegistrationExtension
                 {
                     policy.RequireClaim(ClaimTypes.NameIdentifier);
                     policy.RequireClaim(ClaimTypes.Email);
-                    policy.RequireClaim(ClaimTypes.MobilePhone);
+                    policy.RequireClaim(CustomClaims.CandidateId);
                     policy.RequireAuthenticatedUser();
                 });
         });

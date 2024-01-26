@@ -1,8 +1,11 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.Apply;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -32,6 +35,7 @@ public class VacanciesController(
         return View(viewModel);
     }
 
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("vacancies/{vacancyReference}", Name = RouteNames.Vacancies)]
     [HttpPost]
     public async Task<IActionResult> Apply([FromRoute] PostApplyRequest request)
@@ -39,7 +43,7 @@ public class VacanciesController(
         var result = await mediator.Send(new ApplyCommand
         {
             VacancyReference = request.VacancyReference,
-            CandidateId =  Guid.Parse("1DD26689-2997-4AEC-8FAF-62D4CE9F2155") //to be sourced from claims or similar following auth.
+            CandidateId = Guid.Parse(User.Claims.First(c=>c.Type.Equals(CustomClaims.CandidateId)).Value)  
         });
 
         return RedirectToAction("Index", "Apply", new { result.ApplicationId });
