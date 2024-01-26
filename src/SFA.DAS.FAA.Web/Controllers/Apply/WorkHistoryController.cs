@@ -7,6 +7,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.Apply;
 using System;
+using SFA.DAS.FAA.Web.AppStart;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -18,7 +19,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
         public IActionResult Get([FromRoute] Guid applicationId)
         {
-            return View(ViewPath, new AddWorkHistoryRequest
+            return View(ViewPath, new AddWorkHistoryViewModel
             {
                 ApplicationId = applicationId,
                 BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId })
@@ -27,27 +28,27 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
-        public async Task<IActionResult> Post(AddWorkHistoryRequest request)
+        public async Task<IActionResult> Post(AddWorkHistoryViewModel viewModel)
         {
-            if (string.IsNullOrEmpty(request.AddJob))
+            if (string.IsNullOrEmpty(viewModel.AddJob))
             {
-                ModelState.AddModelError(nameof(request.AddJob), "Select if you want to add any jobs");
-                request.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { request.ApplicationId });
-                return View(ViewPath, request);
+                ModelState.AddModelError(nameof(viewModel.AddJob), "Select if you want to add any jobs");
+                viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { viewModel.ApplicationId });
+                return View(ViewPath, viewModel);
             }
 
             var command = new UpdateApplicationCommand
             {
-                CandidateId = Guid.Parse("1DD26689-2997-4AEC-8FAF-62D4CE9F2155"), //to be sourced from claims or similar following auth.
-                ApplicationId = request.ApplicationId,
-                WorkHistorySectionStatus = request.AddJob is "Yes" ? SectionStatus.InProgress : SectionStatus.Completed
+                CandidateId =  Guid.Parse(User.Claims.First(c=>c.Type.Equals(CustomClaims.CandidateId)).Value),
+                ApplicationId = viewModel.ApplicationId,
+                WorkHistorySectionStatus = viewModel.AddJob is "Yes" ? SectionStatus.InProgress : SectionStatus.Completed
             };
 
             await mediator.Send(command);
 
-            return request.AddJob.Equals("Yes")
+            return viewModel.AddJob.Equals("Yes")
                 ? RedirectToRoute("/") //TODO: Redirect the user to Add Job Page.
-                : RedirectToRoute(RouteNames.Apply, new { request.ApplicationId });
+                : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
     }
 }
