@@ -111,21 +111,20 @@ public static class MockApiServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("search-vacancy-details.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/candidates"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/candidates/\\S+$"))
             .UsingPut())
         .RespondWith(
             Response.Create()
-                .WithStatusCode(200)
-                .WithHeader("Content-Type", "application/json")
+                .WithStatusCode(202)
                 .WithBodyFromFile("put-candidate.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/user-name"))
-           .UsingPut())
-         .RespondWith(
-            Response.Create()
-           .WithStatusCode(200)
-            .WithHeader("Content-Type", "application/json")
-            .WithBodyFromFile("put-candidate.json"));
+        // server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/user-name"))
+        //    .UsingPut())
+        //  .RespondWith(
+        //     Response.Create()
+        //    .WithStatusCode(200)
+        //     .WithHeader("Content-Type", "application/json")
+        //     .WithBodyFromFile("put-candidate.json"));
 
         return server;
     }
