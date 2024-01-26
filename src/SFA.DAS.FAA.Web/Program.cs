@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.GovUK.Auth.AppStart;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,11 @@ builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
 builder.Services.AddServiceRegistration();
+builder.Services.AddAuthenticationServices(rootConfiguration);
 
 builder.Services.AddHealthChecks();
+
+
 
 builder.Services.Configure<RouteOptions>(options =>
 {
@@ -48,7 +52,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHealthChecks("/ping");
 
+app.UseAuthentication();
 app.UseRouting();
+app.UseAuthorization();
 
 app.UseStaticFiles();
 
