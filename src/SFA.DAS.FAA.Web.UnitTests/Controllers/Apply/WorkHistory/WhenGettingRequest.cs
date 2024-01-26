@@ -17,15 +17,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
     {
         [Test, MoqAutoData]
         public void Then_View_Returned(
+            Guid applicationId,
             [Frozen] Mock<IMediator> mediator)
         {
             //arrange
-            var request = new AddWorkHistoryRequest
-            {
-                ApplicationId = Guid.NewGuid(),
-                AddJob = "Yes",
-            };
-
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -36,40 +31,14 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                 Url = mockUrlHelper.Object
             };
 
-            var actual = controller.Get(request) as ViewResult;
+            var actual = controller.Get(applicationId) as ViewResult;
 
             using var scope = new AssertionScope();
             actual.Should().NotBeNull();
             actual?.Model.Should().NotBeNull();
 
             var actualModel = actual?.Model as AddWorkHistoryRequest;
-            actualModel?.ApplicationId.Should().Be(request.ApplicationId);
-            actualModel?.AddJob.Should().Be(request.AddJob);
-        }
-
-        [Test, MoqAutoData]
-        public void Then_Request_With_ValidationError_Is_Called_And_View_Returned(
-            AddWorkHistoryRequest request,
-            [Frozen] Mock<IMediator> mediator)
-        {
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
-            var controller = new WorkHistoryController(mediator.Object)
-            {
-                Url = mockUrlHelper.Object
-            };
-
-            controller.ModelState.AddModelError("SomeProperty", "SomeError");
-            
-            var actual = controller.Get(request) as ViewResult;
-
-            using var scope = new AssertionScope();
-            actual.Should().NotBeNull();
-            var actualModel = actual?.Model as AddWorkHistoryRequest; 
-            actualModel?.ErrorDictionary.Should().NotBeNull();
+            actualModel?.ApplicationId.Should().Be(applicationId);
         }
     }
 }

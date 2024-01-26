@@ -40,6 +40,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             result.ApplicationQuestions.WhatInterestsYou.Should().Be(source.ApplicationQuestions.WhatInterestsYou);
             result.InterviewAdjustments.RequestAdjustments.Should().Be(source.InterviewAdjustments.RequestAdjustments);
             result.DisabilityConfidence.InterviewUnderDisabilityConfident.Should().Be(source.DisabilityConfidence.InterviewUnderDisabilityConfident);
+            result.ApplicationId.Should().Be(request.ApplicationId);
         }
 
         [TestCase(true)]
