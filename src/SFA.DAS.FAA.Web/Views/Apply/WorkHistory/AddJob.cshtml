@@ -1,0 +1,128 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.AddJobViewModel
+
+@{
+    Layout = "_LayoutApprentice";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Jobs)">Back</a>
+}
+
+<span class="govuk-caption-l">Work history</span>
+<h1 class="govuk-heading-l govuk-!-margin-bottom-8">Add a job</h1>
+<form class="form" action="" method="post">
+    <div class="govuk-form-group govuk-!-margin-bottom-7">
+        <label class="govuk-label govuk-label--m" for="job-title">
+            Job title
+        </label>
+        <input class="govuk-input" id="job-title" name="job-title" type="text" value="">
+    </div>
+    <div class="govuk-form-group govuk-!-margin-bottom-7">
+        <label class="govuk-label govuk-label--m" for="employer-name">
+            Company
+        </label>
+        <input class="govuk-input" id="employer-name" name="employer-name" type="text" value="">
+    </div>
+    <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="300">
+        <div class="govuk-form-group govuk-!-margin-bottom-7">
+            <label class="govuk-label govuk-label--m" for="responsibilities">
+                Responsibilities
+            </label>
+            <div class="govuk-hint">
+                Describe what you did at work
+            </div>
+            <textarea class="govuk-textarea govuk-js-character-count" id="responsibilities" name="responsibilities" rows="5" aria-describedby="responsibilities-info"></textarea>
+        </div>
+        <div id="responsibilities-info" class="govuk-hint govuk-character-count__message">
+            You can enter up to 300 words
+        </div>
+    </div>
+    <div class="govuk-form-group govuk-!-margin-bottom-7">
+        <fieldset class="govuk-fieldset" role="group" aria-describedby="start-date-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                Start date
+            </legend>
+            <div class="govuk-hint" id="start-date-hint">
+                For example 08 2019
+            </div>
+            <div class="govuk-date-input" id="start-date">
+                <div class="govuk-date-input__item">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label" for="start-date-month">
+                            Month
+                        </label>
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="start-date-month" name="start-date-month" type="text" inputmode="numeric" value="">
+                    </div>
+                </div>
+                <div class="govuk-date-input__item">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label" for="start-date-year">
+                            Year
+                        </label>
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="start-date-year" name="start-date-year" type="text" inputmode="numeric" value="">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                Is this your current role?
+            </legend>
+            <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="current-role-yes" name="current-role" type="radio" value="yes">
+                    <label class="govuk-label govuk-radios__label" for="current-role-yes">
+                        Yes
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="current-role-no" name="current-role" type="radio" value="no" aria-controls="current-role-end-date" aria-expanded="false">
+                    <label class="govuk-label govuk-radios__label" for="current-role-no">
+                        No
+                    </label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="current-role-end-date">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="end-date-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                End date
+                            </legend>
+                            <div class="govuk-hint" id="end-date-hint">
+                                For example 08 2022
+                            </div>
+                            <div class="govuk-date-input" id="end-date">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="end-date-month">
+                                            Month
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="end-date-month" name="end-date-month" type="text" inputmode="numeric" value="">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="end-date-year">
+                                            Year
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="end-date-year" name="end-date-year" type="text" inputmode="numeric" value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <form method="post">
+        <div class="govuk-button-group" href="application-summary-jobs.html">
+            <button class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
+        </div>
+    </form>
+</form>

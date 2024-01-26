@@ -43,8 +43,30 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(command);
 
             return request.AddJob.Equals("Yes")
-                ? RedirectToRoute("/") //TODO: Redirect the user to Add Job Page.
+                ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new AddJobRequest{ ApplicationId = request.ApplicationId })
                 : RedirectToRoute(RouteNames.Apply, new GetIndexRequest { ApplicationId = request.ApplicationId });
+        }
+
+        [HttpGet]
+        [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
+        public IActionResult GetAddAJob(AddJobRequest request)
+        {
+            //ModelState.Clear();
+            //request.BackLinkUrl = Url.RouteUrl(RouteNames.Apply,
+                //new GetIndexRequest { ApplicationId = request.ApplicationId });
+
+            var viewModel = new AddJobViewModel
+            {
+                ApplicationId = request.ApplicationId
+            };
+            return View("~/Views/apply/workhistory/AddJob.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
+        public IActionResult PostAddAJob(AddJobPostRequest request)
+        {
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob);
         }
     }
 }
