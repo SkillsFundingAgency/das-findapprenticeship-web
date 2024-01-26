@@ -46,7 +46,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply
             var expected = IndexViewModel.Map(dateTimeService.Object, request, result);
             var actualModel = actual.Model as IndexViewModel;
             actualModel.Should().BeEquivalentTo(expected, options => options
-                .Excluding(x => x.ClosingDate));
+                .Excluding(x => x.ClosingDate)
+                .Excluding(x => x.ApplicationId));
+            actualModel?.ApplicationId.Should().Be(request.ApplicationId);
         }
     }
 }

@@ -21,10 +21,12 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 WorkHistory = source.WorkHistory,
                 ApplicationQuestions = source.ApplicationQuestions,
                 InterviewAdjustments = source.InterviewAdjustments,
-                DisabilityConfidence = source.DisabilityConfidence
+                DisabilityConfidence = source.DisabilityConfidence,
+                ApplicationId = request.ApplicationId
             };
         }
 
+        public Guid ApplicationId { get; set; }
         public string VacancyReference { get; set; }
         public bool ShowAccountCreatedBanner { get; set; }
         public string VacancyTitle { get; set; }

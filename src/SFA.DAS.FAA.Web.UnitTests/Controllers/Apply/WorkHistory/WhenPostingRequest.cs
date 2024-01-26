@@ -72,8 +72,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                 .ReturnsAsync(result);
 
             var actual = await controller.Post(request) as ViewResult;
-            actual.Should().NotBeNull();
-            controller.ModelState.Count.Should().BeGreaterThan(1);
+            actual.Should().BeNull();
+            controller.ModelState.Count.Should().BeGreaterThan(0);
         }
     }
 }

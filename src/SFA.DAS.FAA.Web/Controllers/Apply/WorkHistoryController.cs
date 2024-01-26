@@ -6,6 +6,7 @@ using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.Apply;
+using System;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -15,21 +16,23 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
-        public IActionResult Get(AddWorkHistoryRequest request)
+        public IActionResult Get([FromRoute] Guid applicationId)
         {
-            ModelState.Clear();
-            request.BackLinkUrl = Url.RouteUrl(RouteNames.Apply,
-                new GetIndexRequest { ApplicationId = request.ApplicationId});
-            return View(ViewPath, request);
+            return View(ViewPath, new AddWorkHistoryRequest
+            {
+                ApplicationId = applicationId,
+                BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId })
+            });
         }
 
         [HttpPost]
         [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
         public async Task<IActionResult> Post(AddWorkHistoryRequest request)
         {
-            if (!ModelState.IsValid)
+            if (string.IsNullOrEmpty(request.AddJob))
             {
                 ModelState.AddModelError(nameof(request.AddJob), "Select if you want to add any jobs");
+                request.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { request.ApplicationId });
                 return View(ViewPath, request);
             }
 
@@ -44,7 +47,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return request.AddJob.Equals("Yes")
                 ? RedirectToRoute("/") //TODO: Redirect the user to Add Job Page.
-                : RedirectToRoute(RouteNames.Apply, new GetIndexRequest { ApplicationId = request.ApplicationId });
+                : RedirectToRoute(RouteNames.Apply, new { request.ApplicationId });
         }
     }
 }
