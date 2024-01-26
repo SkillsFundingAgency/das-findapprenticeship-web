@@ -16,29 +16,24 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
     }
     public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext ctx)
     {
-        //var claims = new List<Claim>();
-        //var userId = ctx.Principal.Claims
-        //        .First(c => c.Type.Equals(ClaimTypes.NameIdentifier))
-        //        .Value;
-        //var email = ctx.Principal.Claims
-        //        .First(c => c.Type.Equals(ClaimTypes.Email))
-        //        .Value;
-        //var mobile = ctx.Principal.Claims
-        //.First(c => c.Type.Equals(ClaimTypes.MobilePhone))
-        //.Value;
-        //var candidateId = ctx.Principal.Claims
-        //    .First(c => c.Type.Equals(CustomClaims.CandidateId))
-        //    .Value;
+        var userId = ctx.Principal.Claims
+            .First(c => c.Type.Equals(ClaimTypes.NameIdentifier))
+            .Value;
+        
+        var email = ctx.Principal.Claims
+            .First(c => c.Type.Equals(ClaimTypes.Email))
+            .Value;
+        var requestData = new PutCandidateApiRequestData()
+        {
+            Email = email
+        };
+        var candidate = await _apiClient.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
+        
+        
+        
 
-        //var requestData = new PutCandidateApiRequestData()
-        //{
-        //    Email = email,
-        //    MobilePhone = mobile
-        //};
-        //var candidate = await _apiClient.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(Guid.NewGuid(), requestData));
+        // add claims
 
-        //// add claims
-
-        return new List<Claim>();
+        return new List<Claim>{new Claim(CustomClaims.CandidateId, candidate.Id.ToString())};
     }
 }

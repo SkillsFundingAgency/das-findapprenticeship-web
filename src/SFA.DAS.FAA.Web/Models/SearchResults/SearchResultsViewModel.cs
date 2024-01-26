@@ -17,7 +17,6 @@ public class SearchResultsViewModel : ViewModelBase
 
     public List<VacanciesViewModel> Vacancies { get; set; }
     public int PageNumber { get; set; }
-    public int PageSize { get; set; }
     public int TotalPages { get; set; }
     public string Sort { get; set; }
     public PaginationViewModel PaginationViewModel { get; set; } = null!;
@@ -37,7 +36,6 @@ public class SearchResultsViewModel : ViewModelBase
             Total = source.Total,
             Routes = source.Routes.Select(c => (RouteViewModel)c).ToList(),
             Location = source.Location?.LocationName,
-            PageSize = source.PageSize,
             PageNumber = source.PageNumber,
             TotalPages = source.TotalPages,
             VacancyReference =source.VacancyReference,

@@ -4,6 +4,7 @@ namespace SFA.DAS.FAA.Domain.Apply.GetIndex;
 
 public class GetIndexApiResponse
 {
+    public string VacancyReference { get; set; }
     public string VacancyTitle { get; set; }
     public string EmployerName { get; set; }
     public DateTime ClosingDate { get; set; }

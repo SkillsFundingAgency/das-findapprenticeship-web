@@ -7,26 +7,7 @@
 @section BackLink {
     <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
 }
-@if (Model.ErrorDictionary!.Any())
-{
-    <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
-        <h2 class="govuk-error-summary__title" id="error-summary-title">
-            There is a problem
-        </h2>
-        <div class="govuk-error-summary__body">
-            <ul class="govuk-list govuk-error-summary__list">
-                @foreach (var error in Model.ErrorDictionary)
-                {
-                    <li>
-                        <a href="#@error.Key">
-                            @error.Value
-                        </a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-}
+<partial model="@ViewData.ModelState" name="_ValidationSummary" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Work history</span>
@@ -39,20 +20,21 @@
         <p class="govuk-body">An apprenticeship can be your first job.</p>
         <div class="govuk-!-padding-bottom-5"></div>
         <form class="form" method="post">
-            <div class="govuk-form-group">
+            <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h1 class="govuk-fieldset__heading">
                             Do you want to add any jobs?
                         </h1>
                     </legend>
-                    @if (Model.ErrorDictionary.ContainsKey(nameof(Model.AddJob)))
+                    @if (ViewData.ModelState.ErrorCount > 0)
                     {
-                        <span id="error-message-newname" class="govuk-error-message">
-                            <span class="govuk-visually-hidden">Error:</span> @Model.ErrorDictionary[nameof(Model.AddJob)]
+                        <span class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @ViewData.ModelState.Values.First().Errors.First().ErrorMessage
                         </span>
                     }
-                    <div class="govuk-radios" data-module="govuk-radios" @errorClass>
+                    <div class="govuk-radios" data-module="govuk-radios" id="AddJob" @errorClass>
                         @foreach(var job in Model.Jobs)
                         {
                             <div class="govuk-radios__item">

@@ -5,6 +5,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 
 public class GetIndexQueryResult
 {
+    public string VacancyReference { get; set; }
     public string VacancyTitle { get; set; }
     public string EmployerName { get; set; }
     public DateTime ClosingDate { get; set; }
@@ -98,6 +99,7 @@ public class GetIndexQueryResult
     {
         return new GetIndexQueryResult
         {
+            VacancyReference = source.VacancyReference,
             VacancyTitle = source.VacancyTitle,
             EmployerName = source.EmployerName,
             ClosingDate = source.ClosingDate,

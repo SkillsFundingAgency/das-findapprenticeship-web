@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.FAA.Web.Infrastructure;
+namespace SFA.DAS.FAA.Web.Infrastructure;
 
 public static class RouteNames
 {
@@ -9,14 +9,16 @@ public static class RouteNames
     public const string Vacancies = "vacancies";
     public const string Apply = "apply";
     public const string UserName = "user-name";
-    public static class ApplyApprenticeship
-    {
-        public const string WorkHistory = nameof(WorkHistory);
-    }
     public const string SignOut = "sign-out";
     public const string SignedOut = "signed-out";
     public const string AccountUnavailable = "account-unavailable";
     public const string StubAccountDetailsGet = "account-details-get";
     public const string StubAccountDetailsPost = "account-details-post";
     public const string StubSignedIn = "stub-signedin-get";
+
+    public static class ApplyApprenticeship
+    {
+        public const string Jobs = nameof(Jobs);
+        public const string WorkHistory = nameof(WorkHistory);
+    }
 }

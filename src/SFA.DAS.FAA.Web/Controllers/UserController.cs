@@ -1,11 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.User;
-using System.Runtime.InteropServices;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {

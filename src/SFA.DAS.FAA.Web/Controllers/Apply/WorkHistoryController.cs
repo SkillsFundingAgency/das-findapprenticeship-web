@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication;
 using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
@@ -8,47 +7,33 @@ using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
-    public class WorkHistoryController(IMediator mediator, IValidator<AddWorkHistoryRequest> validator) : Controller
+    public class WorkHistoryController(IMediator mediator) : Controller
     {
         private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
 
         [HttpGet]
-        [Route("vacancies/{vacancyReference}/apply/workhistory/{applicationId}", Name = RouteNames.ApplyApprenticeship.WorkHistory)]
-        public async Task<IActionResult> Get(AddWorkHistoryRequest request)
+        [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
+        public IActionResult Get(AddWorkHistoryRequest request)
         {
-            var validation = await validator.ValidateAsync(request);
-            if (!validation.IsValid)
-            {
-                foreach (var validationFailure in validation.Errors)
-                {
-                    request.ErrorDictionary.Add(validationFailure.PropertyName, validationFailure.ErrorMessage);
-                }
-                return View(ViewPath, request);
-            }
-
+            ModelState.Clear();
             request.BackLinkUrl = Url.RouteUrl(RouteNames.Apply,
-                new GetIndexRequest { VacancyReference = request.VacancyReference });
+                new GetIndexRequest { ApplicationId = request.ApplicationId});
             return View(ViewPath, request);
         }
 
         [HttpPost]
-        [Route("vacancies/{vacancyReference}/apply/workhistory/{applicationId}", Name = RouteNames.ApplyApprenticeship.WorkHistory)]
+        [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
         public async Task<IActionResult> Post(AddWorkHistoryRequest request)
         {
-            var validation = await validator.ValidateAsync(request);
-            if (!validation.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (validation.Errors.Exists(e => e.PropertyName == nameof(request.AddJob)))
-                {
-                    request.ErrorDictionary.Add(nameof(request.AddJob), "Select if you want to add any jobs");
-                }
+                ModelState.AddModelError(nameof(request.AddJob), "Select if you want to add any jobs");
                 return View(ViewPath, request);
             }
 
             var command = new UpdateApplicationCommand
             {
-                VacancyReference = request.VacancyReference,
-                CandidateId = Guid.NewGuid(), // TODO: candidateId comes from Gov.One SignIn Integration.
+                CandidateId = Guid.Parse("1DD26689-2997-4AEC-8FAF-62D4CE9F2155"), //to be sourced from claims or similar following auth.
                 ApplicationId = request.ApplicationId,
                 WorkHistorySectionStatus = request.AddJob is "Yes" ? SectionStatus.InProgress : SectionStatus.Completed
             };
@@ -57,7 +42,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return request.AddJob.Equals("Yes")
                 ? RedirectToRoute("/") //TODO: Redirect the user to Add Job Page.
-                : RedirectToRoute(RouteNames.Apply, new GetIndexRequest { VacancyReference = request.VacancyReference });
+                : RedirectToRoute(RouteNames.Apply, new GetIndexRequest { ApplicationId = request.ApplicationId });
         }
     }
 }

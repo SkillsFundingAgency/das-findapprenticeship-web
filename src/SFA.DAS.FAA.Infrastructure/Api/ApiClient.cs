@@ -1,13 +1,10 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Domain.Configuration;
 using System.Net;
 using SFA.DAS.FAA.Domain.Interfaces;
 using System.Text;
 using Newtonsoft.Json;
-using System.Text;
-using System.Text.Json;
 using SFA.DAS.FAA.Domain;
-using Newtonsoft.Json.Serialization;
 
 namespace SFA.DAS.FAA.Infrastructure.Api;
 
@@ -74,32 +71,6 @@ public class ApiClient : IApiClient
         return default;
     }
 
-    public async Task<TResponse?> PostWithResponseCode<TResponse>(IPostApiRequest request)
-    {
-        var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
-        var requestMessage = new HttpRequestMessage(HttpMethod.Post, request.PostUrl)
-        {
-            Content = stringContent,
-        };
-        AddAuthenticationHeader(requestMessage);
-        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
-        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        return JsonConvert.DeserializeObject<TResponse>(responseContent) ?? default;
-    }
-
-    public async Task<TResponse?> PatchWithResponseCode<TResponse>(IPatchApiRequest request)
-    {
-        var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
-        var requestMessage = new HttpRequestMessage(HttpMethod.Patch, request.PatchUrl)
-        {
-            Content = stringContent,
-        };
-        AddAuthenticationHeader(requestMessage);
-        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
-        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        return JsonConvert.DeserializeObject<TResponse>(responseContent) ?? default; 
-    }
-
     public async Task<ApiResponse<TResponse>> PutWithResponseCode<TResponse>(IPutApiRequest request)
     {
         var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
@@ -113,6 +84,20 @@ public class ApiClient : IApiClient
         var apiResponse = new ApiResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(responseContent), response.StatusCode, null);
 
         return apiResponse;
+    }
+
+    public async Task<TResponse?> PostWithResponseCode<TResponse>(IPostApiRequest request)
+    {
+        var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, request.PostUrl)
+        {
+            Content = stringContent,
+        };
+        AddAuthenticationHeader(requestMessage);
+        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        return JsonConvert.DeserializeObject<TResponse>(responseContent) ?? default;
     }
 
     private void AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)

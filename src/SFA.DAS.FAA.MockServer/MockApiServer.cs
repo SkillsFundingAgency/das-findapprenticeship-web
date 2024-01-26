@@ -103,7 +103,7 @@ public static class MockApiServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("search-apprenticeships-results.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/1000012013"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/\\d+$"))
                 .UsingGet())
             .RespondWith(
                 Response.Create()

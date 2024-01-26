@@ -1,4 +1,3 @@
-using System;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAT.Web.Services;

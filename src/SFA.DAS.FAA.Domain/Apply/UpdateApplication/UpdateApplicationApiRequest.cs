@@ -3,7 +3,6 @@
 namespace SFA.DAS.FAA.Domain.Apply.UpdateApplication
 {
     public record UpdateApplicationApiRequest(
-        string VacancyReference,
         Guid ApplicationId,
         Guid CandidateId,
         UpdateApplicationModel UpdateApplicationModel)
@@ -11,6 +10,6 @@ namespace SFA.DAS.FAA.Domain.Apply.UpdateApplication
     {
         public object Data { get; set; } = UpdateApplicationModel;
 
-        public string PostUrl => $"/vacancies/{VacancyReference}/apply/{ApplicationId}/{CandidateId}";
+        public string PostUrl => $"/applications/{ApplicationId}/{CandidateId}";
     }
 }

@@ -20,7 +20,7 @@ public class WhenHandingUpdateApplicationCommand
         [Frozen] Mock<IApiClient> apiClientMock,
         UpdateApplicationCommandHandler handler)
     {
-        var expectedPostRequest = new UpdateApplicationApiRequest(command.VacancyReference, command.ApplicationId, command.CandidateId, new UpdateApplicationModel
+        var expectedPostRequest = new UpdateApplicationApiRequest(command.ApplicationId, command.CandidateId, new UpdateApplicationModel
         {
             WorkHistorySectionStatus = command.WorkHistorySectionStatus
         });
@@ -42,7 +42,7 @@ public class WhenHandingUpdateApplicationCommand
         [Frozen] Mock<IApiClient> apiClientMock,
         UpdateApplicationCommandHandler handler)
     {
-        var expectedPostRequest = new UpdateApplicationApiRequest(command.VacancyReference, command.ApplicationId, command.CandidateId, new UpdateApplicationModel
+        var expectedPostRequest = new UpdateApplicationApiRequest(command.ApplicationId, command.CandidateId, new UpdateApplicationModel
         {
             WorkHistorySectionStatus = command.WorkHistorySectionStatus
         });

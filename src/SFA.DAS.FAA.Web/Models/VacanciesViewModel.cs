@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using SFA.DAS.FAA.Domain.SearchResults;
+﻿using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAT.Web.Services;
 
 namespace SFA.DAS.FAA.Web.Models;
 

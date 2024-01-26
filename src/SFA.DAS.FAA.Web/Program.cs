@@ -1,7 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.AppStart;
-using SFA.DAS.GovUK.Auth.AppStart;
 
 var builder = WebApplication.CreateBuilder(args);
 

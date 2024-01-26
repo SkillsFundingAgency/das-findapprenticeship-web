@@ -9,12 +9,11 @@ public class WhenBuildingUpdateApplicationApiRequest
 {
     [Test, AutoData]
     public void Then_The_Request_Url_Is_Correctly_Built(
-        string vacancyReference,
         Guid applicationId,
         Guid candidateId)
     {
-        var actual = new UpdateApplicationApiRequest(vacancyReference, applicationId, candidateId, null!);
+        var actual = new UpdateApplicationApiRequest(applicationId, candidateId, null!);
 
-        actual.PostUrl.Should().Be($"/vacancies/{vacancyReference}/apply/{applicationId}/{candidateId}");
+        actual.PostUrl.Should().Be($"/applications/{applicationId}/{candidateId}");
     }
 }

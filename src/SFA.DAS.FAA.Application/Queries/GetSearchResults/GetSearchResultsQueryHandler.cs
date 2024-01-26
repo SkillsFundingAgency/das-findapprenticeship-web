@@ -28,7 +28,6 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             Vacancies = response.Vacancies,
             Routes = response.Routes,
             PageNumber = response.PageNumber,
-            PageSize = response.PageSize,
             TotalPages = response.TotalPages,
             Sort = sort.ToString(),
             VacancyReference = response.VacancyReference,

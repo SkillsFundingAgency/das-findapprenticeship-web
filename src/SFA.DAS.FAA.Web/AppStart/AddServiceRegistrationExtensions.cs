@@ -21,11 +21,14 @@ public static class AddServiceRegistrationExtension
 
     public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
     {
+        var cookieDomain = DomainExtensions.GetDomain(configuration["ResourceEnvironmentName"]);
+        var loginRedirect = string.IsNullOrEmpty(cookieDomain)? "" : $"https://{cookieDomain}/service/account-details";
+        
         services.AddAndConfigureGovUkAuthentication(
             configuration,
             typeof(CandidateAccountPostAuthenticationClaimsHandler),
             "",
-            "/service/account-details");
+            "/service/account-details", cookieDomain, loginRedirect);
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, CandidateAccountPostAuthenticationClaimsHandler>();
         services.AddAuthorization(options =>
@@ -40,7 +43,7 @@ public static class AddServiceRegistrationExtension
                 {
                     policy.RequireClaim(ClaimTypes.NameIdentifier);
                     policy.RequireClaim(ClaimTypes.Email);
-                    policy.RequireClaim(ClaimTypes.MobilePhone);
+                    policy.RequireClaim(CustomClaims.CandidateId);
                     policy.RequireAuthenticatedUser();
                 });
         });

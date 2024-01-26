@@ -112,6 +112,20 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
+        var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
+        if (request.Distance <= 0)
+        {
+            request.Distance = null;
+        }
+        else if (request.Distance.HasValue && !validDistanceValues.Contains((int)request.Distance))
+        {
+            request.Distance = 10;
+        }
+        else if (request.PageNumber <= 0)
+        {
+            request.PageNumber = 1;
+        }
+
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,
@@ -120,7 +134,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             Distance = request.Distance,
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
-            PageSize = request.PageSize,
+            PageSize = 10,
             Sort = request.Sort,
             DisabilityConfident = request.DisabilityConfident
         });
@@ -143,7 +157,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             : [];
         viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
         viewmodel.DisabilityConfident = request.DisabilityConfident;
-        viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.PageSize, result.TotalPages, filterUrl);
+        viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.TotalPages, filterUrl);
         foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
         {
             route.Selected = true;
