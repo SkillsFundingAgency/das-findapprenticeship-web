@@ -18,12 +18,14 @@
         <label class="govuk-label govuk-label--m" for="job-title">
             Job title
         </label>
+        <span das-validation-for="JobTitle" class="govuk-error-message"></span>
         <input class="govuk-input" id="job-title" asp-for="JobTitle" type="text" value="">
     </div>
     <div class="govuk-form-group govuk-!-margin-bottom-7">
         <label class="govuk-label govuk-label--m" for="employer-name">
             Company
         </label>
+        <span das-validation-for="EmployerName" class="govuk-error-message"></span>
         <input class="govuk-input" id="employer-name" asp-for="EmployerName" type="text" value="">
     </div>
     <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="300">
@@ -34,6 +36,7 @@
             <div class="govuk-hint">
                 Describe what you did at work
             </div>
+            <span das-validation-for="JobDescription" class="govuk-error-message"></span>
             <textarea class="govuk-textarea govuk-js-character-count" id="responsibilities" asp-for="JobDescription" rows="5" aria-describedby="responsibilities-info"></textarea>
         </div>
         <div id="responsibilities-info" class="govuk-hint govuk-character-count__message">
@@ -48,6 +51,7 @@
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                 Is this your current role?
             </legend>
+            <span das-validation-for="IsCurrentRole" class="govuk-error-message"></span>
             <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
                     <input class="govuk-radios__input" id="current-role-yes" asp-for="IsCurrentRole" type="radio" value="yes">

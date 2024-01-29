@@ -8,6 +8,7 @@ using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.Apply;
 using System;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {

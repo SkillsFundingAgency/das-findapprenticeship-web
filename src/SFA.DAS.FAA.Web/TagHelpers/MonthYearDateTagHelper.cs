@@ -36,11 +36,18 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             var monthValue = model == null ? string.Empty : model.Value.Value.Month.ToString();
             var yearValue = model == null ? string.Empty : model.Value.Value.Year.ToString();
 
-            var errorOutput = "";
+            var isError = false;
+            var errorOutput = string.Empty;
+            var errorMessage = string.Empty;
             if (ViewContext.ModelState.ContainsKey(Property.Name))
             {
                 var modelState = ViewContext.ModelState[Property.Name];
-                if(modelState.Errors.Count > 0) { errorOutput = ErrorCssClass; }
+                if (modelState.Errors.Count > 0)
+                {
+                    isError = true;
+                    errorOutput = ErrorCssClass;
+                    errorMessage = modelState.Errors.First().ErrorMessage;
+                }
             }
 
             var stringWriter = new StringWriter();
@@ -56,9 +63,18 @@ namespace SFA.DAS.FAA.Web.TagHelpers
 
             writer.AddAttribute("class","govuk-hint");
             writer.AddAttribute("id", $"{Property.Name}Hint");
-            writer.RenderBeginTag("div");
+            
+            writer.RenderBeginTag("div"); //hint
             writer.Write(HintText);
             writer.RenderEndTag(); //hint
+
+            if (isError)
+            {
+                writer.AddAttribute("class", "govuk-error-message");
+                writer.RenderBeginTag("span"); //error message
+                writer.Write(errorMessage);
+                writer.RenderEndTag();
+            }
 
             writer.AddAttribute("class", "govuk-date-input");
             writer.RenderBeginTag("div");

@@ -3,7 +3,7 @@ using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.Validators
 {
-    public class AddJobRequestValidator : AbstractValidator<AddJobPostRequest>
+    public class AddJobRequestValidator : AbstractValidator<AddJobViewModel>
     {
         private const string JobTitleErrorMessage = "Enter a job title";
         private const string JobDescriptionErrorMessage = "Enter job desc.";
@@ -19,7 +19,10 @@ namespace SFA.DAS.FAA.Web.Validators
             RuleFor(x => x.JobDescription).NotEmpty().WithMessage(JobDescriptionErrorMessage);
             RuleFor(x => x.EmployerName).NotEmpty().WithMessage(EmployerNameErrorMessage);
             RuleFor(x => x.StartDate).NotEmpty().WithMessage(StartDateErrorMessage);
-            RuleFor(x => x.EndDate).NotEmpty().WithMessage(EndDateErrorMessage);
+            RuleFor(x => x.EndDate).NotEmpty()
+                .When(x => x.IsCurrentRole is false)
+                .WithMessage(EndDateErrorMessage);
+
             RuleFor(x => x.IsCurrentRole).NotEmpty().WithMessage(IsCurrentJobErrorMessage);
         }
     }
