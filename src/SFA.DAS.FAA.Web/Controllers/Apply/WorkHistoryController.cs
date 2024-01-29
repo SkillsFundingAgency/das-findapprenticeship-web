@@ -47,7 +47,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(command);
 
             return viewModel.AddJob.Equals("Yes")
-                ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new AddJobRequest{ ApplicationId = request.ApplicationId })
+                ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new AddJobRequest{ ApplicationId = viewModel.ApplicationId })
                 : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
 

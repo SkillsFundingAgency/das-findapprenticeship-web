@@ -17,13 +17,13 @@
         <label class="govuk-label govuk-label--m" for="job-title">
             Job title
         </label>
-        <input class="govuk-input" id="job-title" name="job-title" type="text" value="">
+        <input class="govuk-input" id="job-title" asp-for="JobTitle" type="text" value="">
     </div>
     <div class="govuk-form-group govuk-!-margin-bottom-7">
         <label class="govuk-label govuk-label--m" for="employer-name">
             Company
         </label>
-        <input class="govuk-input" id="employer-name" name="employer-name" type="text" value="">
+        <input class="govuk-input" id="employer-name" asp-for="EmployerName" type="text" value="">
     </div>
     <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="300">
         <div class="govuk-form-group govuk-!-margin-bottom-7">
@@ -33,7 +33,7 @@
             <div class="govuk-hint">
                 Describe what you did at work
             </div>
-            <textarea class="govuk-textarea govuk-js-character-count" id="responsibilities" name="responsibilities" rows="5" aria-describedby="responsibilities-info"></textarea>
+            <textarea class="govuk-textarea govuk-js-character-count" id="responsibilities" asp-for="JobDescription" rows="5" aria-describedby="responsibilities-info"></textarea>
         </div>
         <div id="responsibilities-info" class="govuk-hint govuk-character-count__message">
             You can enter up to 300 words
@@ -53,7 +53,7 @@
                         <label class="govuk-label govuk-date-input__label" for="start-date-month">
                             Month
                         </label>
-                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="start-date-month" name="start-date-month" type="text" inputmode="numeric" value="">
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="start-date-month" asp-for="StartDateMonth" type="text" inputmode="numeric" value="">
                     </div>
                 </div>
                 <div class="govuk-date-input__item">
@@ -61,7 +61,7 @@
                         <label class="govuk-label govuk-date-input__label" for="start-date-year">
                             Year
                         </label>
-                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="start-date-year" name="start-date-year" type="text" inputmode="numeric" value="">
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="start-date-year" asp-for="StartDateYear" type="text" inputmode="numeric" value="">
                     </div>
                 </div>
             </div>
@@ -74,13 +74,13 @@
             </legend>
             <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="current-role-yes" name="current-role" type="radio" value="yes">
+                    <input class="govuk-radios__input" id="current-role-yes" asp-for="IsCurrentRole" type="radio" value="yes">
                     <label class="govuk-label govuk-radios__label" for="current-role-yes">
                         Yes
                     </label>
                 </div>
                 <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="current-role-no" name="current-role" type="radio" value="no" aria-controls="current-role-end-date" aria-expanded="false">
+                    <input class="govuk-radios__input" id="current-role-no" asp-for="IsCurrentRole" type="radio" value="no" aria-controls="current-role-end-date" aria-expanded="false">
                     <label class="govuk-label govuk-radios__label" for="current-role-no">
                         No
                     </label>
@@ -100,7 +100,7 @@
                                         <label class="govuk-label govuk-date-input__label" for="end-date-month">
                                             Month
                                         </label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="end-date-month" name="end-date-month" type="text" inputmode="numeric" value="">
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="end-date-month" asp-for="EndDateMonth" type="text" inputmode="numeric" value="">
                                     </div>
                                 </div>
                                 <div class="govuk-date-input__item">
@@ -108,7 +108,7 @@
                                         <label class="govuk-label govuk-date-input__label" for="end-date-year">
                                             Year
                                         </label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="end-date-year" name="end-date-year" type="text" inputmode="numeric" value="">
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="end-date-year" asp-for="EndDateYear" type="text" inputmode="numeric" value="">
                                     </div>
                                 </div>
                             </div>
