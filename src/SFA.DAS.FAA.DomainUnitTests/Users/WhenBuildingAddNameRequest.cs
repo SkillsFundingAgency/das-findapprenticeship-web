@@ -10,11 +10,12 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Users
     public class WhenBuildingAddNameRequest
     {
         [Test, AutoData]
-        public void Then_Then_Request_Is_built(string govIdentifier, string firstName, string lastName,string email)
+        public void Then_Then_Request_Is_built(string govIdentifier, UpdateNameApiRequestData data)
         {
-            var actual = new UpdateNameApiRequest(firstName, lastName, govIdentifier, email);
+            var actual = new UpdateNameApiRequest(govIdentifier, data);
 
             actual.PutUrl.Should().Be($"/users/{govIdentifier}/add-details");
+            ((UpdateNameApiRequestData)actual.Data).Should().BeEquivalentTo(data);
         }
     }
 }

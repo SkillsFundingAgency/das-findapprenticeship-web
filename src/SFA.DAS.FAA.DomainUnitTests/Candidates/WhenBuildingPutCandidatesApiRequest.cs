@@ -12,5 +12,6 @@ public class WhenBuildingPutCandidatesApiRequest
         var actual = new PutCandidateApiRequest(govIdentifier, data);
 
         actual.PutUrl.Should().Be($"candidates/{govIdentifier}");
+        ((PutCandidateApiRequestData)actual.Data).Should().BeEquivalentTo(data);
     }
 }
