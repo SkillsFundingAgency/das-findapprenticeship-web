@@ -34,10 +34,8 @@ namespace SFA.DAS.FAA.Web.Controllers
         public async Task<IActionResult> Name(NameViewModel model) 
         {
             if (!ModelState.IsValid) 
-            {
                 return View(model);
             }
-
             if (!ModelState.IsValid) 
             {
                 return View(model);
