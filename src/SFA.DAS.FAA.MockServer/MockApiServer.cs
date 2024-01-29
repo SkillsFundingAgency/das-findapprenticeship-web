@@ -115,11 +115,11 @@ public static class MockApiServer
                     .WithBodyFromFile("search-vacancy-details.json"));
 
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/candidates", RegexOptions.None, regexMaxTimeOut))
-            .UsingPut())
-        .RespondWith(
-            Response.Create()
-                .WithStatusCode(202)
-                .WithBodyFromFile("put-candidate.json"));
+                 .UsingPut())
+              .RespondWith(
+                 Response.Create()
+                     .WithStatusCode(202)
+                     .WithBodyFromFile("put-candidate.json"));
 
 
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/jobs", RegexOptions.None, regexMaxTimeOut))
