@@ -1,7 +1,11 @@
-﻿@model SFA.DAS.FAA.Web.Models.User.NameViewModel
-
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.User.NameViewModel
+@{
+    Layout = "_LayoutApprentice";
+    ViewBag.Title = "What is your name? – Find an apprenticeship – GOV.UK";
+}
 @section BackLink {
-    <a class="govuk-back-link" href="../vacancy-page-02.html">Back</a>
+    <a class="govuk-back-link" asp-route="@RouteNames.CreateAccount">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -9,7 +13,7 @@
         <partial model="@ViewData.ModelState" name="_ValidationSummary" />
         <span class="govuk-caption-l">Create an account</span>
         <h1 class="govuk-heading-l">What is your name?</h1>
-        <p class="govuk-body">Write your name as you want it to appear on your applications.</p>
+        <p class="govuk-body">Write your name as you want it to appear on your applications</p>
         <form class="form" method="post">
             <div
                 class="govuk-form-group @((ViewData.ModelState[nameof(Model.FirstName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
