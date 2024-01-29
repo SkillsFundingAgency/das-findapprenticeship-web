@@ -68,9 +68,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
-        public IActionResult PostAddAJob(AddJobPostRequest request)
+        public IActionResult PostAddAJob(AddJobViewModel request)
         {
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob);
+            return View("~/Views/apply/workhistory/AddJob.cshtml", request);
         }
     }
 }
