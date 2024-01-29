@@ -4,18 +4,19 @@ namespace SFA.DAS.FAA.Domain.User
 {
     public class UpdateNameApiRequest : IPutApiRequest
     {
-        private readonly Guid _candidateId;
+        private readonly string _govIdentifier;
 
-        public UpdateNameApiRequest(string firstName, string lastName, Guid candidateId)
+        public UpdateNameApiRequest(string firstName, string lastName, string govIdentifier, string email)
         {
-            _candidateId = candidateId;
+            _govIdentifier = govIdentifier;
             Data = new 
             {
                 FirstName = firstName,
-                LastName = lastName
+                LastName = lastName,
+                Email = email,
             };
         }
         public object Data { get; set; }
-        public string PutUrl => $"/users/{_candidateId}/add-details";
+        public string PutUrl => $"/users/{_govIdentifier}/add-details";
     }
 }

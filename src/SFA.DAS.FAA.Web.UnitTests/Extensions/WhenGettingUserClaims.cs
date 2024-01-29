@@ -72,4 +72,29 @@ public class WhenGettingUserClaims
 
         actual.Should().BeNull();
     }
+    
+    [Test, AutoData]
+    public void Then_If_The_NameIdentifier_Claim_Exists_Then_Returned(string email)
+    {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new(ClaimTypes.NameIdentifier, email)
+        }));
+
+        var actual = user.Claims.GovIdentifier();
+
+        actual.Should().Be(email);
+    }
+    
+    [Test]
+    public void Then_If_No_NameIdentifier_Claim_Exists_Then_Null_Returned()
+    {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+        }));
+
+        var actual = user.Claims.GovIdentifier();
+
+        actual.Should().BeNull();
+    }
 }
