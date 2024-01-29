@@ -1,0 +1,26 @@
+@using SFA.DAS.FAA.Web.Infrastructure
+@{
+    Layout = "_LayoutApprentice";
+    ViewBag.Title = "Create an account – Find an apprenticeship – GOV.UK";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Create an account for Find an apprenticeship</h1>
+        <p class="govuk-body">
+            We need to ask you some questions to create your account.
+        </p>
+        <p class="govuk-body">
+            By continuing, you confirm that you agree with our: 
+        </p>
+        
+        <ul class="govuk-list govuk-list--bullet">
+            <li><a href="#" class="govuk-link govuk-link--no-visited-state">terms and conditions (opens in new tab)</a> - how we run this service</li>
+            <li><a href="#" class="govuk-link govuk-link--no-visited-state">privacy policy (opens in new tab)</a> - how we use your data</li>
+        </ul>
+        
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+        <a asp-route="@RouteNames.UserName" class="govuk-button">Continue</a>
+    </div>
+</div>

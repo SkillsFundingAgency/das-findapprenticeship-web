@@ -8,6 +8,7 @@ public static class RouteNames
     public const string SearchResults = "search-results";
     public const string Vacancies = "vacancies";
     public const string Apply = "apply";
+    public const string CreateAccount = "create-account";
     public const string SignedOut = "signed-out";
     public const string AccountUnavailable = "account-unavailable";
     public const string StubAccountDetailsGet = "account-details-get";

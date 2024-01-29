@@ -15,6 +15,14 @@ namespace SFA.DAS.FAA.Web.Controllers
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     public class UserController(IMediator mediator) : Controller
     {
+        [HttpGet]
+        [Route("create-account", Name = RouteNames.CreateAccount)]
+        public IActionResult CreateAccount()
+        {
+            return View();
+        }
+        
+        [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
         public IActionResult Name()
         {
