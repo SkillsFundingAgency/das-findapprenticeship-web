@@ -10,6 +10,7 @@ namespace SFA.DAS.FAA.Domain.User
         {
             _govIdentifier = govIdentifier;
             Data = data;
+
         }
         public object Data { get; set; }
         public string PutUrl => $"users/{_govIdentifier}/add-details";
