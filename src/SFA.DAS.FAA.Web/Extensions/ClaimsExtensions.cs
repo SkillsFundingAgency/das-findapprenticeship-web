@@ -14,4 +14,9 @@ public static class ClaimsExtensions
 
         return Guid.Empty;
     }
+
+    public static string? Email(this IEnumerable<Claim> claims)
+    {
+        return claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value;
+    }
 }
