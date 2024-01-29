@@ -7,14 +7,14 @@ using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Extensions;
 
-public class WhenGettingCandidateIdClaim
+public class WhenGettingUserClaims
 {
     [Test, AutoData]
     public void Then_If_The_Claim_Exists_Then_Returned(Guid candidateId)
     {
         var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
-            new(CustomClaims.CandidateId, candidateId.ToString()),
+            new(CustomClaims.CandidateId, candidateId.ToString())
         }));
 
         var actual = user.Claims.CandidateId();
@@ -27,7 +27,7 @@ public class WhenGettingCandidateIdClaim
     {
         var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
-            new(CustomClaims.CandidateId, candidateId),
+            new(CustomClaims.CandidateId, candidateId)
         }));
 
         var actual = user.Claims.CandidateId();
@@ -40,11 +40,36 @@ public class WhenGettingCandidateIdClaim
     {
         var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
-            new("otherclaim", "ABC123"),
+            new("otherclaim", "ABC123")
         }));
 
         var actual = user.Claims.CandidateId();
 
         actual.Should().Be(Guid.Empty);
+    }
+    
+    [Test, AutoData]
+    public void Then_If_The_Email_Claim_Exists_Then_Returned(string email)
+    {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new(ClaimTypes.Email, email)
+        }));
+
+        var actual = user.Claims.Email();
+
+        actual.Should().Be(email);
+    }
+    
+    [Test]
+    public void Then_If_No_Email_Claim_Exists_Then_Null_Returned()
+    {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+        }));
+
+        var actual = user.Claims.Email();
+
+        actual.Should().BeNull();
     }
 }
