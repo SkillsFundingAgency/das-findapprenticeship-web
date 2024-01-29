@@ -14,6 +14,6 @@ public class WhenBuildingUpdateApplicationApiRequest
     {
         var actual = new UpdateApplicationApiRequest(applicationId, candidateId, null!);
 
-        actual.PostUrl.Should().Be($"/applications/{applicationId}/{candidateId}");
+        actual.PostUrl.Should().Be($"applications/{applicationId}/{candidateId}");
     }
 }
