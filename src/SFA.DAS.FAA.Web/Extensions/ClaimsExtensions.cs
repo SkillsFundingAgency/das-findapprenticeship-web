@@ -19,4 +19,9 @@ public static class ClaimsExtensions
     {
         return claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value;
     }
+
+    public static string GovIdentifier(this IEnumerable<Claim> claims)
+    {
+        return claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
+    }
 }

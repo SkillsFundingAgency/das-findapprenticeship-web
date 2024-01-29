@@ -15,9 +15,7 @@ namespace SFA.DAS.FAA.Application.Commands.UserName
     {
         public async Task<Unit> Handle(UpdateNameCommand request, CancellationToken cancellationToken)
         {
-            Guid tempCandidateId = Guid.NewGuid();
-
-            var putRequest = new UpdateNameApiRequest(request.FirstName, request.LastName,  tempCandidateId);
+            var putRequest = new UpdateNameApiRequest(request.FirstName, request.LastName,  request.GovIdentifier, request.Email);
 
             var response = await apiClient.PutWithResponseCode<NullResponse>(putRequest);
 

@@ -25,10 +25,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.UserName
 
             // Arrange
             apiClientMock.Setup(x => x.PutWithResponseCode<NullResponse>(It.IsAny<UpdateNameApiRequest>()))
-                .ReturnsAsync(new ApiResponse<NullResponse>
-                {
-                    StatusCode = HttpStatusCode.OK
-                });
+                .ReturnsAsync(new ApiResponse<NullResponse>(new NullResponse(), HttpStatusCode.Accepted, ""));
 
             // Act
             var result = await handler.Handle(command, CancellationToken.None);
@@ -47,16 +44,13 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.UserName
         {
             // Arrange
             apiClientMock.Setup(x => x.PutWithResponseCode<NullResponse>(It.IsAny<UpdateNameApiRequest>()))
-                .ReturnsAsync(new ApiResponse<NullResponse>
-                {
-                    StatusCode = HttpStatusCode.BadRequest
-                });
+                .ReturnsAsync(new ApiResponse<NullResponse>(new NullResponse(), HttpStatusCode.BadRequest, "error"));
 
             // Act
             Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            act.Should().Throw<InvalidOperationException>();
+            act.Should().ThrowAsync<InvalidOperationException>();
         }
     }
 }
