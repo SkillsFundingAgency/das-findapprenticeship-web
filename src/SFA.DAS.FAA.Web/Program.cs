@@ -35,6 +35,8 @@ builder.Services.Configure<RouteOptions>(options =>
         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
     }
 
+    options.Filters.Add(new SignInLinkFilter());
+
     options.Filters.Add(new NewFaaUserAccountFilter());
 });
 
