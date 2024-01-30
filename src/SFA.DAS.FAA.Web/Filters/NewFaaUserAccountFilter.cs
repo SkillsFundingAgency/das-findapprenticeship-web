@@ -20,7 +20,8 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
 
         if (identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.DisplayName))
         {
-            if (!context.ActionDescriptor.DisplayName.Contains("UserController", StringComparison.CurrentCultureIgnoreCase))
+            if (!context.ActionDescriptor.DisplayName.Contains("UserController", StringComparison.CurrentCultureIgnoreCase) ||
+                !context.ActionDescriptor.DisplayName.Contains("ServiceController", StringComparison.CurrentCultureIgnoreCase))
             {
                 var service = context.HttpContext.RequestServices.GetService<IApiClient>();
                 var email = identity.Claims.FirstOrDefault(c=>c.Type.Equals(ClaimTypes.Email))?.Value;
