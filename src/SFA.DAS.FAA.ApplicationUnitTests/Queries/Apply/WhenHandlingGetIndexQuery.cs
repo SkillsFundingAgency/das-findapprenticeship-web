@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply
             GetIndexQueryHandler handler)
         {
             // Arrange
-            var apiRequestUri = new GetIndexApiRequest(query.VacancyReference, query.ApplicantEmailAddress);
+            var apiRequestUri = new GetIndexApiRequest(query.ApplicationId, query.CandidateId);
 
             apiClientMock.Setup(client =>
                     client.Get<GetIndexApiResponse>(

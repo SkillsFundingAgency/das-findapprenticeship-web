@@ -1,4 +1,4 @@
-﻿Feature: Home
+Feature: Home
 
 As an FAA user
 I want a clear home page
@@ -106,3 +106,10 @@ Scenario: Navigate to vacancy details page with vacancy found
 	When I navigate to the following url: /vacancies/1000012013
 	Then a http status code of 200 is returned
 	And the page content includes the following: Summary
+
+@WireMockServer
+	Scenario: Add Job page with no option selected
+	When I navigate to the following url: /apply/93cc0e3f-6179-4542-893d-22f2b9a6df9a/jobs
+	Then a http status code of 200 is returned
+	And the page content includes the following: Work history
+

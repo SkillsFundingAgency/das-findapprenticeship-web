@@ -27,7 +27,7 @@ public class Vacancies
     public string CourseTitle { get; set; }
     [JsonPropertyName("courseId")]
     public int CourseId { get; set; }
-    [JsonPropertyName("wageText")]
+    [JsonPropertyName("wageAmount")]
     public string WageAmount { get; set; }
     [JsonPropertyName("wageType")]
     public int WageType { get; set; }

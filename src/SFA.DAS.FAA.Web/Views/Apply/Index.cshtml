@@ -8,11 +8,11 @@
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        
+
         @if (Model.ShowAccountCreatedBanner)
         {
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
-                 aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
                     <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                         Success
@@ -23,18 +23,19 @@
                         Account created. You can now start your application for this apprenticeship.
                     </h3>
                     <p class="govuk-body">You can change your account details at any point in
-                        <a
-                            class="govuk-notification-banner__link" href="#">Settings</a>.</p>
+                        <a class="govuk-notification-banner__link" href="#">Settings</a>.
+                    </p>
                 </div>
             </div>
 
         }
 
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Apply for @Model.VacancyTitle</h1>
-        <p class="govuk-body-l faa-vacancy__location">@Model.EmployerName</p>
-        <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
-        <p class="govuk-body govuk-!-margin-bottom-7">
-            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="das-vacancy__link" target="_blank">
+        <p class="govuk-body-l faa-vacancy__location govuk-!-margin-bottom-4">@Model.EmployerName</p>
+        <p class="govuk-body">@Model.ClosingDate</p>
+        <p class="govuk-body">
+            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="govuk-link"
+                target="_blank">
                 View vacancy (opens in new tab)
             </a>
         </p>
@@ -48,7 +49,7 @@
                     </a>
                 </div>
                 <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.EducationHistory.Qualifications"/>
+                    <gov-uk-tag status="@Model.EducationHistory.Qualifications" />
                 </div>
             </li>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
@@ -58,7 +59,7 @@
                     </a>
                 </div>
                 <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.EducationHistory.TrainingCourses"/>
+                    <gov-uk-tag status="@Model.EducationHistory.TrainingCourses" />
                 </div>
             </li>
         </ul>
@@ -67,12 +68,13 @@
         <ul class="govuk-task-list">
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a href="#" class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.Jobs" asp-route-applicationId="@Model.ApplicationId"
+                        class="govuk-link govuk-task-list__link">
                         Jobs
                     </a>
                 </div>
                 <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.WorkHistory.Jobs"/>
+                    <gov-uk-tag status="@Model.WorkHistory.Jobs" />
                 </div>
             </li>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
@@ -82,7 +84,7 @@
                     </a>
                 </div>
                 <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.WorkHistory.VolunteeringAndWorkExperience"/>
+                    <gov-uk-tag status="@Model.WorkHistory.VolunteeringAndWorkExperience" />
                 </div>
             </li>
         </ul>
@@ -96,7 +98,7 @@
                     </a>
                 </div>
                 <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.ApplicationQuestions.SkillsAndStrengths"/>
+                    <gov-uk-tag status="@Model.ApplicationQuestions.SkillsAndStrengths" />
                 </div>
             </li>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
@@ -118,7 +120,7 @@
                         </a>
                     </div>
                     <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1"/>
+                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1" />
                     </div>
                 </li>
             }
@@ -131,7 +133,7 @@
                         </a>
                     </div>
                     <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion2"/>
+                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion2" />
                     </div>
                 </li>
             }
@@ -150,7 +152,7 @@
                 </div>
             </li>
         </ul>
-        
+
         @if (Model.IsDisabilityConfident)
         {
             <h2 class="govuk-heading-m govuk-!-margin-top-8">Disability Confidence</h2>
@@ -163,12 +165,12 @@
                         </a>
                     </div>
                     <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.DisabilityConfidence.InterviewUnderDisabilityConfident"/>
+                        <gov-uk-tag status="@Model.DisabilityConfidence.InterviewUnderDisabilityConfident" />
                     </div>
                 </li>
             </ul>
         }
-        
+
         <div class="govuk-button-group govuk-!-margin-top-8">
             @if (Model.IsApplicationComplete)
             {

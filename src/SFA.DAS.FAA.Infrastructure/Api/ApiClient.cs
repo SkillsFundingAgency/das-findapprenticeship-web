@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Domain.Configuration;
 using System.Net;
 using SFA.DAS.FAA.Domain.Interfaces;
+using System.Text;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace SFA.DAS.FAA.Infrastructure.Api;
 
@@ -20,10 +22,9 @@ public class ApiClient : IApiClient
 
     public async Task<TResponse> Get<TResponse>(IGetApiRequest request)
     {
-
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, request.GetUrl);
         AddAuthenticationHeader(requestMessage);
-            
+
         var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
         if (response.StatusCode.Equals(HttpStatusCode.NotFound))
@@ -40,6 +41,47 @@ public class ApiClient : IApiClient
         response.EnsureSuccessStatusCode();
 
         return default;
+    }
+
+    public async Task<TResponse> Put<TResponse>(IPutApiRequest request)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Put, request.PutUrl)
+        {
+            Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(request.Data), Encoding.UTF8, "application/json"),
+            VersionPolicy = HttpVersionPolicy.RequestVersionOrLower
+        };
+        AddAuthenticationHeader(requestMessage);
+
+        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+
+        if (response.StatusCode.Equals(HttpStatusCode.NotFound))
+        {
+            return default;
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<TResponse>(json);
+
+        }
+
+        response.EnsureSuccessStatusCode();
+        return default;
+    }
+
+    public async Task<TResponse?> PostWithResponseCode<TResponse>(IPostApiRequest request)
+    {
+        var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, request.PostUrl)
+        {
+            Content = stringContent,
+        };
+        AddAuthenticationHeader(requestMessage);
+        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        return JsonConvert.DeserializeObject<TResponse>(responseContent) ?? default;
     }
 
     private void AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
