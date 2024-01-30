@@ -3,6 +3,7 @@ using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Infrastructure.Api;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Services;
 using SFA.DAS.GovUK.Auth.AppStart;
@@ -17,6 +18,7 @@ public static class AddServiceRegistrationExtension
         services.AddHttpClient<IApiClient, ApiClient>();
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
+        services.AddTransient<IDataProtectorService, DataProtectorService>();
     }
 
     public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
