@@ -14,13 +14,20 @@ namespace SFA.DAS.FAA.Web.AppStart;
 
 public static class AddServiceRegistrationExtension
 {
-    public static void AddServiceRegistration(this IServiceCollection services)
+    public static void AddServiceRegistration(this IServiceCollection services, bool devDecrypt)
     {
         services.AddHttpClient<IApiClient, ApiClient>();
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
         services.AddFluentValidationAutoValidation();
-        services.AddTransient<IDataProtectorService, DataProtectorService>();
+        if (devDecrypt)
+        {
+            services.AddTransient<IDataProtectorService, DevDataProtectorService>();
+        }
+        else
+        {
+            services.AddTransient<IDataProtectorService, DataProtectorService>();
+        }
     }
 
     public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
