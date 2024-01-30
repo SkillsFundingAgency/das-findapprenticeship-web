@@ -85,11 +85,11 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     ApplicationId = viewModel.ApplicationId,
                     CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
                 });
-                viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new {viewModel.ApplicationId});
+                viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { viewModel.ApplicationId });
                 viewModel.ChangeLinkUrl = string.Empty; //TODO: Redirect the user to the Edit Page
                 viewModel.DeleteLinkUrl = string.Empty; //TODO: Redirect the user to the Delete Page
                 viewModel.AddAnotherJobLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId });
-                viewModel.WorkHistories = result.WorkHistories.Select(wk => (WorkHistoryViewModel) wk).ToList();
+                viewModel.WorkHistories = result.WorkHistories.Select(wk => (WorkHistoryViewModel)wk).ToList();
                 return View(SummaryViewPath, viewModel);
             }
 
