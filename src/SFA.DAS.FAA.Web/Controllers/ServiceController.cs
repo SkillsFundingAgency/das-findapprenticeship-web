@@ -12,7 +12,7 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.Controllers;
 
 [Route("[controller]")]
-public class ServiceController(IStubAuthenticationService stubAuthenticationService, IConfiguration configuration) : Controller
+public class ServiceController(IStubAuthenticationService stubAuthenticationService, IConfiguration configuration, IDataProtectorService dataProtectorService) : Controller
 {
     [Route("signout", Name = RouteNames.SignOut)]
     public async Task<IActionResult> SignOut()
@@ -36,6 +36,24 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
         return SignOut(
             authenticationProperties,
             schemes.ToArray());
+    }
+
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("signin", Name = RouteNames.SignIn)]
+    public async Task<IActionResult> SignIn([FromQuery] string signInValue)
+    {
+        var protectedValue = dataProtectorService.DecodeData(signInValue);
+
+        if (string.IsNullOrEmpty(protectedValue))
+        {
+            return RedirectToRoute(RouteNames.ServiceStartDefault);
+        }
+
+        var values = protectedValue.Split('|');
+        var controllerName = values[0];
+        var actionName = values[1];
+
+        return RedirectToAction(actionName, controllerName);
     }
 
     [AllowAnonymous]
