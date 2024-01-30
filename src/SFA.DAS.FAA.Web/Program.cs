@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.ModelBinding;
+using SFA.DAS.FAA.Web.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,7 @@ builder.Services.Configure<RouteOptions>(options =>
         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
     }
 
+    options.Filters.Add(new NewFaaUserAccountFilter());
 });
 
 builder.Services.AddDataProtection(rootConfiguration);
