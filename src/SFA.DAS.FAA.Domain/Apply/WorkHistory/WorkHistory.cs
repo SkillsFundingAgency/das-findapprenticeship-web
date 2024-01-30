@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.FAA.Domain.Apply.WorkHistory
 {
-    public class WorkHistory
+    public record WorkHistory
     {
         public Guid Id { get; set; }
         public WorkHistoryType WorkHistoryType { get; set; }

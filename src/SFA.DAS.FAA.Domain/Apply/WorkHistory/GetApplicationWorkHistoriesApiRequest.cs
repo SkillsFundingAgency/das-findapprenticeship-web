@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.FAA.Domain.Apply.WorkHistory;
 
-public class GetApplicationWorkHistoriesApiRequest(Guid applicationId, Guid candidateId) : IGetApiRequest
+public record GetApplicationWorkHistoriesApiRequest(Guid ApplicationId, Guid CandidateId) : IGetApiRequest
 {
-    public string GetUrl => $"applications/{applicationId}/{candidateId}/work-history";
+    public string GetUrl => $"applications/{ApplicationId}/{CandidateId}/work-history";
 }

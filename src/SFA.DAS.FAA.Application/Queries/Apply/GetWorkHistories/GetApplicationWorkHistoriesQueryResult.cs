@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 
-public class GetApplicationWorkHistoriesQueryResult
+public record GetApplicationWorkHistoriesQueryResult
 {
-    public List<WorkHistory> WorkHistories { get; set; } = [];
+    public List<WorkHistory> WorkHistories { get; init; } = [];
 }

@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply
             GetApplicationWorkHistoriesQueryHandler handler)
         {
             // Arrange
-            var apiRequestUri = new GetApplicationWorkHistoriesApiRequest(query.CandidateId, query.ApplicationId);
+            var apiRequestUri = new GetApplicationWorkHistoriesApiRequest(query.ApplicationId, query.CandidateId);
 
             apiClientMock.Setup(client =>
                     client.Get<List<WorkHistory>>(
