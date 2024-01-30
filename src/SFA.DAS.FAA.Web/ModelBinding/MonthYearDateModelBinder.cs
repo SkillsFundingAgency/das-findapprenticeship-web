@@ -37,7 +37,6 @@ namespace SFA.DAS.FAA.Web.ModelBinding
             bindingContext.ModelState[monthPart].ValidationState = ModelValidationState.Valid;
             bindingContext.ModelState[yearPart].ValidationState = ModelValidationState.Valid;
 
-
             var fullValue = $"{yearValue}-{monthValue}-01";
             if (DateTime.TryParse(fullValue, out var parsedValue))
             {
@@ -53,8 +52,13 @@ namespace SFA.DAS.FAA.Web.ModelBinding
                 return Task.CompletedTask;
             }
 
-            return Task.CompletedTask;
+            if(!string.IsNullOrWhiteSpace(monthValue.ToString()) || !string.IsNullOrWhiteSpace(yearValue.ToString()))
+            {
+                bindingContext.ModelState.AddModelError(modelName, "Enter a real date"); //todo: get display name
+                bindingContext.Result = ModelBindingResult.Failed();
+            }
 
+            return Task.CompletedTask;
         }
     }
 }

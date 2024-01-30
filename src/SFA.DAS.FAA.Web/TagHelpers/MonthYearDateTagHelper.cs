@@ -36,6 +36,18 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             var monthValue = model == null ? string.Empty : model.DateTimeValue.Value.Month.ToString();
             var yearValue = model == null ? string.Empty : model.DateTimeValue.Value.Year.ToString();
 
+            var monthModelState = ViewContext.ModelState[monthId];
+            if (monthModelState != null)
+            {
+                monthValue = monthModelState.AttemptedValue;
+            }
+
+            var yearModelStateEntry = ViewContext.ModelState[yearId];
+            if (yearModelStateEntry != null)
+            {
+                yearValue = yearModelStateEntry.AttemptedValue;
+            }
+
             var isError = false;
             var errorOutput = string.Empty;
             var errorMessage = string.Empty;

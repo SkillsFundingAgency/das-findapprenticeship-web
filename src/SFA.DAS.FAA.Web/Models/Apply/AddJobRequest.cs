@@ -7,8 +7,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
     {
         [FromRoute]
         public Guid ApplicationId { get; set; }
-        public string? EmployerName { get; set; }
         public string? JobTitle { get; set; }
+        public string? EmployerName { get; set; }
         public string? JobDescription { get; set; }
         public MonthYearDate? StartDate { get; set; }
         public bool? IsCurrentRole { get; set; }
