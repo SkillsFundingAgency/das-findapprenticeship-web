@@ -21,9 +21,11 @@ public static class MockApiServer
             Logger = new WireMockConsoleLogger()
         };
 
+        var regexMaxTimeOut = TimeSpan.FromSeconds(3);
+
         var server = StandAloneApp.Start(settings);
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
             .UsingGet()
             .WithParam(MatchSearchLocationManchester)
         ).RespondWith(
@@ -32,7 +34,7 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("search-apprentices-index-location.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
             .UsingGet()
             .WithParam(MatchSearchLocationCoventry)
         ).RespondWith(
@@ -41,7 +43,7 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("search-apprentices-index-no-location-found.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
             .UsingGet()
         ).RespondWith(
             Response.Create()
@@ -49,12 +51,13 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("search-apprentices-index.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, @"/locations")).UsingGet()).RespondWith(Response.Create()
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, @"/locations", RegexOptions.None, regexMaxTimeOut))
+            .UsingGet()).RespondWith(Response.Create()
             .WithStatusCode(200)
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("locations.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterests"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterests", RegexOptions.None, regexMaxTimeOut))
             .UsingGet()
             ).RespondWith(
             Response.Create()
@@ -62,14 +65,14 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("routes.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/searchbylocation"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/locations/searchbylocation", RegexOptions.None, regexMaxTimeOut))
             .UsingGet())
             .RespondWith(Response.Create()
             .WithStatusCode(200)
             .WithHeader("Content-Type", "application/json")
             .WithBodyFromFile("location-search.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterestslocation"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterestslocation", RegexOptions.None, regexMaxTimeOut))
                 .WithParam(MatchSearchLocationCoventry)
                 .UsingGet())
             .RespondWith(Response.Create()
@@ -77,7 +80,7 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBody("{}"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterestslocation"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/browsebyinterestslocation", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
             .RespondWith(Response.Create()
                 .WithStatusCode(200)
@@ -87,7 +90,7 @@ public static class MockApiServer
 
 
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults", RegexOptions.None, regexMaxTimeOut))
                 .WithParam(MatchLocationParamManchester)
                 .UsingGet())
             .RespondWith(Response.Create()
@@ -95,7 +98,7 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("search-apprenticeships-no-results.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
             .RespondWith(
                 Response.Create()
@@ -103,7 +106,7 @@ public static class MockApiServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("search-apprenticeships-results.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/\\d+$"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/\\d+$", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
             .RespondWith(
                 Response.Create()
@@ -111,7 +114,7 @@ public static class MockApiServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("search-vacancy-details.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/candidates"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/candidates", RegexOptions.None, regexMaxTimeOut))
             .UsingPut())
         .RespondWith(
             Response.Create()
@@ -119,7 +122,7 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("put-candidate.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/jobs/summary"))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/jobs/summary", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
             .RespondWith(
                 Response.Create()
