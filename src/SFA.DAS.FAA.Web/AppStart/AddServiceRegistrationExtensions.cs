@@ -27,7 +27,7 @@ public static class AddServiceRegistrationExtension
         services.AddAndConfigureGovUkAuthentication(
             configuration,
             typeof(CandidateAccountPostAuthenticationClaimsHandler),
-            "",
+            "/",
             "/service/account-details", cookieDomain, loginRedirect);
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, CandidateAccountPostAuthenticationClaimsHandler>();
