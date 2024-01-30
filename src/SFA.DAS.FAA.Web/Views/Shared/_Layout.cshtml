@@ -61,9 +61,19 @@
                         aria-controls="navigation" hidden>Menu</button>
                     <ul id="navigation" class="govuk-header__navigation-list">
                         <li class="govuk-header__navigation-item">
-                            <a class="govuk-header__link" href="#">
-                                Sign in
-                            </a>
+                            @if (User.Identity is { IsAuthenticated: true })
+                            {
+                                <a class="govuk-header__link" asp-route="@RouteNames.SignOut">
+                                    Sign out
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="govuk-header__link" href="#">
+                                    Sign in
+                                </a>    
+                            }
+                            
                         </li>
                     </ul>
                 </nav>
