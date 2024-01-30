@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+@using SFA.DAS.FAA.Web.Infrastructure
+<!DOCTYPE html>
 <html lang="en" class="govuk-template faa-template">
 
 <head>
@@ -130,7 +131,7 @@
                                 </a>
                             </li>
                             <li class="one-login-header__nav__list-item">
-                                <a class="one-login-header__nav__link" href="https://home.account.gov.uk/sign-out">
+                                <a class="one-login-header__nav__link" href="@RouteNames.SignOut">
                                     Sign out
                                 </a>
                             </li>
@@ -165,7 +166,7 @@
                             <ul class="service-header__nav-list service-header__nav" id="service-header__nav"
                                 data-open-class="service-header__nav--open">
                                 <li class="service-header__nav-list-item ">
-                                    <a class="service-header__nav-list-item-link" href="#">
+                                    <a class="service-header__nav-list-item-link" asp-route="@RouteNames.SearchResults">
                                         Search
                                     </a>
                                 </li>

@@ -10,7 +10,12 @@ namespace SFA.DAS.FAA.Application.Commands.UserName
     {
         public async Task<Unit> Handle(UpdateNameCommand request, CancellationToken cancellationToken)
         {
-            var putRequest = new UpdateNameApiRequest(request.FirstName, request.LastName,  request.GovIdentifier, request.Email);
+            var putRequest = new UpdateNameApiRequest(request.GovIdentifier, new UpdateNameApiRequestData
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName
+            });
 
             var response = await apiClient.PutWithResponseCode<NullResponse>(putRequest);
 

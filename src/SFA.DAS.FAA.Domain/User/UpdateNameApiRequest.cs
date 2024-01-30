@@ -6,17 +6,19 @@ namespace SFA.DAS.FAA.Domain.User
     {
         private readonly string _govIdentifier;
 
-        public UpdateNameApiRequest(string firstName, string lastName, string govIdentifier, string email)
+        public UpdateNameApiRequest(string govIdentifier, UpdateNameApiRequestData data)
         {
             _govIdentifier = govIdentifier;
-            Data = new 
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-            };
+            Data = data;
         }
         public object Data { get; set; }
         public string PutUrl => $"/users/{_govIdentifier}/add-details";
+    }
+    public class UpdateNameApiRequestData
+    {
+        public required string Email { get; set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+        
     }
 }
