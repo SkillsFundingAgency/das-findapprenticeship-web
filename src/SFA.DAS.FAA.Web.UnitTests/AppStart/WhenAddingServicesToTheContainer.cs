@@ -42,7 +42,7 @@ public class WhenAddingServicesToTheContainer
         serviceCollection.AddSingleton(Mock.Of<IConfiguration>());
         serviceCollection.AddConfigurationOptions(configuration);
         serviceCollection.AddDistributedMemoryCache();
-        serviceCollection.AddServiceRegistration();
+        serviceCollection.AddServiceRegistration(false);
         serviceCollection.AddAuthenticationServices(configuration);
     }
 
