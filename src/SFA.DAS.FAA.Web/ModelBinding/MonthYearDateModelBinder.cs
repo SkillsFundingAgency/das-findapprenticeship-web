@@ -7,10 +7,7 @@ namespace SFA.DAS.FAA.Web.ModelBinding
     {
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            if (bindingContext == null)
-            {
-                throw new ArgumentNullException(nameof(bindingContext));
-            }
+            ArgumentNullException.ThrowIfNull(bindingContext);
 
             var modelName = bindingContext.ModelName;
 
@@ -54,7 +51,24 @@ namespace SFA.DAS.FAA.Web.ModelBinding
 
             if(!string.IsNullOrWhiteSpace(monthValue.ToString()) || !string.IsNullOrWhiteSpace(yearValue.ToString()))
             {
-                bindingContext.ModelState.AddModelError(modelName, "Enter a real date"); //todo: get display name
+                var errorMessage = "Enter a real date";
+
+                var holderType = bindingContext.ModelMetadata.ContainerType;
+                if (holderType != null)
+                {
+                    var propertyType = holderType.GetProperty(bindingContext.ModelMetadata.PropertyName);
+                    var attributes = propertyType.GetCustomAttributes(true);
+                    var hasAttribute = attributes
+                        .Cast<Attribute>()
+                        .Any(a => a.GetType().IsEquivalentTo(typeof(ModelBindingErrorAttribute)));
+                    if (hasAttribute)
+                    {
+                        var att = (ModelBindingErrorAttribute) attributes.First(x => x.GetType().IsEquivalentTo(typeof(ModelBindingErrorAttribute)));
+                        errorMessage = att.ErrorMessage;
+                    }
+                }
+
+                bindingContext.ModelState.AddModelError(modelName, errorMessage);
                 bindingContext.Result = ModelBindingResult.Failed();
             }
 

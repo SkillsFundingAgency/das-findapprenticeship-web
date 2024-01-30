@@ -56,14 +56,14 @@
             <span das-validation-for="IsCurrentRole" class="govuk-error-message"></span>
             <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="IsCurrentRole-Yes" name="IsCurrentRole" type="radio" value="true">
-                    <label class="govuk-label govuk-radios__label" for="IsCurrentRole-Yes">
+                    <input class="govuk-radios__input" asp-for="IsCurrentRole" type="radio" value="true">
+                    <label class="govuk-label govuk-radios__label" for="IsCurrentRole">
                         Yes
                     </label>
                 </div>
                 <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="IsCurrentRole-No" name="IsCurrentRole" type="radio" value="false" aria-controls="current-role-end-date" aria-expanded="false">
-                    <label class="govuk-label govuk-radios__label" for="IsCurrentRole-No">
+                    <input class="govuk-radios__input" asp-for="IsCurrentRole" type="radio" value="false" aria-controls="current-role-end-date" aria-expanded="false">
+                    <label class="govuk-label govuk-radios__label" for="IsCurrentRole">
                         No
                     </label>
                 </div>

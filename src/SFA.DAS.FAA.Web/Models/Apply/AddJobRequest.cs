@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Web.ModelBinding;
 using SFA.DAS.FAA.Web.Models.Custom;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
@@ -10,8 +12,10 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public string? JobTitle { get; set; }
         public string? EmployerName { get; set; }
         public string? JobDescription { get; set; }
+        [ModelBindingError("Enter a real date for the start date")]
         public MonthYearDate? StartDate { get; set; }
         public bool? IsCurrentRole { get; set; }
+        [ModelBindingError("Enter a real date for the end date")]
         public MonthYearDate? EndDate { get; set; }
     }
 }
