@@ -33,8 +33,8 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             var monthId = $"{Property.Name}Month";
             var yearId = $"{Property.Name}Year";
 
-            var monthValue = model == null ? string.Empty : model.Value.Value.Month.ToString();
-            var yearValue = model == null ? string.Empty : model.Value.Value.Year.ToString();
+            var monthValue = model == null ? string.Empty : model.DateTimeValue.Value.Month.ToString();
+            var yearValue = model == null ? string.Empty : model.DateTimeValue.Value.Year.ToString();
 
             var isError = false;
             var errorOutput = string.Empty;

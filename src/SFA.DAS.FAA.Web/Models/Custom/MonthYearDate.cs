@@ -10,12 +10,12 @@ namespace SFA.DAS.FAA.Web.Models.Custom
         {
             if (DateTime.TryParse(value, out var parsedValue))
             {
-                Value = parsedValue;
+                DateTimeValue = parsedValue;
             }
 
-            Value = null;
+            DateTimeValue = null;
         }
 
-        public DateTime? Value { get; set; }
+        public DateTime? DateTimeValue { get; set; }
     }
 }

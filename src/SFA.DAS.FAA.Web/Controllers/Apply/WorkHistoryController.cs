@@ -1,17 +1,17 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
 using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.Apply;
-using System;
 using SFA.DAS.FAA.Web.AppStart;
-using SFA.DAS.FAA.Web.Validators;
+using SFA.DAS.FAA.Web.Authentication;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     public class WorkHistoryController(IMediator mediator) : Controller
     {
         private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
@@ -48,30 +48,45 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(command);
 
             return viewModel.AddJob.Equals("Yes")
-                ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new AddJobRequest{ ApplicationId = viewModel.ApplicationId })
+                ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId })
                 : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
 
         [HttpGet]
         [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
-        public IActionResult GetAddAJob(AddJobRequest request)
+        public IActionResult GetAddAJob([FromRoute] Guid applicationId)
         {
-            //ModelState.Clear();
-            //request.BackLinkUrl = Url.RouteUrl(RouteNames.Apply,
-                //new GetIndexRequest { ApplicationId = request.ApplicationId });
-
             var viewModel = new AddJobViewModel
             {
-                ApplicationId = request.ApplicationId
+                ApplicationId = applicationId
             };
+
             return View("~/Views/apply/workhistory/AddJob.cshtml", viewModel);
         }
 
         [HttpPost]
         [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
-        public IActionResult PostAddAJob(AddJobViewModel request)
+        public async Task<IActionResult> PostAddAJob(AddJobViewModel request)
         {
-            return View("~/Views/apply/workhistory/AddJob.cshtml", request);
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/apply/workhistory/AddJob.cshtml", request);
+            }
+
+            var command = new AddJobCommand
+            {
+                ApplicationId = request.ApplicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                EmployerName = request.EmployerName,
+                JobDescription = request.JobDescription,
+                JobTitle = request.JobTitle,
+                StartDate = request.StartDate.DateTimeValue.Value,
+                EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+            };
+
+            await mediator.Send(command);
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
     }
 }

@@ -34,12 +34,15 @@ namespace SFA.DAS.FAA.Web.ModelBinding
 
             bindingContext.ModelState.SetModelValue(monthPart, monthValue);
             bindingContext.ModelState.SetModelValue(yearPart, yearValue);
+            bindingContext.ModelState[monthPart].ValidationState = ModelValidationState.Valid;
+            bindingContext.ModelState[yearPart].ValidationState = ModelValidationState.Valid;
+
 
             var fullValue = $"{yearValue}-{monthValue}-01";
             if (DateTime.TryParse(fullValue, out var parsedValue))
             {
                 var newModel = new MonthYearDate(fullValue);
-                newModel.Value = parsedValue;
+                newModel.DateTimeValue = parsedValue;
                 bindingContext.Model = newModel;
 
                 bindingContext.Result = ModelBindingResult.Success(newModel);
