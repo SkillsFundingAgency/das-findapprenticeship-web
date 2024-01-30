@@ -15,18 +15,18 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         [BindProperty]
         public SectionStatus? IsSectionCompleted { get; set; }
         public List<WorkHistoryViewModel> WorkHistories { get; set; } = [];
-        public List<SectionCompleted> ApplicationCompletionStatus { get; init; } =
+        public List<SectionProgress> ApplicationCompletionStatus { get; init; } =
         [
-            new SectionCompleted
+            new SectionProgress
             {
                 Id = SectionStatus.Completed,
-                StatusText = "Yes, I’ve completed this section"
+                StatusLabel = "Yes, I’ve completed this section"
             },
 
-            new SectionCompleted
+            new SectionProgress
             {
                 Id = SectionStatus.InProgress,
-                StatusText = "No, I’ll come back to it later"
+                StatusLabel = "No, I’ll come back to it later"
             }
         ];
     }
