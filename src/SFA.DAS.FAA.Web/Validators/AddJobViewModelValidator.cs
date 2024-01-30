@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -22,7 +23,10 @@ namespace SFA.DAS.FAA.Web.Validators
             
             RuleFor(x => x.EmployerName).NotEmpty().WithMessage(EmployerNameErrorMessage);
             
-            RuleFor(x => x.JobDescription).NotEmpty().WithMessage(JobDescriptionErrorMessage);
+            RuleFor(x => x.JobDescription).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(JobDescriptionErrorMessage)
+                .Must(x => x.GetWordCount() <= 100)
+                .WithMessage(JobDescriptionMaxLengthErrorMessage);
             
             RuleFor(x => x.StartDate).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(StartDateErrorMessage)
