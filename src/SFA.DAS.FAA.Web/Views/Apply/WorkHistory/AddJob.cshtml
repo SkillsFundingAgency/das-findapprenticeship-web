@@ -39,10 +39,10 @@
                 Describe what you did at work
             </div>
             <span das-validation-for="JobDescription" class="govuk-error-message"></span>
-            <textarea class="govuk-textarea govuk-js-character-count" asp-for="JobDescription" rows="5" aria-describedby="responsibilities-info"></textarea>
+            <textarea class="govuk-textarea govuk-js-character-count" asp-for="JobDescription" rows="5" aria-describedby="JobDescription-info"></textarea>
         </div>
-        <div id="responsibilities-info" class="govuk-hint govuk-character-count__message">
-            You can enter up to 300 words
+        <div id="JobDescription-info" class="govuk-hint govuk-character-count__message">
+            You can enter up to 100 words
         </div>
     </div>
 
@@ -56,14 +56,14 @@
             <span das-validation-for="IsCurrentRole" class="govuk-error-message"></span>
             <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" asp-for="IsCurrentRole" type="radio" value="true">
-                    <label class="govuk-label govuk-radios__label" for="current-role-yes">
+                    <input class="govuk-radios__input" id="IsCurrentRole-Yes" name="IsCurrentRole" type="radio" value="true">
+                    <label class="govuk-label govuk-radios__label" for="IsCurrentRole-Yes">
                         Yes
                     </label>
                 </div>
                 <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" asp-for="IsCurrentRole" type="radio" value="false" aria-controls="current-role-end-date" aria-expanded="false">
-                    <label class="govuk-label govuk-radios__label" for="current-role-no">
+                    <input class="govuk-radios__input" id="IsCurrentRole-No" name="IsCurrentRole" type="radio" value="false" aria-controls="current-role-end-date" aria-expanded="false">
+                    <label class="govuk-label govuk-radios__label" for="IsCurrentRole-No">
                         No
                     </label>
                 </div>
