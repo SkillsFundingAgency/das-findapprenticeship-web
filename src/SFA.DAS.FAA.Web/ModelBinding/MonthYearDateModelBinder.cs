@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Custom;
 
 namespace SFA.DAS.FAA.Web.ModelBinding
@@ -11,34 +12,25 @@ namespace SFA.DAS.FAA.Web.ModelBinding
 
             var modelName = bindingContext.ModelName;
 
-            // Try to fetch the value of the argument by name
             var monthPart = $"{modelName}Month";
             var yearPart = $"{modelName}Year";
 
             var monthValue = bindingContext.ValueProvider.GetValue(monthPart);
-
-            if (monthValue == ValueProviderResult.None)
-            {
-                return Task.CompletedTask;
-            }
-
             var yearValue = bindingContext.ValueProvider.GetValue(yearPart);
+            var userAttemptedValue = !string.IsNullOrWhiteSpace(monthValue.FirstValue) ||
+                                     !string.IsNullOrWhiteSpace(yearValue.FirstValue);
 
-            if (yearValue == ValueProviderResult.None)
+            if (!userAttemptedValue)
             {
                 return Task.CompletedTask;
             }
 
-            bindingContext.ModelState.SetModelValue(monthPart, monthValue);
-            bindingContext.ModelState.SetModelValue(yearPart, yearValue);
-            bindingContext.ModelState[monthPart].ValidationState = ModelValidationState.Valid;
-            bindingContext.ModelState[yearPart].ValidationState = ModelValidationState.Valid;
+            bindingContext.ModelState.Add(monthPart, monthValue, ModelValidationState.Valid);
+            bindingContext.ModelState.Add(yearPart, yearValue, ModelValidationState.Valid);
 
-            var fullValue = $"{yearValue}-{monthValue}-01";
-            if (DateTime.TryParse(fullValue, out var parsedValue))
+            if (DateTime.TryParse($"{yearValue}-{monthValue}-01", out var parsedValue))
             {
-                var newModel = new MonthYearDate(fullValue);
-                newModel.DateTimeValue = parsedValue;
+                var newModel = new MonthYearDate(parsedValue);
                 bindingContext.Model = newModel;
 
                 bindingContext.Result = ModelBindingResult.Success(newModel);
@@ -49,30 +41,27 @@ namespace SFA.DAS.FAA.Web.ModelBinding
                 return Task.CompletedTask;
             }
 
-            if(!string.IsNullOrWhiteSpace(monthValue.ToString()) || !string.IsNullOrWhiteSpace(yearValue.ToString()))
-            {
-                var errorMessage = "Enter a real date";
-
-                var holderType = bindingContext.ModelMetadata.ContainerType;
-                if (holderType != null)
-                {
-                    var propertyType = holderType.GetProperty(bindingContext.ModelMetadata.PropertyName);
-                    var attributes = propertyType.GetCustomAttributes(true);
-                    var hasAttribute = attributes
-                        .Cast<Attribute>()
-                        .Any(a => a.GetType().IsEquivalentTo(typeof(ModelBindingErrorAttribute)));
-                    if (hasAttribute)
-                    {
-                        var att = (ModelBindingErrorAttribute) attributes.First(x => x.GetType().IsEquivalentTo(typeof(ModelBindingErrorAttribute)));
-                        errorMessage = att.ErrorMessage;
-                    }
-                }
-
-                bindingContext.ModelState.AddModelError(modelName, errorMessage);
-                bindingContext.Result = ModelBindingResult.Failed();
-            }
+            bindingContext.ModelState.AddModelError(modelName, GetErrorMessage(bindingContext));
+            bindingContext.Result = ModelBindingResult.Failed();
 
             return Task.CompletedTask;
+        }
+
+        private static string GetErrorMessage(ModelBindingContext bindingContext)
+        {
+            var errorMessage = "Enter a real date";
+
+            var container = bindingContext.ModelMetadata.ContainerType;
+            if (container == null) return errorMessage;
+            var propertyType = container.GetProperty(bindingContext.ModelMetadata.PropertyName);
+            var bindingErrorAttribute = propertyType.GetAttribute<ModelBindingErrorAttribute>();
+
+            if (bindingErrorAttribute != null)
+            {
+                errorMessage = bindingErrorAttribute.ErrorMessage;
+            }
+
+            return errorMessage;
         }
     }
 }
