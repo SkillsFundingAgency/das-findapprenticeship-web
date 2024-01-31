@@ -1,5 +1,7 @@
-﻿using System.Text.Encodings.Web;
+﻿using System.Reflection;
+using System.Text.Encodings.Web;
 using System.Web.UI;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -28,80 +30,53 @@ namespace SFA.DAS.FAA.Web.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            var model = Property.Model as MonthYearDate;
-
-            var monthId = $"{Property.Name}Month";
-            var yearId = $"{Property.Name}Year";
-
-            var monthValue = model == null ? string.Empty : model.DateTimeValue.Value.Month.ToString();
-            var yearValue = model == null ? string.Empty : model.DateTimeValue.Value.Year.ToString();
-
-            var monthModelState = ViewContext.ModelState[monthId];
-            if (monthModelState != null)
-            {
-                monthValue = monthModelState.AttemptedValue;
-            }
-
-            var yearModelStateEntry = ViewContext.ModelState[yearId];
-            if (yearModelStateEntry != null)
-            {
-                yearValue = yearModelStateEntry.AttemptedValue;
-            }
-
-            var isError = false;
-            var errorOutput = string.Empty;
-            var errorMessage = string.Empty;
-            if (ViewContext.ModelState.ContainsKey(Property.Name))
-            {
-                var modelState = ViewContext.ModelState[Property.Name];
-                if (modelState.Errors.Count > 0)
-                {
-                    isError = true;
-                    errorOutput = ErrorCssClass;
-                    errorMessage = modelState.Errors.First().ErrorMessage;
-                }
-            }
+            var monthValue = GetMonthValue();
+            var yearValue = GetYearValue();
+            var errorMessage = GetErrorMessage();
 
             var stringWriter = new StringWriter();
             var writer = new HtmlTextWriter(stringWriter);
 
+            //fieldset
             writer.AddAttribute("class", "govuk-fieldset");
             writer.RenderBeginTag("fieldset");
-            
+
+            //legend
             writer.AddAttribute("class", "govuk-fieldset__legend govuk-fieldset__legend--m");
             writer.RenderBeginTag("legend");
             writer.Write(Label);
-            writer.RenderEndTag(); //legend
+            writer.RenderEndTag();
 
+            //hint
             writer.AddAttribute("class","govuk-hint");
             writer.AddAttribute("id", $"{Property.Name}Hint");
-            
-            writer.RenderBeginTag("div"); //hint
+            writer.RenderBeginTag("div");
             writer.Write(HintText);
-            writer.RenderEndTag(); //hint
+            writer.RenderEndTag();
 
-            if (isError)
+            //error message
+            if (!string.IsNullOrWhiteSpace(errorMessage))
             {
                 writer.AddAttribute("class", "govuk-error-message");
-                writer.RenderBeginTag("span"); //error message
+                writer.RenderBeginTag("span");
                 writer.Write(errorMessage);
                 writer.RenderEndTag();
             }
 
+            //date inputs
             writer.AddAttribute("class", "govuk-date-input");
             writer.RenderBeginTag("div");
+            WriteInput(writer, $"{Property.Name}Month", monthValue, "Month", 2);
+            WriteInput(writer, $"{Property.Name}Year", yearValue, "Year", 4);
+            writer.RenderEndTag();
 
-            WriteInput(writer, monthId, monthValue, "Month", 2);
-            WriteInput(writer, yearId, yearValue, "Year", 4);
-
-            writer.RenderEndTag(); //div
             writer.RenderEndTag(); //fieldset
-            
 
+            var errorHighlight = string.IsNullOrWhiteSpace(errorMessage) ? string.Empty : ErrorCssClass;
             output.TagName = "div";
             output.Attributes.Add("id", $"{Property.Name}");
             output.Attributes.Add("name", $"{Property.Name}");
-            output.Attributes.Add("class", $"govuk-form-group govuk-!-margin-bottom-7 {errorOutput}");
+            output.Attributes.Add("class", $"govuk-form-group govuk-!-margin-bottom-7 {errorHighlight}");
             output.Content.SetHtmlContent(stringWriter.ToString());
             output.TagMode = TagMode.StartTagAndEndTag;
 
@@ -132,6 +107,45 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             writer.RenderEndTag();
             writer.RenderEndTag();
 
+        }
+
+        private string GetMonthValue()
+        {
+            var modelState = ViewContext.ModelState[$"{Property.Name}Month"];
+            if (modelState != null)
+            {
+                return modelState.AttemptedValue ?? string.Empty;
+            }
+
+            if (Property.Model is MonthYearDate { DateTimeValue: not null } model)
+            {
+                return model.DateTimeValue.Value.Month.ToString();
+            }
+
+            return string.Empty;
+        }
+
+        private string GetYearValue()
+        {
+            var modelState = ViewContext.ModelState[$"{Property.Name}Year"];
+            if (modelState != null)
+            {
+                return modelState.AttemptedValue ?? string.Empty;
+            }
+
+            if (Property.Model is MonthYearDate { DateTimeValue: not null } model)
+            {
+                return model.DateTimeValue.Value.Year.ToString();
+            }
+
+            return string.Empty;
+        }
+
+        private string GetErrorMessage()
+        {
+            if (!ViewContext.ModelState.ContainsKey(Property.Name)) return string.Empty;
+            var modelState = ViewContext.ModelState[Property.Name];
+            return modelState is { Errors.Count: > 0 } ? modelState.Errors.First().ErrorMessage : string.Empty;
         }
     }
 }
