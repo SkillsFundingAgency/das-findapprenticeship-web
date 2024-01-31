@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 using SFA.DAS.FAA.Domain.Enums;
@@ -75,7 +75,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
             }
 
-            var command = new UpdateApplicationCommand
             {
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 ApplicationId = viewModel.ApplicationId,
