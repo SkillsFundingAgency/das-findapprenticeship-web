@@ -145,6 +145,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
 
+        [HttpGet]
+        [Route("apply/{applicationId}/jobs/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
+        public IActionResult DeleteJob([FromRoute] Guid applicationId)
+        {
+            return View("~/Views/apply/workhistory/DeleteJob.cshtml");
+        }
 
     }
 }
