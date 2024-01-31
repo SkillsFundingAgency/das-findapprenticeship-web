@@ -89,7 +89,60 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
+        [HttpGet]
+        [Route("apply/{applicationId}/jobs/summary", Name = RouteNames.ApplyApprenticeship.JobsSummary)]
+        public async Task<IActionResult> Summary([FromRoute] Guid applicationId)
+        {
+            var query = new GetApplicationWorkHistoriesQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+            };
 
+            var result = await mediator.Send(query);
+
+            return View(SummaryViewPath, new WorkHistorySummaryViewModel
+            {
+                WorkHistories = result.WorkHistories.Select(wk => (WorkHistoryViewModel)wk).ToList(),
+                ApplicationId = applicationId,
+                BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
+                ChangeLinkUrl = string.Empty, //TODO: Redirect the user to the Edit Page
+                DeleteLinkUrl = string.Empty, //TODO: Redirect the user to the Delete Page
+                AddAnotherJobLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { applicationId }),
+            });
+        }
+
+        [HttpPost]
+        [Route("apply/{applicationId}/jobs/summary", Name = RouteNames.ApplyApprenticeship.JobsSummary)]
+        public async Task<IActionResult> Summary(WorkHistorySummaryViewModel viewModel)
+        {
+            if (viewModel.IsSectionCompleted is null)
+            {
+                ModelState.AddModelError(nameof(viewModel.IsSectionCompleted), "Select if you have finished this section");
+                var result = await mediator.Send(new GetApplicationWorkHistoriesQuery
+                {
+                    ApplicationId = viewModel.ApplicationId,
+                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                });
+                viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { viewModel.ApplicationId });
+                viewModel.ChangeLinkUrl = string.Empty; //TODO: Redirect the user to the Edit Page
+                viewModel.DeleteLinkUrl = string.Empty; //TODO: Redirect the user to the Delete Page
+                viewModel.AddAnotherJobLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId });
+                viewModel.WorkHistories = result.WorkHistories.Select(wk => (WorkHistoryViewModel)wk).ToList();
+                return View(SummaryViewPath, viewModel);
+            }
+
+            var command = new UpdateApplicationCommand
+            {
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                ApplicationId = viewModel.ApplicationId,
+                WorkHistorySectionStatus = (SectionStatus)viewModel.IsSectionCompleted
+            };
+
+            await mediator.Send(command);
+
+            return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
+        }
 
 
     }
