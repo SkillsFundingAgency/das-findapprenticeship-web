@@ -1,6 +1,7 @@
 ﻿﻿@using System.Collections
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using System.Collections
+@using SFA.DAS.FAA.Web.Models.Custom
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
@@ -44,6 +45,11 @@
     {
         var result = new Dictionary<string, string>();
 
+        var propertyName = property.PropertyName;
+        
+        //Errors on MonthYearDate types must be attributed to the "month" input
+        if (property.ModelType == typeof(MonthYearDate)) { propertyName = $"{propertyName}Month"; }
+
         var state = ViewData.ModelState[property.PropertyName];
 
         var errors = state?.Errors ?? null;
@@ -52,7 +58,7 @@
         {
             foreach (var error in errors)
             {
-                result.Add(property.PropertyName, error.ErrorMessage);
+                result.Add(propertyName, error.ErrorMessage);
                 break;
             }
         }
