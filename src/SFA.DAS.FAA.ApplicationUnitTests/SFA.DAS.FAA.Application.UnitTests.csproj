@@ -26,8 +26,4 @@
     <ProjectReference Include="..\SFA.DAS.FAA.Application\SFA.DAS.FAA.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\UpdateApplication\" />
-  </ItemGroup>
-
 </Project>
