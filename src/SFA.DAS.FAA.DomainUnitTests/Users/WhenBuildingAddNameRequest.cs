@@ -14,7 +14,7 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Users
         {
             var actual = new UpdateNameApiRequest(govIdentifier, data);
 
-            actual.PutUrl.Should().Be($"/users/{govIdentifier}/add-details");
+            actual.PutUrl.Should().Be($"users/{govIdentifier}/add-details");
             ((UpdateNameApiRequestData)actual.Data).Should().BeEquivalentTo(data);
         }
     }

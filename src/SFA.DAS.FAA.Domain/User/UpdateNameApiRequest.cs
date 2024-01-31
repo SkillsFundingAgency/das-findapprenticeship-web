@@ -12,7 +12,7 @@ namespace SFA.DAS.FAA.Domain.User
             Data = data;
         }
         public object Data { get; set; }
-        public string PutUrl => $"/users/{_govIdentifier}/add-details";
+        public string PutUrl => $"users/{_govIdentifier}/add-details";
     }
     public class UpdateNameApiRequestData
     {
