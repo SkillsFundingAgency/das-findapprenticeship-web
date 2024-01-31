@@ -8,6 +8,7 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
