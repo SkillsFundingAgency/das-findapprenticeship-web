@@ -14,22 +14,19 @@
         <h1 class="govuk-heading-l">What is your name?</h1>
         <p class="govuk-body">Write your name as you want it to appear on your applications</p>
         <form class="form" method="post">
-            <div
-                class="govuk-form-group @((ViewData.ModelState[nameof(Model.FirstName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="FirstName">
+            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.FirstName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" asp-for="FirstName">
                     First name
                 </label>
                 <span asp-validation-for="FirstName" class="govuk-error-message"></span>
-                <input class="govuk-input govuk-!-width-two-thirds" id="FirstName" name="FirstName" type="text">
+                <input asp-for="FirstName" class="govuk-input govuk-!-width-two-thirds"/>
             </div>
-            <div
-                class="govuk-form-group @((ViewData.ModelState[nameof(Model.LastName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
-
-                <label class="govuk-label" for="LastName">
+            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.LastName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" asp-for="LastName">
                     Last name
                 </label>
                 <span asp-validation-for="LastName" class="govuk-error-message"></span>
-                <input class="govuk-input govuk-!-width-two-thirds" id="LastName" name="LastName" type="text">
+                <input asp-for="LastName" class="govuk-input govuk-!-width-two-thirds"/>
             </div>
 
 
