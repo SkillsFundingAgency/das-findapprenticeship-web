@@ -122,6 +122,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
 
             var actual = await controller.Post(request) as RedirectToRouteResult;
             actual.Should().NotBeNull();
+            mediator.Verify(x => x.Send(It.IsAny<UpdateWorkHistoryApplicationCommand>(), It.IsAny<CancellationToken>()), Times.Never);
         }
     }
 }
