@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
-using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
@@ -15,6 +15,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     public class WorkHistoryController(IMediator mediator) : Controller
     {
         private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
+        private const string SummaryViewPath = "~/Views/apply/workhistory/Summary.cshtml";
 
         [HttpGet]
         [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
@@ -40,7 +41,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             var command = new UpdateApplicationCommand
             {
-                CandidateId =  Guid.Parse(User.Claims.First(c=>c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 ApplicationId = viewModel.ApplicationId,
                 WorkHistorySectionStatus = viewModel.AddJob is "Yes" ? SectionStatus.InProgress : SectionStatus.Completed
             };
@@ -87,6 +88,24 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(command);
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
+                viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { viewModel.ApplicationId });
+                viewModel.ChangeLinkUrl = string.Empty; //TODO: Redirect the user to the Edit Page
+                viewModel.DeleteLinkUrl = string.Empty; //TODO: Redirect the user to the Delete Page
+                viewModel.AddAnotherJobLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId });
+                viewModel.WorkHistories = result.WorkHistories.Select(wk => (WorkHistoryViewModel)wk).ToList();
+                return View(SummaryViewPath, viewModel);
+            }
+
+            var command = new UpdateApplicationCommand
+            {
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                ApplicationId = viewModel.ApplicationId,
+                WorkHistorySectionStatus = (SectionStatus)viewModel.IsSectionCompleted
+            };
+
+            await mediator.Send(command);
+
+            return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
     }
 }
