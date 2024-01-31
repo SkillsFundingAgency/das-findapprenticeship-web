@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Enums;
 
-namespace SFA.DAS.FAA.Application.Commands.UpdateApplication
+namespace SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory
 {
-    public record UpdateApplicationCommand : IRequest<UpdateApplicationCommandResult>
+    public record UpdateWorkHistoryApplicationCommand : IRequest<UpdateWorkHistoryApplicationCommandResult>
     {
         public required Guid ApplicationId { get; init; }
         public required Guid CandidateId { get; init; }

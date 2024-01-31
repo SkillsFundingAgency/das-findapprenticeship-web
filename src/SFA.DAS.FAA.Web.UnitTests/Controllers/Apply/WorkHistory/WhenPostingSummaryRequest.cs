@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
         [Test, MoqAutoData]
         public async Task Then_The_Mediator_Command_Is_Called_And_RedirectRoute_Returned(
             Guid candidateId,
-            UpdateApplicationCommandResult result,
+            UpdateWorkHistoryApplicationCommandResult result,
             [Frozen] Mock<IMediator> mediator)
         {
             //arrange
@@ -51,7 +51,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                 }
             };
 
-            mediator.Setup(x => x.Send(It.Is<UpdateApplicationCommand>(c =>
+            mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
                     c.ApplicationId.Equals(request.ApplicationId)
                     && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);
@@ -97,7 +97,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
 
             actual.Should().NotBeNull();
             controller.ModelState.Count.Should().BeGreaterThan(0);
-            mediator.Verify(x => x.Send(It.IsAny<UpdateApplicationCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+            mediator.Verify(x => x.Send(It.IsAny<UpdateWorkHistoryApplicationCommand>(), It.IsAny<CancellationToken>()), Times.Never);
         }
     }
 }

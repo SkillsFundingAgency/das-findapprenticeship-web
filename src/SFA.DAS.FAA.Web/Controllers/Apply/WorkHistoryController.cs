@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
@@ -36,7 +36,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return View(ViewPath, viewModel);
             }
 
-            var command = new UpdateApplicationCommand
+            var command = new UpdateWorkHistoryApplicationCommand
             {
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 ApplicationId = viewModel.ApplicationId,
@@ -93,7 +93,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return View(SummaryViewPath, viewModel);
             }
 
-            var command = new UpdateApplicationCommand
+            var command = new UpdateWorkHistoryApplicationCommand
             {
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 ApplicationId = viewModel.ApplicationId,
