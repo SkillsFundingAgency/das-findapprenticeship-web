@@ -88,24 +88,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(command);
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
-                viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { viewModel.ApplicationId });
-                viewModel.ChangeLinkUrl = string.Empty; //TODO: Redirect the user to the Edit Page
-                viewModel.DeleteLinkUrl = string.Empty; //TODO: Redirect the user to the Delete Page
-                viewModel.AddAnotherJobLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId });
-                viewModel.WorkHistories = result.WorkHistories.Select(wk => (WorkHistoryViewModel)wk).ToList();
-                return View(SummaryViewPath, viewModel);
-            }
-
-            var command = new UpdateApplicationCommand
-            {
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
-                ApplicationId = viewModel.ApplicationId,
-                WorkHistorySectionStatus = (SectionStatus)viewModel.IsSectionCompleted
-            };
-
-            await mediator.Send(command);
-
-            return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
+
+
+
     }
 }
