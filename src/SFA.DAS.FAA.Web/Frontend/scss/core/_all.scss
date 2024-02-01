@@ -2,6 +2,16 @@
   scroll-behavior: smooth;
 }
 
+.faa-header__navigation {
+  @include govuk-media-query(desktop) {
+    float: right;
+  }
+}
+
 .govuk-error-message:empty {
   display: none;
+}
+
+.govuk-error-summary__list {
+  margin-bottom: 0;
 }

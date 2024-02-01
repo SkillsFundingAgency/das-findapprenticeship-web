@@ -6,7 +6,7 @@ public class PutCandidateApiRequest : IPutApiRequest
     private readonly string govIdentifier;
     public object Data { get; set; }
 
-    public PutCandidateApiRequest(string govIdentifier, object data)
+    public PutCandidateApiRequest(string govIdentifier, PutCandidateApiRequestData data)
     {
         this.govIdentifier = govIdentifier;
         Data = data;
