@@ -11,6 +11,7 @@ using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAT.Domain.Interfaces;
 namespace SFA.DAS.FAA.Web.UnitTests.AppStart;
 
@@ -18,6 +19,7 @@ public class WhenAddingServicesToTheContainer
 {
     [TestCase(typeof(IApiClient))]
     [TestCase(typeof(IDateTimeService))]
+    [TestCase(typeof(IDataProtectorService))]
     [TestCase(typeof(IRequestHandler<GetBrowseByInterestsQuery, GetBrowseByInterestsResult>))]
     [TestCase(typeof(IRequestHandler<GetBrowseByInterestsLocationQuery, GetBrowseByInterestsLocationQueryResult>))]
     [TestCase(typeof(IRequestHandler<GetLocationsBySearchQuery, GetLocationsBySearchQueryResult>))]
@@ -40,7 +42,7 @@ public class WhenAddingServicesToTheContainer
         serviceCollection.AddSingleton(Mock.Of<IConfiguration>());
         serviceCollection.AddConfigurationOptions(configuration);
         serviceCollection.AddDistributedMemoryCache();
-        serviceCollection.AddServiceRegistration();
+        serviceCollection.AddServiceRegistration(false);
         serviceCollection.AddAuthenticationServices(configuration);
     }
 

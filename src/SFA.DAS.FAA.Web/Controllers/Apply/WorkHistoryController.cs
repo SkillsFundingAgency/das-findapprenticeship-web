@@ -1,10 +1,8 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication;
 using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.Apply;
 using System;
 using SFA.DAS.FAA.Web.AppStart;

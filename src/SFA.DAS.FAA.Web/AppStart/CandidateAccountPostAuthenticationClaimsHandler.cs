@@ -29,11 +29,17 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
         };
         var candidate = await _apiClient.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
         
-        
-        
-
         // add claims
 
-        return new List<Claim>{new Claim(CustomClaims.CandidateId, candidate.Id.ToString())};
+        var claims = new List<Claim>{new Claim(CustomClaims.CandidateId, candidate.Id.ToString())};
+
+        if (!string.IsNullOrEmpty(candidate.FirstName) && !string.IsNullOrEmpty(candidate.LastName))
+        {
+            claims.Add(new Claim(ClaimTypes.GivenName, candidate.FirstName));
+            claims.Add(new Claim(ClaimTypes.Surname, candidate.LastName));
+            claims.Add(new Claim(CustomClaims.DisplayName, $"{candidate.FirstName} {candidate.LastName}"));
+        }
+        
+        return claims;
     }
 }
