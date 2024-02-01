@@ -21,13 +21,13 @@ public class WhenGettingAddTrainingCoursesPage
         .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
         .Returns("https://baseUrl");
 
-        var controller = new WorkHistoryController(mediator.Object)
+        var controller = new TrainingCoursesController(mediator.Object)
         {
             Url = mockUrlHelper.Object
         };
 
         var actual = controller.Get(applicationId) as ViewResult;
-        var actualModel = actual?.Model as AddWorkHistoryViewModel;
+        var actualModel = actual?.Model as AddTrainingCourseViewModel;
 
         using (new AssertionScope())
         {
