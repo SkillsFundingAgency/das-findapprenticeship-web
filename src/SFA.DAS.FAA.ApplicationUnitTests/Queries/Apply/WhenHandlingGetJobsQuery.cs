@@ -9,21 +9,21 @@ using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply
 {
-    public class WhenHandlingGetApplicationWorkHistoriesQuery
+    public class WhenHandlingGetJobsQuery
     {
         [Test, MoqAutoData]
         public async Task Then_Result_Is_Returned(
-            GetApplicationWorkHistoriesQuery query,
-            List<WorkHistory> apiResponse,
+            GetJobsQuery query,
+            GetJobsApiResponse apiResponse,
             [Frozen] Mock<IApiClient> apiClientMock,
-            GetApplicationWorkHistoriesQueryHandler handler)
+            GetJobsQueryHandler handler)
         {
             // Arrange
-            var apiRequestUri = new GetApplicationWorkHistoriesApiRequest(query.ApplicationId, query.CandidateId);
+            var apiRequestUri = new GetJobsApiRequest(query.ApplicationId, query.CandidateId);
 
             apiClientMock.Setup(client =>
-                    client.Get<List<WorkHistory>>(
-                        It.Is<GetApplicationWorkHistoriesApiRequest>(c =>
+                    client.Get<GetJobsApiResponse>(
+                        It.Is<GetJobsApiRequest>(c =>
                             c.GetUrl == apiRequestUri.GetUrl)))
                 .ReturnsAsync(apiResponse);
 
@@ -32,7 +32,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply
 
             // Assert
             result.Should().NotBeNull();
-            result.WorkHistories.Should().BeEquivalentTo(apiResponse);
+            result.Should().BeEquivalentTo(apiResponse);
         }
     }
 }

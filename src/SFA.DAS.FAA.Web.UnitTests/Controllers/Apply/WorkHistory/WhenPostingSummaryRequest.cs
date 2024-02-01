@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
         [Test, MoqAutoData]
         public async Task Then_The_Mediator_Command_With_ValidationError_Is_Called_And_RedirectRoute_Returned(
             Guid candidateId,
-            GetApplicationWorkHistoriesQueryResult getApplicationWorkHistoriesQueryResult,
+            GetJobsQueryResult getJobsQueryResult,
             WorkHistorySummaryViewModel viewModel,
             [Frozen] Mock<IMediator> mediator)
         {
@@ -88,10 +88,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                 }
             };
 
-            mediator.Setup(x => x.Send(It.Is<GetApplicationWorkHistoriesQuery>(
+            mediator.Setup(x => x.Send(It.Is<GetJobsQuery>(
                     c => c.ApplicationId.Equals(viewModel.ApplicationId) &&
                          c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(getApplicationWorkHistoriesQueryResult);
+                .ReturnsAsync(getJobsQueryResult);
 
             var actual = await controller.Summary(viewModel) as ViewResult;
 

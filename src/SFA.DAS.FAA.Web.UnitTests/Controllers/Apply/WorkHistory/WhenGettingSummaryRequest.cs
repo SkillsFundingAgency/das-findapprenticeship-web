@@ -22,7 +22,7 @@ public class WhenGettingSummaryRequest
     public async Task Then_The_Mediator_Query_Is_Called_And_Index_Returned(
         Guid applicationId,
         Guid candidateId,
-        GetApplicationWorkHistoriesQueryResult result,
+        GetJobsQueryResult result,
         [Frozen] Mock<IMediator> mediator)
     {
         var mockUrlHelper = new Mock<IUrlHelper>();
@@ -45,7 +45,7 @@ public class WhenGettingSummaryRequest
             }
         };
 
-        mediator.Setup(x => x.Send(It.Is<GetApplicationWorkHistoriesQuery>(
+        mediator.Setup(x => x.Send(It.Is<GetJobsQuery>(
                 c => c.ApplicationId.Equals(applicationId) &&
                      c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
@@ -57,12 +57,11 @@ public class WhenGettingSummaryRequest
         var workHistories = actualModel?.WorkHistories as List<WorkHistoryViewModel>;
 
         actualModel?.ApplicationId.Should().Be(applicationId);
-        actualModel?.WorkHistories.Should().HaveCountGreaterOrEqualTo(result.WorkHistories.Count);
-        workHistories.Should().BeEquivalentTo(result.WorkHistories, options => options
+        actualModel?.WorkHistories.Should().HaveCountGreaterOrEqualTo(result.Jobs.Count);
+        workHistories.Should().BeEquivalentTo(result.Jobs, options => options
             .Excluding(x => x.JobTitle)
             .Excluding(x => x.StartDate)
             .Excluding(x => x.EndDate)
-            .Excluding(x => x.WorkHistoryType)
             .Excluding(x => x.ApplicationId));
     }
 }

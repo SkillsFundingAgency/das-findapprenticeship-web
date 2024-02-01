@@ -12,7 +12,7 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Apply.WorkHistory
             Guid applicationId,
             Guid candidateId)
         {
-            var actual = new GetApplicationWorkHistoriesApiRequest(applicationId, candidateId);
+            var actual = new GetJobsApiRequest(applicationId, candidateId);
 
             actual.GetUrl.Should().Be($"applications/{applicationId}/{candidateId}/work-history");
         }

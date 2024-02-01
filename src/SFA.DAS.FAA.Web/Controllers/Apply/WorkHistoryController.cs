@@ -95,7 +95,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/jobs/summary", Name = RouteNames.ApplyApprenticeship.JobsSummary)]
         public async Task<IActionResult> Summary([FromRoute] Guid applicationId)
         {
-            var query = new GetApplicationWorkHistoriesQuery
+            var query = new GetJobsQuery
             {
                 ApplicationId = applicationId,
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
@@ -105,7 +105,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return View(SummaryViewPath, new WorkHistorySummaryViewModel
             {
-                WorkHistories = result.WorkHistories.Select(wk => (WorkHistoryViewModel)wk).ToList(),
+                WorkHistories = result.Jobs.Select(wk => (WorkHistoryViewModel)wk).ToList(),
                 ApplicationId = applicationId,
                 BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
                 ChangeLinkUrl = string.Empty, //TODO: Redirect the user to the Edit Page
@@ -121,7 +121,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             if (viewModel.IsSectionCompleted is null)
             {
                 ModelState.AddModelError(nameof(viewModel.IsSectionCompleted), "Select if you have finished this section");
-                var result = await mediator.Send(new GetApplicationWorkHistoriesQuery
+                var result = await mediator.Send(new GetJobsQuery
                 {
                     ApplicationId = viewModel.ApplicationId,
                     CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
@@ -130,7 +130,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 viewModel.ChangeLinkUrl = string.Empty; //TODO: Redirect the user to the Edit Page
                 viewModel.DeleteLinkUrl = string.Empty; //TODO: Redirect the user to the Delete Page
                 viewModel.AddAnotherJobLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId });
-                viewModel.WorkHistories = result.WorkHistories.Select(wk => (WorkHistoryViewModel)wk).ToList();
+                viewModel.WorkHistories = result.Jobs.Select(wk => (WorkHistoryViewModel)wk).ToList();
                 return View(SummaryViewPath, viewModel);
             }
 
