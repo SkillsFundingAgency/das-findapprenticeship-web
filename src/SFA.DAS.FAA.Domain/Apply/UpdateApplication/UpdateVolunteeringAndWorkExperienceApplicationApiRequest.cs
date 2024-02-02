@@ -1,8 +1,9 @@
 ﻿using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.Apply.UpdateApplication;
-public class UpdateVolunteeringAndWorkExperienceApplicationApiRequest
-    (Guid ApplicationId, 
+public record UpdateVolunteeringAndWorkExperienceApplicationApiRequest
+    (
+    Guid ApplicationId, 
     Guid CandidateId, 
     UpdateVolunteeringAndWorkHistoryApplicationModel UpdateApplicationModel) 
     : IPostApiRequest
