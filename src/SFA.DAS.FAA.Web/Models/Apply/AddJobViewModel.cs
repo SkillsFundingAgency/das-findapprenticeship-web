@@ -1,14 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.ModelBinding;
 using SFA.DAS.FAA.Web.Models.Custom;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
-    public class AddJobViewModel
+    public class AddJobViewModel : JobViewModelBase
     {
         [FromRoute]
         public Guid ApplicationId { get; set; }
+    }
+
+    public class JobViewModelBase
+    {
         public string? JobTitle { get; set; }
         public string? EmployerName { get; set; }
         public string? JobDescription { get; set; }
