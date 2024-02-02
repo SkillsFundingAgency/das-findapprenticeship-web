@@ -1,6 +1,6 @@
-﻿@model SFA.DAS.FAA.Web.Models.Apply.AddTrainingCourseViewModel
+﻿@model SFA.DAS.FAA.Web.Models.Apply.AddVolunteeringAndWorkExperienceViewModel
 @{
-    ViewData["Title"] = "Training courses";
+    ViewData["Title"] = "Volunteering and work experience";
     var errorClass = Model.ErrorDictionary!.Any() ? "govuk-form-group--error" : "";
 }
 
@@ -10,38 +10,38 @@
 <partial model="@ViewData.ModelState" name="_ValidationSummary" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-l">Education history</span>
-        <h1 class="govuk-heading-l">Training courses</h1>
-        <p class="govuk-body">Add any professional training courses you've done. For example:</p>
+        <span class="govuk-caption-l">Work history</span>
+        <h1 class="govuk-heading-l">Volunteering and work experience</h1>
+        <p class="govuk-body">You can add:</p>
         <ul class="govuk-list govuk-list--bullet">
-            <li>industry training, such as health and safety courses</li>
-            <li>training to use specialist software</li>
-            <li>first aid training</li>
+            <li>voluntary roles</li>
+            <li>work experience placements</li>
+            <li>internships</li>
         </ul>
-        <p class="govuk-body">Most apprenticeships don't ask for any specific training courses. Include training courses if you want to show your experience.</p>
+        <p class="govuk-body">Use this section to show experience you've gained outside of paid work.</p>
         <div class="govuk-!-padding-bottom-5"></div>
         <form class="form" method="post">
             <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h1 class="govuk-fieldset__heading">
-                            Do you want to add any training courses?
+                            Do you want to add any volunteering or work experience?
                         </h1>
                     </legend>
                     @if (ViewData.ModelState.ErrorCount > 0)
                     {
                         <span class="govuk-error-message">
                             <span class="govuk-visually-hidden">Error:</span>
-                            @ViewData.ModelState["AddTrainingCourse"].Errors.First().ErrorMessage
+                            @ViewData.ModelState["AddVolunteeringAndWorkExperience"].Errors.First().ErrorMessage
                         </span>
                     }
-                    <div class="govuk-radios" data-module="govuk-radios" id="AddTrainingCourse" @errorClass>
-                        @foreach (var trainingCourse in Model.TrainingCourse)
+                    <div class="govuk-radios" data-module="govuk-radios" id="AddVolunteeringAndWorkExperience" @errorClass>
+                        @foreach (var volunteeringOrWorkExperience in Model.VolunteeringAndWorkExperience)
                         {
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="AddTrainingCourse" value="@trainingCourse" id="add-qualifications-@trainingCourse" type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="add-qualifications-@trainingCourse">
-                                    @trainingCourse
+                                <input class="govuk-radios__input" type="radio" asp-for="AddVolunteeringAndWorkExperience" value="@volunteeringOrWorkExperience" id="add-volunteeringandworkexperience-@volunteeringOrWorkExperience" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="add-volunteeringandworkexperience-@volunteeringOrWorkExperience">
+                                    @volunteeringOrWorkExperience
                                 </label>
                             </div>
                         }
