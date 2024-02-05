@@ -9,7 +9,6 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Authentication;
-using System;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 
@@ -19,7 +18,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     public class WorkHistoryController(IMediator mediator) : Controller
     {
         private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
-        private const string SummaryViewPath = "~/Views/apply/workhistory/Summary.cshtml";
 
         [HttpGet]
         [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
@@ -169,6 +167,5 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
-
     }
 }

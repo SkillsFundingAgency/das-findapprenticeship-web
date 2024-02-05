@@ -1,0 +1,40 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.User.NameViewModel
+@{
+    ViewBag.Title = "What is your name? – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.CreateAccount">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+        <span class="govuk-caption-l">Create an account</span>
+        <h1 class="govuk-heading-l">What is your name?</h1>
+        <p class="govuk-body">Write your name as you want it to appear on your applications</p>
+        <form class="form" method="post">
+            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.FirstName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" asp-for="FirstName">
+                    First name
+                </label>
+                <span asp-validation-for="FirstName" class="govuk-error-message"></span>
+                <input asp-for="FirstName" class="govuk-input govuk-!-width-two-thirds"/>
+            </div>
+            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.LastName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" asp-for="LastName">
+                    Last name
+                </label>
+                <span asp-validation-for="LastName" class="govuk-error-message"></span>
+                <input asp-for="LastName" class="govuk-input govuk-!-width-two-thirds"/>
+            </div>
+
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
