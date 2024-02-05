@@ -3,10 +3,6 @@
 @using SFA.DAS.FAA.Web.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.AddJobViewModel
 
-@{
-    Layout = "_LayoutApprentice";
-}
-
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Jobs, new { Model.ApplicationId })">
         Back
