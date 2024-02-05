@@ -2,12 +2,10 @@
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
-public class AddTrainingCourseViewModel : ViewModelBase
+public class TrainingCoursesViewModel
 {
     [FromRoute]
     public required Guid ApplicationId { get; init; }
-    [BindProperty]
-    public string? AddTrainingCourse { get; set; }
-    public string[] TrainingCourse = ["Yes", "No"];
+    public bool? DoYouWantToAddAnyTrainingCourses { get; set; }
     public string? BackLinkUrl { get; set; }
 }

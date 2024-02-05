@@ -27,7 +27,7 @@ public class WhenGettingAddTrainingCoursesPage
         };
 
         var actual = controller.Get(applicationId) as ViewResult;
-        var actualModel = actual?.Model as AddTrainingCourseViewModel;
+        var actualModel = actual?.Model as TrainingCoursesViewModel;
 
         using (new AssertionScope())
         {
