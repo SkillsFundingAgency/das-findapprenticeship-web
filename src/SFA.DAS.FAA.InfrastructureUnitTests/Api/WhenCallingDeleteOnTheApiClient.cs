@@ -9,8 +9,7 @@ using SFA.DAS.FAA.Infrastructure.Api;
 using SFA.DAS.FAA.Infrastructure.UnitTests.HttpMessageHandlerMock;
 using SFA.DAS.Testing.AutoFixture;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+
 
 namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
 {
@@ -18,18 +17,28 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
     {
         [Test, MoqAutoData]
         public async Task Then_The_Endpoint_Is_Called_With_Authentication_Header(
-            FindAnApprenticeshipOuterApi config)
+              FindAnApprenticeshipOuterApi config)
         {
+            // Arrange
             var deleteTestRequest = new DeleteTestRequest();
+            config.BaseUrl = $"https://{config.BaseUrl}";
             var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
             configMock.Setup(x => x.Value).Returns(config);
 
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.NoContent
-            };
+            var httpMessageHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            httpMessageHandler
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.NoContent
+                })
+                .Verifiable();
 
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + deleteTestRequest.DeleteUrl), config.Key, HttpMethod.Delete);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
 
@@ -37,7 +46,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             await apiClient.Delete(deleteTestRequest);
 
             // Assert
-            httpMessageHandler.Protected().Verify<Task<HttpResponseMessage>>(
+            httpMessageHandler.Protected().Verify(
                 "SendAsync",
                 Times.Once(),
                 ItExpr.Is<HttpRequestMessage>(req =>
