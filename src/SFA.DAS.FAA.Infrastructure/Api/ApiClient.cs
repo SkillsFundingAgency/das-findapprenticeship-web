@@ -115,11 +115,11 @@ public class ApiClient : IApiClient
     public async Task Delete(IDeleteApiRequest request)
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Delete, request.DeleteUrl);
-        await AddAuthenticationHeader(requestMessage);
+        AddAuthenticationHeader(requestMessage);
 
-        var response = await HttpClient.SendAsync(requestMessage).ConfigureAwait(false);
+        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
-        await response.EnsureSuccessStatusCodeIncludeContentInException();
+        response.EnsureSuccessStatusCode();
     }
 
     private void AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
