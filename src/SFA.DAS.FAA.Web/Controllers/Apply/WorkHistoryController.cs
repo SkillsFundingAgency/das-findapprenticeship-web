@@ -88,5 +88,11 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
+        [Route("apply/{applicationId}/jobs/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
+        public IActionResult DeleteJob([FromRoute] Guid applicationId)
+        {
+                JobId = request.JobId,
+            return View("~/Views/apply/workhistory/DeleteJob.cshtml");
+        }
     }
 }
