@@ -174,7 +174,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/jobs/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
         public IActionResult DeleteJob([FromRoute] Guid applicationId)
         {
-                JobId = request.JobId,
+               // JobId = request.JobId,
             return View("~/Views/apply/workhistory/DeleteJob.cshtml");
         }
 
