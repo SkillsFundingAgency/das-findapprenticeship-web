@@ -112,6 +112,16 @@ public class ApiClient : IApiClient
         response.EnsureSuccessStatusCode();
     }
 
+    public async Task Delete(IDeleteApiRequest request)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Delete, request.DeleteUrl);
+        await AddAuthenticationHeader(requestMessage);
+
+        var response = await HttpClient.SendAsync(requestMessage).ConfigureAwait(false);
+
+        await response.EnsureSuccessStatusCodeIncludeContentInException();
+    }
+
     private void AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
     {
         httpRequestMessage.Headers.Add("Ocp-Apim-Subscription-Key", _config.Key);
