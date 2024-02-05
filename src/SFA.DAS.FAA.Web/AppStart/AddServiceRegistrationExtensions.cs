@@ -4,6 +4,7 @@ using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Infrastructure.Api;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Services;
 using SFA.DAS.GovUK.Auth.AppStart;
@@ -13,12 +14,20 @@ namespace SFA.DAS.FAA.Web.AppStart;
 
 public static class AddServiceRegistrationExtension
 {
-    public static void AddServiceRegistration(this IServiceCollection services)
+    public static void AddServiceRegistration(this IServiceCollection services, bool devDecrypt)
     {
         services.AddHttpClient<IApiClient, ApiClient>();
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
         services.AddFluentValidationAutoValidation();
+        if (devDecrypt)
+        {
+            services.AddTransient<IDataProtectorService, DevDataProtectorService>();
+        }
+        else
+        {
+            services.AddTransient<IDataProtectorService, DataProtectorService>();
+        }
     }
 
     public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
@@ -29,7 +38,7 @@ public static class AddServiceRegistrationExtension
         services.AddAndConfigureGovUkAuthentication(
             configuration,
             typeof(CandidateAccountPostAuthenticationClaimsHandler),
-            "",
+            "/",
             "/service/account-details", cookieDomain, loginRedirect);
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, CandidateAccountPostAuthenticationClaimsHandler>();

@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.JobsViewModel
 @{
-    Layout = "_LayoutApprentice";
     ViewData["Title"] = "Jobs";
 }
 
@@ -106,6 +105,7 @@
                 </div>
             }
             else
+                        @foreach (var job in Model.Jobs)
             {
                 <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyJobs" error-class="govuk-form-group--error">
                     <fieldset class="govuk-fieldset">
@@ -117,8 +117,8 @@
                         <span das-validation-for="DoYouWantToAddAnyJobs" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios" id="AddJob">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyJobs" value="true" type="radio"/>
-                                <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyJobs">
+                                <input class="govuk-radios__input" type="radio" asp-for="AddJob" value="@job"
+                                    id="add-qualifications-@job" type="radio" />
                                     Yes
                                 </label>
                             </div>
