@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 using SFA.DAS.FAA.Web.ModelBinding;
 using SFA.DAS.FAA.Web.Models.Custom;
 
@@ -8,6 +9,29 @@ namespace SFA.DAS.FAA.Web.Models.Apply
     {
         [FromRoute]
         public Guid ApplicationId { get; set; }
+    }
+
+    public class EditJobViewModel : JobViewModelBase
+    {
+        [FromRoute]
+        public Guid ApplicationId { get; set; }
+
+        [FromRoute]
+        public Guid JobId { get; set; }
+
+        public static implicit operator EditJobViewModel(GetJobQueryResult source)
+        {
+            return new EditJobViewModel
+            {
+                ApplicationId = source.ApplicationId,
+                EmployerName = source.Employer,
+                StartDate = new MonthYearDate(source.StartDate),
+                EndDate = new MonthYearDate(source.EndDate),
+                IsCurrentRole = source.EndDate.HasValue,
+                JobDescription = source.Description,
+                JobTitle = source.JobTitle
+            };
+        }
     }
 
     public class JobViewModelBase

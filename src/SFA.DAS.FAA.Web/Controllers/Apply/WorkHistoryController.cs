@@ -10,6 +10,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Authentication;
 using System;
+using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -125,5 +126,23 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
+
+        [HttpGet]
+        [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
+        public async Task<IActionResult> Edit([FromRoute] Guid applicationId, Guid jobId)
+        {
+            var result = await mediator.Send(new GetJobQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                JobId = jobId
+            });
+
+            var viewModel = (EditJobViewModel)result;
+
+            return View("~/Views/apply/workhistory/EditJob.cshtml", viewModel);
+        }
+
+
     }
 }
