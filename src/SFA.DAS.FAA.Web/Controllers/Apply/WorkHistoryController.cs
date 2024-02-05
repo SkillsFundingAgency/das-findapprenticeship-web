@@ -7,6 +7,12 @@ using SFA.DAS.FAA.Web.Authentication;
 using System;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication;
+using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Apply;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -122,42 +128,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
-        [HttpGet]
-        {
-            var viewModel = new AddJobViewModel
-            {
-                ApplicationId = applicationId
-            };
-
-            return View("~/Views/apply/workhistory/AddJob.cshtml", viewModel);
-        }
-
-        [HttpPost]
-        [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
-        public async Task<IActionResult> PostAddAJob(AddJobViewModel request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("~/Views/apply/workhistory/AddJob.cshtml", request);
-            }
-
-            var command = new AddJobCommand
-            {
-                ApplicationId = request.ApplicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
-                EmployerName = request.EmployerName,
-                JobDescription = request.JobDescription,
-            };
-
-            await mediator.Send(command);
-
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
-        }
 
         [HttpGet]
         [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
         public async Task<IActionResult> Edit([FromRoute] Guid applicationId, Guid jobId)
+        {
             var result = await mediator.Send(new GetJobQuery
+            {
                 ApplicationId = applicationId,
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 JobId = jobId
@@ -166,14 +143,34 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var viewModel = (EditJobViewModel)result;
 
             return View("~/Views/apply/workhistory/EditJob.cshtml", viewModel);
-
-            return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
-        [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
-        public async Task<IActionResult> PostEditAJob(EditJobViewModel request)
-                return View("~/Views/apply/workhistory/EditJob.cshtml", request);
         }
 
+        [HttpPost]
+        [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
+        public async Task<IActionResult> PostEditAJob(EditJobViewModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/apply/workhistory/EditJob.cshtml", request);
+            }
+
             var command = new UpdateJobCommand
+            {
+                JobId = request.JobId,
+                ApplicationId = request.ApplicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                EmployerName = request.EmployerName,
+                JobDescription = request.JobDescription,
+                JobTitle = request.JobTitle,
+                StartDate = request.StartDate.DateTimeValue.Value,
+                EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+            };
+
+            await mediator.Send(command);
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
+        }
+
         [Route("apply/{applicationId}/jobs/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
         public IActionResult DeleteJob([FromRoute] Guid applicationId)
         {
