@@ -27,7 +27,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 EmployerName = source.Employer,
                 StartDate = new MonthYearDate(source.StartDate),
                 EndDate = new MonthYearDate(source.EndDate),
-                IsCurrentRole = source.EndDate.HasValue,
+                IsCurrentRole = !source.EndDate.HasValue,
                 JobDescription = source.Description,
                 JobTitle = source.JobTitle
             };

@@ -10,6 +10,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Authentication;
 using System;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
@@ -143,6 +144,31 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             return View("~/Views/apply/workhistory/EditJob.cshtml", viewModel);
         }
 
+        [HttpPost]
+        [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
+        public async Task<IActionResult> PostEditAJob(EditJobViewModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/apply/workhistory/EditJob.cshtml", request);
+            }
+
+            var command = new UpdateJobCommand
+            {
+                JobId = request.JobId,
+                ApplicationId = request.ApplicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                EmployerName = request.EmployerName,
+                JobDescription = request.JobDescription,
+                JobTitle = request.JobTitle,
+                StartDate = request.StartDate.DateTimeValue.Value,
+                EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+            };
+
+            await mediator.Send(command);
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
+        }
 
     }
 }
