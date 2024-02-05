@@ -1,0 +1,59 @@
+﻿@model SFA.DAS.FAA.Web.Models.Apply.JobViewModelBase
+
+<div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="JobTitle" error-class="govuk-form-group--error">
+    <label class="govuk-label govuk-label--m" for="JobTitle">
+        Job title
+    </label>
+    <span das-validation-for="JobTitle" class="govuk-error-message"></span>
+    <input class="govuk-input" asp-for="JobTitle" type="text">
+</div>
+<div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="EmployerName" error-class="govuk-form-group--error">
+    <label class="govuk-label govuk-label--m" for="EmployerName">
+        Company
+    </label>
+    <span das-validation-for="EmployerName" class="govuk-error-message"></span>
+    <input class="govuk-input" asp-for="EmployerName" type="text">
+</div>
+<div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="100">
+    <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="JobDescription" error-class="govuk-form-group--error">
+        <label class="govuk-label govuk-label--m" for="JobDescription">
+            Responsibilities
+        </label>
+        <div class="govuk-hint">
+            Describe what this job involved
+        </div>
+        <span das-validation-for="JobDescription" class="govuk-error-message"></span>
+        <textarea class="govuk-textarea govuk-js-character-count" asp-for="JobDescription" rows="5" aria-describedby="JobDescription-info"></textarea>
+    </div>
+    <div id="JobDescription-info" class="govuk-hint govuk-character-count__message">
+        You can enter up to 100 words
+    </div>
+</div>
+
+<month-year-date property="StartDate" label="Start date" hint-text="For example 08 2019" error-class="govuk-form-group--error" />
+
+<div class="govuk-form-group" das-highlight-error-for="IsCurrentRole" error-class="govuk-form-group--error">
+    <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            Is this your current role?
+        </legend>
+        <span das-validation-for="IsCurrentRole" class="govuk-error-message"></span>
+        <div class="govuk-radios" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input" asp-for="IsCurrentRole" type="radio" value="true">
+                <label class="govuk-label govuk-radios__label" for="IsCurrentRole">
+                    Yes
+                </label>
+            </div>
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input" asp-for="IsCurrentRole" type="radio" value="false" aria-controls="current-role-end-date" aria-expanded="false">
+                <label class="govuk-label govuk-radios__label" for="IsCurrentRole">
+                    No
+                </label>
+            </div>
+            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="current-role-end-date">
+                <month-year-date property="EndDate" label="End date" hint-text="For example 08 2022" error-class="govuk-form-group--error" />
+            </div>
+        </div>
+    </fieldset>
+</div>

@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Domain.Apply.WorkHistory;
+﻿using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
+using SFA.DAS.FAA.Domain.Apply.WorkHistory;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
@@ -10,7 +11,7 @@ public record WorkHistoryViewModel
     public string? JobDates { get; private init; }
     public string? Description { get; private init; }
 
-    public static implicit operator WorkHistoryViewModel(WorkHistory source)
+    public static implicit operator WorkHistoryViewModel(GetJobsQueryResult.Job source)
     {
         return new WorkHistoryViewModel
         {

@@ -7,6 +7,22 @@ namespace SFA.DAS.FAA.Web.Validators
 {
     public class AddJobViewModelValidator : AbstractValidator<AddJobViewModel>
     {
+        public AddJobViewModelValidator(IDateTimeService dateTimeService)
+        {
+            Include(new JobViewModelBaseValidator(dateTimeService));
+        }
+    }
+
+    public class EditJobViewModelValidator : AbstractValidator<EditJobViewModel>
+    {
+        public EditJobViewModelValidator(IDateTimeService dateTimeService)
+        {
+            Include(new JobViewModelBaseValidator(dateTimeService));
+        }
+    }
+
+    public class JobViewModelBaseValidator : AbstractValidator<JobViewModelBase>
+    {
         private const string JobTitleErrorMessage = "Enter the job title for this job";
         private const string EmployerNameErrorMessage = "Enter the company you worked for";
         private const string JobDescriptionErrorMessage = "Enter the responsibilities you had for this job";
@@ -17,7 +33,7 @@ namespace SFA.DAS.FAA.Web.Validators
         private const string EndDateErrorMessage = "Enter the end date for this job";
         private const string EndDateIsInThePastErrorMessage = "The end date must be in the past";
 
-        public AddJobViewModelValidator(IDateTimeService dateTimeService)
+        public JobViewModelBaseValidator(IDateTimeService dateTimeService)
         {
             RuleFor(x => x.JobTitle).NotEmpty().WithMessage(JobTitleErrorMessage);
             

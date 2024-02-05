@@ -2,15 +2,12 @@
 {
     public class MonthYearDate
     {
-        public string AttemptedMonth { get; set; } = string.Empty;
-        public string AttemptedYear { get; set; } = string.Empty;
-
         public MonthYearDate(string value)
         {
             SetValue(value);
         }
 
-        public MonthYearDate(DateTime value)
+        public MonthYearDate(DateTime? value)
         {
             DateTimeValue = value;
         }

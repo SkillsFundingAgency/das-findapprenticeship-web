@@ -2,28 +2,28 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
+using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 using SFA.DAS.FAA.Domain.Apply.WorkHistory;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply
 {
-    public class WhenHandlingGetApplicationWorkHistoriesQuery
+    public class WhenHandlingGetJobQuery
     {
         [Test, MoqAutoData]
         public async Task Then_Result_Is_Returned(
-            GetApplicationWorkHistoriesQuery query,
-            List<WorkHistory> apiResponse,
+            GetJobQuery query,
+            GetJobApiResponse apiResponse,
             [Frozen] Mock<IApiClient> apiClientMock,
-            GetApplicationWorkHistoriesQueryHandler handler)
+            GetJobQueryHandler handler)
         {
             // Arrange
-            var apiRequestUri = new GetApplicationWorkHistoriesApiRequest(query.ApplicationId, query.CandidateId);
+            var apiRequestUri = new GetJobApiRequest(query.ApplicationId, query.CandidateId, query.JobId);
 
             apiClientMock.Setup(client =>
-                    client.Get<List<WorkHistory>>(
-                        It.Is<GetApplicationWorkHistoriesApiRequest>(c =>
+                    client.Get<GetJobApiResponse>(
+                        It.Is<GetJobApiRequest>(c =>
                             c.GetUrl == apiRequestUri.GetUrl)))
                 .ReturnsAsync(apiResponse);
 
@@ -32,7 +32,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply
 
             // Assert
             result.Should().NotBeNull();
-            result.WorkHistories.Should().BeEquivalentTo(apiResponse);
+            result.Should().BeEquivalentTo(apiResponse);
         }
     }
 }

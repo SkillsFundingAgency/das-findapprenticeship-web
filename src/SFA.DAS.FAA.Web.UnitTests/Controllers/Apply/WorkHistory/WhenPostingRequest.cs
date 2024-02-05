@@ -5,10 +5,12 @@ using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
@@ -26,10 +28,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
         {
             //arrange
-            var request = new AddWorkHistoryViewModel
+            var request = new JobsViewModel
             {
                 ApplicationId = Guid.NewGuid(),
-                AddJob = "Yes",
+                DoYouWantToAddAnyJobs = true
             };
             controller.ControllerContext = new ControllerContext
             {
@@ -57,10 +59,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
         {
             //arrange
-            var request = new AddWorkHistoryViewModel
+            var request = new JobsViewModel
             {
                 ApplicationId = Guid.NewGuid(),
-                AddJob = "No",
+                DoYouWantToAddAnyJobs = false
             };
             controller.ControllerContext = new ControllerContext
             {
@@ -82,20 +84,44 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
         }
 
         [Test, MoqAutoData]
-        public async Task Then_The_Mediator_Command_With_ValidationError_Is_Called_And_RedirectRoute_Returned(
+        public async Task Then_When_Section_Is_Completed_The_Section_Status_Is_Updated_RedirectRoute_Returned(
+            Guid candidateId,
             UpdateApplicationCommandResult result,
-            AddWorkHistoryViewModel viewModel,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
+            [Frozen] Mock<IMediator> mediator)
         {
-            viewModel.AddJob = null;
-            controller.Url = Mock.Of<IUrlHelper>();
+            //arrange
+            var request = new JobsViewModel
+            {
+                ApplicationId = Guid.NewGuid(),
+                ShowJobHistory = true,
+                IsSectionCompleted = true
+            };
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns("https://baseUrl");
+            var controller = new WorkHistoryController(mediator.Object)
+            {
+                Url = mockUrlHelper.Object,
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext
+                    {
+                        User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                        {
+                            new(CustomClaims.CandidateId, candidateId.ToString()),
+                        }))
+                    }
+                }
+            };
 
-            var actual = await controller.Post(viewModel) as ViewResult;
-            
+            mediator.Setup(x => x.Send(It.Is<UpdateApplicationCommand>(c =>
+                    c.ApplicationId.Equals(request.ApplicationId)
+                    && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(result);
+
+            var actual = await controller.Post(request) as RedirectToRouteResult;
             actual.Should().NotBeNull();
-            controller.ModelState.Count.Should().BeGreaterThan(0);
-            mediator.Verify(x => x.Send(It.IsAny<UpdateApplicationCommand>(), It.IsAny<CancellationToken>()), Times.Never);
         }
     }
 }
