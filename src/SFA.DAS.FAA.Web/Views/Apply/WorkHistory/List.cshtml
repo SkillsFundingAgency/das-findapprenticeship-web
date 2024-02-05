@@ -14,7 +14,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Work history</span>
-        <h1 class="govuk-heading-l">Jobs</h1>
+        <h1 class="govuk-heading-l">@Model.PageTitle</h1>
         
         @if (Model.ShowJobHistory)
         {
@@ -38,6 +38,14 @@
                     </div>
                     <div class="govuk-summary-card__content">
                         <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Role
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @work.JobTitle
+                                </dd>
+                            </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">
                                     Responsibilities
