@@ -25,10 +25,12 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.UserName
 
             // Arrange
             var request = new UpdateNameApiRequest(command.GovIdentifier, new UpdateNameApiRequestData
+            {
                 Email = command.Email,
                 FirstName = command.FirstName,
                 LastName = command.LastName
-            apiClientMock.Setup(x => x.PutWithResponseCode<NullResponse>(It.Is<UpdateNameApiRequest>(c=> 
+            });
+            apiClientMock.Setup(x => x.PutWithResponseCode<NullResponse>(It.Is<UpdateNameApiRequest>(c =>
                     c.PutUrl.Equals(request.PutUrl)
                         && ((UpdateNameApiRequestData)c.Data).FirstName.Equals(command.FirstName)
                         && ((UpdateNameApiRequestData)c.Data).LastName.Equals(command.LastName)

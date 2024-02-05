@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             return View();
         }
-        
+
         [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
         public IActionResult Name()
@@ -31,12 +31,9 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("user-name", Name = RouteNames.UserName)]
-        public async Task<IActionResult> Name(NameViewModel model) 
+        public async Task<IActionResult> Name(NameViewModel model)
         {
-            if (!ModelState.IsValid) 
-                return View(model);
-            }
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -60,7 +57,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             //TODO add correct route 
             return RedirectToRoute(RouteNames.SearchResults);
-            
+
         }
     }
 }
