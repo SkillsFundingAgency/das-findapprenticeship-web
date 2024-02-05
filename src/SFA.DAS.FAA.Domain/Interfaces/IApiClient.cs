@@ -7,5 +7,6 @@ namespace SFA.DAS.FAA.Domain.Interfaces
 
         Task<TResponse?> PostWithResponseCode<TResponse>(IPostApiRequest request);
         Task<ApiResponse<TResponse>> PutWithResponseCode<TResponse>(IPutApiRequest request);
+        Task PostWithResponseCode(IPostApiRequest request);
     }
 }

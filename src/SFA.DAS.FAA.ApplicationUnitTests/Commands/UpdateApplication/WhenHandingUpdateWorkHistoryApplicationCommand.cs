@@ -18,12 +18,13 @@ public class WhenHandingUpdateWorkHistoryApplicationCommand
         UpdateWorkHistoryApplicationCommand command,
         Domain.Apply.UpdateApplication.Application apiResponse,
         [Frozen] Mock<IApiClient> apiClientMock,
-        UpdateWorkHostoryApplicationCommandHandler handler)
+        UpdateWorkHistoryApplicationCommandHandler handler)
     {
-        var expectedPostRequest = new UpdateWorkHistoryApplicationApiRequest(command.ApplicationId, command.CandidateId, new UpdateWorkHistoryApplicationModel
-        {
-            WorkHistorySectionStatus = command.WorkHistorySectionStatus
-        });
+        var expectedPostRequest = new UpdateWorkHistoryApplicationApiRequest(command.ApplicationId, command.CandidateId,
+            new UpdateWorkHistoryApplicationModel
+            {
+                WorkHistorySectionStatus = command.WorkHistorySectionStatus
+            });
 
         apiClientMock
             .Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostRequest))
@@ -40,12 +41,13 @@ public class WhenHandingUpdateWorkHistoryApplicationCommand
     public async Task Then_ApiResponse_IsEmpty_The_CommandResult_Is_Returned_As_Expected(
         UpdateWorkHistoryApplicationCommand command,
         [Frozen] Mock<IApiClient> apiClientMock,
-        UpdateWorkHostoryApplicationCommandHandler handler)
+        UpdateWorkHistoryApplicationCommandHandler handler)
     {
-        var expectedPostRequest = new UpdateWorkHistoryApplicationApiRequest(command.ApplicationId, command.CandidateId, new UpdateWorkHistoryApplicationModel
-        {
-            WorkHistorySectionStatus = command.WorkHistorySectionStatus
-        });
+        var expectedPostRequest = new UpdateWorkHistoryApplicationApiRequest(command.ApplicationId, command.CandidateId,
+            new UpdateWorkHistoryApplicationModel
+            {
+                WorkHistorySectionStatus = command.WorkHistorySectionStatus
+            });
 
         apiClientMock
             .Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostRequest))
