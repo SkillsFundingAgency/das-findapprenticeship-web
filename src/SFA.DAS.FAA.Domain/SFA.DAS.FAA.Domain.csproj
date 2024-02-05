@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Apply\UpdateJob\" />
     <Folder Include="Configuration\" />
   </ItemGroup>
 

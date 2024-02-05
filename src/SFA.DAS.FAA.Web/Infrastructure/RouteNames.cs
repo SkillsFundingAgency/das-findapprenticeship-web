@@ -10,6 +10,7 @@ public static class RouteNames
     public const string Apply = "apply";
     public const string UserName = "user-name";
     public const string CreateAccount = "create-account";
+    public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
     public const string SignedOut = "signed-out";
     public const string AccountUnavailable = "account-unavailable";
@@ -19,13 +20,14 @@ public static class RouteNames
 
     public static class ApplyApprenticeship
     {
-        public const string Jobs = nameof(Jobs);
         public const string AddJob = nameof(AddJob);
-		public const string JobsSummary = nameof(JobsSummary);
+        public const string Jobs = nameof(Jobs);
+        public const string JobsSummary = nameof(JobsSummary);
         public const string WorkHistory = nameof(WorkHistory);
 		public const string EditJob = nameof(EditJob);
         public const string DeleteJob = nameof(DeleteJob);
         public const string AddTrainingCourse = nameof(AddTrainingCourse);
         public const string TrainingCourses = nameof(TrainingCourses);
+        public const string WorkHistory = nameof(WorkHistory);
     }
 }

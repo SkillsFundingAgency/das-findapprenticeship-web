@@ -25,7 +25,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             Guid candidateId,
             UpdateWorkHistoryApplicationCommandResult result,
             [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
+            [Greedy] WorkHistoryController controller)
         {
             //arrange
             var request = new JobsViewModel
@@ -42,7 +42,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                 }
             };
 
-            mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c=>
+            mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
                     c.ApplicationId.Equals(request.ApplicationId)
                     && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);
@@ -56,7 +56,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             Guid candidateId,
             UpdateWorkHistoryApplicationCommandResult result,
             [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
+            [Greedy] WorkHistoryController controller)
         {
             //arrange
             var request = new JobsViewModel
@@ -115,7 +115,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                 }
             };
 
-            mediator.Setup(x => x.Send(It.Is<UpdateApplicationCommand>(c =>
+            mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
                     c.ApplicationId.Equals(request.ApplicationId)
                     && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);

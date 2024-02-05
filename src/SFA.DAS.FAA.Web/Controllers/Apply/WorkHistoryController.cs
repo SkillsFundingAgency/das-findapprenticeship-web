@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 using SFA.DAS.FAA.Domain.Enums;
@@ -11,6 +10,7 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             if (viewModel.ShowJobHistory)
             {
-                var completeSectionCommand = new UpdateApplicationCommand
+                var completeSectionCommand = new UpdateWorkHistoryApplicationCommand
                 {
                     CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                     ApplicationId = viewModel.ApplicationId,
@@ -75,6 +75,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
             }
 
+            var command = new UpdateWorkHistoryApplicationCommand
             {
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 ApplicationId = viewModel.ApplicationId,
