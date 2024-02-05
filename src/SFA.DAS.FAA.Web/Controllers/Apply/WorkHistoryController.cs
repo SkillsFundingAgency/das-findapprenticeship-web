@@ -13,6 +13,11 @@ using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+using SFA.DAS.FAA.Application.Commands.UserName;
+using SFA.DAS.FAA.Web.Extensions;
+using SFA.DAS.FAA.Web.Models.User;
+using System.Reflection;
+using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -173,10 +178,26 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpDelete]
         [Route("apply/{applicationId}/jobs/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
-        public IActionResult DeleteJob([FromRoute] Guid applicationId, [FromRoute] Guid candidateId, [FromRoute] Guid jobId)
+        public async Task<IActionResult> DeleteJob([FromRoute] Guid applicationId, [FromRoute] Guid candidateId, [FromRoute] Guid jobId)
         {
-               // JobId = request.JobId,
-            return View("~/Views/apply/workhistory/DeleteJob.cshtml");
+            try
+            {
+                var command = new DeleteJobCommand
+                {
+                    CandidateId = candidateId,
+                    ApplicationId = applicationId,
+                    JobId = jobId
+                };
+                await mediator.Send(command);
+            }
+            catch (InvalidOperationException e)
+            {
+                ModelState.AddModelError(nameof(DeleteJobViewModel), "There's been a problem");
+                return View("~/Views/apply/workhistory/DeleteJob.cshtml");
+            }
+
+            return RedirectToRoute(SummaryViewPath);
+
         }
 
     }
