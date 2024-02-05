@@ -28,6 +28,5 @@ public static class RouteNames
         public const string DeleteJob = nameof(DeleteJob);
         public const string AddTrainingCourse = nameof(AddTrainingCourse);
         public const string TrainingCourses = nameof(TrainingCourses);
-        public const string WorkHistory = nameof(WorkHistory);
     }
 }
