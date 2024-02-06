@@ -27,7 +27,7 @@ public class WhenGettingAddVolunteeringAndWorkExperiencePage
         };
 
         var actual = controller.Get(applicationId) as ViewResult;
-        var actualModel = actual?.Model as AddVolunteeringAndWorkExperienceViewModel;
+        var actualModel = actual?.Model as VolunteeringAndWorkExperienceViewModel;
 
         using (new AssertionScope())
         {

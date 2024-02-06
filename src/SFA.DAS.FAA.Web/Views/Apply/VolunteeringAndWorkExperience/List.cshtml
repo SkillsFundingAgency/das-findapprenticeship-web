@@ -1,13 +1,15 @@
-﻿@model SFA.DAS.FAA.Web.Models.Apply.AddVolunteeringAndWorkExperienceViewModel
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Apply.VolunteeringAndWorkExperienceViewModel
 @{
     ViewData["Title"] = "Volunteering and work experience";
-    var errorClass = Model.ErrorDictionary!.Any() ? "govuk-form-group--error" : "";
 }
 
 @section BackLink {
-    <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
-<partial model="@ViewData.ModelState" name="_ValidationSummary" />
+
+<partial name="_ValidationSummary" />
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Work history</span>
@@ -21,30 +23,27 @@
         <p class="govuk-body">Use this section to show experience you've gained outside of paid work.</p>
         <div class="govuk-!-padding-bottom-5"></div>
         <form class="form" method="post">
-            <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyVolunteeringAndWorkExperience" error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h1 class="govuk-fieldset__heading">
                             Do you want to add any volunteering or work experience?
                         </h1>
                     </legend>
-                    @if (ViewData.ModelState.ErrorCount > 0)
-                    {
-                        <span class="govuk-error-message">
-                            <span class="govuk-visually-hidden">Error:</span>
-                            @ViewData.ModelState["AddVolunteeringAndWorkExperience"].Errors.First().ErrorMessage
-                        </span>
-                    }
-                    <div class="govuk-radios" data-module="govuk-radios" id="AddVolunteeringAndWorkExperience" @errorClass>
-                        @foreach (var volunteeringOrWorkExperience in Model.VolunteeringAndWorkExperience)
-                        {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="AddVolunteeringAndWorkExperience" value="@volunteeringOrWorkExperience" id="add-volunteeringandworkexperience-@volunteeringOrWorkExperience" type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="add-volunteeringandworkexperience-@volunteeringOrWorkExperience">
-                                    @volunteeringOrWorkExperience
-                                </label>
-                            </div>
-                        }
+                    <span das-validation-for="DoYouWantToAddAnyVolunteeringAndWorkExperience" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios" id="AddVolunteeringAndWorkExperience">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyVolunteeringAndWorkExperience" value="true" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyVolunteeringAndWorkExperience">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyVolunteeringAndWorkExperience" id="DoYouWantToAddAnyVolunteeringAndWorkExperience-false" value="false" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyVolunteeringAndWorkExperience-false">
+                                No
+                            </label>
+                        </div>
                     </div>
                 </fieldset>
             </div>

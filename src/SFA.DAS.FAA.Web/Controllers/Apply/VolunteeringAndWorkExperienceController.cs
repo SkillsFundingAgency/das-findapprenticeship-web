@@ -16,7 +16,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
     public IActionResult Get([FromRoute] Guid applicationId)
     {
-        return View(ViewPath, new AddVolunteeringAndWorkExperienceViewModel
+        return View(ViewPath, new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
             BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId })
@@ -25,11 +25,10 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpPost]
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
-    public async Task<IActionResult> Post(AddVolunteeringAndWorkExperienceViewModel model)
+    public async Task<IActionResult> Post(VolunteeringAndWorkExperienceViewModel model)
     {
-        if (string.IsNullOrEmpty(model.AddVolunteeringAndWorkExperience))
+        if (!ModelState.IsValid)
         {
-            ModelState.AddModelError(nameof(model.AddVolunteeringAndWorkExperience), "Select if you want to add any volunteering or work experience");
             model.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { model.ApplicationId });
             return View(ViewPath, model);
         }
@@ -38,11 +37,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         {
             CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
             ApplicationId = model.ApplicationId,
-            VolunteeringAndWorkExperienceSectionStatus = model.AddVolunteeringAndWorkExperience is "Yes" ? SectionStatus.InProgress : SectionStatus.Completed
+            VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringAndWorkExperience.Value ? SectionStatus.InProgress : SectionStatus.Completed
         };
 
         await mediator.Send(command);
 
-        return model.AddVolunteeringAndWorkExperience.Equals("Yes") ? RedirectToRoute("/") : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
+        return model.DoYouWantToAddAnyVolunteeringAndWorkExperience.Value ? RedirectToRoute("/") : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
     }
 }
