@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+﻿using SFA.DAS.FAA.Domain.Enums;
+=======
+﻿using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
+using SFA.DAS.FAA.Domain.Enums;
+>>>>>>> FAI-1090-CreateTrainingCoursesPage
+
+namespace SFA.DAS.FAA.Domain.Apply.UpdateApplication;
+
+public record UpdateWorkHistoryApplicationModel
+{
+    public SectionStatus WorkHistorySectionStatus { get; set; }
+}

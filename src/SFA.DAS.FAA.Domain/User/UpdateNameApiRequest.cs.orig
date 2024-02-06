@@ -1,0 +1,37 @@
+﻿using SFA.DAS.FAA.Domain.Interfaces;
+<<<<<<< HEAD
+=======
+
+>>>>>>> FAI-1090-CreateTrainingCoursesPage
+namespace SFA.DAS.FAA.Domain.User
+{
+    public class UpdateNameApiRequest : IPutApiRequest
+    {
+        private readonly string _govIdentifier;
+
+        public UpdateNameApiRequest(string govIdentifier, UpdateNameApiRequestData data)
+        {
+            _govIdentifier = govIdentifier;
+            Data = data;
+<<<<<<< HEAD
+=======
+
+>>>>>>> FAI-1090-CreateTrainingCoursesPage
+        }
+        public object Data { get; set; }
+        public string PutUrl => $"users/{_govIdentifier}/add-details";
+    }
+    public class UpdateNameApiRequestData
+    {
+        public required string Email { get; set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+<<<<<<< HEAD
+
+    }
+}
+=======
+        
+    }
+}
+>>>>>>> FAI-1090-CreateTrainingCoursesPage

@@ -1,0 +1,90 @@
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
+using Microsoft.IdentityModel.Tokens;
+=======
+>>>>>>> FAI-1090-CreateTrainingCoursesPage
+using SFA.DAS.FAA.Application.Commands.UserName;
+using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models;
+using SFA.DAS.FAA.Web.Models.User;
+<<<<<<< HEAD
+using System.Runtime.InteropServices;
+=======
+>>>>>>> FAI-1090-CreateTrainingCoursesPage
+
+namespace SFA.DAS.FAA.Web.Controllers
+{
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    public class UserController(IMediator mediator) : Controller
+    {
+        [HttpGet]
+        [Route("create-account", Name = RouteNames.CreateAccount)]
+        public IActionResult CreateAccount()
+        {
+            return View();
+        }
+<<<<<<< HEAD
+
+=======
+        
+>>>>>>> FAI-1090-CreateTrainingCoursesPage
+        [HttpGet]
+        [Route("user-name", Name = RouteNames.UserName)]
+        public IActionResult Name()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("user-name", Name = RouteNames.UserName)]
+<<<<<<< HEAD
+        public async Task<IActionResult> Name(NameViewModel model)
+        {
+            if (!ModelState.IsValid)
+=======
+        public async Task<IActionResult> Name(NameViewModel model) 
+        {
+            if (!ModelState.IsValid) 
+            {
+                return View(model);
+            }
+            if (!ModelState.IsValid) 
+>>>>>>> FAI-1090-CreateTrainingCoursesPage
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var command = new UpdateNameCommand
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    GovIdentifier = User.Claims.GovIdentifier(),
+                    Email = User.Claims.Email(),
+                };
+                await mediator.Send(command);
+            }
+            catch (InvalidOperationException e)
+            {
+                ModelState.AddModelError(nameof(NameViewModel), "There's been a problem");
+                return View(model);
+            }
+
+            //TODO add correct route 
+            return RedirectToRoute(RouteNames.SearchResults);
+<<<<<<< HEAD
+
+        }
+    }
+}
+=======
+            
+        }
+    }
+}
+>>>>>>> FAI-1090-CreateTrainingCoursesPage
