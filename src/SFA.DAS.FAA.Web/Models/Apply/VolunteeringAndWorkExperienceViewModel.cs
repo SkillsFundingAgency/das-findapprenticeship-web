@@ -7,5 +7,5 @@ public class VolunteeringAndWorkExperienceViewModel
     [FromRoute]
     public required Guid ApplicationId { get; init; }
     public string? BackLinkUrl { get; set; }
-    public bool? DoYouWantToAddAnyVolunteeringAndWorkExperience { get; set; }
+    public bool? DoYouWantToAddAnyVolunteeringOrWorkExperience { get; set; }
 }

@@ -7,7 +7,7 @@ public class VolunteeringAndWorkExperienceViewModelValidator : AbstractValidator
 {
     public VolunteeringAndWorkExperienceViewModelValidator()
     {
-        RuleFor(x => x.DoYouWantToAddAnyVolunteeringAndWorkExperience)
+        RuleFor(x => x.DoYouWantToAddAnyVolunteeringOrWorkExperience)
         .NotNull()
         .WithMessage("Select if you want to add any volunteering or work experience");
     }

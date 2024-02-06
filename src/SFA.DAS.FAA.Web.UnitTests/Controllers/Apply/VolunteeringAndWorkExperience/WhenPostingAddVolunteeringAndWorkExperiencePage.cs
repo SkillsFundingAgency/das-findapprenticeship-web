@@ -28,7 +28,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         var request = new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
-            DoYouWantToAddAnyVolunteeringAndWorkExperience = false,
+            DoYouWantToAddAnyVolunteeringOrWorkExperience = false,
         };
         controller.ControllerContext = new ControllerContext
         {
@@ -62,7 +62,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         var request = new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
-            DoYouWantToAddAnyVolunteeringAndWorkExperience = true,
+            DoYouWantToAddAnyVolunteeringOrWorkExperience = true,
         };
         controller.ControllerContext = new ControllerContext
         {

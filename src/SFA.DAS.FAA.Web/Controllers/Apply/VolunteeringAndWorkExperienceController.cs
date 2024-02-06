@@ -37,11 +37,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         {
             CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
             ApplicationId = model.ApplicationId,
-            VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringAndWorkExperience.Value ? SectionStatus.InProgress : SectionStatus.Completed
+            VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? SectionStatus.InProgress : SectionStatus.Completed
         };
 
         await mediator.Send(command);
 
-        return model.DoYouWantToAddAnyVolunteeringAndWorkExperience.Value ? RedirectToRoute("/") : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
+        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? RedirectToRoute("/") : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
     }
 }
