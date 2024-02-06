@@ -4,7 +4,6 @@ using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
-using System;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +24,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     public class WorkHistoryController(IMediator mediator) : Controller
     {
         private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
-        private const string SummaryViewPath = "~/Views/apply/workhistory/Summary.cshtml";
 
         [HttpGet]
         [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
@@ -199,6 +197,5 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             return RedirectToRoute(SummaryViewPath);
 
         }
-
     }
 }
