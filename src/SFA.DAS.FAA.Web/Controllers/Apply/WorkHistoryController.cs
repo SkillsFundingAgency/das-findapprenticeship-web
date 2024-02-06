@@ -194,7 +194,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return View("~/Views/apply/workhistory/DeleteJob.cshtml");
             }
 
-            return RedirectToRoute(SummaryViewPath);
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.JobsSummary);
 
         }
     }
