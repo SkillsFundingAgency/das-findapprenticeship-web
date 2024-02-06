@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.ModelBinding;
 using SFA.DAS.FAA.Web.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,11 @@ var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTes
 
 builder.Services
     .AddOptions()
-    .AddValidatorsFromAssembly(typeof(Program).Assembly);
+    .AddValidatorsFromAssembly(typeof(Program).Assembly)
+    .AddControllers(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new MonthYearDateModelBinderProvider());
+    });
 
 builder.Services.AddConfigurationOptions(rootConfiguration);
 

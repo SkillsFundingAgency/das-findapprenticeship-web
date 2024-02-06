@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using FluentValidation.AspNetCore;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Infrastructure.Api;
@@ -18,6 +19,7 @@ public static class AddServiceRegistrationExtension
         services.AddHttpClient<IApiClient, ApiClient>();
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
+        services.AddFluentValidationAutoValidation();
         if (devDecrypt)
         {
             services.AddTransient<IDataProtectorService, DevDataProtectorService>();
