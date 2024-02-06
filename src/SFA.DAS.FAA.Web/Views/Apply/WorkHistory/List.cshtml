@@ -22,7 +22,7 @@
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">@work.JobTitle</h2>
+                        <h2 class="govuk-summary-card__title">@work.Employer</h2>
                         <ul class="govuk-summary-card__actions">
                             <li class="govuk-summary-card__action">
                                 <a class="govuk-link" href="">
@@ -99,13 +99,13 @@
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="true" type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="IsSectionCompleted">
-                                    Yes
+                                    Yes, I’ve completed this section
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" id="IsSectionCompleted-No" value="false" type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="IsSectionCompleted-No">
-                                    No
+                                    No, I’ll come back to it later
                                 </label>
                             </div>
                         </div>
