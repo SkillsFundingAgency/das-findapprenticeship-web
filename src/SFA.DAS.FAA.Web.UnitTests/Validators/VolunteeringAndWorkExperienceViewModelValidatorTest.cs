@@ -11,7 +11,7 @@ public class VolunteeringAndWorkExperienceViewModelValidatorTest
     [TestCase(NoSelectionErrorMessage, false, null)]
     [TestCase(null, true, true)]
     [TestCase(null, true, false)]
-    public async Task Validate_VacancyReference(string? errorMessage, bool isValid, bool? doYouWantToAddAnyVolunteeringOrWorkExperience)
+    public async Task Validate_VaolunteeringAndWorkExperience(string? errorMessage, bool isValid, bool? doYouWantToAddAnyVolunteeringOrWorkExperience)
     {
         var model = new VolunteeringAndWorkExperienceViewModel()
         {

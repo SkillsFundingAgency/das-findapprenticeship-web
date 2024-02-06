@@ -11,7 +11,7 @@ public class TrainingCoursesViewModelValidatorTest
     [TestCase(NoSelectionErrorMessage, false, null)]
     [TestCase(null, true, true)]
     [TestCase(null, true, false)]
-    public async Task Validate_VacancyReference(string? errorMessage, bool isValid, bool? doYouWantToAddAnyTrainingCourses)
+    public async Task Validate_TrainingCourses(string? errorMessage, bool isValid, bool? doYouWantToAddAnyTrainingCourses)
     {
         var model = new TrainingCoursesViewModel()
         {
