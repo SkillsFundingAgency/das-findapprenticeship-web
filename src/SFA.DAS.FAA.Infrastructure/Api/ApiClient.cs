@@ -113,21 +113,6 @@ public class ApiClient : IApiClient
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task<ApiResponse<TResponse>> PutWithResponseCode<TResponse>(IPutApiRequest request)
-    {
-        var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
-        var requestMessage = new HttpRequestMessage(HttpMethod.Put, request.PutUrl)
-        {
-            Content = stringContent,
-        };
-        AddAuthenticationHeader(requestMessage);
-        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
-        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        var apiResponse = new ApiResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(responseContent), response.StatusCode, null);
-
-        return apiResponse;
-    }
-
     private void AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
     {
         httpRequestMessage.Headers.Add("Ocp-Apim-Subscription-Key", _config.Key);
