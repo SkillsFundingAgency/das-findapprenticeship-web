@@ -1,14 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.User;
-using System.Runtime.InteropServices;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
@@ -21,7 +19,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             return View();
         }
-
+        
         [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
         public IActionResult Name()
@@ -31,9 +29,13 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("user-name", Name = RouteNames.UserName)]
-        public async Task<IActionResult> Name(NameViewModel model)
+        public async Task<IActionResult> Name(NameViewModel model) 
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) 
+            {
+                return View(model);
+            }
+            if (!ModelState.IsValid) 
             {
                 return View(model);
             }
@@ -57,7 +59,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             //TODO add correct route 
             return RedirectToRoute(RouteNames.SearchResults);
-
+            
         }
     }
 }

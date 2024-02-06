@@ -19,32 +19,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
 public class WhenPostingAddTrainingCoursesPage
 {
     [Test, MoqAutoData]
-    public async Task And_Validation_Error_Then_View_Returned(
-        AddTrainingCourseViewModel viewModel, 
-        [Frozen] Mock<IMediator> mediator)
-    {
-        viewModel.AddTrainingCourse = null;
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-        .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-        .Returns("https://baseUrl");
-
-        var controller = new TrainingCoursesController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object
-        };
-
-        var actual = await controller.Post(viewModel) as ViewResult;
-
-        using (new AssertionScope())
-        {
-            actual.Should().NotBeNull();
-            controller.ModelState.Count.Should().BeGreaterThan(0);
-            mediator.Verify(x => x.Send(It.IsAny<UpdateTrainingCoursesApplicationCommand>(), It.IsAny<CancellationToken>()), Times.Never);
-        }
-    }
-
-    [Test, MoqAutoData]
     public async Task And_User_Has_No_Training_Courses_Then_Mediator_Is_Called_And_Redirect_To_TaskList(
         Guid candidateId,
         Guid applicationId,
@@ -52,10 +26,10 @@ public class WhenPostingAddTrainingCoursesPage
         [Frozen] Mock<IMediator> mediator,
         [Greedy] TrainingCoursesController controller)
     {
-        var request = new AddTrainingCourseViewModel
+        var request = new TrainingCoursesViewModel
         {
             ApplicationId = applicationId,
-            AddTrainingCourse = "No",
+            DoYouWantToAddAnyTrainingCourses = false,
         };
         controller.ControllerContext = new ControllerContext
         {
@@ -86,10 +60,10 @@ public class WhenPostingAddTrainingCoursesPage
         [Frozen] Mock<IMediator> mediator,
         [Greedy] TrainingCoursesController controller)
     {
-        var request = new AddTrainingCourseViewModel
+        var request = new TrainingCoursesViewModel
         {
             ApplicationId = applicationId,
-            AddTrainingCourse = "Yes",
+            DoYouWantToAddAnyTrainingCourses = true,
         };
         controller.ControllerContext = new ControllerContext
         {

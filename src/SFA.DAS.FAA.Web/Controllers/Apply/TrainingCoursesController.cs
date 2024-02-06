@@ -16,7 +16,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
     [Route("apply/{applicationId}/trainingcourses/", Name = RouteNames.ApplyApprenticeship.TrainingCourses)]
     public IActionResult Get([FromRoute] Guid applicationId)
     {
-        return View(ViewPath, new AddTrainingCourseViewModel
+        return View(ViewPath, new TrainingCoursesViewModel
         {
             ApplicationId = applicationId,
             BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId })
@@ -25,11 +25,10 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
     [HttpPost]
     [Route("apply/{applicationId}/trainingcourses/", Name = RouteNames.ApplyApprenticeship.TrainingCourses)]
-    public async Task<IActionResult> Post(AddTrainingCourseViewModel viewModel)
+    public async Task<IActionResult> Post(TrainingCoursesViewModel viewModel)
     {
-        if (string.IsNullOrEmpty(viewModel.AddTrainingCourse))
+        if (!ModelState.IsValid)
         {
-            ModelState.AddModelError(nameof(viewModel.AddTrainingCourse), "Select if you want to add any training courses");
             viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { viewModel.ApplicationId });
             return View(ViewPath, viewModel);
         }
@@ -38,12 +37,12 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         {
             CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
             ApplicationId = viewModel.ApplicationId,
-            TrainingCoursesSectionStatus = viewModel.AddTrainingCourse is "Yes" ? SectionStatus.InProgress : SectionStatus.Completed
+            TrainingCoursesSectionStatus = viewModel.DoYouWantToAddAnyTrainingCourses.Value ? SectionStatus.InProgress : SectionStatus.Completed
         };
 
         await mediator.Send(command);
 
-        return viewModel.AddTrainingCourse.Equals("Yes")
+        return viewModel.DoYouWantToAddAnyTrainingCourses.Value
             ? RedirectToRoute("/") //TODO: Redirect the user to Add Training Course Page.
             : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
     }

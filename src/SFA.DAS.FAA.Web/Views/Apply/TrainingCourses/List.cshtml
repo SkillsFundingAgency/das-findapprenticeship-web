@@ -1,13 +1,15 @@
-﻿@model SFA.DAS.FAA.Web.Models.Apply.AddTrainingCourseViewModel
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Apply.TrainingCoursesViewModel
 @{
-    ViewData["Title"] = "Training courses";
-    var errorClass = Model.ErrorDictionary!.Any() ? "govuk-form-group--error" : "";
+    ViewData["Title"] = "Training Courses";
 }
 
 @section BackLink {
-    <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
-<partial model="@ViewData.ModelState" name="_ValidationSummary" />
+
+<partial name="_ValidationSummary" />
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Education history</span>
@@ -21,30 +23,27 @@
         <p class="govuk-body">Most apprenticeships don't ask for any specific training courses. Include training courses if you want to show your experience.</p>
         <div class="govuk-!-padding-bottom-5"></div>
         <form class="form" method="post">
-            <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyTrainingCourses" error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h1 class="govuk-fieldset__heading">
                             Do you want to add any training courses?
                         </h1>
                     </legend>
-                    @if (ViewData.ModelState.ErrorCount > 0)
-                    {
-                        <span class="govuk-error-message">
-                            <span class="govuk-visually-hidden">Error:</span>
-                            @ViewData.ModelState["AddTrainingCourse"].Errors.First().ErrorMessage
-                        </span>
-                    }
-                    <div class="govuk-radios" data-module="govuk-radios" id="AddTrainingCourse" @errorClass>
-                        @foreach (var trainingCourse in Model.TrainingCourse)
-                        {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="AddTrainingCourse" value="@trainingCourse" id="add-qualifications-@trainingCourse" type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="add-qualifications-@trainingCourse">
-                                    @trainingCourse
-                                </label>
-                            </div>
-                        }
+                    <span das-validation-for="DoYouWantToAddAnyTrainingCourses" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyTrainingCourses" value="true" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyTrainingCourses">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyTrainingCourses" value="false" id="add-qualifications-false" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="add-qualifications-false">
+                                No
+                            </label>
+                        </div>
                     </div>
                 </fieldset>
             </div>

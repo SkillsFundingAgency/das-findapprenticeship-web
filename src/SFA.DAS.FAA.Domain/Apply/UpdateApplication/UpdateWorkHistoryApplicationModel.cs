@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Domain.Enums;
+﻿using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Domain.Apply.UpdateApplication;
 

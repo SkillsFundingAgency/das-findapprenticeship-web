@@ -19,7 +19,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     public class WorkHistoryController(IMediator mediator) : Controller
     {
         private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
-        private const string SummaryViewPath = "~/Views/apply/workhistory/Summary.cshtml";
 
         [HttpGet]
         [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
@@ -169,6 +168,5 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
-
     }
 }
