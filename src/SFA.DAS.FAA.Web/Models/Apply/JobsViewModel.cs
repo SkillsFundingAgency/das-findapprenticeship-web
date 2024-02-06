@@ -19,6 +19,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public class Job
         {
             public Guid Id { get; private init; }
+            public string JobHeader => $"{JobTitle}, {Employer}";
             public string? Employer { get; private init; }
             public string? JobTitle { get; private init; }
             public string? JobDates { get; private init; }
