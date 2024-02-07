@@ -2,9 +2,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Apply.WorkHistory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.WorkHistory
 {
@@ -16,7 +13,7 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Apply.WorkHistory
         Guid jobId,
         Guid candidateId)
         {
-            var actual = new GetDeleteJobApiRequest(applicationId, jobId, candidateId);
+            var actual = new GetDeleteJobApiRequest(applicationId, candidateId, jobId);
 
             actual.GetUrl.Should().Be($"applications/{applicationId}/jobs/{jobId}/delete?candidateId={candidateId}");
         }
