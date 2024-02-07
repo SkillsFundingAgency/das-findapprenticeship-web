@@ -9,6 +9,6 @@ public class TrainingCoursesViewModelValidator : AbstractValidator<TrainingCours
     {
         RuleFor(x => x.DoYouWantToAddAnyTrainingCourses)
         .NotNull()
-        .WithMessage("Add any professional training courses you want to include.");
+        .WithMessage("Select if you want to add any training courses");
     }
 }
