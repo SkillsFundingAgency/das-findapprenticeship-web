@@ -88,9 +88,6 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("browse-location-search.json"));
 
-
-
-
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults", RegexOptions.None, regexMaxTimeOut))
                 .WithParam(MatchLocationParamManchester)
                 .UsingGet())
@@ -152,6 +149,13 @@ public static class MockApiServer
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("job.json"));
+
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/jobs/\\S+/delete", RegexOptions.None, regexMaxTimeOut))
+            .UsingPost())
+            .RespondWith
+            (Response.Create()
+            .WithStatusCode(200));
+            
 
         return server;
     }

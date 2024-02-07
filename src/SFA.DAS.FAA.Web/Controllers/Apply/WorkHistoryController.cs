@@ -13,6 +13,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob;
+using Azure.Core;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -206,7 +207,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return View("~/Views/apply/workhistory/DeleteJob.cshtml");
             }
 
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs);
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { model.ApplicationId });
 
         }
     }
