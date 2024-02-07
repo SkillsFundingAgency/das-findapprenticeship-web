@@ -11,11 +11,6 @@ using SFA.DAS.FAA.Application.Commands.UpdateApplication;
 using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
-using SFA.DAS.FAA.Application.Commands.UserName;
-using SFA.DAS.FAA.Web.Extensions;
-using SFA.DAS.FAA.Web.Models.User;
-using System.Reflection;
 using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob;
 
@@ -211,7 +206,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return View("~/Views/apply/workhistory/DeleteJob.cshtml");
             }
 
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.JobsSummary);
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs);
 
         }
     }
