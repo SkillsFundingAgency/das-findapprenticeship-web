@@ -21,29 +21,32 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob
         public Guid ApplicationId { get; set; }
         public string Description { get; set; }
 
-        public static implicit operator GetDeleteJobQueryResult(GetDeleteJobApiResponse source)
-        {
-            return new GetDeleteJobQueryResult
-            {
-                Id = source.Id,
-                Employer = source.Employer,
-                JobTitle = source.JobTitle,
-                StartDate = source.StartDate,
-                EndDate = source.EndDate,
-                ApplicationId = source.ApplicationId,
-                Description = source.Description
-            };
-        }
     }
 
-    public class GetDeleteJobQueryHandler(IApiClient ApiClient) : IRequestHandler<GetDeleteJobQuery, GetDeleteJobQueryResult>
+    public class GetDeleteJobQueryHandler : IRequestHandler<GetDeleteJobQuery, GetDeleteJobQueryResult>
     {
-        public async Task<GetDeleteJobQueryResult> Handle(GetDeleteJobQuery request, CancellationToken cancellationToken)
-        {
-            var response = await ApiClient.Get<GetDeleteJobApiResponse>(
-                new GetDeleteJobApiRequest(request.ApplicationId, request.CandidateId, request.JobId));
+        private readonly IApiClient _apiClient;
 
-            return response;
+        public GetDeleteJobQueryHandler(IApiClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
+        public async Task<GetDeleteJobQueryResult> Handle(GetDeleteJobQuery query, CancellationToken cancellationToken)
+        {
+            var request = new GetDeleteJobApiRequest(query.ApplicationId, query.CandidateId, query.JobId);
+
+            var response = await _apiClient.Get<GetDeleteJobApiResponse>(request);
+
+            return new GetDeleteJobQueryResult
+            {
+                Id = response.Id,
+                Employer = response.Employer,
+                JobTitle = response.JobTitle,
+                StartDate = response.StartDate,
+                EndDate = response.EndDate,
+                ApplicationId = response.ApplicationId,
+                Description = response.Description,
+            };
         }
     }
 }
