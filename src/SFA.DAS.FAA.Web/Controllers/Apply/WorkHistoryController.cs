@@ -180,7 +180,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         {
             try
             {
-                var command = new DeleteJobCommand
+                var command = new PostDeleteJobCommand
                 {
                     CandidateId = candidateId,
                     ApplicationId = applicationId,

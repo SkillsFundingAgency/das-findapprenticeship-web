@@ -9,6 +9,7 @@ using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FAA.Web.Infrastructure;
 
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
@@ -71,8 +72,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             {
                 var result = await controller.DeleteJob(applicationId, candidateId, jobId) as RedirectToRouteResult;
 
-                result.Should().NotBeNull();
-                result.RouteValues["action"].Should().Be("Summary");
+                result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.ApplyApprenticeship.JobsSummary);
             }
         }
     }

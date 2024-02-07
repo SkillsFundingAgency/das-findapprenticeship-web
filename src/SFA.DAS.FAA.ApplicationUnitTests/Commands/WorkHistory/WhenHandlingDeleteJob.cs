@@ -13,17 +13,20 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.WorkHistory
     {
         [Test, MoqAutoData]
         public async Task The_Job_Is_Deleted(
-            DeleteJobCommand command,
+            PostDeleteJobCommand command,
             [Frozen] Mock<IApiClient> apiClient,
-            DeleteJobCommandHandler handler)
+            PostDeleteJobCommandHandler handler)
         {
-            var expectedRequest = new DeleteJobApiRequest(command.ApplicationId, command.CandidateId, command.JobId);
+            var expectedRequest = new PostDeleteJobApiRequest(command.ApplicationId, command.JobId, new PostDeleteJobApiRequest.PostDeleteJobApiRequestData
+            {
+                CandidateId = command.CandidateId,
+            });
 
-            apiClient.Setup(client => client.Delete(It.Is<DeleteJobApiRequest>(r => r.DeleteUrl == expectedRequest.DeleteUrl)));
+            apiClient.Setup(client => client.PostWithResponseCode(It.Is<PostDeleteJobApiRequest>(r => r.PostUrl == expectedRequest.PostUrl)));
 
             await handler.Handle(command, CancellationToken.None);
 
-            apiClient.Verify(x => x.Delete(It.IsAny<DeleteJobApiRequest>()), Times.Once);
+            apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<PostDeleteJobApiRequest>()), Times.Once);
         }
     }
 }
