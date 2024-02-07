@@ -17,6 +17,7 @@ using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.User;
 using System.Reflection;
 using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -174,17 +175,33 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
 
+        [HttpGet]
+        [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
+        public async Task<IActionResult> GetDeleteJob([FromRoute] Guid applicationId, Guid jobId)
+        {
+            var result = await mediator.Send(new GetDeleteJobQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                JobId = jobId
+            });
+
+            var viewModel = (DeleteJobViewModel)result;
+
+            return View("~/Views/apply/workhistory/DeleteJob.cshtml", viewModel);
+        }
+
         [HttpPost]
         [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
-        public async Task<IActionResult> DeleteJob([FromRoute] Guid applicationId, [FromRoute] Guid candidateId, [FromRoute] Guid jobId)
+        public async Task<IActionResult> PostDeleteJob(DeleteJobViewModel model)
         {
             try
             {
                 var command = new PostDeleteJobCommand
                 {
-                    CandidateId = candidateId,
-                    ApplicationId = applicationId,
-                    JobId = jobId
+                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                    ApplicationId = model.ApplicationId,
+                    JobId = model.JobId
                 };
                 await mediator.Send(command);
             }

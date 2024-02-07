@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Apply.WorkHistory
         {
             var actual = new PostDeleteJobApiRequest(applicationId, jobId, data);
 
-            actual.PostUrl.Should().Be($"applications/{applicationId}/work-history/{jobId}");
+            actual.PostUrl.Should().Be($"applications/{applicationId}/jobs/{jobId}/delete");
         }
     }
 }

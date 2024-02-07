@@ -26,7 +26,7 @@
                         <h2 class="govuk-summary-card__title">@work.JobHeader</h2>
                         <ul class="govuk-summary-card__actions">
                             <li class="govuk-summary-card__action">
-                                <a class="govuk-link" href="">
+                                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteJob, new {Model.ApplicationId, JobId = work.Id})">
                                     Delete<span class="govuk-visually-hidden"> jobs and work experience</span>
                                 </a>
                             </li>
