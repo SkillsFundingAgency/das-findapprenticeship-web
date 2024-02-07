@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.FAA.Domain.Apply.WorkHistory
 {
-    public class PostDeleteJobApiRequest(Guid jobId, Guid applicationId, PostDeleteJobApiRequest.PostDeleteJobApiRequestData body) : IPostApiRequest
+    public class PostDeleteJobApiRequest(Guid applicationId, Guid jobId, PostDeleteJobApiRequest.PostDeleteJobApiRequestData body) : IPostApiRequest
     {
         public string PostUrl => $"applications/{applicationId}/work-history/{jobId}";
         public object Data { get; set; } = body;

@@ -26,7 +26,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                 [Frozen] Mock<IMediator> mediator,
                 [Greedy] WorkHistoryController controller)
             {
-                var command = new DeleteJobCommand
+                var command = new PostDeleteJobCommand
                 {
                     CandidateId = candidateId,
                     ApplicationId = applicationId,
@@ -35,7 +35,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
 
                 await controller.DeleteJob(applicationId, candidateId, jobId);
 
-                mediator.Verify(x => x.Send(It.Is<DeleteJobCommand>(c =>
+                mediator.Verify(x => x.Send(It.Is<PostDeleteJobCommand>(c =>
                         c.CandidateId == candidateId
                         && c.ApplicationId == applicationId
                         && c.JobId == jobId),
@@ -50,7 +50,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                 [Frozen] Mock<IMediator> mediator,
                 [Greedy] WorkHistoryController controller)
             {
-                mediator.Setup(x => x.Send(It.IsAny<DeleteJobCommand>(),
+                mediator.Setup(x => x.Send(It.IsAny<PostDeleteJobCommand>(),
                         CancellationToken.None))
                     .ThrowsAsync(new InvalidOperationException());
 
