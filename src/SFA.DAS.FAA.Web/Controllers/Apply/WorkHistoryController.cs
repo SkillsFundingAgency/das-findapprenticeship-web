@@ -174,8 +174,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
 
-        [HttpDelete]
-        [Route("apply/{applicationId}/jobs/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
+        [HttpPost]
+        [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
         public async Task<IActionResult> DeleteJob([FromRoute] Guid applicationId, [FromRoute] Guid candidateId, [FromRoute] Guid jobId)
         {
             try
