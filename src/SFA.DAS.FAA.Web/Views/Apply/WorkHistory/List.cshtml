@@ -14,7 +14,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Work history</span>
-        <h1 class="govuk-heading-l">@Model.PageTitle</h1>
+        <h1 class="govuk-heading-l">Jobs</h1>
         
         @if (Model.ShowJobHistory)
         {
@@ -22,7 +22,7 @@
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">@work.JobTitle</h2>
+                        <h2 class="govuk-summary-card__title">@work.JobHeader</h2>
                         <ul class="govuk-summary-card__actions">
                             <li class="govuk-summary-card__action">
                                 <a class="govuk-link" href="">
@@ -38,14 +38,6 @@
                     </div>
                     <div class="govuk-summary-card__content">
                         <dl class="govuk-summary-list">
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Role
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @work.JobTitle
-                                </dd>
-                            </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">
                                     Responsibilities
@@ -66,6 +58,10 @@
                     </div>
                 </div>
             }
+
+            <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-9" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { Model.ApplicationId })">
+                Add another job
+            </a>
         }
         else
         {
@@ -77,10 +73,6 @@
             <p class="govuk-body">An apprenticeship can be your first job.</p>
             <div class="govuk-!-padding-bottom-5"></div>
         }
-        
-        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-9" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { Model.ApplicationId })">
-            Add another job
-        </a>
         
         <form class="form" method="post">
             @Html.HiddenFor(x => x.ShowJobHistory)
@@ -98,14 +90,14 @@
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="true" type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="completed-true">
-                                    Yes
+                                <label class="govuk-label govuk-radios__label" for="IsSectionCompleted">
+                                    Yes, I’ve completed this section
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="false" type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="completed-false">
-                                    No
+                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" id="IsSectionCompleted-No" value="false" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="IsSectionCompleted-No">
+                                    No, I’ll come back to it later
                                 </label>
                             </div>
                         </div>

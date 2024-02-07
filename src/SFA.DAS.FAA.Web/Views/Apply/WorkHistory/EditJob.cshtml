@@ -2,10 +2,6 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.EditJobViewModel
 
-@{
-    Layout = "_LayoutApprentice";
-}
-
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Jobs, new { Model.ApplicationId })">
         Back
