@@ -14,7 +14,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public bool? IsSectionCompleted { get; set; }
         public bool? DoYouWantToAddAnyJobs { get; set; }
-        public string PageTitle => ShowJobHistory ? "Jobs summary" : "Jobs";
 
         public class Job
         {
