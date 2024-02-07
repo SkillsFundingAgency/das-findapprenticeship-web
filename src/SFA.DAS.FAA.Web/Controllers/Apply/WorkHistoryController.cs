@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
-using SFA.DAS.FAA.Domain.Apply.UpdateApplication.Enums;
+using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
+using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -17,37 +20,71 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
 
         [HttpGet]
-        [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
-        public IActionResult Get([FromRoute] Guid applicationId)
+        [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
+        public async Task<IActionResult> Get([FromRoute] Guid applicationId)
         {
-            return View(ViewPath, new AddWorkHistoryViewModel
+            var result = await mediator.Send(new GetJobsQuery
             {
                 ApplicationId = applicationId,
-                BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId })
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
             });
+
+            var viewModel = new JobsViewModel
+            {
+                ApplicationId = applicationId,
+                JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
+                ShowJobHistory = result.Jobs.Any()
+            };
+
+            return View(ViewPath, viewModel);
         }
 
         [HttpPost]
-        [Route("apply/{applicationId}/jobs/", Name = RouteNames.ApplyApprenticeship.Jobs)]
-        public async Task<IActionResult> Post(AddWorkHistoryViewModel viewModel)
+        [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
+        public async Task<IActionResult> Post(JobsViewModel viewModel)
         {
-            if (string.IsNullOrEmpty(viewModel.AddJob))
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(nameof(viewModel.AddJob), "Select if you want to add any jobs");
-                viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { viewModel.ApplicationId });
+                var result = await mediator.Send(new GetJobsQuery
+                {
+                    ApplicationId = viewModel.ApplicationId,
+                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                });
+
+                viewModel = new JobsViewModel
+                {
+                    ApplicationId = viewModel.ApplicationId,
+                    JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
+                    ShowJobHistory = result.Jobs.Any()
+                };
+
                 return View(ViewPath, viewModel);
+            }
+
+            if (viewModel.ShowJobHistory)
+            {
+                var completeSectionCommand = new UpdateApplicationCommand
+                {
+                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                    ApplicationId = viewModel.ApplicationId,
+                    WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.InProgress
+                };
+
+                await mediator.Send(completeSectionCommand);
+
+                return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
             }
 
             var command = new UpdateApplicationCommand
             {
-                CandidateId =  Guid.Parse(User.Claims.First(c=>c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 ApplicationId = viewModel.ApplicationId,
-                WorkHistorySectionStatus = viewModel.AddJob is "Yes" ? SectionStatus.InProgress : SectionStatus.Completed
+                WorkHistorySectionStatus = viewModel.DoYouWantToAddAnyJobs.Value ? SectionStatus.InProgress : SectionStatus.Completed
             };
 
             await mediator.Send(command);
 
-            return viewModel.AddJob.Equals("Yes")
+            return viewModel.DoYouWantToAddAnyJobs.Value
                 ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId })
                 : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
@@ -75,6 +112,48 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             var command = new AddJobCommand
             {
+                ApplicationId = request.ApplicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                EmployerName = request.EmployerName,
+                JobDescription = request.JobDescription,
+                JobTitle = request.JobTitle,
+                StartDate = request.StartDate.DateTimeValue.Value,
+                EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+            };
+
+            await mediator.Send(command);
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
+        }
+
+        [HttpGet]
+        [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
+        public async Task<IActionResult> Edit([FromRoute] Guid applicationId, Guid jobId)
+        {
+            var result = await mediator.Send(new GetJobQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                JobId = jobId
+            });
+
+            var viewModel = (EditJobViewModel)result;
+
+            return View("~/Views/apply/workhistory/EditJob.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
+        public async Task<IActionResult> PostEditAJob(EditJobViewModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/apply/workhistory/EditJob.cshtml", request);
+            }
+
+            var command = new UpdateJobCommand
+            {
+                JobId = request.JobId,
                 ApplicationId = request.ApplicationId,
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 EmployerName = request.EmployerName,
