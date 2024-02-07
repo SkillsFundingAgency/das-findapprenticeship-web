@@ -11,6 +11,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         [FromRoute]
         public Guid JobId { get; set; }
+        public string? JobDates { get; private init; }
 
         public static implicit operator DeleteJobViewModel(GetDeleteJobQueryResult source)
         {
@@ -18,8 +19,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             {
                 ApplicationId = source.ApplicationId,
                 EmployerName = source.Employer,
-                StartDate = new MonthYearDate(source.StartDate),
-                EndDate = new MonthYearDate(source.EndDate),
+                JobDates = source.EndDate is null ? $"{source.StartDate:MMMM yyyy} onwards" : $"{source.StartDate:MMMM yyyy} to {source.EndDate:MMMM yyyy}",
                 IsCurrentRole = !source.EndDate.HasValue, //not sure if need this, asked chris L
                 JobDescription = source.Description,
                 JobTitle = source.JobTitle

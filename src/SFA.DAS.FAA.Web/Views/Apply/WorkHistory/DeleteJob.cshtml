@@ -6,9 +6,8 @@
 }
 
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Jobs, new { Model.ApplicationId })">Back</a>
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Jobs, new { Model.ApplicationId })">Back</a>
 }
-<main class="govuk-main-wrapper " id="main-content" role="main">
   <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-l">Work history</span>
@@ -34,7 +33,7 @@
                                 Dates
                             </dt>
                             <dd class="govuk-summary-list__value">
-                                @Model.StartDate to @Model.EndDate
+                                @Model.JobDates
                             </dd>
                         </div>
                     </dl>
@@ -48,7 +47,7 @@
                     <button class="govuk-button govuk-button--warning" data-module="govuk-button">
                         Yes, delete
                     </button>
-                    <a class="govuk-link" asp-route="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Jobs, new { Model.ApplicationId })">Cancel – don't delete</a>
+                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Jobs, new { Model.ApplicationId })">Cancel – don't delete</a>
                 </div>
             </form>
 
@@ -56,7 +55,3 @@
 
         </div>
     </div>
-
-
-
-</main>
