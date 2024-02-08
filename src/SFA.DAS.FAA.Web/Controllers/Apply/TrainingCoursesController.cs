@@ -1,13 +1,17 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.TrainingCourses;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply;
 
+[Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
 public class TrainingCoursesController(IMediator mediator) : Controller
 {
     private const string ViewPath = "~/Views/apply/trainingcourses/List.cshtml";
@@ -68,7 +72,15 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             return View("~/Views/apply/trainingcourses/AddTrainingCourse.cshtml", request);
         }
 
-        return RedirectToRoute("/", new { request.ApplicationId });
-    }
+        var command = new AddTrainingCourseCommand
+        {
+            ApplicationId = request.ApplicationId,
+            CourseName = request.CourseName,
+            YearAchieved = int.Parse(request.YearAchieved)
+        };
 
+        await mediator.Send(command);
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.TrainingCourses, new { request.ApplicationId });
+    }
 }
