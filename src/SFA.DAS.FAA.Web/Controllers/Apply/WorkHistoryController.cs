@@ -94,7 +94,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
         public IActionResult GetAddAJob([FromRoute] Guid applicationId)
         {
-            var viewModel = new AddJobViewModel
+            var viewModel = new AddTrainingCourseViewModel
             {
                 ApplicationId = applicationId
             };

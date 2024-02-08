@@ -1,0 +1,19 @@
+﻿@model SFA.DAS.FAA.Web.Models.Apply.TrainingCourseViewModelBase
+
+<div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="CourseName" error-class="govuk-form-group--error">
+    <label class="govuk-label govuk-label--m" for="CourseName">
+        Course name
+    </label>
+    <span das-validation-for="CourseName" class="govuk-error-message"></span>
+    <input class="govuk-input" asp-for="CourseName" type="text">
+</div>
+<div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="YearAchieved" error-class="govuk-form-group--error">
+    <label class="govuk-label govuk-label--m" for="YearAchieved">
+        Year
+    </label>
+    <div class="govuk-hint">
+        Year you finished studying this training course
+    </div>
+    <span das-validation-for="YearAchieved" class="govuk-error-message"></span>
+    <input class="govuk-input" asp-for="YearAchieved" type="text" inputmode="numeric">
+</div>

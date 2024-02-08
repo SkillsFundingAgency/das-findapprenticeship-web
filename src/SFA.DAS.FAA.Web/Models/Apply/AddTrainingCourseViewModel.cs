@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
-public class AddTrainingCourseViewModel : ViewModelBase
+public class AddTrainingCourseViewModel : TrainingCourseViewModelBase
 {
     [FromRoute]
-    public required Guid ApplicationId { get; init; }
-    [BindProperty]
-    public string? AddTrainingCourse { get; set; }
-    public string[] TrainingCourse = ["Yes", "No"];
-    public string? BackLinkUrl { get; set; }
+    public Guid ApplicationId { get; set; }
+}
+
+public class TrainingCourseViewModelBase
+{
+    public string? CourseName { get; set; }
+    public string? YearAchieved { get; set; }
 }

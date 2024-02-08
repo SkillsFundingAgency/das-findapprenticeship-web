@@ -43,7 +43,32 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         await mediator.Send(command);
 
         return viewModel.DoYouWantToAddAnyTrainingCourses.Value
-            ? RedirectToRoute("/") //TODO: Redirect the user to Add Training Course Page.
+            ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddTrainingCourse, new { viewModel.ApplicationId })
             : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
     }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/trainingcourses/add", Name = RouteNames.ApplyApprenticeship.AddTrainingCourse)]
+    public IActionResult GetAddATrainingCourse([FromRoute] Guid applicationId)
+    {
+        var viewModel = new AddTrainingCourseViewModel
+        {
+            ApplicationId = applicationId
+        };
+
+        return View("~/Views/apply/trainingcourses/AddTrainingCourse.cshtml", viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/trainingcourses/add", Name = RouteNames.ApplyApprenticeship.AddTrainingCourse)]
+    public async Task<IActionResult> PostAddATrainingCourse(AddTrainingCourseViewModel request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View("~/Views/apply/trainingcourses/AddTrainingCourse.cshtml", request);
+        }
+
+        return RedirectToRoute("/", new { request.ApplicationId });
+    }
+
 }
