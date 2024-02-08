@@ -4,7 +4,7 @@ using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Apply.AddTrainingCourse;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.TrainingCourses;
-public class WhenBuildingAddTrainingCourseApiRequest
+public class WhenBuildingPostTrainingCourseApiRequest
 {
     [Test, AutoData]
     public void Then_The_Request_Url_Is_Correctly_Built(

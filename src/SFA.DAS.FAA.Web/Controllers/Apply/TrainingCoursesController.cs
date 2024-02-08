@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.TrainingCourses;
+using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
@@ -82,5 +83,21 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         await mediator.Send(command);
 
         return RedirectToRoute(RouteNames.ApplyApprenticeship.TrainingCourses, new { request.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}", Name = RouteNames.ApplyApprenticeship.EditTrainingCourse)]
+    public async Task<IActionResult> Edit([FromRoute] Guid applicationId, Guid trainingCourseId)
+    {
+        var result = await mediator.Send(new GetTrainingCourseQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            TrainingCourseId = trainingCourseId
+        });
+
+        var viewModel = (EditTrainingCourseViewModel)result;
+
+        return View("~/Views/apply/trainingcourses/EditTrainingCourse.cshtml", viewModel);
     }
 }
