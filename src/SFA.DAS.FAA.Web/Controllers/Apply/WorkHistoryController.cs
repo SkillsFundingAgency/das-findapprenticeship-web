@@ -11,7 +11,6 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {

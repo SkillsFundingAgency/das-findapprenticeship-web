@@ -41,7 +41,7 @@ public class WhenPostingRequest
         mediator.Setup(x => x.Send(It.IsAny<UpdateTrainingCoursesApplicationCommandResult>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.Post(request) as RedirectToRouteResult;
+        var actual = await controller.Post(applicationId, request) as RedirectToRouteResult;
 
         using (new AssertionScope())
         {
@@ -75,7 +75,7 @@ public class WhenPostingRequest
         mediator.Setup(x => x.Send(It.IsAny<UpdateTrainingCoursesApplicationCommandResult>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.Post(request) as RedirectToRouteResult;
+        var actual = await controller.Post(applicationId, request) as RedirectToRouteResult;
 
         using (new AssertionScope())
         {

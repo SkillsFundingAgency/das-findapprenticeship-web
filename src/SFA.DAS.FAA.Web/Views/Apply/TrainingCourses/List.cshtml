@@ -14,39 +14,119 @@
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Education history</span>
         <h1 class="govuk-heading-l">Training courses</h1>
-        <p class="govuk-body">Add any professional training courses you want to include. For example:</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>industry training, such as health and safety courses</li>
-            <li>training to use software</li>
-            <li>first aid training</li>
-        </ul>
-        <p class="govuk-body">Most apprenticeships don't ask for any specific training courses. Include training courses if you want to show extra skills you have.</p>
-        <div class="govuk-!-padding-bottom-5"></div>
-        <form class="form" method="post">
-            <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyTrainingCourses" error-class="govuk-form-group--error">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        <h1 class="govuk-fieldset__heading">
-                            Do you want to add any training courses?
-                        </h1>
-                    </legend>
-                    <span das-validation-for="DoYouWantToAddAnyTrainingCourses" class="govuk-error-message"></span>
-                    <div class="govuk-radios" data-module="govuk-radios">
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyTrainingCourses" value="true" type="radio" />
-                            <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyTrainingCourses">
-                                Yes
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyTrainingCourses" value="false" id="add-qualifications-false" type="radio" />
-                            <label class="govuk-label govuk-radios__label" for="add-qualifications-false">
-                                No
-                            </label>
-                        </div>
+
+        @if (Model.ShowTrainingCoursesAchieved)
+        {
+            @foreach (var trainingCourse in Model.TrainingCourses)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="#">
+                                    Delete<span class="govuk-visually-hidden"> training course</span>
+                                </a>
+                            </li>
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EditTrainingCourse, new {Model.ApplicationId, Id = trainingCourse.Id})">
+                                    Change<span class="govuk-visually-hidden"> training course</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                </fieldset>
-            </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Year
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @trainingCourse.YearAchieved
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            }
+
+            <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-9" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddTrainingCourse, new { Model.ApplicationId })">
+                Add another training course
+            </a>
+
+        }
+        else
+        {
+            <p class="govuk-body">Add any professional training courses you want to include. For example:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>industry training, such as health and safety courses</li>
+                <li>training to use software</li>
+                <li>first aid training</li>
+            </ul>
+            <p class="govuk-body">Most apprenticeships don't ask for any specific training courses. Include training courses if you want to show extra skills you have.</p>
+            <div class="govuk-!-padding-bottom-5"></div>
+        }
+
+        <form class="form" method="post">
+
+            @Html.HiddenFor(x => x.ShowTrainingCoursesAchieved)
+
+
+            @if (Model.ShowTrainingCoursesAchieved)
+            {
+                <div class="govuk-form-group" das-highlight-error-for="IsSectionComplete" error-class="govuk-form-group--error">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            <h1 class="govuk-fieldset__heading">
+                                Have you completed this section?
+                            </h1>
+                        </legend>
+                        <span das-validation-for="IsSectionComplete" class="govuk-error-message"></span>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionComplete" value="true" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="IsSectionComplete">
+                                    Yes, I've completed this section
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionComplete" id="IsSectionComplete-false" value="false" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="IsSectionComplete-false">
+                                    No, I'll come back to it later
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+            else
+            {
+                <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyTrainingCourses" error-class="govuk-form-group--error">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            <h1 class="govuk-fieldset__heading">
+                                Do you want to add any training courses?
+                            </h1>
+                        </legend>
+                        <span das-validation-for="DoYouWantToAddAnyTrainingCourses" class="govuk-error-message"></span>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyTrainingCourses" value="true" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyTrainingCourses">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyTrainingCourses" value="false" id="add-qualifications-false" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="add-qualifications-false">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+
             <div class="govuk-button-group">
                 <button class="govuk-button" type="submit" data-module="govuk-button">
                     Continue
