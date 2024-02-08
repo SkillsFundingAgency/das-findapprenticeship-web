@@ -2,14 +2,14 @@
 
 namespace SFA.DAS.FAA.Domain.Apply.UpdateApplication
 {
-    public record UpdateApplicationApiRequest(
+    public record UpdateWorkHistoryApplicationApiRequest(
         Guid ApplicationId,
         Guid CandidateId,
-        UpdateApplicationModel UpdateApplicationModel)
+        UpdateWorkHistoryApplicationModel UpdateApplicationModel)
         : IPostApiRequest
     {
         public object Data { get; set; } = UpdateApplicationModel;
 
-        public string PostUrl => $"applications/{ApplicationId}/{CandidateId}";
+        public string PostUrl => $"applications/{ApplicationId}/{CandidateId}/work-history";
     }
 }
