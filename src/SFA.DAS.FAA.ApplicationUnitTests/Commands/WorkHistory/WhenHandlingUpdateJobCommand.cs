@@ -23,12 +23,12 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.WorkHistory
             apiClient.Setup(x =>
                     x.PostWithResponseCode(
                         It.Is<PostJobApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
-                                        && ((PostJobApiRequest.PostJobApiRequestData) r.Data).CandidateId == command.CandidateId
-                                        && ((PostJobApiRequest.PostJobApiRequestData) r.Data).JobDescription == command.JobDescription
-                                        && ((PostJobApiRequest.PostJobApiRequestData) r.Data).JobTitle == command.JobTitle
-                                        && ((PostJobApiRequest.PostJobApiRequestData) r.Data).EmployerName == command.EmployerName
-                                        && ((PostJobApiRequest.PostJobApiRequestData) r.Data).StartDate == command.StartDate
-                                        && ((PostJobApiRequest.PostJobApiRequestData) r.Data).EndDate == command.EndDate
+                                        && ((PostJobApiRequest.PostJobApiRequestData)r.Data).CandidateId == command.CandidateId
+                                        && ((PostJobApiRequest.PostJobApiRequestData)r.Data).JobDescription == command.JobDescription
+                                        && ((PostJobApiRequest.PostJobApiRequestData)r.Data).JobTitle == command.JobTitle
+                                        && ((PostJobApiRequest.PostJobApiRequestData)r.Data).EmployerName == command.EmployerName
+                                        && ((PostJobApiRequest.PostJobApiRequestData)r.Data).StartDate == command.StartDate
+                                        && ((PostJobApiRequest.PostJobApiRequestData)r.Data).EndDate == command.EndDate
                         )))
                 .Returns(() => Task.CompletedTask);
 

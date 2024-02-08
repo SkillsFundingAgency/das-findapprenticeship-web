@@ -32,7 +32,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             .Returns("https://baseUrl");
 
             mediator.Setup(x => x.Send(It.Is<GetJobsQuery>(q => q.ApplicationId == applicationId && q.CandidateId == candidateId), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GetJobsQueryResult{Jobs = [] });
+                .ReturnsAsync(new GetJobsQueryResult { Jobs = [] });
 
             var controller = new WorkHistoryController(mediator.Object)
             {

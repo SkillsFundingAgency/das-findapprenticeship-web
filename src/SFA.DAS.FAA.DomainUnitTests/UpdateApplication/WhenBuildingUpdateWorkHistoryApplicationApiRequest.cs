@@ -5,15 +5,15 @@ using SFA.DAS.FAA.Domain.Apply.UpdateApplication;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.UpdateApplication;
 
-public class WhenBuildingUpdateApplicationApiRequest
+public class WhenBuildingUpdateWorkHistoryApplicationApiRequest
 {
     [Test, AutoData]
     public void Then_The_Request_Url_Is_Correctly_Built(
         Guid applicationId,
         Guid candidateId)
     {
-        var actual = new UpdateApplicationApiRequest(applicationId, candidateId, null!);
+        var actual = new UpdateWorkHistoryApplicationApiRequest(applicationId, candidateId, null!);
 
-        actual.PostUrl.Should().Be($"applications/{applicationId}/{candidateId}");
+        actual.PostUrl.Should().Be($"applications/{applicationId}/{candidateId}/work-history");
     }
 }

@@ -3,7 +3,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 using SFA.DAS.FAA.Domain.Apply.UpdateApplication;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
@@ -11,19 +11,20 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.UpdateApplication;
 
 [TestFixture]
-public class WhenHandingUpdateApplicationCommand
+public class WhenHandingUpdateWorkHistoryApplicationCommand
 {
     [Test, MoqAutoData]
     public async Task Then_The_CommandResult_Is_Returned_As_Expected(
-        UpdateApplicationCommand command,
+        UpdateWorkHistoryApplicationCommand command,
         Domain.Apply.UpdateApplication.Application apiResponse,
         [Frozen] Mock<IApiClient> apiClientMock,
-        UpdateApplicationCommandHandler handler)
+        UpdateWorkHistoryApplicationCommandHandler handler)
     {
-        var expectedPostRequest = new UpdateApplicationApiRequest(command.ApplicationId, command.CandidateId, new UpdateApplicationModel
-        {
-            WorkHistorySectionStatus = command.WorkHistorySectionStatus
-        });
+        var expectedPostRequest = new UpdateWorkHistoryApplicationApiRequest(command.ApplicationId, command.CandidateId,
+            new UpdateWorkHistoryApplicationModel
+            {
+                WorkHistorySectionStatus = command.WorkHistorySectionStatus
+            });
 
         apiClientMock
             .Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostRequest))
@@ -38,14 +39,15 @@ public class WhenHandingUpdateApplicationCommand
 
     [Test, MoqAutoData]
     public async Task Then_ApiResponse_IsEmpty_The_CommandResult_Is_Returned_As_Expected(
-        UpdateApplicationCommand command,
+        UpdateWorkHistoryApplicationCommand command,
         [Frozen] Mock<IApiClient> apiClientMock,
-        UpdateApplicationCommandHandler handler)
+        UpdateWorkHistoryApplicationCommandHandler handler)
     {
-        var expectedPostRequest = new UpdateApplicationApiRequest(command.ApplicationId, command.CandidateId, new UpdateApplicationModel
-        {
-            WorkHistorySectionStatus = command.WorkHistorySectionStatus
-        });
+        var expectedPostRequest = new UpdateWorkHistoryApplicationApiRequest(command.ApplicationId, command.CandidateId,
+            new UpdateWorkHistoryApplicationModel
+            {
+                WorkHistorySectionStatus = command.WorkHistorySectionStatus
+            });
 
         apiClientMock
             .Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostRequest))
