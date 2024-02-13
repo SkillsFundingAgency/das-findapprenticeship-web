@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Domain.Apply.AddTrainingCourse;
 public class PostTrainingCourseApiRequest (Guid applicationId, PostTrainingCourseApiRequest.PostTrainingCourseApiRequestData body)
         : IPostApiRequest
 {
-    public string PostUrl => $"applications/{applicationId}/training-courses";
+    public string PostUrl => $"applications/{applicationId}/trainingcourses";
     public object Data { get; set; } = body;
 
     public class PostTrainingCourseApiRequestData
