@@ -114,6 +114,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
         var command = new AddTrainingCourseCommand
         {
+            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
             ApplicationId = request.ApplicationId,
             CourseName = request.CourseName,
             YearAchieved = int.Parse(request.YearAchieved)
