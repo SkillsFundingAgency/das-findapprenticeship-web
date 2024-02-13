@@ -63,6 +63,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
         if (viewModel.ShowTrainingCoursesAchieved)
         {
+            viewModel.DoYouWantToAddAnyTrainingCourses = viewModel.DoYouWantToAddAnyTrainingCourses == null ? false : viewModel.DoYouWantToAddAnyTrainingCourses;
             var completeSectionCommand = new UpdateTrainingCoursesApplicationCommand
             {
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
@@ -75,6 +76,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
 
+        viewModel.IsSectionComplete = viewModel.IsSectionComplete == null ? false : viewModel.IsSectionComplete;
         var command = new UpdateTrainingCoursesApplicationCommand
         {
             CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
