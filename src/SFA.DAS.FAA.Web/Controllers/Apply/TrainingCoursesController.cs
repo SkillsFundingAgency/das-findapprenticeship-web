@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
+using SFA.DAS.FAA.Application.Commands.TrainingCourses.UpdateTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.TrainingCourses;
 using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
 using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourses;
@@ -68,7 +69,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             {
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 ApplicationId = viewModel.ApplicationId,
-                TrainingCoursesSectionStatus = viewModel.DoYouWantToAddAnyTrainingCourses.Value ? SectionStatus.InProgress : SectionStatus.Completed
+                TrainingCoursesSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.InProgress
             };
 
             await mediator.Send(completeSectionCommand);
@@ -139,5 +140,28 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         var viewModel = (EditTrainingCourseViewModel)result;
 
         return View("~/Views/apply/trainingcourses/EditTrainingCourse.cshtml", viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}", Name = RouteNames.ApplyApprenticeship.EditTrainingCourse)]
+    public async Task<IActionResult> PostEdit(EditTrainingCourseViewModel request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View("~/Views/apply/trainingcourses/EditTrainingCourse.cshtml", request);
+        }
+
+        var command = new UpdateTrainingCourseCommand
+        {
+            TrainingCourseId = request.TrainingCourseId,
+            ApplicationId = request.ApplicationId,
+            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CourseName = request.CourseName,
+            YearAchieved = int.Parse(request.YearAchieved)
+        };
+
+        await mediator.Send(command);
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.TrainingCourses, new { request.ApplicationId });
     }
 }
