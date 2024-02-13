@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
