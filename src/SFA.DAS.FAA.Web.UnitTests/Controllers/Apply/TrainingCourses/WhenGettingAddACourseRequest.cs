@@ -11,10 +11,12 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
-public class WhenGettingAddTrainingCoursesPage
+public class WhenGettingAddACourseRequest
 {
     [Test, MoqAutoData]
-    public async Task Then_View_Returned(Guid applicationId, [Frozen] Mock<IMediator> mediator)
+    public void Then_View_Returned(
+    Guid applicationId,
+    [Frozen] Mock<IMediator> mediator)
     {
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
@@ -26,14 +28,14 @@ public class WhenGettingAddTrainingCoursesPage
             Url = mockUrlHelper.Object
         };
 
-        var actual = controller.Get(applicationId) as ViewResult;
-        var actualModel = actual?.Model as TrainingCoursesViewModel;
+        var actual = controller.GetAddATrainingCourse(applicationId) as ViewResult;
+        var actualModel = actual?.Model as AddJobViewModel;
 
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
-            actual.Model.Should().NotBeNull();
-            actualModel.ApplicationId.Should().Be(applicationId);
+            actual?.Model.Should().NotBeNull();
+            actualModel?.ApplicationId.Should().Be(applicationId);
         }
     }
 }
