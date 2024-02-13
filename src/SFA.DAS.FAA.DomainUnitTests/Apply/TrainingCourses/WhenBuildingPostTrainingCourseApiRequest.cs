@@ -13,6 +13,6 @@ public class WhenBuildingPostTrainingCourseApiRequest
     {
         var actual = new PostTrainingCourseApiRequest(applicationId, data);
 
-        actual.PostUrl.Should().Be($"applications/{applicationId}/training-courses");
+        actual.PostUrl.Should().Be($"applications/{applicationId}/trainingcourses");
     }
 }
