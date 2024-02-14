@@ -84,3 +84,21 @@ if (printLinks.length > 0) {
     });
   }
 }
+
+const forms = document.querySelectorAll("main form");
+
+if (forms.length > 0) {
+  for (let i = 0; i < forms.length; i++) {
+    const form = forms[i];
+    const button = form.querySelector(".govuk-button");
+
+    form.addEventListener("submit", () => {
+      if (button) {
+        button.setAttribute("disabled", "disabled");
+        setTimeout(function () {
+          button.removeAttribute("disabled");
+        }, 5000);
+      }
+    });
+  }
+}
