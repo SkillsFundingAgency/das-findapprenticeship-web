@@ -71,3 +71,16 @@ if (sortSelect) {
     document.location.href = "?" + params.toString();
   });
 }
+
+const printLinks = document.querySelectorAll(
+  ".faa-vacancy-actions__link--print"
+);
+
+if (printLinks.length > 0) {
+  for (let i = 0; i < printLinks.length; i++) {
+    printLinks[i].addEventListener("click", (e) => {
+      e.preventDefault();
+      window.print();
+    });
+  }
+}
