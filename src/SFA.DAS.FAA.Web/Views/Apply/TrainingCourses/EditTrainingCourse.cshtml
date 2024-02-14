@@ -1,0 +1,25 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.EditTrainingCourseViewModel
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.TrainingCourses, new { Model.ApplicationId })">
+        Back
+    </a>
+}
+<partial name="_ValidationSummary" />
+<span class="govuk-caption-l">Education history</span>
+<h1 class="govuk-heading-l govuk-!-margin-bottom-8">Add a training course</h1>
+<form class="form" method="post">
+
+    @Html.HiddenFor(x => x.TrainingCourseId)
+
+    <partial name="_TrainingCourseForm" model="@Model" />
+
+    <div class="govuk-button-group" href="application-summary-jobs.html">
+        <button class="govuk-button" data-module="govuk-button">
+            Save and continue
+        </button>
+    </div>
+
+</form>
