@@ -15,7 +15,7 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
-public class WhenPostingAddTrainingCoursesPage
+public class WhenPostingRequest
 {
     [Test, MoqAutoData]
     public async Task And_User_Has_No_Training_Courses_Then_Mediator_Is_Called_And_Redirect_To_TaskList(
@@ -80,7 +80,7 @@ public class WhenPostingAddTrainingCoursesPage
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
-            actual?.RouteName.Should().Be("/");
+            actual?.RouteName.Should().Be(RouteNames.ApplyApprenticeship.AddTrainingCourse);
         }
     }
 }
