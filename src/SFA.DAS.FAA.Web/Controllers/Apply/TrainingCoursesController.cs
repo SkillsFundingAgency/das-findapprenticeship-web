@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
+using SFA.DAS.FAA.Application.Commands.TrainingCourses.DeleteTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.UpdateTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.TrainingCourses;
 using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
@@ -11,6 +12,7 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply;
 
@@ -180,4 +182,30 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
         return View("~/Views/apply/trainingcourses/DeleteTrainingCourse.cshtml", viewModel);
     }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteTrainingCourse)]
+    public async Task<IActionResult> Delete (DeleteTrainingCourseViewModel model)
+    {
+        try
+        {
+            var command = new DeleteTrainingCourseCommand
+            {
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                ApplicationId = model.ApplicationId,
+                TrainingCourseId = model.TrainingCourseId
+            };
+            await mediator.Send(command);
+        }
+        catch (InvalidOperationException e)
+        {
+            ModelState.AddModelError(nameof(DeleteTrainingCourseViewModel), "There's been a problem");
+            return View("~/Views/apply/trainingcourses/DeleteTrainingCourse.cshtml");
+        }
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.TrainingCourses, new { model.ApplicationId });
+
+    }
+
+
 }
