@@ -40,7 +40,7 @@ public class WhenGettingDeleteTrainingCourseRequest
                 , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);
 
-        var actual = await controller.Edit(query.ApplicationId, query.TrainingCourseId) as ViewResult;
+        var actual = await controller.Delete(query.ApplicationId, query.TrainingCourseId) as ViewResult;
         var actualModel = actual?.Model as DeleteTrainingCourseViewModel;
 
         using (new AssertionScope())
