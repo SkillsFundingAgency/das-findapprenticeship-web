@@ -1,4 +1,4 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.JobsViewModel
 @{
@@ -10,10 +10,10 @@
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
 
-<partial name="_ValidationSummary" />
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Work history</span>
         <h1 class="govuk-heading-l">Jobs</h1>
 
@@ -31,7 +31,8 @@
                                 </a>
                             </li>
                             <li class="govuk-summary-card__action">
-                                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EditJob, new {Model.ApplicationId, JobId = work.Id})">
+                                <a class="govuk-link"
+                                    href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EditJob, new {Model.ApplicationId, JobId = work.Id})">
                                     Change<span class="govuk-visually-hidden"> jobs and work experience</span>
                                 </a>
                             </li>
@@ -60,7 +61,8 @@
                 </div>
             }
 
-            <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-9" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { Model.ApplicationId })">
+            <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-9"
+                href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddJob, new { Model.ApplicationId })">
                 Add another job
             </a>
         }
@@ -71,8 +73,7 @@
                 <li>your current job</li>
                 <li>previous jobs you’d like to mention</li>
             </ul>
-            <p class="govuk-body">An apprenticeship can be your first job.</p>
-            <div class="govuk-!-padding-bottom-5"></div>
+            <p class="govuk-body govuk-!-padding-bottom-5">An apprenticeship can be your first job.</p>
         }
 
         <form class="form" method="post">
@@ -80,23 +81,24 @@
 
             @if (Model.ShowJobHistory)
             {
-                <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted" error-class="govuk-form-group--error">
+                <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted"
+                    error-class="govuk-form-group--error">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                            <h1 class="govuk-fieldset__heading">
-                                Have you completed this section?
-                            </h1>
+                            Have you completed this section?
                         </legend>
                         <span das-validation-for="IsSectionCompleted" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="true" type="radio" />
+                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="true"
+                                    type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="IsSectionCompleted">
                                     Yes, I’ve completed this section
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" id="IsSectionCompleted-No" value="false" type="radio" />
+                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted"
+                                    id="IsSectionCompleted-No" value="false" type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="IsSectionCompleted-No">
                                     No, I’ll come back to it later
                                 </label>
@@ -107,23 +109,24 @@
             }
             else
             {
-                <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyJobs" error-class="govuk-form-group--error">
+                <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyJobs"
+                    error-class="govuk-form-group--error">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                            <h1 class="govuk-fieldset__heading">
-                                Do you want to add any jobs?
-                            </h1>
+                            Do you want to add any jobs?
                         </legend>
                         <span das-validation-for="DoYouWantToAddAnyJobs" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios" id="AddJob">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyJobs" value="true" type="radio" />
+                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyJobs" value="true"
+                                    type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyJobs">
                                     Yes
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyJobs" id="DoYouWantToAddAnyJobs-false" value="false" type="radio" />
+                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyJobs"
+                                    id="DoYouWantToAddAnyJobs-false" value="false" type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyJobs-false">
                                     No
                                 </label>

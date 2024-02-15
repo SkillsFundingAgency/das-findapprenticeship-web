@@ -1,4 +1,4 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.AddJobViewModel
 
@@ -7,15 +7,19 @@
         Back
     </a>
 }
-<partial name="_ValidationSummary" />
-<span class="govuk-caption-l">Work history</span>
-<h1 class="govuk-heading-l govuk-!-margin-bottom-8">Add a job</h1>
-<form class="form" method="post">
 
-    <partial name="_JobForm" model="@Model" />
-            <button class="govuk-button" data-module="govuk-button">
-                Save and continue
-            </button>
-        </div>
-
-</form>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Work history</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-8">Add a job</h1>
+        <form class="form" method="post">
+            <partial name="_JobForm" model="@Model" />
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Save and continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
