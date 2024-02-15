@@ -37,6 +37,10 @@
     <Content Update="appsettings.Development.json">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
+    <Content Update="Views\Apply\VolunteeringAndWorkExperience\AddVolunteeringAndWorkExperience.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="NpmInstall" Inputs="package.json" Outputs="node_modules/.install-stamp">

@@ -1,0 +1,24 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.AddVolunteeringAndWorkExperienceViewModel
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Jobs, new { Model.ApplicationId })">
+        Back
+    </a>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Work history</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-8">Add volunteering or work experience</h1>
+        <form class="form" method="post">
+            <partial name="_VolunteeringAndWorkExperienceForm" model="@Model" />
+            <div class="govuk-button-group" href="application-summary-jobs.html">
+                <button class="govuk-button" data-module="govuk-button">
+                    Save and continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
