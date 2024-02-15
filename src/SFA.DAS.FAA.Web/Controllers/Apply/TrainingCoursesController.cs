@@ -166,7 +166,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
     }
 
     [HttpGet]
-    [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}", Name = RouteNames.ApplyApprenticeship.DeleteTrainingCourse)]
+    [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteTrainingCourse)]
     public async Task<IActionResult> Delete([FromRoute] Guid applicationId, Guid trainingCourseId)
     {
         var result = await mediator.Send(new GetDeleteTrainingCourseQuery

@@ -24,7 +24,7 @@
                         <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
                         <ul class="govuk-summary-card__actions">
                             <li class="govuk-summary-card__action">
-                                <a class="govuk-link" href="#">
+                                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteTrainingCourse, new {Model.ApplicationId, TrainingCourseId = trainingCourse.Id})">
                                     Delete<span class="govuk-visually-hidden"> training course</span>
                                 </a>
                             </li>

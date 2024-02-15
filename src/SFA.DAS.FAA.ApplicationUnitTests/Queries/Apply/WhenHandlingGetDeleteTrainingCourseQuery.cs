@@ -9,20 +9,20 @@ using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply;
-public class WhenHandlingGetTrainingCourseQuery
+public class WhenHandlingGetDeleteTrainingCourseQuery
 {
     [Test, MoqAutoData]
     public async Task Then_Result_Is_Returned(
-    GetTrainingCourseQuery query,
-    GetTrainingCourseApiResponse apiResponse,
+    GetDeleteTrainingCourseQuery query,
+    GetDeleteTrainingCourseApiResponse apiResponse,
     [Frozen] Mock<IApiClient> apiClientMock,
-    GetTrainingCourseQueryHandler handler)
+    GetDeleteTrainingCourseQueryHandler handler)
     {
-        var apiRequestUri = new GetTrainingCourseApiRequest(query.ApplicationId, query.CandidateId, query.TrainingCourseId);
+        var apiRequestUri = new GetDeleteTrainingCourseApiRequest(query.ApplicationId, query.CandidateId, query.TrainingCourseId);
 
         apiClientMock.Setup(client =>
-                client.Get<GetTrainingCourseApiResponse>(
-                    It.Is<GetTrainingCourseApiRequest>(c =>
+                client.Get<GetDeleteTrainingCourseApiResponse>(
+                    It.Is<GetDeleteTrainingCourseApiRequest>(c =>
                         c.GetUrl == apiRequestUri.GetUrl)))
             .ReturnsAsync(apiResponse);
 

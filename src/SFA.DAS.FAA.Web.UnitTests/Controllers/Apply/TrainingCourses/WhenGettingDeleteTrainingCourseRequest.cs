@@ -14,12 +14,12 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
-public class WhenGettingUpdateTrainingCourseRequest
+public class WhenGettingDeleteTrainingCourseRequest
 {
     [Test, MoqAutoData]
     public async Task Then_View_Returned(
-        GetTrainingCourseQuery query,
-        GetTrainingCourseQueryResult result,
+        GetDeleteTrainingCourseQuery query,
+        GetDeleteTrainingCourseQueryResult result,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] TrainingCoursesController controller)
     {
@@ -33,7 +33,7 @@ public class WhenGettingUpdateTrainingCourseRequest
             }
         };
 
-        mediator.Setup(x => x.Send(It.Is<GetTrainingCourseQuery>(c =>
+        mediator.Setup(x => x.Send(It.Is<GetDeleteTrainingCourseQuery>(c =>
                 c.ApplicationId == query.ApplicationId
                 && c.CandidateId == query.CandidateId
                 && c.TrainingCourseId == query.TrainingCourseId)
@@ -41,7 +41,7 @@ public class WhenGettingUpdateTrainingCourseRequest
                 .ReturnsAsync(result);
 
         var actual = await controller.Edit(query.ApplicationId, query.TrainingCourseId) as ViewResult;
-        var actualModel = actual?.Model as EditTrainingCourseViewModel;
+        var actualModel = actual?.Model as DeleteTrainingCourseViewModel;
 
         using (new AssertionScope())
         {
