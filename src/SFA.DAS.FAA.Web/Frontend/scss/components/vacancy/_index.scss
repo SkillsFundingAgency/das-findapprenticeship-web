@@ -46,7 +46,7 @@
   max-height: 1em;
   position: relative;
   top: 3px;
-  margin-right: 3px;
+  margin-right: 5px;
 }
 
 .faa-vacancy__section > h2:not([class]) {
@@ -93,6 +93,9 @@
   margin-bottom: 20px;
 }
 
-.faa-vacancy-grey-text {
-  color: #505a5f;
+.faa-vacancy-actions__link--print {
+  display: none;
+  .js-enabled & {
+    display: inline;
+  }
 }
