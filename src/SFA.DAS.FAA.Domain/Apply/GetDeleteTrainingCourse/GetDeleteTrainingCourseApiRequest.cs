@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Domain.Apply.GetTrainingCourse
 {
     public class GetDeleteTrainingCourseApiRequest(Guid applicationId, Guid candidateId, Guid trainingCourseId) : IGetApiRequest
     {
-        public string GetUrl => $"applications/{applicationId}/trainingcourses/{trainingCourseId}?candidateId={candidateId}/delete";
+        public string GetUrl => $"applications/{applicationId}/trainingcourses/{trainingCourseId}/delete?candidateId={candidateId}";
     }
 
     public class GetDeleteTrainingCourseApiResponse

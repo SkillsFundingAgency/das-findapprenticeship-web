@@ -14,6 +14,6 @@ public class WhenBuildingGetDeleteTrainingCourseApiRequest
     {
         var actual = new GetDeleteTrainingCourseApiRequest(applicationId, candidateId, trainingCourseId);
 
-        actual.GetUrl.Should().Be($"applications/{applicationId}/trainingcourses/{trainingCourseId}?candidateId={candidateId}/delete");
+        actual.GetUrl.Should().Be($"applications/{applicationId}/trainingcourses/{trainingCourseId}/delete?candidateId={candidateId}");
     }
 }
