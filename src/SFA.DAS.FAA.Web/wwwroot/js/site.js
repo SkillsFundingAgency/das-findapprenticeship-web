@@ -71,3 +71,34 @@ if (sortSelect) {
     document.location.href = "?" + params.toString();
   });
 }
+
+const printLinks = document.querySelectorAll(
+  ".faa-vacancy-actions__link--print"
+);
+
+if (printLinks.length > 0) {
+  for (let i = 0; i < printLinks.length; i++) {
+    printLinks[i].addEventListener("click", (e) => {
+      e.preventDefault();
+      window.print();
+    });
+  }
+}
+
+const forms = document.querySelectorAll("main form");
+
+if (forms.length > 0) {
+  for (let i = 0; i < forms.length; i++) {
+    const form = forms[i];
+    const button = form.querySelector(".govuk-button");
+
+    form.addEventListener("submit", () => {
+      if (button) {
+        button.setAttribute("disabled", "disabled");
+        setTimeout(function () {
+          button.removeAttribute("disabled");
+        }, 5000);
+      }
+    });
+  }
+}
