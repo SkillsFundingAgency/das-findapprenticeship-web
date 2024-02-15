@@ -13,7 +13,7 @@ public class WhenHandlingAddTrainingCourse
     [Test, MoqAutoData]
     public async Task Then_The_CommandResult_Is_Returned_As_Expected(
             AddTrainingCourseCommand command,
-            Guid apiResponse,
+            PostTrainingCourseApiResponse apiResponse,
             [Frozen] Mock<IApiClient> apiClient,
             [Greedy] AddTrainingCourseCommandHandler handler)
     {
@@ -21,7 +21,7 @@ public class WhenHandlingAddTrainingCourse
             new PostTrainingCourseApiRequest(command.ApplicationId, new PostTrainingCourseApiRequest.PostTrainingCourseApiRequestData());
 
         apiClient.Setup(x =>
-                x.PostWithResponseCode<Guid>(
+                x.PostWithResponseCode<PostTrainingCourseApiResponse>(
                     It.Is<PostTrainingCourseApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                     && ((PostTrainingCourseApiRequest.PostTrainingCourseApiRequestData)r.Data).CandidateId == command.CandidateId
                                     && ((PostTrainingCourseApiRequest.PostTrainingCourseApiRequestData)r.Data).CourseName == command.CourseName
@@ -31,6 +31,6 @@ public class WhenHandlingAddTrainingCourse
 
         var result = await handler.Handle(command, It.IsAny<CancellationToken>());
 
-        result.Id.Should().Be(apiResponse);
+        result.Id.Should().Be(apiResponse.Id);
     }
 }
