@@ -3,7 +3,7 @@ using SFA.DAS.FAA.Domain.Apply.GetTrainingCourse;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
-public class GetTrainingCourseQueryHandler : IRequestHandler<GetTrainingCourseQuery, GetTrainingCourseQueryResult>
+public class GetTrainingCourseQueryHandler : IRequestHandler<GetDeleteTrainingCourseQuery, GetTrainingCourseQueryResult>
 {
     private readonly IApiClient _apiClient;
 
@@ -12,7 +12,7 @@ public class GetTrainingCourseQueryHandler : IRequestHandler<GetTrainingCourseQu
         _apiClient = apiClient;
     }
 
-    public async Task<GetTrainingCourseQueryResult> Handle(GetTrainingCourseQuery request, CancellationToken cancellationToken)
+    public async Task<GetTrainingCourseQueryResult> Handle(GetDeleteTrainingCourseQuery request, CancellationToken cancellationToken)
     {
         var response = await _apiClient.Get<GetTrainingCourseApiResponse>(
             new GetTrainingCourseApiRequest(request.ApplicationId, request.CandidateId, request.TrainingCourseId));

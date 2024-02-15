@@ -164,4 +164,20 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
         return RedirectToRoute(RouteNames.ApplyApprenticeship.TrainingCourses, new { request.ApplicationId });
     }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}", Name = RouteNames.ApplyApprenticeship.DeleteTrainingCourse)]
+    public async Task<IActionResult> Delete([FromRoute] Guid applicationId, Guid trainingCourseId)
+    {
+        var result = await mediator.Send(new GetDeleteTrainingCourseQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            TrainingCourseId = trainingCourseId
+        });
+
+        var viewModel = (DeleteTrainingCourseViewModel)result;
+
+        return View("~/Views/apply/trainingcourses/DeleteTrainingCourse.cshtml", viewModel);
+    }
 }

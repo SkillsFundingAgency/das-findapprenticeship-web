@@ -13,7 +13,7 @@ public class WhenHandlingGetTrainingCourseQuery
 {
     [Test, MoqAutoData]
     public async Task Then_Result_Is_Returned(
-    GetTrainingCourseQuery query,
+    GetDeleteTrainingCourseQuery query,
     GetTrainingCourseApiResponse apiResponse,
     [Frozen] Mock<IApiClient> apiClientMock,
     GetTrainingCourseQueryHandler handler)
