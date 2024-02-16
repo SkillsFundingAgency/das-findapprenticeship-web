@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="job.json" />
     <None Remove="jobs.json" />
   </ItemGroup>
 
@@ -19,6 +20,9 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="job.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="jobs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
