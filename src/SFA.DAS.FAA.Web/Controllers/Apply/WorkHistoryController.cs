@@ -1,17 +1,21 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
-using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
-using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication;
+using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob;
+using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -167,6 +171,46 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(command);
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
+        }
+
+        [HttpGet]
+        [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
+        public async Task<IActionResult> GetDeleteJob([FromRoute] Guid applicationId, Guid jobId)
+        {
+            var result = await mediator.Send(new GetDeleteJobQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                JobId = jobId
+            });
+
+            var viewModel = (DeleteJobViewModel)result;
+
+            return View("~/Views/apply/workhistory/DeleteJob.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
+        public async Task<IActionResult> PostDeleteJob(DeleteJobViewModel model)
+        {
+            try
+            {
+                var command = new PostDeleteJobCommand
+                {
+                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                    ApplicationId = model.ApplicationId,
+                    JobId = model.JobId
+                };
+                await mediator.Send(command);
+            }
+            catch (InvalidOperationException e)
+            {
+                ModelState.AddModelError(nameof(DeleteJobViewModel), "There's been a problem");
+                return View("~/Views/apply/workhistory/DeleteJob.cshtml");
+            }
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { model.ApplicationId });
+
         }
     }
 }
