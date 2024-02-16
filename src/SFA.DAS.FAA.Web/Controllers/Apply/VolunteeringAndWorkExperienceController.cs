@@ -13,6 +13,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply;
 public class VolunteeringAndWorkExperienceController(IMediator mediator) : Controller
 {
     private const string ViewPath = "~/Views/apply/volunteeringandworkexperience/List.cshtml";
+    private const string AddViewPath = "~/Views/apply/VolunteeringAndWorkExperience/AddVolunteeringAndWorkExperience.cshtml";
 
     [HttpGet]
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
@@ -44,7 +45,9 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         await mediator.Send(command);
 
-        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? RedirectToRoute("/") : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
+        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value 
+            ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { model.ApplicationId }) 
+            : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
     }
 
     [HttpGet]
@@ -56,7 +59,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             ApplicationId = applicationId
         };
 
-        return View("~/Views/apply/VolunteeringAndWorkExperience/AddVolunteeringAndWorkExperience.cshtml", viewModel);
+        return View(AddViewPath, viewModel);
     }
 
     [HttpPost]
@@ -65,7 +68,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
     {
         if (!ModelState.IsValid)
         {
-            return View("~/Views/apply/VolunteeringAndWorkExperience/AddVolunteeringAndWorkExperience.cshtml", request);
+            return View(AddViewPath, request);
         }
 
         var command = new AddVolunteeringAndWorkExperienceCommand

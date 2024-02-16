@@ -18,11 +18,12 @@ namespace SFA.DAS.FAA.Web.Validators
         private const string CompanyNameErrorMessage = "Enter the company or organisation for this volunteering or work experience";
         private const string JobDescriptionErrorMessage = "Enter what you did for this volunteering or work experience";
         private const string JobDescriptionMaxLengthErrorMessage = "What you did must be 100 words or less";
-        private const string StartDateErrorMessage = "Enter the start date for this job";
+        private const string StartDateErrorMessage = "Enter a real date for the start date";
         private const string StartDateIsInThePastErrorMessage = "The start date must be in the past";
         private const string IsCurrentJobErrorMessage = "Select if you’re still doing this volunteering or work experience";
         private const string EndDateErrorMessage = "Enter a real date for the end date";
         private const string EndDateIsInThePastErrorMessage = "The end date must be in the past";
+        private const string EndDateMustBeGreaterThanStartDate = "The end date must be greater than start date";
 
         public AddVolunteeringAndWorkExperienceViewModelBaseValidator(IDateTimeService dateTimeService)
         {
@@ -46,6 +47,12 @@ namespace SFA.DAS.FAA.Web.Validators
                            x.DateTimeValue.Value <= dateTimeService.GetDateTime())
                 .WithMessage(EndDateIsInThePastErrorMessage)
                 .When(x => x.IsCurrentRole is false);
+
+            RuleFor(x => x).Cascade(CascadeMode.Stop)
+                .Must(x => x.EndDate?.DateTimeValue == default(DateTime) || x.StartDate?.DateTimeValue == default(DateTime) || x.EndDate?.DateTimeValue > x.StartDate?.DateTimeValue)
+                .WithMessage(EndDateMustBeGreaterThanStartDate)
+                .When(x => x.IsCurrentRole is false)
+                .WithName(nameof(AddVolunteeringAndWorkExperienceViewModelBase.EndDate));
 
             RuleFor(x => x.IsCurrentRole).NotEmpty().WithMessage(IsCurrentJobErrorMessage);
         }

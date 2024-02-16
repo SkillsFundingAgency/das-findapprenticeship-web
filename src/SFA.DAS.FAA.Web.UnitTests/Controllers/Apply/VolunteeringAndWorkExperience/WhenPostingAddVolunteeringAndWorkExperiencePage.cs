@@ -80,7 +80,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
-            actual?.RouteName.Should().Be("/");
+            actual?.RouteName.Should().Be(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience);
         }
     }
 }

@@ -15,11 +15,12 @@ public class AddVolunteeringAndWorkExperienceViewModelValidatorTest
     private const string CompanyNameErrorMessage = "Enter the company or organisation for this volunteering or work experience";
     private const string JobDescriptionErrorMessage = "Enter what you did for this volunteering or work experience";
     private const string JobDescriptionMaxLengthErrorMessage = "What you did must be 100 words or less";
-    private const string StartDateErrorMessage = "Enter the start date for this job";
+    private const string StartDateErrorMessage = "Enter a real date for the start date";
     private const string StartDateIsInThePastErrorMessage = "The start date must be in the past";
     private const string IsCurrentJobErrorMessage = "Select if you’re still doing this volunteering or work experience";
     private const string EndDateErrorMessage = "Enter a real date for the end date";
     private const string EndDateIsInThePastErrorMessage = "The end date must be in the past";
+    private const string EndDateMustBeGreaterThanStartDate = "The end date must be greater than start date";
 
     [Test, MoqInlineAutoData("", "", null, null)]
     public async Task Validate_VolunteeringAndWorkExperience(
