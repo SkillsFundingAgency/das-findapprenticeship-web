@@ -1,12 +1,14 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.FAA.Domain.Apply.DeleteTrainingCourse;
 using SFA.DAS.FAA.Domain.Apply.WorkHistory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SFA.DAS.FAA.Domain.Apply.WorkHistory.PostDeleteJobApiRequest;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.TrainingCourses
 {
@@ -15,12 +17,13 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Apply.TrainingCourses
         [Test, AutoData]
         public void Then_The_Request_Url_Is_Correctly_Built(
             Guid applicationId,
-            Guid jobId,
-            Guid candidateId)
+            Guid trainingCourseId,
+            DeleteTrainingCourseApiRequest.DeleteTrainingCourseApiRequestData data)
         {
-            var actual = new GetDeleteJobApiRequest(applicationId, candidateId, jobId);
+            var actual = new DeleteTrainingCourseApiRequest(applicationId, trainingCourseId, data);
 
-            actual.GetUrl.Should().Be($"applications/{applicationId}/jobs/{jobId}/delete?candidateId={candidateId}");
+            actual.PostUrl.Should().Be($"applications/{applicationId}/trainingcourses/{trainingCourseId}/delete");
         }
+
     }
 }

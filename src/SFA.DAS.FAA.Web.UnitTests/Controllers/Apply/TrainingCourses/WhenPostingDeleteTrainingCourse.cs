@@ -72,7 +72,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses
             var result = await controller.Delete(model) as ViewResult;
 
             result.Should().NotBeNull();
-            result.ViewName.Should().Be("/Views/apply/trainingcourses/DeleteTrainingCourse.cshtml");
+            result.ViewName.Should().Be("~/Views/apply/trainingcourses/DeleteTrainingCourse.cshtml");
             controller.ModelState.ContainsKey(nameof(DeleteTrainingCourseViewModel)).Should().BeTrue();
             controller.ModelState[nameof(DeleteTrainingCourseViewModel)].Errors.Should().Contain(e => e.ErrorMessage == "There's been a problem");
         }
