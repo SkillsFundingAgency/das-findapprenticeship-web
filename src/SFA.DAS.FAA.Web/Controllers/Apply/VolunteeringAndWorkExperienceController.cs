@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteVolunteeringOrWorkExperience;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -43,5 +45,21 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         await mediator.Send(command);
 
         return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? RedirectToRoute("/") : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience)]
+    public async Task<IActionResult> GetDeleteVolunteeringOrWorkExperience([FromRoute] Guid applicationId, Guid volunteeringWorkExperienceId)
+    {
+        var result = await mediator.Send(new GetDeleteVolunteeringOrWorkExperienceQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            Id = volunteeringWorkExperienceId
+        });
+
+        var viewModel = (DeleteVolunteeringOrWorkExperienceViewModel)result;
+
+        return View("~/Views/apply/volunteeringandworkexperience/DeleteVolunteeringOrWorkExperience.cshtml", viewModel);
     }
 }
