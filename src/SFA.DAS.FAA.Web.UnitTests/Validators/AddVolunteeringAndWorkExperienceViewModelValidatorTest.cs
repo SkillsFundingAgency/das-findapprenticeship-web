@@ -20,7 +20,7 @@ public class AddVolunteeringAndWorkExperienceViewModelValidatorTest
     private const string IsCurrentJobErrorMessage = "Select if you’re still doing this volunteering or work experience";
     private const string EndDateErrorMessage = "Enter a real date for the end date";
     private const string EndDateIsInThePastErrorMessage = "The end date must be in the past";
-    private const string EndDateMustBeGreaterThanStartDate = "The end date must be greater than start date";
+    private const string EndDateMustBeGreaterThanStartDate = "The end date must be after the start date";
 
     [Test, MoqInlineAutoData("", "", null, null)]
     public async Task Validate_VolunteeringAndWorkExperience(
