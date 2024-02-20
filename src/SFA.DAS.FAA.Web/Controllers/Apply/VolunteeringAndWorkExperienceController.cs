@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
+using SFA.DAS.FAA.Application.Commands.VolunteeringOrWorkExperience.DeleteVolunteeringOrWorkExperience;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
@@ -48,7 +49,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpGet]
     [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience)]
-    public async Task<IActionResult> GetDeleteVolunteeringOrWorkExperience([FromRoute] Guid applicationId, Guid volunteeringWorkExperienceId)
+    public async Task<IActionResult> GetDelete([FromRoute] Guid applicationId, Guid volunteeringWorkExperienceId)
     {
         var result = await mediator.Send(new GetVolunteeringOrWorkExperienceItemQuery
         {
@@ -60,5 +61,29 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         var viewModel = (DeleteVolunteeringOrWorkExperienceViewModel)result;
 
         return View("~/Views/apply/volunteeringandworkexperience/DeleteVolunteeringOrWorkExperience.cshtml", viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience)]
+    public async Task<IActionResult> PostDelete(DeleteVolunteeringOrWorkExperienceViewModel model)
+    {
+        try
+        {
+            var command = new DeleteVolunteeringOrWorkExperienceCommand
+            {
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                ApplicationId = model.ApplicationId,
+                Id = model.Id
+            };
+            await mediator.Send(command);
+        }
+        catch (InvalidOperationException e)
+        {
+            ModelState.AddModelError(nameof(DeleteVolunteeringOrWorkExperienceViewModel), "There's been a problem");
+            return View("~/Views/apply/volunteeringandworkexperience/DeleteVolunteeringOrWorkExperience.cshtml");
+        }
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience, new { model.ApplicationId });
+
     }
 }

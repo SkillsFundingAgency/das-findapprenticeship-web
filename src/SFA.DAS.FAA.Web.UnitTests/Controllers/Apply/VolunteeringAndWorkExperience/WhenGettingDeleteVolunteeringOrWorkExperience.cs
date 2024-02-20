@@ -11,7 +11,7 @@ using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.VolunteeringAndWorkExperience;
-public class WhenCallingGetDeleteVolunteeringOrWorkExperience
+public class WhenGettingDeleteVolunteeringOrWorkExperience
 {
     [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_Delete_VolunteeringOrWorkExperience_View_Is_Returned(
@@ -33,7 +33,7 @@ public class WhenCallingGetDeleteVolunteeringOrWorkExperience
         mediator.Setup(x => x.Send(It.IsAny<GetVolunteeringOrWorkExperienceItemQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.GetDeleteVolunteeringOrWorkExperience(applicationId, id) as ViewResult;
+        var actual = await controller.GetDelete(applicationId, id) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as DeleteVolunteeringOrWorkExperienceViewModel;

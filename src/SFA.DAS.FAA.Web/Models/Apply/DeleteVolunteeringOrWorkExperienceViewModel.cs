@@ -1,10 +1,13 @@
-﻿using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
+﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
 public class DeleteVolunteeringOrWorkExperienceViewModel
 {
+    [FromRoute]
     public Guid ApplicationId { get; set; }
+    [FromRoute]
     public Guid Id { get; set; }
     public string Dates { get; set; }
     public string Organisation { get; set; }
