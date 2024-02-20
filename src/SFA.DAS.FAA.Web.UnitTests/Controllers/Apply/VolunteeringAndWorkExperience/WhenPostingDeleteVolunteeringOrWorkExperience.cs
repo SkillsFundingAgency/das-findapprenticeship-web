@@ -39,7 +39,7 @@ public class WhenPostingDeleteVolunteeringOrWorkExperience
         mediator.Verify(x => x.Send(It.Is<DeleteVolunteeringOrWorkExperienceCommand>(c =>
             c.CandidateId == candidateId
             && c.ApplicationId == model.ApplicationId
-            && c.Id == model.Id),
+            && c.Id == model.VolunteeringWorkExperienceId),
         CancellationToken.None), Times.Once);
     }
 

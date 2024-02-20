@@ -73,7 +73,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             {
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
                 ApplicationId = model.ApplicationId,
-                Id = model.Id
+                Id = model.VolunteeringWorkExperienceId
             };
             await mediator.Send(command);
         }

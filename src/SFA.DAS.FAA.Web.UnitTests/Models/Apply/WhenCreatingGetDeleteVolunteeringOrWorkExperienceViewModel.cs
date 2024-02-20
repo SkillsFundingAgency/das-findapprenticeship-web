@@ -15,7 +15,7 @@ public class WhenCreatingGetDeleteVolunteeringOrWorkExperienceViewModel
 
         using (new AssertionScope())
         {
-            result.Id.Should().Be(source.Id);
+            result.VolunteeringWorkExperienceId.Should().Be(source.Id);
             result.Organisation.Should().Be(source.Organisation);
             result.Description.Should().Be(source.Description);
             result.ApplicationId.Should().Be(source.ApplicationId);
@@ -31,7 +31,7 @@ public class WhenCreatingGetDeleteVolunteeringOrWorkExperienceViewModel
 
         using (new AssertionScope())
         {
-            result.Id.Should().Be(source.Id);
+            result.VolunteeringWorkExperienceId.Should().Be(source.Id);
             result.Organisation.Should().Be(source.Organisation);
             result.Description.Should().Be(source.Description);
             result.ApplicationId.Should().Be(source.ApplicationId);
