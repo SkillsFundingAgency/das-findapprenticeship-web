@@ -11,6 +11,6 @@ public class WhenBuildingGetDeleteVolunteeringOrWorkExperienceApiRequest
     {
         var request = new GetVolunteeringOrWorkExperienceItemApiRequest(applicationId, id, candidateId);
 
-        request.GetUrl.Should().Be($"applications/{applicationId}/volunteeringorworkexperience/{id}?candidateId={candidateId}");
+        request.GetUrl.Should().Be($"applications/{applicationId}/volunteeringorworkexperience/{id}/delete?candidateId={candidateId}");
     }
 }
