@@ -9,8 +9,8 @@ public class WhenBuildingGetDeleteVolunteeringOrWorkExperienceApiRequest
     [Test, MoqAutoData]
     public void Then_The_Request_Url_Is_Built_Correctly(Guid applicationId, Guid id, Guid candidateId)
     {
-        var request = new GetDeleteVolunteeringOrWorkExperienceApiRequest(applicationId, id, candidateId);
+        var request = new GetVolunteeringOrWorkExperienceItemApiRequest(applicationId, id, candidateId);
 
-        request.GetUrl.Should().Be($"applications/{applicationId}/volunteeringorworkexperience/{id}/delete?candidateId={candidateId}");
+        request.GetUrl.Should().Be($"applications/{applicationId}/volunteeringorworkexperience/{id}?candidateId={candidateId}");
     }
 }

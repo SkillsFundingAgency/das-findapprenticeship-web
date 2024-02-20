@@ -3,7 +3,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteVolunteeringOrWorkExperience;
+using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Domain.Apply.VolunteeringOrWorkExperience;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
@@ -13,16 +13,16 @@ public class WhenHandlingGetDeleteVolunteeringOrWorkExperienceQuery
 {
     [Test, MoqAutoData]
     public async Task Then_Result_Is_Returned(
-          GetDeleteVolunteeringOrWorkExperienceQuery query,
-          GetDeleteVolunteeringOrWorkExperienceApiResponse apiResponse,
+          GetVolunteeringOrWorkExperienceItemQuery query,
+          GetVolunteeringOrWorkExperienceItemApiResponse apiResponse,
           [Frozen] Mock<IApiClient> apiClientMock,
-          GetDeleteVolunteeringOrWorkExperienceQueryHandler handler)
+          GetVolunteeringOrWorkExperienceItemQueryHandler handler)
     {
-        var apiRequestUri = new GetDeleteVolunteeringOrWorkExperienceApiRequest(query.ApplicationId, query.Id, query.CandidateId);
+        var apiRequestUri = new GetVolunteeringOrWorkExperienceItemApiRequest(query.ApplicationId, query.Id, query.CandidateId);
 
         apiClientMock.Setup(client =>
-                client.Get<GetDeleteVolunteeringOrWorkExperienceApiResponse>(
-                    It.Is<GetDeleteVolunteeringOrWorkExperienceApiRequest>(c =>
+                client.Get<GetVolunteeringOrWorkExperienceItemApiResponse>(
+                    It.Is<GetVolunteeringOrWorkExperienceItemApiRequest>(c =>
                         c.GetUrl == apiRequestUri.GetUrl)))
             .ReturnsAsync(apiResponse);
 

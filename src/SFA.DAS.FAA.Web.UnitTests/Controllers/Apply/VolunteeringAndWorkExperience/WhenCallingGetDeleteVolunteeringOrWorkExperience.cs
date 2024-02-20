@@ -4,21 +4,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteVolunteeringOrWorkExperience;
+using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.VolunteeringAndWorkExperience;
-public class WhenGettingDeleteVolunteeringAndWorkExperience
+public class WhenCallingGetDeleteVolunteeringOrWorkExperience
 {
     [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_Delete_VolunteeringOrWorkExperience_View_Is_Returned(
         Guid candidateId,
         Guid applicationId,
         Guid id,
-        GetDeleteVolunteeringOrWorkExperienceQueryResult result,
+        GetVolunteeringOrWorkExperienceItemQueryResult result,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] Web.Controllers.Apply.VolunteeringAndWorkExperienceController controller)
     {
@@ -30,7 +30,7 @@ public class WhenGettingDeleteVolunteeringAndWorkExperience
                         { new(CustomClaims.CandidateId, candidateId.ToString()) }))
             }
         };
-        mediator.Setup(x => x.Send(It.IsAny<GetDeleteVolunteeringOrWorkExperienceQuery>(), It.IsAny<CancellationToken>()))
+        mediator.Setup(x => x.Send(It.IsAny<GetVolunteeringOrWorkExperienceItemQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
         var actual = await controller.GetDeleteVolunteeringOrWorkExperience(applicationId, id) as ViewResult;
