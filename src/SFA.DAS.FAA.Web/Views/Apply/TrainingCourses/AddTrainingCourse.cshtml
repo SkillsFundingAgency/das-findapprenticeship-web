@@ -3,21 +3,24 @@
 @model SFA.DAS.FAA.Web.Models.Apply.AddTrainingCourseViewModel
 
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.TrainingCourses, new { Model.ApplicationId })">
+    <a class="govuk-back-link"
+        href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.TrainingCourses, new { Model.ApplicationId })">
         Back
     </a>
 }
-<partial name="_ValidationSummary" />
-<span class="govuk-caption-l">Education history</span>
-<h1 class="govuk-heading-l govuk-!-margin-bottom-8">Add a training course</h1>
-<form class="form" method="post">
 
-    <partial name="_TrainingCourseForm" model="@Model" />
-
-    <div class="govuk-button-group" href="application-summary-jobs.html">
-        <button class="govuk-button" data-module="govuk-button">
-            Save and continue
-        </button>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Education history</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-8">Add a training course</h1>
+        <form class="form" method="post">
+            <partial name="_TrainingCourseForm" model="@Model" />
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Save and continue
+                </button>
+            </div>
+        </form>
     </div>
-
-</form>
+</div>

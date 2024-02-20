@@ -12,6 +12,14 @@ public class AddTrainingCourseViewModelValidator : AbstractValidator<AddTraining
     }
 }
 
+public class EditTrainingCourseViewModelValidator : AbstractValidator<EditTrainingCourseViewModel>
+{
+    public EditTrainingCourseViewModelValidator(IDateTimeService dateTimeService)
+    {
+        Include(new TrainingCourseViewModelBaseValidator(dateTimeService));
+    }
+}
+
 public class TrainingCourseViewModelBaseValidator : AbstractValidator<TrainingCourseViewModelBase>
 {
     private const string CourseNameErrorMessage = "Enter the name of this training course";

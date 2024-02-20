@@ -10,7 +10,7 @@ public static class AddDataProtectionExtensions
     public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
     {
         var config = configuration.GetSection(nameof(FindAnApprenticeship))
-            .Get<FindAnApprenticeship>();
+            .Get<Domain.Configuration.FindAnApprenticeship>();
 
         if (config != null 
             && !string.IsNullOrEmpty(config.DataProtectionKeysDatabase) 
