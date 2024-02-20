@@ -8,7 +8,13 @@ public class TrainingCoursesViewModelValidator : AbstractValidator<TrainingCours
     public TrainingCoursesViewModelValidator()
     {
         RuleFor(x => x.DoYouWantToAddAnyTrainingCourses)
-        .NotNull()
-        .WithMessage("Select if you want to add any training courses");
+            .NotNull()
+            .When(x => x.ShowTrainingCoursesAchieved is false)
+            .WithMessage("Select if you want to add any training courses");
+
+        RuleFor(x => x.IsSectionComplete)
+            .NotNull()
+            .When(x => x.ShowTrainingCoursesAchieved)
+            .WithMessage("Select if you have finished this section");
     }
 }
