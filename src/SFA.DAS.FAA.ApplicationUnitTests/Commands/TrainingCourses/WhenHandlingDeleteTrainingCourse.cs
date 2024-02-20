@@ -3,16 +3,10 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.DeleteTrainingCourse;
 using SFA.DAS.FAA.Domain.Apply.DeleteTrainingCourse;
-using SFA.DAS.FAA.Domain.Apply.WorkHistory;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 using SFA.DAS.Testing.AutoFixture;
 using SFA.FAA.FindAnApprenticeship.Application.TrainingCourses.DeleteTrainingCourse;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.TrainingCourses
 {

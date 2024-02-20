@@ -2,13 +2,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Apply.DeleteTrainingCourse;
-using SFA.DAS.FAA.Domain.Apply.WorkHistory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static SFA.DAS.FAA.Domain.Apply.WorkHistory.PostDeleteJobApiRequest;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.TrainingCourses
 {
