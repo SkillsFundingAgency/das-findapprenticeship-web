@@ -11,6 +11,6 @@ public class WhenBuildingGetSkillsAndStrengthsApiRequest
     {
         var request = new GetSkillsAndStrengthsApiRequest(applicationId, candidateId);
 
-        request.GetUrl.Should().BeEquivalentTo($"applications/{applicationId}/volunteeringorworkexperience?candidateId={candidateId}");
+        request.GetUrl.Should().BeEquivalentTo($"applications/{applicationId}/skillsandstrengths?candidateId={candidateId}");
     }
 }
