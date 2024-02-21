@@ -32,5 +32,6 @@ public static class RouteNames
         public const string DeleteTrainingCourse = nameof(DeleteTrainingCourse);
         public const string VolunteeringAndWorkExperience = nameof(VolunteeringAndWorkExperience);
         public const string DeleteVolunteeringOrWorkExperience = nameof(DeleteVolunteeringOrWorkExperience);
+        public const string SkillsAndStrengths = nameof(SkillsAndStrengths);
     }
 }
