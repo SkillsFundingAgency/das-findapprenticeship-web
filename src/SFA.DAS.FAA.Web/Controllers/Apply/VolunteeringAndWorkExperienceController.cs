@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
+using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -11,6 +13,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply;
 public class VolunteeringAndWorkExperienceController(IMediator mediator) : Controller
 {
     private const string ViewPath = "~/Views/apply/volunteeringandworkexperience/List.cshtml";
+    private const string AddViewPath = "~/Views/apply/VolunteeringAndWorkExperience/AddVolunteeringAndWorkExperience.cshtml";
 
     [HttpGet]
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
@@ -42,6 +45,44 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         await mediator.Send(command);
 
-        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? RedirectToRoute("/") : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
+        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value 
+            ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { model.ApplicationId }) 
+            : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/volunteering-and-work-experience/add", Name = RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience)]
+    public IActionResult GetAddVolunteeringAndWorkExperience([FromRoute] Guid applicationId)
+    {
+        var viewModel = new AddVolunteeringAndWorkExperienceViewModel
+        {
+            ApplicationId = applicationId
+        };
+
+        return View(AddViewPath, viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/volunteering-and-work-experience/add", Name = RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience)]
+    public async Task<IActionResult> PostAddVolunteeringAndWorkExperience(AddVolunteeringAndWorkExperienceViewModel request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(AddViewPath, request);
+        }
+
+        var command = new AddVolunteeringAndWorkExperienceCommand
+        {
+            ApplicationId = request.ApplicationId,
+            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CompanyName = request.CompanyName,
+            Description = request.Description,
+            StartDate = request.StartDate.DateTimeValue.Value,
+            EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+        };
+
+        await mediator.Send(command);
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience, new { request.ApplicationId });
     }
 }
