@@ -15,6 +15,6 @@ public class WhenBuildingGetVolunteeringAndWorkExperiencesApiRequest
     {
         var actual = new GetVolunteeringAndWorkExperiencesApiRequest(applicationId, candidateId);
 
-        actual.GetUrl.Should().Be($"applications/{applicationId}/workExperiences?candidateId={candidateId}");
+        actual.GetUrl.Should().Be($"applications/{applicationId}/volunteeringorworkexperience?candidateId={candidateId}");
     }
 }

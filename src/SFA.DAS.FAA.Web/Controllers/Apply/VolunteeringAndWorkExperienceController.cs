@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteVolunteeringOrWorkExperience;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
@@ -19,6 +20,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
     private const string ViewPath = "~/Views/apply/volunteeringandworkexperience/List.cshtml";
     private const string AddViewPath = "~/Views/apply/VolunteeringAndWorkExperience/AddVolunteeringAndWorkExperience.cshtml";
     private const string SummaryViewPath = "~/Views/apply/VolunteeringAndWorkExperience/Summary.cshtml";
+    private const string DeleteViewPath = "~/Views/apply/volunteeringandworkexperience/DeleteVolunteeringOrWorkExperience.cshtml";
 
     [HttpGet]
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
@@ -106,8 +108,6 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         return View(SummaryViewPath, new VolunteeringAndWorkExperienceSummaryViewModel
         {
             ApplicationId = applicationId,
-            ChangeLinkUrl = string.Empty, //TODO: Redirect the user to the Edit Page
-            DeleteLinkUrl = string.Empty, //TODO: Redirect the user to the Delete Page
             AddAnotherVolunteeringAndWorkExperienceLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { applicationId }),
             BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
             WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
@@ -129,8 +129,6 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             viewModel = new VolunteeringAndWorkExperienceSummaryViewModel
             {
                 ApplicationId = viewModel.ApplicationId,
-                ChangeLinkUrl = string.Empty, //TODO: Redirect the user to the Edit Page
-                DeleteLinkUrl = string.Empty, //TODO: Redirect the user to the Delete Page
                 AddAnotherVolunteeringAndWorkExperienceLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { viewModel.ApplicationId }),
                 BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { viewModel.ApplicationId }),
                 WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
@@ -150,5 +148,21 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         await mediator.Send(command);
 
         return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience)]
+    public async Task<IActionResult> GetDeleteVolunteeringOrWorkExperience([FromRoute] Guid applicationId, Guid volunteeringWorkExperienceId)
+    {
+        var result = await mediator.Send(new GetDeleteVolunteeringOrWorkExperienceQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            Id = volunteeringWorkExperienceId
+        });
+
+        var viewModel = (DeleteVolunteeringOrWorkExperienceViewModel)result;
+
+        return View(DeleteViewPath, viewModel);
     }
 }

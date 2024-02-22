@@ -4,6 +4,6 @@ namespace SFA.DAS.FAA.Domain.Apply.WorkHistory.SummaryVolunteeringAndWorkExperie
 {
     public record GetVolunteeringAndWorkExperiencesApiRequest(Guid ApplicationId, Guid CandidateId) : IGetApiRequest
     {
-        public string GetUrl => $"applications/{ApplicationId}/workExperiences?candidateId={CandidateId}";
+        public string GetUrl => $"applications/{ApplicationId}/volunteeringorworkexperience?candidateId={CandidateId}";
     }
 }

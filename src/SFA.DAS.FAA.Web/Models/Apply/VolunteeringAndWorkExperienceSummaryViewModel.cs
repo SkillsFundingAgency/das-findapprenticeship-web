@@ -7,8 +7,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         [FromRoute]
         public required Guid ApplicationId { get; init; }
         public string? BackLinkUrl { get; init; }
-        public string? DeleteLinkUrl { get; init; }
-        public string? ChangeLinkUrl { get; init; }
         public string? AddAnotherVolunteeringAndWorkExperienceLinkUrl { get; init; }
         [BindProperty]
         public bool? IsSectionCompleted { get; init; }

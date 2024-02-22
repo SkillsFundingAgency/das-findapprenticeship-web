@@ -1,4 +1,5 @@
-﻿@model SFA.DAS.FAA.Web.Models.Apply.VolunteeringAndWorkExperienceSummaryViewModel
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Apply.VolunteeringAndWorkExperienceSummaryViewModel
 @{
     ViewData["Title"] = "Volunteering and work experience - Find an apprenticeship - GOV.UK";
 }
@@ -17,12 +18,12 @@
                     <h2 class="govuk-summary-card__title">@work.JobTitle</h2>
                     <ul class="govuk-summary-card__actions">
                         <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="@Model.DeleteLinkUrl">
+                            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience, new {Model.ApplicationId, volunteeringWorkExperienceId = work.Id})">
                                 Delete<span class="govuk-visually-hidden"> jobs and work experience</span>
                             </a>
                         </li>
                         <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="@Model.ChangeLinkUrl">
+                            <a class="govuk-link" href="#">
                                 Change<span class="govuk-visually-hidden"> jobs and work experience</span>
                             </a>
                         </li>
