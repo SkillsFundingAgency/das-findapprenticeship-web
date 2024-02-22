@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Apply\UpdateJob\" />
+    <Folder Include="Apply\WorkHistory\AddVolunteeringAndWorkExperience\" />
     <Folder Include="Configuration\" />
   </ItemGroup>
 
