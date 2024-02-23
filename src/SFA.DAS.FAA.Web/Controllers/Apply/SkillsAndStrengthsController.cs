@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.SkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetEmployerSkillsAndStrengths;
+using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
@@ -20,10 +21,10 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
     [Route("apply/{applicationId}/skillsandstrengths/", Name = RouteNames.ApplyApprenticeship.SkillsAndStrengths)]
     public async Task<IActionResult> Get([FromRoute] Guid applicationId)
     {
-        var result = await mediator.Send(new GetSkillsAndStrengthsQuery
+        var expectedResult = await mediator.Send(new GetExpectedSkillsAndStrengthsQuery
         {
             ApplicationId = applicationId,
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+            CandidateId = User.Claims.CandidateId()
         });
 
         var viewModel = (SkillsAndStrengthsViewModel)result;
@@ -35,7 +36,13 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
     {
         if (!ModelState.IsValid)
         {
-            var result = await mediator.Send(new GetSkillsAndStrengthsQuery
+            var expectedResult = await mediator.Send(new GetExpectedSkillsAndStrengthsQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId()
+            });
+
+            var candidateResult = await mediator.Send(new GetCandidateSkillsAndStrengthsQuery
             {
                 ApplicationId = applicationId,
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)

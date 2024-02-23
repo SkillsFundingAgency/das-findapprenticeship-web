@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetEmployerSkillsAndStrengths;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +12,7 @@ using System.Security.Claims;
 using FluentAssertions.Execution;
 using FluentAssertions;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.SkillsAndStrengths;
 public class WhenCallingGet
@@ -21,7 +21,7 @@ public class WhenCallingGet
     public async Task Then_Mediator_Is_Called_And_View_Returned(
         Guid candidateId,
         Guid applicationId,
-        GetSkillsAndStrengthsQueryResult queryResult,
+        GetExpectedSkillsAndStrengthsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
         var mockUrlHelper = new Mock<IUrlHelper>();
@@ -43,7 +43,7 @@ public class WhenCallingGet
             }
         };
 
-        mediator.Setup(x => x.Send(It.Is<GetSkillsAndStrengthsQuery>
+        mediator.Setup(x => x.Send(It.Is<GetExpectedSkillsAndStrengthsQuery>
             (x => x.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 

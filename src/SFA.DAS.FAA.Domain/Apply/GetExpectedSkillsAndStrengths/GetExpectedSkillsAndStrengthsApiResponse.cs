@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-
-namespace SFA.DAS.FAA.Domain.Apply.GetEmployerSkillsAndStrengths;
-public class GetSkillsAndStrengthsApiResponse
+﻿namespace SFA.DAS.FAA.Domain.Apply.GetEmployerSkillsAndStrengths;
+public class GetExpectedSkillsAndStrengthsApiResponse
 {
     public Guid ApplicationId { get; set; }
     public Guid CandidateId { get; set; }
