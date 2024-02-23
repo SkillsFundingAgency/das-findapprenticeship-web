@@ -13,6 +13,6 @@ public class WhenBuildingUpdateSkillsAndStrengthsApplicationApiRequest
     {
         var actual = new UpdateSkillsAndStrengthsApplicationApiRequest(applicationId, candidateId, new UpdateSkillsAndStrengthsApplicationModel());
 
-        actual.PostUrl.Should().Be($"applications/{applicationId}/{candidateId}/skillsandstrengths");
+        actual.PostUrl.Should().Be($"applications/{applicationId}/{candidateId}/skills-and-strengths");
     }
 }

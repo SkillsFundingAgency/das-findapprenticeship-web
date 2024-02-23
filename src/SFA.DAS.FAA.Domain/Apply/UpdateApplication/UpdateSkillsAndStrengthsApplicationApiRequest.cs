@@ -10,5 +10,5 @@ public record UpdateSkillsAndStrengthsApplicationApiRequest
 {
     public object Data { get; set; } = UpdateApplicationModel;
 
-    public string PostUrl => $"applications/{ApplicationId}/{CandidateId}/skillsandstrengths";
+    public string PostUrl => $"applications/{ApplicationId}/{CandidateId}/skills-and-strengths";
 }
