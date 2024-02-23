@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
+using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.UpdateVolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Commands.VolunteeringOrWorkExperience.DeleteVolunteeringOrWorkExperience;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
+using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Domain.Enums;
@@ -20,8 +23,10 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 {
     private const string ViewPath = "~/Views/apply/volunteeringandworkexperience/List.cshtml";
     private const string AddViewPath = "~/Views/apply/VolunteeringAndWorkExperience/AddVolunteeringAndWorkExperience.cshtml";
+    private const string EditViewPath = "~/Views/apply/volunteeringandworkexperience/EditVolunteeringAndWorkExperience.cshtml";
     private const string SummaryViewPath = "~/Views/apply/VolunteeringAndWorkExperience/Summary.cshtml";
     private const string DeleteViewPath = "~/Views/apply/volunteeringandworkexperience/DeleteVolunteeringOrWorkExperience.cshtml";
+
 
     [HttpGet]
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
@@ -149,6 +154,47 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         await mediator.Send(command);
 
         return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}", Name = RouteNames.ApplyApprenticeship.EditVolunteeringAndWorkExperience)]
+    public async Task<IActionResult> GetEditVolunteeringAndWorkExperience([FromRoute] Guid applicationId, Guid volunteeringWorkExperienceId)
+    {
+        var result = await mediator.Send(new GetVolunteeringOrWorkExperienceItemQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = User.Claims.CandidateId(),
+            Id = volunteeringWorkExperienceId
+        });
+
+        var viewModel = (EditVolunteeringAndWorkExperienceViewModel)result;
+
+        return View(EditViewPath, viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}", Name = RouteNames.ApplyApprenticeship.EditVolunteeringAndWorkExperience)]
+    public async Task<IActionResult> PostEditVolunteeringAndWorkExperience(EditVolunteeringAndWorkExperienceViewModel request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(EditViewPath, request);
+        }
+
+        var command = new UpdateVolunteeringAndWorkExperienceCommand
+        {
+            VolunteeringOrWorkExperienceId = request.VolunteeringOrWorkExperienceId,
+            ApplicationId = request.ApplicationId,
+            CandidateId = User.Claims.CandidateId(),
+            CompanyName = request.CompanyName,
+            Description = request.Description,
+            StartDate = request.StartDate.DateTimeValue.Value,
+            EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+        };
+
+        await mediator.Send(command);
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary, new { request.ApplicationId });
     }
 
     [HttpGet]
