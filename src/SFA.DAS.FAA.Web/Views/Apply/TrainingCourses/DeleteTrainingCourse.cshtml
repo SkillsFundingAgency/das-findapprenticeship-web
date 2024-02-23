@@ -4,7 +4,7 @@
 <div class="govuk-width-container">
 
     @section BackLink {
-        <a class="govuk-back-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-applicationId="@Model.ApplicationId">Back</a>
+        <a class="govuk-back-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-trainingCourseId="@Model.TrainingCourseId" asp-route-applicationId="@Model.ApplicationId">Back</a>
     }
 
     <main class="govuk-main-wrapper " id="main-content" role="main">
@@ -38,7 +38,7 @@
                         <button class="govuk-button govuk-button--warning" data-module="govuk-button">
                             Yes, delete
                         </button>
-                        <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-applicationId="@Model.ApplicationId" "> Cancel – don't delete</a>
+                        <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-trainingCourseId="@Model.TrainingCourseId" asp-route-applicationId="@Model.ApplicationId"> Cancel – don't delete</a>
                     </div>
 
                 </form>
