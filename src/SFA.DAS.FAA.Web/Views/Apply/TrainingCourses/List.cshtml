@@ -24,12 +24,12 @@
                         <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
                         <ul class="govuk-summary-card__actions">
                             <li class="govuk-summary-card__action">
-                                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteTrainingCourse, new {Model.ApplicationId, TrainingCourseId = trainingCourse.Id})">
+                                <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trianingCourseId="@trainingCourse.Id">
                                     Delete<span class="govuk-visually-hidden"> training course</span>
                                 </a>
                             </li>
                             <li class="govuk-summary-card__action">
-                                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EditTrainingCourse, new {Model.ApplicationId, TrainingCourseId = trainingCourse.Id})">
+                                <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.EditTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trianingCourseId="@trainingCourse.Id">
                                     Change<span class="govuk-visually-hidden"> training course</span>
                                 </a>
                             </li>

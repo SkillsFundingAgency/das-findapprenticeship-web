@@ -10,6 +10,9 @@ public class GetDeleteTrainingCourseQueryResult
 
     public static implicit operator GetDeleteTrainingCourseQueryResult(GetDeleteTrainingCourseApiResponse source)
     {
+        if (source == null)
+            return null;
+
         return new GetDeleteTrainingCourseQueryResult
         {
             Id = source.Id,

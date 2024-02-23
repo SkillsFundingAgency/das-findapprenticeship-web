@@ -10,6 +10,7 @@ using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourses;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
@@ -174,7 +175,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         var result = await mediator.Send(new GetDeleteTrainingCourseQuery
         {
             ApplicationId = applicationId,
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             TrainingCourseId = trainingCourseId
         });
 
@@ -191,7 +192,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         {
             var command = new DeleteTrainingCourseCommand
             {
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = User.Claims.CandidateId(),
                 ApplicationId = model.ApplicationId,
                 TrainingCourseId = model.TrainingCourseId
             };
