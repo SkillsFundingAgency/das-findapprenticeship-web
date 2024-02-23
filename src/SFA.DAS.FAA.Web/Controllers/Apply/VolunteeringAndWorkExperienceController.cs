@@ -91,7 +91,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         await mediator.Send(command);
 
-        return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience, new { request.ApplicationId });
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary, new { request.ApplicationId });
     }
 
     [HttpGet]
