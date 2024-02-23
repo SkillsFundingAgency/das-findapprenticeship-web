@@ -1,12 +1,12 @@
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
-using SFA.DAS.FAA.Web.Models.Apply;
 using Microsoft.AspNetCore.Authorization;
-using SFA.DAS.FAA.Web.AppStart;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var query = new GetIndexQuery
             {
                 ApplicationId = request.ApplicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c=>c.Type.Equals(CustomClaims.CandidateId)).Value)  
+                CandidateId = User.Claims.CandidateId() 
             };
 
             var result = await mediator.Send(query);

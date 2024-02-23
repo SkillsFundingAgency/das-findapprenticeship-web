@@ -1,17 +1,17 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob;
+using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.FAA.Web.Authentication;
-using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
-using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
-using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob;
 using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
@@ -28,7 +28,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetJobsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                CandidateId = User.Claims.CandidateId()
             });
 
             var viewModel = new JobsViewModel
@@ -50,7 +50,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetJobsQuery
                 {
                     ApplicationId = viewModel.ApplicationId,
-                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                    CandidateId = User.Claims.CandidateId()
                 });
 
                 viewModel = new JobsViewModel
@@ -67,7 +67,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 var completeSectionCommand = new UpdateWorkHistoryApplicationCommand
                 {
-                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                    CandidateId = User.Claims.CandidateId(),
                     ApplicationId = viewModel.ApplicationId,
                     WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.InProgress
                 };
@@ -79,7 +79,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             var command = new UpdateWorkHistoryApplicationCommand
             {
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = User.Claims.CandidateId(),
                 ApplicationId = viewModel.ApplicationId,
                 WorkHistorySectionStatus = viewModel.DoYouWantToAddAnyJobs.Value ? SectionStatus.InProgress : SectionStatus.Completed
             };
@@ -115,7 +115,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var command = new AddJobCommand
             {
                 ApplicationId = request.ApplicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = User.Claims.CandidateId(),
                 EmployerName = request.EmployerName,
                 JobDescription = request.JobDescription,
                 JobTitle = request.JobTitle,
@@ -135,7 +135,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetJobQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = User.Claims.CandidateId(),
                 JobId = jobId
             });
 
@@ -157,7 +157,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 JobId = request.JobId,
                 ApplicationId = request.ApplicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = User.Claims.CandidateId(),
                 EmployerName = request.EmployerName,
                 JobDescription = request.JobDescription,
                 JobTitle = request.JobTitle,
@@ -177,7 +177,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetDeleteJobQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = User.Claims.CandidateId(),
                 JobId = jobId
             });
 
@@ -194,7 +194,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 var command = new PostDeleteJobCommand
                 {
-                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                    CandidateId = User.Claims.CandidateId(),
                     ApplicationId = model.ApplicationId,
                     JobId = model.JobId
                 };

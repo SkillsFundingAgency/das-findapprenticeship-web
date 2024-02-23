@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
-using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteVolunteeringOrWorkExperience;
+using SFA.DAS.FAA.Application.Commands.VolunteeringOrWorkExperience.DeleteVolunteeringOrWorkExperience;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
+using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 
@@ -45,7 +46,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         var command = new UpdateVolunteeringAndWorkExperienceApplicationCommand
         {
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             ApplicationId = model.ApplicationId,
             VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? SectionStatus.InProgress : SectionStatus.Completed
         };
@@ -81,7 +82,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         var command = new AddVolunteeringAndWorkExperienceCommand
         {
             ApplicationId = request.ApplicationId,
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             CompanyName = request.CompanyName,
             Description = request.Description,
             StartDate = request.StartDate.DateTimeValue.Value,
@@ -100,7 +101,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         var query = new GetVolunteeringAndWorkExperiencesQuery
         {
             ApplicationId = applicationId,
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+            CandidateId = User.Claims.CandidateId()
         };
 
         var result = await mediator.Send(query);
@@ -123,7 +124,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             var result = await mediator.Send(new GetVolunteeringAndWorkExperiencesQuery
             {
                 ApplicationId = viewModel.ApplicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                CandidateId = User.Claims.CandidateId()
             });
 
             viewModel = new VolunteeringAndWorkExperienceSummaryViewModel
@@ -138,7 +139,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         var command = new UpdateVolunteeringAndWorkExperienceApplicationCommand
         {
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             ApplicationId = viewModel.ApplicationId,
             VolunteeringAndWorkExperienceSectionStatus = viewModel.IsSectionCompleted.HasValue && viewModel.IsSectionCompleted.Value
                 ? SectionStatus.Completed 
@@ -152,17 +153,40 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpGet]
     [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience)]
-    public async Task<IActionResult> GetDeleteVolunteeringOrWorkExperience([FromRoute] Guid applicationId, Guid volunteeringWorkExperienceId)
+    public async Task<IActionResult> GetDelete([FromRoute] Guid applicationId, Guid volunteeringWorkExperienceId)
     {
-        var result = await mediator.Send(new GetDeleteVolunteeringOrWorkExperienceQuery
+        var result = await mediator.Send(new GetVolunteeringOrWorkExperienceItemQuery
         {
             ApplicationId = applicationId,
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             Id = volunteeringWorkExperienceId
         });
 
         var viewModel = (DeleteVolunteeringOrWorkExperienceViewModel)result;
 
         return View(DeleteViewPath, viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience)]
+    public async Task<IActionResult> PostDelete(DeleteVolunteeringOrWorkExperienceViewModel model)
+    {
+        try
+        {
+            var command = new DeleteVolunteeringOrWorkExperienceCommand
+            {
+                CandidateId = User.Claims.CandidateId(),
+                ApplicationId = model.ApplicationId,
+                Id = model.VolunteeringWorkExperienceId
+            };
+            await mediator.Send(command);
+        }
+        catch (InvalidOperationException e)
+        {
+            ModelState.AddModelError(nameof(DeleteVolunteeringOrWorkExperienceViewModel), "There's been a problem");
+            return View(DeleteViewPath);
+        }
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary, new { model.ApplicationId });
     }
 }
