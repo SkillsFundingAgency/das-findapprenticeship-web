@@ -63,7 +63,7 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
 
         var createCommand = new CreateSkillsAndStrengthsCommand
         {
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             ApplicationId = viewModel.ApplicationId,
             SkillsAndStrengths = viewModel.SkillsAndStrengths
         };
@@ -72,7 +72,7 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
 
         var updateStatusCommand = new UpdateSkillsAndStrengthsApplicationCommand
         {
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             ApplicationId = viewModel.ApplicationId,
             SkillsAndStrengthsSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.InProgress
         };

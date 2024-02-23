@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.SkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetCandidateSkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
@@ -23,7 +24,7 @@ public class WhenCallingPost
     public async Task And_ModelState_Is_Valid_Then_Redirected_To_TaskList(
         Guid candidateId,
         Guid applicationId,
-        UpdateSkillsAndStrengthsApplicationCommandResult result,
+        UpdateSkillsAndStrengthsApplicationCommandResult updateApplicationResult,
         GetExpectedSkillsAndStrengthsQueryResult expectedSkills,
         GetCandidateSkillsAndStrengthsQueryResult candidateSkills,
         [Frozen] Mock<IMediator> mediator,
@@ -47,7 +48,11 @@ public class WhenCallingPost
         mediator.Setup(x => x.Send(It.Is<UpdateSkillsAndStrengthsApplicationCommand>(c =>
         c.ApplicationId.Equals(request.ApplicationId)
                 && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(result);
+            .ReturnsAsync(updateApplicationResult);
+
+        mediator.Setup(x => x.Send(It.Is<CreateSkillsAndStrengthsCommand>(c =>
+        c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
+            .Returns(() => Task.CompletedTask);
 
         var actual = await controller.Post(request.ApplicationId, request) as RedirectToRouteResult;
 

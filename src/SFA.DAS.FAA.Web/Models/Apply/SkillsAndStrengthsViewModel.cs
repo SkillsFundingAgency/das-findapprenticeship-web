@@ -25,4 +25,9 @@ public class SkillsAndStrengthsViewModel
         SkillsAndStrengths = candidateSkillsAndStrengths.SkillsAndStrengths;
     }
 
+    public SkillsAndStrengthsViewModel()
+    {
+        
+    }
+
 }
