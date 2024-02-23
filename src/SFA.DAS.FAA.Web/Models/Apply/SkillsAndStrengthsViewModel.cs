@@ -1,25 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Queries.Apply.GetEmployerSkillsAndStrengths;
+using SFA.DAS.FAA.Application.Queries.Apply.GetCandidateSkillsAndStrengths;
+using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
 public class SkillsAndStrengthsViewModel
 {
     [FromRoute]
-    public required Guid ApplicationId { get; init; }
+    public Guid ApplicationId { get; init; }
     public bool? IsSectionComplete { get; set; }
     public string? SkillsAndStrengths { get; set; }
 
-    public string Employer { get; set; }
-    public List<string> ExpectedSkillsAndStrengths { get; set; }
+    public string? Employer { get; set; }
+    public List<string>? ExpectedSkillsAndStrengths { get; set; }
 
-    public static implicit operator SkillsAndStrengthsViewModel(GetSkillsAndStrengthsQueryResult source)
+    public SkillsAndStrengthsViewModel(
+        GetExpectedSkillsAndStrengthsQueryResult expectedSkillsAndStrengths, 
+        GetCandidateSkillsAndStrengthsQueryResult? candidateSkillsAndStrengths,
+        Guid applicationId)
     {
-        return new SkillsAndStrengthsViewModel
-        {
-            ApplicationId = source.ApplicationId,
-            Employer = source.Employer,
-            ExpectedSkillsAndStrengths = source.ExpectedSkillsAndStrengths.ToList()
-        };
+        ApplicationId = applicationId;
+        Employer = expectedSkillsAndStrengths.Employer;
+        ExpectedSkillsAndStrengths = expectedSkillsAndStrengths.ExpectedSkillsAndStrengths.ToList();
+        SkillsAndStrengths = candidateSkillsAndStrengths.SkillsAndStrengths;
     }
+
 }

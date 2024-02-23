@@ -19,7 +19,7 @@ public class WhenHandlingGetExpectedSkillsAndStrengthQuery
         [Greedy] GetExpectedSkillsAndStrengthsQueryHandler handler)
     {
         apiClient.Setup(x => x.Get<GetExpectedSkillsAndStrengthsApiResponse>(It.Is<GetExpectedSkillsAndStrengthsApiRequest>
-            (x => x.GetUrl.Equals($"applications/{query.ApplicationId}/volunteeringorworkexperience?candidateId={query.CandidateId}"))))
+            (x => x.GetUrl.Equals($"applications/{query.ApplicationId}/skillsandstrengths/expected?candidateId={query.CandidateId}"))))
             .ReturnsAsync(apiResponse);
 
         var actual = await handler.Handle(query, CancellationToken.None);

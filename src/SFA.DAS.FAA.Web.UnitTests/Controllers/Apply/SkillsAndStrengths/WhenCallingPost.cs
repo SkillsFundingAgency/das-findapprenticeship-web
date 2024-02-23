@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.SkillsAndStrengths;
+using SFA.DAS.FAA.Application.Queries.Apply.GetCandidateSkillsAndStrengths;
+using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -20,11 +22,14 @@ public class WhenCallingPost
     [Test, MoqAutoData]
     public async Task And_ModelState_Is_Valid_Then_Redirected_To_TaskList(
         Guid candidateId,
+        Guid applicationId,
         UpdateSkillsAndStrengthsApplicationCommandResult result,
+        GetExpectedSkillsAndStrengthsQueryResult expectedSkills,
+        GetCandidateSkillsAndStrengthsQueryResult candidateSkills,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SkillsAndStrengthsController controller)
     {
-        var request = new SkillsAndStrengthsViewModel
+        var request = new SkillsAndStrengthsViewModel(expectedSkills, candidateSkills, applicationId)
         {
             ApplicationId = Guid.NewGuid(),
             IsSectionComplete = true
