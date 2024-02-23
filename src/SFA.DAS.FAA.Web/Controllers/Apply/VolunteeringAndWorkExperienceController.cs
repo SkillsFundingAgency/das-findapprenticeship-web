@@ -13,6 +13,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply;
 public class VolunteeringAndWorkExperienceController(IMediator mediator) : Controller
 {
     private const string ViewPath = "~/Views/apply/volunteeringandworkexperience/List.cshtml";
+    private const string AddViewPath = "~/Views/apply/VolunteeringAndWorkExperience/AddVolunteeringAndWorkExperience.cshtml";
 
     [HttpGet]
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
@@ -44,7 +45,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         await mediator.Send(command);
 
-        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? RedirectToRoute("/") : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
+        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value 
     }
 
     [HttpGet]
