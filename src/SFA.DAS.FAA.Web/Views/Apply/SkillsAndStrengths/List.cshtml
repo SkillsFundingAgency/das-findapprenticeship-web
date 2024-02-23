@@ -14,7 +14,7 @@
         <span class="govuk-caption-l">Application questions</span>
         <h1 class="govuk-heading-l">What are your skills and strengths?</h1>
         <p class="govuk-body">Tell this company what you can bring to the apprenticeship.</p>
-        <h3 class="govuk-heading-m">Skills wanted for this apprenticeship</h3>
+        <h2 class="govuk-heading-m">Skills wanted for this apprenticeship</h2>
 
         <div class="govuk-inset-text">
             <p class="govuk-body"><b>@Model.Employer</b> is looking for people with:</p>
@@ -54,13 +54,13 @@
                     <span das-validation-for="IsSectionComplete" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsSectionComplete" type="radio" value="true">
+                            <input class="govuk-radios__input" asp-for="IsSectionComplete" type="radio" value="true" id="IsSectionComplete">
                             <label class="govuk-label govuk-radios__label" for="IsSectionComplete">
                                 Yes, I've completed this section
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsSectionComplete" id="IsSectionComplete-No" type="radio" value="false" aria-controls="current-role-end-date" aria-expanded="false">
+                            <input class="govuk-radios__input" asp-for="IsSectionComplete" id="IsSectionComplete-No" type="radio" value="false">
                             <label class="govuk-label govuk-radios__label" for="IsSectionComplete-No">
                                 No, I'll come back to it later (saves your answer)
                             </label>
