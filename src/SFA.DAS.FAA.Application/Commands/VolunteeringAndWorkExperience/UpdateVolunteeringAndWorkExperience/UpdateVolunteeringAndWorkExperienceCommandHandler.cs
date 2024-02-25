@@ -8,10 +8,7 @@ public record UpdateVolunteeringAndWorkExperienceCommandHandler : IRequestHandle
 {
     private readonly IApiClient _apiClient;
 
-    public UpdateVolunteeringAndWorkExperienceCommandHandler(IApiClient apiClient)
-    {
-        _apiClient = apiClient;
-    }
+    public UpdateVolunteeringAndWorkExperienceCommandHandler(IApiClient apiClient) => _apiClient = apiClient;
 
     public async Task Handle(UpdateVolunteeringAndWorkExperienceCommand request, CancellationToken cancellationToken)
     {

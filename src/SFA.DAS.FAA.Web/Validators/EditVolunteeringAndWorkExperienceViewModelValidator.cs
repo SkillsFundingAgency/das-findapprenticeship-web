@@ -6,15 +6,15 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Validators
 {
-    public class AddVolunteeringAndWorkExperienceViewModelValidator : AbstractValidator<AddVolunteeringAndWorkExperienceViewModel>
+    public class EditVolunteeringAndWorkExperienceViewModelValidator : AbstractValidator<EditVolunteeringAndWorkExperienceViewModel>
     {
-        public AddVolunteeringAndWorkExperienceViewModelValidator(IDateTimeService dateTimeService)
+        public EditVolunteeringAndWorkExperienceViewModelValidator(IDateTimeService dateTimeService)
         {
-            Include(new AddVolunteeringAndWorkExperienceViewModelBaseValidator(dateTimeService));
+            Include(new EditVolunteeringAndWorkExperienceViewModelBaseValidator(dateTimeService));
         }
     }
 
-    public class AddVolunteeringAndWorkExperienceViewModelBaseValidator : AbstractValidator<VolunteeringAndWorkExperienceViewModelBase>
+    public class EditVolunteeringAndWorkExperienceViewModelBaseValidator : AbstractValidator<VolunteeringAndWorkExperienceViewModelBase>
     {
         private const string CompanyNameErrorMessage = "Enter the company or organisation for this volunteering or work experience";
         private const string JobDescriptionErrorMessage = "Enter what you did for this volunteering or work experience";
@@ -26,7 +26,7 @@ namespace SFA.DAS.FAA.Web.Validators
         private const string EndDateIsInThePastErrorMessage = "The end date must be in the past";
         private const string EndDateMustBeGreaterThanStartDate = "The end date must be after the start date";
 
-        public AddVolunteeringAndWorkExperienceViewModelBaseValidator(IDateTimeService dateTimeService)
+        public EditVolunteeringAndWorkExperienceViewModelBaseValidator(IDateTimeService dateTimeService)
         {
             RuleFor(x => x.CompanyName).NotEmpty().WithMessage(CompanyNameErrorMessage);
             
