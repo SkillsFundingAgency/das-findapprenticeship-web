@@ -3,50 +3,94 @@
 @{
     ViewData["Title"] = "Volunteering and work experience - Find an apprenticeship - GOV.UK";
 }
-
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
-
-
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Work history</span>
         <h1 class="govuk-heading-l">Volunteering and work experience</h1>
-        <p class="govuk-body">You can add:</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>voluntary roles</li>
-            <li>work experience placements</li>
-            <li>internships</li>
-        </ul>
-        <p class="govuk-body govuk-!-padding-bottom-5">Use this section to show experience you've gained outside of paid
-            work.</p>
+        @if (Model.ShowVolunteeringAndWorkHistory)
+        {
+            foreach (var work in Model.WorkHistories)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">@work.Employer</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience, new {Model.ApplicationId, volunteeringWorkExperienceId = work.Id})">
+                                    Delete<span class="govuk-visually-hidden"> jobs and work experience</span>
+                                </a>
+                            </li>
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EditVolunteeringAndWorkExperience, new {Model.ApplicationId, volunteeringWorkExperienceId = work.Id})">
+                                    Change<span class="govuk-visually-hidden"> jobs and work experience</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    What you did
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @work.Description
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Dates
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @work.JobDates
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="govuk-body">You can add:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>voluntary roles</li>
+                <li>work experience placements</li>
+                <li>internships</li>
+            </ul>
+            <p class="govuk-body govuk-!-padding-bottom-5">
+                Use this section to show experience you've gained outside of paid
+                work.
+            </p>
+        }
         <form class="form" method="post">
             <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyVolunteeringOrWorkExperience"
-                error-class="govuk-form-group--error">
+                 error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Do you want to add any volunteering or work experience?
                     </legend>
                     <span das-validation-for="DoYouWantToAddAnyVolunteeringOrWorkExperience"
-                        class="govuk-error-message"></span>
+                          class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios" id="AddVolunteeringOrWorkExperience">
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" type="radio"
-                                asp-for="DoYouWantToAddAnyVolunteeringOrWorkExperience" value="true" type="radio" />
+                                   asp-for="DoYouWantToAddAnyVolunteeringOrWorkExperience" value="true" type="radio" />
                             <label class="govuk-label govuk-radios__label"
-                                for="DoYouWantToAddAnyVolunteeringOrWorkExperience">
+                                   for="DoYouWantToAddAnyVolunteeringOrWorkExperience">
                                 Yes
                             </label>
                         </div>
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" type="radio"
-                                asp-for="DoYouWantToAddAnyVolunteeringOrWorkExperience"
-                                id="DoYouWantToAddAnyVolunteeringOrWorkExperience-false" value="false" type="radio" />
+                                   asp-for="DoYouWantToAddAnyVolunteeringOrWorkExperience"
+                                   id="DoYouWantToAddAnyVolunteeringOrWorkExperience-false" value="false" type="radio" />
                             <label class="govuk-label govuk-radios__label"
-                                for="DoYouWantToAddAnyVolunteeringOrWorkExperience-false">
+                                   for="DoYouWantToAddAnyVolunteeringOrWorkExperience-false">
                                 No
                             </label>
                         </div>
