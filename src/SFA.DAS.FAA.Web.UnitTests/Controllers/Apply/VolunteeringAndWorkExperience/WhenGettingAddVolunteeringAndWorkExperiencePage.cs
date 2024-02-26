@@ -48,7 +48,7 @@ public class WhenGettingAddVolunteeringAndWorkExperiencePage
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = controller.Get(applicationId) as ViewResult;
+        var actual = await controller.Get(applicationId) as ViewResult;
         var actualModel = actual?.Model as VolunteeringAndWorkExperienceViewModel;
 
         using (new AssertionScope())

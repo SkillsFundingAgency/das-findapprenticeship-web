@@ -5,8 +5,6 @@ using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExpe
 using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.UpdateVolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Commands.VolunteeringOrWorkExperience.DeleteVolunteeringOrWorkExperience;
-using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
-using SFA.DAS.FAA.Application.Queries.Apply.GetJob;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Domain.Enums;
@@ -14,7 +12,7 @@ using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-
+using System;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply;
 
@@ -30,12 +28,22 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpGet]
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
-    public IActionResult Get([FromRoute] Guid applicationId)
+    public async Task<IActionResult> Get([FromRoute] Guid applicationId)
     {
+        var query = new GetVolunteeringAndWorkExperiencesQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = User.Claims.CandidateId()
+        };
+
+        var result = await mediator.Send(query);
+
         return View(ViewPath, new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
-            BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId })
+            BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
+            WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
+            ShowVolunteeringAndWorkHistory = result.VolunteeringAndWorkExperiences.Count > 0
         });
     }
 
@@ -45,7 +53,21 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
     {
         if (!ModelState.IsValid)
         {
-            model.BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { model.ApplicationId });
+            var query = new GetVolunteeringAndWorkExperiencesQuery
+            {
+                ApplicationId = model.ApplicationId,
+                CandidateId = User.Claims.CandidateId()
+            };
+
+            var result = await mediator.Send(query);
+
+            model = new VolunteeringAndWorkExperienceViewModel
+            {
+                ApplicationId = model.ApplicationId,
+                BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { model.ApplicationId }),
+                WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
+                ShowVolunteeringAndWorkHistory = result.VolunteeringAndWorkExperiences.Count > 0
+            };
             return View(ViewPath, model);
         }
 
