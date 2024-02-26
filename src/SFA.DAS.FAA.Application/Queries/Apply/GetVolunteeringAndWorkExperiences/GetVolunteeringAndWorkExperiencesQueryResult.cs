@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperience
 
 public record GetVolunteeringAndWorkExperiencesQueryResult
 {
-    public List<VolunteeringAndWorkExperience> VolunteeringAndWorkExperiences { get; private init; } = [];
+    public List<VolunteeringAndWorkExperience> VolunteeringAndWorkExperiences { get; set; } = [];
 
     public record VolunteeringAndWorkExperience
     {

@@ -111,13 +111,18 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         var result = await mediator.Send(query);
 
-        return View(SummaryViewPath, new VolunteeringAndWorkExperienceSummaryViewModel
+        if (result.VolunteeringAndWorkExperiences.Count > 0)
         {
-            ApplicationId = applicationId,
-            AddAnotherVolunteeringAndWorkExperienceLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { applicationId }),
-            BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
-            WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
-        });
+            return View(SummaryViewPath, new VolunteeringAndWorkExperienceSummaryViewModel
+            {
+                ApplicationId = applicationId,
+                AddAnotherVolunteeringAndWorkExperienceLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { applicationId }),
+                BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
+                WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
+            });
+        }
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience, new { applicationId });
     }
 
     [HttpPost]
