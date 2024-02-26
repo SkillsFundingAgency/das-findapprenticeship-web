@@ -30,20 +30,21 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
     public async Task<IActionResult> Get([FromRoute] Guid applicationId)
     {
-        var query = new GetVolunteeringAndWorkExperiencesQuery
+        var result = await mediator.Send(new GetVolunteeringAndWorkExperiencesQuery
         {
             ApplicationId = applicationId,
             CandidateId = User.Claims.CandidateId()
-        };
+        });
 
-        var result = await mediator.Send(query);
+        if (result.VolunteeringAndWorkExperiences.Count > 0)
+        {
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary, new { applicationId });
+        }
 
         return View(ViewPath, new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
             BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
-            WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
-            ShowVolunteeringAndWorkHistory = result.VolunteeringAndWorkExperiences.Count > 0
         });
     }
 
@@ -53,20 +54,10 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
     {
         if (!ModelState.IsValid)
         {
-            var query = new GetVolunteeringAndWorkExperiencesQuery
-            {
-                ApplicationId = model.ApplicationId,
-                CandidateId = User.Claims.CandidateId()
-            };
-
-            var result = await mediator.Send(query);
-
             model = new VolunteeringAndWorkExperienceViewModel
             {
                 ApplicationId = model.ApplicationId,
                 BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { model.ApplicationId }),
-                WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
-                ShowVolunteeringAndWorkHistory = result.VolunteeringAndWorkExperiences.Count > 0
             };
             return View(ViewPath, model);
         }
