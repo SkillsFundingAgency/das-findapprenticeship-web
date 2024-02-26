@@ -1,0 +1,75 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.WhatInterestsYouViewModel
+@{
+    ViewData["Title"] = "What interests you about this apprenticeship?";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Application questions</span>
+        <h1 class="govuk-heading-l">What interests you about this apprenticeship?</h1>
+        
+        <p class="govuk-body">Explain to the company why you want to do this apprenticeship.</p>
+        <p class="govuk-body">You could write about:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>your interest in @Model.StandardName</li>
+            <li>why you want to work for @Model.EmployerName</li>
+            <li>hobbies you have that are relevant to this apprenticeship</li>
+        </ul>
+
+        <form class="form" method="post">
+
+            <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="300">
+                <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="YourInterest" error-class="govuk-form-group--error">
+                    <label class="govuk-label govuk-label--m" for="YourInterest">
+                        Your interest in this apprenticeship
+                    </label>
+                    <span das-validation-for="YourInterest" class="govuk-error-message"></span>
+                    <textarea class="govuk-textarea govuk-js-character-count" asp-for="YourInterest" rows="5" aria-describedby="YourInterest-info"></textarea>
+                </div>
+                <div id="YourInterest-info" class="govuk-hint govuk-character-count__message">
+                    You can enter up to 300 words
+                </div>
+            </div>
+            
+            <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted"
+                 error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Have you completed this section?
+                    </legend>
+                    <span das-validation-for="IsSectionCompleted" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="true"
+                                   type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="IsSectionCompleted">
+                                Yes, I’ve completed this section
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted"
+                                   id="IsSectionCompleted-No" value="false" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="IsSectionCompleted-No">
+                                No, I’ll come back to it later (saves your answer)
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
