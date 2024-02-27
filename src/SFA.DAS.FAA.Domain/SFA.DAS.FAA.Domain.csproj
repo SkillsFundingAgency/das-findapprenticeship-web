@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Apply\UpdateJob\" />
+    <Compile Remove="Apply\UpdateJob\**" />
+    <EmbeddedResource Remove="Apply\UpdateJob\**" />
+    <None Remove="Apply\UpdateJob\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Apply\WorkHistory\AddVolunteeringAndWorkExperience\" />
     <Folder Include="Configuration\" />
   </ItemGroup>
