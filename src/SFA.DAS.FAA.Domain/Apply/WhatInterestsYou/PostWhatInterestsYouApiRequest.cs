@@ -10,7 +10,8 @@ namespace SFA.DAS.FAA.Domain.Apply.WhatInterestsYou
         public class PostWhatInterestsYouRequestData
         {
             public Guid CandidateId { get; set; }
-            public string? YourInterest { get; set; }
+            public string? AnswerText { get; set; }
+            public bool IsComplete { get; set; }
         }
     }
 }

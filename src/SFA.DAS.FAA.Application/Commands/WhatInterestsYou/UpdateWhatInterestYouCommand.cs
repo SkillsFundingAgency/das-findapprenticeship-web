@@ -8,7 +8,8 @@ namespace SFA.DAS.FAA.Application.Commands.WhatInterestsYou
     {
         public Guid ApplicationId { get; set; }
         public Guid CandidateId { get; set; }
-        public string YourInterest { get; set; }
+        public string AnswerText { get; set; }
+        public bool IsComplete { get; set; }
     }
 
     public class UpdateWhatInterestsYouCommandHandler(IApiClient apiClient) : IRequestHandler<UpdateWhatInterestsYouCommand>
@@ -18,7 +19,8 @@ namespace SFA.DAS.FAA.Application.Commands.WhatInterestsYou
             var data = new PostWhatInterestsYouApiRequest.PostWhatInterestsYouRequestData
             {
                 CandidateId = request.CandidateId,
-                YourInterest = request.YourInterest
+                AnswerText = request.AnswerText,
+                IsComplete = request.IsComplete
             };
             var apiRequest = new PostWhatInterestsYouApiRequest(request.ApplicationId, data);
 

@@ -61,7 +61,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 ApplicationId = applicationId,
                 CandidateId = User.Claims.CandidateId(),
-                YourInterest = model.YourInterest ?? string.Empty
+                AnswerText = model.YourInterest ?? string.Empty,
+                IsComplete = model.IsSectionCompleted ?? false
             });
 
             return RedirectToRoute(RouteNames.Apply, new { applicationId });

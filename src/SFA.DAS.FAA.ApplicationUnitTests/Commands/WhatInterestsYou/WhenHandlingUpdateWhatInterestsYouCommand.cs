@@ -30,7 +30,8 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.WhatInterestsYou
                     x.PostWithResponseCode(
                         It.Is<PostWhatInterestsYouApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                && ((PostWhatInterestsYouApiRequest.PostWhatInterestsYouRequestData)r.Data).CandidateId == command.CandidateId
-                               && ((PostWhatInterestsYouApiRequest.PostWhatInterestsYouRequestData)r.Data).YourInterest == command.YourInterest
+                               && ((PostWhatInterestsYouApiRequest.PostWhatInterestsYouRequestData)r.Data).AnswerText == command.AnswerText
+                               && ((PostWhatInterestsYouApiRequest.PostWhatInterestsYouRequestData)r.Data).IsComplete == command.IsComplete
                         )), Times.Once);
         }
     }
