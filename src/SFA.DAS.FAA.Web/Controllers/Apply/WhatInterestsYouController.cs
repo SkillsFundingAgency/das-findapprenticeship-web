@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Queries.Apply.GetWhatInterestsYou;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -7,18 +10,25 @@ using SFA.DAS.FAA.Web.Models.Apply;
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    public class WhatInterestsYouController : Controller
+    public class WhatInterestsYouController(IMediator mediator) : Controller
     {
         private const string _viewName = "~/Views/apply/WhatInterestsYou/Index.cshtml";
 
         [Route("apply/{applicationId}/what-interests-you", Name = RouteNames.ApplyApprenticeship.WhatInterestsYou)]
-        public IActionResult Index([FromRoute] Guid applicationId)
+        public async Task<IActionResult> Get([FromRoute] Guid applicationId)
         {
+            var result = await mediator.Send(new GetWhatInterestsYouQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+            });
+
+
             var viewModel = new WhatInterestsYouViewModel
             {
                 ApplicationId = applicationId,
-                StandardName = "business administration", //todo: source these
-                EmployerName = "King Recruitment"
+                StandardName = result.StandardName.ToLower(),
+                EmployerName = result.EmployerName
             };
 
             return View(_viewName, viewModel);
@@ -26,20 +36,28 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [Route("apply/{applicationId}/what-interests-you", Name = RouteNames.ApplyApprenticeship.WhatInterestsYou)]
         [HttpPost]
-        public IActionResult Index([FromRoute] Guid applicationId, WhatInterestsYouViewModel model)
+        public async Task<IActionResult> Post([FromRoute] Guid applicationId, WhatInterestsYouViewModel model)
         {
             if (!ModelState.IsValid)
             {
+                var result = await mediator.Send(new GetWhatInterestsYouQuery
+                {
+                    ApplicationId = applicationId,
+                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                });
+
+
                 var viewModel = new WhatInterestsYouViewModel
                 {
                     ApplicationId = applicationId,
-                    StandardName = "business administration", //todo: source these
-                    EmployerName = "King Recruitment"
+                    StandardName = result.StandardName.ToLower(),
+                    EmployerName = result.EmployerName
                 };
 
                 return View(_viewName, viewModel);
             }
 
+            //todo: remove the below, and post to outer api, then redirect
 
             var viewModel2 = new WhatInterestsYouViewModel
             {
