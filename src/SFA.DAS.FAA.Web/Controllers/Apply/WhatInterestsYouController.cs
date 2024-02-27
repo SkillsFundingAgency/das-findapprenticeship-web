@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.WhatInterestsYou;
 using SFA.DAS.FAA.Application.Queries.Apply.GetWhatInterestsYou;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 
@@ -12,7 +14,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     public class WhatInterestsYouController(IMediator mediator) : Controller
     {
-        private const string _viewName = "~/Views/apply/WhatInterestsYou/Index.cshtml";
+        private const string ViewName = "~/Views/apply/WhatInterestsYou/Index.cshtml";
 
         [Route("apply/{applicationId}/what-interests-you", Name = RouteNames.ApplyApprenticeship.WhatInterestsYou)]
         public async Task<IActionResult> Get([FromRoute] Guid applicationId)
@@ -23,7 +25,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
             });
 
-
             var viewModel = new WhatInterestsYouViewModel
             {
                 ApplicationId = applicationId,
@@ -31,7 +32,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 EmployerName = result.EmployerName
             };
 
-            return View(_viewName, viewModel);
+            return View(ViewName, viewModel);
         }
 
         [Route("apply/{applicationId}/what-interests-you", Name = RouteNames.ApplyApprenticeship.WhatInterestsYou)]
@@ -43,9 +44,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetWhatInterestsYouQuery
                 {
                     ApplicationId = applicationId,
-                    CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                    CandidateId = User.Claims.CandidateId()
                 });
-
 
                 var viewModel = new WhatInterestsYouViewModel
                 {
@@ -54,20 +54,17 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     EmployerName = result.EmployerName
                 };
 
-                return View(_viewName, viewModel);
+                return View(ViewName, viewModel);
             }
 
-            //todo: remove the below, and post to outer api, then redirect
-
-            var viewModel2 = new WhatInterestsYouViewModel
+            await mediator.Send(new UpdateWhatInterestsYouCommand
             {
                 ApplicationId = applicationId,
-                StandardName = "business administration", //todo: source these
-                EmployerName = "King Recruitment"
-            };
+                CandidateId = User.Claims.CandidateId(),
+                YourInterest = model.YourInterest ?? string.Empty
+            });
 
-            return View(_viewName, viewModel2);
+            return RedirectToRoute(RouteNames.Apply, new { applicationId });
         }
-
     }
 }
