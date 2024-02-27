@@ -6,7 +6,7 @@ namespace SFA.DAS.FAA.Domain.Apply.WorkHistory.AddVolunteeringAndWorkExperience;
 public class PostVolunteeringAndWorkExperienceRequest(Guid applicationId, PostVolunteeringAndWorkExperienceApiRequestData body)
     : IPostApiRequest
 {
-    public string PostUrl => $"applications/{applicationId}/workExperiences";
+    public string PostUrl => $"applications/{applicationId}/volunteeringorworkexperience";
     public object Data { get; set; } = body;
 
     public record PostVolunteeringAndWorkExperienceApiRequestData

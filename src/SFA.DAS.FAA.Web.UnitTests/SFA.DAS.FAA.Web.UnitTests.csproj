@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Apply\VolunteeringAndWorkExperience\AddVolunteeringAndWorkExperience\" />
+    <Folder Include="Controllers\Apply\VolunteeringAndWorkExperience\SummaryVolunteeringAndWorkExperience\" />
   </ItemGroup>
 
 </Project>
