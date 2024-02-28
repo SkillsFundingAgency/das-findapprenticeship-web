@@ -13,14 +13,16 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.VolunteeringAndWorkExperience;
 public class WhenPostingAddVolunteeringAndWorkExperiencePage
 {
     [Test, MoqAutoData]
-    public async Task And_User_Has_No_Training_Courses_Then_Mediator_Is_Called_And_Redirect_To_TaskList(
+    public async Task And_User_Has_No_Working_Experiences_Then_Mediator_Is_Called_And_Redirect_To_TaskList(
         Guid candidateId,
         Guid applicationId,
+        GetVolunteeringAndWorkExperiencesQueryResult queryResult,
         UpdateVolunteeringAndWorkExperienceApplicationCommandResult result,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] VolunteeringAndWorkExperienceController controller)
@@ -40,6 +42,12 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         };
         mediator.Setup(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
+
+        mediator.Setup(x => x.Send(It.Is<GetVolunteeringAndWorkExperiencesQuery>(c =>
+                c.ApplicationId.Equals(applicationId)
+                && c.CandidateId.Equals(candidateId)
+            ), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
 
         var actual = await controller.Post(request) as RedirectToRouteResult;
 
@@ -80,7 +88,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
-            actual?.RouteName.Should().Be("/");
+            actual?.RouteName.Should().Be(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience);
         }
     }
 }

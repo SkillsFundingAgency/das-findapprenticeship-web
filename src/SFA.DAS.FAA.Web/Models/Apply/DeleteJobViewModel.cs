@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob;
-using SFA.DAS.FAA.Web.Models.Custom;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
