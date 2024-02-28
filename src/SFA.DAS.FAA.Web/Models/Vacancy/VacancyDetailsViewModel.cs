@@ -10,9 +10,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
     {
         public string? Title { get; init; }
         public string? EmployerName { get; init; }
-        public string? EmployerContactName { get; init; }
-        public string? EmployerContactEmail { get; init; }
-        public string? EmployerContactPhone { get; init; }
+        public string? ContactOrganisationName { get; init; }
+        public string? ContactName { get; init; }
+        public string? ContactEmail { get; init; }
+        public string? ContactPhone { get; init; }
         public string? EmployerDescription { get; init; }
         public string? EmployerWebsite { get; init; }
         public string? VacancyReference { get; init; }
@@ -71,9 +72,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                     VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
                 EmployerDescription = source.Vacancy?.EmployerDescription,
                 EmployerName = source.Vacancy?.EmployerName,
-                EmployerContactName = source.Vacancy?.EmployerContactName,
-                EmployerContactEmail = source.Vacancy?.EmployerContactEmail,
-                EmployerContactPhone = source.Vacancy?.EmployerContactPhone,
+                ContactOrganisationName = string.IsNullOrWhiteSpace(source.Vacancy?.EmployerContactName) ? source.Vacancy!.ProviderName : source.Vacancy!.EmployerName,
+                ContactName = source.Vacancy?.EmployerContactName ?? source.Vacancy?.ProviderContactName,
+                ContactEmail = source.Vacancy?.EmployerContactEmail ?? source.Vacancy?.ProviderContactEmail,
+                ContactPhone = source.Vacancy?.EmployerContactPhone ?? source.Vacancy?.ProviderContactPhone,
                 CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
                 EssentialQualifications = source.Vacancy?.Qualifications
                     .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),

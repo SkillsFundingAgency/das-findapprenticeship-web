@@ -63,6 +63,9 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public string? EmployerContactPhone { get; init; }
         public string? EmployerContactEmail { get; init; }
         public string? EmployerContactName { get; init; }
+        public string? ProviderContactPhone { get; init; }
+        public string? ProviderContactEmail { get; init; }
+        public string? ProviderContactName { get; init; }
         public string? AnonymousEmployerName { get; init; }
         public bool IsEmployerAnonymous { get; init; }
 
