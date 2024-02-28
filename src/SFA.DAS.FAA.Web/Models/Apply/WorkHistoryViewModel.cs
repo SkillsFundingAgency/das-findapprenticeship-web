@@ -1,5 +1,5 @@
-﻿using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
-using SFA.DAS.FAA.Domain.Apply.WorkHistory;
+﻿using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
+using SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
@@ -12,6 +12,18 @@ public record WorkHistoryViewModel
     public string? Description { get; private init; }
 
     public static implicit operator WorkHistoryViewModel(GetJobsQueryResult.Job source)
+    {
+        return new WorkHistoryViewModel
+        {
+            Id = source.Id,
+            JobTitle = source.JobTitle,
+            Employer = source.Employer,
+            Description = source.Description,
+            JobDates = source.EndDate is null ? $"{source.StartDate:MMMM yyyy} onwards" : $"{source.StartDate:MMMM yyyy} to {source.EndDate:MMMM yyyy}"
+        };
+    }
+
+    public static implicit operator WorkHistoryViewModel(GetVolunteeringAndWorkExperiencesQueryResult.VolunteeringAndWorkExperience source)
     {
         return new WorkHistoryViewModel
         {
