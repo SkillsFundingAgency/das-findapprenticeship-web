@@ -58,7 +58,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WhatInterestsYou
             var actualModel = actual?.Model as WhatInterestsYouViewModel;
             actualModel?.ApplicationId.Should().Be(applicationId);
             actualModel?.EmployerName.Should().Be(queryResult.EmployerName);
-            actualModel?.StandardName.Should().Be(queryResult.StandardName.ToLower());
+            actualModel?.StandardName.Should().Be(queryResult.StandardName);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var viewModel = new WhatInterestsYouViewModel
             {
                 ApplicationId = applicationId,
-                StandardName = result.StandardName.ToLower(),
+                StandardName = result.StandardName,
                 EmployerName = result.EmployerName,
                 YourInterest = result.AnswerText,
                 IsSectionCompleted = result.IsSectionCompleted
@@ -52,7 +52,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var viewModel = new WhatInterestsYouViewModel
                 {
                     ApplicationId = applicationId,
-                    StandardName = result.StandardName.ToLower(),
+                    StandardName = result.StandardName,
                     EmployerName = result.EmployerName,
                     YourInterest = result.AnswerText,
                     IsSectionCompleted = result.IsSectionCompleted
