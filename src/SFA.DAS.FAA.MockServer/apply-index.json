@@ -1,0 +1,50 @@
+{
+  "VacancyReference": "1000012741",
+  "VacancyTitle": "Software Engineer",
+  "EmployerName": "ABC Tech",
+  "ClosingDate": "2024-03-15T00:00:00",
+  "IsDisabilityConfident": true,
+
+  "EducationHistory": {
+    "Qualifications": {
+      "Status": 2
+    },
+    "TrainingCourses": {
+      "Status": 1
+    }
+  },
+  "WorkHistory": {
+    "Jobs": {
+      "Status": 2
+    },
+    "VolunteeringAndWorkExperience": {
+      "Status": 0
+    }
+  },
+  "ApplicationQuestions": {
+    "SkillsAndStrengths": {
+      "Status": 2
+    },
+    "WhatInterestsYou": {
+      "Status": 1
+    },
+    "AdditionalQuestion1": {
+      "Status": 0,
+      "Label": "Additional Question 1"
+    },
+    "AdditionalQuestion2": {
+      "Status": 0,
+      "Label": "Additional Question 2"
+    }
+  },
+  "InterviewAdjustments": {
+    "RequestAdjustments": {
+      "Status": 3
+    }
+  },
+  "DisabilityConfidence": {
+    "InterviewUnderDisabilityConfident": {
+      "Status": 3
+    }
+  }
+}
