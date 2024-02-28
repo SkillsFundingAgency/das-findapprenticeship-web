@@ -6,6 +6,7 @@ public class GetWhatInterestsYouQueryResult
 {
     public string StandardName { get; set; }
     public string EmployerName { get; set; }
+    public string AnswerText { get; set; }
     public bool? IsSectionCompleted { get; set; }
 
     public static implicit operator GetWhatInterestsYouQueryResult(GetWhatInterestsYouApiResponse source)
@@ -14,6 +15,7 @@ public class GetWhatInterestsYouQueryResult
         {
             EmployerName = source.EmployerName,
             StandardName = source.StandardName,
+            AnswerText = source.AnswerText,
             IsSectionCompleted = source.IsSectionCompleted
         };
     }

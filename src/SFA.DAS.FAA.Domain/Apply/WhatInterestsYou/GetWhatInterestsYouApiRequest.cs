@@ -11,6 +11,7 @@ namespace SFA.DAS.FAA.Domain.Apply.WhatInterestsYou
     {
         public string EmployerName { get; set; }
         public string StandardName { get; set; }
+        public string AnswerText { get; set; }
         public bool? IsSectionCompleted { get; set; }
     }
 }
