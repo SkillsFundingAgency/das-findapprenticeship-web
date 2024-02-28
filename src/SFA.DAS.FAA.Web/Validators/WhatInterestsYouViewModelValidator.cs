@@ -12,12 +12,12 @@ namespace SFA.DAS.FAA.Web.Validators
                 .NotEmpty()
                 .WithMessage("Select if you have finished this section");
 
-            RuleFor(x => x.YourInterest)
-                .Must((model, s) => !string.IsNullOrWhiteSpace(model.YourInterest))
+            RuleFor(x => x.AnswerText)
+                .Must((model, s) => !string.IsNullOrWhiteSpace(model.AnswerText))
                 .When(x => x.IsSectionCompleted is true)
                 .WithMessage("Enter your interest in this apprenticeship – you must enter an answer before making this section complete");
 
-            RuleFor(x => x.YourInterest).Cascade(CascadeMode.Stop)
+            RuleFor(x => x.AnswerText).Cascade(CascadeMode.Stop)
                 .Must(x => x.GetWordCount() <= 300)
                 .WithMessage("Your interest in this apprenticeship must be 300 words or less");
         }

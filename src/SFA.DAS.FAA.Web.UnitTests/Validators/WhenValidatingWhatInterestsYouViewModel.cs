@@ -36,7 +36,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators
             {
                 ApplicationId = Guid.NewGuid(),
                 IsSectionCompleted = isSectionCompleted,
-                YourInterest = string.Empty
+                AnswerText = string.Empty
             };
 
             var result = await validator.TestValidateAsync(model);
@@ -44,7 +44,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators
             result.IsValid.Should().Be(!expectError);
             if (!result.IsValid)
             {
-                result.ShouldHaveValidationErrorFor(x => x.YourInterest).WithErrorMessage("Enter your interest in this apprenticeship – you must enter an answer before making this section complete");
+                result.ShouldHaveValidationErrorFor(x => x.AnswerText).WithErrorMessage("Enter your interest in this apprenticeship – you must enter an answer before making this section complete");
             }
         }
 
@@ -58,7 +58,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators
             {
                 ApplicationId = Guid.NewGuid(),
                 IsSectionCompleted = true,
-                YourInterest = string.Concat(Enumerable.Repeat("x ", wordCount))
+                AnswerText = string.Concat(Enumerable.Repeat("x ", wordCount))
             };
 
             var result = await validator.TestValidateAsync(model);
@@ -67,7 +67,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators
 
             if (!result.IsValid)
             {
-                result.ShouldHaveValidationErrorFor(x => x.YourInterest).WithErrorMessage("Your interest in this apprenticeship must be 300 words or less");
+                result.ShouldHaveValidationErrorFor(x => x.AnswerText).WithErrorMessage("Your interest in this apprenticeship must be 300 words or less");
             }
         }
     }

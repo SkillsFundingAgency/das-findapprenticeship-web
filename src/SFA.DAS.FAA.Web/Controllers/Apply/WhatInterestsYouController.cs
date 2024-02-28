@@ -30,7 +30,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 ApplicationId = applicationId,
                 StandardName = result.StandardName,
                 EmployerName = result.EmployerName,
-                YourInterest = result.AnswerText,
+                AnswerText = result.AnswerText,
                 IsSectionCompleted = result.IsSectionCompleted
             };
 
@@ -54,7 +54,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     ApplicationId = applicationId,
                     StandardName = result.StandardName,
                     EmployerName = result.EmployerName,
-                    YourInterest = result.AnswerText,
+                    AnswerText = result.AnswerText,
                     IsSectionCompleted = result.IsSectionCompleted
                 };
 
@@ -65,7 +65,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 ApplicationId = applicationId,
                 CandidateId = User.Claims.CandidateId(),
-                AnswerText = model.YourInterest ?? string.Empty,
+                AnswerText = model.AnswerText ?? string.Empty,
                 IsComplete = model.IsSectionCompleted ?? false
             });
 

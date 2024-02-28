@@ -7,10 +7,10 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         [FromRoute]
         public required Guid ApplicationId { get; set; }
 
-        public string? StandardName { get; set; } //todo: source
-        public string? EmployerName { get; set; } //todo: source
+        public string? StandardName { get; set; }
+        public string? EmployerName { get; set; }
 
-        public string? YourInterest { get; set; }
+        public string? AnswerText { get; set; }
         public bool? IsSectionCompleted { get; set; }
     }
 }
