@@ -6,13 +6,12 @@ using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.AddVoluntee
 using SFA.DAS.FAA.Application.Commands.VolunteeringOrWorkExperience.DeleteVolunteeringOrWorkExperience;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
-using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using System;
+using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.UpdateVolunteeringAndWorkExperience;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply;
 

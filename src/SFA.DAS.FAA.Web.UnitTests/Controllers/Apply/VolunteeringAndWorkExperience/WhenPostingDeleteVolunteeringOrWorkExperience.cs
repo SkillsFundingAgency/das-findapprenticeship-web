@@ -91,6 +91,6 @@ public class WhenPostingDeleteVolunteeringOrWorkExperience
         };
         var result = await controller.PostDelete(model) as RedirectToRouteResult;
 
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary);
     }
 }
