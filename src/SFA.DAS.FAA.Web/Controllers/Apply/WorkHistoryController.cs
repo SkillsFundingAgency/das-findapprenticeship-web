@@ -34,6 +34,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var viewModel = new JobsViewModel
             {
                 ApplicationId = applicationId,
+                IsSectionCompleted = result.IsSectionCompleted,
                 JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
                 ShowJobHistory = result.Jobs.Any()
             };
@@ -57,7 +58,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 {
                     ApplicationId = viewModel.ApplicationId,
                     JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
-                    ShowJobHistory = result.Jobs.Any()
+                    ShowJobHistory = result.Jobs.Any(),
+                    IsSectionCompleted = result.IsSectionCompleted
                 };
 
                 return View(ViewPath, viewModel);

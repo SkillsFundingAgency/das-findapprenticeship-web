@@ -4,6 +4,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetWorkHistories;
 
 public record GetJobsQueryResult
 {
+    public bool? IsSectionCompleted { get; set; }
     public List<Job> Jobs { get; set; } = null!;
 
     public class Job
@@ -35,6 +36,7 @@ public record GetJobsQueryResult
     {
         return new GetJobsQueryResult
         {
+            IsSectionCompleted = source.IsSectionCompleted,
             Jobs = source.Jobs.Select(x => (Job)x).ToList()
         };
     }

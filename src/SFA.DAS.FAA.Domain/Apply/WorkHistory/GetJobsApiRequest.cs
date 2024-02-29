@@ -9,6 +9,7 @@ public class GetJobsApiRequest(Guid ApplicationId, Guid CandidateId) : IGetApiRe
 
 public class GetJobsApiResponse
 {
+    public bool? IsSectionCompleted { get; set; }
     public List<Job> Jobs { get; set; } = null!;
 
     public class Job
