@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FAA.Web.Models.Apply.Base;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Validators
@@ -13,7 +14,7 @@ namespace SFA.DAS.FAA.Web.Validators
         }
     }
 
-    public class AddVolunteeringAndWorkExperienceViewModelBaseValidator : AbstractValidator<AddVolunteeringAndWorkExperienceViewModelBase>
+    public class AddVolunteeringAndWorkExperienceViewModelBaseValidator : AbstractValidator<VolunteeringAndWorkExperienceViewModelBase>
     {
         private const string CompanyNameErrorMessage = "Enter the company or organisation for this volunteering or work experience";
         private const string JobDescriptionErrorMessage = "Enter what you did for this volunteering or work experience";
@@ -52,7 +53,7 @@ namespace SFA.DAS.FAA.Web.Validators
                 .Must(x => x.EndDate?.DateTimeValue == default(DateTime) || x.StartDate?.DateTimeValue == default(DateTime) || x.EndDate?.DateTimeValue > x.StartDate?.DateTimeValue)
                 .WithMessage(EndDateMustBeGreaterThanStartDate)
                 .When(x => x.IsCurrentRole is false)
-                .WithName(nameof(AddVolunteeringAndWorkExperienceViewModelBase.EndDate));
+                .WithName(nameof(VolunteeringAndWorkExperienceViewModelBase.EndDate));
 
             RuleFor(x => x.IsCurrentRole).NotEmpty().WithMessage(IsCurrentJobErrorMessage);
         }

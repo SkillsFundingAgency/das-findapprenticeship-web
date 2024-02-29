@@ -15,6 +15,6 @@ public class WhenBuildingPostVolunteeringAndWorkExperienceRequest
     {
         var actual = new PostVolunteeringAndWorkExperienceRequest(applicationId, data);
 
-        actual.PostUrl.Should().Be($"applications/{applicationId}/workExperiences");
+        actual.PostUrl.Should().Be($"applications/{applicationId}/volunteeringorworkexperience");
     }
 }

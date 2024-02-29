@@ -10,6 +10,7 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
 
@@ -46,5 +47,6 @@ public class WhenPostingVolunteeringAndWorkExperienceRequest
 
         var actual = await controller.PostAddVolunteeringAndWorkExperience(request) as RedirectToRouteResult;
         actual.Should().NotBeNull();
+        actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary);
     }
 }

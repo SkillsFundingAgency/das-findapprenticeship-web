@@ -14,7 +14,7 @@
 
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
-                <h2 class="govuk-summary-card__title">@Model.Organisation </h2>
+                <h2 class="govuk-summary-card__title">@Model.Organisation</h2>
             </div>
             <div class="govuk-summary-card__content">
                 <dl class="govuk-summary-list">
@@ -37,15 +37,13 @@
                 </dl>
             </div>
         </div>
-
         <form class="form" method="post">
             <div class="govuk-button-group">
                 <button class="govuk-button govuk-button--warning" data-module="govuk-button">
                     Yes, delete
                 </button>
-                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience, new { Model.ApplicationId })">Cancel – don't delete</a>
+                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary, new { Model.ApplicationId })">Cancel – don't delete</a>
             </div>
         </form>
-
     </div>
 </div>

@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Apply\VolunteeringAndWorkExperience\" />
     <Folder Include="BrowseByInterestsRequest\" />
     <Folder Include="SearchResults\" />
   </ItemGroup>

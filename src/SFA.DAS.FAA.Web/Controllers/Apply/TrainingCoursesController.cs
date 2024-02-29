@@ -2,15 +2,17 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
+using SFA.DAS.FAA.Application.Commands.TrainingCourses.DeleteTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.UpdateTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.TrainingCourses;
 using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
 using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourses;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply;
 
@@ -26,7 +28,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         var result = await mediator.Send(new GetTrainingCoursesQuery
         {
             ApplicationId = applicationId,
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+            CandidateId = User.Claims.CandidateId()
         });
 
         var viewModel = new TrainingCoursesViewModel
@@ -49,7 +51,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             var result = await mediator.Send(new GetTrainingCoursesQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                CandidateId = User.Claims.CandidateId()
             });
 
             viewModel = new TrainingCoursesViewModel
@@ -67,7 +69,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             viewModel.DoYouWantToAddAnyTrainingCourses = viewModel.DoYouWantToAddAnyTrainingCourses == null ? false : viewModel.DoYouWantToAddAnyTrainingCourses;
             var completeSectionCommand = new UpdateTrainingCoursesApplicationCommand
             {
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+                CandidateId = User.Claims.CandidateId(),
                 ApplicationId = viewModel.ApplicationId,
                 TrainingCoursesSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.InProgress
             };
@@ -80,7 +82,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         viewModel.IsSectionComplete = viewModel.IsSectionComplete == null ? false : viewModel.IsSectionComplete;
         var command = new UpdateTrainingCoursesApplicationCommand
         {
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             ApplicationId = viewModel.ApplicationId,
             TrainingCoursesSectionStatus = viewModel.DoYouWantToAddAnyTrainingCourses.Value ? SectionStatus.InProgress : SectionStatus.Completed
         };
@@ -115,7 +117,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
         var command = new AddTrainingCourseCommand
         {
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             ApplicationId = request.ApplicationId,
             CourseName = request.CourseName,
             YearAchieved = int.Parse(request.YearAchieved)
@@ -133,7 +135,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         var result = await mediator.Send(new GetTrainingCourseQuery
         {
             ApplicationId = applicationId,
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             TrainingCourseId = trainingCourseId
         });
 
@@ -155,7 +157,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         {
             TrainingCourseId = request.TrainingCourseId,
             ApplicationId = request.ApplicationId,
-            CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value),
+            CandidateId = User.Claims.CandidateId(),
             CourseName = request.CourseName,
             YearAchieved = int.Parse(request.YearAchieved)
         };
@@ -164,4 +166,46 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
         return RedirectToRoute(RouteNames.ApplyApprenticeship.TrainingCourses, new { request.ApplicationId });
     }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteTrainingCourse)]
+    public async Task<IActionResult> Delete([FromRoute] Guid applicationId, Guid trainingCourseId)
+    {
+        var result = await mediator.Send(new GetDeleteTrainingCourseQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = User.Claims.CandidateId(),
+            TrainingCourseId = trainingCourseId
+        });
+
+        var viewModel = (DeleteTrainingCourseViewModel)result;
+
+        return View("~/Views/apply/trainingcourses/DeleteTrainingCourse.cshtml", viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteTrainingCourse)]
+    public async Task<IActionResult> Delete (DeleteTrainingCourseViewModel model)
+    {
+        try
+        {
+            var command = new DeleteTrainingCourseCommand
+            {
+                CandidateId = User.Claims.CandidateId(),
+                ApplicationId = model.ApplicationId,
+                TrainingCourseId = model.TrainingCourseId
+            };
+            await mediator.Send(command);
+        }
+        catch (InvalidOperationException e)
+        {
+            ModelState.AddModelError(nameof(DeleteTrainingCourseViewModel), "There's been a problem");
+            return View("~/Views/apply/trainingcourses/DeleteTrainingCourse.cshtml");
+        }
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.TrainingCourses, new { model.ApplicationId });
+
+    }
+
+
 }
