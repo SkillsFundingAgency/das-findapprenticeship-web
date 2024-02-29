@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication.SkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetCandidateSkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -61,23 +59,15 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
             return View(ViewPath, viewModel);
         }
 
-        var createCommand = new CreateSkillsAndStrengthsCommand
+        var updateCommand = new UpdateSkillsAndStrengthsCommand
         {
             CandidateId = User.Claims.CandidateId(),
             ApplicationId = viewModel.ApplicationId,
-            SkillsAndStrengths = viewModel.SkillsAndStrengths
-        };
-
-        await mediator.Send(createCommand);
-
-        var updateStatusCommand = new UpdateSkillsAndStrengthsApplicationCommand
-        {
-            CandidateId = User.Claims.CandidateId(),
-            ApplicationId = viewModel.ApplicationId,
+            SkillsAndStrengths = viewModel.SkillsAndStrengths,
             SkillsAndStrengthsSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.InProgress
         };
 
-        await mediator.Send(updateStatusCommand);
+        await mediator.Send(updateCommand);
 
         return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
     }

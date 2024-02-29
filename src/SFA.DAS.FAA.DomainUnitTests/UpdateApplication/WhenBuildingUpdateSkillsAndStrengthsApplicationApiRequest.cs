@@ -7,12 +7,10 @@ namespace SFA.DAS.FAA.Domain.UnitTests.UpdateApplication;
 public class WhenBuildingUpdateSkillsAndStrengthsApplicationApiRequest
 {
     [Test, AutoData]
-    public void Then_The_Request_Url_Is_Correctly_Built(
-        Guid applicationId,
-        Guid candidateId)
+    public void Then_The_Request_Url_Is_Correctly_Built(Guid applicationId)
     {
-        var actual = new UpdateSkillsAndStrengthsApplicationApiRequest(applicationId, candidateId, new UpdateSkillsAndStrengthsApplicationModel());
+        var actual = new PostSkillsAndStrengthsApiRequest(applicationId, new PostSkillsAndStrengthsModel());
 
-        actual.PostUrl.Should().Be($"applications/{applicationId}/{candidateId}/skills-and-strengths");
+        actual.PostUrl.Should().Be($"applications/{applicationId}/skillsandstrengths");
     }
 }
