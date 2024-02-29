@@ -55,6 +55,8 @@ public class GetIndexQueryResult
         public SectionStatus AdditionalQuestion2 { get; set; }
         public string AdditionalQuestion1Label { get; set; }
         public string AdditionalQuestion2Label { get; set; }
+        public Guid AdditionalQuestion1Id { get; set; }
+        public Guid AdditionalQuestion2Id { get; set; }
 
         public static implicit operator ApplicationQuestionsSection(GetIndexApiResponse.ApplicationQuestionsSection source)
         {
@@ -65,7 +67,9 @@ public class GetIndexQueryResult
                 AdditionalQuestion1 = source.AdditionalQuestion1,
                 AdditionalQuestion2 = source.AdditionalQuestion2,
                 AdditionalQuestion1Label = source.AdditionalQuestion1Label,
-                AdditionalQuestion2Label = source.AdditionalQuestion2Label
+                AdditionalQuestion2Label = source.AdditionalQuestion2Label,
+                AdditionalQuestion1Id = source.AdditionalQuestion1Id,
+                AdditionalQuestion2Id = source.AdditionalQuestion2Id
             };
         }
     }

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Apply\PostAdditionalQuestion\" />
     <Folder Include="Apply\WorkHistory\AddVolunteeringAndWorkExperience\" />
     <Folder Include="Configuration\" />
   </ItemGroup>

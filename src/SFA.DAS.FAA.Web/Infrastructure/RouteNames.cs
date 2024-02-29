@@ -35,5 +35,6 @@ public static class RouteNames
         public const string AddVolunteeringAndWorkExperience = nameof(AddVolunteeringAndWorkExperience);
         public const string VolunteeringAndWorkExperienceSummary = nameof(VolunteeringAndWorkExperienceSummary);
         public const string EditVolunteeringAndWorkExperience = nameof(EditVolunteeringAndWorkExperience);
+        public const string AddAdditionalQuestion = nameof(AddAdditionalQuestion);
     }
 }
