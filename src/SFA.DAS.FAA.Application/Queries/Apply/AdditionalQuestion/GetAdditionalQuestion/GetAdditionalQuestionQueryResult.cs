@@ -4,10 +4,10 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.AdditionalQuestion.GetAdditional
 
 public record GetAdditionalQuestionQueryResult
 {
-    public Guid Id { get; set; }
-    public string? QuestionText { get; set; }
-    public string? Answer { get; set; }
-    public Guid ApplicationId { get; set; }
+    public Guid Id { get; private init; }
+    public string? QuestionText { get; private init; }
+    public string? Answer { get; private init; }
+    public Guid ApplicationId { get; private init; }
 
     public static implicit operator GetAdditionalQuestionQueryResult(GetAdditionalQuestionApiResponse source)
     {

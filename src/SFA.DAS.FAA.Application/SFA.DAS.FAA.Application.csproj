@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\AdditionalQuestion\AddAdditionalQuestion\" />
-    <Folder Include="Commands\UpdateApplication\AdditionalQuestion\" />
   </ItemGroup>
 
 </Project>

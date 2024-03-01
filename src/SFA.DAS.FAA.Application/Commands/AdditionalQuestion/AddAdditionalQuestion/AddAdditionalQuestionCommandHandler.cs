@@ -13,7 +13,9 @@ public record AddAdditionalQuestionCommandHandler(IApiClient ApiClient)
         {
             CandidateId = request.CandidateId,
             Answer = request.Answer,
-            Id = request.Id
+            Id = request.Id,
+            AdditionalQuestionSectionStatus = request.AdditionalQuestionSectionStatus,
+            UpdatedAdditionalQuestion = request.UpdatedAdditionalQuestion
         };
 
         var apiRequest = new PostAdditionalQuestionApiRequest(request.ApplicationId, data);
