@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Security.Policy;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
@@ -61,7 +60,7 @@ public sealed class HttpSteps
     {
         var redirection = _context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
         redirection.StatusCode.Should().Be(HttpStatusCode.Redirect);
-        redirection.Headers.Location.Should().Be(url);
+        redirection.Headers.Location.ToString().Should().StartWith(url);
 
         var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(url);

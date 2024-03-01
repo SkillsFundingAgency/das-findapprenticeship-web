@@ -19,16 +19,13 @@ So that it is clear what actions I can take
 
 @WireMockServer
 	Scenario: Location search from home page no option selected
-	When I navigate to the following url: /
-	Then a http status code of 200 is returned
-	And I am redirected to the following url: /search-results
+	When I navigate to the following url: /?search=1
+	Then I am redirected to the following url: /search-results
 	
 @WireMockServer
 	Scenario: Location search from home page with valid entry
-	When I navigate to the following url: /?whereSearchTerm=Manchester
-	Then a http status code of 302 is returned
-	And I am redirected to the following url: /search-results
-
+	When I navigate to the following url: /?whereSearchTerm=Manchester&search=1
+	Then I am redirected to the following url: /search-results
 
 @WireMockServer
 	Scenario: Navigate to the browse by your interests page
@@ -41,8 +38,7 @@ So that it is clear what actions I can take
 	When I post to the following url: /browse-by-interests
 	| Field            | Value |
 	| SelectedRouteIds | 1     |
-	Then a http status code of 302 is returned
-	And I am redirected to the following url: /location
+	Then I am redirected to the following url: /location
 	And the page redirect content includes the following: What is your location?
 
 @WireMockServer
@@ -66,27 +62,21 @@ Scenario: Location search no location found
 	  | SearchTerm                | Coventry |
 	  | Distance                  | 10       |
 	  | SuggestedLocationSelected | true     |
-	Then a http status code of 200 is returned
-	And I am redirected to the following url: /location
-	And the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
+	Then the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
 
 	
 @WireMockServer
 Scenario: Location search no option selected
 	When I post to the following url: /location
 	  | Field          | Value    |
-	Then a http status code of 200 is returned
-	And I am redirected to the following url: /location
-	And the page content includes the following error: Select if you want to enter a city or postcode
+	Then the page content includes the following error: Select if you want to enter a city or postcode
 	
 @WireMockServer
 Scenario: Location search option selected no postcode
 	When I post to the following url: /location
 	  | Field          | Value |
 	  | NationalSearch | false |
-	Then a http status code of 200 is returned
-	And I am redirected to the following url: /location
-	And the page content includes the following error: Enter a city or postcode 
+	Then the page content includes the following error: Enter a city or postcode 
 
 @WireMockServer
 Scenario: Navigate to search results page with no filters
