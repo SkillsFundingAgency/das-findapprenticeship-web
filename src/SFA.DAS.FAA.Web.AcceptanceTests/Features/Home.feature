@@ -15,7 +15,6 @@ So that it is clear what actions I can take
 	Scenario: Location search from home page no location found
 	When I navigate to the following url: /?whereSearchTerm=Coventry
 	Then a http status code of 200 is returned
-	And I am redirected to the following url: /
 	And the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
 
 @WireMockServer

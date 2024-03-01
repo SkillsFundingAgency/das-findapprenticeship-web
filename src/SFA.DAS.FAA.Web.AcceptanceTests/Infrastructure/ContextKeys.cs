@@ -1,7 +1,8 @@
 ﻿namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 public static class ContextKeys
 {
-    public const string HttpClient = nameof(HttpClient);
+    public const string TestHttpClient = nameof(TestHttpClient);
+    //public const string HttpClient = nameof(HttpClient);
     public const string HttpResponse = nameof(HttpResponse);
     public const string HttpResponseContent = nameof(HttpResponseContent);
     public const string TestServer = nameof(TestServer);
