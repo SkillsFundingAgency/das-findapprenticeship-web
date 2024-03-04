@@ -43,8 +43,7 @@ So that it is clear what actions I can take
 
 @WireMockServer
 	Scenario: Browse by interests with validation failure
-	When I post to the following url: /browse-by-interests
-		| Field | Value |
+	When I post an empty form to the following url: /browse-by-interests
 	Then a http status code of 200 is returned
 	And the page content includes the following: Select at least one job category
 
@@ -67,8 +66,7 @@ Scenario: Location search no location found
 	
 @WireMockServer
 Scenario: Location search no option selected
-	When I post to the following url: /location
-	  | Field          | Value    |
+	When I post an empty form to the following url: /location
 	Then the page content includes the following error: Select if you want to enter a city or postcode
 	
 @WireMockServer

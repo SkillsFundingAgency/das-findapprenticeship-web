@@ -44,6 +44,19 @@ public sealed class HttpSteps
         _context.Set(responseContent, ContextKeys.HttpResponseContent);
     }
 
+    [Given("I post an empty form to the following url: (.*)")]
+    [When("I post an empty form to the following url: (.*)")]
+    public async Task WhenIPostAnEmptyFormToTheFollowingUrl(string url)
+    {
+        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+
+        var response = await client.PostAsync(url, new StringContent(string.Empty));
+        var responseContent = await response.Content.ReadAsStringAsync();
+        ClearResponseContext();
+        _context.Set(response, ContextKeys.HttpResponse);
+        _context.Set(responseContent, ContextKeys.HttpResponseContent);
+    }
+
     [Then("a http status code of (.*) is returned")]
     public void ThenAHttpStatusCodeIsReturned(int httpStatusCode)
     {
