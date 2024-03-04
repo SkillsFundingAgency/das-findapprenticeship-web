@@ -147,6 +147,44 @@ this.ScenarioInitialize(scenarioInfo);
             }
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Completion of job section without entering any jobs")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        public void CompletionOfJobSectionWithoutEnteringAnyJobs()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Completion of job section without entering any jobs", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 24
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table1.AddRow(new string[] {
+                            "DoYouWantToAddAnyJobs",
+                            "false"});
+#line 25
+ testRunner.When("I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs", ((string)(null)), table1, "When ");
+#line hidden
+#line 28
+ testRunner.Then("I am redirected to the following url: /applications/1b82e2a2-e76e-40c7-8a20-5736b" +
+                        "ed1afd1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

@@ -216,6 +216,15 @@ public static class MockApiServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("Apply/NewApplication/get-jobs.json"));
 
+        server.Given(Request.Create().WithPath(s =>
+                    Regex.IsMatch(s, $"{newApplicationRoute}/\\S+/work-history", RegexOptions.None, regexMaxTimeOut))
+                .UsingPost())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBody(string.Empty));
+
 
     }
 }

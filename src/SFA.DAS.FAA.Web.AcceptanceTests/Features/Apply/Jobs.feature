@@ -18,3 +18,11 @@ Scenario: Validation error on adding first job
 	When I post an empty form to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs
 	Then a http status code of 200 is returned
 	And the page content includes the following error: Select if you want to add any jobs
+
+@WireMockServer
+@AuthenticatedUser
+Scenario: Completion of job section without entering any jobs
+	When I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs
+	  | Field					   | Value |
+	  | DoYouWantToAddAnyJobs	   | false |
+	Then I am redirected to the following url: /applications/1b82e2a2-e76e-40c7-8a20-5736bed1afd1
