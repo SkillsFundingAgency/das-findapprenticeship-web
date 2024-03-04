@@ -26,6 +26,7 @@ public static class MockApiServer
         var server = StandAloneApp.Start(settings);
 
         AddFilesForNewApplication(server);
+        AddFilesForExistingApplication(server);
 
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
             .UsingGet()
@@ -91,9 +92,6 @@ public static class MockApiServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("browse-location-search.json"));
 
-
-
-
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults", RegexOptions.None, regexMaxTimeOut))
                 .WithParam(MatchLocationParamManchester)
                 .UsingGet())
@@ -139,32 +137,6 @@ public static class MockApiServer
                     .WithStatusCode(202)
                     .WithBodyFromFile("put-candidate.json"));
 
-        
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs", RegexOptions.None, regexMaxTimeOut))
-                .UsingGet())
-            .RespondWith(
-                Response.Create()
-                    .WithStatusCode(200)
-                    .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("jobs.json"));
-
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/1000012013", RegexOptions.None, regexMaxTimeOut))
-            .UsingPost())
-            .RespondWith(
-                Response.Create()
-                    .WithStatusCode(200)
-                    .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("post-application-details.json"));
-
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/applications/676476cc-525a-4a13-8da7-cf36345e6f61", RegexOptions.None, regexMaxTimeOut))
-                .UsingGet())
-            .RespondWith(
-                Response.Create()
-                    .WithStatusCode(200)
-                    .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("get-application.json"));
-
-
         return server;
     }
 
@@ -182,11 +154,69 @@ public static class MockApiServer
         return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Equals("Manchester", StringComparison.CurrentCultureIgnoreCase);
     }
 
+    private static void AddFilesForExistingApplication(WireMockServer server)
+    {
+        var existingApplicationRoute = $"/applications/676476cc-525a-4a13-8da7-cf36345e6f61";
+        var regexMaxTimeOut = TimeSpan.FromSeconds(3);
+
+        server.Given(Request.Create().WithPath(s
+                    => Regex.IsMatch(s, $"{existingApplicationRoute}", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/ExistingApplication/get-application.json"));
+
+        server.Given(Request.Create().WithPath(s
+                    => Regex.IsMatch(s, $"{existingApplicationRoute}/jobs", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/ExistingApplication/get-jobs.json"));
+
+        server.Given(Request.Create().WithPath(s
+                    => Regex.IsMatch(s, $"{existingApplicationRoute}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/ExistingApplication/get-job.json"));
+
+        server.Given(Request.Create().WithPath(s
+                    => Regex.IsMatch(s, $"{existingApplicationRoute}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae/delete", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/ExistingApplication/get-delete-job.json"));
+
+        server.Given(Request.Create().WithPath(s 
+                    => Regex.IsMatch(s, "/vacancies/1000012013", RegexOptions.None, regexMaxTimeOut))
+                .UsingPost())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/ExistingApplication/post-application-details.json"));
+
+        server.Given(Request.Create().WithPath(s =>
+                    Regex.IsMatch(s, $"{existingApplicationRoute}/\\S+/work-history", RegexOptions.None, regexMaxTimeOut))
+                .UsingPost())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBody(string.Empty));
+    }
 
     private static void AddFilesForNewApplication(WireMockServer server)
     {
         var newApplicationRoute = $"/applications/1b82e2a2-e76e-40c7-8a20-5736bed1afd1";
-
         var regexMaxTimeOut = TimeSpan.FromSeconds(3);
 
         server.Given(Request.Create().WithPath(s => 
@@ -225,6 +255,13 @@ public static class MockApiServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBody(string.Empty));
 
-
+        server.Given(Request.Create().WithPath(s =>
+                    Regex.IsMatch(s, $"{newApplicationRoute}/jobs", RegexOptions.None, regexMaxTimeOut))
+                .UsingPost())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/NewApplication/post-add-job.json"));
     }
 }

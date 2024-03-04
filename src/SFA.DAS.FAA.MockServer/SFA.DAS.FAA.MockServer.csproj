@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Apply\NewApplication\get-jobs.json" />
+    <None Remove="Apply\NewApplication\post-add-job.json" />
     <None Remove="jobs.json" />
   </ItemGroup>
 
@@ -23,7 +24,10 @@
     <Content Include="Apply\NewApplication\get-jobs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="jobs.json">
+    <Content Include="Apply\NewApplication\post-add-job.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Apply\ExistingApplication\get-jobs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="locations.json">
@@ -61,16 +65,22 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Apply\ExistingApplication\get-delete-job.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\get-job.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Apply\NewApplication\get-application.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Apply\NewApplication\post-application-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="get-application.json">
+    <None Update="Apply\ExistingApplication\get-application.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="post-application-details.json">
+    <None Update="Apply\ExistingApplication\post-application-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
