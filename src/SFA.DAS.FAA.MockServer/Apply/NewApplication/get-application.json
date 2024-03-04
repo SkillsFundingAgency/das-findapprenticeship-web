@@ -1,0 +1,27 @@
+﻿{
+	"vacancyReference": "VAC1000012345",
+	"vacancyTitle": "Software Engineering Apprenticeship",
+	"employerName": "Wonderful Employer Ltd",
+	"closingDate": "2025-03-23T00:00:00Z",
+	"isDisabilityConfident": true,
+	"educationHistory": {
+		"qualifications": "NotStarted",
+		"trainingCourses": "NotStarted"
+	},
+	"workHistory": {
+		"jobs": "NotStarted",
+		"volunteeringAndWorkExperience": "NotStarted"
+	},
+	"applicationQuestions": {
+		"skillsAndStrengths": "NotStarted",
+		"whatInterestsYou": "NotStarted",
+		"additionalQuestion1": "NotStarted",
+		"additionalQuestion2": "NotStarted"
+	},
+	"interviewAdjustments": {
+		"requestAdjustments": "NotStarted"
+	},
+	"disabilityConfidence": {
+		"interviewUnderDisabilityConfident": "NotStarted"
+	}
+}

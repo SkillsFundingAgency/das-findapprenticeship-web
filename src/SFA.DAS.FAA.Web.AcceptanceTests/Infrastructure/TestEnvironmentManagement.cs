@@ -66,12 +66,11 @@ public sealed class TestEnvironmentManagement
     {
         var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
 
-        //todo: config these
         var formData = new Dictionary<string, string>
         {
             { "Id", "B2A7987A-2734-4617-AA9F-6DD8BCCC7B96" },
-            { "Email", "chrisfoster186@googlemail.com" },
-            { "MobilePhone", "09281 293728" }
+            { "Email", "test@test.com" },
+            { "MobilePhone", "12345 67890" }
         };
 
         var content = new FormUrlEncodedContent(formData);

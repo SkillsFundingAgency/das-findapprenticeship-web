@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Apply\NewApplication\get-jobs.json" />
     <None Remove="jobs.json" />
   </ItemGroup>
 
@@ -19,6 +20,9 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Apply\NewApplication\get-jobs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="jobs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -57,6 +61,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Apply\NewApplication\get-application.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\NewApplication\post-application-details.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="get-application.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

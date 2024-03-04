@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.TestHost;
+﻿using Microsoft.AspNetCore.TestHost;
 using Microsoft.Net.Http.Headers;
 using System.Net;
 
@@ -10,7 +9,7 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure
         private TestServer Server { get; }
         private CookieContainer CookieContainer { get; }
 
-        private Uri TestUri => new Uri("https://www.test.com/");
+        private Uri SubstituteBaseUrl => new Uri("https://www.test.com/");
 
         public TestHttpClient(TestServer server)
         {
@@ -20,10 +19,10 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure
 
         private RequestBuilder BuildRequest(string url)
         {
-            var uri = new Uri(Server.BaseAddress, url);
+            var uri = new Uri(SubstituteBaseUrl, url);
             var builder = Server.CreateRequest(url);
 
-            var cookieHeader = CookieContainer.GetCookieHeader(TestUri);
+            var cookieHeader = CookieContainer.GetCookieHeader(uri);
             if (!string.IsNullOrWhiteSpace(cookieHeader))
             {
                 builder.AddHeader(HeaderNames.Cookie, cookieHeader);
@@ -36,13 +35,11 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure
         {
             if (response.Headers.Contains(HeaderNames.SetCookie))
             {
-                var uri = new Uri(Server.BaseAddress, url);
+                var uri = new Uri(SubstituteBaseUrl, url);
                 var cookies = response.Headers.GetValues(HeaderNames.SetCookie);
                 foreach (var cookie in cookies)
                 {
-                    Console.WriteLine($"Cookie for {TestUri}");
-                    Console.WriteLine(cookie);
-                    CookieContainer.SetCookies(TestUri, cookie);
+                    CookieContainer.SetCookies(uri, cookie);
                 }
             }
         }

@@ -25,6 +25,8 @@ public static class MockApiServer
 
         var server = StandAloneApp.Start(settings);
 
+        AddFilesForNewApplication(server);
+
         server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
             .UsingGet()
             .WithParam(MatchSearchLocationManchester)
@@ -138,7 +140,7 @@ public static class MockApiServer
                     .WithBodyFromFile("put-candidate.json"));
 
         
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/jobs", RegexOptions.None, regexMaxTimeOut))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
             .RespondWith(
                 Response.Create()
@@ -146,7 +148,7 @@ public static class MockApiServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("jobs.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/\\d+$", RegexOptions.None, regexMaxTimeOut))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/1000012013", RegexOptions.None, regexMaxTimeOut))
             .UsingPost())
             .RespondWith(
                 Response.Create()
@@ -154,15 +156,13 @@ public static class MockApiServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("post-application-details.json"));
 
-        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/applications/\\S", RegexOptions.None, regexMaxTimeOut))
+        server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/applications/676476cc-525a-4a13-8da7-cf36345e6f61", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
             .RespondWith(
                 Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("get-application.json"));
-
-
 
 
         return server;
@@ -180,5 +180,42 @@ public static class MockApiServer
     private static bool MatchLocationParamManchester(IDictionary<string, WireMockList<string>> arg)
     {
         return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Equals("Manchester", StringComparison.CurrentCultureIgnoreCase);
+    }
+
+
+    private static void AddFilesForNewApplication(WireMockServer server)
+    {
+        var newApplicationRoute = $"/applications/1b82e2a2-e76e-40c7-8a20-5736bed1afd1";
+
+        var regexMaxTimeOut = TimeSpan.FromSeconds(3);
+
+        server.Given(Request.Create().WithPath(s => 
+                    Regex.IsMatch(s, "/vacancies/2000012013", RegexOptions.None, regexMaxTimeOut))
+                .UsingPost())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/NewApplication/post-application-details.json"));
+
+        server.Given(Request.Create().WithPath(s => 
+                    Regex.IsMatch(s, newApplicationRoute, RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/NewApplication/get-application.json"));
+
+        server.Given(Request.Create().WithPath(s => 
+                    Regex.IsMatch(s, $"{newApplicationRoute}/jobs", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("Apply/NewApplication/get-jobs.json"));
+
+
     }
 }
