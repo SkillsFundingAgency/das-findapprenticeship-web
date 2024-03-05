@@ -7,4 +7,5 @@ public static class ContextKeys
     public const string TestServer = nameof(TestServer);
     public const string MockApiClient = nameof(MockApiClient);
     public const string HttpResponseRedirectContent = nameof(HttpResponseRedirectContent);
+    public const string ApplicationId = nameof(ApplicationId);
 }

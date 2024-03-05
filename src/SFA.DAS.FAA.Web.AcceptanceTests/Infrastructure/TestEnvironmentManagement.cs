@@ -7,6 +7,7 @@ using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.MockServer;
+using SFA.DAS.FAA.Web.AcceptanceTests.Data;
 using SFA.DAS.FAA.Web.Controllers;
 using TechTalk.SpecFlow;
 using WireMock.Server;
@@ -59,6 +60,18 @@ public sealed class TestEnvironmentManagement
             .UseConfiguration(ConfigBuilder.GenerateConfiguration()));
 
         _context.Set(_mockApiClient, ContextKeys.MockApiClient);
+    }
+
+    [BeforeScenario("NewApplication")]
+    public async Task NewApplication()
+    {
+        _context.Set(Constants.NewApplicationId, ContextKeys.ApplicationId);
+    }
+
+    [BeforeScenario("ExistingApplication")]
+    public async Task ExistingApplication()
+    {
+        _context.Set(Constants.ExistingApplicationId, ContextKeys.ApplicationId);
     }
 
     [BeforeScenario("AuthenticatedUser")]

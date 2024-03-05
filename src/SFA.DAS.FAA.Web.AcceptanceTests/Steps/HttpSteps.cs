@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using NUnit.Framework;
 using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
@@ -21,6 +22,54 @@ public sealed class HttpSteps
     {
         var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(url);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        ClearResponseContext();
+        _context.Set(response, ContextKeys.HttpResponse);
+        _context.Set(responseContent, ContextKeys.HttpResponseContent);
+    }
+
+
+    [When("I navigate to the (.*) page")]
+    public async Task WhenINavigateToAPage(string pageName)
+    {
+        var page = Data.Pages.GetPage(pageName, _context.Get<string>(ContextKeys.ApplicationId));
+
+        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var response = await client.GetAsync(page.Url);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        ClearResponseContext();
+        _context.Set(response, ContextKeys.HttpResponse);
+        _context.Set(responseContent, ContextKeys.HttpResponseContent);
+    }
+
+    [Given("I post to the (.*) page")]
+    [When("I post to the (.*) page")]
+    public async Task WhenIPostToAPage(string pageName, Table formBody)
+    {
+        var page = Data.Pages.GetPage(pageName, _context.Get<string>(ContextKeys.ApplicationId));
+
+        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+
+        var contentDictionary = formBody.Rows.ToDictionary(r => r[0], r => r[1]);
+
+        var content = new FormUrlEncodedContent(contentDictionary);
+
+        var response = await client.PostAsync(page.Url, content);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        ClearResponseContext();
+        _context.Set(response, ContextKeys.HttpResponse);
+        _context.Set(responseContent, ContextKeys.HttpResponseContent);
+    }
+
+    [Given("I post an empty form to the (.*) page")]
+    [When("I post an empty form to the (.*) page")]
+    public async Task WhenIPostAnEmptyFormToAPage(string pageName)
+    {
+        var page = Data.Pages.GetPage(pageName, _context.Get<string>(ContextKeys.ApplicationId));
+
+        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+
+        var response = await client.PostAsync(page.Url, new StringContent(string.Empty));
         var responseContent = await response.Content.ReadAsStringAsync();
         ClearResponseContext();
         _context.Set(response, ContextKeys.HttpResponse);
@@ -77,6 +126,26 @@ public sealed class HttpSteps
 
         var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(url);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        if (_context.ContainsKey(ContextKeys.HttpResponseRedirectContent))
+        {
+            _context.Remove(ContextKeys.HttpResponseRedirectContent);
+        }
+
+        _context.Set(responseContent, ContextKeys.HttpResponseRedirectContent);
+    }
+
+    [Then("I am redirected to the (.*) page")]
+    public async Task ThenIAmRedirectedToAPage(string pageName)
+    {
+        var page = Data.Pages.GetPage(pageName, _context.Get<string>(ContextKeys.ApplicationId));
+
+        var redirection = _context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
+        redirection.StatusCode.Should().Be(HttpStatusCode.Redirect);
+        redirection.Headers.Location.ToString().Should().StartWith(page.Url);
+
+        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var response = await client.GetAsync(page.Url);
         var responseContent = await response.Content.ReadAsStringAsync();
         if (_context.ContainsKey(ContextKeys.HttpResponseRedirectContent))
         {

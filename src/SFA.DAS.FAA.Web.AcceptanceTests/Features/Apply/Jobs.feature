@@ -6,24 +6,27 @@ So that I can show my work experience
 
 @WireMockServer
 @AuthenticatedUser
+@NewApplication
 Scenario: See my options for entering jobs
-	When I navigate to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs
+	When I navigate to the Jobs page
 	Then a http status code of 200 is returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Jobs
 
 @WireMockServer
 @AuthenticatedUser
+@NewApplication
 Scenario: Opt to add my first job
-	When I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs
+	When I post to the Jobs page
 	  | Field					   | Value |
 	  | DoYouWantToAddAnyJobs	   | true  |
-	Then I am redirected to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs/add
+	Then I am redirected to the Add a Job page
 
 @WireMockServer
 @AuthenticatedUser
+@NewApplication
 Scenario: Add a job
-	When I navigate to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs/add
+	When I navigate to the Add a Job page
 	Then a http status code of 200 is returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Add a job

@@ -78,14 +78,16 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Features.Apply
         [NUnit.Framework.DescriptionAttribute("See my options for entering jobs")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
         public void SeeMyOptionsForEnteringJobs()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("See my options for entering jobs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 9
+#line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -95,17 +97,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
- testRunner.When("I navigate to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs" +
-                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 11
- testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I navigate to the Jobs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 12
- testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 13
+ testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 14
  testRunner.And("the page content includes the following: Jobs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -116,14 +117,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Opt to add my first job")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
         public void OptToAddMyFirstJob()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opt to add my first job", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 17
+#line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -139,12 +142,11 @@ this.ScenarioInitialize(scenarioInfo);
                 table1.AddRow(new string[] {
                             "DoYouWantToAddAnyJobs",
                             "true"});
-#line 18
- testRunner.When("I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs", ((string)(null)), table1, "When ");
+#line 20
+ testRunner.When("I post to the Jobs page", ((string)(null)), table1, "When ");
 #line hidden
-#line 21
- testRunner.Then("I am redirected to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1" +
-                        "/jobs/add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+ testRunner.Then("I am redirected to the Add a Job page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -154,14 +156,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Add a job")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
         public void AddAJob()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a job", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 25
+#line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -171,17 +175,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
- testRunner.When("I navigate to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs" +
-                        "/add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.When("I navigate to the Add a Job page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 30
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 28
+#line 31
  testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 32
  testRunner.And("the page content includes the following: Add a job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -199,7 +202,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "AuthenticatedUser"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fill out the Add a job page", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 33
+#line 36
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -230,11 +233,11 @@ this.ScenarioInitialize(scenarioInfo);
                 table2.AddRow(new string[] {
                             "IsCurrentRole",
                             "true"});
-#line 34
+#line 37
  testRunner.When("I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs/add" +
                         "", ((string)(null)), table2, "When ");
 #line hidden
-#line 42
+#line 45
  testRunner.Then("I am redirected to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1" +
                         "/jobs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -253,7 +256,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "AuthenticatedUser"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation on the Add a job page", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 46
+#line 49
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -263,24 +266,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 47
+#line 50
  testRunner.When("I post an empty form to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed" +
                         "1afd1/jobs/add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
+#line 51
  testRunner.Then("the page content includes the following error: Enter the job title for this job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 49
+#line 52
  testRunner.And("the page content includes the following error: Enter the company you worked for", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 53
  testRunner.And("the page content includes the following error: Enter the responsibilities you had" +
                         " for this job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 51
+#line 54
  testRunner.And("the page content includes the following error: Enter the start date for this job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 52
+#line 55
  testRunner.And("the page content includes the following error: Select if this is your current job" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -299,7 +302,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "AuthenticatedUser"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation error on job summary page", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 56
+#line 59
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -309,14 +312,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 57
+#line 60
  testRunner.When("I post an empty form to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed" +
                         "1afd1/jobs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 58
+#line 61
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 59
+#line 62
  testRunner.And("the page content includes the following error: Select if you want to add any jobs" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -335,7 +338,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "AuthenticatedUser"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Completion of job section without entering any jobs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 63
+#line 66
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -351,10 +354,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table3.AddRow(new string[] {
                             "DoYouWantToAddAnyJobs",
                             "false"});
-#line 64
+#line 67
  testRunner.When("I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs", ((string)(null)), table3, "When ");
 #line hidden
-#line 67
+#line 70
  testRunner.Then("I am redirected to the following url: /applications/1b82e2a2-e76e-40c7-8a20-5736b" +
                         "ed1afd1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -373,7 +376,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "AuthenticatedUser"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Revisit the jobs page having already completed it previously", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 71
+#line 74
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -383,20 +386,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 72
+#line 75
  testRunner.When("I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 73
+#line 76
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 74
+#line 77
  testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 75
+#line 78
  testRunner.And("the page content includes the following: Jobs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 76
+#line 79
  testRunner.And("the page content includes the following: Junior Developer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -414,7 +417,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "AuthenticatedUser"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Confirm completion of the jobs page on a return visit", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 80
+#line 83
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -433,10 +436,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table4.AddRow(new string[] {
                             "ShowJobHistory",
                             "true"});
-#line 81
+#line 84
  testRunner.When("I post to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs", ((string)(null)), table4, "When ");
 #line hidden
-#line 85
+#line 88
  testRunner.Then("I am redirected to the following url: /applications/676476cc-525a-4a13-8da7-cf363" +
                         "45e6f61", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -455,7 +458,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "AuthenticatedUser"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit an existing job", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 89
+#line 92
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -465,17 +468,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 90
+#line 93
  testRunner.When("I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs" +
                         "/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 91
+#line 94
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 92
+#line 95
  testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 93
+#line 96
  testRunner.And("the page content includes the following: Add a job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -493,7 +496,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "AuthenticatedUser"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a job", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 97
+#line 100
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -503,17 +506,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 98
+#line 101
  testRunner.When("I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs" +
                         "/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae/delete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 99
+#line 102
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 100
+#line 103
  testRunner.And("the page content includes the following: Do you want to delete this job?", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 101
+#line 104
  testRunner.And("the page content includes the following: Junior Developer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
