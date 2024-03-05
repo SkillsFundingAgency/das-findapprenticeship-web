@@ -33,8 +33,9 @@ Scenario: Add a job
 
 @WireMockServer
 @AuthenticatedUser
+@NewApplication
 Scenario: Fill out the Add a job page
-	When I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs/add
+	When I post to the Add a Job page
 		| Field          | Value                                       |
 		| JobTitle       | Lapidary worker                             |
 		| EmployerName   | Rocks u Like                                |
@@ -42,12 +43,13 @@ Scenario: Fill out the Add a job page
 		| StartDateMonth | 07                                          |
 		| StartDateYear  | 2021                                        |
 		| IsCurrentRole  | true                                        |
-	Then I am redirected to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs
+	Then I am redirected to the Jobs page
 
 @WireMockServer
 @AuthenticatedUser
+@NewApplication
 Scenario: Validation on the Add a job page
-	When I post an empty form to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs/add
+	When I post an empty form to the Add a Job page
 	Then the page content includes the following error: Enter the job title for this job
 	And the page content includes the following error: Enter the company you worked for
 	And the page content includes the following error: Enter the responsibilities you had for this job
@@ -56,23 +58,26 @@ Scenario: Validation on the Add a job page
 
 @WireMockServer
 @AuthenticatedUser
+@NewApplication
 Scenario: Validation error on job summary page
-	When I post an empty form to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs
+	When I post an empty form to the Jobs page
 	Then a http status code of 200 is returned
 	And the page content includes the following error: Select if you want to add any jobs
 
 @WireMockServer
 @AuthenticatedUser
+@NewApplication
 Scenario: Completion of job section without entering any jobs
-	When I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs
+	When I post to the Jobs page
 	  | Field					   | Value |
 	  | DoYouWantToAddAnyJobs	   | false |
-	Then I am redirected to the following url: /applications/1b82e2a2-e76e-40c7-8a20-5736bed1afd1
+	Then I am redirected to the Application Tasklist page
 
 @WireMockServer
 @AuthenticatedUser
+@ExistingApplication
 Scenario: Revisit the jobs page having already completed it previously
-	When I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs
+	When I navigate to the Jobs page
 	Then a http status code of 200 is returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Jobs
@@ -80,25 +85,28 @@ Scenario: Revisit the jobs page having already completed it previously
 
 @WireMockServer
 @AuthenticatedUser
+@ExistingApplication
 Scenario: Confirm completion of the jobs page on a return visit
-	When I post to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs
+	When I post to the Jobs page
 	| Field              | Value |
 	| IsSectionCompleted | false |
 	| ShowJobHistory     | true  |
-	Then I am redirected to the following url: /applications/676476cc-525a-4a13-8da7-cf36345e6f61
+	Then I am redirected to the Application Tasklist page
 
 @WireMockServer
 @AuthenticatedUser
+@ExistingApplication
 Scenario: Edit an existing job
-	When I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae
+	When I navigate to the Edit Job page
 	Then a http status code of 200 is returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Add a job
 
 @WireMockServer
 @AuthenticatedUser
+@ExistingApplication
 Scenario: Delete a job
-	When I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae/delete
+	When I navigate to the Delete Job page
 	Then a http status code of 200 is returned
 	And the page content includes the following: Do you want to delete this job?
 	And the page content includes the following: Junior Developer

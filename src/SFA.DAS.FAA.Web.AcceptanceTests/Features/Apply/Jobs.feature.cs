@@ -195,14 +195,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Fill out the Add a job page")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
         public void FillOutTheAddAJobPage()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fill out the Add a job page", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 36
+#line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -233,13 +235,11 @@ this.ScenarioInitialize(scenarioInfo);
                 table2.AddRow(new string[] {
                             "IsCurrentRole",
                             "true"});
-#line 37
- testRunner.When("I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs/add" +
-                        "", ((string)(null)), table2, "When ");
+#line 38
+ testRunner.When("I post to the Add a Job page", ((string)(null)), table2, "When ");
 #line hidden
-#line 45
- testRunner.Then("I am redirected to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1" +
-                        "/jobs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 46
+ testRunner.Then("I am redirected to the Jobs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -249,14 +249,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Validation on the Add a job page")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
         public void ValidationOnTheAddAJobPage()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation on the Add a job page", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 49
+#line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -266,24 +268,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 50
- testRunner.When("I post an empty form to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed" +
-                        "1afd1/jobs/add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 51
- testRunner.Then("the page content includes the following error: Enter the job title for this job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
 #line 52
- testRunner.And("the page content includes the following error: Enter the company you worked for", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I post an empty form to the Add a Job page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 53
+ testRunner.Then("the page content includes the following error: Enter the job title for this job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 54
+ testRunner.And("the page content includes the following error: Enter the company you worked for", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 55
  testRunner.And("the page content includes the following error: Enter the responsibilities you had" +
                         " for this job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 56
  testRunner.And("the page content includes the following error: Enter the start date for this job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 55
+#line 57
  testRunner.And("the page content includes the following error: Select if this is your current job" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -295,14 +296,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Validation error on job summary page")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
         public void ValidationErrorOnJobSummaryPage()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation error on job summary page", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 59
+#line 62
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -312,14 +315,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 60
- testRunner.When("I post an empty form to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed" +
-                        "1afd1/jobs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 63
+ testRunner.When("I post an empty form to the Jobs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 61
+#line 64
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 62
+#line 65
  testRunner.And("the page content includes the following error: Select if you want to add any jobs" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -331,14 +333,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Completion of job section without entering any jobs")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
         public void CompletionOfJobSectionWithoutEnteringAnyJobs()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Completion of job section without entering any jobs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 66
+#line 70
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -354,12 +358,11 @@ this.ScenarioInitialize(scenarioInfo);
                 table3.AddRow(new string[] {
                             "DoYouWantToAddAnyJobs",
                             "false"});
-#line 67
- testRunner.When("I post to the following url: /apply/1b82e2a2-e76e-40c7-8a20-5736bed1afd1/jobs", ((string)(null)), table3, "When ");
+#line 71
+ testRunner.When("I post to the Jobs page", ((string)(null)), table3, "When ");
 #line hidden
-#line 70
- testRunner.Then("I am redirected to the following url: /applications/1b82e2a2-e76e-40c7-8a20-5736b" +
-                        "ed1afd1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 74
+ testRunner.Then("I am redirected to the Application Tasklist page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -369,14 +372,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Revisit the jobs page having already completed it previously")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
         public void RevisitTheJobsPageHavingAlreadyCompletedItPreviously()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Revisit the jobs page having already completed it previously", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 74
+#line 79
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -386,20 +391,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 75
- testRunner.When("I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs" +
-                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 80
+ testRunner.When("I navigate to the Jobs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 81
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 77
+#line 82
  testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 78
+#line 83
  testRunner.And("the page content includes the following: Jobs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 79
+#line 84
  testRunner.And("the page content includes the following: Junior Developer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -410,14 +414,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Confirm completion of the jobs page on a return visit")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
         public void ConfirmCompletionOfTheJobsPageOnAReturnVisit()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Confirm completion of the jobs page on a return visit", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 83
+#line 89
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -436,12 +442,11 @@ this.ScenarioInitialize(scenarioInfo);
                 table4.AddRow(new string[] {
                             "ShowJobHistory",
                             "true"});
-#line 84
- testRunner.When("I post to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs", ((string)(null)), table4, "When ");
+#line 90
+ testRunner.When("I post to the Jobs page", ((string)(null)), table4, "When ");
 #line hidden
-#line 88
- testRunner.Then("I am redirected to the following url: /applications/676476cc-525a-4a13-8da7-cf363" +
-                        "45e6f61", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 94
+ testRunner.Then("I am redirected to the Application Tasklist page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -451,14 +456,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Edit an existing job")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
         public void EditAnExistingJob()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit an existing job", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 92
+#line 99
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -468,17 +475,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 93
- testRunner.When("I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs" +
-                        "/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 100
+ testRunner.When("I navigate to the Edit Job page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 94
+#line 101
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 95
+#line 102
  testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 96
+#line 103
  testRunner.And("the page content includes the following: Add a job", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -489,14 +495,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Delete a job")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
         public void DeleteAJob()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
-                    "AuthenticatedUser"};
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a job", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 100
+#line 108
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -506,17 +514,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 101
- testRunner.When("I navigate to the following url: /apply/676476cc-525a-4a13-8da7-cf36345e6f61/jobs" +
-                        "/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae/delete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 109
+ testRunner.When("I navigate to the Delete Job page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 102
+#line 110
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 103
+#line 111
  testRunner.And("the page content includes the following: Do you want to delete this job?", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 104
+#line 112
  testRunner.And("the page content includes the following: Junior Developer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
