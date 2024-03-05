@@ -1,0 +1,78 @@
+﻿@model SFA.DAS.FAA.Web.Models.Apply.InterviewQuestionSummaryViewModel
+@{
+    ViewData["Title"] = "Get support at an interview – Find an apprenticeship – GOV.UK";
+    var errorClass = Model.ErrorDictionary!.Any() ? "govuk-form-group--error" : "";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+        <span class="govuk-caption-l">Interview adjustments</span>
+        <h1 class="govuk-heading-l">Get support at an interview</h1>
+        <div class="govuk-!-padding-bottom-5"></div>
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Do you want to request support at an interview?
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @(Model.IsSupportRequestRequired ? Html.Raw("Yes") : Html.Raw("No"))
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="#">
+                        Change<span class="govuk-visually-hidden"> interview adjustments</span>
+                    </a>
+                </dd>
+            </div>
+            @if (Model.IsSupportRequestRequired)
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Interview support request
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.SupportRequestAnswer
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="#">
+                            Change<span class="govuk-visually-hidden"> interview adjustments</span>
+                        </a>
+                    </dd>
+                </div>    
+            }
+        </dl>
+        <div class="govuk-!-padding-bottom-5"></div>
+        <form class="form" method="post">
+            <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            Have you completed this section?
+                        </h1>
+                    </legend>
+                    <div class="govuk-radios" data-module="govuk-radios" id="IsSectionCompleted" @errorClass>
+                        @foreach (var sectionProgress in Model.InterviewQuestionCompletionStatus)
+                        {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="@sectionProgress.Id"
+                                       id="completed-intrvquestion-@sectionProgress.Id" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="completed-intrvquestion-@sectionProgress.Id">
+                                    @sectionProgress.StatusLabel
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
