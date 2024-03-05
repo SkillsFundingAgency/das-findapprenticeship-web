@@ -62,7 +62,7 @@ public class InterviewAdjustmentsController(IMediator mediator) : Controller
         {
             CandidateId = User.Claims.CandidateId(),
             ApplicationId = viewModel.ApplicationId,
-            InterviewAdjustmentsDescription = viewModel.InterviewAdjustmentsDescription,
+            InterviewAdjustmentsDescription = viewModel.DoYouWantInterviewAdjustments.Value ? viewModel.InterviewAdjustmentsDescription : null,
             InterviewAdjustmentsSectionStatus = viewModel.DoYouWantInterviewAdjustments!.Value ? SectionStatus.InProgress : SectionStatus.Completed
         };
 
