@@ -16,7 +16,8 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
             return server
                 .WithApplicationFiles()
                 .WithJobsFiles()
-                .WithTrainingCoursesFiles();
+                .WithTrainingCoursesFiles()
+                .WithVolunteeringAndWorkExperienceFiles();
 
             return server;
         }
@@ -151,6 +152,40 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithStatusCode(200)
                         .WithHeader("Content-Type", "application/json")
                         .WithBody(string.Empty));
+
+            return server;
+        }
+
+        private static WireMockServer WithVolunteeringAndWorkExperienceFiles(this WireMockServer server)
+        {
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/volunteeringorworkexperience", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/WorkExperience/get-workexperiences.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/\\S+/volunteering-and-work-experience", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/volunteeringorworkexperience/\\S+/delete",
+                            RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/WorkExperience/get-delete-workexperience.json"));
 
             return server;
         }

@@ -20,6 +20,11 @@ public static class Pages
             new Page { Name = "Add a Training Course", Url = "/apply/{applicationId}/trainingcourses/add" },
             new Page { Name = "Edit a Training Course", Url = "/apply/{applicationId}/trainingcourses/d96b7cbd-fee2-4084-ae69-b138959edce4" },
             new Page { Name = "Delete a Training Course", Url = "/apply/{applicationId}/trainingcourses/d96b7cbd-fee2-4084-ae69-b138959edce4/delete" },
+            //Volunteering and Work Experience
+            new Page { Name = "Volunteering and Work Experience", Url="/apply/{applicationId}/volunteering-and-work-experience" },
+            new Page { Name = "Volunteering and Work Experience Summary", Url = "/apply/{applicationId}/volunteering-and-work-experience/summary" },
+            new Page { Name = "Add Work Experience", Url="/apply/{applicationId}/volunteering-and-work-experience/add" },
+            new Page { Name = "Delete Work Experience", Url= "/apply/{applicationId}/volunteering-and-work-experience/3584e247-ae13-46b0-bca3-55ff9ba096ef/delete" }
         ];
     }
 
