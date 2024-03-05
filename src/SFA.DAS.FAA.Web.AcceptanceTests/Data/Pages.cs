@@ -15,7 +15,9 @@ public static class Pages
             new Page { Name = "Add a Job", Url = "/apply/{applicationId}/jobs/add" },
             new Page { Name = "Edit Job", Url = "/apply/{applicationId}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae" },
             new Page { Name = "Delete Job", Url = "/apply/{applicationId}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae/delete" },
-
+            //Training Courses
+            new Page { Name = "Training Courses", Url = "/apply/{applicationId}/training-courses" },
+            new Page { Name = "Add a Training Course", Url = "/apply/{applicationId}/trainingcourses/add" },
         ];
     }
 

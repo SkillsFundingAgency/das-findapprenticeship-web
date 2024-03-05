@@ -6,11 +6,11 @@ using Moq;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.MockServer;
-using SFA.DAS.FAA.Web.AcceptanceTests.Data;
+using SFA.DAS.FAA.MockServer.MockServerBuilder;
 using SFA.DAS.FAA.Web.Controllers;
 using TechTalk.SpecFlow;
 using WireMock.Server;
+using Constants = SFA.DAS.FAA.Web.AcceptanceTests.Data.Constants;
 
 namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 

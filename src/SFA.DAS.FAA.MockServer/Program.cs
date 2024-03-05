@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using SFA.DAS.FAA.MockServer;
+using SFA.DAS.FAA.MockServer.MockServerBuilder;
 
 Console.WriteLine("Mock Server starting on http://localhost:5027");
 
