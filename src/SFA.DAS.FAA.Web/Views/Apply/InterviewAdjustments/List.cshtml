@@ -52,10 +52,10 @@
                         </div>
                         <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-DoYouWantInterviewAdjustments">
                             <div class="govuk-form-group">
-                                <label class="govuk-label" for="interview-adjustments-description">
+                                <label class="govuk-label" for="InterviewAdjustmentsDescription">
                                     Interview support request
                                 </label>
-                                <input class="govuk-input govuk-!-width-one-third" id="interview-adjustments-description" name="interviewAdjustmentsDescription" type="text" spellcheck="false">
+                                <input class="govuk-input govuk-!-width-one-third" asp-for="InterviewAdjustmentsDescription" type="text" spellcheck="false" value="@Model.InterviewAdjustmentsDescription">
                             </div>
                         </div>
                         <div class="govuk-radios__item">
