@@ -65,12 +65,14 @@ public sealed class TestEnvironmentManagement
     [BeforeScenario("NewApplication")]
     public async Task NewApplication()
     {
+        _context.Set(Constants.NewVacancyReference, ContextKeys.VacancyReference);
         _context.Set(Constants.NewApplicationId, ContextKeys.ApplicationId);
     }
 
     [BeforeScenario("ExistingApplication")]
     public async Task ExistingApplication()
     {
+        _context.Set(Constants.ExistingVacancyReference, ContextKeys.VacancyReference);
         _context.Set(Constants.ExistingApplicationId, ContextKeys.ApplicationId);
     }
 

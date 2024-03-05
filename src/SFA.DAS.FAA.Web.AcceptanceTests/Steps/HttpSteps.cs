@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.AcceptanceTests.Extensions;
 using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
 
@@ -32,7 +32,7 @@ public sealed class HttpSteps
     [When("I navigate to the (.*) page")]
     public async Task WhenINavigateToAPage(string pageName)
     {
-        var page = Data.Pages.GetPage(pageName, _context.Get<string>(ContextKeys.ApplicationId));
+        var page = _context.GetPage(pageName);
 
         var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(page.Url);
@@ -46,7 +46,7 @@ public sealed class HttpSteps
     [When("I post to the (.*) page")]
     public async Task WhenIPostToAPage(string pageName, Table formBody)
     {
-        var page = Data.Pages.GetPage(pageName, _context.Get<string>(ContextKeys.ApplicationId));
+        var page = _context.GetPage(pageName);
 
         var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
 
@@ -65,7 +65,7 @@ public sealed class HttpSteps
     [When("I post an empty form to the (.*) page")]
     public async Task WhenIPostAnEmptyFormToAPage(string pageName)
     {
-        var page = Data.Pages.GetPage(pageName, _context.Get<string>(ContextKeys.ApplicationId));
+        var page = _context.GetPage(pageName);
 
         var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
 
@@ -138,7 +138,7 @@ public sealed class HttpSteps
     [Then("I am redirected to the (.*) page")]
     public async Task ThenIAmRedirectedToAPage(string pageName)
     {
-        var page = Data.Pages.GetPage(pageName, _context.Get<string>(ContextKeys.ApplicationId));
+        var page = _context.GetPage(pageName);
 
         var redirection = _context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
         redirection.StatusCode.Should().Be(HttpStatusCode.Redirect);
