@@ -13,6 +13,6 @@ public class WhenBuildingGetInterviewAdjustmentsApiRequest
     {
         var actual = new GetInterviewAdjustmentsApiRequest(applicationId, candidateId);
 
-        actual.GetUrl.Should().Be($"applications/{applicationId}/interview-adjustments?candidateId={candidateId}");
+        actual.GetUrl.Should().Be($"applications/{applicationId}/interviewadjustments?candidateId={candidateId}");
     }
 }
