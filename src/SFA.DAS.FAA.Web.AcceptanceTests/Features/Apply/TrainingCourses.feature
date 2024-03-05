@@ -65,3 +65,34 @@ Scenario: Validation error on job summary page
 	When I post an empty form to the Training Courses page
 	Then a http status code of 200 is returned
 	And the page content includes the following error: Select if you want to add any training courses
+
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Edit a Training Course
+	When I navigate to the Edit a Training Course page
+	Then a http status code of 200 is returned
+
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Complete editing a Training Course
+	When I post to the Edit a Training Course page
+		| Field        | Value                               |
+		| CourseName   | Super Skill Booster Training part 2 |
+		| YearAchieved | 2022                                |
+	Then I am redirected to the Training Courses page
+
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Delete a Training Course
+	When I navigate to the Delete a Training Course page
+	Then a http status code of 200 is returned
+	
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Confirm deletion of a Training Course
+	When I post an empty form to the Delete a Training Course page
+	Then I am redirected to the Training Courses page

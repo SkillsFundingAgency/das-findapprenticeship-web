@@ -492,6 +492,60 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Complete edit of an existing job")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void CompleteEditOfAnExistingJob()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Complete edit of an existing job", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 108
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table5.AddRow(new string[] {
+                            "JobTitle",
+                            "Lapidary worker level 2"});
+                table5.AddRow(new string[] {
+                            "EmployerName",
+                            "Rocks u Like"});
+                table5.AddRow(new string[] {
+                            "JobDescription",
+                            "Polishing semi-precious stones and the like"});
+                table5.AddRow(new string[] {
+                            "StartDateMonth",
+                            "09"});
+                table5.AddRow(new string[] {
+                            "StartDateYear",
+                            "2022"});
+                table5.AddRow(new string[] {
+                            "IsCurrentRole",
+                            "true"});
+#line 109
+ testRunner.When("I post to the Edit Job page", ((string)(null)), table5, "When ");
+#line hidden
+#line 117
+ testRunner.Then("I am redirected to the Jobs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Delete a job")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
@@ -504,7 +558,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "ExistingApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a job", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 108
+#line 122
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -514,17 +568,50 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 109
+#line 123
  testRunner.When("I navigate to the Delete Job page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 110
+#line 124
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 111
+#line 125
  testRunner.And("the page content includes the following: Do you want to delete this job?", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 112
+#line 126
  testRunner.And("the page content includes the following: Junior Developer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Confirm deletion of a job")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void ConfirmDeletionOfAJob()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Confirm deletion of a job", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 131
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 132
+ testRunner.When("I post an empty form to the Delete Job page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 133
+ testRunner.Then("I am redirected to the Jobs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

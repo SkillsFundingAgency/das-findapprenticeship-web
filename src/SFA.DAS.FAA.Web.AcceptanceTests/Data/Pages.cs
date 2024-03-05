@@ -18,6 +18,8 @@ public static class Pages
             //Training Courses
             new Page { Name = "Training Courses", Url = "/apply/{applicationId}/training-courses" },
             new Page { Name = "Add a Training Course", Url = "/apply/{applicationId}/trainingcourses/add" },
+            new Page { Name = "Edit a Training Course", Url = "/apply/{applicationId}/trainingcourses/d96b7cbd-fee2-4084-ae69-b138959edce4" },
+            new Page { Name = "Delete a Training Course", Url = "/apply/{applicationId}/trainingcourses/d96b7cbd-fee2-4084-ae69-b138959edce4/delete" },
         ];
     }
 

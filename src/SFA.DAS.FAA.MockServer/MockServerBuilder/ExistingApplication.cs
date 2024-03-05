@@ -7,58 +7,144 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
 {
     public static class ExistingApplication
     {
+        private static readonly string BaseRoute = $"/applications/{Constants.ExistingApplicationId}";
+        private static readonly TimeSpan RegexMaxTimeOut = TimeSpan.FromSeconds(3);
+        private static readonly string BaseFilePath = $"Apply/ExistingApplication";
+
         public static WireMockServer WithExistingApplicationFiles(this WireMockServer server)
         {
-            var existingApplicationRoute = $"/applications/676476cc-525a-4a13-8da7-cf36345e6f61";
-            var regexMaxTimeOut = TimeSpan.FromSeconds(3);
+            return server
+                .WithApplicationFiles()
+                .WithJobsFiles()
+                .WithTrainingCoursesFiles();
 
+            return server;
+        }
+
+        private static WireMockServer WithApplicationFiles(this WireMockServer server)
+        {
             server.Given(Request.Create().WithPath(s
-                        => Regex.IsMatch(s, $"{existingApplicationRoute}", RegexOptions.None, regexMaxTimeOut))
+                        => Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
                     .UsingGet())
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(200)
                         .WithHeader("Content-Type", "application/json")
-                        .WithBodyFromFile("Apply/ExistingApplication/get-application.json"));
+                        .WithBodyFromFile($"{BaseFilePath}/get-application.json"));
 
             server.Given(Request.Create().WithPath(s
-                        => Regex.IsMatch(s, $"{existingApplicationRoute}/jobs", RegexOptions.None, regexMaxTimeOut))
-                    .UsingGet())
-                .RespondWith(
-                    Response.Create()
-                        .WithStatusCode(200)
-                        .WithHeader("Content-Type", "application/json")
-                        .WithBodyFromFile("Apply/ExistingApplication/Jobs/get-jobs.json"));
-
-            server.Given(Request.Create().WithPath(s
-                        => Regex.IsMatch(s, $"{existingApplicationRoute}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae", RegexOptions.None, regexMaxTimeOut))
-                    .UsingGet())
-                .RespondWith(
-                    Response.Create()
-                        .WithStatusCode(200)
-                        .WithHeader("Content-Type", "application/json")
-                        .WithBodyFromFile("Apply/ExistingApplication/Jobs/get-job.json"));
-
-            server.Given(Request.Create().WithPath(s
-                        => Regex.IsMatch(s, $"{existingApplicationRoute}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae/delete", RegexOptions.None, regexMaxTimeOut))
-                    .UsingGet())
-                .RespondWith(
-                    Response.Create()
-                        .WithStatusCode(200)
-                        .WithHeader("Content-Type", "application/json")
-                        .WithBodyFromFile("Apply/ExistingApplication/Jobs/get-delete-job.json"));
-
-            server.Given(Request.Create().WithPath(s
-                        => Regex.IsMatch(s, "/vacancies/1000012013", RegexOptions.None, regexMaxTimeOut))
+                        => Regex.IsMatch(s, "/vacancies/1000012013", RegexOptions.None, RegexMaxTimeOut))
                     .UsingPost())
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(200)
                         .WithHeader("Content-Type", "application/json")
-                        .WithBodyFromFile("Apply/ExistingApplication/post-application-details.json"));
+                        .WithBodyFromFile($"{BaseFilePath}/post-application-details.json"));
 
             server.Given(Request.Create().WithPath(s =>
-                        Regex.IsMatch(s, $"{existingApplicationRoute}/\\S+/work-history", RegexOptions.None, regexMaxTimeOut))
+                        Regex.IsMatch(s, $"{BaseRoute}/\\S+/work-history", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
+            return server;
+        }
+
+        private static WireMockServer WithJobsFiles(this WireMockServer server)
+        {
+            server.Given(Request.Create().WithPath(s
+                        => Regex.IsMatch(s, $"{BaseRoute}/jobs", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Jobs/get-jobs.json"));
+
+            server.Given(Request.Create().WithPath(s
+                        => Regex.IsMatch(s, $"{BaseRoute}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Jobs/get-job.json"));
+
+            server.Given(Request.Create().WithPath(s
+                        => Regex.IsMatch(s, $"{BaseRoute}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
+            server.Given(Request.Create().WithPath(s
+                        => Regex.IsMatch(s, $"{BaseRoute}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae/delete", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Jobs/get-delete-job.json"));
+
+            server.Given(Request.Create().WithPath(s
+                        => Regex.IsMatch(s, $"{BaseRoute}/jobs/0dfaedf4-e8a0-4181-b08d-17b2d2e997ae/delete", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
+            return server;
+        }
+
+        private static WireMockServer WithTrainingCoursesFiles(this WireMockServer server)
+        {
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/trainingcourses", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/TrainingCourses/get-trainingcourses.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/trainingcourses/\\S+", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/TrainingCourses/get-trainingcourse.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/trainingcourses/\\S+", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/trainingcourses/\\S+/delete", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/TrainingCourses/get-delete-trainingcourse.json"));
+
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/trainingcourses/\\S+/delete", RegexOptions.None,
+                            RegexMaxTimeOut))
                     .UsingPost())
                 .RespondWith(
                     Response.Create()

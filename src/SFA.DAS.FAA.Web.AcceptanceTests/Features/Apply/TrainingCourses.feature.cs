@@ -136,14 +136,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "DoYouWantToAddAnyTrainingCourses",
                             "true"});
 #line 20
- testRunner.When("I post to the Training Courses page", ((string)(null)), table5, "When ");
+ testRunner.When("I post to the Training Courses page", ((string)(null)), table6, "When ");
 #line hidden
 #line 23
  testRunner.Then("I am redirected to the Add a Training Course page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -175,14 +175,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table6.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "DoYouWantToAddAnyTrainingCourses",
                             "false"});
 #line 29
- testRunner.When("I post to the Training Courses page", ((string)(null)), table6, "When ");
+ testRunner.When("I post to the Training Courses page", ((string)(null)), table7, "When ");
 #line hidden
 #line 32
  testRunner.Then("I am redirected to the Application Tasklist page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -253,17 +253,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table7.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "CourseName",
                             "Super Skill Booster Training"});
-                table7.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "YearAchieved",
                             "2021"});
 #line 47
- testRunner.When("I post to the Add a Training Course page", ((string)(null)), table7, "When ");
+ testRunner.When("I post to the Add a Training Course page", ((string)(null)), table8, "When ");
 #line hidden
 #line 51
  testRunner.Then("I am redirected to the Training Courses page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -342,6 +342,147 @@ this.ScenarioInitialize(scenarioInfo);
 #line 67
  testRunner.And("the page content includes the following error: Select if you want to add any trai" +
                         "ning courses", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Edit a Training Course")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void EditATrainingCourse()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit a Training Course", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 72
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 73
+ testRunner.When("I navigate to the Edit a Training Course page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 74
+ testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Complete editing a Training Course")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void CompleteEditingATrainingCourse()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Complete editing a Training Course", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 79
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table9.AddRow(new string[] {
+                            "CourseName",
+                            "Super Skill Booster Training part 2"});
+                table9.AddRow(new string[] {
+                            "YearAchieved",
+                            "2022"});
+#line 80
+ testRunner.When("I post to the Edit a Training Course page", ((string)(null)), table9, "When ");
+#line hidden
+#line 84
+ testRunner.Then("I am redirected to the Training Courses page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Delete a Training Course")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void DeleteATrainingCourse()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a Training Course", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 89
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 90
+ testRunner.When("I navigate to the Delete a Training Course page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 91
+ testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Confirm deletion of a Training Course")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void ConfirmDeletionOfATrainingCourse()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Confirm deletion of a Training Course", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 96
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 97
+ testRunner.When("I post an empty form to the Delete a Training Course page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 98
+ testRunner.Then("I am redirected to the Training Courses page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
