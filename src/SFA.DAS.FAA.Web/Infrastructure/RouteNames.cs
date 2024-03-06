@@ -38,6 +38,7 @@ public static class RouteNames
         public const string EditVolunteeringAndWorkExperience = nameof(EditVolunteeringAndWorkExperience);
         public const string AddAdditionalQuestion = nameof(AddAdditionalQuestion);
         public const string InterviewAdjustments = nameof(InterviewAdjustments);
+        public const string WhatInterestsYou = nameof(WhatInterestsYou);
         public const string InterviewAdjustmentsSummary = nameof(InterviewAdjustmentsSummary);
     }
 }

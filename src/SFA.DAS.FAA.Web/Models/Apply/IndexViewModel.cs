@@ -85,10 +85,10 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public SectionStatus WhatInterestsYou { get; set; }
             public SectionStatus AdditionalQuestion1 { get; set; }
             public SectionStatus AdditionalQuestion2 { get; set; }
-            public string AdditionalQuestion1Label { get; set; }
-            public string AdditionalQuestion2Label { get; set; }
-            public Guid AdditionalQuestion1Id { get; set; }
-            public Guid AdditionalQuestion2Id { get; set; }
+            public string? AdditionalQuestion1Label { get; set; }
+            public string? AdditionalQuestion2Label { get; set; }
+            public Guid? AdditionalQuestion1Id { get; set; }
+            public Guid? AdditionalQuestion2Id { get; set; }
             public bool ShowAdditionalQuestion1 => !string.IsNullOrWhiteSpace(AdditionalQuestion1Label);
             public bool ShowAdditionalQuestion2 => !string.IsNullOrWhiteSpace(AdditionalQuestion2Label);
 
