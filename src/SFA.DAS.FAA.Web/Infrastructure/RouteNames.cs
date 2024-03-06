@@ -33,8 +33,10 @@ public static class RouteNames
         public const string VolunteeringAndWorkExperience = nameof(VolunteeringAndWorkExperience);
         public const string DeleteVolunteeringOrWorkExperience = nameof(DeleteVolunteeringOrWorkExperience);
         public const string AddVolunteeringAndWorkExperience = nameof(AddVolunteeringAndWorkExperience);
+        public const string SkillsAndStrengths = nameof(SkillsAndStrengths);
         public const string VolunteeringAndWorkExperienceSummary = nameof(VolunteeringAndWorkExperienceSummary);
         public const string EditVolunteeringAndWorkExperience = nameof(EditVolunteeringAndWorkExperience);
         public const string AddAdditionalQuestion = nameof(AddAdditionalQuestion);
+        public const string WhatInterestsYou = nameof(WhatInterestsYou);
     }
 }
