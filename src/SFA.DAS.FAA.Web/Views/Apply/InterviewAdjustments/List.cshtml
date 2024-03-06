@@ -51,10 +51,11 @@
                             </label>
                         </div>
                         <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-DoYouWantInterviewAdjustments">
-                            <div class="govuk-form-group">
+                            <div class="govuk-form-group" das-highlight-error-for="InterviewAdjustmentsDescription" error-class="govuk-form-group--error">
                                 <label class="govuk-label" for="InterviewAdjustmentsDescription">
                                     Interview support request
                                 </label>
+                                <span das-validation-for="InterviewAdjustmentsDescription" class="govuk-error-message"></span>
                                 <input class="govuk-input govuk-!-width-one-third" asp-for="InterviewAdjustmentsDescription" type="text" spellcheck="false" value="@Model.InterviewAdjustmentsDescription">
                             </div>
                         </div>
