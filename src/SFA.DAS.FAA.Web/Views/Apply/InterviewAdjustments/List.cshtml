@@ -1,0 +1,79 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.Apply
+@model InterviewAdjustmentsViewModel
+@{
+    ViewData["Title"] = "Get support at an interview - Find an apprenticeship - GOV.UK";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+
+<partial name="_ValidationSummary" />
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Interview adjustments</span>
+        <h1 class="govuk-heading-l">Ask for support at an interview</h1>
+
+        <p class="govuk-body">You can ask for support at an interview if you have a disability, health condition or neurodiversity.</p>
+        <p class="govuk-body">You can ask for your interview to have reasonable adjustments. Adjustments could include things like:</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>step-free access to the interview room</li>
+            <li>a quiet place for the interview</li>
+        </ul>
+
+        <h2 class="govuk-heading-m">It's your choice when to discuss your interview needs</h2>
+        <p class="govuk-body">If you make a request here, we'll show it on your application.</p>
+        <p class="govuk-body">
+            You can choose to select 'No' on this question, even if you need adjustments. You can wait and see if the company
+            offers you an interview first, and then discuss your needs with them.
+        </p>
+
+        <div class="govuk-!-padding-bottom-5"></div>
+
+        <form class="form" method="post">
+
+            <div class="govuk-form-group" das-highlight-error-for="DoYouWantInterviewAdjustments" error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            Do you want to request support at an interview?
+                        </h1>
+                    </legend>
+                    <span das-validation-for="DoYouWantInterviewAdjustments" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantInterviewAdjustments" value="true" type="radio" data-aria-controls="conditional-DoYouWantInterviewAdjustments" />
+                            <label class="govuk-label govuk-radios__label" for="DoYouWantInterviewAdjustments">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-DoYouWantInterviewAdjustments">
+                            <div class="govuk-form-group" das-highlight-error-for="InterviewAdjustmentsDescription" error-class="govuk-form-group--error">
+                                <label class="govuk-label" for="InterviewAdjustmentsDescription">
+                                    Interview support request
+                                </label>
+                                <span das-validation-for="InterviewAdjustmentsDescription" class="govuk-error-message"></span>
+                                <input class="govuk-input govuk-!-width-one-third" asp-for="InterviewAdjustmentsDescription" type="text" spellcheck="false" value="@Model.InterviewAdjustmentsDescription">
+                            </div>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantInterviewAdjustments" value="false" id="interview-adjustments-false" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="interview-adjustments-false">
+                                No, I don't need support or I'll discuss it if I get an interview
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+﻿using SFA.DAS.FAA.Domain.Apply.GetEmployerSkillsAndStrengths;
+
+namespace SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
+public class GetExpectedSkillsAndStrengthsQueryResult
+{
+    public Guid ApplicationId { get; set; }
+    public string Employer { get; set; }
+    public IEnumerable<string> ExpectedSkillsAndStrengths { get; set; }
+
+    public static implicit operator GetExpectedSkillsAndStrengthsQueryResult(GetExpectedSkillsAndStrengthsApiResponse source)
+    {
+        return new GetExpectedSkillsAndStrengthsQueryResult()
+        {
+            ApplicationId = source.ApplicationId,
+            Employer = source.Employer,
+            ExpectedSkillsAndStrengths = source.ExpectedSkillsAndStrengths
+        };
+    }
+}
