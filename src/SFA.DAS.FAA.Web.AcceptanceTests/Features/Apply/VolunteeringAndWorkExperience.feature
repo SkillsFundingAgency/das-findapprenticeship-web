@@ -48,4 +48,13 @@ Scenario: Delete work experience
 	And the page content includes the following: Do you want to delete this volunteering or work experience?
 	And the page content includes the following: Cleaning bottles
 
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Mark the work experience section as complete
+	When I post to the Volunteering and Work Experience Summary page
+	| Field                  | Value |
+	| IsSectionCompleted | true  |
+	Then I am redirected to the Application Tasklist page
+	
 
