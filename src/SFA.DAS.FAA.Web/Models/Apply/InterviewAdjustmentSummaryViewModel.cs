@@ -3,15 +3,15 @@ using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
-    public class InterviewQuestionSummaryViewModel : ViewModelBase
+    public class InterviewAdjustmentSummaryViewModel : ViewModelBase
     {
         [FromRoute]
         public required Guid ApplicationId { get; init; }
         public string? BackLinkUrl { get; set; }
         public string? ChangeLinkUrl { get; set; }
         public string? ChangeSupportRequestAnswerLinkUrl { get; set; }
-        public bool IsSupportRequestRequired { get; set; }
-        public string? SupportRequestAnswer { get; set; }
+        public bool IsSupportRequestRequired { get; init; }
+        public string? SupportRequestAnswer { get; init; }
 
         [BindProperty]
         public SectionStatus? IsSectionCompleted { get; set; }
