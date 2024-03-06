@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
@@ -7,27 +6,11 @@ namespace SFA.DAS.FAA.Web.Models.Apply
     {
         [FromRoute]
         public required Guid ApplicationId { get; init; }
-        public string? BackLinkUrl { get; set; }
-        public string? ChangeLinkUrl { get; set; }
-        public string? ChangeSupportRequestAnswerLinkUrl { get; set; }
+        public string? BackLinkUrl { get; init; }
         public bool IsSupportRequestRequired { get; init; }
         public string? SupportRequestAnswer { get; init; }
 
         [BindProperty]
-        public SectionStatus? IsSectionCompleted { get; set; }
-        public List<SectionProgress> InterviewQuestionCompletionStatus { get; init; } =
-        [
-            new SectionProgress
-            {
-                Id = SectionStatus.Completed,
-                StatusLabel = "Yes, I’ve completed this section"
-            },
-
-            new SectionProgress
-            {
-                Id = SectionStatus.InProgress,
-                StatusLabel = "No, I’ll come back to it later"
-            }
-        ];
+        public bool? IsSectionCompleted { get; init; }
     }
 }
