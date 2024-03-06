@@ -3,16 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
-using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.UpdateVolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Commands.VolunteeringOrWorkExperience.DeleteVolunteeringOrWorkExperience;
-using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
+using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using System;
+using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.UpdateVolunteeringAndWorkExperience;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply;
 
@@ -71,8 +70,8 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         await mediator.Send(command);
 
-        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value 
-            ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { model.ApplicationId }) 
+        return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value
+            ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { model.ApplicationId })
             : RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
     }
 
@@ -252,5 +251,6 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         }
 
         return RedirectToRoute(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary, new { model.ApplicationId });
+
     }
 }
