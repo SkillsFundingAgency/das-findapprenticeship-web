@@ -13,10 +13,10 @@ public class WhenHandlingGetDeleteVolunteeringOrWorkExperienceQuery
 {
     [Test, MoqAutoData]
     public async Task Then_Result_Is_Returned(
-        GetVolunteeringOrWorkExperienceItemQuery query,
-        GetVolunteeringOrWorkExperienceItemApiResponse apiResponse,
+          GetVolunteeringOrWorkExperienceItemQuery query,
+          GetVolunteeringOrWorkExperienceItemApiResponse apiResponse,
         [Frozen] Mock<IApiClient> apiClientMock,
-        GetVolunteeringOrWorkExperienceItemQueryHandler handler)
+          GetVolunteeringOrWorkExperienceItemQueryHandler handler)
     {
         var apiRequestUri = new GetVolunteeringOrWorkExperienceItemApiRequest(query.ApplicationId, query.Id, query.CandidateId);
 
