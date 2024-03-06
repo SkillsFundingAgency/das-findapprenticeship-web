@@ -1,10 +1,12 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
 
 namespace SFA.DAS.FAA.MockServer.MockServerBuilder
 {
+    [ExcludeFromCodeCoverage]
     public static class NewApplication
     {
         private static readonly string BaseRoute = $"/applications/{Constants.NewApplicationId}";

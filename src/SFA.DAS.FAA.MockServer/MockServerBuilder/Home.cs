@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -6,6 +7,7 @@ using WireMock.Types;
 
 namespace SFA.DAS.FAA.MockServer.MockServerBuilder
 {
+    [ExcludeFromCodeCoverage]
     public static class Home
     {
         public static WireMockServer WithSearchApprenticeshipsFiles(this WireMockServer server)
