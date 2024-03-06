@@ -1,7 +1,9 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.AddAdditionalQuestionViewModel
-
+@{
+    ViewData["Title"] = Model.AdditionalQuestionLabel + " - Find an apprenticeship - GOV.UK";
+}
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
