@@ -74,7 +74,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 {
                     CandidateId = User.Claims.CandidateId(),
                     ApplicationId = viewModel.ApplicationId,
-                    WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.InProgress
+                    WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.Incomplete
                 };
 
                 await mediator.Send(completeSectionCommand);
@@ -82,14 +82,17 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
             }
 
-            var command = new UpdateWorkHistoryApplicationCommand
+            if (viewModel.DoYouWantToAddAnyJobs is false)
             {
-                CandidateId = User.Claims.CandidateId(),
-                ApplicationId = viewModel.ApplicationId,
-                WorkHistorySectionStatus = viewModel.DoYouWantToAddAnyJobs.Value ? SectionStatus.InProgress : SectionStatus.Completed
-            };
+                var command = new UpdateWorkHistoryApplicationCommand
+                {
+                    CandidateId = User.Claims.CandidateId(),
+                    ApplicationId = viewModel.ApplicationId,
+                    WorkHistorySectionStatus = SectionStatus.Completed
+                };
 
-            await mediator.Send(command);
+                await mediator.Send(command);
+            }
 
             return viewModel.DoYouWantToAddAnyJobs.Value
                 ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId })

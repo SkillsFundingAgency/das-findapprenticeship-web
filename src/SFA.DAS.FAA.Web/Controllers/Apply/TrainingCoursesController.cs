@@ -75,7 +75,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             {
                 CandidateId = User.Claims.CandidateId(),
                 ApplicationId = viewModel.ApplicationId,
-                TrainingCoursesSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.InProgress
+                TrainingCoursesSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.Incomplete
             };
 
             await mediator.Send(completeSectionCommand);
@@ -83,15 +83,17 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
 
-        viewModel.IsSectionComplete = viewModel.IsSectionComplete == null ? false : viewModel.IsSectionComplete;
-        var command = new UpdateTrainingCoursesApplicationCommand
+        if (viewModel.DoYouWantToAddAnyTrainingCourses is false)
         {
-            CandidateId = User.Claims.CandidateId(),
-            ApplicationId = viewModel.ApplicationId,
-            TrainingCoursesSectionStatus = viewModel.DoYouWantToAddAnyTrainingCourses.Value ? SectionStatus.InProgress : SectionStatus.Completed
-        };
+            var command = new UpdateTrainingCoursesApplicationCommand
+            {
+                CandidateId = User.Claims.CandidateId(),
+                ApplicationId = viewModel.ApplicationId,
+                TrainingCoursesSectionStatus = SectionStatus.Completed
+            };
 
-        await mediator.Send(command);
+            await mediator.Send(command);
+        }
 
         return viewModel.DoYouWantToAddAnyTrainingCourses.Value
             ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddTrainingCourse, new { viewModel.ApplicationId })

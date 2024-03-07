@@ -65,7 +65,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         {
             CandidateId = User.Claims.CandidateId(),
             ApplicationId = model.ApplicationId,
-            VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? SectionStatus.InProgress : SectionStatus.Completed
+            VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? SectionStatus.Incomplete : SectionStatus.Completed
         };
 
         await mediator.Send(command);
@@ -165,7 +165,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             ApplicationId = viewModel.ApplicationId,
             VolunteeringAndWorkExperienceSectionStatus = viewModel.IsSectionCompleted.HasValue && viewModel.IsSectionCompleted.Value
                 ? SectionStatus.Completed 
-                : SectionStatus.InProgress
+                : SectionStatus.Incomplete
         };
 
         await mediator.Send(command);

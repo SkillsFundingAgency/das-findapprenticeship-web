@@ -64,7 +64,7 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
             CandidateId = User.Claims.CandidateId(),
             ApplicationId = viewModel.ApplicationId,
             SkillsAndStrengths = viewModel.SkillsAndStrengths,
-            SkillsAndStrengthsSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.InProgress
+            SkillsAndStrengthsSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.Incomplete
         };
 
         await mediator.Send(updateCommand);
