@@ -3,7 +3,7 @@ using SFA.DAS.FAA.Domain.Apply.UpdateApplication;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Commands.InterviewAdjustments;
-public class UpdateInterviewAdjustmentsCommandHandler(IApiClient apiClient) : IRequestHandler<UpdateInterviewAdjustmentsCommand, UpdateInterviewAdjustmentsCommandResult>
+public record UpdateInterviewAdjustmentsCommandHandler(IApiClient ApiClient) : IRequestHandler<UpdateInterviewAdjustmentsCommand, UpdateInterviewAdjustmentsCommandResult>
 {
     public async Task<UpdateInterviewAdjustmentsCommandResult> Handle(UpdateInterviewAdjustmentsCommand request, CancellationToken cancellationToken)
     {
@@ -16,7 +16,7 @@ public class UpdateInterviewAdjustmentsCommandHandler(IApiClient apiClient) : IR
                         InterviewAdjustmentsSectionStatus = request.InterviewAdjustmentsSectionStatus
                     });
 
-        var updateApplicationResponse = await apiClient.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(postUpdateApplicationRequest);
+        var updateApplicationResponse = await ApiClient.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(postUpdateApplicationRequest);
 
         return new UpdateInterviewAdjustmentsCommandResult
         {

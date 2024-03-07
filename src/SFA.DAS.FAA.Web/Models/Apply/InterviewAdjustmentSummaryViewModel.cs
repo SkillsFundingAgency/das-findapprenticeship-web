@@ -11,6 +11,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public string? SupportRequestAnswer { get; init; }
 
         [BindProperty]
-        public bool? IsSectionCompleted { get; init; }
+        public bool? IsSectionCompleted { get; set; }
     }
 }

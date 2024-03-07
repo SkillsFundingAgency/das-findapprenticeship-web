@@ -17,10 +17,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     {
         private const string ListViewPath = "~/Views/apply/interviewadjustments/List.cshtml";
         private const string SummaryViewPath = "~/Views/apply/InterviewAdjustments/Summary.cshtml";
-        
-        [Route("apply/{applicationId}/interview-adjustments/",
+
+        [Route("apply/{applicationId}/interview-adjustments",
             Name = RouteNames.ApplyApprenticeship.InterviewAdjustments)]
-        public async Task<IActionResult> Index([FromRoute] Guid applicationId)
+        public async Task<IActionResult> Index([FromRoute] Guid applicationId, [FromQuery] int isEdit = 0)
         {
             var result = await mediator.Send(new GetInterviewAdjustmentsQuery
             {
@@ -28,7 +28,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = User.Claims.CandidateId()
             });
 
-            if (result.Status is not null)
+            if (isEdit == 0 && result.Status is not null)
             {
                 return RedirectToRoute(RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary, new { applicationId });
             }
@@ -36,7 +36,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var model = new InterviewAdjustmentsViewModel
             {
                 ApplicationId = applicationId,
-                DoYouWantInterviewAdjustments = result.Status,
+                DoYouWantInterviewAdjustments = !IsNullOrEmpty(result.InterviewAdjustmentsDescription),
                 InterviewAdjustmentsDescription = result.InterviewAdjustmentsDescription,
             };
 
@@ -44,9 +44,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         }
 
         [HttpPost]
-        [Route("apply/{applicationId}/interview-adjustments/",
+        [Route("apply/{applicationId}/interview-adjustments",
             Name = RouteNames.ApplyApprenticeship.InterviewAdjustments)]
-        public async Task<IActionResult> Post([FromRoute] Guid applicationId, InterviewAdjustmentsViewModel viewModel)
+        public async Task<IActionResult> Post([FromRoute] Guid applicationId, InterviewAdjustmentsViewModel viewModel, [FromQuery] int isEdit = 0)
         {
             if (!ModelState.IsValid)
             {
@@ -59,7 +59,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var model = new InterviewAdjustmentsViewModel
                 {
                     ApplicationId = applicationId,
-                    DoYouWantInterviewAdjustments = result.Status,
+                    DoYouWantInterviewAdjustments = !IsNullOrEmpty(result.InterviewAdjustmentsDescription),
                     InterviewAdjustmentsDescription = result.InterviewAdjustmentsDescription
                 };
 
@@ -70,9 +70,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 CandidateId = User.Claims.CandidateId(),
                 ApplicationId = viewModel.ApplicationId,
-                InterviewAdjustmentsDescription = viewModel.DoYouWantInterviewAdjustments.Value
+                InterviewAdjustmentsDescription = viewModel.DoYouWantInterviewAdjustments!.Value
                     ? viewModel.InterviewAdjustmentsDescription
-                    : null,
+                    : string.Empty,
                 InterviewAdjustmentsSectionStatus = viewModel.DoYouWantInterviewAdjustments!.Value
                     ? SectionStatus.InProgress
                     : SectionStatus.Completed
@@ -85,8 +85,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     new { viewModel.ApplicationId })
                 : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
-
-
+        
         [HttpGet]
         [Route("apply/{applicationId}/interview-adjustments/summary",
             Name = RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary)]

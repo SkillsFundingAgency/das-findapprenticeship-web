@@ -23,7 +23,7 @@
                         @Html.HiddenFor(x => x.IsSupportRequestRequired)
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId})">
+                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = 1})">
                             Change<span class="govuk-visually-hidden"> interview adjustments</span>
                         </a>
                     </dd>
@@ -39,7 +39,7 @@
                             @Html.HiddenFor(x => x.SupportRequestAnswer)
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId})">
+                            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = 1})">
                                 Change<span class="govuk-visually-hidden"> interview adjustments</span>
                             </a>
                         </dd>

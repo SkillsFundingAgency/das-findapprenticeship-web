@@ -1,5 +1,5 @@
 ﻿namespace SFA.DAS.FAA.Application.Commands.InterviewAdjustments;
-public class UpdateInterviewAdjustmentsCommandResult
+public record UpdateInterviewAdjustmentsCommandResult
 {
-    public Domain.Apply.UpdateApplication.Application? Application { get; set; }
+    public Domain.Apply.UpdateApplication.Application? Application { get; init; }
 }
