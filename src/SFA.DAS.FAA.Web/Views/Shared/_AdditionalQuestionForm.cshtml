@@ -1,0 +1,40 @@
+﻿@model SFA.DAS.FAA.Web.Models.Apply.Base.AdditionalQuestionViewModelBase
+
+<div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="300">
+    <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="AdditionalQuestionAnswer" error-class="govuk-form-group--error">
+        <label class="govuk-label govuk-label--m" for="AdditionalQuestionAnswer"></label>
+        <span das-validation-for="AdditionalQuestionAnswer" class="govuk-error-message"></span>
+        <textarea class="govuk-textarea govuk-js-character-count" asp-for="AdditionalQuestionAnswer" rows="5" aria-describedby="AdditionalQuestionAnswer-info"></textarea>
+    </div>
+    <div id="AdditionalQuestionAnswer-info" class="govuk-hint govuk-character-count__message">
+        You have 300 words remaining
+    </div>
+</div>
+<div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted" error-class="govuk-form-group--error">
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            Have you completed this section?
+        </legend>
+        <span das-validation-for="IsSectionCompleted"
+              class="govuk-error-message"></span>
+        <div class="govuk-radios" data-module="govuk-radios" id="AdditionalQuestionAnswerSectionStatus">
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input" type="radio"
+                       asp-for="IsSectionCompleted" value="true" type="radio" />
+                <label class="govuk-label govuk-radios__label"
+                       for="IsSectionCompleted">
+                    Yes, I’ve completed this section
+                </label>
+            </div>
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input" type="radio"
+                       asp-for="IsSectionCompleted"
+                       id="IsSectionCompleted-false" value="false" type="radio" />
+                <label class="govuk-label govuk-radios__label"
+                       for="IsSectionCompleted-false">
+                    No, I’ll come back to it later
+                </label>
+            </div>
+        </div>
+    </fieldset>
+</div>
