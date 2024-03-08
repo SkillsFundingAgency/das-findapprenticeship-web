@@ -36,6 +36,7 @@ public static class RouteNames
         public const string SkillsAndStrengths = nameof(SkillsAndStrengths);
         public const string VolunteeringAndWorkExperienceSummary = nameof(VolunteeringAndWorkExperienceSummary);
         public const string EditVolunteeringAndWorkExperience = nameof(EditVolunteeringAndWorkExperience);
+        public const string AddAdditionalQuestion = nameof(AddAdditionalQuestion);
         public const string WhatInterestsYou = nameof(WhatInterestsYou);
     }
 }

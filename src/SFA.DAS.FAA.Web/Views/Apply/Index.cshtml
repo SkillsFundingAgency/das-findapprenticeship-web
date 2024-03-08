@@ -117,9 +117,13 @@
             {
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">
-                        <a href="#" class="govuk-link govuk-task-list__link">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion" 
+                        asp-route-applicationId="@Model.ApplicationId" 
+                        asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1Id"
+                           asp-route-additionalQuestion="1"
+                           class="govuk-link govuk-task-list__link">
                             @Model.ApplicationQuestions.AdditionalQuestion1Label
-                        </a>
+                           </a>
                     </div>
                     <div class="govuk-task-list__status">
                         <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1" />
@@ -130,7 +134,11 @@
             {
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">
-                        <a href="#" class="govuk-link govuk-task-list__link">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
+                        asp-route-applicationId="@Model.ApplicationId"
+                        asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2Id"
+                           asp-route-additionalQuestion="2"
+                           class="govuk-link govuk-task-list__link">
                             @Model.ApplicationQuestions.AdditionalQuestion2Label
                         </a>
                     </div>
