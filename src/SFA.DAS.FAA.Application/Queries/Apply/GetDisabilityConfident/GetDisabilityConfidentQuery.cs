@@ -1,4 +1,8 @@
 ﻿using MediatR;
+using SFA.DAS.FAA.Domain.Apply.GetDisabilityConfident;
+using SFA.DAS.FAA.Domain.Apply.WorkHistory;
+using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Infrastructure.Api;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident
 {
@@ -12,15 +16,25 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident
     {
         public string EmployerName { get; set; }
         public bool? ApplyUnderDisabilityConfidentScheme { get; set; }
-    }
 
-    public class GetDisabilityConfidentQueryHandler : IRequestHandler<GetDisabilityConfidentQuery, GetDisabilityConfidentQueryResult>
-    {
-        public Task<GetDisabilityConfidentQueryResult> Handle(GetDisabilityConfidentQuery request, CancellationToken cancellationToken)
+        public static implicit operator GetDisabilityConfidentQueryResult(GetDisabilityConfidentApiResponse source)
         {
-            throw new NotImplementedException();
+            return new GetDisabilityConfidentQueryResult
+            {
+                ApplyUnderDisabilityConfidentScheme = source.ApplyUnderDisabilityConfidentScheme,
+                EmployerName = source.EmployerName
+            };
         }
     }
 
+    public class GetDisabilityConfidentQueryHandler(IApiClient ApiClient) : IRequestHandler<GetDisabilityConfidentQuery, GetDisabilityConfidentQueryResult>
+    {
+        public async Task<GetDisabilityConfidentQueryResult> Handle(GetDisabilityConfidentQuery request, CancellationToken cancellationToken)
+        {
+            var response = await ApiClient.Get<GetDisabilityConfidentApiResponse>(
+                new GetDisabilityConfidentApiRequest(request.ApplicationId, request.CandidateId));
 
+            return response;
+        }
+    }
 }
