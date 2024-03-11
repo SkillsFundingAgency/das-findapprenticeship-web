@@ -16,13 +16,19 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     {
         [HttpGet]
         [Route("apply/{applicationId}/disability-confident", Name = RouteNames.ApplyApprenticeship.DisabilityConfident)]
-        public async Task<IActionResult> Get(Guid applicationId)
+        public async Task<IActionResult> Get(Guid applicationId, [FromRoute] bool isEdit = false)
         {
             var result = await mediator.Send(new GetDisabilityConfidentQuery
             {
                 ApplicationId = applicationId,
                 CandidateId = User.Claims.CandidateId()
             });
+
+            if (result.ApplyUnderDisabilityConfidentScheme.HasValue && !isEdit)
+            {
+                return RedirectToRoute(RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation,
+                    new { ApplicationId = applicationId });
+            }
 
             var viewModel = new DisabilityConfidentViewModel
             {
