@@ -11,12 +11,11 @@ using SFA.DAS.FAA.Web.Models.Apply;
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-
     public class DisabilityConfidentController(IMediator mediator) : Controller
     {
         [HttpGet]
         [Route("apply/{applicationId}/disability-confident", Name = RouteNames.ApplyApprenticeship.DisabilityConfident)]
-        public async Task<IActionResult> Get(Guid applicationId, [FromRoute] bool isEdit = false)
+        public async Task<IActionResult> Get(Guid applicationId, [FromQuery] bool isEdit = false)
         {
             var result = await mediator.Send(new GetDisabilityConfidentQuery
             {

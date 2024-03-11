@@ -96,6 +96,9 @@
     <None Update="Apply\ExistingApplication\TrainingCourses\get-trainingcourses.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Apply\NewApplication\DisabilityConfident\get-disabilityconfident.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Apply\NewApplication\get-application.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
