@@ -71,5 +71,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             return RedirectToRoute(RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation,
                 new { ApplicationId = applicationId });
         }
+
+
+        [HttpGet]
+        [Route("apply/{applicationId}/disability-confident/confirm", Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
+        public async Task<IActionResult> GetSummary(Guid applicationId)
+        {
+            return View("~/Views/Apply/DisabilityConfident/Index.cshtml", new DisabilityConfidentViewModel());
+        }
     }
 }

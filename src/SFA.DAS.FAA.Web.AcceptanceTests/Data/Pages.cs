@@ -27,7 +27,7 @@ public static class Pages
             new Page { Name = "Delete Work Experience", Url= "/apply/{applicationId}/volunteering-and-work-experience/3584e247-ae13-46b0-bca3-55ff9ba096ef/delete" },
             //Disability Confident
             new Page { Name = "Disability Confident", Url = "/apply/{applicationId}/disability-confident" },
-            new Page { Name = "Disability Confident Confirmation", Url = "/apply/{applicationId}/disability-confident/summary" }
+            new Page { Name = "Disability Confident Confirmation", Url = "/apply/{applicationId}/disability-confident/confirm" }
         ];
     }
 
