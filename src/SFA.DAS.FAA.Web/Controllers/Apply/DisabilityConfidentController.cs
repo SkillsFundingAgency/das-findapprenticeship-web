@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.DisabilityConfident;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident;
-using SFA.DAS.FAA.Application.Queries.Apply.GetWhatInterestsYou;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 
@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetDisabilityConfidentQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                CandidateId = User.Claims.CandidateId()
             });
 
             var viewModel = new DisabilityConfidentViewModel
@@ -38,7 +38,33 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/disability-confident", Name = RouteNames.ApplyApprenticeship.DisabilityConfident)]
         public async Task<IActionResult> Post(Guid applicationId, DisabilityConfidentViewModel viewModel)
         {
-            return View("~/Views/Apply/DisabilityConfident/Index.cshtml", viewModel);
+            if (!ModelState.IsValid)
+            {
+                var result = await mediator.Send(new GetDisabilityConfidentQuery
+                {
+                    ApplicationId = applicationId,
+                    CandidateId = User.Claims.CandidateId()
+                });
+
+                viewModel = new DisabilityConfidentViewModel
+                {
+                    ApplicationId = applicationId,
+                    EmployerName = result.EmployerName,
+                    ApplyUnderDisabilityConfidentScheme = result.ApplyUnderDisabilityConfidentScheme
+                };
+
+                return View("~/Views/Apply/DisabilityConfident/Index.cshtml", viewModel);
+            }
+
+            await mediator.Send(new UpdateDisabilityConfidentCommand
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId(),
+                ApplyUnderDisabilityConfidentScheme = viewModel.ApplyUnderDisabilityConfidentScheme ?? false
+            });
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation,
+                new { ApplicationId = applicationId });
         }
     }
 }

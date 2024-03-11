@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SFA.DAS.FAA.Domain.Apply.GetDisabilityConfident;
+using SFA.DAS.FAA.Domain.Apply.DisabilityConfident;
 using SFA.DAS.FAA.Domain.Apply.WorkHistory;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Infrastructure.Api;

@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.Interfaces;
 
-namespace SFA.DAS.FAA.Domain.Apply.GetDisabilityConfident
+namespace SFA.DAS.FAA.Domain.Apply.DisabilityConfident
 {
     public class GetDisabilityConfidentApiRequest(Guid ApplicationId, Guid CandidateId) : IGetApiRequest
     {

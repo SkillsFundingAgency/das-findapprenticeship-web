@@ -5,7 +5,7 @@ using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using FluentAssertions;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident;
-using SFA.DAS.FAA.Domain.Apply.GetDisabilityConfident;
+using SFA.DAS.FAA.Domain.Apply.DisabilityConfident;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply
 {
