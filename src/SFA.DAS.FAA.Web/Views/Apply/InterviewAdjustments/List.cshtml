@@ -56,7 +56,16 @@
                                     Interview support request
                                 </label>
                                 <span das-validation-for="InterviewAdjustmentsDescription" class="govuk-error-message"></span>
-                                <input class="govuk-input govuk-!-width-one-third" asp-for="InterviewAdjustmentsDescription" type="text" spellcheck="false" value="@Model.InterviewAdjustmentsDescription">
+                                <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="500">
+                                    <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="InterviewAdjustmentsDescription" error-class="govuk-form-group--error">
+                                        <label class="govuk-label govuk-label--m" for="InterviewAdjustmentsDescription"></label>
+                                        <span das-validation-for="InterviewAdjustmentsDescription" class="govuk-error-message"></span>
+                                        <textarea class="govuk-textarea govuk-js-character-count" asp-for="InterviewAdjustmentsDescription" rows="5" aria-describedby="InterviewAdjustmentsDescription-info" spellcheck="false" value="@Model.InterviewAdjustmentsDescription"></textarea>
+                                    </div>
+                                    <div id="InterviewAdjustmentsDescription-info" class="govuk-hint govuk-character-count__message">
+                                        You have 500 words remaining
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="govuk-radios__item">
