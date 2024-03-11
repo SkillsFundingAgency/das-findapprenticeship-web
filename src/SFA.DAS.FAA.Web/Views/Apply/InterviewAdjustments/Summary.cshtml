@@ -4,7 +4,7 @@
     ViewData["Title"] = "Get support at an interview – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
+    <div class="das-js-back-link"></div>
 }
 <partial name="_ValidationSummary" />
 <div class="govuk-grid-row">
@@ -19,7 +19,7 @@
                         Do you want to request support at an interview?
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @(Model.IsSupportRequestRequired ? Html.Raw("Yes") : Html.Raw("No"))
+                        @(Model.IsSupportRequestRequired ? Html.Raw("Yes") : Html.Raw("No, I don’t need support or I’ll discuss it if I get an interview"))
                         @Html.HiddenFor(x => x.IsSupportRequestRequired)
                     </dd>
                     <dd class="govuk-summary-list__actions">

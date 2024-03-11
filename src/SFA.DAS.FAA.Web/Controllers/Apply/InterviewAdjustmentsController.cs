@@ -36,7 +36,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var model = new InterviewAdjustmentsViewModel
             {
                 ApplicationId = applicationId,
-                DoYouWantInterviewAdjustments = !IsNullOrEmpty(result.InterviewAdjustmentsDescription),
+                DoYouWantInterviewAdjustments = 
+                    IsNullOrEmpty(result.InterviewAdjustmentsDescription) 
+                        ? isEdit == 1 ? false : null 
+                        : true,
                 InterviewAdjustmentsDescription = result.InterviewAdjustmentsDescription,
             };
 
@@ -59,7 +62,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var model = new InterviewAdjustmentsViewModel
                 {
                     ApplicationId = applicationId,
-                    DoYouWantInterviewAdjustments = !IsNullOrEmpty(result.InterviewAdjustmentsDescription),
+                    DoYouWantInterviewAdjustments =
+                        IsNullOrEmpty(result.InterviewAdjustmentsDescription)
+                            ? isEdit == 1 ? false : null
+                            : true,
                     InterviewAdjustmentsDescription = result.InterviewAdjustmentsDescription
                 };
 
