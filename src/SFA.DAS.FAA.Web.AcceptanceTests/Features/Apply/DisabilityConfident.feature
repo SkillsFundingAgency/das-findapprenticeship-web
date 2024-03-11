@@ -45,3 +45,14 @@ Scenario: Opt not to apply under the scheme
 Scenario: See my options for Disability Confident having previously answered
 	When I navigate to the Disability Confident page
 	Then I am redirected to the Disability Confident Confirmation page
+
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: See my options for Disability Confident while editing previous answer
+	When I navigate to the Disability Confident page with querystring parameters
+	  | Field  | Value |
+	  | isEdit | true  |
+	Then a http status code of 200 is returned
+	And the page content includes the following: Equal opportunity
+	And the page content includes the following: Disability Confident scheme
