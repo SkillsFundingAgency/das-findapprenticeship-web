@@ -24,7 +24,10 @@ public static class Pages
             new Page { Name = "Volunteering and Work Experience", Url="/apply/{applicationId}/volunteering-and-work-experience" },
             new Page { Name = "Volunteering and Work Experience Summary", Url = "/apply/{applicationId}/volunteering-and-work-experience/summary" },
             new Page { Name = "Add Work Experience", Url="/apply/{applicationId}/volunteering-and-work-experience/add" },
-            new Page { Name = "Delete Work Experience", Url= "/apply/{applicationId}/volunteering-and-work-experience/3584e247-ae13-46b0-bca3-55ff9ba096ef/delete" }
+            new Page { Name = "Delete Work Experience", Url= "/apply/{applicationId}/volunteering-and-work-experience/3584e247-ae13-46b0-bca3-55ff9ba096ef/delete" },
+            //Disability Confident
+            new Page { Name = "Disability Confident", Url = "/apply/{applicationId}/disability-confident" },
+            new Page { Name = "Disability Confident Confirmation", Url = "/apply/{applicationId}/disability-confident/summary" }
         ];
     }
 
