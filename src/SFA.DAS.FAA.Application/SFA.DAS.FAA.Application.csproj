@@ -17,4 +17,8 @@
     <ProjectReference Include="..\SFA.DAS.FAA.Infrastructure\SFA.DAS.FAA.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\AdditionalQuestion\AddAdditionalQuestion\" />
+  </ItemGroup>
+
 </Project>
