@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using SFA.DAS.FAA.Domain.Apply.Qualifications;
+using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
 {
@@ -14,16 +16,32 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
 
         public List<Qualification> Qualifications { get; set; } = new List<Qualification>();
 
+        public static implicit operator GetQualificationsQueryResult(GetQualificationsApiResponse source)
+        {
+            return new GetQualificationsQueryResult
+            {
+                IsSectionCompleted = source.IsSectionCompleted,
+                Qualifications = source.Qualifications.Select(x => (Qualification)x).ToList()
+            };
+        }
+
         public class Qualification
         {
+            public static implicit operator Qualification(GetQualificationsApiResponse.Qualification source)
+            {
+                return new Qualification();
+            }
         }
     }
 
-    public class GetQualificationsQueryHandler : IRequestHandler<GetQualificationsQuery, GetQualificationsQueryResult>
+    public class GetQualificationsQueryHandler(IApiClient apiClient) : IRequestHandler<GetQualificationsQuery, GetQualificationsQueryResult>
     {
-        public Task<GetQualificationsQueryResult> Handle(GetQualificationsQuery request, CancellationToken cancellationToken)
+        public async Task<GetQualificationsQueryResult> Handle(GetQualificationsQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await apiClient.Get<GetQualificationsApiResponse>(
+                new GetQualificationsApiRequest(request.ApplicationId, request.CandidateId));
+
+            return response;
         }
     }
 }

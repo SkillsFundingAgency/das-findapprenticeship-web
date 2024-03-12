@@ -20,7 +20,8 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                 .WithJobsFiles()
                 .WithTrainingCoursesFiles()
                 .WithVolunteeringAndWorkExperienceFiles()
-                .WithDisabilityConfidentFiles();
+                .WithDisabilityConfidentFiles()
+                .WithQualificationsFiles();
         }
 
         private static WireMockServer WithApplicationFiles(this WireMockServer server)
@@ -147,6 +148,29 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
 
             server.Given(Request.Create().WithPath(s =>
                         Regex.IsMatch(s, $"{BaseRoute}/disability-confident", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
+            return server;
+        }
+
+        private static WireMockServer WithQualificationsFiles(this WireMockServer server)
+        {
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Qualifications/get-qualifications.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications", RegexOptions.None, RegexMaxTimeOut))
                     .UsingPost())
                 .RespondWith(
                     Response.Create()
