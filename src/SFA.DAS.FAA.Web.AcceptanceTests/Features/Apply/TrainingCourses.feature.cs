@@ -136,14 +136,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table9.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "DoYouWantToAddAnyTrainingCourses",
                             "true"});
 #line 20
- testRunner.When("I post to the Training Courses page", ((string)(null)), table9, "When ");
+ testRunner.When("I post to the Training Courses page", ((string)(null)), table10, "When ");
 #line hidden
 #line 23
  testRunner.Then("I am redirected to the Add a Training Course page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -175,14 +175,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table10.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "DoYouWantToAddAnyTrainingCourses",
                             "false"});
 #line 29
- testRunner.When("I post to the Training Courses page", ((string)(null)), table10, "When ");
+ testRunner.When("I post to the Training Courses page", ((string)(null)), table11, "When ");
 #line hidden
 #line 32
  testRunner.Then("I am redirected to the Application Tasklist page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -253,17 +253,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table11.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "CourseName",
                             "Super Skill Booster Training"});
-                table11.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "YearAchieved",
                             "2021"});
 #line 47
- testRunner.When("I post to the Add a Training Course page", ((string)(null)), table11, "When ");
+ testRunner.When("I post to the Add a Training Course page", ((string)(null)), table12, "When ");
 #line hidden
 #line 51
  testRunner.Then("I am redirected to the Training Courses page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -403,17 +403,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table12.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "CourseName",
                             "Super Skill Booster Training part 2"});
-                table12.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "YearAchieved",
                             "2022"});
 #line 80
- testRunner.When("I post to the Edit a Training Course page", ((string)(null)), table12, "When ");
+ testRunner.When("I post to the Edit a Training Course page", ((string)(null)), table13, "When ");
 #line hidden
 #line 84
  testRunner.Then("I am redirected to the Training Courses page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

@@ -1,0 +1,19 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.AddQualificationSelectTypeViewModel
+@{
+    ViewData["Title"] = "What is your most recent qualification? – Find an apprenticeship – GOV.UK";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Qualifications, new { Model.ApplicationId })">Back</a>
+}
+
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+    <partial name="_ValidationSummary" />
+    <span class="govuk-caption-l">Education history</span>
+    <h1 class="govuk-heading-l">What is your most recent qualification?</h1>
+
+</div>
+</div>

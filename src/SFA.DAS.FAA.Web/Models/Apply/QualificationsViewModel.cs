@@ -9,4 +9,10 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public bool? DoYouWantToAddAnyQualifications { get; set; }
     }
+
+    public class AddQualificationSelectTypeViewModel
+    {
+        [FromRoute]
+        public required Guid ApplicationId { get; set; }
+    }
 }
