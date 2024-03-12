@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Queries.Apply.GetQualifications;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using System;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -18,10 +19,19 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/qualifications", Name = RouteNames.ApplyApprenticeship.Qualifications)]
         public async Task<IActionResult> Get(Guid applicationId)
         {
+            var result = await mediator.Send(new GetQualificationsQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId()
+            });
+
             var viewModel = new QualificationsViewModel
             {
                 ApplicationId = applicationId,
-                DoYouWantToAddAnyQualifications = null
+                DoYouWantToAddAnyQualifications = result.Qualifications.Count == 0 && result.IsSectionCompleted is true ? false : null,
+                IsSectionCompleted = result.IsSectionCompleted,
+                Qualifications = result.Qualifications.Select(x => (QualificationsViewModel.Qualification)x).ToList(),
+                ShowQualifications = result.Qualifications.Count != 0
             };
 
             return View(ViewName, viewModel);
