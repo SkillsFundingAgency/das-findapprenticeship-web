@@ -1,0 +1,57 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.QualificationsViewModel
+@{
+    ViewData["Title"] = "School, college and university – Find an apprenticeship – GOV.UK ";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Education history</span>
+        <h1 class="govuk-heading-l">School, college and university qualifications</h1>
+
+        <p class="govuk-body">Add qualifications you have from school, college and university.</p>
+        <p class="govuk-body">If you have your results, you can add your predicted grades for your GCSEs, BTECs, A levels or T levels.</p>
+        <p class="govuk-body">Some apprenticeships don’t need you to have any qualifications. Check the vacancy’s requirements section to see what qualifications are essential.</p>
+
+        <form class="form" method="post">
+
+            <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyQualifications"
+                 error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Do you want to add any qualifications?
+                    </legend>
+                    <span das-validation-for="DoYouWantToAddAnyQualifications" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyQualifications" value="true"
+                                   type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyQualifications">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyQualifications"
+                                   id="DoYouWantToAddAnyQualifications-No" value="false" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyQualifications-No">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" id="submit-button" type="submit" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
