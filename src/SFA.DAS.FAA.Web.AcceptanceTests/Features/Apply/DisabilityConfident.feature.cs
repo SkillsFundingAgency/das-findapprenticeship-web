@@ -112,6 +112,199 @@ this.ScenarioInitialize(scenarioInfo);
             }
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Validation error on disability confident page")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
+        public void ValidationErrorOnDisabilityConfidentPage()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "NewApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation error on disability confident page", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 19
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 20
+ testRunner.When("I post an empty form to the Disability Confident page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+ testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 22
+ testRunner.And("the page content includes the following error: Select if you want to apply under " +
+                        "the Disability Confident scheme", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Opt to apply under the scheme")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
+        public void OptToApplyUnderTheScheme()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "NewApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opt to apply under the scheme", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 27
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table1.AddRow(new string[] {
+                            "ApplyUnderDisabilityConfidentScheme",
+                            "true"});
+#line 28
+ testRunner.When("I post to the Disability Confident page", ((string)(null)), table1, "When ");
+#line hidden
+#line 31
+   testRunner.Then("I am redirected to the Disability Confident Confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Opt not to apply under the scheme")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
+        public void OptNotToApplyUnderTheScheme()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "NewApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opt not to apply under the scheme", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 36
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "ApplyUnderDisabilityConfidentScheme",
+                            "false"});
+#line 37
+ testRunner.When("I post to the Disability Confident page", ((string)(null)), table2, "When ");
+#line hidden
+#line 40
+   testRunner.Then("I am redirected to the Disability Confident Confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("See my options for Disability Confident having previously answered")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void SeeMyOptionsForDisabilityConfidentHavingPreviouslyAnswered()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("See my options for Disability Confident having previously answered", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 45
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 46
+ testRunner.When("I navigate to the Disability Confident page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 47
+ testRunner.Then("I am redirected to the Disability Confident Confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("See my options for Disability Confident while editing previous answer")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void SeeMyOptionsForDisabilityConfidentWhileEditingPreviousAnswer()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("See my options for Disability Confident while editing previous answer", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 52
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table3.AddRow(new string[] {
+                            "isEdit",
+                            "true"});
+#line 53
+ testRunner.When("I navigate to the Disability Confident page with querystring parameters", ((string)(null)), table3, "When ");
+#line hidden
+#line 56
+ testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 57
+ testRunner.And("the page content includes the following: Equal opportunity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 58
+ testRunner.And("the page content includes the following: Disability Confident scheme", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

@@ -9,6 +9,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public bool IsApplyUnderDisabilityConfidentSchemeRequired { get; init; }
 
         [BindProperty]
-        public bool? IsSectionCompleted { get; set; }
+        public bool? IsSectionCompleted { get; init; }
     }
 }

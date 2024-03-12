@@ -2,15 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.DisabilityConfident;
-using SFA.DAS.FAA.Application.Commands.InterviewAdjustments;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident;
-using SFA.DAS.FAA.Application.Queries.Apply.GetInterviewAdjustments;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using static System.String;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -80,8 +77,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         }
 
         [HttpGet]
-        [Route("apply/{applicationId}/disability-confident/summary",
-            Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
+        [Route("apply/{applicationId}/disability-confident/confirm", Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
         public async Task<IActionResult> GetSummary([FromRoute] Guid applicationId)
         {
             var result = await mediator.Send(new GetDisabilityConfidentQuery
@@ -100,8 +96,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         }
 
         [HttpPost]
-        [Route("apply/{applicationId}/disability-confident/summary",
-            Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
+        [Route("apply/{applicationId}/disability-confident/confirm", Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
         public async Task<IActionResult> PostSummary([FromRoute] Guid applicationId, DisabilityConfidentSummaryViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -121,11 +116,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return View(SummaryViewPath, viewModel);
             }
 
-            var updateCommand = new UpdateDisabilityConfidentCommand
+            var updateCommand = new UpdateDisabilityConfidenceApplicationCommand
             {
                 ApplicationId = viewModel.ApplicationId,
                 CandidateId = User.Claims.CandidateId(),
-                ApplyUnderDisabilityConfidentScheme = viewModel.IsSectionCompleted!.Value ? true : false
+                DisabilityConfidenceSectionStatus = viewModel.IsSectionCompleted!.Value 
+                    ? SectionStatus.Completed 
+                    : SectionStatus.InProgress
             };
 
             await mediator.Send(updateCommand);

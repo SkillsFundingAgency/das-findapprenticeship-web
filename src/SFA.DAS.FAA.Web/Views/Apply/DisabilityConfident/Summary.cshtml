@@ -23,7 +23,7 @@
                         @Html.HiddenFor(x => x.IsApplyUnderDisabilityConfidentSchemeRequired)
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DisabilityConfident, new {Model.ApplicationId, isEdit = 1})">
+                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DisabilityConfident, new {Model.ApplicationId, isEdit = true})">
                             Change<span class="govuk-visually-hidden"> Disability Confident</span>
                         </a>
                     </dd>
