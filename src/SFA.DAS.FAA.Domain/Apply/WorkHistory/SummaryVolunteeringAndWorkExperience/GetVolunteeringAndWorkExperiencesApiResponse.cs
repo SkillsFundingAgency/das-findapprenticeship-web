@@ -2,6 +2,7 @@
 {
     public record GetVolunteeringAndWorkExperiencesApiResponse
     {
+        public bool? IsSectionCompleted { get; set; }
         public List<VolunteeringAndWorkExperience> VolunteeringAndWorkExperiences { get; set; } = null!;
 
         public record VolunteeringAndWorkExperience
