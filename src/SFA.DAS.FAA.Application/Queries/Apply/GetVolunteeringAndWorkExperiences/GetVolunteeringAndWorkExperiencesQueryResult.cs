@@ -4,6 +4,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperience
 
 public record GetVolunteeringAndWorkExperiencesQueryResult
 {
+    public bool? IsSectionCompleted { get; set; }
     public List<VolunteeringAndWorkExperience> VolunteeringAndWorkExperiences { get; set; } = [];
 
     public record VolunteeringAndWorkExperience
@@ -36,10 +37,14 @@ public record GetVolunteeringAndWorkExperiencesQueryResult
         if (source.VolunteeringAndWorkExperiences is {Count: > 0})
             return new GetVolunteeringAndWorkExperiencesQueryResult
             {
+                IsSectionCompleted = source.IsSectionCompleted,
                 VolunteeringAndWorkExperiences = source.VolunteeringAndWorkExperiences
                     .Select(x => (VolunteeringAndWorkExperience) x).ToList()
             };
 
-        return new GetVolunteeringAndWorkExperiencesQueryResult();
+        return new GetVolunteeringAndWorkExperiencesQueryResult
+        {
+            IsSectionCompleted = source.IsSectionCompleted,
+        };
     }
 }
