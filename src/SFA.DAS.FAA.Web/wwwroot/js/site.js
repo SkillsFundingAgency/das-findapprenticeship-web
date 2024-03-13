@@ -102,3 +102,18 @@ if (forms.length > 0) {
     });
   }
 }
+
+const jsBackLink = document.querySelector(".faa-js-back-link");
+
+if (jsBackLink) {
+  const backLink = document.createElement("a");
+  const backLinkText = document.createTextNode("Back");
+  backLink.appendChild(backLinkText);
+  backLink.className = "govuk-back-link";
+  backLink.href = "#";
+  backLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.history.back();
+  });
+  jsBackLink.parentNode.replaceChild(backLink, jsBackLink);
+}

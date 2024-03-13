@@ -153,7 +153,8 @@
         <ul class="govuk-task-list">
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a href="#" class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.InterviewAdjustments" asp-route-applicationId="@Model.ApplicationId" asp-route-isEdit="0"
+                       class="govuk-link govuk-task-list__link">
                         Request adjustments on your application
                     </a>
                 </div>
