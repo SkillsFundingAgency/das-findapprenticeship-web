@@ -11,6 +11,6 @@ public class WhenBuildingGetQualificationTypesApiRequest
     {
         var actual = new GetQualificationTypesApiRequest();
 
-        actual.GetUrl.Should().Be("referencedata/qualifications");
+        actual.GetUrl.Should().Be("referencedata/qualificationtypes");
     }
 }

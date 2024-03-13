@@ -4,12 +4,12 @@ namespace SFA.DAS.FAA.Domain.Apply.Qualifications;
 
 public class GetQualificationTypesApiRequest : IGetApiRequest
 {
-    public string GetUrl => "referencedata/qualifications";
+    public string GetUrl => "referencedata/qualificationtypes";
 }
 
 public class GetQualificationTypesApiResponse
 {
-    public List<QualificationTypeApiResponse> Qualifications { get; set; }
+    public List<QualificationTypeApiResponse> QualificationTypes { get; set; }
 }
 
 public class QualificationTypeApiResponse
