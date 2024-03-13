@@ -120,6 +120,9 @@
     <None Update="Apply\NewApplication\Qualifications\get-qualifications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Apply\NewApplication\Qualifications\add-qualification.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Apply\NewApplication\TrainingCourses\get-trainingcourses.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
