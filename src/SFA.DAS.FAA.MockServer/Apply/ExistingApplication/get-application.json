@@ -1,0 +1,27 @@
+{
+    "vacancyReference": "VAC1000013014",
+    "vacancyTitle": "Engineering and Manufacturing",
+    "employerName": "Mega Corp Limited",
+    "closingDate": "2025-03-23T00:00:00Z",
+    "isDisabilityConfident": true,
+    "educationHistory": {
+        "qualifications": "Completed",
+        "trainingCourses": "Completed"
+    },
+    "workHistory": {
+        "jobs": "Completed",
+        "volunteeringAndWorkExperience": "Completed"
+    },
+    "applicationQuestions": {
+        "skillsAndStrengths": "Completed",
+        "whatInterestsYou": "Completed",
+        "additionalQuestion1": "Completed",
+        "additionalQuestion2": "Completed"
+    },
+    "interviewAdjustments": {
+        "requestAdjustments": "Completed"
+    },
+    "disabilityConfidence": {
+        "interviewUnderDisabilityConfident": "Completed"
+    }
+}

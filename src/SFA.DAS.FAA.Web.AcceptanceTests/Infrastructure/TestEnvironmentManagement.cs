@@ -6,11 +6,11 @@ using Moq;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.MockServer;
+using SFA.DAS.FAA.MockServer.MockServerBuilder;
 using SFA.DAS.FAA.Web.Controllers;
 using TechTalk.SpecFlow;
 using WireMock.Server;
-
+using Constants = SFA.DAS.FAA.Web.AcceptanceTests.Data.Constants;
 
 namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 
@@ -18,7 +18,7 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 public sealed class TestEnvironmentManagement
 {
     private readonly ScenarioContext _context;
-    private static HttpClient _staticClient;
+    private static TestHttpClient _testHttpClient;
     private static IWireMockServer _staticApiServer;
     private Mock<IApiClient> _mockApiClient;
     private static TestServer _server;
@@ -35,10 +35,11 @@ public sealed class TestEnvironmentManagement
         var webApp = new CustomWebApplicationFactory<SearchApprenticeshipsController>()
             .WithWebHostBuilder(c=>c.UseEnvironment("IntegrationTest").UseConfiguration(ConfigBuilder.GenerateConfiguration()));
         _server = webApp.Server;
-        _staticClient = _server
-            .CreateClient();
+
+        _testHttpClient = new TestHttpClient(_server);
+
         _context.Set(_server, ContextKeys.TestServer);
-        _context.Set(_staticClient,ContextKeys.HttpClient);
+        _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
     }
 
     [BeforeScenario("MockApiClient")]
@@ -58,10 +59,38 @@ public sealed class TestEnvironmentManagement
             .UseStartup<SearchApprenticeshipsController>()
             .UseConfiguration(ConfigBuilder.GenerateConfiguration()));
 
-        _staticClient = _server.CreateClient();
-
         _context.Set(_mockApiClient, ContextKeys.MockApiClient);
-        _context.Set(_staticClient, ContextKeys.HttpClient);
+    }
+
+    [BeforeScenario("NewApplication")]
+    public async Task NewApplication()
+    {
+        _context.Set(Constants.NewVacancyReference, ContextKeys.VacancyReference);
+        _context.Set(Constants.NewApplicationId, ContextKeys.ApplicationId);
+    }
+
+    [BeforeScenario("ExistingApplication")]
+    public async Task ExistingApplication()
+    {
+        _context.Set(Constants.ExistingVacancyReference, ContextKeys.VacancyReference);
+        _context.Set(Constants.ExistingApplicationId, ContextKeys.ApplicationId);
+    }
+
+    [BeforeScenario("AuthenticatedUser")]
+    public async Task AuthenticatedUser()
+    {
+        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+
+        var formData = new Dictionary<string, string>
+        {
+            { "Id", "B2A7987A-2734-4617-AA9F-6DD8BCCC7B96" },
+            { "Email", "test@test.com" },
+            { "MobilePhone", "12345 67890" }
+        };
+
+        var content = new FormUrlEncodedContent(formData);
+
+        await client.PostAsync("/Service/account-details", content);
     }
 
     [AfterScenario("WireMockServer")]
@@ -70,14 +99,13 @@ public sealed class TestEnvironmentManagement
         _server.Dispose();
         _staticApiServer?.Stop();
         _staticApiServer?.Dispose();
-        _staticClient?.Dispose();
+        _testHttpClient?.Dispose();
     }
 
     [AfterScenario("MockApiClient")]
     public void StopTestEnvironment()
     {
         _server.Dispose();
-        _staticClient?.Dispose();
     }
 
     private void ConfigureTestServices(IServiceCollection serviceCollection, Mock<IApiClient> mockApiClient)

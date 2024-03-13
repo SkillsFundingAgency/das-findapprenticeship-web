@@ -13,13 +13,14 @@ using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
+using System;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     public class WorkHistoryController(IMediator mediator) : Controller
     {
-        private const string ViewPath = "~/Views/apply/workhistory/List.cshtml";
+        private const string ViewPath = "~/Views/apply/workhistory/Index.cshtml";
 
         [HttpGet]
         [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
@@ -34,8 +35,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var viewModel = new JobsViewModel
             {
                 ApplicationId = applicationId,
+                DoYouWantToAddAnyJobs = result.Jobs.Count == 0 && result.IsSectionCompleted is true ? false : null,
+                IsSectionCompleted = result.IsSectionCompleted,
                 JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
-                ShowJobHistory = result.Jobs.Any()
+                ShowJobHistory = result.Jobs.Count != 0
             };
 
             return View(ViewPath, viewModel);
@@ -56,8 +59,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 viewModel = new JobsViewModel
                 {
                     ApplicationId = viewModel.ApplicationId,
+                    DoYouWantToAddAnyJobs = result.Jobs.Count == 0 && result.IsSectionCompleted is true ? false : null,
+                    IsSectionCompleted = result.IsSectionCompleted,
                     JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
-                    ShowJobHistory = result.Jobs.Any()
+                    ShowJobHistory = result.Jobs.Count != 0
                 };
 
                 return View(ViewPath, viewModel);
@@ -69,7 +74,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 {
                     CandidateId = User.Claims.CandidateId(),
                     ApplicationId = viewModel.ApplicationId,
-                    WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.InProgress
+                    WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.Incomplete
                 };
 
                 await mediator.Send(completeSectionCommand);
@@ -77,14 +82,17 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
             }
 
-            var command = new UpdateWorkHistoryApplicationCommand
+            if (viewModel.DoYouWantToAddAnyJobs is false)
             {
-                CandidateId = User.Claims.CandidateId(),
-                ApplicationId = viewModel.ApplicationId,
-                WorkHistorySectionStatus = viewModel.DoYouWantToAddAnyJobs.Value ? SectionStatus.InProgress : SectionStatus.Completed
-            };
+                var command = new UpdateWorkHistoryApplicationCommand
+                {
+                    CandidateId = User.Claims.CandidateId(),
+                    ApplicationId = viewModel.ApplicationId,
+                    WorkHistorySectionStatus = SectionStatus.Completed
+                };
 
-            await mediator.Send(command);
+                await mediator.Send(command);
+            }
 
             return viewModel.DoYouWantToAddAnyJobs.Value
                 ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId })

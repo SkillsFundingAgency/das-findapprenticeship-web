@@ -43,6 +43,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         return View(ViewPath, new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
+            DoYouWantToAddAnyVolunteeringOrWorkExperience = result.VolunteeringAndWorkExperiences.Count == 0 && result.IsSectionCompleted is true ? false : null,
             BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
         });
     }
@@ -65,7 +66,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         {
             CandidateId = User.Claims.CandidateId(),
             ApplicationId = model.ApplicationId,
-            VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? SectionStatus.InProgress : SectionStatus.Completed
+            VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? SectionStatus.Incomplete : SectionStatus.Completed
         };
 
         await mediator.Send(command);
@@ -128,6 +129,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             return View(SummaryViewPath, new VolunteeringAndWorkExperienceSummaryViewModel
             {
                 ApplicationId = applicationId,
+                IsSectionCompleted = result.IsSectionCompleted,
                 AddAnotherVolunteeringAndWorkExperienceLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { applicationId }),
                 BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
                 WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
@@ -165,7 +167,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             ApplicationId = viewModel.ApplicationId,
             VolunteeringAndWorkExperienceSectionStatus = viewModel.IsSectionCompleted.HasValue && viewModel.IsSectionCompleted.Value
                 ? SectionStatus.Completed 
-                : SectionStatus.InProgress
+                : SectionStatus.Incomplete
         };
 
         await mediator.Send(command);

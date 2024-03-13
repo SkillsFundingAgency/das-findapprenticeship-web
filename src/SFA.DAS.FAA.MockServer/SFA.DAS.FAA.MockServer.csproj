@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Apply\ExistingApplication\WorkExperience\get-delete-workexperience.json" />
+    <None Remove="Apply\ExistingApplication\WorkExperience\get-workexperiences.json" />
+    <None Remove="Apply\NewApplication\get-jobs.json" />
+    <None Remove="Apply\NewApplication\post-add-job.json" />
+    <None Remove="Apply\NewApplication\TrainingCourses\post-add-trainingcourse.json" />
+    <None Remove="Apply\NewApplication\WorkExperience\get-workexperiences.json" />
     <None Remove="jobs.json" />
   </ItemGroup>
 
@@ -19,7 +25,25 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="jobs.json">
+    <Content Include="Apply\ExistingApplication\WorkExperience\get-delete-workexperience.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Apply\ExistingApplication\WorkExperience\get-workexperiences.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Apply\NewApplication\Jobs\get-jobs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Apply\NewApplication\Jobs\post-add-job.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Apply\ExistingApplication\Jobs\get-jobs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Apply\NewApplication\TrainingCourses\post-add-trainingcourse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Apply\NewApplication\WorkExperience\get-workexperiences.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="locations.json">
@@ -55,6 +79,38 @@
     <Content Include="search-vacancy-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Apply\ExistingApplication\Jobs\get-delete-job.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\Jobs\get-job.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\TrainingCourses\get-delete-trainingcourse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\TrainingCourses\get-trainingcourse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\TrainingCourses\get-trainingcourses.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\NewApplication\get-application.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\NewApplication\post-application-details.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\get-application.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\post-application-details.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\NewApplication\TrainingCourses\get-trainingcourses.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   
 </Project>
