@@ -72,7 +72,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 ApplicationId = model.ApplicationId,
                 CandidateId = User.Claims.CandidateId(),
-                IsComplete = model.DoYouWantToAddAnyQualifications ?? false
+                IsComplete = model.DoYouWantToAddAnyQualifications == false
             });
 
             return RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
