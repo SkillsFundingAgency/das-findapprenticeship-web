@@ -43,6 +43,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         return View(ViewPath, new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
+            DoYouWantToAddAnyVolunteeringOrWorkExperience = result.VolunteeringAndWorkExperiences.Count == 0 && result.IsSectionCompleted is true ? false : null,
             BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
         });
     }
@@ -128,6 +129,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             return View(SummaryViewPath, new VolunteeringAndWorkExperienceSummaryViewModel
             {
                 ApplicationId = applicationId,
+                IsSectionCompleted = result.IsSectionCompleted,
                 AddAnotherVolunteeringAndWorkExperienceLinkUrl = Url.RouteUrl(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { applicationId }),
                 BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }),
                 WorkHistories = result.VolunteeringAndWorkExperiences.Select(wk => (WorkHistoryViewModel)wk).ToList(),
