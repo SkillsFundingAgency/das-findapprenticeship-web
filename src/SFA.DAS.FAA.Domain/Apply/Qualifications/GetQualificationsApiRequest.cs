@@ -2,9 +2,9 @@
 
 namespace SFA.DAS.FAA.Domain.Apply.Qualifications;
 
-public class GetQualificationsApiRequest(Guid ApplicationId, Guid CandidateId) : IGetApiRequest
+public class GetQualificationsApiRequest(Guid applicationId, Guid candidateId) : IGetApiRequest
 {
-    public string GetUrl => $"applications/{ApplicationId}/qualifications?candidateId={CandidateId}";
+    public string GetUrl => $"applications/{applicationId}/qualifications?candidateId={candidateId}";
 }
 
 public class GetQualificationsApiResponse
