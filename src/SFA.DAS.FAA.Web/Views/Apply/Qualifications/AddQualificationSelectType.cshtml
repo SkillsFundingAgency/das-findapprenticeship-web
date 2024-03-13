@@ -14,6 +14,32 @@
     <partial name="_ValidationSummary" />
     <span class="govuk-caption-l">Education history</span>
     <h1 class="govuk-heading-l">What is your most recent qualification?</h1>
+    <p class="govuk-hint">You'll be able to add your other qualifications later</p>
+    <form class="form" method="post" asp-route="@RouteNames.ApplyApprenticeship.AddQualificationSelectType" asp-route-applicationId="@Model.ApplicationId">
+        <div class="govuk-form-group" das-highlight-error-for="QualificationReferenceId"
+             error-class="govuk-form-group--error">
+            <fieldset class="govuk-fieldset">
+                <span das-validation-for="QualificationReferenceId" class="govuk-error-message"></span>
+                <div class="govuk-radios" data-module="govuk-radios" id="QualificationReferenceId">
+                    @foreach (var qualificationType in Model.Qualifications)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="qualification-@qualificationType.Id" name="QualificationReferenceId" type="radio" value="@qualificationType.Id">
+                            <label class="govuk-label govuk-radios__label" for="qualification-@qualificationType.Id">
+                                @qualificationType.Name
+                            </label>
+                        </div>
+                    }
+                </div>
+            </fieldset>
+        </div>
+        
+          <div class="govuk-button-group">
+              <button class="govuk-button" id="submit-button" type="submit" data-module="govuk-button">
+                  Continue
+              </button>
+          </div>
+    </form>
+</div>
+</div>
 
-</div>
-</div>

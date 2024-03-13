@@ -44,5 +44,6 @@ public static class RouteNames
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
         public const string Qualifications = nameof(Qualifications);
         public const string AddQualificationSelectType = nameof(AddQualificationSelectType);
+        public const string AddQualification = nameof(AddQualification);
     }
 }

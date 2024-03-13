@@ -7,9 +7,8 @@ using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using System.Reflection;
-using System;
 using SFA.DAS.FAA.Application.Commands.Qualifications;
+using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -18,6 +17,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     {
         private const string ViewName = "~/Views/apply/Qualifications/Index.cshtml";
         private const string AddQualificationSelectTypeViewName = "~/Views/apply/Qualifications/AddQualificationSelectType.cshtml";
+        private const string AddQualificationViewName = "~/Views/apply/Qualifications/AddQualification.cshtml";
 
         [HttpGet]
         [Route("apply/{applicationId}/qualifications", Name = RouteNames.ApplyApprenticeship.Qualifications)]
@@ -61,6 +61,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     Qualifications = result.Qualifications.Select(x => (QualificationsViewModel.Qualification)x).ToList(),
                     ShowQualifications = result.Qualifications.Count != 0
                 };
+                return View(ViewName, viewModel);
             }
 
             if (model.DoYouWantToAddAnyQualifications is true)
@@ -82,12 +83,42 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/qualifications/add/select-type", Name = RouteNames.ApplyApprenticeship.AddQualificationSelectType)]
         public async Task<IActionResult> AddQualificationSelectType(Guid applicationId)
         {
+            var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery());
+            
             var viewModel = new AddQualificationSelectTypeViewModel
             {
-                ApplicationId = applicationId
+                ApplicationId = applicationId,
+                Qualifications = qualificationTypes.QualificationTypes
             };
 
             return View(AddQualificationSelectTypeViewName, viewModel);
+        }
+        [HttpPost]
+        [Route("apply/{applicationId}/qualifications/add/select-type", Name = RouteNames.ApplyApprenticeship.AddQualificationSelectType)]
+        public async Task<IActionResult> AddQualificationSelectTypePost(AddQualificationSelectTypeViewModel model)
+        {
+            if (model.QualificationReferenceId == Guid.Empty)
+            {
+                var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery());
+            
+                var viewModel = new AddQualificationSelectTypeViewModel
+                {
+                    ApplicationId = model.ApplicationId,
+                    Qualifications = qualificationTypes.QualificationTypes
+                };
+                ModelState.AddModelError(nameof(model.QualificationReferenceId), "Select your most recent qualification");
+
+                return View(AddQualificationSelectTypeViewName,viewModel);
+            }
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualification, new {ApplicationId = model.ApplicationId, QualificationReferenceId = model.QualificationReferenceId});
+        }
+
+        [HttpGet]
+        [Route("apply/{applicationId}/qualifications/add/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.AddQualification)]
+        public async Task<IActionResult> AddQualificationSelectTypePost([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
+        {
+            return View(AddQualificationViewName);
         }
     }
 }

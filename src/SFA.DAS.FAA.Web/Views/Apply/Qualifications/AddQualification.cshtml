@@ -1,0 +1,22 @@
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.AddQualificationSelectTypeViewModel
+@{
+    ViewData["Title"] = "Add Qualification – Find an apprenticeship – GOV.UK";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Qualifications, new { Model.ApplicationId })">Back</a>
+}
+
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+    <partial name="_ValidationSummary" />
+    <span class="govuk-caption-l">Add Qualification</span>
+    <p class="govuk-hint">You'll be able to add your other qualifications later</p>
+    <form class="form" method="post">
+    
+    </form>
+</div>
+</div>
+
