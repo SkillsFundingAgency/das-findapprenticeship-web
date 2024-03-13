@@ -53,41 +53,4 @@ public class WhenCallingPost
             actual!.RouteName.Should().BeEquivalentTo(RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary);
         }
     }
-
-    [Test, MoqAutoData]
-    public async Task And_ModelState_Is_Valid_Then_Redirected_To_TaskList(
-        Guid candidateId,
-        string adjustmentsInput,
-        UpdateInterviewAdjustmentsCommandResult createInterviewAdjustmentsQueryResult,
-        [Frozen] Mock<IMediator> mediator,
-        [Greedy] InterviewAdjustmentsController controller)
-    {
-        var request = new InterviewAdjustmentsViewModel
-        {
-            ApplicationId = Guid.NewGuid(),
-            InterviewAdjustmentsDescription = adjustmentsInput,
-            DoYouWantInterviewAdjustments = false
-        };
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
-
-        mediator.Setup(x => x.Send(It.Is<UpdateInterviewAdjustmentsCommand>(c =>
-                c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(createInterviewAdjustmentsQueryResult);
-
-        var actual = await controller.Post(request.ApplicationId, request) as RedirectToRouteResult;
-
-        using (new AssertionScope())
-        {
-            actual.Should().NotBeNull();
-            actual!.RouteName.Should().BeEquivalentTo(RouteNames.Apply);
-        }
-    }
 }

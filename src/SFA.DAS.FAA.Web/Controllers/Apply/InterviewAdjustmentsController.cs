@@ -79,17 +79,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 InterviewAdjustmentsDescription = viewModel.DoYouWantInterviewAdjustments!.Value
                     ? viewModel.InterviewAdjustmentsDescription
                     : string.Empty,
-                InterviewAdjustmentsSectionStatus = viewModel.DoYouWantInterviewAdjustments!.Value
-                    ? SectionStatus.InProgress
-                    : SectionStatus.Completed
+                InterviewAdjustmentsSectionStatus = SectionStatus.InProgress
             };
 
             await mediator.Send(updateCommand);
 
-            return viewModel.DoYouWantInterviewAdjustments.Value
-                ? RedirectToRoute(RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary,
-                    new { viewModel.ApplicationId })
-                : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary,
+                new {viewModel.ApplicationId});
         }
         
         [HttpGet]
@@ -140,7 +136,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 CandidateId = User.Claims.CandidateId(),
                 ApplicationId = viewModel.ApplicationId,
-                InterviewAdjustmentsDescription = viewModel.SupportRequestAnswer,
+                InterviewAdjustmentsDescription = !IsNullOrEmpty(viewModel.SupportRequestAnswer) ? viewModel.SupportRequestAnswer : string.Empty,
                 InterviewAdjustmentsSectionStatus = viewModel.IsSectionCompleted!.Value ? SectionStatus.Completed : SectionStatus.InProgress
             };
 
