@@ -1,11 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.WhatInterestsYou;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualifications;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
+using System.Reflection;
+using System;
+using SFA.DAS.FAA.Application.Commands.Qualifications;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -39,19 +43,26 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("apply/{applicationId}/qualifications", Name = RouteNames.ApplyApprenticeship.Qualifications)]
-        public async Task<IActionResult> Post(QualificationsViewModel viewModel)
+        public async Task<IActionResult> Post(QualificationsViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(ViewName, viewModel);
+                return View(ViewName, model);
             }
 
-            if (viewModel.DoYouWantToAddAnyQualifications is true)
+            if (model.DoYouWantToAddAnyQualifications is true)
             {
-                return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualificationSelectType, new { viewModel.ApplicationId });
+                return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualificationSelectType, new { model.ApplicationId });
             }
 
-            return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
+            await mediator.Send(new UpdateQualificationsCommand
+            {
+                ApplicationId = model.ApplicationId,
+                CandidateId = User.Claims.CandidateId(),
+                IsComplete = model.IsSectionCompleted ?? false
+            });
+
+            return RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
         }
         
         [HttpGet]
