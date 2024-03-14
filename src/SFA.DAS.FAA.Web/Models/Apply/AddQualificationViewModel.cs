@@ -7,9 +7,16 @@ public class AddQualificationViewModel
 {
     [FromRoute]
     public required Guid ApplicationId { get; set; }
-
-    public QualificationTypeApiResponse QualificationType { get; set; }
-    
+    public QualificationDisplayTypeViewModel QualificationDisplayTypeViewModel { get; set; }
     [FromRoute]
     public Guid QualificationReferenceId { get; set; }
+    public List<SubjectViewModel> Subject { get; set; }
+}
+
+public class SubjectViewModel
+{
+    public string Grade { get; set; }
+    public string Name { get; set; }
+    public string Level { get; set; }
+    public string IsPredicted { get; set; }
 }

@@ -5,7 +5,6 @@ using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.Controllers
