@@ -12,9 +12,9 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident
 
     public class GetDisabilityConfidentQueryResult
     {
-        public string EmployerName { get; private init; }
+        public string? EmployerName { get; private init; }
         public bool? ApplyUnderDisabilityConfidentScheme { get; set; }
-        public bool? IsSectionCompleted { get; set; }
+        public bool? IsSectionCompleted { get; private init; }
 
         public static implicit operator GetDisabilityConfidentQueryResult(GetDisabilityConfidentApiResponse source)
         {

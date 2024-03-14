@@ -28,7 +28,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = User.Claims.CandidateId()
             });
 
-            if (isEdit == false && result.Status is not null)
+            if (!isEdit && result.Status is not null)
             {
                 return RedirectToRoute(RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary, new { applicationId });
             }
