@@ -14,5 +14,6 @@ public class GetQualificationsApiResponse
 
     public class Qualification
     {
+        public string QualificationType { get; set; }
     }
 }

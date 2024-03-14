@@ -27,9 +27,14 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
 
         public class Qualification
         {
+            public string QualificationType { get; set; }
+
             public static implicit operator Qualification(GetQualificationsApiResponse.Qualification source)
             {
-                return new Qualification();
+                return new Qualification
+                {
+                    QualificationType = source.QualificationType
+                };
             }
         }
     }

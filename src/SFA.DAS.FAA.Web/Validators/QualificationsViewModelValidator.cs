@@ -9,7 +9,13 @@ namespace SFA.DAS.FAA.Web.Validators
         {
             RuleFor(x => x.DoYouWantToAddAnyQualifications)
                 .NotNull()
+                .When(x => !x.ShowQualifications)
                 .WithMessage("Select if you want to add any qualifications ");
+
+            RuleFor(x => x.IsSectionCompleted)
+                .NotNull()
+                .When(x => x.ShowQualifications)
+                .WithMessage("Select if you have finished this section");
         }
     }
 }
