@@ -6,6 +6,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
     {
         [FromRoute]
         public required Guid ApplicationId { get; init; }
+        public string? BackLinkUrl { get; init; }
         public bool IsApplyUnderDisabilityConfidentSchemeRequired { get; init; }
 
         [BindProperty]

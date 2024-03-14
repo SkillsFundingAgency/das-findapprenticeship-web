@@ -48,7 +48,7 @@ public class WhenCallingSummaryPost
         mediator.Setup(x => x.Send(It.Is<UpdateDisabilityConfidenceApplicationCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId) &&
                 c.CandidateId.Equals(candidateId) &&
-                c.DisabilityConfidenceSectionStatus.Equals(SectionStatus.Completed)), It.IsAny<CancellationToken>()))
+                c.IsSectionCompleted.Equals(SectionStatus.Completed)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(updateDisabilityConfidenceApplicationCommandResult);
 
         var actual = await controller.PostSummary(request.ApplicationId, request) as RedirectToRouteResult;
