@@ -9,6 +9,8 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Application.Commands.Qualifications;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
+using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -62,6 +64,20 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     ShowQualifications = result.Qualifications.Count != 0
                 };
                 return View(ViewName, viewModel);
+            }
+
+            if (model.ShowQualifications)
+            {
+                var completeSectionCommand = new UpdateQualificationsCommand
+                {
+                    CandidateId = User.Claims.CandidateId(),
+                    ApplicationId = model.ApplicationId,
+                    IsComplete = model.IsSectionCompleted ?? false
+                };
+
+                await mediator.Send(completeSectionCommand);
+
+                return RedirectToRoute(RouteNames.Apply, new { model.ApplicationId });
             }
 
             if (model.DoYouWantToAddAnyQualifications is true)

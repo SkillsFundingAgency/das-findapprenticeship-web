@@ -18,10 +18,14 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public class Qualification
         {
+            public string QualificationType { get; set; }
 
             public static implicit operator Qualification(GetQualificationsQueryResult.Qualification source)
             {
-                return new Qualification();
+                return new Qualification
+                {
+                    QualificationType = source.QualificationType
+                };
             }
 
         }

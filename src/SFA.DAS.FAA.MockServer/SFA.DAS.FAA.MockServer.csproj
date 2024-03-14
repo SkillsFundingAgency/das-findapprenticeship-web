@@ -93,6 +93,9 @@
     <None Update="Apply\ExistingApplication\Jobs\get-job.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Apply\ExistingApplication\Qualifications\get-qualifications.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Apply\ExistingApplication\TrainingCourses\get-delete-trainingcourse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
