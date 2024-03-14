@@ -24,26 +24,29 @@
                     </div>
                     <div class="govuk-date-input" id="date-of-birth">
                         <div class="govuk-date-input__item">
-                            <div class="govuk-form-group">
+                            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.Day)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
                                 <label class="govuk-label govuk-date-input__label" for="Day">
                                     Day
                                 </label>
+                                <span asp-validation-for="Day" class="govuk-error-message"></span>
                                 <input class="govuk-input govuk-date-input__input govuk-input--width-2" type="text" asp-for="Day" inputmode="numeric">
                             </div>
                         </div>
                         <div class="govuk-date-input__item">
-                            <div class="govuk-form-group">
+                            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.Month)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
                                 <label class="govuk-label govuk-date-input__label" for="Month">
                                     Month
                                 </label>
+                                <span asp-validation-for="Month" class="govuk-error-message"></span>
                                 <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="Month" type="text" inputmode="numeric">
                             </div>
                         </div>
                         <div class="govuk-date-input__item">
-                            <div class="govuk-form-group">
+                            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.Year)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
                                 <label class="govuk-label govuk-date-input__label" for="Year">
                                     Year
                                 </label>
+                                <span asp-validation-for="Year" class="govuk-error-message"></span>
                                 <input class="govuk-input govuk-date-input__input govuk-input--width-4" asp-for="Year" type="text" inputmode="numeric">
                             </div>
                         </div>
