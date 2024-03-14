@@ -9,6 +9,7 @@ public static class RouteNames
     public const string Vacancies = "vacancies";
     public const string Apply = "apply";
     public const string UserName = "user-name";
+    public const string DateOfBirth = "date-of-birth";
     public const string CreateAccount = "create-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";

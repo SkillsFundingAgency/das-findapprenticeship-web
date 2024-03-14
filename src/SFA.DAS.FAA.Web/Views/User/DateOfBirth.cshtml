@@ -1,0 +1,61 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.User.DateOfBirthViewModel
+@{
+    ViewBag.Title = "What is your date of birth? – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.CreateAccount">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+        <span class="govuk-caption-l">Create an account</span>
+        <h1 class="govuk-heading-l">What is your date of birth?</h1>
+        <div class="govuk-inset-text">
+            <p class="govuk-body">We don't share your date of birth when you apply for an apprenticeship.</p>
+        </div>
+        <p class="govuk-body">We only use your age to make our services work. For example, to show you the correct National Minimum Wage rate for your age.</p>
+        <form class="form" method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint">
+                    <div id="date-of-birth-hint" class="govuk-hint">
+                        For example, 31 03 1980
+                    </div>
+                    <div class="govuk-date-input" id="date-of-birth">
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="Day">
+                                    Day
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" type="text" asp-for="Day" inputmode="numeric">
+                            </div>
+                        </div>
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="Month">
+                                    Month
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="Month" type="text" inputmode="numeric">
+                            </div>
+                        </div>
+                        <div class="govuk-date-input__item">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="Year">
+                                    Year
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" asp-for="Year" type="text" inputmode="numeric">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
