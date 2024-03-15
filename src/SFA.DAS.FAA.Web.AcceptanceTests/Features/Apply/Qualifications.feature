@@ -71,3 +71,10 @@ Scenario: Confirm non-completion of the qualifications page
 	| ShowQualifications | true  |
 	| IsSectionCompleted | false |
 	Then I am redirected to the Application Tasklist page
+
+@WireMockServer
+@AuthenticatedUser
+@NewApplication
+Scenario: Delete a set of qualifications
+	When I navigate to the Delete Qualifications page
+	Then a http status code of 200 is returned

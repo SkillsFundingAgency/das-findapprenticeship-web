@@ -9,8 +9,6 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Application.Commands.Qualifications;
 using SFA.DAS.FAA.Application.Queries.Apply.GetAddQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
-using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -20,6 +18,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         private const string ViewName = "~/Views/apply/Qualifications/Index.cshtml";
         private const string AddQualificationSelectTypeViewName = "~/Views/apply/Qualifications/AddQualificationSelectType.cshtml";
         private const string AddQualificationViewName = "~/Views/apply/Qualifications/AddQualification.cshtml";
+        private const string DeleteQualificationsViewName = "~/Views/apply/Qualifications/DeleteQualifications.cshtml";
 
         [HttpGet]
         [Route("apply/{applicationId}/qualifications", Name = RouteNames.ApplyApprenticeship.Qualifications)]
@@ -31,14 +30,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = User.Claims.CandidateId()
             });
 
-            var viewModel = new QualificationsViewModel
-            {
-                ApplicationId = applicationId,
-                DoYouWantToAddAnyQualifications = result.Qualifications.Count == 0 && result.IsSectionCompleted is true ? false : null,
-                IsSectionCompleted = result.IsSectionCompleted,
-                Qualifications = result.Qualifications.Select(x => (QualificationsViewModel.Qualification)x).ToList(),
-                ShowQualifications = result.Qualifications.Count != 0
-            };
+            var viewModel = QualificationsViewModel.MapFromQueryResult(applicationId, result);
 
             return View(ViewName, viewModel);
         }
@@ -55,14 +47,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     CandidateId = User.Claims.CandidateId()
                 });
 
-                var viewModel = new QualificationsViewModel
-                {
-                    ApplicationId = model.ApplicationId,
-                    DoYouWantToAddAnyQualifications = result.Qualifications.Count == 0 && result.IsSectionCompleted is true ? false : null,
-                    IsSectionCompleted = result.IsSectionCompleted,
-                    Qualifications = result.Qualifications.Select(x => (QualificationsViewModel.Qualification)x).ToList(),
-                    ShowQualifications = result.Qualifications.Count != 0
-                };
+                var viewModel = QualificationsViewModel.MapFromQueryResult(model.ApplicationId, result);
                 return View(ViewName, viewModel);
             }
 
@@ -162,6 +147,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             
             return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualificationSelectType,
                 new { model.ApplicationId });
+        }
+
+        [HttpGet]
+        [Route("apply/{applicationId}/qualifications/delete/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.DeleteQualifications)]
+        public async Task<IActionResult> DeleteQualifications([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
+        {
+            return View(DeleteQualificationsViewName);
         }
     }
 }
