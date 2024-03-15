@@ -7,8 +7,10 @@ using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Application.Commands.Qualifications;
+using SFA.DAS.FAA.Application.Commands.UpsertQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetAddQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
+using SFA.DAS.FAA.Domain.Apply.Qualifications;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -144,6 +146,21 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/qualifications/add/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.AddQualification)]
         public async Task<IActionResult> AddQualification(AddQualificationViewModel model)
         {
+            //TODO - Add validation
+            await mediator.Send(new UpsertQualificationCommand
+            {
+                CandidateId = User.Claims.CandidateId(),
+                ApplicationId = model.ApplicationId,
+                QualificationReferenceId = model.QualificationReferenceId,
+                Subjects = model.Subjects.Select(c => new PostUpsertQualificationsApiRequest.Subject
+                {
+                    Grade = c.Grade,
+                    Name = c.Name,
+                    Id = c.Id,
+                    Level = c.Level,
+                    IsPredicted = c.IsPredicted
+                }).ToList()
+            });
             
             return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualificationSelectType,
                 new { model.ApplicationId });

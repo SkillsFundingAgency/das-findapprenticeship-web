@@ -10,7 +10,7 @@ public class AddQualificationViewModel
     public QualificationDisplayTypeViewModel QualificationDisplayTypeViewModel { get; set; }
     [FromRoute]
     public Guid QualificationReferenceId { get; set; }
-    public List<SubjectViewModel> Subject { get; set; }
+    public List<SubjectViewModel> Subjects { get; set; }
 }
 
 public class SubjectViewModel
