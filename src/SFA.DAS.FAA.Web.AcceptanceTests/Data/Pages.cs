@@ -30,7 +30,8 @@ public static class Pages
             new Page { Name = "Disability Confident Confirmation", Url = "/apply/{applicationId}/disability-confident/confirm" },
             //Qualifications
             new Page { Name = "Qualifications", Url="/apply/{applicationId}/qualifications"},
-            new Page { Name = "Add Qualification Select Type", Url="/apply/{applicationId}/qualifications/add/select-type"}
+            new Page { Name = "Add Qualification Select Type", Url="/apply/{applicationId}/qualifications/add/select-type"},
+            new Page { Name = "Delete Qualifications", Url = "/apply/{applicationId}/qualifications/delete/55db82b4-87a9-410c-9ec8-c6081f59cb0f" }
         ];
     }
 

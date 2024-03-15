@@ -14,7 +14,7 @@ public class GetQualificationsApiResponse
 
     public class Qualification
     {
-        public string GroupName { get; set; }
+        public Guid QualificationReferenceId { get; set; }
         public string QualificationType { get; set; }
         public string Subject { get; set; }
         public string Level { get; set; }

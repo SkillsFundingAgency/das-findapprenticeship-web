@@ -30,6 +30,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public Guid Id { get; set; }
             public string GroupName { get; set; }
             public string QualificationType { get; set; }
+            public Guid QualificationReferenceId { get; set; }
             public string Subject { get; set; }
             public string Grade { get; set; }
             public string Level { get; set; }
@@ -40,9 +41,12 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
             public static implicit operator Qualification(GetQualificationsQueryResult.Qualification source)
             {
+                var groupMetadata = new QualificationDisplayTypeViewModel(source.QualificationType);
+
                 return new Qualification
                 {
-                    GroupName = source.GroupName,
+                    GroupName = groupMetadata.GroupTitle,
+                    QualificationReferenceId = source.QualificationReferenceId,
                     QualificationType = source.QualificationType,
                     Subject = source.Subject,
                     Grade = source.Grade,
