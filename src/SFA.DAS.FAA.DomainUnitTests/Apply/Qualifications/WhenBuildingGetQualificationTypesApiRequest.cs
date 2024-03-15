@@ -1,3 +1,4 @@
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
@@ -6,11 +7,11 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Apply.Qualifications;
 
 public class WhenBuildingGetQualificationTypesApiRequest
 {
-    [Test]
-    public void Then_The_Url_Is_Correctly_Built()
+    [Test, AutoData]
+    public void Then_The_Url_Is_Correctly_Built(Guid applicationId)
     {
-        var actual = new GetQualificationTypesApiRequest();
+        var actual = new GetQualificationTypesApiRequest(applicationId);
 
-        actual.GetUrl.Should().Be("referencedata/qualificationtypes");
+        actual.GetUrl.Should().Be($"applications/{applicationId}/qualifications/add/select-type");
     }
 }

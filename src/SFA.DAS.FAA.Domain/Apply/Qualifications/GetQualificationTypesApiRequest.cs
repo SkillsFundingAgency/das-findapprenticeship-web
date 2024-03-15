@@ -2,9 +2,9 @@ using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.Apply.Qualifications;
 
-public class GetQualificationTypesApiRequest : IGetApiRequest
+public class GetQualificationTypesApiRequest(Guid applicationId) : IGetApiRequest
 {
-    public string GetUrl => "referencedata/qualificationtypes";
+    public string GetUrl => $"applications/{applicationId}/qualifications/add/select-type";
 }
 
 public class GetQualificationTypesApiResponse
