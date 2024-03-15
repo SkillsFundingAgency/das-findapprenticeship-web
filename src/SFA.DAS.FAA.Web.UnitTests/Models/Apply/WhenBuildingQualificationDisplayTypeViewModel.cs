@@ -7,7 +7,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply;
 public class WhenBuildingQualificationDisplayTypeViewModel
 {
     [Test]
-    public void Then_Values_Set_For_Gcse()
+    public void Then_Values_Set_For_Btec()
     {
         var actual = new QualificationDisplayTypeViewModel("BTEC");
 

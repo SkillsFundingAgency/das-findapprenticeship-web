@@ -21,7 +21,7 @@ public class WhenGettingQualificationTypes
         [Frozen] Mock<IMediator> mediator,
         [Greedy] QualificationsController controller)
     {
-        mediator.Setup(x => x.Send(It.IsAny<GetQualificationTypesQuery>(), CancellationToken.None))
+        mediator.Setup(x => x.Send(It.Is<GetQualificationTypesQuery>(c=>c.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
         var actual = await controller.AddQualificationSelectType(applicationId) as ViewResult;

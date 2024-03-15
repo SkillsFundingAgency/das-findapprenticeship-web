@@ -123,14 +123,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithStatusCode(202)
                         .WithBodyFromFile("put-candidate.json"));
             
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/referencedata/qualificationtypes", RegexOptions.None, regexMaxTimeOut))
-                    .UsingGet())
-                .RespondWith(
-                    Response.Create()
-                        .WithStatusCode(200)
-                        .WithHeader("Content-Type", "application/json")
-                        .WithBodyFromFile("qualification-types.json"));
-
+            
             return server;
         }
 

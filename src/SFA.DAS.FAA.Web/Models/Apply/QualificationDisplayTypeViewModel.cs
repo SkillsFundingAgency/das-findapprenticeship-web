@@ -17,6 +17,14 @@ public class QualificationDisplayTypeViewModel
                 Title = "Add a BTEC";
                 GroupTitle = "BTEC";
                 break;
+            case "gcse":
+                CanShowLevel = false;
+                CanShowPredicted = true;
+                AllowMultipleAdd = false;
+                ShouldDisplayAdditionalInformationField = true;
+                Title = "Add GCSEs";
+                GroupTitle = "BTEC";
+                break;
             default:
                 Title = "Add other qualifications";
                 GroupTitle = "Other qualifications";

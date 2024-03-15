@@ -15,6 +15,9 @@
     <None Remove="Apply\NewApplication\TrainingCourses\post-add-trainingcourse.json" />
     <None Remove="Apply\NewApplication\WorkExperience\get-workexperiences.json" />
     <None Remove="jobs.json" />
+    <None Update="Apply\NewApplication\Qualifications\qualification-types.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -79,9 +82,7 @@
     <Content Include="search-vacancy-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="qualification-types.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+
   </ItemGroup>
   <ItemGroup>
     <None Update="Apply\ExistingApplication\DisabilityConfident\get-disabilityconfident.json">
@@ -126,6 +127,9 @@
     <None Update="Apply\NewApplication\Qualifications\add-qualification.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Update="Apply\NewApplication\Qualifications\qualification-types.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Update="Apply\NewApplication\TrainingCourses\get-trainingcourses.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -16,15 +16,13 @@ public class WhenPostingSelectedQualificationTypes
 {
     [Test, MoqAutoData]
     public async Task Then_If_Nothing_Selected_Then_Error_Returned(
-        Guid applicationId,
-        Guid candidateId,
         AddQualificationSelectTypeViewModel model,
         GetQualificationTypesQueryResponse queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] QualificationsController controller)
     {
         model.QualificationReferenceId = Guid.Empty;
-        mediator.Setup(x => x.Send(It.IsAny<GetQualificationTypesQuery>(), CancellationToken.None))
+        mediator.Setup(x => x.Send(It.Is<GetQualificationTypesQuery>(c=>c.ApplicationId == model.ApplicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
         var actual = await controller.AddQualificationSelectTypePost(model) as ViewResult;
@@ -38,14 +36,12 @@ public class WhenPostingSelectedQualificationTypes
     }
     [Test, MoqAutoData]
     public async Task Then_If_Value_Selected_Then_Redirected(
-        Guid applicationId,
-        Guid candidateId,
         AddQualificationSelectTypeViewModel model,
         GetQualificationTypesQueryResponse queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] QualificationsController controller)
     {
-        mediator.Setup(x => x.Send(It.IsAny<GetQualificationTypesQuery>(), CancellationToken.None))
+        mediator.Setup(x => x.Send(It.Is<GetQualificationTypesQuery>(c=>c.ApplicationId == model.ApplicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
         var actual = await controller.AddQualificationSelectTypePost(model) as RedirectToRouteResult;
