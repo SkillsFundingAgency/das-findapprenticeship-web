@@ -28,12 +28,22 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
         public class Qualification
         {
             public string QualificationType { get; set; }
+            public string Subject { get; set; }
+            public string Level { get; set; }
+            public string Grade { get; set; }
+            public string AdditionalInformation { get; set; }
+            public bool? IsPredicted { get; set; }
 
             public static implicit operator Qualification(GetQualificationsApiResponse.Qualification source)
             {
                 return new Qualification
                 {
-                    QualificationType = source.QualificationType
+                    QualificationType = source.QualificationType,
+                    AdditionalInformation = source.AdditionalInformation,
+                    IsPredicted = source.IsPredicted,
+                    Grade = source.Grade,
+                    Level = source.Level,
+                    Subject = source.Subject
                 };
             }
         }
