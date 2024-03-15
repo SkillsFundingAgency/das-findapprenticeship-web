@@ -9,6 +9,12 @@ public class QualificationDisplayTypeViewModel
     {
         switch (qualificationType.ToLower())
         {
+            case "gcse":
+                GroupTitle = "GCSEs";
+                break;
+            case "apprenticeship":
+                GroupTitle = "Apprenticeship";
+                break;
             case "btec":
                 CanShowLevel = true;
                 CanShowPredicted = true;
@@ -16,6 +22,15 @@ public class QualificationDisplayTypeViewModel
                 ShouldDisplayAdditionalInformationField = true;
                 Title = "Add a BTEC";
                 GroupTitle = "BTEC";
+                break;
+            case "a levels":
+                GroupTitle = "A levels";
+                break;
+            case "t levels":
+                GroupTitle = "T levels";
+                break;
+            case "degree":
+                GroupTitle = "Degree";
                 break;
             default:
                 Title = "Add other qualifications";

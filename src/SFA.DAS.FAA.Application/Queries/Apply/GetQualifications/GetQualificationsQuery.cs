@@ -21,13 +21,32 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
             return new GetQualificationsQueryResult
             {
                 IsSectionCompleted = source.IsSectionCompleted,
-                Qualifications = source.Qualifications.Select(x => (Qualification)x).ToList()
+                Qualifications = source.Qualifications.Select(x => (Qualification)x).ToList(),
+                QualificationTypes = source.QualificationTypes.Select(x => (QualificationType)x).ToList()
             };
+        }
+
+        public List<QualificationType> QualificationTypes { get; set; } = null!;
+
+        public class QualificationType
+        {
+            public Guid Id { get; set; }
+            public string Name { get; set; }
+            public int Order { get; set; }
+
+            public static implicit operator QualificationType(GetQualificationsApiResponse.QualificationType source)
+            {
+                return new QualificationType
+                {
+                    Id = source.Id,
+                    Name = source.Name,
+                    Order = source.Order
+                };
+            }
         }
 
         public class Qualification
         {
-            public Guid QualificationReferenceId { get; set; }
             public string QualificationType { get; set; }
             public string Subject { get; set; }
             public string Level { get; set; }
@@ -39,7 +58,6 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
             {
                 return new Qualification
                 {
-                    QualificationReferenceId = source.QualificationReferenceId,
                     QualificationType = source.QualificationType,
                     AdditionalInformation = source.AdditionalInformation,
                     IsPredicted = source.IsPredicted,

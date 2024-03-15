@@ -30,14 +30,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = User.Claims.CandidateId()
             });
 
-            var viewModel = new QualificationsViewModel
-            {
-                ApplicationId = applicationId,
-                DoYouWantToAddAnyQualifications = result.Qualifications.Count == 0 && result.IsSectionCompleted is true ? false : null,
-                IsSectionCompleted = result.IsSectionCompleted,
-                Qualifications = result.Qualifications.Select(x => (QualificationsViewModel.Qualification)x).ToList(),
-                ShowQualifications = result.Qualifications.Count != 0
-            };
+            var viewModel = QualificationsViewModel.MapFromQueryResult(applicationId, result);
 
             return View(ViewName, viewModel);
         }
@@ -54,14 +47,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     CandidateId = User.Claims.CandidateId()
                 });
 
-                var viewModel = new QualificationsViewModel
-                {
-                    ApplicationId = model.ApplicationId,
-                    DoYouWantToAddAnyQualifications = result.Qualifications.Count == 0 && result.IsSectionCompleted is true ? false : null,
-                    IsSectionCompleted = result.IsSectionCompleted,
-                    Qualifications = result.Qualifications.Select(x => (QualificationsViewModel.Qualification)x).ToList(),
-                    ShowQualifications = result.Qualifications.Count != 0
-                };
+                var viewModel = QualificationsViewModel.MapFromQueryResult(model.ApplicationId, result);
                 return View(ViewName, viewModel);
             }
 
