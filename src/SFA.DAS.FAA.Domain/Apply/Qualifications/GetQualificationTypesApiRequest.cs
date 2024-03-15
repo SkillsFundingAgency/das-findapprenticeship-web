@@ -11,10 +11,3 @@ public class GetQualificationTypesApiResponse
 {
     public List<QualificationTypeApiResponse> QualificationTypes { get; set; }
 }
-
-public class QualificationTypeApiResponse
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public int Order { get; set; }
-}

@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Commands.WhatInterestsYou;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualifications;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Application.Commands.Qualifications;
+using SFA.DAS.FAA.Application.Queries.Apply.GetAddQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
 using SFA.DAS.FAA.Domain.Enums;
@@ -132,9 +132,36 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("apply/{applicationId}/qualifications/add/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.AddQualification)]
-        public async Task<IActionResult> AddQualificationSelectTypePost([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
+        public async Task<IActionResult> AddQualification([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
         {
-            return View(AddQualificationViewName);
+            var result = await mediator.Send(new GetAddQualificationQuery
+            {
+                ApplicationId = applicationId,
+                QualificationReferenceId = qualificationReferenceId
+            });
+
+            if (result.QualificationType == null)
+            {
+                return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualificationSelectType,
+                    new { applicationId });
+            }
+            
+            var model = new AddQualificationViewModel
+            {
+                ApplicationId = applicationId,
+                QualificationReferenceId = qualificationReferenceId,
+                QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name)
+            };
+            return View(AddQualificationViewName, model);
+        }
+        
+        [HttpPost]
+        [Route("apply/{applicationId}/qualifications/add/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.AddQualification)]
+        public async Task<IActionResult> AddQualification(AddQualificationViewModel model)
+        {
+            
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualificationSelectType,
+                new { model.ApplicationId });
         }
     }
 }
