@@ -15,6 +15,6 @@ public class UpdateDateOfBirthApiRequest : IPostApiRequest
 }
 public class UpdateDateOfBirthRequestData
 {
-    public required DateOnly DateOfBirth { get; set; }
+    public required DateTime DateOfBirth { get; set; }
     public string Email { get; set; }
 }

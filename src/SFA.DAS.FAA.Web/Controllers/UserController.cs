@@ -79,7 +79,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 {
                     GovIdentifier = User.Claims.GovIdentifier(),
                     Email = User.Claims.Email(),
-                    DateOfBirth = new DateOnly((int)model.Year, (int)model.Month, (int)model.Day)
+                    DateOfBirth = model.DateOfBirth.DateTimeValue.Value
                 };
                 await mediator.Send(command);
             }

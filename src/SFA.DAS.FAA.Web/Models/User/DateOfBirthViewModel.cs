@@ -1,10 +1,8 @@
-﻿namespace SFA.DAS.FAA.Web.Models.User;
+﻿using SFA.DAS.FAA.Web.Models.Custom;
 
-public class DateOfBirthViewModel : ViewModelBase
+namespace SFA.DAS.FAA.Web.Models.User;
+
+public class DateOfBirthViewModel
 {
-    public int? Day { get; set; }
-    public int? Month { get; set; }
-    public int? Year { get; set; }
-
-    //public DateTime DateOfBirth { get { return new DateTime((int)Year, (int)Month, (int)Day); } }
+    public DayMonthYearDate? DateOfBirth { get; set; }
 }
