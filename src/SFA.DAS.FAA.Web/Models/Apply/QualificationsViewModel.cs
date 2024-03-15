@@ -15,14 +15,12 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public List<Qualification> Qualifications { get; set; } = new List<Qualification>();
 
-        public IEnumerable<IGrouping<string, Qualification>> GetQualificationGroups()
+        public IEnumerable<IGrouping<string, Qualification>> QualificationGroups
         {
-            return Qualifications.GroupBy(x => x.QualificationType);
-        }
-
-        public IEnumerable<Qualification> GetQualificationsForGroup(string qualificationType)
-        {
-            return Qualifications.Where(x => x.QualificationType == qualificationType);
+            get
+            {
+                return Qualifications.GroupBy(x => x.GroupName);
+            }
         }
 
         public bool ShowQualifications { get; set; }
@@ -30,6 +28,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public class Qualification
         {
             public Guid Id { get; set; }
+            public string GroupName { get; set; }
             public string QualificationType { get; set; }
             public string Subject { get; set; }
             public string Grade { get; set; }
@@ -37,10 +36,13 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public string AdditionalInformation { get; set; }
             public bool? IsPredicted { get; set; }
 
+            public string GradeLabel => IsPredicted is true ? $"{Grade} (predicted)" : Grade;
+
             public static implicit operator Qualification(GetQualificationsQueryResult.Qualification source)
             {
                 return new Qualification
                 {
+                    GroupName = source.GroupName,
                     QualificationType = source.QualificationType,
                     Subject = source.Subject,
                     Grade = source.Grade,

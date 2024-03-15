@@ -27,6 +27,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
 
         public class Qualification
         {
+            public string GroupName { get; set; }
             public string QualificationType { get; set; }
             public string Subject { get; set; }
             public string Level { get; set; }
@@ -38,6 +39,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
             {
                 return new Qualification
                 {
+                    GroupName = source.GroupName,
                     QualificationType = source.QualificationType,
                     AdditionalInformation = source.AdditionalInformation,
                     IsPredicted = source.IsPredicted,

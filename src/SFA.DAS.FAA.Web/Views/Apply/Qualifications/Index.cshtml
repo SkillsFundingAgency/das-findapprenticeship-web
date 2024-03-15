@@ -17,7 +17,7 @@
         
         @if (Model.ShowQualifications)
         {
-            @foreach (var group in Model.GetQualificationGroups())
+            @foreach (var group in Model.QualificationGroups)
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
@@ -45,7 +45,7 @@
                                         @qualification.Subject
                                     </dt>
                                     <dd class="govuk-summary-list__value">
-                                        @qualification.Grade
+                                        @qualification.GradeLabel
                                     </dd>
                                 </div>
                             }
