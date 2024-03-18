@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
 using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -19,12 +20,34 @@ namespace SFA.DAS.FAA.Web.Controllers
             var query = new GetIndexQuery
             {
                 ApplicationId = request.ApplicationId,
-                CandidateId = User.Claims.CandidateId() 
+                CandidateId = User.Claims.CandidateId()
             };
 
             var result = await mediator.Send(query);
             var viewModel = IndexViewModel.Map(dateTimeService, request, result);
             return View(viewModel);
+        }
+
+        [HttpGet]
+        [Route("application-submitted", Name = RouteNames.ApplyApprenticeship.ApplicationSubmitted)]
+        public async Task<IActionResult> ApplicationSubmitted([FromRoute] Guid applicationId)
+        {
+            var query = new GetApplicationSubmittedQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId()
+            };
+
+            var result = await mediator.Send(query);
+
+            var model = new ApplicationSubmittedViewModel
+            {
+                VacancyTitle = result.VacancyTitle,
+                EmployerName = result.EmployerName,
+                ApplicationId = applicationId
+            };
+
+            return View(model);
         }
     }
 }

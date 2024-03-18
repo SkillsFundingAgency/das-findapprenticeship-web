@@ -1,0 +1,59 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.Apply
+@model ApplicationSubmittedViewModel
+@{
+    ViewData["Title"] = "Do you want to answer equality questions? - Find an apprenticeship - GOV.UK";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Application submitted
+            </h1>
+            <div class="govuk-panel__body">
+                @Model.VacancyTitle, @Model.EmployerName
+            </div>
+        </div>
+
+        <div class="govuk-!-padding-bottom-5"></div>
+
+        <form class="form" method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            Do you want to answer the equality questions?
+                        </h1>
+                    </legend>
+                    <div id="optional-equality-questions-hint" class="govuk-hint">
+                        These questions are optional. The Department for Education will use any information you provide to improve this service and ensure apprenticeship recruitment is inclusive.
+                    </div>
+                    <div id="not-shared-equality-questions-hint" class="govuk-hint">
+                        These answers will not be shared when you apply for an apprenticeship.
+                    </div>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="AnswerEqualityQuestions" value="true" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="AnswerEqualityQuestions">
+                                Yes, answer the equality questions (takes 2 minutes)
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="AnswerEqualityQuestions" value="false" id="AnswerEqualityQuestions-false" type="radio" />
+                            <label class="govuk-label govuk-radios__label" for="AnswerEqualityQuestions-false">
+                                No, skip the equality questions
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
