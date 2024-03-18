@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.DisabilityConfident;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident;
-using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -30,7 +29,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             if (result.ApplyUnderDisabilityConfidentScheme.HasValue && !isEdit)
             {
                 return RedirectToRoute(RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation,
-                    new { ApplicationId = applicationId, isEdit = isEdit });
+                    new { ApplicationId = applicationId, isEdit });
             }
 
             var viewModel = new DisabilityConfidentViewModel
@@ -80,7 +79,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/disability-confident/confirm", Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
         public async Task<IActionResult> GetSummary([FromRoute] Guid applicationId, [FromQuery] bool isEdit = false)
         {
-            var result = await mediator.Send(new GetDisabilityConfidentQuery
+            var result = await mediator.Send(new GetDisabilityConfidentDetailsQuery
             {
                 ApplicationId = applicationId,
                 CandidateId = User.Claims.CandidateId()
@@ -105,7 +104,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         {
             if (!ModelState.IsValid)
             {
-                var result = await mediator.Send(new GetDisabilityConfidentQuery
+                var result = await mediator.Send(new GetDisabilityConfidentDetailsQuery
                 {
                     ApplicationId = applicationId,
                     CandidateId = User.Claims.CandidateId()

@@ -11,6 +11,5 @@ namespace SFA.DAS.FAA.Domain.Apply.DisabilityConfident
     {
         public bool? ApplyUnderDisabilityConfidentScheme { get; set; }
         public string EmployerName { get; set; } = null!;
-        public bool? IsSectionCompleted { get; set; }
     }
 }

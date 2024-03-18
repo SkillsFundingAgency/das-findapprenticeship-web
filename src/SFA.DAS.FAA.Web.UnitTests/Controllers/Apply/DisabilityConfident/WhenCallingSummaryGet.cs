@@ -23,7 +23,7 @@ public class WhenCallingSummaryGet
     public async Task Then_View_Is_Returned(
         Guid applicationId,
         Guid candidateId,
-        GetDisabilityConfidentQueryResult queryResult,
+        GetDisabilityConfidentDetailsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
         var mockUrlHelper = new Mock<IUrlHelper>();
@@ -31,7 +31,7 @@ public class WhenCallingSummaryGet
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        mediator.Setup(x => x.Send(It.Is<GetDisabilityConfidentQuery>(q => q.ApplicationId == applicationId && q.CandidateId == candidateId),
+        mediator.Setup(x => x.Send(It.Is<GetDisabilityConfidentDetailsQuery>(q => q.ApplicationId == applicationId && q.CandidateId == candidateId),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 

@@ -14,7 +14,6 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident
     {
         public string? EmployerName { get; private init; }
         public bool? ApplyUnderDisabilityConfidentScheme { get; set; }
-        public bool? IsSectionCompleted { get; private init; }
 
         public static implicit operator GetDisabilityConfidentQueryResult(GetDisabilityConfidentApiResponse source)
         {
@@ -22,7 +21,6 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident
             {
                 ApplyUnderDisabilityConfidentScheme = source.ApplyUnderDisabilityConfidentScheme,
                 EmployerName = source.EmployerName,
-                IsSectionCompleted = source.IsSectionCompleted
             };
         }
     }
