@@ -11,7 +11,7 @@ public class WhenBuildingDateOfBirthApiRequest
     {
         var data = new UpdateDateOfBirthRequestData() 
         { 
-            DateOfBirth = DateOnly.FromDateTime(dob),
+            DateOfBirth = dob,
             Email = email
         };
         var actual = new UpdateDateOfBirthApiRequest(govIdentifier, data);

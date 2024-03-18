@@ -19,16 +19,10 @@ public class WhenPostingDateOfBirth
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Search_Results(
          string govIdentifier,
          string email,
-         DateTime dob,
+         DateOfBirthViewModel model,
          [Frozen] Mock<IMediator> mediator,
          [Greedy] UserController controller)
     {
-        var model = new DateOfBirthViewModel()
-        {
-            Day = dob.Day,
-            Month = dob.Month,
-            Year = dob.Year
-        };
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -48,7 +42,7 @@ public class WhenPostingDateOfBirth
         result.RouteName.Should().Be(RouteNames.SearchResults);
         mediator.Verify(x => x.Send(It.Is<UpdateDateOfBirthCommand>(c =>
             c.GovIdentifier.Equals(govIdentifier)
-            && c.DateOfBirth.Equals(new DateOnly(model.Year, model.Month, model.Day))
+            && c.DateOfBirth.Equals(model.DateOfBirth.DateTimeValue.Value)
             && c.Email.Equals(email)
             ), It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -71,16 +65,10 @@ public class WhenPostingDateOfBirth
     public async Task Name_When_Mediator_Send_Throws_InvalidOperationException_Should_Return_View_With_Model_Error(
          string govIdentifier,
          string email,
-         DateTime dob,
+         DateOfBirthViewModel model,
          [Frozen] Mock<IMediator> mediator,
          [Greedy] UserController controller)
     {
-        var model = new DateOfBirthViewModel()
-        {
-            Day = dob.Day,
-            Month = dob.Month,
-            Year = dob.Year
-        };
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext

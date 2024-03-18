@@ -23,7 +23,7 @@ public class WhenHandlingUpdateUserDateOfBirthCommand
         {
             GovIdentifier = govUkIdentifier,
             Email = email,
-            DateOfBirth = DateOnly.FromDateTime(dob)
+            DateOfBirth = dob
         };
            
         var request = new UpdateDateOfBirthApiRequest(command.GovIdentifier, new UpdateDateOfBirthRequestData
