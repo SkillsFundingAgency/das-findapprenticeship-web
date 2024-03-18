@@ -1,6 +1,7 @@
 ﻿namespace SFA.DAS.FAA.Domain.Apply.GetTrainingCourses;
 public class GetTrainingCoursesApiResponse
 {
+    public bool? IsSectionCompleted { get; set; }
     public List<TrainingCourse> TrainingCourses { get; set; } = null!;
 
     public class TrainingCourse

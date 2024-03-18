@@ -1,0 +1,11 @@
+﻿{
+	"IsSectionCompleted": true,
+	"TrainingCourses": [
+		{
+			"Id": "d96b7cbd-fee2-4084-ae69-b138959edce4",
+			"ApplicationId": "1b82e2a2-e76e-40c7-8a20-5736bed1afd1",
+			"CourseName": "Coping with workplace stress",
+			"YearAchieved":  2021
+		}
+	]
+}

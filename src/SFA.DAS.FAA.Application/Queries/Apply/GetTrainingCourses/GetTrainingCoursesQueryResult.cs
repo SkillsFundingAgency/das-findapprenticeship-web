@@ -3,6 +3,7 @@
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourses;
 public record GetTrainingCoursesQueryResult
 {
+    public bool? IsSectionCompleted { get; set; }
     public List<TrainingCourse> TrainingCourses { get; set; } = null!;
 
     public class TrainingCourse
@@ -28,6 +29,7 @@ public record GetTrainingCoursesQueryResult
     {
         return new GetTrainingCoursesQueryResult
         {
+            IsSectionCompleted = source.IsSectionCompleted,
             TrainingCourses = source.TrainingCourses.Select(x => (TrainingCourse)x).ToList()
         };
     }

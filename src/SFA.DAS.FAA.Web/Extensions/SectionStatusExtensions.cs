@@ -10,6 +10,7 @@ namespace SFA.DAS.FAA.Web.Extensions
             {
                 SectionStatus.NotStarted => "Not yet started",
                 SectionStatus.InProgress => "Incomplete",
+                SectionStatus.Incomplete => "Incomplete",
                 SectionStatus.Completed => "Complete",
                 SectionStatus.NotRequired => "Not Required",
                 _ => string.Empty
@@ -22,6 +23,7 @@ namespace SFA.DAS.FAA.Web.Extensions
             {
                 SectionStatus.NotStarted => "govuk-tag das-no-wrap govuk-tag--blue",
                 SectionStatus.InProgress => "govuk-tag das-no-wrap govuk-tag--light-blue",
+                SectionStatus.Incomplete => "govuk-tag das-no-wrap govuk-tag--light-blue",
                 SectionStatus.Completed => "govuk-body das-no-wrap",
                 SectionStatus.NotRequired => "govuk-tag das-no-wrap govuk-tag--grey",
                 _ => string.Empty
