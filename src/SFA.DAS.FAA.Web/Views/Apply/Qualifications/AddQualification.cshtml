@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.AddQualificationViewModel
 @{
-    ViewData["Title"] = "Add Qualification – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = $"{Model.QualificationDisplayTypeViewModel.Title} – Find an apprenticeship – GOV.UK";
 }
 
 @section BackLink {
@@ -18,7 +18,7 @@
       <div class="govuk-form-group govuk-!-width-two-thirds">
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="subjects[0][name]">
-            Add subjects
+            Add subject@(Model.QualificationDisplayTypeViewModel.AllowMultipleAdd ? "s" : "")
           </label>
         </h1>
         <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text">
