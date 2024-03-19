@@ -35,7 +35,7 @@ public class WhenPostingAddQualification
         
         var actual = await controller.ModifyQualification(model) as RedirectToRouteResult;
 
-        actual.RouteName.Should().Be(RouteNames.ApplyApprenticeship.AddQualificationSelectType);
+        actual.RouteName.Should().Be(RouteNames.ApplyApprenticeship.Qualifications);
         mediator.Verify(x=>x.Send(It.Is<UpsertQualificationCommand>(
                 c=>c.CandidateId == candidateId)
             , CancellationToken.None), Times.Once);

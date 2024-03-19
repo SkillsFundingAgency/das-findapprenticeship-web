@@ -164,7 +164,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 }).ToList()
             });
             
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualificationSelectType,
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Qualifications,
                 new { model.ApplicationId });
         }
 
