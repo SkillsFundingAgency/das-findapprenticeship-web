@@ -8,7 +8,7 @@ public class GetQualificationTypesQueryHandler(IApiClient apiClient) : IRequestH
 {
     public async Task<GetQualificationTypesQueryResponse> Handle(GetQualificationTypesQuery request, CancellationToken cancellationToken)
     {
-        var results = await apiClient.Get<GetQualificationTypesApiResponse>(new GetQualificationTypesApiRequest(request.ApplicationId));
+        var results = await apiClient.Get<GetQualificationTypesApiResponse>(new GetQualificationTypesApiRequest(request.ApplicationId, request.CandidateId));
 
         return new GetQualificationTypesQueryResponse
         {

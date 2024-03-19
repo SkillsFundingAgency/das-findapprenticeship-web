@@ -8,10 +8,10 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Apply.Qualifications;
 public class WhenBuildingGetQualificationTypesApiRequest
 {
     [Test, AutoData]
-    public void Then_The_Url_Is_Correctly_Built(Guid applicationId)
+    public void Then_The_Url_Is_Correctly_Built(Guid applicationId, Guid candidateId)
     {
-        var actual = new GetQualificationTypesApiRequest(applicationId);
+        var actual = new GetQualificationTypesApiRequest(applicationId, candidateId);
 
-        actual.GetUrl.Should().Be($"applications/{applicationId}/qualifications/add/select-type");
+        actual.GetUrl.Should().Be($"applications/{applicationId}/qualifications/add/select-type?candidateId={candidateId}");
     }
 }

@@ -86,7 +86,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/qualifications/add/select-type", Name = RouteNames.ApplyApprenticeship.AddQualificationSelectType)]
         public async Task<IActionResult> AddQualificationSelectType(Guid applicationId)
         {
-            var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery{ ApplicationId = applicationId});
+            var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery{ ApplicationId = applicationId, CandidateId = User.Claims.CandidateId()});
             
             var viewModel = new AddQualificationSelectTypeViewModel
             {
@@ -103,7 +103,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         {
             if (model.QualificationReferenceId == Guid.Empty)
             {
-                var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery{ ApplicationId = model.ApplicationId});
+                var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery{ ApplicationId = model.ApplicationId, CandidateId = User.Claims.CandidateId()});
             
                 var viewModel = new AddQualificationSelectTypeViewModel
                 {

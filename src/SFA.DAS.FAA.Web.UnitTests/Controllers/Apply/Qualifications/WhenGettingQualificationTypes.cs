@@ -1,10 +1,13 @@
+using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
@@ -23,6 +26,15 @@ public class WhenGettingQualificationTypes
     {
         mediator.Setup(x => x.Send(It.Is<GetQualificationTypesQuery>(c=>c.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
+
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    { new(CustomClaims.CandidateId, candidateId.ToString()) }))
+            }
+        };
 
         var actual = await controller.AddQualificationSelectType(applicationId) as ViewResult;
 
