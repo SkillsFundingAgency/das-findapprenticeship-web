@@ -1,0 +1,33 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.User.DateOfBirthViewModel
+@{
+    ViewBag.Title = "What is your date of birth? – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.CreateAccount">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @* <partial model="@ViewData.ModelState" name="_ValidationSummary" /> *@
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Create an account</span>
+        <form class="form" method="post">
+            <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        What is your date of birth?
+                    </h1>
+                </legend>
+                <div class="govuk-inset-text">
+                    <p class="govuk-body">We don't share your date of birth when you apply for an apprenticeship.</p>
+                </div>
+                <p class="govuk-body">We only use your age to make our services work. For example, to show you the correct National Minimum Wage rate for your age.</p>
+                <day-month-year-date property="DateOfBirth" label="" hint-text="For example, 31 03 1980" error-class="govuk-form-group--error" />
+            </fieldset>
+            <button class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>
