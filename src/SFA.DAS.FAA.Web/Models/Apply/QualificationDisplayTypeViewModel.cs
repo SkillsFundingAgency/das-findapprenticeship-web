@@ -20,7 +20,7 @@ public class QualificationDisplayTypeViewModel
                 Title = "Add a BTEC";
                 GroupTitle = "BTEC";
                 break;
-            case "a levels":
+            case "a level":
                 GroupTitle = "A levels";
                 break;
             case "t levels":
