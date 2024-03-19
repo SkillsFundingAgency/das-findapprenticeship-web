@@ -12,6 +12,7 @@ public class GetQualificationTypesQueryHandler(IApiClient apiClient) : IRequestH
 
         return new GetQualificationTypesQueryResponse
         {
+            HasAddedQualifications = results.HasAddedQualifications,
             QualificationTypes = results.QualificationTypes.OrderBy(c => c.Order).ToList()
         };
     }

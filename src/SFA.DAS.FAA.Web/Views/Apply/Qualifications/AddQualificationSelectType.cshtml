@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.AddQualificationSelectTypeViewModel
 @{
-    ViewData["Title"] = "What is your most recent qualification? – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = $"{Model.PageTitle} – Find an apprenticeship – GOV.UK";
 }
 
 @section BackLink {
@@ -13,8 +13,11 @@
 <div class="govuk-grid-column-two-thirds">
     <partial name="_ValidationSummary" />
     <span class="govuk-caption-l">Education history</span>
-    <h1 class="govuk-heading-l">What is your most recent qualification?</h1>
-    <p class="govuk-hint">You'll be able to add your other qualifications later</p>
+    <h1 class="govuk-heading-l">@Model.PageTitle</h1>
+    @if (!Model.HasAddedQualifications)
+    {
+            <p class="govuk-hint">You'll be able to add your other qualifications later</p>
+    }
     <form class="form" method="post" asp-route="@RouteNames.ApplyApprenticeship.AddQualificationSelectType" asp-route-applicationId="@Model.ApplicationId">
         <div class="govuk-form-group" das-highlight-error-for="QualificationReferenceId"
              error-class="govuk-form-group--error">

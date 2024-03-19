@@ -11,4 +11,6 @@ public class AddQualificationSelectTypeViewModel
     public List<QualificationTypeApiResponse> Qualifications { get; set; } = [];
         
     public Guid QualificationReferenceId { get; set; }
+    public bool HasAddedQualifications { get; set; }
+    public string PageTitle => HasAddedQualifications ? "Add another qualification" : "What is your most recent qualification?";
 }

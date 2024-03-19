@@ -9,5 +9,6 @@ public class GetQualificationTypesApiRequest(Guid applicationId) : IGetApiReques
 
 public class GetQualificationTypesApiResponse
 {
+    public bool HasAddedQualifications { get; set; }
     public List<QualificationTypeApiResponse> QualificationTypes { get; set; }
 }

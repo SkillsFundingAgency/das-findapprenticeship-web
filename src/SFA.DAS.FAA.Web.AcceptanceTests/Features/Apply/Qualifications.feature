@@ -22,6 +22,7 @@ Scenario: Opt to add my first qualification
 	  | Field                           | Value |
 	  | DoYouWantToAddAnyQualifications | true  |
 	Then I am redirected to the Add Qualification Select Type page
+	And the page redirect content includes the following: What is your most recent qualification?
 
 @WireMockServer
 @AuthenticatedUser
@@ -78,3 +79,10 @@ Scenario: Confirm non-completion of the qualifications page
 Scenario: Delete a set of qualifications
 	When I navigate to the Delete Qualifications page
 	Then a http status code of 200 is returned
+
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Opt to add another qualification
+	When I navigate to the Add Qualification Select Type page
+	Then the page content includes the following: Add another qualification

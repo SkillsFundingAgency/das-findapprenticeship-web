@@ -91,7 +91,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var viewModel = new AddQualificationSelectTypeViewModel
             {
                 ApplicationId = applicationId,
-                Qualifications = qualificationTypes.QualificationTypes
+                Qualifications = qualificationTypes.QualificationTypes,
+                HasAddedQualifications = qualificationTypes.HasAddedQualifications,
             };
 
             return View(AddQualificationSelectTypeViewName, viewModel);
@@ -107,7 +108,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var viewModel = new AddQualificationSelectTypeViewModel
                 {
                     ApplicationId = model.ApplicationId,
-                    Qualifications = qualificationTypes.QualificationTypes
+                    Qualifications = qualificationTypes.QualificationTypes,
+                    HasAddedQualifications = qualificationTypes.HasAddedQualifications,
                 };
                 ModelState.AddModelError(nameof(model.QualificationReferenceId), "Select your most recent qualification");
 
