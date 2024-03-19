@@ -47,7 +47,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
 
         public class Qualification
         {
-            public string QualificationType { get; set; }
+            public Guid QualificationReference { get; set; }
             public string Subject { get; set; }
             public string Level { get; set; }
             public string Grade { get; set; }
@@ -58,7 +58,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
             {
                 return new Qualification
                 {
-                    QualificationType = source.QualificationType,
+                    QualificationReference = source.QualificationReference,
                     AdditionalInformation = source.AdditionalInformation,
                     IsPredicted = source.IsPredicted,
                     Grade = source.Grade,

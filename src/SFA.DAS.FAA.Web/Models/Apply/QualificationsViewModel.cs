@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
             foreach (var qualificationType in source.QualificationTypes.OrderBy(x => x.Order))
             {
-                if (source.Qualifications.Any(x => x.QualificationType == qualificationType.Name))
+                if (source.Qualifications.Any(x => x.QualificationReference == qualificationType.Id))
                 {
                     var groupMetadata = new QualificationDisplayTypeViewModel(qualificationType.Name);
                     var group = new QualificationGroup
@@ -27,7 +27,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                         DisplayName = groupMetadata.GroupTitle,
                         QualificationReferenceId = qualificationType.Id,
                         Qualifications = source.Qualifications
-                            .Where(y => y.QualificationType == qualificationType.Name)
+                            .Where(y => y.QualificationReference == qualificationType.Id)
                             //.OrderBy(x => x.Order) //todo: order by 
                             .Select(z => new Qualification
                             {

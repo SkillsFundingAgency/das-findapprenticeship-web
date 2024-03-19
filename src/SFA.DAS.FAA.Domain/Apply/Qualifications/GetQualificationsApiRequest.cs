@@ -22,7 +22,7 @@ public class GetQualificationsApiResponse
 
     public class Qualification
     {
-        public string QualificationType { get; set; }
+        public Guid QualificationReference { get; set; }
         public string Subject { get; set; }
         public string Level { get; set; }
         public string Grade { get; set; }
