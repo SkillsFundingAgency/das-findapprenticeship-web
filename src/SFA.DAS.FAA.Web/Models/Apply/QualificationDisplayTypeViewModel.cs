@@ -23,8 +23,11 @@ public class QualificationDisplayTypeViewModel
             case "a level":
                 GroupTitle = "A levels";
                 break;
-            case "t levels":
+            case "t level":
                 GroupTitle = "T levels";
+                break;
+            case "as level":
+                GroupTitle = "AS levels";
                 break;
             case "degree":
                 GroupTitle = "Degree";

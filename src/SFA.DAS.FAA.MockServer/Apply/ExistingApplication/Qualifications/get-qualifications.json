@@ -44,8 +44,7 @@
     ],
     "Qualifications": [
         {
-            "QualificationReferenceId": "8141a0e2-4299-48b1-aa6a-9647fa30b65c",
-            "QualificationType": "Degree",
+            "QualificationReference": "20d1923f-25b4-4a37-8580-d04643cf1fba",
             "Subject": "Linguistics MA (Hons)",
             "Grade": "2:1",
             "Level": "",
@@ -53,7 +52,7 @@
             "Institution": "University of Edinburgh"
         },
         {
-            "QualificationReferenceId": "e53558bc-ecd9-4910-971e-253a64408dee",
+            "QualificationReference": "20d1923f-25b4-4a37-8580-d04643cf1fba",
             "QualificationType": "Apprenticeship",
             "Subject": "Business admin (level 3)",
             "Grade": "",
@@ -62,8 +61,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "55db82b4-87a9-410c-9ec8-c6081f59cb0f",
-            "QualificationType": "A levels",
+            "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
             "Subject": "English",
             "Grade": "B",
             "Level": "",
@@ -71,8 +69,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "55db82b4-87a9-410c-9ec8-c6081f59cb0f",
-            "QualificationType": "A levels",
+            "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
             "Subject": "French",
             "Grade": "A",
             "Level": "",
@@ -80,8 +77,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "55db82b4-87a9-410c-9ec8-c6081f59cb0f",
-            "QualificationType": "A levels",
+            "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
             "Subject": "History",
             "Grade": "A",
             "Level": "",
@@ -89,8 +85,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "caf28a4c-90a7-420a-85fc-18af0f8a60c5",
-            "QualificationType": "AS levels",
+            "QualificationReference": "2cb6af9b-77f9-4f47-af64-253a8bcc87bb",
             "Subject": "Art",
             "Grade": "B",
             "Level": "",
@@ -98,8 +93,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "51afbfb2-5fe2-467b-b9be-94c96c6d8934",
-            "QualificationType": "T Level",
+            "QualificationReference": "f5cd9f3f-472a-4eae-a666-2b5702bacafb",
             "Subject": "Education and Early Years",
             "Grade": "Distinction*",
             "Level": "",
@@ -107,8 +101,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "f4eb427b-1d8b-43d4-a313-19e14acc6cb3",
-            "QualificationType": "BTEC",
+            "QualificationReference": "7e709598-c0c8-42c1-9588-b9ce61b167f8",
             "Subject": "Physical education (Level 3)",
             "Grade": "Merit",
             "Level": "",
@@ -116,8 +109,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "9bf1de56-c38b-4b90-b2a3-1ad165120381",
-            "QualificationType": "GCSE",
+            "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
             "Subject": "Maths",
             "Grade": "C",
             "Level": "",
@@ -125,8 +117,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "9bf1de56-c38b-4b90-b2a3-1ad165120381",
-            "QualificationType": "GCSE",
+            "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
             "Subject": "Science",
             "Grade": "B",
             "Level": "",
@@ -134,8 +125,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "9bf1de56-c38b-4b90-b2a3-1ad165120381",
-            "QualificationType": "GCSE",
+            "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
             "Subject": "English",
             "Grade": "A",
             "Level": "",
@@ -143,8 +133,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "9bf1de56-c38b-4b90-b2a3-1ad165120381",
-            "QualificationType": "GCSE",
+            "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
             "Subject": "History",
             "Grade": "A",
             "Level": "",
@@ -153,7 +142,6 @@
         },
         {
             "QualificationReferenceId": "9bf1de56-c38b-4b90-b2a3-1ad165120381",
-            "QualificationType": "GCSE",
             "Subject": "Geography",
             "Grade": "D",
             "Level": "",
@@ -161,8 +149,7 @@
             "Institution": ""
         },
         {
-            "QualificationReferenceId": "db53d358-f457-4cb4-a605-1261bb347e09",
-            "QualificationType": "Other",
+            "QualificationReferenceId": "e57b417e-2953-4af7-8b60-87508b199ce9",
             "Subject": "Business management NVQ",
             "Grade": "Pass",
             "Level": "",
