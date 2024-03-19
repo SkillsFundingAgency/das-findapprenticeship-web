@@ -17,20 +17,20 @@
     <form class="form" method="post">
       <div class="govuk-form-group govuk-!-width-two-thirds">
         <h1 class="govuk-label-wrapper">
-          <label class="govuk-label govuk-label--m" for="subject[0][name]">
+          <label class="govuk-label govuk-label--m" for="subjects[0][name]">
             Add subjects
           </label>
         </h1>
-        <input class="govuk-input" id="subject[0][name]" name="subject[0][name]" type="text">
+        <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text">
       </div>
     
       @if (Model.QualificationDisplayTypeViewModel.CanShowLevel)
       {
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m" for="subject[0][level]">
+          <label class="govuk-label govuk-label--m" for="subjects[0][level]">
             Level
           </label>
-          <select class="govuk-select" id="subject[0][level]" name="subject[0][level]">
+          <select class="govuk-select" id="subjects[0][level]" name="subjects[0][level]">
             <option value="select" selected="">Select a level</option>
             <option value="1">Level 1</option>
             <option value="2">Level 2</option>
@@ -50,18 +50,18 @@
         </legend>
         <div class="govuk-grid-row app-grid-row--flex">
           <div class="govuk-grid-column-one-quarter">
-            <label class="govuk-heading-m" for="subject[0][grade]">
+            <label class="govuk-heading-m" for="subjects[0][grade]">
               Grade
             </label>
-            <input class="govuk-input" id="subject[0][grade]" name="subject[0][grade]" type="text" data-name="subject[%index%][grade]" data-id="subject[%index%][grade]">
+            <input class="govuk-input" id="subjects[0][grade]" name="subjects[0][grade]" type="text" data-name="subject[%index%][grade]" data-id="subject[%index%][grade]">
           </div>
           @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
           {
             <div class="govuk-grid-column-one-third">
               <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                 <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="subject[0][IsPredicted]" name="subject[0][IsPredicted]" type="checkbox" value="yes" data-name="subject[%index%][IsPredicted]" data-id="subject[%index%][IsPredicted]">
-                  <label class="govuk-label govuk-checkboxes__label" for="subject[0][IsPredicted]">
+                  <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" type="checkbox" value="yes" data-name="subject[%index%][IsPredicted]" data-id="subject[%index%][IsPredicted]">
+                  <label class="govuk-label govuk-checkboxes__label" for="subjects[0][IsPredicted]">
                     Predicted grade
                   </label>
                 </div>
