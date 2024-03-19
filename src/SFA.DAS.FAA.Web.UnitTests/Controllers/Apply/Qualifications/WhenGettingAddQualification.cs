@@ -18,17 +18,17 @@ public class WhenGettingAddQualification
     public async Task Then_The_Query_Is_Called_And_View_Displayed(
         Guid applicationId,
         Guid qualificationReferenceId,
-        GetAddQualificationQueryResult queryResult,
+        GetModifyQualificationQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] QualificationsController controller)
     {
         queryResult.QualificationType!.Name = "BTec";
-        mediator.Setup(x => x.Send(It.Is<GetAddQualificationQuery>(c=>
+        mediator.Setup(x => x.Send(It.Is<GetModifyQualificationQuery>(c=>
                 c.QualificationReferenceId == qualificationReferenceId
                 && c.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
-        var actual = await controller.AddQualification(applicationId, qualificationReferenceId) as ViewResult;
+        var actual = await controller.ModifyQualification(applicationId, qualificationReferenceId) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.ViewName.Should().Be("~/Views/apply/Qualifications/AddQualification.cshtml");
@@ -41,15 +41,15 @@ public class WhenGettingAddQualification
     public async Task Then_If_No_Qualification_Type_Is_Returned_Then_Redirect_To_Select_Qualification(
         Guid applicationId,
         Guid qualificationReferenceId,
-        GetAddQualificationQueryResult queryResult,
+        GetModifyQualificationQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] QualificationsController controller)
     {
         queryResult.QualificationType = null;
-        mediator.Setup(x => x.Send(It.Is<GetAddQualificationQuery>(c=>c.QualificationReferenceId == qualificationReferenceId), CancellationToken.None))
+        mediator.Setup(x => x.Send(It.Is<GetModifyQualificationQuery>(c=>c.QualificationReferenceId == qualificationReferenceId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
-        var actual = await controller.AddQualification(applicationId, qualificationReferenceId) as RedirectToRouteResult;
+        var actual = await controller.ModifyQualification(applicationId, qualificationReferenceId) as RedirectToRouteResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.AddQualificationSelectType);

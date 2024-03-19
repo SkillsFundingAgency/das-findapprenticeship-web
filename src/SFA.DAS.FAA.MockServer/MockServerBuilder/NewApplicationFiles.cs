@@ -179,7 +179,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithBody(string.Empty));
             
             server.Given(Request.Create().WithPath(s =>
-                        Regex.IsMatch(s, $"{BaseRoute}/qualifications/\\S*/add", RegexOptions.None, RegexMaxTimeOut))
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications/\\S*/modify", RegexOptions.None, RegexMaxTimeOut))
                     .UsingGet())
                 .RespondWith(
                     Response.Create()

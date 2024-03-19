@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetAddQualification;
+using SFA.DAS.FAA.Application.Queries.Apply.GetModifyQualification;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
@@ -13,14 +14,14 @@ public class WhenHandlingGetAddQualificationQuery
 {
     [Test, MoqAutoData]
     public async Task Then_The_Query_Is_Handled_And_Data_Returned(
-        GetAddQualificationApiResponse apiResponse,
-        GetAddQualificationQuery query,
+        GetModifyQualificationApiResponse apiResponse,
+        GetModifyQualificationQuery query,
         [Frozen] Mock<IApiClient> apiClient,
-        GetAddQualificationQueryHandler handler)
+        GetModifyQualificationQueryHandler handler)
     {
         apiClient.Setup(x =>
-                x.Get<GetAddQualificationApiResponse>(
-                    It.Is<GetAddQualificationApiRequest>(c => c.GetUrl.Contains(query.QualificationReferenceId.ToString()) 
+                x.Get<GetModifyQualificationApiResponse>(
+                    It.Is<GetModifyQualificationApiRequest>(c => c.GetUrl.Contains(query.QualificationReferenceId.ToString()) 
                                                               && c.GetUrl.Contains(query.ApplicationId.ToString()))))
             .ReturnsAsync(apiResponse);
 

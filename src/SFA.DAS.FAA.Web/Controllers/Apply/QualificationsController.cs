@@ -118,10 +118,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         }
 
         [HttpGet]
-        [Route("apply/{applicationId}/qualifications/add/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.AddQualification)]
-        public async Task<IActionResult> AddQualification([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
+        [Route("apply/{applicationId}/qualifications/{qualificationReferenceId}/modify", Name = RouteNames.ApplyApprenticeship.AddQualification)]
+        public async Task<IActionResult> ModifyQualification([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
         {
-            var result = await mediator.Send(new GetAddQualificationQuery
+            var result = await mediator.Send(new GetModifyQualificationQuery
             {
                 ApplicationId = applicationId,
                 QualificationReferenceId = qualificationReferenceId
@@ -143,8 +143,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         }
         
         [HttpPost]
-        [Route("apply/{applicationId}/qualifications/add/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.AddQualification)]
-        public async Task<IActionResult> AddQualification(AddQualificationViewModel model)
+        [Route("apply/{applicationId}/qualifications/{qualificationReferenceId}/modify", Name = RouteNames.ApplyApprenticeship.AddQualification)]
+        public async Task<IActionResult> ModifyQualification(AddQualificationViewModel model)
         {
             //TODO - Add validation
             await mediator.Send(new UpsertQualificationCommand
