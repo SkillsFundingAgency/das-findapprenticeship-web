@@ -5,6 +5,8 @@
     ViewData["Title"] = "Do you want to answer equality questions? - Find an apprenticeship - GOV.UK";
 }
 
+<partial name="_ValidationSummary" />
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <div class="govuk-panel govuk-panel--confirmation">
@@ -18,31 +20,39 @@
 
         <div class="govuk-!-padding-bottom-5"></div>
 
+        <h2 class="govuk-heading-m">What happens next</h2>
+        <p class="govuk-body">The company will contact you if you're invited to an interview. They'll contact you using the telephone number or 
+            email address on your application.</p>
+        <p class="govuk-body">Check your application status in <a class="govuk-link" href="#">your applications.</a></p>
+
+        <h2 class="govuk-heading-m">Tell us more about yourself (optional)</h2>
+        <p class="govuk-body">
+            Answer 4 equality questions. Your answers will help us check that apprenticeship recruitment is inclusive and fair.
+        </p>
+        <p class="govuk-body">
+            We'll never share your answers when you apply for an apprenticeship.
+        </p>
+
         <form class="form" method="post">
-            <div class="govuk-form-group">
+            <div class="govuk-form-group" das-highlight-error-for="AnswerEqualityQuestions" error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                         <h1 class="govuk-fieldset__heading">
                             Do you want to answer the equality questions?
                         </h1>
                     </legend>
-                    <div id="optional-equality-questions-hint" class="govuk-hint">
-                        These questions are optional. The Department for Education will use any information you provide to improve this service and ensure apprenticeship recruitment is inclusive.
-                    </div>
-                    <div id="not-shared-equality-questions-hint" class="govuk-hint">
-                        These answers will not be shared when you apply for an apprenticeship.
-                    </div>
+                    <span das-validation-for="AnswerEqualityQuestions" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" type="radio" asp-for="AnswerEqualityQuestions" value="true" type="radio" />
                             <label class="govuk-label govuk-radios__label" for="AnswerEqualityQuestions">
-                                Yes, answer the equality questions (takes 2 minutes)
+                                Yes, answer the equality questions (4 questions)
                             </label>
                         </div>
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" type="radio" asp-for="AnswerEqualityQuestions" value="false" id="AnswerEqualityQuestions-false" type="radio" />
                             <label class="govuk-label govuk-radios__label" for="AnswerEqualityQuestions-false">
-                                No, skip the equality questions
+                                No, don't answer the equality questions
                             </label>
                         </div>
                     </div>

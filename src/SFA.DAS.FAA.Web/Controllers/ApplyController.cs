@@ -28,6 +28,12 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public IActionResult Index([FromRoute] Guid applicationId)
+        {
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmitted, new { applicationId });
+        }
+
         [HttpGet]
         [Route("application-submitted", Name = RouteNames.ApplyApprenticeship.ApplicationSubmitted)]
         public async Task<IActionResult> ApplicationSubmitted([FromRoute] Guid applicationId)
@@ -48,6 +54,35 @@ namespace SFA.DAS.FAA.Web.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Route("application-submitted", Name = RouteNames.ApplyApprenticeship.ApplicationSubmitted)]
+        public async Task<IActionResult> ApplicationSubmitted(ApplicationSubmittedViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var query = new GetApplicationSubmittedQuery
+                {
+                    ApplicationId = model.ApplicationId,
+                    CandidateId = User.Claims.CandidateId()
+                };
+
+                var result = await mediator.Send(query);
+
+                model = new ApplicationSubmittedViewModel
+                {
+                    VacancyTitle = result.VacancyTitle,
+                    EmployerName = result.EmployerName,
+                    ApplicationId = model.ApplicationId
+                };
+
+                return View(model);
+            }
+
+            return model.AnswerEqualityQuestions.Value is true ?
+                RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityFlow, new { model.ApplicationId })
+                : RedirectToRoute(RouteNames.UserProfile.YourApplications);
         }
     }
 }
