@@ -1,0 +1,79 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Apply.InterviewAdjustmentSummaryViewModel
+@{
+    ViewData["Title"] = "Get support at an interview – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <div class="faa-js-back-link"></div>
+}
+<partial name="_ValidationSummary" />
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Interview adjustments</span>
+        <h1 class="govuk-heading-l">Get support at an interview</h1>
+        <div class="govuk-!-padding-bottom-5"></div>
+        <form class="form" method="post">
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Do you want to request support at an interview?
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @(Model.IsSupportRequestRequired ? Html.Raw("Yes") : Html.Raw("No, I don’t need support or I’ll discuss it if I get an interview"))
+                        @Html.HiddenFor(x => x.IsSupportRequestRequired)
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = true})">
+                            Change<span class="govuk-visually-hidden"> interview adjustments</span>
+                        </a>
+                    </dd>
+                </div>
+                @if (Model.IsSupportRequestRequired)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Interview support request
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.SupportRequestAnswer
+                            @Html.HiddenFor(x => x.SupportRequestAnswer)
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = true})">
+                                Change<span class="govuk-visually-hidden"> interview adjustments</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+            </dl>
+            <div class="govuk-!-padding-bottom-5"></div>
+            <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted" error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Have you completed this section?
+                    </legend>
+                    <span das-validation-for="IsSectionCompleted" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="IsSectionCompleted" type="radio" value="true" id="IsSectionCompleted">
+                            <label class="govuk-label govuk-radios__label" for="IsSectionCompleted">
+                                Yes, I've completed this section
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="IsSectionCompleted" id="IsSectionComplete-No" type="radio" value="false">
+                            <label class="govuk-label govuk-radios__label" for="IsSectionCompleted-No">
+                                No, I'll come back to it later
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
