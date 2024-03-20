@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.UserName;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -19,7 +20,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             return View();
         }
-        
+
         [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
         public IActionResult Name()
@@ -29,9 +30,9 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("user-name", Name = RouteNames.UserName)]
-        public async Task<IActionResult> Name(NameViewModel model) 
+        public async Task<IActionResult> Name(NameViewModel model)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -47,19 +48,19 @@ namespace SFA.DAS.FAA.Web.Controllers
                 };
                 await mediator.Send(command);
             }
-            catch (InvalidOperationException e)
+            catch
             {
                 ModelState.AddModelError(nameof(NameViewModel), "There's been a problem");
                 return View(model);
             }
 
             return RedirectToRoute(RouteNames.DateOfBirth);
-            
+
         }
 
         [HttpGet]
         [Route("date-of-birth", Name = RouteNames.DateOfBirth)]
-        public IActionResult DateOfBirth() 
+        public IActionResult DateOfBirth()
         {
             return View();
         }
@@ -83,14 +84,47 @@ namespace SFA.DAS.FAA.Web.Controllers
                 };
                 await mediator.Send(command);
             }
-            catch (InvalidOperationException e)
+            catch
             {
                 ModelState.AddModelError(nameof(NameViewModel), "There's been a problem");
                 return View(model);
             }
 
-            return RedirectToRoute(RouteNames.SearchResults);
+            return RedirectToRoute(RouteNames.PostcodeAddress);
 
+        }
+
+        [HttpGet("address", Name = RouteNames.PostcodeAddress)]
+        public IActionResult PostcodeAddress()
+        {
+            return View();
+        }
+
+        [HttpPost("address", Name = RouteNames.PostcodeAddress)]
+        public async Task<IActionResult> PostcodeAddress(PostCodeAddressViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var postcodeExists = await mediator.Send(new GetCandidatePostcodeAddressQuery() { Postcode = model.Postcode! });
+
+                if (!postcodeExists.PostcodeExists)
+                {
+                    ModelState.AddModelError(nameof(PostCodeAddressViewModel.Postcode), "Enter a recognised postcode or select 'Enter my address manually'");
+                    return View(model);
+                }
+            }
+            catch
+            {
+                ModelState.AddModelError(nameof(NameViewModel), "There's been a problem");
+                return View(model);
+            }
+
+            return RedirectToRoute(RouteNames.SelectAddress);
         }
     }
 }
