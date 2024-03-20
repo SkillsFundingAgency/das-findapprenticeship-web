@@ -20,6 +20,7 @@ public static class RouteNames
 
     public static class ApplyApprenticeship
     {
+        public const string Preview = nameof(Preview);
         public const string AddJob = nameof(AddJob);
         public const string Jobs = nameof(Jobs);
         public const string JobsSummary = nameof(JobsSummary);
@@ -40,5 +41,6 @@ public static class RouteNames
         public const string InterviewAdjustments = nameof(InterviewAdjustments);
         public const string InterviewAdjustmentsSummary = nameof(InterviewAdjustmentsSummary);
         public const string WhatInterestsYou = nameof(WhatInterestsYou);
+        public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
     }
 }

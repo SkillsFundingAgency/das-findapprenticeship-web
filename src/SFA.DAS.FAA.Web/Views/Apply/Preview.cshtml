@@ -1,0 +1,114 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Apply.ApplicationSummaryViewModel;
+@{
+    ViewBag.Title = "Check your application before submitting – Find an apprenticeship – GOV.UK ";
+}
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+<partial name="_ValidationSummary" />
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Check your application before submitting</h1>
+        <div class="govuk-inset-text">
+            This is what the company will see when they view your application.
+        </div>
+        <a href="#print"
+           class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
+                <path fill="currentColor"
+                      d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+            </svg>Print your application
+        </a>
+        <div class="govuk-!-padding-bottom-7"></div>
+        <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
+        <div class="govuk-!-padding-bottom-8"></div>
+
+        <h2 class="govuk-heading-m">Personal details</h2>
+        <p class="govuk-body">
+            You can change your personal details in your <a href="#" class="govuk-link">settings</a>.
+        </p>
+        <dl class="govuk-summary-list govuk-summary-list--no-border">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Candidate.FullName
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Date of birth
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Candidate.BirthDate
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.AddressLine1
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.AddressLine2
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.Town
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.County
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.Postcode
+                    </p>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Phone number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Candidate.PhoneNumber
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value govuk-!-padding-bottom-5">
+                    @Model.Candidate.Email
+                </dd>
+            </div>
+        </dl>
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <form class="form" method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            Submit your application
+                        </h1>
+                    </legend>
+                    <span das-validation-for="IsConsentProvided" class="govuk-error-message"></span>
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes" das-highlight-error-for="IsConsentProvided" error-class="govuk-form-group--error">
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" asp-for="IsConsentProvided" type="checkbox" value="true" id="IsConsentProvided">
+                            <label class="govuk-label govuk-checkboxes__label" for="@Model.IsConsentProvided">
+                                I understand that I won't be able to make any changes after I submit my application
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group" href="equality-question.html">
+                <button class="govuk-button" data-module="govuk-button">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
