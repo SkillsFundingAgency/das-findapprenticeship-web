@@ -1,1 +1,82 @@
-﻿<p>Placeholder Delete Qualifications View</p>
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.DeleteQualificationsViewModel
+@{
+    ViewData["Title"] = $"{Model.PageTitle} – Find an apprenticeship – GOV.UK ";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Education history</span>
+        <h1 class="govuk-heading-l">@Model.PageTitle</h1>
+
+        <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title">@Model.DisplayName</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+                <dl class="govuk-summary-list">
+
+                    @foreach (var qualification in Model.Qualifications)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                @qualification.Subject
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @qualification.GradeLabel
+                            </dd>
+                        </div>
+                    }
+                </dl>
+            </div>
+        </div>
+
+    
+    
+    
+        </div>
+</div>
+            
+                @* 
+
+        <form class="form" method="post">
+
+                <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted"
+                     error-class="govuk-form-group--error">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            Have you completed this section?
+                        </legend>
+                        <span das-validation-for="IsSectionCompleted" class="govuk-error-message"></span>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="true"
+                                       type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="IsSectionCompleted">
+                                    Yes, I’ve completed this section
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted"
+                                       id="IsSectionCompleted-No" value="false" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="IsSectionCompleted-No">
+                                    No, I’ll come back to it later
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            
+            <div class="govuk-button-group">
+                <button class="govuk-button" id="submit-button" type="submit" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+ *@

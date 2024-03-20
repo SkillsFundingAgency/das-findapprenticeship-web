@@ -75,10 +75,19 @@ Scenario: Confirm non-completion of the qualifications page
 
 @WireMockServer
 @AuthenticatedUser
-@NewApplication
-Scenario: Delete a set of qualifications
-	When I navigate to the Delete Qualifications page
+@ExistingApplication
+Scenario: Delete multiple qualifications of a single type
+	When I navigate to the Delete Qualifications (multiple) page
 	Then a http status code of 200 is returned
+	And the page content includes the following: Do you want to delete these qualifications?
+
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Delete a single qualification of a single type
+	When I navigate to the Delete Qualifications (single) page
+	Then a http status code of 200 is returned
+	And the page content includes the following: Do you want to delete this qualification?
 
 @WireMockServer
 @AuthenticatedUser

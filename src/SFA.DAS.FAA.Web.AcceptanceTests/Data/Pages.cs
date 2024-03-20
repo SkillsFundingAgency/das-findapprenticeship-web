@@ -31,7 +31,8 @@ public static class Pages
             //Qualifications
             new Page { Name = "Qualifications", Url="/apply/{applicationId}/qualifications"},
             new Page { Name = "Add Qualification Select Type", Url="/apply/{applicationId}/qualifications/add/select-type"},
-            new Page { Name = "Delete Qualifications", Url = "/apply/{applicationId}/qualifications/delete/55db82b4-87a9-410c-9ec8-c6081f59cb0f" }
+            new Page { Name = "Delete Qualifications (single)", Url = "/apply/{applicationId}/qualifications/delete/2cb6af9b-77f9-4f47-af64-253a8bcc87bb" },
+            new Page { Name = "Delete Qualifications (multiple)", Url = "/apply/{applicationId}/qualifications/delete/20d1923f-25b4-4a37-8580-d04643cf1fba" }
         ];
     }
 

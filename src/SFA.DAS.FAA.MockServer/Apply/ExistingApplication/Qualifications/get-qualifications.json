@@ -49,7 +49,7 @@
             "Grade": "2:1",
             "Level": "",
             "IsPredicted": false,
-            "Institution": "University of Edinburgh"
+            "AdditionalInformation": "University of Edinburgh"
         },
         {
             "QualificationReference": "20d1923f-25b4-4a37-8580-d04643cf1fba",
@@ -58,7 +58,7 @@
             "Grade": "",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
@@ -66,7 +66,7 @@
             "Grade": "B",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
@@ -74,7 +74,7 @@
             "Grade": "A",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
@@ -82,7 +82,7 @@
             "Grade": "A",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "2cb6af9b-77f9-4f47-af64-253a8bcc87bb",
@@ -90,7 +90,7 @@
             "Grade": "B",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "f5cd9f3f-472a-4eae-a666-2b5702bacafb",
@@ -98,7 +98,7 @@
             "Grade": "Distinction*",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "7e709598-c0c8-42c1-9588-b9ce61b167f8",
@@ -106,7 +106,7 @@
             "Grade": "Merit",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
@@ -114,7 +114,7 @@
             "Grade": "C",
             "Level": "",
             "IsPredicted": true,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
@@ -122,7 +122,7 @@
             "Grade": "B",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
@@ -130,7 +130,7 @@
             "Grade": "A",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
@@ -138,7 +138,7 @@
             "Grade": "A",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReferenceId": "9bf1de56-c38b-4b90-b2a3-1ad165120381",
@@ -146,7 +146,7 @@
             "Grade": "D",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         },
         {
             "QualificationReferenceId": "e57b417e-2953-4af7-8b60-87508b199ce9",
@@ -154,7 +154,7 @@
             "Grade": "Pass",
             "Level": "",
             "IsPredicted": false,
-            "Institution": ""
+            "AdditionalInformation": ""
         }
     ]
 }

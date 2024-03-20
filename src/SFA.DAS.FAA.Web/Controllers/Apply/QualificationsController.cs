@@ -11,6 +11,7 @@ using SFA.DAS.FAA.Application.Commands.UpsertQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetAddQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteQualifications;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -172,7 +173,16 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/qualifications/delete/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.DeleteQualifications)]
         public async Task<IActionResult> DeleteQualifications([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
         {
-            return View(DeleteQualificationsViewName);
+            var result = await mediator.Send(new GetDeleteQualificationsQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId(),
+                QualificationType = qualificationReferenceId
+            });
+
+            var viewModel = DeleteQualificationsViewModel.MapFromQueryResult(applicationId, result);
+
+            return View(DeleteQualificationsViewName, viewModel);
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿using SFA.DAS.FAA.Domain.Interfaces;
+
+namespace SFA.DAS.FAA.Domain.Apply.Qualifications
+{
+    public class GetDeleteQualificationsApiRequest(Guid applicationId, Guid candidateId, Guid qualificationType) : IGetApiRequest
+    {
+        public string GetUrl => $"applications/{applicationId}/qualifications/delete/{qualificationType}?candidateId={candidateId}";
+    }
+
+    public class GetDeleteQualificationsApiResponse
+    {
+        public Guid QualificationReference { get; set; }
+        public List<Qualification> Qualifications { get; set; } = null!;
+
+        public class Qualification
+        {
+            public string Subject { get; set; }
+            public string Level { get; set; }
+            public string Grade { get; set; }
+            public string AdditionalInformation { get; set; }
+            public bool? IsPredicted { get; set; }
+        }
+    }
+    
+
+}
