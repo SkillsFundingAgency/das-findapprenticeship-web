@@ -10,39 +10,42 @@
 }
 
 <div class="govuk-grid-row">
-<div class="govuk-grid-column-two-thirds">
-    <partial name="_ValidationSummary" />
-    <span class="govuk-caption-l">Education history</span>
-    <h1 class="govuk-heading-l">@Model.PageTitle</h1>
-    @if (!Model.HasAddedQualifications)
-    {
+   <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post" asp-route="@RouteNames.ApplyApprenticeship.AddQualificationSelectType" asp-route-applicationId="@Model.ApplicationId">
+         <partial name="_ValidationSummary" />
+         <span class="govuk-caption-l">Education history</span>
+         <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+               <h1 class="govuk-fieldset__heading">
+                  @Model.PageTitle
+               </h1>
+            </legend>
+            @if (!Model.HasAddedQualifications)
+            {
             <p class="govuk-hint">You'll be able to add your other qualifications later</p>
-    }
-    <form class="form" method="post" asp-route="@RouteNames.ApplyApprenticeship.AddQualificationSelectType" asp-route-applicationId="@Model.ApplicationId">
-        <div class="govuk-form-group" das-highlight-error-for="QualificationReferenceId"
-             error-class="govuk-form-group--error">
-            <fieldset class="govuk-fieldset">
-                <span das-validation-for="QualificationReferenceId" class="govuk-error-message"></span>
-                <div class="govuk-radios" data-module="govuk-radios" id="QualificationReferenceId">
-                    @foreach (var qualificationType in Model.Qualifications)
-                    {
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="qualification-@qualificationType.Id" name="QualificationReferenceId" type="radio" value="@qualificationType.Id">
-                            <label class="govuk-label govuk-radios__label" for="qualification-@qualificationType.Id">
-                                @qualificationType.Name
-                            </label>
-                        </div>
-                    }
-                </div>
-            </fieldset>
-        </div>
-        
-          <div class="govuk-button-group">
-              <button class="govuk-button" id="submit-button" type="submit" data-module="govuk-button">
-                  Continue
-              </button>
-          </div>
-    </form>
-</div>
+            }
+            <div class="govuk-form-group" das-highlight-error-for="QualificationReferenceId"
+               error-class="govuk-form-group--error">
+               <span das-validation-for="QualificationReferenceId" class="govuk-error-message"></span>
+               <div class="govuk-radios" data-module="govuk-radios" id="QualificationReferenceId">
+                  @foreach (var qualificationType in Model.Qualifications)
+                  {
+                  <div class="govuk-radios__item">
+                     <input class="govuk-radios__input" id="qualification-@qualificationType.Id" name="QualificationReferenceId" type="radio" value="@qualificationType.Id">
+                     <label class="govuk-label govuk-radios__label" for="qualification-@qualificationType.Id">
+                     @qualificationType.Name
+                     </label>
+                  </div>
+                  }
+               </div>
+            </div>
+         </fieldset>
+         <div class="govuk-button-group">
+            <button class="govuk-button" id="submit-button" type="submit" data-module="govuk-button">
+            Continue
+            </button>
+         </div>
+      </form>
+   </div>
 </div>
 

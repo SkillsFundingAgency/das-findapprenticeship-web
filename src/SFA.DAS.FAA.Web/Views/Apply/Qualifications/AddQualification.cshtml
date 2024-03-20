@@ -10,32 +10,24 @@
 }
 
 <div class="govuk-grid-row">
-<div class="govuk-grid-column-two-thirds">
-    <partial name="_ValidationSummary" />
-    <span class="govuk-caption-l">Education history</span>
-    <h1 class="govuk-heading-l">@Model.QualificationDisplayTypeViewModel.Title</h1>
-    <form class="form" method="post">
-   
-      @if (Model.QualificationDisplayTypeViewModel.AllowMultipleAdd)
-      {
-        <partial name="_MultiQualification" model="@Model" />
-      }
-      else
-      {
-        <partial name="_SingleQualification" model="@Model" />
-      }
-    
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <div class="govuk-button-group">
+   <div class="govuk-grid-column-two-thirds">
+      <partial name="_ValidationSummary" />
+      <span class="govuk-caption-l">Education history</span>
+      <h1 class="govuk-heading-l">@Model.QualificationDisplayTypeViewModel.Title</h1>
+      <form class="form" method="post">
+         @if (Model.QualificationDisplayTypeViewModel.AllowMultipleAdd)
+         {
+          <partial name="_MultiQualification" model="@Model" />
+         }
+         else
+         {
+          <partial name="_SingleQualification" model="@Model" />
+         }
+         <div class="govuk-button-group">
             <button class="govuk-button" data-module="govuk-button">
               Save and continue
             </button>
-          </div>
-    
-        </div>
-      </div>
-    </form>
+         </div>
+      </form>
+   </div>
 </div>
-</div>
-
