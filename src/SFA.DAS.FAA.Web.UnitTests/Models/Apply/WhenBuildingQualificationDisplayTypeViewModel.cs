@@ -74,10 +74,14 @@ public class WhenBuildingQualificationDisplayTypeViewModel
 
         actual.Title.Should().Be("Add a degree");
         actual.GroupTitle.Should().Be("Degree");
+        actual.SubjectLabel.Should().Be("Degree");
+        actual.AdditionalInformationLabel.Should().Be("University");
+        actual.SubjectHintText.Should().Be("For example, BSc Mechanical Engineering");
+        actual.GroupTitle.Should().Be("Degree");
         actual.AllowMultipleAdd.Should().BeFalse();
-        actual.CanShowPredicted.Should().BeTrue();
+        actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
-        actual.ShouldDisplayAdditionalInformationField.Should().BeFalse();
+        actual.ShouldDisplayAdditionalInformationField.Should().BeTrue();
     }
     
     [Test]

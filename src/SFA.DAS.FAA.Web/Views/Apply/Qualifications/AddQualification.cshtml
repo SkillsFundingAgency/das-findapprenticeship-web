@@ -15,64 +15,15 @@
     <span class="govuk-caption-l">Education history</span>
     <h1 class="govuk-heading-l">@Model.QualificationDisplayTypeViewModel.Title</h1>
     <form class="form" method="post">
-      <div class="govuk-form-group govuk-!-width-two-thirds">
-        <h1 class="govuk-label-wrapper">
-          <label class="govuk-label govuk-label--m" for="subjects[0][name]">
-            Add subject@(Model.QualificationDisplayTypeViewModel.AllowMultipleAdd ? "s" : "")
-          </label>
-        </h1>
-        <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text">
-      </div>
-    
-      @if (Model.QualificationDisplayTypeViewModel.CanShowLevel)
+   
+      @if (Model.QualificationDisplayTypeViewModel.AllowMultipleAdd)
       {
-        <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m" for="subjects[0][level]">
-            Level
-          </label>
-          <select class="govuk-select" id="subjects[0][level]" name="subjects[0][level]">
-            <option value="select" selected="">Select a level</option>
-            <option value="1">Level 1</option>
-            <option value="2">Level 2</option>
-            <option value="3">Level 3</option>
-            <option value="4">Level 4</option>
-            <option value="5">Level 5</option>
-            <option value="6">Level 6</option>
-            <option value="7">Level 7</option>
-          </select>
-        </div>
+        <partial name="_MultiQualification" model="@Model" />
       }
-      
-    
-      <fieldset class="govuk-fieldset moj-add-another__item">
-        <legend class="govuk-fieldset__legend moj-add-another__title govuk-fieldset__legend--m govuk-visually-hidden">
-          Subject
-        </legend>
-        <div class="govuk-grid-row app-grid-row--flex">
-          <div class="govuk-grid-column-one-quarter">
-            <label class="govuk-heading-m" for="subjects[0][grade]">
-              Grade
-            </label>
-            <input class="govuk-input" id="subjects[0][grade]" name="subjects[0][grade]" type="text" data-name="subject[%index%][grade]" data-id="subject[%index%][grade]">
-          </div>
-          @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
-          {
-            <div class="govuk-grid-column-one-third">
-              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" type="checkbox" value="yes" data-name="subject[%index%][IsPredicted]" data-id="subject[%index%][IsPredicted]">
-                  <label class="govuk-label govuk-checkboxes__label" for="subjects[0][IsPredicted]">
-                    Predicted grade
-                  </label>
-                </div>
-              </div>
-            </div>
-          }
-          
-        </div>
-      </fieldset>
-    
-      <div class="govuk-!-padding-bottom-6"></div>
+      else
+      {
+        <partial name="_SingleQualification" model="@Model" />
+      }
     
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
