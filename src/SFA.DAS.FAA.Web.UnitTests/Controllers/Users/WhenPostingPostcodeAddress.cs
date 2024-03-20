@@ -20,7 +20,7 @@ public class WhenPostingPostcodeAddress
         string govIdentifier,
         string email,
         GetCandidatePostcodeAddressQueryResult queryResult,
-        PostCodeAddressViewModel model,
+        PostcodeAddressViewModel model,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
@@ -53,7 +53,7 @@ public class WhenPostingPostcodeAddress
 
     [Test, MoqAutoData]
     public async Task And_Model_State_Is_Invalid_Should_Return_View_With_Model(
-        PostCodeAddressViewModel model,
+        PostcodeAddressViewModel model,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
@@ -69,7 +69,7 @@ public class WhenPostingPostcodeAddress
     public async Task And_Mediator_Throws_Exception_Then_InvalidOperationException(
         string govIdentifier,
         string email,
-        PostCodeAddressViewModel model,
+        PostcodeAddressViewModel model,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
@@ -100,7 +100,7 @@ public class WhenPostingPostcodeAddress
         string govIdentifier,
         string email,
         GetCandidatePostcodeAddressQueryResult queryResult,
-        PostCodeAddressViewModel model,
+        PostcodeAddressViewModel model,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {

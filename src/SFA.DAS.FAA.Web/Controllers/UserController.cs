@@ -101,7 +101,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpPost("address", Name = RouteNames.PostcodeAddress)]
-        public async Task<IActionResult> PostcodeAddress(PostCodeAddressViewModel model)
+        public async Task<IActionResult> PostcodeAddress(PostcodeAddressViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -114,7 +114,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
                 if (!postcodeExists.PostcodeExists)
                 {
-                    ModelState.AddModelError(nameof(PostCodeAddressViewModel.Postcode), "Enter a recognised postcode or select 'Enter my address manually'");
+                    ModelState.AddModelError(nameof(PostcodeAddressViewModel.Postcode), "Enter a recognised postcode or select 'Enter my address manually'");
                     return View(model);
                 }
             }

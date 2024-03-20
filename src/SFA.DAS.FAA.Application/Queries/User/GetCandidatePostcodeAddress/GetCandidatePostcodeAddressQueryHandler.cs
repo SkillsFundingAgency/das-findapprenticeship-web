@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Web;
+using MediatR;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
@@ -14,6 +15,7 @@ public class GetCandidatePostcodeAddressQueryHandler : IRequestHandler<GetCandid
 
     public async Task<GetCandidatePostcodeAddressQueryResult> Handle(GetCandidatePostcodeAddressQuery request, CancellationToken cancellationToken)
     {
-        return await _apiClient.Get<GetCandidatePostcodeAddressApiResponse>(new GetCandidatePostcodeAddressApiRequest(request.Postcode));
+        var postcodeEncoded = HttpUtility.UrlEncode(request.Postcode);
+        return await _apiClient.Get<GetCandidatePostcodeAddressApiResponse>(new GetCandidatePostcodeAddressApiRequest(postcodeEncoded));
     }
 }
