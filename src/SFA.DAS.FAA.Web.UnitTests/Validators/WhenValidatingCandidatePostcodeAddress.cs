@@ -7,8 +7,7 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.FAA.Web.UnitTests.Validators;
 public class WhenValidatingCandidatePostcodeAddress
 {
-    private readonly string IllegalCharacters = "A postcode can only have letters, numbers, and spaces.";
-    private readonly string MaximumLength = "Enter 10 or less characters";
+    private readonly string IllegalInput = "Enter a full UK postcode";
     private readonly string PostcodeRequired = "Enter a postcode to search for your address or select 'Enter address manually'";
 
     [Test, MoqInlineAutoData("abcdefghij123")]
@@ -19,7 +18,7 @@ public class WhenValidatingCandidatePostcodeAddress
 
         var result = await sut.TestValidateAsync(model);
 
-        result.ShouldHaveValidationErrorFor(x => x.Postcode).WithErrorMessage(MaximumLength);
+        result.ShouldHaveValidationErrorFor(x => x.Postcode).WithErrorMessage(IllegalInput);
     }
 
     [Test, MoqInlineAutoData("abc 12*")]
@@ -30,7 +29,7 @@ public class WhenValidatingCandidatePostcodeAddress
 
         var result = await sut.TestValidateAsync(model);
 
-        result.ShouldHaveValidationErrorFor(x => x.Postcode).WithErrorMessage(IllegalCharacters);
+        result.ShouldHaveValidationErrorFor(x => x.Postcode).WithErrorMessage(IllegalInput);
     }
 
     [Test, MoqAutoData]
