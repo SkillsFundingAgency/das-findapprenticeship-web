@@ -177,10 +177,12 @@ ExtraFieldRows.prototype.insertAddLink = function () {
 
 ExtraFieldRows.prototype.appendRemoveLink = function (row) {
   const that = this;
+  const removeLinkWrap = document.createElement("span");
+  removeLinkWrap.className = "faa-extra-field__form-group-link--remove-wrap";
   const removeLink = document.createElement("a");
   removeLink.innerHTML = "Remove";
   removeLink.className =
-    "govuk-link govuk-link--no-visited-state faa-extra-field__form-group-link--remove";
+    "govuk-button govuk-button--secondary faa-extra-field__form-group-link--remove";
   removeLink.href = "#";
   removeLink.addEventListener("click", function (e) {
     e.preventDefault();
@@ -188,7 +190,10 @@ ExtraFieldRows.prototype.appendRemoveLink = function (row) {
     that.hideRow(row);
     that.updateRowOrder();
   });
-  row.append(removeLink);
+
+  removeLinkWrap.append(removeLink);
+
+  row.append(removeLinkWrap);
 };
 
 ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
@@ -267,6 +272,7 @@ ExtraFieldRows.prototype.areAllRowsHidden = function () {
 };
 
 const extraFieldRows = document.querySelectorAll("[data-extra-field-rows]");
+
 if (extraFieldRows) {
   extraFieldRows.forEach(function (extraFieldRows) {
     new ExtraFieldRows(extraFieldRows).init();

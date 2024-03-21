@@ -2,7 +2,7 @@
 @{
    var index = 0;
 }
-
+@* 
 @for (index = 0; index < Model.Subjects.Count; index++)
 {
    var subject = Model.Subjects[index];
@@ -47,33 +47,32 @@
          </div>
       </div>
    </div>
-}
+} *@
+<div  data-extra-field-rows="true" data-add-button-text="Add another subject">
+<fieldset class="govuk-fieldset faa-extra-fields__fieldset">
+<legend class="govuk-fieldset__legend govuk-fieldset__legend--m">@(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subjects")</legend>
 
-<div class="govuk-form-group">
-   <label class="govuk-label govuk-label--m" for="subjects[@index][name]">
-   @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subjects")
-   </label>
-   <input class="govuk-input" id="subjects[@index][name]" name="subjects[@index][name]" type="text">
-</div>
-
-@if (Model.QualificationDisplayTypeViewModel.ShouldDisplayAdditionalInformationField)
+@for (index = 0; index < 10; index++)
 {
-<div class="govuk-form-group">
-   <label class="govuk-label govuk-label--m" for="subjects[@index][additionalInformation]">
-   @Model.QualificationDisplayTypeViewModel.AdditionalInformationLabel
-   </label>
-   <input class="govuk-input" id="subjects[@index][additionalInformation]" name="subjects[@index][AdditionalInformation]" type="text">
-</div>
-}
-<div class="govuk-form-group">
-   <div class="govuk-grid-row faa-grid-row--flex-from-tablet">
-      <div class="govuk-grid-column-one-third">
-         <label class="govuk-heading-m" for="subjects[@index][grade]">
+<div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
+   <div class="govuk-grid-column-one-third">
+      <div class="govuk-form-group">
+         <label class="govuk-label" for="subjects[@index][name]">
+         Subject
+         </label>
+         <input class="govuk-input" id="subjects[@index][name]" name="subjects[@index][name]" type="text">
+      </div>
+   </div>
+   <div class="govuk-grid-column-one-quarter">
+      <div class="govuk-form-group">
+         <label class="govuk-label" for="subjects[@index][grade]">
          Grade
          </label>
          <input class="govuk-input" id="subjects[@index][grade]" name="subjects[@index][grade]" type="text">
       </div>
-      <div class="govuk-grid-column-two-thirds">
+   </div>
+   <div class="govuk-grid-column-one-third">
+      <div class="govuk-form-group">
          @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
          {
          <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
@@ -87,4 +86,7 @@
          }
       </div>
    </div>
+</div>
+}
+</fieldset>
 </div>

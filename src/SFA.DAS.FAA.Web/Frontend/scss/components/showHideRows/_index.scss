@@ -4,7 +4,7 @@
 }
 
 .js-enabled .faa-extra-fields__fieldset {
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .js-enabled .faa-extra-fields__fieldset--all-hidden {
@@ -14,19 +14,22 @@
 
 .faa-extra-fields__form-group {
   position: relative;
-  margin-bottom: 20px;
 }
 
 .faa-extra-field__form-group-link--add {
-  display: inline-block;
-  font-size: 19px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
-.faa-extra-field__form-group-link--remove {
-  display: inline-block;
-  margin-top: 5px;
-  margin-bottom: -10px;
+.faa-extra-field__form-group-link--remove-wrap {
+  padding: 0 15px;
+  margin-bottom: 10px;
+  display: block;
+  border-bottom: 1px solid $govuk-border-colour;
+  @include govuk-media-query(tablet) {
+    border-bottom: 0;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .faa-extra-field__form-group--hidden {
