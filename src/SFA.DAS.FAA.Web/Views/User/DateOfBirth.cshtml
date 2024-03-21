@@ -4,12 +4,11 @@
     ViewBag.Title = "What is your date of birth? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.CreateAccount">Back</a>
+    <a class="govuk-back-link" asp-route="@RouteNames.UserName">Back</a>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        @* <partial model="@ViewData.ModelState" name="_ValidationSummary" /> *@
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Create an account</span>
         <form class="form" method="post">
