@@ -1,0 +1,34 @@
+.faa-extra-fields__fieldset {
+  margin: 0 0 30px;
+  padding-top: 10px;
+}
+
+.js-enabled .faa-extra-fields__fieldset {
+  margin-bottom: 10px;
+}
+
+.js-enabled .faa-extra-fields__fieldset--all-hidden {
+  padding: 0;
+  margin: 0;
+}
+
+.faa-extra-fields__form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.faa-extra-field__form-group-link--add {
+  display: inline-block;
+  font-size: 19px;
+  margin-bottom: 20px;
+}
+
+.faa-extra-field__form-group-link--remove {
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: -10px;
+}
+
+.faa-extra-field__form-group--hidden {
+  display: none;
+}
