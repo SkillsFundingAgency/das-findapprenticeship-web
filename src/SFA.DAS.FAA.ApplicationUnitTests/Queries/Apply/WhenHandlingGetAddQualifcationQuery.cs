@@ -2,7 +2,6 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetAddQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetModifyQualification;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Domain.Interfaces;
@@ -21,12 +20,17 @@ public class WhenHandlingGetAddQualificationQuery
     {
         apiClient.Setup(x =>
                 x.Get<GetModifyQualificationApiResponse>(
-                    It.Is<GetModifyQualificationApiRequest>(c => c.GetUrl.Contains(query.QualificationReferenceId.ToString()) 
-                                                              && c.GetUrl.Contains(query.ApplicationId.ToString()))))
+                    It.Is<GetModifyQualificationApiRequest>(c => 
+                        c.GetUrl.Contains(query.QualificationReferenceId.ToString()) 
+                        && c.GetUrl.Contains(query.ApplicationId.ToString())
+                        && c.GetUrl.Contains(query.CandidateId.ToString())
+                        && c.GetUrl.Contains(query.QualificationId.ToString()!)
+                        )))
             .ReturnsAsync(apiResponse);
 
         var actual = await handler.Handle(query, CancellationToken.None);
 
         actual.QualificationType.Should().BeEquivalentTo(apiResponse.QualificationType);
+        actual.Qualifications.Should().BeEquivalentTo(apiResponse.Qualifications);
     }
 }

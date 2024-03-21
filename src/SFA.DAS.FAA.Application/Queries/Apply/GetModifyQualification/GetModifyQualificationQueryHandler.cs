@@ -1,5 +1,4 @@
 using MediatR;
-using SFA.DAS.FAA.Application.Queries.Apply.GetAddQualification;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Domain.Interfaces;
 
@@ -11,11 +10,12 @@ public class GetModifyQualificationQueryHandler(IApiClient apiClient) : IRequest
     {
         var result =
             await apiClient.Get<GetModifyQualificationApiResponse>(
-                new GetModifyQualificationApiRequest(request.QualificationReferenceId,request.ApplicationId));
+                new GetModifyQualificationApiRequest(request.QualificationReferenceId,request.ApplicationId, request.CandidateId, request.QualificationId));
 
         return new GetModifyQualificationQueryResult
         {
-            QualificationType = result.QualificationType
+            QualificationType = result.QualificationType,
+            Qualifications = result.Qualifications
         };
     }
 }

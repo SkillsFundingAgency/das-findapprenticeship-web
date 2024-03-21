@@ -62,7 +62,7 @@ public class QualificationDisplayTypeViewModel
                 CanShowLevel = false;
                 CanShowPredicted = true;
                 AllowMultipleAdd = true;
-                ShouldDisplayAdditionalInformationField = true;
+                ShouldDisplayAdditionalInformationField = false;
                 Title = "Add GCSEs";
                 GroupTitle = "GCSEs";
                 break;
