@@ -44,7 +44,7 @@
     ],
     "Qualifications": [
         {
-            "QualificationReference": "20d1923f-25b4-4a37-8580-d04643cf1fba",
+            "QualificationReferenceId": "20d1923f-25b4-4a37-8580-d04643cf1fba",
             "Subject": "Linguistics MA (Hons)",
             "Grade": "2:1",
             "Level": "",
@@ -52,7 +52,7 @@
             "AdditionalInformation": "University of Edinburgh"
         },
         {
-            "QualificationReference": "20d1923f-25b4-4a37-8580-d04643cf1fba",
+            "QualificationReferenceId": "20d1923f-25b4-4a37-8580-d04643cf1fba",
             "QualificationType": "Apprenticeship",
             "Subject": "Business admin (level 3)",
             "Grade": "",
@@ -61,7 +61,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
+            "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
             "Subject": "English",
             "Grade": "B",
             "Level": "",
@@ -69,7 +69,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
+            "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
             "Subject": "French",
             "Grade": "A",
             "Level": "",
@@ -77,7 +77,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
+            "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
             "Subject": "History",
             "Grade": "A",
             "Level": "",
@@ -85,7 +85,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "2cb6af9b-77f9-4f47-af64-253a8bcc87bb",
+            "QualificationReferenceId": "2cb6af9b-77f9-4f47-af64-253a8bcc87bb",
             "Subject": "Art",
             "Grade": "B",
             "Level": "",
@@ -93,7 +93,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "f5cd9f3f-472a-4eae-a666-2b5702bacafb",
+            "QualificationReferenceId": "f5cd9f3f-472a-4eae-a666-2b5702bacafb",
             "Subject": "Education and Early Years",
             "Grade": "Distinction*",
             "Level": "",
@@ -101,7 +101,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "7e709598-c0c8-42c1-9588-b9ce61b167f8",
+            "QualificationReferenceId": "7e709598-c0c8-42c1-9588-b9ce61b167f8",
             "Subject": "Physical education (Level 3)",
             "Grade": "Merit",
             "Level": "",
@@ -109,7 +109,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+            "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
             "Subject": "Maths",
             "Grade": "C",
             "Level": "",
@@ -117,7 +117,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+            "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
             "Subject": "Science",
             "Grade": "B",
             "Level": "",
@@ -125,7 +125,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+            "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
             "Subject": "English",
             "Grade": "A",
             "Level": "",
@@ -133,7 +133,7 @@
             "AdditionalInformation": ""
         },
         {
-            "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+            "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
             "Subject": "History",
             "Grade": "A",
             "Level": "",

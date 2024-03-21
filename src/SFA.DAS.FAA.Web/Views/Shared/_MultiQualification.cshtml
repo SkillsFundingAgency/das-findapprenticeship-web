@@ -1,40 +1,90 @@
 @model SFA.DAS.FAA.Web.Models.Apply.AddQualificationViewModel
+@{
+   var index = 0;
+}
 
-<div class="govuk-form-group govuk-!-width-two-thirds">
-    <h1 class="govuk-label-wrapper">
-      <label class="govuk-label govuk-label--m" for="subjects[0][name]">
-        Add subjects
+@for (index = 0; index < Model.Subjects.Count; index++)
+{
+   var subject = Model.Subjects[index];
+   <input type="hidden" id="subjects[@index][id]" value="@subject.Id" name="subjects[@index][id]">
+   <div class="govuk-form-group">
+      <label class="govuk-label govuk-label--m" for="subjects[@index][name]">
+         @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subjects")
       </label>
-    </h1>
-    <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text">
-  </div>
+      <input class="govuk-input" id="subjects[@index][name]" value="@subject.Name" name="subjects[@index][name]" type="text">
+   </div>
 
-  <fieldset class="govuk-fieldset moj-add-another__item">
-    <legend class="govuk-fieldset__legend moj-add-another__title govuk-fieldset__legend--m govuk-visually-hidden">
-      Subject
-    </legend>
-    <div class="govuk-grid-row app-grid-row--flex">
-      <div class="govuk-grid-column-one-quarter">
-        <label class="govuk-heading-m" for="subjects[0][grade]">
-          Grade
-        </label>
-        <input class="govuk-input" id="subjects[0][grade]" name="subjects[0][grade]" type="text" data-name="subject[%index%][grade]" data-id="subject[%index%][grade]">
+   if (Model.QualificationDisplayTypeViewModel.ShouldDisplayAdditionalInformationField)
+   {
+      <div class="govuk-form-group">
+         <label class="govuk-label govuk-label--m" for="subjects[@index][additionalInformation]">
+            @Model.QualificationDisplayTypeViewModel.AdditionalInformationLabel
+         </label>
+         <input class="govuk-input" id="subjects[@index][additionalInformation]" value="@subject.AdditionalInformation" name="subjects[@index][AdditionalInformation]" type="text">
       </div>
-      @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
-      {
-        <div class="govuk-grid-column-one-third">
-          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" type="checkbox" value="true" data-name="subject[%index%][IsPredicted]" data-id="subject[%index%][IsPredicted]">
-              <label class="govuk-label govuk-checkboxes__label" for="subjects[0][IsPredicted]">
-                Predicted grade
-              </label>
-            </div>
-          </div>
-        </div>
-      }
-      
-    </div>
-  </fieldset>
+   }
 
-  <div class="govuk-!-padding-bottom-6"></div>
+   <div class="govuk-form-group">
+      <div class="govuk-grid-row faa-grid-row--flex-from-tablet">
+         <div class="govuk-grid-column-one-third">
+            <label class="govuk-heading-m" for="subjects[@index][grade]">
+               Grade
+            </label>
+            <input class="govuk-input" id="subjects[@index][grade]" name="subjects[@index][grade]" value="@subject.Grade" type="text">
+         </div>
+         <div class="govuk-grid-column-two-thirds">
+            @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
+            {
+               <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
+                  <div class="govuk-checkboxes__item">
+                     <input class="govuk-checkboxes__input" id="subjects[@index][IsPredicted]" name="subjects[@index][IsPredicted]" type="checkbox" value="@subject.IsPredicted">
+                     <label class="govuk-label govuk-checkboxes__label" for="subjects[@index][IsPredicted]">
+                        Predicted grade
+                     </label>
+                  </div>
+               </div>
+            }
+         </div>
+      </div>
+   </div>
+}
+
+<div class="govuk-form-group">
+   <label class="govuk-label govuk-label--m" for="subjects[@index][name]">
+   @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subjects")
+   </label>
+   <input class="govuk-input" id="subjects[@index][name]" name="subjects[@index][name]" type="text">
+</div>
+
+@if (Model.QualificationDisplayTypeViewModel.ShouldDisplayAdditionalInformationField)
+{
+<div class="govuk-form-group">
+   <label class="govuk-label govuk-label--m" for="subjects[@index][additionalInformation]">
+   @Model.QualificationDisplayTypeViewModel.AdditionalInformationLabel
+   </label>
+   <input class="govuk-input" id="subjects[@index][additionalInformation]" name="subjects[@index][AdditionalInformation]" type="text">
+</div>
+}
+<div class="govuk-form-group">
+   <div class="govuk-grid-row faa-grid-row--flex-from-tablet">
+      <div class="govuk-grid-column-one-third">
+         <label class="govuk-heading-m" for="subjects[@index][grade]">
+         Grade
+         </label>
+         <input class="govuk-input" id="subjects[@index][grade]" name="subjects[@index][grade]" type="text">
+      </div>
+      <div class="govuk-grid-column-two-thirds">
+         @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
+         {
+         <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+               <input class="govuk-checkboxes__input" id="subjects[@index][IsPredicted]" name="subjects[@index][IsPredicted]" type="checkbox" value="true">
+               <label class="govuk-label govuk-checkboxes__label" for="subjects[@index][IsPredicted]">
+               Predicted grade
+               </label>
+            </div>
+         </div>
+         }
+      </div>
+   </div>
+</div>
