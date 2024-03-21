@@ -6,10 +6,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
     public class DeleteQualificationsViewModel
     {
         [FromRoute] public required Guid ApplicationId { get; set; }
+        [FromRoute] public required Guid QualificationReferenceId { get; set; }
 
-        public bool? Confirm { get; set; }
-
-        public Guid QualificationReferenceId { get; set; }
         public string DisplayName { get; set; }
 
         public List<Qualification> Qualifications { get; set; } = new List<Qualification>();
@@ -28,15 +26,15 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public string GradeLabel => IsPredicted is true ? $"{Grade} (predicted)" : Grade;
         }
 
-        public static DeleteQualificationsViewModel MapFromQueryResult(Guid applicationId,
+        public static DeleteQualificationsViewModel MapFromQueryResult(Guid applicationId, Guid qualificationReferenceId,
             GetDeleteQualificationsQueryResult source)
         {
-            var metadata = new QualificationDisplayTypeViewModel(source.QualificationReference.ToString());
+            var metadata = new QualificationDisplayTypeViewModel(source.QualificationReference);
 
             var result = new DeleteQualificationsViewModel
             {
                 ApplicationId = applicationId,
-                QualificationReferenceId = source.QualificationReference,
+                QualificationReferenceId = qualificationReferenceId,
                 DisplayName = metadata.GroupTitle,
                 Qualifications = source.Qualifications.Select(z => new Qualification
                 {

@@ -9,7 +9,7 @@ namespace SFA.DAS.FAA.Domain.Apply.Qualifications
 
     public class GetDeleteQualificationsApiResponse
     {
-        public Guid QualificationReference { get; set; }
+        public string QualificationReference { get; set; } = null!;
         public List<Qualification> Qualifications { get; set; } = null!;
 
         public class Qualification
@@ -21,6 +21,4 @@ namespace SFA.DAS.FAA.Domain.Apply.Qualifications
             public bool? IsPredicted { get; set; }
         }
     }
-    
-
 }

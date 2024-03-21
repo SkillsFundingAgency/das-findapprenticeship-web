@@ -2,7 +2,7 @@
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Domain.Interfaces;
 
-namespace SFA.DAS.FAA.Application.Commands.Qualifications
+namespace SFA.DAS.FAA.Application.Commands.UpdateQualifications
 {
     public class UpdateQualificationsCommand : IRequest
     {

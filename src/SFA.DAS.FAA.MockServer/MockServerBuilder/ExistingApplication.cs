@@ -262,6 +262,24 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile($"{BaseFilePath}/Qualifications/get-delete-qualifications-multiple.json"));
 
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications/delete/20d1923f-25b4-4a37-8580-d04643cf1fba", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications/delete/20d1923f-25b4-4a37-8580-d04643cf1fba", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
             return server;
         }
     }

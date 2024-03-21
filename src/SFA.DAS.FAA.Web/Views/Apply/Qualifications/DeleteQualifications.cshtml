@@ -37,46 +37,17 @@
             </div>
         </div>
 
-    
-    
-    
-        </div>
-</div>
-            
-                @* 
-
-        <form class="form" method="post">
-
-                <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted"
-                     error-class="govuk-form-group--error">
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                            Have you completed this section?
-                        </legend>
-                        <span das-validation-for="IsSectionCompleted" class="govuk-error-message"></span>
-                        <div class="govuk-radios" data-module="govuk-radios">
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="true"
-                                       type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="IsSectionCompleted">
-                                    Yes, I’ve completed this section
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted"
-                                       id="IsSectionCompleted-No" value="false" type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="IsSectionCompleted-No">
-                                    No, I’ll come back to it later
-                                </label>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-            
+        <form method="post">
+            @Html.HiddenFor(x => x.QualificationReferenceId)
             <div class="govuk-button-group">
-                <button class="govuk-button" id="submit-button" type="submit" data-module="govuk-button">
-                    Continue
+                <button class="govuk-button govuk-button--warning" data-module="govuk-button">
+                    Yes, delete
                 </button>
+                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Qualifications, new { Model.ApplicationId })">Cancel – don't delete</a>
             </div>
+    
         </form>
- *@
+    
+    </div>
+</div>
+           
