@@ -33,4 +33,5 @@ public class SubjectViewModel
     public string? Level { get; set; }
     public bool? IsPredicted { get; set; }
     public string? AdditionalInformation { get; set; }
+    public bool? IsDeleted { get; set; }
 }

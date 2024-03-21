@@ -176,6 +176,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     Id = c.Id ?? Guid.NewGuid(),
                     AdditionalInformation = c.Level ?? c.AdditionalInformation,
                     IsPredicted = c.IsPredicted,
+                    IsDeleted = c.IsDeleted
                 }).ToList()
             });
             
