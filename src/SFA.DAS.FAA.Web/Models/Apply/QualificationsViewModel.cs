@@ -26,11 +26,13 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                     {
                         DisplayName = groupMetadata.GroupTitle,
                         QualificationReferenceId = qualificationType.Id,
+                        AllowMultipleAdd = groupMetadata.AllowMultipleAdd,
                         Qualifications = source.Qualifications
                             .Where(y => y.QualificationReferenceId == qualificationType.Id)
                             //.OrderBy(x => x.Order) //todo: order by 
                             .Select(z => new Qualification
                             {
+                                Id = z.Id!.Value,
                                 Subject = z.Subject,
                                 Grade = z.Grade,
                                 Level = z.Level,
@@ -62,6 +64,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public Guid QualificationReferenceId { get; set; }
             public string DisplayName { get; set; }
             public List<Qualification> Qualifications { get; set; } = new List<Qualification>();
+            public bool AllowMultipleAdd { get; set; }
         }
 
         public class Qualification
@@ -74,6 +77,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public bool? IsPredicted { get; set; }
 
             public string GradeLabel => IsPredicted is true ? $"{Grade} (predicted)" : Grade;
+            
         }
     }
 }

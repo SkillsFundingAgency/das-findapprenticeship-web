@@ -29,7 +29,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeTrue();
-        actual.ShouldDisplayAdditionalInformationField.Should().BeTrue();
+        actual.ShouldDisplayAdditionalInformationField.Should().BeFalse();
     }
     [Test]
     public void Then_Values_Set_For_ALevel()

@@ -1,58 +1,66 @@
+
+@using SFA.DAS.FAA.Web.Models.Apply
 @model SFA.DAS.FAA.Web.Models.Apply.AddQualificationViewModel
+
+@{
+   var existingApplicationQualification = Model.Subjects.FirstOrDefault() ?? new SubjectViewModel();
+}
+
 <div class="govuk-grid-row">
+   <input type="hidden" name="subjects[0][id]" value="@existingApplicationQualification.Id" id="subjects[0][id]"/>
    <div class="govuk-grid-column-two-thirds">
       <div class="govuk-form-group">
          <label class="govuk-label govuk-label--m" for="subjects[0][name]">
-         @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subject")
+            @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subject")
          </label>
-         <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text">
+         <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text" value="@existingApplicationQualification.Name">
       </div>
       @if (Model.QualificationDisplayTypeViewModel.CanShowLevel)
       {
-      <div class="govuk-form-group">
-         <label class="govuk-label govuk-label--m" for="subjects[0][level]">
-         Level
-         </label>
-         <select class="govuk-select" id="subjects[0][level]" name="subjects[0][level]">
-            <option value="select" selected="">Select a level</option>
-            <option value="1">Level 1</option>
-            <option value="2">Level 2</option>
-            <option value="3">Level 3</option>
-            <option value="4">Level 4</option>
-            <option value="5">Level 5</option>
-            <option value="6">Level 6</option>
-            <option value="7">Level 7</option>
-         </select>
-      </div>
+         <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--m" for="subjects[0][level]">
+               Level
+            </label>
+            <select class="govuk-select" id="subjects[0][level]" name="subjects[0][level]">
+               <option value="select" selected="">Select a level</option>
+               <option value="1">Level 1</option>
+               <option value="2">Level 2</option>
+               <option value="3">Level 3</option>
+               <option value="4">Level 4</option>
+               <option value="5">Level 5</option>
+               <option value="6">Level 6</option>
+               <option value="7">Level 7</option>
+            </select>
+         </div>
       }
       @if (Model.QualificationDisplayTypeViewModel.ShouldDisplayAdditionalInformationField)
       {
-      <div class="govuk-form-group">
-         <label class="govuk-label govuk-label--m" for="subjects[0][additionalInformation]">
-         @Model.QualificationDisplayTypeViewModel.AdditionalInformationLabel
-         </label>
-         <input class="govuk-input" id="subjects[0][additionalInformation]" name="subjects[0][AdditionalInformation]" type="text">
-      </div>
+         <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--m" for="subjects[0][additionalInformation]">
+               @Model.QualificationDisplayTypeViewModel.AdditionalInformationLabel
+            </label>
+            <input class="govuk-input" id="subjects[0][additionalInformation]" name="subjects[0][AdditionalInformation]" type="text" value="@existingApplicationQualification.AdditionalInformation">
+         </div>
       }
       <div class="govuk-form-group">
          <div class="govuk-grid-row faa-grid-row--flex-from-tablet">
             <div class="govuk-grid-column-one-third">
                <label class="govuk-heading-m" for="subjects[0][grade]">
-               Grade
+                  Grade
                </label>
-               <input class="govuk-input" id="subjects[0][grade]" name="subjects[0][grade]" type="text">
+               <input class="govuk-input" id="subjects[0][grade]" name="subjects[0][grade]" type="text" value="@existingApplicationQualification.Grade">
             </div>
             <div class="govuk-grid-column-two-thirds">
                @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
                {
-               <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
-                  <div class="govuk-checkboxes__item">
-                     <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" type="checkbox" value="true">
-                     <label class="govuk-label govuk-checkboxes__label" for="subjects[0][IsPredicted]">
-                     Predicted grade
-                     </label>
+                  <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
+                     <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" type="checkbox" value="@existingApplicationQualification.IsPredicted">
+                        <label class="govuk-label govuk-checkboxes__label" for="subjects[0][IsPredicted]">
+                           Predicted grade
+                        </label>
+                     </div>
                   </div>
-               </div>
                }
             </div>
          </div>

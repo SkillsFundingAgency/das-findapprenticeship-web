@@ -22,7 +22,7 @@ public class QualificationDisplayTypeViewModel
                 CanShowLevel = true;
                 CanShowPredicted = true;
                 AllowMultipleAdd = false;
-                ShouldDisplayAdditionalInformationField = true;
+                ShouldDisplayAdditionalInformationField = false;
                 Title = "Add a BTEC";
                 GroupTitle = "BTEC";
                 break;

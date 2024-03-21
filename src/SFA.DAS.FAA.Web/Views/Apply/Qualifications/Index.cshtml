@@ -28,11 +28,15 @@
                                     Delete<span class="govuk-visually-hidden"> qualification</span>
                                 </a>
                             </li>
-                            <li class="govuk-summary-card__action">
-                                <a class="govuk-link">
-                                    Change<span class="govuk-visually-hidden"> qualification</span>
-                                </a>
-                            </li>
+                            @if (group.AllowMultipleAdd)
+                            {
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualification, new { Model.ApplicationId,group.QualificationReferenceId })">
+                                        Change<span class="govuk-visually-hidden"> qualification</span>
+                                    </a>
+                                </li>    
+                            }
+                            
                         </ul>
                     </div>
                     <div class="govuk-summary-card__content">
@@ -47,6 +51,16 @@
                                     <dd class="govuk-summary-list__value">
                                         @qualification.GradeLabel
                                     </dd>
+                                    @if (!group.AllowMultipleAdd)
+                                    {
+                                        <dd class="govuk-summary-list__value">
+                                        
+                                            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualification, new { Model.ApplicationId,group.QualificationReferenceId, id=qualification.Id })">
+                                                Change<span class="govuk-visually-hidden"> qualification</span>
+                                            </a>
+                                            
+                                        </dd>
+                                        }
                                 </div>
                             }
                         </dl>
