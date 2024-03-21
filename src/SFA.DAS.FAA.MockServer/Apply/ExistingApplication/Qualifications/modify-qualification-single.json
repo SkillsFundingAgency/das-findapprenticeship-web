@@ -1,0 +1,18 @@
+{
+  "QualificationType": 
+    {
+      "id": "20d1923f-25b4-4a37-8580-d04643cf1fba",
+      "name": "Degree",
+      "order": 1
+    },
+  "Qualifications": [
+    {
+      "id": "19FC767D-D6B9-4327-9EDE-6B7B83CBB6AD",
+      "Subject": "Art",
+      "Grade": "2.1",
+      "Level": "",
+      "IsPredicted": false,
+      "AdditionalInformation": ""
+    }
+  ]
+}

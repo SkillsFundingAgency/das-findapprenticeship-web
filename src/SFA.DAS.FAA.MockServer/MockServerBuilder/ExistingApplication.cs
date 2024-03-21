@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
+using WireMock.Types;
 
 namespace SFA.DAS.FAA.MockServer.MockServerBuilder
 {
@@ -262,7 +263,27 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile($"{BaseFilePath}/Qualifications/get-delete-qualifications-multiple.json"));
 
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"{BaseRoute}/qualifications/f0dd327d-8888-4a00-a529-ea8e35d38bb5/modify", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Qualifications/modify-qualification-multiple.json"));
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"{BaseRoute}/qualifications/20d1923f-25b4-4a37-8580-d04643cf1fba/modify", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet()
+                    .WithParam(MatchQualificationIdParam))
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Qualifications/modify-qualification-single.json"));
             return server;
+        }
+        
+        private static bool MatchQualificationIdParam(IDictionary<string, WireMockList<string>> arg)
+        {
+            return arg.ContainsKey("qualificationId") && arg["qualificationId"].Count != 0 && arg["qualificationId"][0].Equals("19FC767D-D6B9-4327-9EDE-6B7B83CBB6AD", StringComparison.CurrentCultureIgnoreCase);
         }
     }
 }

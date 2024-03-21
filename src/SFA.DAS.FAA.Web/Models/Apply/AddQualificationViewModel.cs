@@ -15,10 +15,22 @@ public class AddQualificationViewModel
 
 public class SubjectViewModel
 {
-    public Guid Id { get; set; }
-    public string Grade { get; set; }
+    public static implicit operator SubjectViewModel(GetQualificationsApiResponse.Qualification source)
+    {
+        return new SubjectViewModel
+        {
+            Grade =  source.Grade,
+            Name = source.Subject,
+            AdditionalInformation = source.AdditionalInformation,
+            IsPredicted = source.IsPredicted,
+            Id = source.Id,
+            Level = source.AdditionalInformation
+        };
+    }
+    public Guid? Id { get; set; }
+    public string? Grade { get; set; }
     public string Name { get; set; }
     public string? Level { get; set; }
-    public string? IsPredicted { get; set; }
+    public bool? IsPredicted { get; set; }
     public string? AdditionalInformation { get; set; }
 }

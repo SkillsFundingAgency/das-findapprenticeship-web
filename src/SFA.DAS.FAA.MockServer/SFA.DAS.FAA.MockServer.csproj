@@ -27,6 +27,12 @@
     <None Update="Apply\NewApplication\Qualifications\qualification-types.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Apply\ExistingApplication\Qualifications\modify-qualification-single.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\Qualifications\modify-qualification-multiple.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

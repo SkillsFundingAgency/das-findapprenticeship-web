@@ -8,10 +8,10 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Application.Commands.Qualifications;
 using SFA.DAS.FAA.Application.Commands.UpsertQualification;
-using SFA.DAS.FAA.Application.Queries.Apply.GetAddQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteQualifications;
+using SFA.DAS.FAA.Application.Queries.Apply.GetModifyQualification;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -122,12 +122,14 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("apply/{applicationId}/qualifications/{qualificationReferenceId}/modify", Name = RouteNames.ApplyApprenticeship.AddQualification)]
-        public async Task<IActionResult> ModifyQualification([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
+        public async Task<IActionResult> ModifyQualification([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId, [FromQuery]Guid? id = null)
         {
             var result = await mediator.Send(new GetModifyQualificationQuery
             {
                 ApplicationId = applicationId,
-                QualificationReferenceId = qualificationReferenceId
+                QualificationReferenceId = qualificationReferenceId,
+                CandidateId = User.Claims.CandidateId(),
+                QualificationId = id
             });
 
             if (result.QualificationType == null)
@@ -140,7 +142,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 ApplicationId = applicationId,
                 QualificationReferenceId = qualificationReferenceId,
-                QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name)
+                QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name),
+                Subjects = result.Qualifications.Select(c=>(SubjectViewModel)c).ToList()
             };
             return View(AddQualificationViewName, model);
         }

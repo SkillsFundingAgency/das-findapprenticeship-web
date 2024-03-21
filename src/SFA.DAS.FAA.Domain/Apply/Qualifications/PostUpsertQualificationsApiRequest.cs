@@ -16,10 +16,10 @@ public class PostUpsertQualificationsApiRequest(Guid applicationId, Guid qualifi
 
     public class Subject
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string Grade { get; set; }
         public string Name { get; set; }
         public string? AdditionalInformation { get; set; }
-        public string? IsPredicted { get; set; }
+        public bool? IsPredicted { get; set; }
     }
 }
