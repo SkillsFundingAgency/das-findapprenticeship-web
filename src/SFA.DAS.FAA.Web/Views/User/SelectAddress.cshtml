@@ -1,0 +1,42 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.User
+@model SelectAddressViewModel
+@{
+    ViewBag.Title = "Select your address – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Create an account</span>
+        <h1 class="govuk-heading-l">Select your address</h1>
+
+        <h2 class="govuk-heading-m">Postcode</h2>
+        <p class="govuk-body"><strong>@Model.Postcode</strong> <a class="govuk-link" href="#">Change</a></p>
+
+        <form class="form" method="post">
+            <div class="govuk-form-group">
+                <div id="location-hint" class="govuk-hint">
+                    @Model.Addresses.Count addresses found
+                </div>
+                <select class="govuk-select" asp-for="SelectedAddress" aria-describedby="addresses-found">
+                    <option value="choose" selected>Select address</option>
+                    @for (var i = 0; i < Model.Addresses.Count; i++)
+                    {
+                        <option value="@i">@Model.Addresses[i].Thoroughfare</option>
+                    }
+                </select>
+            </div>
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+                <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually">Enter address manually</a>
+            </div>
+        </form>
+    </div>
+</div>

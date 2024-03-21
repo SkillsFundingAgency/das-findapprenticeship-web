@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.UserName;
+using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -124,7 +125,32 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return RedirectToRoute(RouteNames.SelectAddress);
+            return RedirectToRoute(RouteNames.SelectAddress, new { model.Postcode });
+        }
+
+        [HttpGet("select-address", Name = RouteNames.SelectAddress)]
+        public async Task<IActionResult> SelectAddress(string postcode)
+        {
+            var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = postcode });
+
+            var model = (SelectAddressViewModel)result.Addresses.ToList();
+            model.Postcode = postcode;
+
+            return View(model);
+        }
+
+        [HttpPost("select-address", Name =RouteNames.SelectAddress)]
+        public async Task<IActionResult> SelectAddress(SelectAddressViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
+
+                model = (SelectAddressViewModel)result.Addresses.ToList();
+                return View(model);
+            }
+
+            return RedirectToRoute(RouteNames.SearchResults);
         }
     }
 }
