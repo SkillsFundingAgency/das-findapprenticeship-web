@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.DeleteQualifications;
+using SFA.DAS.FAA.Application.Commands.UpdateQualifications;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualifications;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.FAA.Application.Commands.Qualifications;
 using SFA.DAS.FAA.Application.Commands.UpsertQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
@@ -183,9 +184,23 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 QualificationType = qualificationReferenceId
             });
 
-            var viewModel = DeleteQualificationsViewModel.MapFromQueryResult(applicationId, result);
+            var viewModel = DeleteQualificationsViewModel.MapFromQueryResult(applicationId, qualificationReferenceId, result);
 
             return View(DeleteQualificationsViewName, viewModel);
+        }
+
+        [HttpPost]
+        [Route("apply/{applicationId}/qualifications/delete/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.DeleteQualifications)]
+        public async Task<IActionResult> DeleteQualifications(DeleteQualificationsViewModel viewModel)
+        {
+            await mediator.Send(new DeleteQualificationsCommand
+            {
+                ApplicationId = viewModel.ApplicationId,
+                CandidateId = User.Claims.CandidateId(),
+                QualificationReferenceId = viewModel.QualificationReferenceId
+            });
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.Qualifications, new { viewModel.ApplicationId });
         }
     }
 }

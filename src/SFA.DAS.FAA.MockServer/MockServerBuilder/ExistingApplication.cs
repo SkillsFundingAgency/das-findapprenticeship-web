@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -262,6 +262,24 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithStatusCode(200)
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile($"{BaseFilePath}/Qualifications/get-delete-qualifications-multiple.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications/delete/20d1923f-25b4-4a37-8580-d04643cf1fba", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications/delete/20d1923f-25b4-4a37-8580-d04643cf1fba", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
 
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"{BaseRoute}/qualifications/f0dd327d-8888-4a00-a529-ea8e35d38bb5/modify", RegexOptions.None, RegexMaxTimeOut))
                     .UsingGet())

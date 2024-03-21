@@ -95,3 +95,17 @@ Scenario: Delete a single qualification of a single type
 Scenario: Opt to add another qualification
 	When I navigate to the Add Qualification Select Type page
 	Then the page content includes the following: Add another qualification
+
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Confirm deletion of a qualification
+	When I post an empty form to the Delete Qualifications (single) page
+	Then I am redirected to the Qualifications page
+	
+@WireMockServer
+@AuthenticatedUser
+@ExistingApplication
+Scenario: Confirm deletion of multiple qualifications of a single type
+	When I post an empty form to the Delete Qualifications (multiple) page
+	Then I am redirected to the Qualifications page

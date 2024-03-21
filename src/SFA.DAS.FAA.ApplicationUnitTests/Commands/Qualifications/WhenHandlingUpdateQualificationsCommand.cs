@@ -1,7 +1,7 @@
 ﻿using AutoFixture.NUnit3;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.Qualifications;
+using SFA.DAS.FAA.Application.Commands.UpdateQualifications;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
