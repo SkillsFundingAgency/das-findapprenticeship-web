@@ -45,7 +45,12 @@ public class WhenPostingSelectedQualificationTypes
         actual!.ViewName.Should().Be("~/Views/apply/Qualifications/AddQualificationSelectType.cshtml");
         var actualModel = actual.Model as AddQualificationSelectTypeViewModel;
         actualModel!.ApplicationId.Should().Be(model.ApplicationId);
-        actualModel!.Qualifications.Should().BeEquivalentTo(queryResult.QualificationTypes);
+        actualModel.Qualifications.Should().BeEquivalentTo(queryResult.QualificationTypes.Select(c=>new AddQualificationSelectTypeViewModel.QualificationType
+        {
+            QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(c.Name),
+            Id = c.Id,
+            Name = c.Name
+        }).ToList());
     }
     [Test, MoqAutoData]
     public async Task Then_If_Value_Selected_Then_Redirected(

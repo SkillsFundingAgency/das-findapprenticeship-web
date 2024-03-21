@@ -22,7 +22,7 @@
             </legend>
             @if (!Model.HasAddedQualifications)
             {
-            <p class="govuk-hint">You'll be able to add your other qualifications later</p>
+               <p class="govuk-hint">You'll be able to add your other qualifications later</p>
             }
             <div class="govuk-form-group" das-highlight-error-for="QualificationReferenceId"
                error-class="govuk-form-group--error">
@@ -30,12 +30,16 @@
                <div class="govuk-radios" data-module="govuk-radios" id="QualificationReferenceId">
                   @foreach (var qualificationType in Model.Qualifications)
                   {
-                  <div class="govuk-radios__item">
-                     <input class="govuk-radios__input" id="qualification-@qualificationType.Id" name="QualificationReferenceId" type="radio" value="@qualificationType.Id">
-                     <label class="govuk-label govuk-radios__label" for="qualification-@qualificationType.Id">
-                     @qualificationType.Name
-                     </label>
-                  </div>
+                     if (qualificationType.Name.Equals("other", StringComparison.CurrentCultureIgnoreCase))
+                     {
+                        <div class="govuk-radios__divider">or</div>
+                     }
+                     <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="qualification-@qualificationType.Id" name="QualificationReferenceId" type="radio" value="@qualificationType.Id">
+                        <label class="govuk-label govuk-radios__label" for="qualification-@qualificationType.Id">
+                        @qualificationType.Name @qualificationType.QualificationDisplayTypeViewModel.SelectHintText
+                        </label>
+                     </div>
                   }
                </div>
             </div>

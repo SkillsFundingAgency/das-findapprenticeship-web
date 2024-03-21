@@ -77,6 +77,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.SubjectLabel.Should().Be("Degree");
         actual.AdditionalInformationLabel.Should().Be("University");
         actual.SubjectHintText.Should().Be("For example, BSc Mechanical Engineering");
+        actual.SelectHintText.Should().Be("(undergraduate, postgraduate or foundation)");
         actual.GroupTitle.Should().Be("Degree");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
@@ -107,5 +108,6 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
         actual.ShouldDisplayAdditionalInformationField.Should().BeTrue();
+        actual.SelectHintText.Should().Be("(including international qualifications)");
     }
 }

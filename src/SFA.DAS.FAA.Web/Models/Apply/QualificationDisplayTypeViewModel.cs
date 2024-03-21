@@ -57,6 +57,7 @@ public class QualificationDisplayTypeViewModel
                 SubjectLabel = "Degree";
                 AdditionalInformationLabel = "University";
                 SubjectHintText = "For example, BSc Mechanical Engineering";
+                SelectHintText = "(undergraduate, postgraduate or foundation)";
                 break;
             case "gcse":
                 CanShowLevel = false;
@@ -73,9 +74,12 @@ public class QualificationDisplayTypeViewModel
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;
                 ShouldDisplayAdditionalInformationField = true;
+                SelectHintText = "(including international qualifications)";
                 break;
         }
     }
+
+    public string? SelectHintText { get; set; }
 
     public string? SubjectHintText { get; set; }
 
