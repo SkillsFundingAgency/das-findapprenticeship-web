@@ -51,8 +51,12 @@ public class QualificationDisplayTypeViewModel
                 GroupTitle = "Degree";
                 Title = "Add a degree";
                 CanShowLevel = false;
-                CanShowPredicted = true;
+                CanShowPredicted = false;
                 AllowMultipleAdd = false;
+                ShouldDisplayAdditionalInformationField = true;
+                SubjectLabel = "Degree";
+                AdditionalInformationLabel = "University";
+                SubjectHintText = "For example, BSc Mechanical Engineering";
                 break;
             case "gcse":
                 CanShowLevel = false;
@@ -72,7 +76,13 @@ public class QualificationDisplayTypeViewModel
                 break;
         }
     }
-    
+
+    public string? SubjectHintText { get; set; }
+
+    public string? AdditionalInformationLabel { get; set; }
+
+    public string? SubjectLabel { get; set; }
+
     public bool CanShowLevel { get; }
     public bool CanShowPredicted { get; }
     public bool AllowMultipleAdd { get; }

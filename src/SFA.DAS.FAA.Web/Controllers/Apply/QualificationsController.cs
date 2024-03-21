@@ -161,8 +161,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     Grade = c.Grade,
                     Name = c.Name,
                     Id = c.Id == Guid.Empty ? Guid.NewGuid() : c.Id,
-                    AdditionalInformation = c.Level,
-                    IsPredicted = c.IsPredicted
+                    AdditionalInformation = c.Level ?? c.AdditionalInformation,
+                    IsPredicted = c.IsPredicted,
                 }).ToList()
             });
             
