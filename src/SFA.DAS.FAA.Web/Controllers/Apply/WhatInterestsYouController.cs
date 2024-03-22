@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetWhatInterestsYouQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = Guid.Parse(User.Claims.First(c => c.Type.Equals(CustomClaims.CandidateId)).Value)
+                CandidateId = User.Claims.CandidateId()
             });
 
             var viewModel = new WhatInterestsYouViewModel

@@ -4,7 +4,7 @@ using FluentAssertions.Execution;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
-using SFA.DAS.FAA.Domain.Apply.GetEmployerSkillsAndStrengths;
+using SFA.DAS.FAA.Domain.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -30,6 +30,7 @@ public class WhenHandlingGetExpectedSkillsAndStrengthQuery
             actual.Should().NotBeNull();
             actual.Should().BeOfType<GetExpectedSkillsAndStrengthsQueryResult>();
             actual.Employer.Should().BeEquivalentTo(apiResponse.Employer);
+            actual.IsSectionCompleted.Should().Be(apiResponse.IsSectionCompleted);
             actual.ExpectedSkillsAndStrengths.Should().BeEquivalentTo(apiResponse.ExpectedSkillsAndStrengths.ToList());
         }
     }
