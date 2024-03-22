@@ -6,7 +6,7 @@
 }
 
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Qualifications, new { Model.ApplicationId })">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -27,6 +27,10 @@
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">
                                 @qualification.Subject
+                                @if (Model.ShowAdditionalInformation)
+                                {
+                                    <p class="govuk-body govuk-!-margin-top-1" style="color:#505a5f">@qualification.AdditionalInformation</p>
+                                }
                             </dt>
                             <dd class="govuk-summary-list__value">
                                 @qualification.GradeLabel
