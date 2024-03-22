@@ -19,15 +19,36 @@
 
         <form class="form" method="post">
             <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
-                <div id="location-hint" class="govuk-hint">
-                    @Model.Addresses.Count addresses found
-                </div>
+                @if (Model.Addresses.Count == 1)
+                {
+                    <div id="location-hint" class="govuk-hint">
+
+                        1 address found
+                    </div>
+                }
+                else
+                {
+                    <div id="location-hint" class="govuk-hint">
+                        @Model.Addresses.Count addresses found
+                    </div>
+                }
                 <span asp-validation-for="SelectedAddress" class="govuk-error-message"></span>
                 <select class="govuk-select" asp-for="SelectedAddress" aria-describedby="addresses-found">
                     <option value="choose" selected>Select address</option>
-                    @for (var i = 0; i < Model.Addresses.Count; i++)
+                    @foreach (var address in Model.Addresses)
                     {
-                        <option value="@i">@Model.Addresses[i].Thoroughfare</option>
+                        if (address.Thoroughfare != address.AddressLine1)
+                        {
+                            <option value="@address.Uprn">@address.AddressLine1, @address.Thoroughfare</option>
+                        }
+                        else if (string.IsNullOrWhiteSpace(address.AddressLine1) && string.IsNullOrWhiteSpace(address.Thoroughfare) && !string.IsNullOrWhiteSpace(address.Organisation))
+                        {
+                            <option value="@address.Uprn">@address.Organisation, @address.PostTown</option>
+                        }
+                        else
+                        {
+                            <option value="@address.Uprn">@address.AddressLine1</option>
+                        }
                     }
                 </select>
             </div>

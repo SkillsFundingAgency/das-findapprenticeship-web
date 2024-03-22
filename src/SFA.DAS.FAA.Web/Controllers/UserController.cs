@@ -135,7 +135,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = postcode });
 
             var model = (SelectAddressViewModel)result.Addresses.ToList();
-            model.Postcode = postcode;
+            model.Postcode = model.Addresses.First().Postcode;
 
             return View(model);
         }
@@ -152,19 +152,20 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             var addresses = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
-
             model.Addresses = addresses.Addresses.Select(x => (AddressViewModel)x).ToList();
 
+            var selectedAdress = addresses.Addresses.Where(x => x.Uprn == model.SelectedAddress).SingleOrDefault();
             await mediator.Send(new UpdateAddressCommand()
             {
                 GovUkIdentifier = User.Claims.GovIdentifier(),
                 Email = User.Claims.Email(),
-                AddressLine1 = model.Addresses[Convert.ToInt32(model.SelectedAddress)].AddressLine1,
-                AddressLine2 = model.Addresses[Convert.ToInt32(model.SelectedAddress)].AddressLine2,
-                AddressLine3 = model.Addresses[Convert.ToInt32(model.SelectedAddress)].AddressLine3,
-                AddressLine4 = model.Addresses[Convert.ToInt32(model.SelectedAddress)].County,
-                Postcode = model.Addresses[Convert.ToInt32(model.SelectedAddress)].Postcode,
-                Uprn = model.Addresses[Convert.ToInt32(model.SelectedAddress)].Uprn
+                Thoroughfare = selectedAdress.Thoroughfare,
+                Organisation = selectedAdress.Organisation,
+                AddressLine1 = selectedAdress.AddressLine1,
+                AddressLine2 = selectedAdress.AddressLine2,
+                AddressLine3 = selectedAdress.PostTown,
+                AddressLine4 = selectedAdress.County,
+                Postcode = selectedAdress.Postcode
             });
 
             return RedirectToRoute(RouteNames.PhoneNumber);

@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Web.Models.User;
 
 public class SelectAddressViewModel : ViewModelBase
 {
-    public List<AddressViewModel>? Addresses { get; set; }
+    public List<AddressViewModel>? Addresses {  get; set; }
     public string? SelectedAddress { get; set; }
     public string Postcode { get; set; }
 
@@ -12,7 +12,7 @@ public class SelectAddressViewModel : ViewModelBase
     {
         return new SelectAddressViewModel
         {
-            Addresses = source.Select(c => (AddressViewModel)c).ToList()
+            Addresses = source.Select(c => (AddressViewModel)c).GroupBy(x => x.AddressLine1).Select(x => x.First()).ToList()
         };
     }
 }

@@ -24,8 +24,7 @@ public class WhenHandlingCreateUserAddressCommand
             AddressLine2 = command.AddressLine2,
             AddressLine3 = command.AddressLine3,
             AddressLine4 = command.AddressLine4,
-            Postcode = command.Postcode,
-            Uprn = command.Uprn
+            Postcode = command.Postcode
         });
         apiClientMock.Setup(x =>
                 x.PostWithResponseCode(It.Is<CreateUserAddressApiRequest>(c =>

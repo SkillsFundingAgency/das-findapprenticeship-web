@@ -20,8 +20,7 @@ public class WhenBuildingUpdateAddressApiRequest
             AddressLine2 = addressLine2,
             AddressLine3 = addressLine3,
             AddressLine4 = addressLine4,
-            Postcode = postcode,
-            Uprn = uprn
+            Postcode = postcode
         };
         var actual = new CreateUserAddressApiRequest(govIdentifier, data);
 

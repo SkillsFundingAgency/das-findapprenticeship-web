@@ -25,7 +25,8 @@ public class WhenPostingSelectAddress
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        model.SelectedAddress = "1";
+        model.SelectedAddress = addressesByPostcodeQueryResult.Addresses.First().Uprn;
+
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
