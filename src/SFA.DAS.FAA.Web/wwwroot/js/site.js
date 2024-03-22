@@ -271,10 +271,56 @@ ExtraFieldRows.prototype.areAllRowsHidden = function () {
   return hiddenRowCount === this.extraFieldRows.length;
 };
 
+function Autocomplete(select) {
+  this.select = select;
+  this.selectId = this.select.id;
+}
+
+Autocomplete.prototype.convertId = function (id) {
+  const replaceSqL = id.replace(/[[]/g, "\\[");
+  return `#${replaceSqL.replace(/]/g, "\\]")}`;
+};
+
+Autocomplete.prototype.init = function () {
+  accessibleAutocomplete.enhanceSelectElement({
+    selectElement: this.select,
+    minLength: 1,
+    defaultValue: "",
+    displayMenu: "overlay",
+    placeholder: "",
+    onConfirm: (opt) => {
+      const txtInput = document.querySelector(this.convertId(this.selectId));
+      const searchString = opt || txtInput.value;
+      const requestedOption = [].filter.call(
+        this.select.options,
+        function (option) {
+          return (option.textContent || option.innerText) === searchString;
+        }
+      )[0];
+      if (requestedOption) {
+        requestedOption.selected = true;
+      } else {
+        this.select.selectedIndex = 0;
+      }
+    },
+  });
+};
+
+// Extra field row
+
 const extraFieldRows = document.querySelectorAll("[data-extra-field-rows]");
 
 if (extraFieldRows) {
   extraFieldRows.forEach(function (extraFieldRows) {
     new ExtraFieldRows(extraFieldRows).init();
+  });
+}
+
+// Autocomplete
+const autocompleteSelects = document.querySelectorAll("[data-autocomplete]");
+
+if (autocompleteSelects) {
+  autocompleteSelects.forEach(function (select) {
+    new Autocomplete(select).init();
   });
 }

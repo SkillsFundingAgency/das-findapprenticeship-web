@@ -2,9 +2,9 @@
 
 namespace SFA.DAS.FAA.Domain.Apply.Qualifications
 {
-    public class GetDeleteQualificationsApiRequest(Guid applicationId, Guid candidateId, Guid qualificationType) : IGetApiRequest
+    public class GetDeleteQualificationsApiRequest(Guid applicationId, Guid candidateId, Guid qualificationType, Guid? id = null) : IGetApiRequest
     {
-        public string GetUrl => $"applications/{applicationId}/qualifications/delete/{qualificationType}?candidateId={candidateId}";
+        public string GetUrl => $"applications/{applicationId}/qualifications/delete/{qualificationType}?candidateId={candidateId}&id={id}";
     }
 
     public class GetDeleteQualificationsApiResponse

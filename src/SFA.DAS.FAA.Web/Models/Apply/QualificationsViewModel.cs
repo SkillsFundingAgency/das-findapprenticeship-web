@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualifications;
-using System.Reflection;
-using SFA.DAS.FAA.Domain.Apply.Qualifications;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
@@ -25,19 +23,19 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                     var group = new QualificationGroup
                     {
                         DisplayName = groupMetadata.GroupTitle,
+                        ShowAdditionalInformation = groupMetadata.ShouldDisplayAdditionalInformationField,
                         QualificationReferenceId = qualificationType.Id,
                         AllowMultipleAdd = groupMetadata.AllowMultipleAdd,
                         Qualifications = source.Qualifications
-                            .Where(y => y.QualificationReferenceId == qualificationType.Id)
-                            //.OrderBy(x => x.Order) //todo: order by 
-                            .Select(z => new Qualification
+                            .Where(x => x.QualificationReferenceId == qualificationType.Id)
+                            .Select(x => new Qualification
                             {
-                                Id = z.Id!.Value,
-                                Subject = z.Subject,
-                                Grade = z.Grade,
-                                Level = z.Level,
-                                AdditionalInformation = z.AdditionalInformation,
-                                IsPredicted = z.IsPredicted
+                                Id = x.Id,
+                                Subject = x.Subject,
+                                Grade = x.Grade,
+                                Level = x.Level,
+                                AdditionalInformation = x.AdditionalInformation,
+                                IsPredicted = x.IsPredicted
                             }).ToList()
                     };
                     result.QualificationGroups.Add(group);
@@ -65,11 +63,12 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public string DisplayName { get; set; }
             public List<Qualification> Qualifications { get; set; } = new List<Qualification>();
             public bool AllowMultipleAdd { get; set; }
+            public bool ShowAdditionalInformation { get; set; }
         }
 
         public class Qualification
         {
-            public Guid Id { get; set; }
+            public Guid? Id { get; set; }
             public string Subject { get; set; }
             public string Grade { get; set; }
             public string Level { get; set; }

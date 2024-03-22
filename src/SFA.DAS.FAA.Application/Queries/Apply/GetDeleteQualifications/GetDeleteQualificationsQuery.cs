@@ -7,5 +7,6 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDeleteQualifications
         public Guid CandidateId { get; init; }
         public Guid ApplicationId { get; init; }
         public Guid QualificationType { get; init; }
+        public Guid? Id { get; set; }
     }
 }

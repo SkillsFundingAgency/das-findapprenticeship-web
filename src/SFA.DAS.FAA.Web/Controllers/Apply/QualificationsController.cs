@@ -187,13 +187,14 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("apply/{applicationId}/qualifications/delete/{qualificationReferenceId}", Name = RouteNames.ApplyApprenticeship.DeleteQualifications)]
-        public async Task<IActionResult> DeleteQualifications([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId)
+        public async Task<IActionResult> DeleteQualifications([FromRoute] Guid applicationId, [FromRoute] Guid qualificationReferenceId, [FromQuery] Guid? id = null)
         {
             var result = await mediator.Send(new GetDeleteQualificationsQuery
             {
                 ApplicationId = applicationId,
                 CandidateId = User.Claims.CandidateId(),
-                QualificationType = qualificationReferenceId
+                QualificationType = qualificationReferenceId,
+                Id = id
             });
 
             var viewModel = DeleteQualificationsViewModel.MapFromQueryResult(applicationId, qualificationReferenceId, result);
