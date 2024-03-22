@@ -148,13 +148,14 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return RedirectToRoute(RouteNames.ApplyApprenticeship.AddQualificationSelectType,
                     new { applicationId });
             }
-            
+
+            var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name);
             var model = new AddQualificationViewModel
             {
                 ApplicationId = applicationId,
                 QualificationReferenceId = qualificationReferenceId,
-                QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name),
-                Subjects = result.Qualifications.Select(c=>(SubjectViewModel)c).ToList()
+                QualificationDisplayTypeViewModel = qualificationDisplayTypeViewModel,
+                Subjects = !qualificationDisplayTypeViewModel.AllowMultipleAdd && id == null ? [] : result.Qualifications!.Select(c=>(SubjectViewModel)c).ToList()
             };
             return View(AddQualificationViewName, model);
         }
