@@ -10,7 +10,7 @@ public class GetDeleteQualificationsQueryHandler(IApiClient apiClient): IRequest
     {
         var result = await apiClient.Get<GetDeleteQualificationsApiResponse>(
             new GetDeleteQualificationsApiRequest(request.ApplicationId, request.CandidateId,
-                request.QualificationType));
+                request.QualificationType, request.Id));
 
         return result;
     }

@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply
             GetDeleteQualificationsQueryHandler handler)
         {
             // Arrange
-            var apiRequestUri = new GetDeleteQualificationsApiRequest(query.ApplicationId, query.CandidateId, query.QualificationType);
+            var apiRequestUri = new GetDeleteQualificationsApiRequest(query.ApplicationId, query.CandidateId, query.QualificationType, query.Id);
 
             apiClientMock.Setup(client =>
                     client.Get<GetDeleteQualificationsApiResponse>(
