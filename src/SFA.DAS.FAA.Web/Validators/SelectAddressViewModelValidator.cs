@@ -10,6 +10,8 @@ public class SelectAddressViewModelValidator : AbstractValidator<SelectAddressVi
     {
         RuleFor(x => x.SelectedAddress)
             .NotNull()
+            .WithMessage(NoAddressSelected)
+            .NotEqual("choose")
             .WithMessage(NoAddressSelected);
     }
 }

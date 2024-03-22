@@ -5,7 +5,7 @@ namespace SFA.DAS.FAA.Web.Models.User;
 public class SelectAddressViewModel : ViewModelBase
 {
     public List<AddressViewModel>? Addresses { get; set; }
-    public AddressViewModel? SelectedAddress { get; set; }
+    public string? SelectedAddress { get; set; }
     public string Postcode { get; set; }
 
     public static implicit operator SelectAddressViewModel(List<GetAddressesByPostcodeApiResponse.AddressListItem> source)

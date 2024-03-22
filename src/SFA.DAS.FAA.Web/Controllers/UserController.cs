@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.UserAddress;
 using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
@@ -150,7 +151,23 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return RedirectToRoute(RouteNames.SearchResults);
+            var addresses = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
+
+            model.Addresses = addresses.Addresses.Select(x => (AddressViewModel)x).ToList();
+
+            await mediator.Send(new UpdateAddressCommand()
+            {
+                GovUkIdentifier = User.Claims.GovIdentifier(),
+                Email = User.Claims.Email(),
+                AddressLine1 = model.Addresses[Convert.ToInt32(model.SelectedAddress)+1].AddressLine1,
+                AddressLine2 = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].AddressLine2,
+                AddressLine3 = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].AddressLine3,
+                AddressLine4 = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].County,
+                Postcode = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].Postcode,
+                Uprn = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].Uprn
+            });
+
+            return RedirectToRoute(RouteNames.PhoneNumber);
         }
     }
 }
