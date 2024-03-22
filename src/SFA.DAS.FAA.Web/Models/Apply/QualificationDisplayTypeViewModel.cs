@@ -5,11 +5,12 @@ public class QualificationDisplayTypeViewModel
     public QualificationDisplayTypeViewModel()
     {
     }
-    public QualificationDisplayTypeViewModel(string qualificationType)
+    public QualificationDisplayTypeViewModel(string qualificationType, Guid id)
     {
         switch (qualificationType.ToLower())
         {
             case "apprenticeship":
+                Id = id;
                 GroupTitle = "Apprenticeships";
                 Title = "Add an apprenticeship";
                 ShouldDisplayAdditionalInformationField = true;
@@ -21,6 +22,7 @@ public class QualificationDisplayTypeViewModel
                 ListOrder = 2;
                 break;
             case "btec":
+                Id = id;
                 CanShowLevel = true;
                 CanShowPredicted = true;
                 AllowMultipleAdd = false;
@@ -31,6 +33,7 @@ public class QualificationDisplayTypeViewModel
                 ListOrder = 6;
                 break;
             case "a level":
+                Id = id;
                 GroupTitle = "A levels";
                 Title = "Add A levels";
                 CanShowLevel = false;
@@ -40,6 +43,7 @@ public class QualificationDisplayTypeViewModel
                 ListOrder = 3;
                 break;
             case "t level":
+                Id = id;
                 GroupTitle = "T levels";
                 Title = "Add a T level";
                 CanShowLevel = false;
@@ -49,6 +53,7 @@ public class QualificationDisplayTypeViewModel
                 ListOrder = 5;
                 break;
             case "as level":
+                Id = id;
                 GroupTitle = "AS levels";
                 Title = "Add AS levels";
                 CanShowLevel = false;
@@ -58,6 +63,7 @@ public class QualificationDisplayTypeViewModel
                 ListOrder = 4;
                 break;
             case "degree":
+                Id = id;
                 GroupTitle = "Degree";
                 Title = "Add a degree";
                 CanShowLevel = false;
@@ -72,6 +78,7 @@ public class QualificationDisplayTypeViewModel
                 ListOrder = 1;
                 break;
             case "gcse":
+                Id = id;
                 CanShowLevel = false;
                 CanShowPredicted = true;
                 AllowMultipleAdd = true;
@@ -82,6 +89,7 @@ public class QualificationDisplayTypeViewModel
                 ListOrder = 7;
                 break;
             default:
+                Id = id;
                 Title = "Add other qualifications";
                 GroupTitle = "Other qualifications";
                 CanShowLevel = false;
@@ -94,6 +102,9 @@ public class QualificationDisplayTypeViewModel
                 break;
         }
     }
+
+    public Guid Id { get; set; }
+
     public short ListOrder { get; set; }
     public short AddOrder { get; set; }
     public string? SelectHintText { get; set; }

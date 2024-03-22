@@ -15,17 +15,20 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 ShowQualifications = source.Qualifications.Count != 0
             };
 
-            foreach (var qualificationType in source.QualificationTypes.OrderBy(x => x.Order))
+            var viewModelQualificationTypes =
+                source.QualificationTypes.Select(c => new QualificationDisplayTypeViewModel(c.Name, c.Id)).ToList();
+
+            foreach (var qualificationType in viewModelQualificationTypes.OrderBy(x => x.ListOrder))
             {
                 if (source.Qualifications.Any(x => x.QualificationReferenceId == qualificationType.Id))
                 {
-                    var groupMetadata = new QualificationDisplayTypeViewModel(qualificationType.Name);
+                    
                     var group = new QualificationGroup
                     {
-                        DisplayName = groupMetadata.GroupTitle,
-                        ShowAdditionalInformation = groupMetadata.ShouldDisplayAdditionalInformationField,
+                        DisplayName = qualificationType.GroupTitle,
+                        ShowAdditionalInformation = qualificationType.ShouldDisplayAdditionalInformationField,
                         QualificationReferenceId = qualificationType.Id,
-                        AllowMultipleAdd = groupMetadata.AllowMultipleAdd,
+                        AllowMultipleAdd = qualificationType.AllowMultipleAdd,
                         Qualifications = source.Qualifications
                             .Where(x => x.QualificationReferenceId == qualificationType.Id)
                             .Select(x => new Qualification

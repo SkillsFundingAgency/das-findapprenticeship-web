@@ -30,7 +30,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public static DeleteQualificationsViewModel MapFromQueryResult(Guid applicationId, Guid qualificationReferenceId,
             GetDeleteQualificationsQueryResult source)
         {
-            var metadata = new QualificationDisplayTypeViewModel(source.QualificationReference);
+            var metadata = new QualificationDisplayTypeViewModel(source.QualificationReference, qualificationReferenceId);
 
             var result = new DeleteQualificationsViewModel
             {

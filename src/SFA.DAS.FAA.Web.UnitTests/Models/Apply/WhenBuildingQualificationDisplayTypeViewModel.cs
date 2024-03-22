@@ -9,8 +9,11 @@ public class WhenBuildingQualificationDisplayTypeViewModel
     [Test]
     public void Then_Values_Set_For_Apprenticeship()
     {
-        var actual = new QualificationDisplayTypeViewModel("Apprenticeship");
+        var id = Guid.NewGuid();
+        
+        var actual = new QualificationDisplayTypeViewModel("Apprenticeship", id);
 
+        actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add an apprenticeship");
         actual.GroupTitle.Should().Be("Apprenticeships");
         actual.AllowMultipleAdd.Should().BeFalse();
@@ -24,8 +27,11 @@ public class WhenBuildingQualificationDisplayTypeViewModel
     [Test]
     public void Then_Values_Set_For_Btec()
     {
-        var actual = new QualificationDisplayTypeViewModel("BTEC");
+        var id = Guid.NewGuid();
+        
+        var actual = new QualificationDisplayTypeViewModel("BTEC", id);
 
+        actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add a BTEC");
         actual.GroupTitle.Should().Be("BTEC");
         actual.AllowMultipleAdd.Should().BeFalse();
@@ -38,8 +44,11 @@ public class WhenBuildingQualificationDisplayTypeViewModel
     [Test]
     public void Then_Values_Set_For_ALevel()
     {
-        var actual = new QualificationDisplayTypeViewModel("A Level");
+        var id = Guid.NewGuid();
+        
+        var actual = new QualificationDisplayTypeViewModel("A Level", id);
 
+        actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add A levels");
         actual.GroupTitle.Should().Be("A levels");
         actual.AllowMultipleAdd.Should().BeTrue();
@@ -52,8 +61,11 @@ public class WhenBuildingQualificationDisplayTypeViewModel
     [Test]
     public void Then_Values_Set_For_AsLevel()
     {
-        var actual = new QualificationDisplayTypeViewModel("As Level");
+        var id = Guid.NewGuid();
+        
+        var actual = new QualificationDisplayTypeViewModel("As Level", id);
 
+        actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add AS levels");
         actual.GroupTitle.Should().Be("AS levels");
         actual.AllowMultipleAdd.Should().BeTrue();
@@ -66,8 +78,11 @@ public class WhenBuildingQualificationDisplayTypeViewModel
     [Test]
     public void Then_Values_Set_For_TLevel()
     {
-        var actual = new QualificationDisplayTypeViewModel("T Level");
+        var id = Guid.NewGuid();
+        
+        var actual = new QualificationDisplayTypeViewModel("T Level", id);
 
+        actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add a T level");
         actual.GroupTitle.Should().Be("T levels");
         actual.AllowMultipleAdd.Should().BeFalse();
@@ -80,8 +95,11 @@ public class WhenBuildingQualificationDisplayTypeViewModel
     [Test]
     public void Then_Values_Set_For_Degree()
     {
-        var actual = new QualificationDisplayTypeViewModel("Degree");
+        var id = Guid.NewGuid();
+        
+        var actual = new QualificationDisplayTypeViewModel("Degree", id);
 
+        actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add a degree");
         actual.GroupTitle.Should().Be("Degree");
         actual.SubjectLabel.Should().Be("Degree");
@@ -98,8 +116,11 @@ public class WhenBuildingQualificationDisplayTypeViewModel
     [Test]
     public void Then_Values_Set_For_GCSE()
     {
-        var actual = new QualificationDisplayTypeViewModel("GCse");
+        var id = Guid.NewGuid();
+        
+        var actual = new QualificationDisplayTypeViewModel("GCse", id);
 
+        actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add GCSEs");
         actual.GroupTitle.Should().Be("GCSEs");
         actual.AllowMultipleAdd.Should().BeTrue();
@@ -110,8 +131,11 @@ public class WhenBuildingQualificationDisplayTypeViewModel
     [Test]
     public void Then_Values_Set_For_Other()
     {
-        var actual = new QualificationDisplayTypeViewModel("MAgic");
+        var id = Guid.NewGuid();
+        
+        var actual = new QualificationDisplayTypeViewModel("MAgic", id);
 
+        actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add other qualifications");
         actual.GroupTitle.Should().Be("Other qualifications");
         actual.AllowMultipleAdd.Should().BeFalse();

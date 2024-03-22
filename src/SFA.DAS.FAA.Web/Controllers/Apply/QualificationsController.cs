@@ -95,7 +95,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 ApplicationId = applicationId,
                 Qualifications = qualificationTypes.QualificationTypes.Select(c=>new AddQualificationSelectTypeViewModel.QualificationType
                 {
-                    QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(c.Name),
+                    QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(c.Name, c.Id),
                     Id = c.Id,
                     Name = c.Name
                 }).ToList(),
@@ -117,7 +117,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     ApplicationId = model.ApplicationId,
                     Qualifications = qualificationTypes.QualificationTypes.Select(c=>new AddQualificationSelectTypeViewModel.QualificationType
                     {
-                        QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(c.Name),
+                        QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(c.Name, c.Id),
                         Id = c.Id,
                         Name = c.Name
                     }).ToList(),
@@ -149,7 +149,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     new { applicationId });
             }
 
-            var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name);
+            var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name, result.QualificationType.Id);
             var model = new AddQualificationViewModel
             {
                 ApplicationId = applicationId,

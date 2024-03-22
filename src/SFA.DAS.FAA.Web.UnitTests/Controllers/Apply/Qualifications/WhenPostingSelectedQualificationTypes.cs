@@ -47,7 +47,7 @@ public class WhenPostingSelectedQualificationTypes
         actualModel!.ApplicationId.Should().Be(model.ApplicationId);
         actualModel.Qualifications.Should().BeEquivalentTo(queryResult.QualificationTypes.Select(c=>new AddQualificationSelectTypeViewModel.QualificationType
         {
-            QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(c.Name),
+            QualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(c.Name, c.Id),
             Id = c.Id,
             Name = c.Name
         }).ToList());
