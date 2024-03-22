@@ -15,13 +15,14 @@
         <h1 class="govuk-heading-l">Select your address</h1>
 
         <h2 class="govuk-heading-m">Postcode</h2>
-        <p class="govuk-body"><strong>@Model.Postcode</strong> <a class="govuk-link" href="#">Change</a></p>
+        <p class="govuk-body"><strong>@Model.Postcode</strong> <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress">Change</a></p>
 
         <form class="form" method="post">
-            <div class="govuk-form-group">
+            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                 <div id="location-hint" class="govuk-hint">
                     @Model.Addresses.Count addresses found
                 </div>
+                <span asp-validation-for="SelectedAddress" class="govuk-error-message"></span>
                 <select class="govuk-select" asp-for="SelectedAddress" aria-describedby="addresses-found">
                     <option value="choose" selected>Select address</option>
                     @for (var i = 0; i < Model.Addresses.Count; i++)

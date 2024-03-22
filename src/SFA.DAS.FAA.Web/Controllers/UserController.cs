@@ -159,12 +159,12 @@ namespace SFA.DAS.FAA.Web.Controllers
             {
                 GovUkIdentifier = User.Claims.GovIdentifier(),
                 Email = User.Claims.Email(),
-                AddressLine1 = model.Addresses[Convert.ToInt32(model.SelectedAddress)+1].AddressLine1,
-                AddressLine2 = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].AddressLine2,
-                AddressLine3 = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].AddressLine3,
-                AddressLine4 = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].County,
-                Postcode = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].Postcode,
-                Uprn = model.Addresses[Convert.ToInt32(model.SelectedAddress) + 1].Uprn
+                AddressLine1 = model.Addresses[Convert.ToInt32(model.SelectedAddress)].AddressLine1,
+                AddressLine2 = model.Addresses[Convert.ToInt32(model.SelectedAddress)].AddressLine2,
+                AddressLine3 = model.Addresses[Convert.ToInt32(model.SelectedAddress)].AddressLine3,
+                AddressLine4 = model.Addresses[Convert.ToInt32(model.SelectedAddress)].County,
+                Postcode = model.Addresses[Convert.ToInt32(model.SelectedAddress)].Postcode,
+                Uprn = model.Addresses[Convert.ToInt32(model.SelectedAddress)].Uprn
             });
 
             return RedirectToRoute(RouteNames.PhoneNumber);
