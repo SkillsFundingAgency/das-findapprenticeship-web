@@ -18,6 +18,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.CanShowLevel.Should().BeFalse();
         actual.ShouldDisplayAdditionalInformationField.Should().BeTrue();
         actual.HasDataLookup.Should().BeTrue();
+        actual.AddOrder.Should().Be(6);
+        actual.ListOrder.Should().Be(2);
     }
     [Test]
     public void Then_Values_Set_For_Btec()
@@ -30,6 +32,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeTrue();
         actual.ShouldDisplayAdditionalInformationField.Should().BeFalse();
+        actual.AddOrder.Should().Be(2);
+        actual.ListOrder.Should().Be(6);
     }
     [Test]
     public void Then_Values_Set_For_ALevel()
@@ -42,6 +46,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
         actual.ShouldDisplayAdditionalInformationField.Should().BeFalse();
+        actual.AddOrder.Should().Be(5);
+        actual.ListOrder.Should().Be(3);
     }
     [Test]
     public void Then_Values_Set_For_AsLevel()
@@ -54,6 +60,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
         actual.ShouldDisplayAdditionalInformationField.Should().BeFalse();
+        actual.AddOrder.Should().Be(4);
+        actual.ListOrder.Should().Be(4);
     }
     [Test]
     public void Then_Values_Set_For_TLevel()
@@ -66,6 +74,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
         actual.ShouldDisplayAdditionalInformationField.Should().BeFalse();
+        actual.AddOrder.Should().Be(3);
+        actual.ListOrder.Should().Be(5);
     }
     [Test]
     public void Then_Values_Set_For_Degree()
