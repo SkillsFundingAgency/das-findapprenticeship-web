@@ -30,7 +30,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                             .Where(x => x.QualificationReferenceId == qualificationType.Id)
                             .Select(x => new Qualification
                             {
-                                Id = x.Id!.Value,
+                                Id = x.Id,
                                 Subject = x.Subject,
                                 Grade = x.Grade,
                                 Level = x.Level,
@@ -68,7 +68,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public class Qualification
         {
-            public Guid Id { get; set; }
+            public Guid? Id { get; set; }
             public string Subject { get; set; }
             public string Grade { get; set; }
             public string Level { get; set; }
