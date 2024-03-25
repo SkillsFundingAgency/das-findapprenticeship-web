@@ -27,51 +27,14 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
                 if (qualificationType.AllowMultipleAdd)
                 {
-                    var group = new QualificationGroup
-                    {
-                        DisplayName = qualificationType.GroupTitle,
-                        ShowAdditionalInformation = qualificationType.ShouldDisplayAdditionalInformationField,
-                        QualificationReferenceId = qualificationType.Id,
-                        AllowMultipleAdd = qualificationType.AllowMultipleAdd,
-                        Qualifications = source.Qualifications
-                            .Where(x => x.QualificationReferenceId == qualificationType.Id)
-                            .Select(x => new Qualification
-                            {
-                                Id = x.Id,
-                                Subject = x.Subject,
-                                Grade = x.Grade,
-                                Level = x.Level,
-                                AdditionalInformation = x.AdditionalInformation,
-                                IsPredicted = x.IsPredicted
-                            }).ToList()
-                    };
+                    var group = MapGroup(qualificationType, source.Qualifications.Where(x => x.QualificationReferenceId == qualificationType.Id));
                     result.QualificationGroups.Add(group);
                 }
                 else
                 {
-                    foreach (var qualification in source.Qualifications.Where(x =>
-                                 x.QualificationReferenceId == qualificationType.Id))
+                    foreach (var qualification in source.Qualifications.Where(x => x.QualificationReferenceId == qualificationType.Id))
                     {
-
-                        var group = new QualificationGroup
-                        {
-                            DisplayName = qualificationType.GroupTitle,
-                            ShowAdditionalInformation = qualificationType.ShouldDisplayAdditionalInformationField,
-                            QualificationReferenceId = qualificationType.Id,
-                            AllowMultipleAdd = qualificationType.AllowMultipleAdd,
-                            Qualifications =
-                            [
-                                new Qualification
-                                {
-                                    Id = qualification.Id,
-                                    Subject = qualification.Subject,
-                                    Grade = qualification.Grade,
-                                    Level = qualification.Level,
-                                    AdditionalInformation = qualification.AdditionalInformation,
-                                    IsPredicted = qualification.IsPredicted
-                                }
-                            ]
-                        };
+                        var group = MapGroup(qualificationType, new[] { qualification });
                         result.QualificationGroups.Add(group);
                     }
                 }
@@ -79,7 +42,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
             return result;
         }
-
 
         [FromRoute]
         public required Guid ApplicationId { get; set; }
@@ -111,7 +73,31 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public bool? IsPredicted { get; set; }
 
             public string GradeLabel => IsPredicted is true ? $"{Grade} (predicted)" : Grade;
-            
         }
+
+        private static QualificationGroup MapGroup(QualificationDisplayTypeViewModel qualificationType,
+            IEnumerable<GetQualificationsQueryResult.Qualification> qualifications)
+        {
+            var result = new QualificationGroup
+            {
+                DisplayName = qualificationType.GroupTitle,
+                ShowAdditionalInformation = qualificationType.ShouldDisplayAdditionalInformationField,
+                QualificationReferenceId = qualificationType.Id,
+                AllowMultipleAdd = qualificationType.AllowMultipleAdd,
+                Qualifications = qualifications
+                    .Select(x => new Qualification
+                    {
+                        Id = x.Id,
+                        Subject = x.Subject,
+                        Grade = x.Grade,
+                        Level = x.Level,
+                        AdditionalInformation = x.AdditionalInformation,
+                        IsPredicted = x.IsPredicted
+                    }).ToList()
+            };
+
+            return result;
+        }
+
     }
 }
