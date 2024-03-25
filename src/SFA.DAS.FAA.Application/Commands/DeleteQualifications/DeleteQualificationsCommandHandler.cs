@@ -9,6 +9,7 @@ namespace SFA.DAS.FAA.Application.Commands.DeleteQualifications
         public Guid ApplicationId { get; set; }
         public Guid CandidateId { get; set; }
         public Guid QualificationReferenceId { get; set; }
+        public Guid? Id { get; set; }
     }
 
     public class DeleteQualificationsCommandHandler(IApiClient apiClient) : IRequestHandler<DeleteQualificationsCommand>
@@ -19,7 +20,8 @@ namespace SFA.DAS.FAA.Application.Commands.DeleteQualifications
                 request.QualificationReferenceId,
                 new PostDeleteQualificationsApiRequest.PostDeleteQualificationsApiRequestBody
                 {
-                    CandidateId = request.CandidateId
+                    CandidateId = request.CandidateId,
+                    Id = request.Id
                 });
 
             await apiClient.PostWithResponseCode(apiRequest);

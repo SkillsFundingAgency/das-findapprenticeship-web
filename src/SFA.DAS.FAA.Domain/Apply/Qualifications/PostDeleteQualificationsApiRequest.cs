@@ -10,6 +10,7 @@ namespace SFA.DAS.FAA.Domain.Apply.Qualifications
         public class PostDeleteQualificationsApiRequestBody
         {
             public Guid CandidateId { get; set; }
+            public Guid? Id { get; set; }
         }
     }
 }

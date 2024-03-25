@@ -197,7 +197,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 Id = id
             });
 
-            var viewModel = DeleteQualificationsViewModel.MapFromQueryResult(applicationId, qualificationReferenceId, result);
+            var viewModel = DeleteQualificationsViewModel.MapFromQueryResult(applicationId, qualificationReferenceId, id, result);
 
             return View(DeleteQualificationsViewName, viewModel);
         }
@@ -210,7 +210,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 ApplicationId = viewModel.ApplicationId,
                 CandidateId = User.Claims.CandidateId(),
-                QualificationReferenceId = viewModel.QualificationReferenceId
+                QualificationReferenceId = viewModel.QualificationReferenceId,
+                Id = viewModel.Id
             });
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Qualifications, new { viewModel.ApplicationId });
