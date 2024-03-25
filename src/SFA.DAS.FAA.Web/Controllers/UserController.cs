@@ -134,30 +134,30 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = postcode });
 
-            var model = (SelectAddressViewModel)result.Addresses.ToList();
-            model.Postcode = model.Addresses.First().Postcode;
+            var model = (SelectAddressViewModel)result.Addresses?.ToList();
+            model.Postcode = model.Addresses?.FirstOrDefault()?.Postcode ?? postcode;
 
             return View(model);
         }
 
-        [HttpPost("select-address", Name =RouteNames.SelectAddress)]
+        [HttpPost("select-address", Name = RouteNames.SelectAddress)]
         public async Task<IActionResult> SelectAddress(SelectAddressViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
 
-                model = (SelectAddressViewModel)result.Addresses.ToList();
+                model = (SelectAddressViewModel)result.Addresses?.ToList();
                 return View(model);
             }
 
             var addresses = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
-            model.Addresses = addresses.Addresses.Select(x => (AddressViewModel)x).ToList();
+            model.Addresses = addresses.Addresses?.Select(x => (AddressViewModel)x).ToList();
 
-            var selectedAdress = addresses.Addresses.Where(x => x.Uprn == model.SelectedAddress).SingleOrDefault();
+            var selectedAdress = addresses.Addresses?.Where(x => x.Uprn == model.SelectedAddress).SingleOrDefault();
             await mediator.Send(new UpdateAddressCommand()
             {
-                GovUkIdentifier = User.Claims.GovIdentifier(),
+                CandidateId = User.Claims.CandidateId(),
                 Email = User.Claims.Email(),
                 Thoroughfare = selectedAdress.Thoroughfare,
                 Organisation = selectedAdress.Organisation,

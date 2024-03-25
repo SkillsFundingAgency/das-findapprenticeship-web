@@ -3,7 +3,7 @@
 namespace SFA.DAS.FAA.Application.Commands.UserAddress;
 public class UpdateAddressCommand : IRequest<Unit>
 {
-    public string GovUkIdentifier { get; set; }
+    public Guid CandidateId { get; set; }
     public string Email { get; set; }
     public string Thoroughfare { get; set; }
     public string Organisation { get; set; }
