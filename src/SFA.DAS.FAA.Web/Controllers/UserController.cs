@@ -189,7 +189,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             await mediator.Send(new UpdateManuallyEnteredAddressCommand()
             {
-                GovUkIdentifier = User.Claims.GovIdentifier(),
+                CandidateId = User.Claims.CandidateId(),
                 Email = User.Claims.Email(),
                 AddressLine1 = model.AddressLine1,
                 AddressLine2 = model.AddressLine2,

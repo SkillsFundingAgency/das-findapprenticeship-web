@@ -3,15 +3,15 @@
 namespace SFA.DAS.FAA.Domain.User;
 public class CreateUserManuallyEnteredAddressApiRequest : IPostApiRequest
 {
-    private readonly string _govIdentifier;
+    private readonly Guid _candidateId;
 
-    public CreateUserManuallyEnteredAddressApiRequest(string govIdentifier, CreateUserManuallyEnteredAddressApiRequestData data)
+    public CreateUserManuallyEnteredAddressApiRequest(Guid candidateId, CreateUserManuallyEnteredAddressApiRequestData data)
     {
-        _govIdentifier = govIdentifier;
+        _candidateId = candidateId;
         Data = data;
     }
     public object Data { get; set; }
-    public string PostUrl => $"users/{_govIdentifier}/enter-address";
+    public string PostUrl => $"users/{_candidateId}/enter-address";
 }
 public class CreateUserManuallyEnteredAddressApiRequestData
 {

@@ -8,7 +8,7 @@ public class WhenBuildingUpdateManuallyEnteredAddressRequest
 {
     [Test, AutoData]
     public void Then_Then_Request_Is_Built(
-        string govIdentifier, string email,
+        Guid candidateId, string email,
         string addressLine1, string addressLine2,
         string townOrCity, string county,
         string postcode)
@@ -22,8 +22,8 @@ public class WhenBuildingUpdateManuallyEnteredAddressRequest
             County = county,
             Postcode = postcode
         };
-        var actual = new CreateUserManuallyEnteredAddressApiRequest(govIdentifier, data);
+        var actual = new CreateUserManuallyEnteredAddressApiRequest(candidateId, data);
 
-        actual.PostUrl.Should().Be($"users/{govIdentifier}/enter-address");
+        actual.PostUrl.Should().Be($"users/{candidateId}/enter-address");
     }
 }

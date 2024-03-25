@@ -17,7 +17,7 @@ public class WhenHandlingCreateUserAddressEnteredManuallyCommand
         [Frozen] Mock<IApiClient> apiClientMock,
         UpdateManuallyEnteredAddressCommandHandler handler)
     {
-        var request = new CreateUserManuallyEnteredAddressApiRequest(command.GovUkIdentifier, new CreateUserManuallyEnteredAddressApiRequestData
+        var request = new CreateUserManuallyEnteredAddressApiRequest(command.CandidateId, new CreateUserManuallyEnteredAddressApiRequestData
         {
             Email = command.Email,
             AddressLine1 = command.AddressLine1,

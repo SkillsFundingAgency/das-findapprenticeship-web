@@ -9,7 +9,7 @@ public class UpdateManuallyEnteredAddressCommandHandler(IApiClient apiClient)
 {
     public async Task<Unit> Handle(UpdateManuallyEnteredAddressCommand request, CancellationToken cancellationToken)
     {
-        var postRequest = new CreateUserManuallyEnteredAddressApiRequest(request.GovUkIdentifier, new CreateUserManuallyEnteredAddressApiRequestData
+        var postRequest = new CreateUserManuallyEnteredAddressApiRequest(request.CandidateId, new CreateUserManuallyEnteredAddressApiRequestData
         {
             Email = request.Email,
             AddressLine1 = request.AddressLine1,
