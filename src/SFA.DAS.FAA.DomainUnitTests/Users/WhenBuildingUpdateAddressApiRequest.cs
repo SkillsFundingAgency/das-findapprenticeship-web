@@ -8,10 +8,10 @@ public class WhenBuildingUpdateAddressApiRequest
 {
     [Test, AutoData]
     public void Then_Then_Request_Is_Built(
-        string govIdentifier, string email,
+        Guid candidateId, string email,
         string addressLine1, string addressLine2,
         string addressLine3, string addressLine4,
-        string postcode, string uprn)
+        string postcode)
     {
         var data = new CreateUserAddressApiRequestData()
         {
@@ -22,8 +22,8 @@ public class WhenBuildingUpdateAddressApiRequest
             AddressLine4 = addressLine4,
             Postcode = postcode
         };
-        var actual = new CreateUserAddressApiRequest(govIdentifier, data);
+        var actual = new CreateUserAddressApiRequest(candidateId, data);
 
-        actual.PostUrl.Should().Be($"users/{govIdentifier}/select-address");
+        actual.PostUrl.Should().Be($"users/{candidateId}/select-address");
     }
 }

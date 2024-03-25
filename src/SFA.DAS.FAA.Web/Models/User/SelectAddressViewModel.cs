@@ -8,11 +8,11 @@ public class SelectAddressViewModel : ViewModelBase
     public string? SelectedAddress { get; set; }
     public string Postcode { get; set; }
 
-    public static implicit operator SelectAddressViewModel(List<GetAddressesByPostcodeApiResponse.AddressListItem> source)
+    public static implicit operator SelectAddressViewModel(List<GetAddressesByPostcodeApiResponse.AddressListItem>? source)
     {
         return new SelectAddressViewModel
         {
-            Addresses = source.Select(c => (AddressViewModel)c).GroupBy(x => x.AddressLine1).Select(x => x.First()).ToList()
+            Addresses = source?.Select(c => (AddressViewModel)c).GroupBy(x => x.AddressLine1).Select(x => x.First()).ToList() ?? new List<AddressViewModel>()
         };
     }
 }

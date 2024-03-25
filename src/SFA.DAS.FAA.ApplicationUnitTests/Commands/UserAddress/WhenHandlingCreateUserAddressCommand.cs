@@ -17,7 +17,7 @@ public class WhenHandlingCreateUserAddressCommand
         [Frozen] Mock<IApiClient> apiClientMock,
         UpdateAddressCommandHandler handler)
     {
-        var request = new CreateUserAddressApiRequest(command.GovUkIdentifier, new CreateUserAddressApiRequestData
+        var request = new CreateUserAddressApiRequest(command.CandidateId, new CreateUserAddressApiRequestData
         {
             Email = command.Email,
             AddressLine1 = command.AddressLine1,

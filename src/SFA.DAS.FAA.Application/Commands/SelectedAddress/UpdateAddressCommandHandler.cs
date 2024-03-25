@@ -14,8 +14,12 @@ public class UpdateAddressCommandHandler(IApiClient apiClient)
         {
             addressLine1 = !String.IsNullOrWhiteSpace(request.Thoroughfare) ? request.Thoroughfare : request.Organisation;
         }
+        else
+        {
+            addressLine1 = request.AddressLine1;
+        }
 
-        var postRequest = new CreateUserAddressApiRequest(request.GovUkIdentifier, new CreateUserAddressApiRequestData
+        var postRequest = new CreateUserAddressApiRequest(request.CandidateId, new CreateUserAddressApiRequestData
         {
             Email = request.Email,
             AddressLine1 = addressLine1,
