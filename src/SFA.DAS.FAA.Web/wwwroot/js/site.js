@@ -139,10 +139,10 @@ ExtraFieldRows.prototype.init = function () {
     this.appendRemoveLink(extraFieldRow);
   }
 
-  // If all rows are hidden, add class to hide the fieldset
+  // If all rows are hidden, show the first row
   const hiddenRowCount = this.showHideEmptyRows();
   if (hiddenRowCount === this.extraFieldRows.length) {
-    this.fieldset.classList.add(this.fieldsetHiddenClass);
+    this.showRow(this.extraFieldRows[0]);
   }
 };
 
@@ -216,6 +216,7 @@ ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
 };
 
 ExtraFieldRows.prototype.updateRowOrder = function () {
+  /*
   const that = this;
   const answers = [];
   for (let f = 0; f < that.extraFieldRows.length; f++) {
@@ -233,6 +234,7 @@ ExtraFieldRows.prototype.updateRowOrder = function () {
     textInput.value = answer;
     that.showRow(extraFieldRow, false);
   });
+  */
 };
 
 ExtraFieldRows.prototype.hideRow = function (row) {
