@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.ManuallyEnteredAddress;
 using SFA.DAS.FAA.Application.Commands.UserAddress;
 using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.UserName;
@@ -140,7 +141,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
-        [HttpPost("select-address", Name =RouteNames.SelectAddress)]
+        [HttpPost("select-address", Name = RouteNames.SelectAddress)]
         public async Task<IActionResult> SelectAddress(SelectAddressViewModel model)
         {
             if (!ModelState.IsValid)
@@ -166,6 +167,35 @@ namespace SFA.DAS.FAA.Web.Controllers
                 AddressLine3 = selectedAdress.PostTown,
                 AddressLine4 = selectedAdress.County,
                 Postcode = selectedAdress.Postcode
+            });
+
+            return RedirectToRoute(RouteNames.PhoneNumber);
+        }
+
+        [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
+        public IActionResult EnterAddressManually(string backLink)
+        {
+            var model = new EnterAddressManuallyViewModel() { BackLink = backLink };
+            return View(model);
+        }
+
+        [HttpPost("enter-address", Name = RouteNames.EnterAddressManually)]
+        public async Task<IActionResult> EnterAddressManually(EnterAddressManuallyViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await mediator.Send(new UpdateManuallyEnteredAddressCommand()
+            {
+                GovUkIdentifier = User.Claims.GovIdentifier(),
+                Email = User.Claims.Email(),
+                AddressLine1 = model.AddressLine1,
+                AddressLine2 = model.AddressLine2,
+                TownOrCity = model.TownOrCity,
+                County = model.County,
+                Postcode = model.Postcode
             });
 
             return RedirectToRoute(RouteNames.PhoneNumber);
