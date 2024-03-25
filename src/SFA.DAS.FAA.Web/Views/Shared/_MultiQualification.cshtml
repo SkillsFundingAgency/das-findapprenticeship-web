@@ -7,8 +7,8 @@
          if(index < Model.Subjects.Count)
          {
             var subject = Model.Subjects[index];
-            <input type="hidden" id="subjects[@index][id]" value="@subject.Id" name="subjects[@index][id]">
             <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
+               <input type="hidden" id="subjects[@index][id]" value="@subject.Id" name="subjects[@index][id]">
                <div class="govuk-grid-column-one-third">
                   <div class="govuk-form-group">
                      <label class="govuk-label" for="subjects[@index][name]">
