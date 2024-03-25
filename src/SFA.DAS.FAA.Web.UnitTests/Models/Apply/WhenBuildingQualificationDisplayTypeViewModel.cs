@@ -16,10 +16,12 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add an apprenticeship");
         actual.GroupTitle.Should().Be("Apprenticeships");
+        actual.SubjectLabel.Should().Be("Training course");
+        actual.SubjectHintText.Should().Be("For example, Network engineer (Level 4)");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
-        actual.ShouldDisplayAdditionalInformationField.Should().BeTrue();
+        actual.ShouldDisplayAdditionalInformationField.Should().BeFalse();
         actual.HasDataLookup.Should().BeTrue();
         actual.AddOrder.Should().Be(6);
         actual.ListOrder.Should().Be(2);

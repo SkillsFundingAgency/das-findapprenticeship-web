@@ -155,7 +155,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 ApplicationId = applicationId,
                 QualificationReferenceId = qualificationReferenceId,
                 QualificationDisplayTypeViewModel = qualificationDisplayTypeViewModel,
-                Subjects = !qualificationDisplayTypeViewModel.AllowMultipleAdd && id == null ? [] : result.Qualifications!.Select(c=>(SubjectViewModel)c).ToList()
+                Subjects = !qualificationDisplayTypeViewModel.AllowMultipleAdd && id == null ? [] : result.Qualifications!.Select(c=>(SubjectViewModel)c).ToList(),
+                Courses = result.Courses.Select(c=>(CourseDataListItem)c).ToList()
             };
             return View(AddQualificationViewName, model);
         }

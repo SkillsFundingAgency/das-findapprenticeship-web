@@ -12,6 +12,7 @@ public class GetQualificationsApiResponse
     public bool? IsSectionCompleted { get; set; }
     public List<Qualification> Qualifications { get; set; } = null!;
     public List<QualificationType> QualificationTypes { get; set; } = null!;
+    
 
     public class QualificationType
     {
@@ -30,4 +31,6 @@ public class GetQualificationsApiResponse
         public bool? IsPredicted { get; set; }
         public Guid? Id { get; set; }
     }
+
+    
 }

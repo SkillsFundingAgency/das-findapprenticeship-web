@@ -10,10 +10,36 @@
    <input type="hidden" name="subjects[0][id]" value="@existingApplicationQualification.Id" id="subjects[0][id]"/>
    <div class="govuk-grid-column-two-thirds">
       <div class="govuk-form-group">
+         
          <label class="govuk-label govuk-label--m" for="subjects[0][name]">
             @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subject")
-         </label>
-         <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text" value="@existingApplicationQualification.Name">
+            @if (!string.IsNullOrEmpty(Model.QualificationDisplayTypeViewModel.SubjectHintText))
+            {
+               <div class="govuk-hint">@Model.QualificationDisplayTypeViewModel.SubjectHintText</div>   
+            }
+            
+         </label>   
+         
+         @if (Model.QualificationDisplayTypeViewModel.HasDataLookup)
+         {
+            
+            <select class="govuk-select" id="subjects[0][name]" name="subjects[0][name]" data-autocomplete="true">
+               <option value=""></option>   
+               @foreach (var course in Model.Courses)
+               {
+                  <option value="@($"{course.Id}|{course.Title}")">@course.Title</option>
+               }
+
+            </select>
+         }
+         else
+         {
+            
+            <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text" value="@existingApplicationQualification.Name">      
+         }
+         
+         
+         
       </div>
       @if (Model.QualificationDisplayTypeViewModel.CanShowLevel)
       {

@@ -15,7 +15,8 @@ public class GetModifyQualificationQueryHandler(IApiClient apiClient) : IRequest
         return new GetModifyQualificationQueryResult
         {
             QualificationType = result.QualificationType,
-            Qualifications = result.Qualifications
+            Qualifications = result.Qualifications,
+            Courses = result.Courses
         };
     }
 }

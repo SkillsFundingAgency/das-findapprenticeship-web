@@ -13,7 +13,9 @@ public class QualificationDisplayTypeViewModel
                 Id = id;
                 GroupTitle = "Apprenticeships";
                 Title = "Add an apprenticeship";
-                ShouldDisplayAdditionalInformationField = true;
+                SubjectLabel = "Training course";
+                SubjectHintText = "For example, Network engineer (Level 4)";
+                ShouldDisplayAdditionalInformationField = false;
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;
@@ -102,7 +104,6 @@ public class QualificationDisplayTypeViewModel
                 break;
         }
     }
-
     public Guid Id { get; set; }
 
     public short ListOrder { get; set; }
