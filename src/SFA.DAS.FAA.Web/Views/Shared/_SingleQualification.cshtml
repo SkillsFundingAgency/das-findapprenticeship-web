@@ -22,15 +22,16 @@
          
          @if (Model.QualificationDisplayTypeViewModel.HasDataLookup)
          {
-            
-            <select class="govuk-select" id="subjects[0][name]" name="subjects[0][name]" data-autocomplete="true">
-               <option value=""></option>   
-               @foreach (var course in Model.Courses)
-               {
-                  <option value="@($"{course.Id}|{course.Title}")">@course.Title</option>
-               }
+            <div class="faa-course-select">
+               <select class="govuk-select" id="subjects[0][name]" name="subjects[0][name]" data-autocomplete="true">
+                  <option value=""></option>   
+                  @foreach (var course in Model.Courses)
+                  {
+                     <option value="@($"{course.Id}|{course.Title}")">@course.Title</option>
+                  }
 
-            </select>
+               </select>
+            </div>
          }
          else
          {
