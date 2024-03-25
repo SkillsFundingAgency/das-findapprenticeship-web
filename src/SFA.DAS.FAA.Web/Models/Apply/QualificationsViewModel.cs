@@ -20,9 +20,13 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
             foreach (var qualificationType in viewModelQualificationTypes.OrderBy(x => x.ListOrder))
             {
-                if (source.Qualifications.Any(x => x.QualificationReferenceId == qualificationType.Id))
+                if (source.Qualifications.All(x => x.QualificationReferenceId != qualificationType.Id))
                 {
-                    
+                    continue;
+                }
+
+                if (qualificationType.AllowMultipleAdd)
+                {
                     var group = new QualificationGroup
                     {
                         DisplayName = qualificationType.GroupTitle,
@@ -42,6 +46,34 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                             }).ToList()
                     };
                     result.QualificationGroups.Add(group);
+                }
+                else
+                {
+                    foreach (var qualification in source.Qualifications.Where(x =>
+                                 x.QualificationReferenceId == qualificationType.Id))
+                    {
+
+                        var group = new QualificationGroup
+                        {
+                            DisplayName = qualificationType.GroupTitle,
+                            ShowAdditionalInformation = qualificationType.ShouldDisplayAdditionalInformationField,
+                            QualificationReferenceId = qualificationType.Id,
+                            AllowMultipleAdd = qualificationType.AllowMultipleAdd,
+                            Qualifications =
+                            [
+                                new Qualification
+                                {
+                                    Id = qualification.Id,
+                                    Subject = qualification.Subject,
+                                    Grade = qualification.Grade,
+                                    Level = qualification.Level,
+                                    AdditionalInformation = qualification.AdditionalInformation,
+                                    IsPredicted = qualification.IsPredicted
+                                }
+                            ]
+                        };
+                        result.QualificationGroups.Add(group);
+                    }
                 }
             }
 
