@@ -144,8 +144,8 @@ public class QualificationDisplayTypeViewModel
     public string Title { get; }
     public string GroupTitle { get; }
     public string ErrorSummary { get; set; }
-    public string? SubjectErrorMessage { get; set; }
-    public string? GradeErrorMessage { get; set; }
-    public string? AdditionalInformationErrorMessage { get; set; }
+    public string? SubjectErrorMessage { get; set; } = "Error";
+    public string? GradeErrorMessage { get; set; } = "Error";
+    public string? AdditionalInformationErrorMessage { get; set; } = "Error";
     
 }

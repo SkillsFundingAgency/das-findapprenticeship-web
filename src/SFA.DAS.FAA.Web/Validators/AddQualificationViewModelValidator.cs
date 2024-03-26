@@ -23,8 +23,13 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
         RuleFor(x => x.Grade).Cascade(CascadeMode.Continue).NotEmpty()
             .WithMessage(model.GradeErrorMessage)
             .When(c => (!string.IsNullOrEmpty(c.Name) || c.Id.HasValue) && model.GradeErrorMessage != null);
-        RuleFor(x => x.AdditionalInformation).Cascade(CascadeMode.Continue).NotEmpty()
-            .WithMessage(model.AdditionalInformationErrorMessage)
-            .When(c=> model.AdditionalInformationErrorMessage != null);
+
+        When(c => model.ShouldDisplayAdditionalInformationField, () =>
+        {
+            RuleFor(x => x.AdditionalInformation).Cascade(CascadeMode.Continue).NotEmpty()
+                .WithMessage(model.AdditionalInformationErrorMessage);
+        });
+        
+        
     }
 }
