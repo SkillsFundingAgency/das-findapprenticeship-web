@@ -258,13 +258,8 @@ ExtraFieldRows.prototype.hideRow = function (row) {
 };
 
 ExtraFieldRows.prototype.showRow = function (row, focus = false) {
-  const errorMessage = row.querySelector(".govuk-error-message");
   const textInput = row.querySelector("input");
   this.fieldset.classList.remove(this.fieldsetHiddenClass);
-  if (errorMessage) {
-    errorMessage.remove();
-  }
-  row.classList.remove("govuk-form-group--error");
   row.classList.remove(this.hiddenClass);
   if (focus) {
     textInput.focus();

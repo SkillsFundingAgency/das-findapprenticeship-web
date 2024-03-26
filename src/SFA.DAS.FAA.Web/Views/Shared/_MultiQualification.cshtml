@@ -9,11 +9,11 @@
          {
             var subject = Model.Subjects[index];
             
-               <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
+            <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
                <input type="hidden" id="subjects[@index][id]" value="@subject.Id" name="subjects[@index][id]">
-               <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Name" error-class="govuk-form-group--error">
+    
                   <div class="govuk-grid-column-one-third">
-                     <div class="govuk-form-group">
+                     <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Name" error-class="govuk-form-group--error">
                         <label class="govuk-label" for="subjects[@index][name]">
                            Subject
                         </label>
@@ -21,10 +21,10 @@
                         <input class="govuk-input" id="subjects[@index][name]" name="subjects[@index][name]" type="text" value="@subject.Name">
                      </div>
                   </div>
-               </div>
-               <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Grade" error-class="govuk-form-group--error">
+
+  
                   <div class="govuk-grid-column-one-quarter">
-                     <div class="govuk-form-group">
+                     <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Grade" error-class="govuk-form-group--error">
                         <label class="govuk-label" for="subjects[@index][grade]">
                            Grade
                         </label>
@@ -32,7 +32,7 @@
                         <input class="govuk-input" id="subjects[@index][grade]" name="subjects[@index][grade]" type="text" value="@subject.Grade">
                      </div>
                   </div>
-               </div>
+      
                <div class="govuk-grid-column-one-third">
                   <div class="govuk-form-group">
                      @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
