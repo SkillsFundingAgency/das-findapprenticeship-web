@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.ManuallyEnteredAddress;
+using SFA.DAS.FAA.Application.Commands.PhoneNumber;
 using SFA.DAS.FAA.Application.Commands.UserAddress;
 using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.UserName;
@@ -169,7 +170,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = selectedAdress.Postcode
             });
 
-            return RedirectToRoute(RouteNames.PhoneNumber);
+            return RedirectToRoute(RouteNames.PhoneNumber, new {backLink = RouteNames.SelectAddress.ToString()});
         }
 
         [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
@@ -198,7 +199,38 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = model.Postcode
             });
 
-            return RedirectToRoute(RouteNames.PhoneNumber);
+            return RedirectToRoute(RouteNames.PhoneNumber, new {RouteNames.EnterAddressManually});
+        }
+
+        [HttpGet("phone-number", Name = RouteNames.PhoneNumber)]
+        public IActionResult PhoneNumber(string backLink)
+        {
+            var model = new PhoneNumberViewModel()
+            {
+                PhoneNumber = User.Claims.PhoneNumber() != null ? User.Claims.PhoneNumber() : null,
+                Backlink = backLink
+            };
+
+            return View(model);
+        }
+
+        [HttpPost("phone-number", Name = RouteNames.PhoneNumber)]
+        public async Task<IActionResult> PhoneNumber(PhoneNumberViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await mediator.Send(new UpdatePhoneNumberCommand()
+            {
+                GovUkIdentifier = User.Claims.GovIdentifier(),
+                Email = User.Claims.Email(),
+                PhoneNumber = model.PhoneNumber
+            });
+
+
+            return RedirectToRoute(RouteNames.NotificationPreferences);
         }
     }
 }
