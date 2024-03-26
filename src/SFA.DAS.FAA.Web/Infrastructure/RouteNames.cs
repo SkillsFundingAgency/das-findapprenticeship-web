@@ -40,5 +40,12 @@ public static class RouteNames
         public const string InterviewAdjustments = nameof(InterviewAdjustments);
         public const string InterviewAdjustmentsSummary = nameof(InterviewAdjustmentsSummary);
         public const string WhatInterestsYou = nameof(WhatInterestsYou);
+        public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
+        public const string EqualityFlow = nameof(EqualityFlow);
+    }
+
+    public static class UserProfile
+    {
+        public const string YourApplications = nameof(YourApplications);
     }
 }
