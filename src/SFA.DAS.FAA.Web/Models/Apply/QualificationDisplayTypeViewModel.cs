@@ -87,6 +87,9 @@ public class QualificationDisplayTypeViewModel
                 GroupTitle = "Degree";
                 Title = "Add a degree";
                 ErrorSummary = "Enter your degree";
+                GradeErrorMessage = "Enter the grade you got in your degree";
+                SubjectErrorMessage = "Enter the name of the degree you studied";
+                AdditionalInformationErrorMessage = "Enter the university where you studied your degree";
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;
