@@ -9,6 +9,7 @@ public static class RouteNames
     public const string Vacancies = "vacancies";
     public const string Apply = "apply";
     public const string UserName = "user-name";
+    public const string DateOfBirth = "date-of-birth";
     public const string CreateAccount = "create-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
@@ -40,11 +41,18 @@ public static class RouteNames
         public const string InterviewAdjustments = nameof(InterviewAdjustments);
         public const string InterviewAdjustmentsSummary = nameof(InterviewAdjustmentsSummary);
         public const string WhatInterestsYou = nameof(WhatInterestsYou);
+        public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
+        public const string EqualityFlow = nameof(EqualityFlow);
         public const string DisabilityConfident = nameof(DisabilityConfident);
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
         public const string Qualifications = nameof(Qualifications);
         public const string AddQualificationSelectType = nameof(AddQualificationSelectType);
         public const string AddQualification = nameof(AddQualification);
         public const string DeleteQualifications = nameof(DeleteQualifications);
+    }
+
+    public static class UserProfile
+    {
+        public const string YourApplications = nameof(YourApplications);
     }
 }

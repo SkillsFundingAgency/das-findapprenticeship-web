@@ -186,9 +186,11 @@
         <div class="govuk-button-group govuk-!-margin-top-8">
             @if (Model.IsApplicationComplete)
             {
-                <button class="govuk-button" data-module="govuk-button">
-                    Continue
-                </button>
+                <form class="form" method="post">
+                    <button class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+                </form>
             }
             <a class="govuk-link" href="#">Save and finish later</a>
         </div>
