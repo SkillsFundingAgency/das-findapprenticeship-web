@@ -150,8 +150,17 @@ ExtraFieldRows.prototype.showHideEmptyRows = function () {
   let hiddenRowCount = 0;
   for (let f = 0; f < this.extraFieldRows.length; f++) {
     const extraFieldRow = this.extraFieldRows[f];
-    const textInput = extraFieldRow.querySelector("input");
-    if (textInput.value === "") {
+    const inputs = extraFieldRow.querySelectorAll("input:not([type=hidden])");
+    let areAllFieldsEmpty = true;
+    inputs.forEach((input) => {
+      if (input.type === "text" && input.value.length > 0) {
+        areAllFieldsEmpty = false;
+      }
+      if (input.type === "checkbox" && input.checked) {
+        areAllFieldsEmpty = false;
+      }
+    });
+    if (areAllFieldsEmpty) {
       this.hideRow(extraFieldRow);
       hiddenRowCount++;
     } else {
