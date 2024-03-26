@@ -7,11 +7,14 @@ public class AddQualificationViewModel
 {
     [FromRoute]
     public required Guid ApplicationId { get; set; }
-    public QualificationDisplayTypeViewModel QualificationDisplayTypeViewModel { get; set; }
+    public QualificationDisplayTypeViewModel? QualificationDisplayTypeViewModel { get; set; }
     [FromRoute]
     public Guid QualificationReferenceId { get; set; }
     public List<SubjectViewModel> Subjects { get; set; }
-    public List<CourseDataListItem> Courses { get; set; }
+    public List<CourseDataListItem>? Courses { get; set; }
+    public bool IsApprenticeship { get; set; }
+    public Guid? SingleQualificationId { get; set; }
+    public string QualificationType { get; set; }
 }
 
 public class SubjectViewModel
@@ -20,17 +23,21 @@ public class SubjectViewModel
     {
         return new SubjectViewModel
         {
+            QualificationReferenceId = source.QualificationReferenceId,
             Grade =  source.Grade,
             Name = source.Subject,
             AdditionalInformation = source.AdditionalInformation,
-            IsPredicted = source.IsPredicted,
+            IsPredicted = source.IsPredicted.HasValue && source.IsPredicted.Value,
             Id = source.Id,
             Level = source.AdditionalInformation
         };
     }
+
+    public Guid QualificationReferenceId { get; set; }
+
     public Guid? Id { get; set; }
     public string? Grade { get; set; }
-    public string Name { get; set; }
+    public string? Name { get; set; }
     public string? Level { get; set; }
     public bool? IsPredicted { get; set; }
     public string? AdditionalInformation { get; set; }

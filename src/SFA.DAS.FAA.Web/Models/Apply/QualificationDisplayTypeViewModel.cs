@@ -15,7 +15,12 @@ public class QualificationDisplayTypeViewModel
                 Title = "Add an apprenticeship";
                 SubjectLabel = "Training course";
                 SubjectHintText = "For example, Network engineer (Level 4)";
-                ShouldDisplayAdditionalInformationField = false;
+                ErrorSummary = "Enter your apprenticeship";
+                SubjectErrorMessage = "Enter the training course you studied during your apprenticeship";
+                AdditionalInformationLabel = "Company";
+                AdditionalInformationErrorMessage = "Enter the company you worked for during your apprenticeship";
+                GradeErrorMessage = "Select a grade";
+                ShouldDisplayAdditionalInformationField = true;
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;
@@ -29,6 +34,10 @@ public class QualificationDisplayTypeViewModel
                 CanShowPredicted = true;
                 AllowMultipleAdd = false;
                 ShouldDisplayAdditionalInformationField = false;
+                ErrorSummary = "Enter your BTEC";
+                SubjectErrorMessage = "Enter your BTEC subject";
+                AdditionalInformationErrorMessage = "Select the level of your BTEC";
+                GradeErrorMessage = "Enter the grade for your BTEC";
                 Title = "Add a BTEC";
                 GroupTitle = "BTEC";
                 AddOrder = 2;
@@ -38,6 +47,9 @@ public class QualificationDisplayTypeViewModel
                 Id = id;
                 GroupTitle = "A levels";
                 Title = "Add A levels";
+                ErrorSummary = "Enter your A level subjects and grades";
+                SubjectErrorMessage = "Enter the subject for this grade";
+                GradeErrorMessage = "Enter the grade for this subject";
                 CanShowLevel = false;
                 CanShowPredicted = true;
                 AllowMultipleAdd = true;
@@ -48,6 +60,9 @@ public class QualificationDisplayTypeViewModel
                 Id = id;
                 GroupTitle = "T levels";
                 Title = "Add a T level";
+                ErrorSummary = "Enter your T level";
+                SubjectErrorMessage = "Enter the subject of your T level";
+                GradeErrorMessage = "Select the grade of your T level";
                 CanShowLevel = false;
                 CanShowPredicted = true;
                 AllowMultipleAdd = false;
@@ -58,6 +73,9 @@ public class QualificationDisplayTypeViewModel
                 Id = id;
                 GroupTitle = "AS levels";
                 Title = "Add AS levels";
+                ErrorSummary = "Enter your AS level subjects and grades";
+                SubjectErrorMessage = "Enter the subject for this grade";
+                GradeErrorMessage = "Enter the grade for this subject";
                 CanShowLevel = false;
                 CanShowPredicted = true;
                 AllowMultipleAdd = true;
@@ -68,6 +86,7 @@ public class QualificationDisplayTypeViewModel
                 Id = id;
                 GroupTitle = "Degree";
                 Title = "Add a degree";
+                ErrorSummary = "Enter your degree";
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;
@@ -85,6 +104,9 @@ public class QualificationDisplayTypeViewModel
                 CanShowPredicted = true;
                 AllowMultipleAdd = true;
                 ShouldDisplayAdditionalInformationField = false;
+                ErrorSummary = "Enter your GCSE subjects and grades";
+                SubjectErrorMessage = "Enter the subject for this grade";
+                GradeErrorMessage = "Enter the grade for this subject";
                 Title = "Add GCSEs";
                 GroupTitle = "GCSEs";
                 AddOrder = 1;
@@ -94,6 +116,7 @@ public class QualificationDisplayTypeViewModel
                 Id = id;
                 Title = "Add other qualifications";
                 GroupTitle = "Other qualifications";
+                ErrorSummary = "Enter your other qualification";
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;
@@ -104,6 +127,7 @@ public class QualificationDisplayTypeViewModel
                 break;
         }
     }
+
     public Guid Id { get; set; }
 
     public short ListOrder { get; set; }
@@ -119,4 +143,9 @@ public class QualificationDisplayTypeViewModel
     public bool HasDataLookup { get; set; }
     public string Title { get; }
     public string GroupTitle { get; }
+    public string ErrorSummary { get; set; }
+    public string? SubjectErrorMessage { get; set; }
+    public string? GradeErrorMessage { get; set; }
+    public string? AdditionalInformationErrorMessage { get; set; }
+    
 }

@@ -156,7 +156,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 QualificationReferenceId = qualificationReferenceId,
                 QualificationDisplayTypeViewModel = qualificationDisplayTypeViewModel,
                 Subjects = !qualificationDisplayTypeViewModel.AllowMultipleAdd && id == null ? [] : result.Qualifications!.Select(c=>(SubjectViewModel)c).ToList(),
-                Courses = result.Courses.Select(c=>(CourseDataListItem)c).ToList()
+                Courses = result.Courses.Select(c=>(CourseDataListItem)c).ToList(),
+                SingleQualificationId = id,
+                QualificationType = result.QualificationType.Name
             };
             return View(AddQualificationViewName, model);
         }
@@ -165,7 +167,31 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/qualifications/{qualificationReferenceId}/modify", Name = RouteNames.ApplyApprenticeship.AddQualification)]
         public async Task<IActionResult> ModifyQualification(AddQualificationViewModel model)
         {
-            //TODO - Add validation
+            string? apprenticeshipTitle = null;
+            string? apprenticeshipId = null;
+            if (model.IsApprenticeship)
+            {
+                var apprenticeship = model.Subjects.First().Name.Split("|");
+                apprenticeshipId = apprenticeship[0];
+                apprenticeshipTitle = apprenticeship[1];
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var result = await mediator.Send(new GetModifyQualificationQuery
+                {
+                    ApplicationId = model.ApplicationId,
+                    QualificationReferenceId = model.QualificationReferenceId,
+                    CandidateId = User.Claims.CandidateId(),
+                    QualificationId = model.SingleQualificationId
+                });
+                var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name, result.QualificationType.Id);
+                
+                model.QualificationDisplayTypeViewModel = qualificationDisplayTypeViewModel;
+                ModelState.AddModelError(nameof(model.Subjects), qualificationDisplayTypeViewModel.ErrorSummary);
+                return View(AddQualificationViewName, model);
+            }
+            
             await mediator.Send(new UpsertQualificationCommand
             {
                 CandidateId = User.Claims.CandidateId(),
@@ -174,10 +200,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 Subjects = model.Subjects.Select(c => new PostUpsertQualificationsApiRequest.Subject
                 {
                     Grade = c.Grade,
-                    Name = c.Name,
+                    Name = apprenticeshipTitle ?? c.Name,
                     Id = c.Id ?? Guid.NewGuid(),
-                    AdditionalInformation = c.Level ?? c.AdditionalInformation,
-                    IsPredicted = c.IsPredicted,
+                    AdditionalInformation = c.Level ?? c.AdditionalInformation ?? apprenticeshipId,
+                    IsPredicted = c.IsPredicted.HasValue && c.IsPredicted.Value,
                     IsDeleted = c.IsDeleted
                 }).ToList()
             });

@@ -21,7 +21,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
-        actual.ShouldDisplayAdditionalInformationField.Should().BeFalse();
+        actual.ShouldDisplayAdditionalInformationField.Should().BeTrue();
         actual.HasDataLookup.Should().BeTrue();
         actual.AddOrder.Should().Be(6);
         actual.ListOrder.Should().Be(2);

@@ -16,19 +16,21 @@
       <h1 class="govuk-heading-l">@Model.QualificationDisplayTypeViewModel.Title</h1>
    </div>
 </div>
-      <form class="form" method="post">
-         @if (Model.QualificationDisplayTypeViewModel.AllowMultipleAdd)
-         {
-          <partial name="_MultiQualification" model="@Model" />
-         }
-         else
-         {
-          <partial name="_SingleQualification" model="@Model" />
-         }
-         <div class="govuk-button-group">
-            <button class="govuk-button" data-module="govuk-button">
-              Save and continue
-            </button>
-         </div>
-      </form>
+<form class="form" method="post">
+   <input type="hidden" asp-for="QualificationType"/>
+   <input type="hidden" asp-for="QualificationReferenceId"/>
+   @if (Model.QualificationDisplayTypeViewModel.AllowMultipleAdd)
+   {
+      <partial name="_MultiQualification" model="@Model"/>
+   }
+   else
+   {
+      <partial name="_SingleQualification" model="@Model"/>
+   }
+   <div class="govuk-button-group">
+      <button class="govuk-button" data-module="govuk-button">
+         Save and continue
+      </button>
+   </div>
+</form>
 

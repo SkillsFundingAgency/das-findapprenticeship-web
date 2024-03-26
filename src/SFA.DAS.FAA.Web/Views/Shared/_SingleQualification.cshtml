@@ -7,40 +7,45 @@
 }
 
 <div class="govuk-grid-row">
+   <input type="hidden" asp-for="SingleQualificationId"/>
+   <input type="hidden" asp-for="IsApprenticeship" value="@Model.QualificationDisplayTypeViewModel.HasDataLookup"/>
    <input type="hidden" name="subjects[0][id]" value="@existingApplicationQualification.Id" id="subjects[0][id]"/>
    <div class="govuk-grid-column-two-thirds">
-      <div class="govuk-form-group">
-         
-         <label class="govuk-label govuk-label--m" for="subjects[0][name]">
-            @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subject")
-            @if (!string.IsNullOrEmpty(Model.QualificationDisplayTypeViewModel.SubjectHintText))
-            {
-               <div class="govuk-hint">@Model.QualificationDisplayTypeViewModel.SubjectHintText</div>   
-            }
-            
-         </label>   
-         
-         @if (Model.QualificationDisplayTypeViewModel.HasDataLookup)
-         {
-            <div class="faa-course-select">
-               <select class="govuk-select" id="subjects[0][name]" name="subjects[0][name]" data-autocomplete="true">
-                  <option value=""></option>   
-                  @foreach (var course in Model.Courses)
-                  {
-                     <option value="@($"{course.Id}|{course.Title}")">@course.Title</option>
-                  }
+      <div class="govuk-form-group" das-highlight-error-for="Subjects[0].Name" error-class="govuk-form-group--error">
+         <div class="govuk-form-group">
 
-               </select>
-            </div>
-         }
-         else
-         {
-            
-            <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text" value="@existingApplicationQualification.Name">      
-         }
-         
-         
-         
+            <label class="govuk-label govuk-label--m" for="subjects[0][name]">
+               @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subject")
+               @if (!string.IsNullOrEmpty(Model.QualificationDisplayTypeViewModel.SubjectHintText))
+               {
+                  <div class="govuk-hint">@Model.QualificationDisplayTypeViewModel.SubjectHintText</div>
+               }
+
+            </label>
+
+            @if (Model.QualificationDisplayTypeViewModel.HasDataLookup)
+            {
+               <span das-validation-for="Subjects[0].Name" class="govuk-error-message"></span>
+               <div class="faa-course-select">
+                  <select class="govuk-select" id="subjects[0][name]" name="subjects[0][name]" data-autocomplete="true">
+                     <option value=""></option>
+                     @foreach (var course in Model.Courses)
+                     {
+                        <option value="@($"{course.Id}|{course.Title}")">@course.Title</option>
+                     }
+
+                  </select>
+               </div>
+            }
+            else
+            {
+               <span das-validation-for="Subjects[0].Name" class="govuk-error-message"></span>
+               <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text" value="@existingApplicationQualification.Name">
+            }
+
+
+
+         </div>
       </div>
       @if (Model.QualificationDisplayTypeViewModel.CanShowLevel)
       {
@@ -69,26 +74,29 @@
             <input class="govuk-input" id="subjects[0][additionalInformation]" name="subjects[0][AdditionalInformation]" type="text" value="@existingApplicationQualification.AdditionalInformation">
          </div>
       }
-      <div class="govuk-form-group">
-         <div class="govuk-grid-row faa-grid-row--flex-from-tablet">
-            <div class="govuk-grid-column-one-third">
-               <label class="govuk-heading-m" for="subjects[0][grade]">
-                  Grade
-               </label>
-               <input class="govuk-input" id="subjects[0][grade]" name="subjects[0][grade]" type="text" value="@existingApplicationQualification.Grade">
-            </div>
-            <div class="govuk-grid-column-two-thirds">
-               @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
-               {
-                  <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
-                     <div class="govuk-checkboxes__item">
-                        <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" type="checkbox" value="@existingApplicationQualification.IsPredicted">
-                        <label class="govuk-label govuk-checkboxes__label" for="subjects[0][IsPredicted]">
-                           Predicted grade
-                        </label>
+      <div class="govuk-form-group" das-highlight-error-for="Subjects[0].Grade" error-class="govuk-form-group--error">
+         <div class="govuk-form-group">
+            <div class="govuk-grid-row faa-grid-row--flex-from-tablet">
+               <div class="govuk-grid-column-one-third">
+                  <label class="govuk-heading-m" for="subjects[0][grade]">
+                     Grade
+                  </label>
+                  <span das-validation-for="Subjects[0].Grade" class="govuk-error-message"></span>
+                  <input class="govuk-input" id="subjects[0][grade]" name="subjects[0][grade]" type="text" value="@existingApplicationQualification.Grade">
+               </div>
+               <div class="govuk-grid-column-two-thirds">
+                  @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
+                  {
+                     <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
+                        <div class="govuk-checkboxes__item">
+                           <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" type="checkbox" value="@existingApplicationQualification.IsPredicted">
+                           <label class="govuk-label govuk-checkboxes__label" for="subjects[0][IsPredicted]">
+                              Predicted grade
+                           </label>
+                        </div>
                      </div>
-                  </div>
-               }
+                  }
+               </div>
             </div>
          </div>
       </div>
