@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Web.AcceptanceTests.Extensions;
@@ -36,6 +37,29 @@ public sealed class HttpSteps
 
         var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(page.Url);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        ClearResponseContext();
+        _context.Set(response, ContextKeys.HttpResponse);
+        _context.Set(responseContent, ContextKeys.HttpResponseContent);
+    }
+
+    [When("I navigate to the (.*) page with querystring parameters")]
+    public async Task WhenINavigateToAPage(string pageName, Table querystring)
+    {
+        var page = _context.GetPage(pageName);
+
+        var url = new StringBuilder(page.Url);
+        url.Append("?");
+        var querystringParameters = querystring.Rows.ToDictionary(r => r[0], r => r[1]);
+        foreach (var querystringParameter in querystringParameters)
+        {
+            url.Append(querystringParameter.Key);
+            url.Append("=");
+            url.Append(querystringParameter.Value);
+        }
+
+        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var response = await client.GetAsync($"{url}");
         var responseContent = await response.Content.ReadAsStringAsync();
         ClearResponseContext();
         _context.Set(response, ContextKeys.HttpResponse);

@@ -1,50 +1,33 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@model SFA.DAS.FAA.Web.Models.Apply.InterviewAdjustmentSummaryViewModel
+@model SFA.DAS.FAA.Web.Models.Apply.DisabilityConfidentSummaryViewModel
 @{
-    ViewData["Title"] = "Get support at an interview – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = "Disability Confident scheme – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <div class="faa-js-back-link"></div>
+    <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
 }
 <partial name="_ValidationSummary" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-l">Interview adjustments</span>
-        <h1 class="govuk-heading-l">Get support at an interview</h1>
+        <span class="govuk-caption-l">Equal opportunity</span>
+        <h1 class="govuk-heading-l">Disability Confident scheme</h1>
         <div class="govuk-!-padding-bottom-5"></div>
         <form class="form" method="post">
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                        Do you want to request support at an interview?
+                        Do you want to apply under the Disability Confident scheme?
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @(Model.IsSupportRequestRequired ? Html.Raw("Yes") : Html.Raw("No, I don’t need support or I’ll discuss it if I get an interview"))
-                        @Html.HiddenFor(x => x.IsSupportRequestRequired)
+                        @(Model.IsApplyUnderDisabilityConfidentSchemeRequired ? Html.Raw("Yes") : Html.Raw("No"))
+                        @Html.HiddenFor(x => x.IsApplyUnderDisabilityConfidentSchemeRequired)
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = true})">
-                            Change<span class="govuk-visually-hidden"> interview adjustments</span>
+                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DisabilityConfident, new {Model.ApplicationId, isEdit = true})">
+                            Change<span class="govuk-visually-hidden"> Disability Confident</span>
                         </a>
                     </dd>
                 </div>
-                @if (Model.IsSupportRequestRequired)
-                {
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Interview support request
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.SupportRequestAnswer
-                            @Html.HiddenFor(x => x.SupportRequestAnswer)
-                        </dd>
-                        <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = true})">
-                                Change<span class="govuk-visually-hidden"> interview adjustments</span>
-                            </a>
-                        </dd>
-                    </div>
-                }
             </dl>
             <div class="govuk-!-padding-bottom-5"></div>
             <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted" error-class="govuk-form-group--error">
