@@ -13,11 +13,12 @@ public class WhenGettingEnterAddressManually
 {
     [Test, MoqAutoData]
     public async Task Then_View_Is_Returned(
+        string? postcode,
         string backLink,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        var result = controller.EnterAddressManually(backLink) as ViewResult;
+        var result = controller.EnterAddressManually(backLink, postcode) as ViewResult;
         var resultModel = result.Model as EnterAddressManuallyViewModel;
 
         resultModel.BackLink.Should().BeEquivalentTo(backLink);
