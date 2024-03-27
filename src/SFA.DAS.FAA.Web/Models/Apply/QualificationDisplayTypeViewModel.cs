@@ -120,6 +120,7 @@ public class QualificationDisplayTypeViewModel
                 Title = "Add other qualifications";
                 GroupTitle = "Other qualifications";
                 ErrorSummary = "Enter your other qualification";
+                AdditionalInformationErrorMessage = "Enter the type of the qualification you want to add";
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;

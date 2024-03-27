@@ -18,6 +18,10 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.GroupTitle.Should().Be("Apprenticeships");
         actual.SubjectLabel.Should().Be("Training course");
         actual.SubjectHintText.Should().Be("For example, Network engineer (Level 4)");
+        actual.ErrorSummary.Should().Be("Enter your apprenticeship");
+        actual.SubjectErrorMessage.Should().Be("Enter the training course you studied during your apprenticeship");
+        actual.AdditionalInformationLabel.Should().Be("Company");
+        actual.GradeErrorMessage.Should().Be("Select a grade");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
@@ -36,6 +40,10 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add a BTEC");
         actual.GroupTitle.Should().Be("BTEC");
+        actual.ErrorSummary.Should().Be("Enter your BTEC");
+        actual.SubjectErrorMessage.Should().Be("Enter your BTEC subject");
+        actual.AdditionalInformationErrorMessage.Should().Be("Select the level of your BTEC");
+        actual.GradeErrorMessage.Should().Be("Enter the grade for your BTEC");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeTrue();
@@ -53,6 +61,9 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add A levels");
         actual.GroupTitle.Should().Be("A levels");
+        actual.ErrorSummary.Should().Be("Enter your A level subjects and grades");
+        actual.SubjectErrorMessage.Should().Be("Enter the subject for this grade");
+        actual.GradeErrorMessage.Should().Be("Enter the grade for this subject");
         actual.AllowMultipleAdd.Should().BeTrue();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
@@ -70,6 +81,9 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add AS levels");
         actual.GroupTitle.Should().Be("AS levels");
+        actual.ErrorSummary.Should().Be("Enter your AS level subjects and grades");
+        actual.SubjectErrorMessage.Should().Be("Enter the subject for this grade");
+        actual.GradeErrorMessage.Should().Be("Enter the grade for this subject");
         actual.AllowMultipleAdd.Should().BeTrue();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
@@ -87,6 +101,9 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add a T level");
         actual.GroupTitle.Should().Be("T levels");
+        actual.ErrorSummary.Should().Be("Enter your T level");
+        actual.SubjectErrorMessage.Should().Be("Enter the subject of your T level");
+        actual.GradeErrorMessage.Should().Be("Select the grade of your T level");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
@@ -125,6 +142,9 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add GCSEs");
         actual.GroupTitle.Should().Be("GCSEs");
+        actual.ErrorSummary.Should().Be("Enter your GCSE subjects and grades");
+        actual.SubjectErrorMessage.Should().Be("Enter the subject for this grade");
+        actual.GradeErrorMessage.Should().Be("Enter the grade for this subject");
         actual.AllowMultipleAdd.Should().BeTrue();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
@@ -140,6 +160,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add other qualifications");
         actual.GroupTitle.Should().Be("Other qualifications");
+        actual.ErrorSummary.Should().Be("Enter your other qualification");
+        actual.AdditionalInformationErrorMessage.Should().Be("Enter the type of the qualification you want to add");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
