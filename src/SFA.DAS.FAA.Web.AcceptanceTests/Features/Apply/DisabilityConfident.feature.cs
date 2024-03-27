@@ -20,23 +20,23 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Features.Apply
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("VolunteeringAndWorkExperience")]
-    public partial class VolunteeringAndWorkExperienceFeature
+    [NUnit.Framework.DescriptionAttribute("DisabilityConfident")]
+    public partial class DisabilityConfidentFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-#line 1 "VolunteeringAndWorkExperience.feature"
+#line 1 "DisabilityConfident.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Apply", "VolunteeringAndWorkExperience", "As an FAA User\r\nI can complete the Volunteering and Work Experience section\r\nSo t" +
-                    "hat I can show work I\'ve volunteered for", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Apply", "DisabilityConfident", "As an FAA User\r\nI can complete the Disability Confident section\r\nSo that I can ch" +
+                    "oose whether or not to apply under the scheme", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,18 +75,18 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Features.Apply
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("See my options for entering work experience")]
+        [NUnit.Framework.DescriptionAttribute("See my options for Disability Confident")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
         [NUnit.Framework.CategoryAttribute("NewApplication")]
-        public void SeeMyOptionsForEnteringWorkExperience()
+        public void SeeMyOptionsForDisabilityConfident()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
                     "AuthenticatedUser",
                     "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("See my options for entering work experience", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("See my options for Disability Confident", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -98,34 +98,34 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 11
- testRunner.When("I navigate to the Volunteering and Work Experience page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I navigate to the Disability Confident page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 12
  testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 13
- testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the page content includes the following: Equal opportunity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 14
- testRunner.And("the page content includes the following: Volunteering and work experience", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the page content includes the following: Disability Confident scheme", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Opt to add my work experience")]
+        [NUnit.Framework.DescriptionAttribute("Validation error on disability confident page")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
         [NUnit.Framework.CategoryAttribute("NewApplication")]
-        public void OptToAddMyWorkExperience()
+        public void ValidationErrorOnDisabilityConfidentPage()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
                     "AuthenticatedUser",
                     "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opt to add my work experience", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation error on disability confident page", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -136,108 +136,73 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+#line 20
+ testRunner.When("I post an empty form to the Disability Confident page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+ testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 22
+ testRunner.And("the page content includes the following error: Select if you want to apply under " +
+                        "the Disability Confident scheme", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Opt to apply under the scheme")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
+        public void OptToApplyUnderTheScheme()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "NewApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opt to apply under the scheme", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 27
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table13.AddRow(new string[] {
-                            "DoYouWantToAddAnyVolunteeringOrWorkExperience",
+                table1.AddRow(new string[] {
+                            "ApplyUnderDisabilityConfidentScheme",
                             "true"});
-#line 20
- testRunner.When("I post to the Volunteering and Work Experience page", ((string)(null)), table13, "When ");
-#line hidden
-#line 23
- testRunner.Then("I am redirected to the Add Work Experience page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Revisit the work experience page having previously completed it")]
-        [NUnit.Framework.CategoryAttribute("WireMockServer")]
-        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
-        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
-        public void RevisitTheWorkExperiencePageHavingPreviouslyCompletedIt()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "WireMockServer",
-                    "AuthenticatedUser",
-                    "ExistingApplication"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Revisit the work experience page having previously completed it", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 28
-this.ScenarioInitialize(scenarioInfo);
+ testRunner.When("I post to the Disability Confident page", ((string)(null)), table1, "When ");
 #line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 29
- testRunner.When("I navigate to the Volunteering and Work Experience page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 30
- testRunner.Then("I am redirected to the Volunteering and Work Experience Summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 31
+   testRunner.Then("I am redirected to the Disability Confident Confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Revisit the work experience summary page having previously completed it")]
+        [NUnit.Framework.DescriptionAttribute("Opt not to apply under the scheme")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
-        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
-        public void RevisitTheWorkExperienceSummaryPageHavingPreviouslyCompletedIt()
+        [NUnit.Framework.CategoryAttribute("NewApplication")]
+        public void OptNotToApplyUnderTheScheme()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
                     "AuthenticatedUser",
-                    "ExistingApplication"};
+                    "NewApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Revisit the work experience summary page having previously completed it", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 35
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opt not to apply under the scheme", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 36
- testRunner.When("I navigate to the Volunteering and Work Experience Summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 37
- testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 38
- testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 39
- testRunner.And("the page content includes the following: Volunteering and work experience", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Delete work experience")]
-        [NUnit.Framework.CategoryAttribute("WireMockServer")]
-        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
-        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
-        public void DeleteWorkExperience()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "WireMockServer",
-                    "AuthenticatedUser",
-                    "ExistingApplication"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete work experience", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 44
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -247,40 +212,69 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 45
- testRunner.When("I navigate to the Delete Work Experience page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "ApplyUnderDisabilityConfidentScheme",
+                            "false"});
+#line 37
+ testRunner.When("I post to the Disability Confident page", ((string)(null)), table2, "When ");
 #line hidden
+#line 40
+   testRunner.Then("I am redirected to the Disability Confident Confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("See my options for Disability Confident having previously answered")]
+        [NUnit.Framework.CategoryAttribute("WireMockServer")]
+        [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
+        [NUnit.Framework.CategoryAttribute("ExistingApplication")]
+        public void SeeMyOptionsForDisabilityConfidentHavingPreviouslyAnswered()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "WireMockServer",
+                    "AuthenticatedUser",
+                    "ExistingApplication"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("See my options for Disability Confident having previously answered", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 45
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
 #line 46
- testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I navigate to the Disability Confident page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 47
- testRunner.And("the page content includes the following: Work history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 48
- testRunner.And("the page content includes the following: Do you want to delete this volunteering " +
-                        "or work experience?", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 49
- testRunner.And("the page content includes the following: Cleaning bottles", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("I am redirected to the Disability Confident Confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Mark the work experience section as complete")]
+        [NUnit.Framework.DescriptionAttribute("See my options for Disability Confident while editing previous answer")]
         [NUnit.Framework.CategoryAttribute("WireMockServer")]
         [NUnit.Framework.CategoryAttribute("AuthenticatedUser")]
         [NUnit.Framework.CategoryAttribute("ExistingApplication")]
-        public void MarkTheWorkExperienceSectionAsComplete()
+        public void SeeMyOptionsForDisabilityConfidentWhileEditingPreviousAnswer()
         {
             string[] tagsOfScenario = new string[] {
                     "WireMockServer",
                     "AuthenticatedUser",
                     "ExistingApplication"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mark the work experience section as complete", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 54
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("See my options for Disability Confident while editing previous answer", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 52
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -290,17 +284,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table14.AddRow(new string[] {
-                            "IsSectionCompleted",
+                table3.AddRow(new string[] {
+                            "isEdit",
                             "true"});
-#line 55
- testRunner.When("I post to the Volunteering and Work Experience Summary page", ((string)(null)), table14, "When ");
+#line 53
+ testRunner.When("I navigate to the Disability Confident page with querystring parameters", ((string)(null)), table3, "When ");
+#line hidden
+#line 56
+ testRunner.Then("a http status code of 200 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 57
+ testRunner.And("the page content includes the following: Equal opportunity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 58
- testRunner.Then("I am redirected to the Application Tasklist page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("the page content includes the following: Disability Confident scheme", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
