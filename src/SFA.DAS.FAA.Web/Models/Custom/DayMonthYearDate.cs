@@ -1,0 +1,33 @@
+﻿namespace SFA.DAS.FAA.Web.Models.Custom;
+
+public class DayMonthYearDate
+{
+    public DayMonthYearDate(string value)
+    {
+        SetValue(value);
+    }
+
+    public DayMonthYearDate(DateTime? value)
+    {
+        DateTimeValue = value;
+    }
+
+    public void SetValue(DateTime value)
+    {
+        DateTimeValue = value;
+    }
+
+    public void SetValue(string value)
+    {
+        if (DateTime.TryParse(value, out var parsedValue))
+        {
+            DateTimeValue = parsedValue;
+        }
+        else
+        {
+            DateTimeValue = null;
+        }
+    }
+
+    public DateTime? DateTimeValue { get; set; }
+}

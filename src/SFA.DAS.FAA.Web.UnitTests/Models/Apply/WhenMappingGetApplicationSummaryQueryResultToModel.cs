@@ -17,11 +17,23 @@ public class WhenMappingGetApplicationSummaryQueryResultToModel
         using (new AssertionScope())
         {
             result.Candidate.Should().BeEquivalentTo(source.Candidate);
-            result.WorkHistory.Should().BeEquivalentTo(source.WorkHistory);
+            result.WorkHistory.Should().BeEquivalentTo(source.WorkHistory, options => options
+                    .Excluding(fil => fil.Jobs)
+                    .Excluding(fil => fil.VolunteeringAndWorkExperiences));
+            result.WorkHistory.Jobs.Should().BeEquivalentTo(source.WorkHistory.Jobs, options => options
+                .Excluding(fil => fil!.StartDate)
+                .Excluding(fil => fil!.EndDate));
+            result.WorkHistory.VolunteeringAndWorkExperiences.Should().BeEquivalentTo(source.WorkHistory.VolunteeringAndWorkExperiences, options => options
+                .Excluding(fil => fil!.StartDate)
+                .Excluding(fil => fil!.EndDate)
+                .Excluding(fil => fil!.JobTitle));
             result.EducationHistory.Should().BeEquivalentTo(source.EducationHistory);
             result.InterviewAdjustments.Should().BeEquivalentTo(source.InterviewAdjustments);
             result.ApplicationQuestions.Should().BeEquivalentTo(source.ApplicationQuestions);
             result.IsDisabilityConfident.Should().Be(source.IsDisabilityConfident);
+            result.AboutYou.Should().BeEquivalentTo(source.AboutYou);
+            result.WhatIsYourInterest.Should().BeEquivalentTo(source.WhatIsYourInterest);
+            result.DisabilityConfidence.Should().BeEquivalentTo(source.DisabilityConfidence);
         }
     }
 }

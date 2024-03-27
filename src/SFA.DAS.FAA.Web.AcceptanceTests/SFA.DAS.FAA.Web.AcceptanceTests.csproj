@@ -8,6 +8,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <SpecFlowObsoleteCodeBehindFiles Remove="Features\Apply\Jobs - Copy.feature.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="6.12.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.8.0" />
@@ -35,5 +39,18 @@
 	<ItemGroup>
 		<ProjectReference Include="..\SFA.DAS.FAA.MockServer\SFA.DAS.FAA.MockServer.csproj" />
 		<ProjectReference Include="..\SFA.DAS.FAA.Web\SFA.DAS.FAA.Web.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Features\Apply\DisabilityConfident.feature.cs">
+	    <DependentUpon>DisabilityConfident.feature</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <SpecFlowFeatureFiles Update="Features\Apply\DisabilityConfident.feature">
+	    <Visible>$(UsingMicrosoftNETSdk)</Visible>
+	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+	  </SpecFlowFeatureFiles>
 	</ItemGroup>
 </Project>

@@ -22,8 +22,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
     public class WhenPuttingUserName
     {
-        //Complete when what is your date of birth page is created 
-        
         [Test, MoqAutoData]
         public async Task When_Model_State_Is_Valid_Should_Redirect_To_What_Is_Your_Date_Of_Birth(
          string govIdentifier,
@@ -51,7 +49,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 
             // Assert
             result.Should().NotBeNull();
-            result.RouteName.Should().Be(RouteNames.SearchResults);
+            result.RouteName.Should().Be(RouteNames.DateOfBirth);
             mediator.Verify(x => x.Send(It.Is<UpdateNameCommand>(c =>
                 c.GovIdentifier.Equals(govIdentifier)
                 && c.FirstName.Equals(model.FirstName)

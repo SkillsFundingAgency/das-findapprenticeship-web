@@ -136,14 +136,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table1.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "DoYouWantToAddAnyJobs",
                             "true"});
 #line 20
- testRunner.When("I post to the Jobs page", ((string)(null)), table1, "When ");
+ testRunner.When("I post to the Jobs page", ((string)(null)), table4, "When ");
 #line hidden
 #line 23
  testRunner.Then("I am redirected to the Add a Job page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -214,29 +214,29 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table2.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "JobTitle",
                             "Lapidary worker"});
-                table2.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "EmployerName",
                             "Rocks u Like"});
-                table2.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "JobDescription",
                             "Polishing semi-precious stones and the like"});
-                table2.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "StartDateMonth",
                             "07"});
-                table2.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "StartDateYear",
                             "2021"});
-                table2.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "IsCurrentRole",
                             "true"});
 #line 38
- testRunner.When("I post to the Add a Job page", ((string)(null)), table2, "When ");
+ testRunner.When("I post to the Add a Job page", ((string)(null)), table5, "When ");
 #line hidden
 #line 46
  testRunner.Then("I am redirected to the Jobs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -352,14 +352,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table3.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "DoYouWantToAddAnyJobs",
                             "false"});
 #line 71
- testRunner.When("I post to the Jobs page", ((string)(null)), table3, "When ");
+ testRunner.When("I post to the Jobs page", ((string)(null)), table6, "When ");
 #line hidden
 #line 74
  testRunner.Then("I am redirected to the Application Tasklist page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -433,17 +433,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table4.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "IsSectionCompleted",
                             "false"});
-                table4.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "ShowJobHistory",
                             "true"});
 #line 90
- testRunner.When("I post to the Jobs page", ((string)(null)), table4, "When ");
+ testRunner.When("I post to the Jobs page", ((string)(null)), table7, "When ");
 #line hidden
 #line 94
  testRunner.Then("I am redirected to the Application Tasklist page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -514,29 +514,29 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table5.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "JobTitle",
                             "Lapidary worker level 2"});
-                table5.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "EmployerName",
                             "Rocks u Like"});
-                table5.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "JobDescription",
                             "Polishing semi-precious stones and the like"});
-                table5.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "StartDateMonth",
                             "09"});
-                table5.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "StartDateYear",
                             "2022"});
-                table5.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "IsCurrentRole",
                             "true"});
 #line 109
- testRunner.When("I post to the Edit Job page", ((string)(null)), table5, "When ");
+ testRunner.When("I post to the Edit Job page", ((string)(null)), table8, "When ");
 #line hidden
 #line 117
  testRunner.Then("I am redirected to the Jobs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

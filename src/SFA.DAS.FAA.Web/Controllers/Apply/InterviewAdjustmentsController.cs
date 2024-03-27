@@ -20,7 +20,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [Route("apply/{applicationId}/interview-adjustments",
             Name = RouteNames.ApplyApprenticeship.InterviewAdjustments)]
-        public async Task<IActionResult> Index([FromRoute] Guid applicationId, [FromQuery] int isEdit = 0)
+        public async Task<IActionResult> Index([FromRoute] Guid applicationId, [FromQuery] bool isEdit = false)
         {
             var result = await mediator.Send(new GetInterviewAdjustmentsQuery
             {
@@ -28,7 +28,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = User.Claims.CandidateId()
             });
 
-            if (isEdit == 0 && result.Status is not null)
+            if (!isEdit && result.Status is not null)
             {
                 return RedirectToRoute(RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary, new { applicationId });
             }
@@ -38,7 +38,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 ApplicationId = applicationId,
                 DoYouWantInterviewAdjustments = 
                     IsNullOrEmpty(result.InterviewAdjustmentsDescription) 
-                        ? isEdit == 1 ? false : null 
+                        ? isEdit ? false : null 
                         : true,
                 InterviewAdjustmentsDescription = result.InterviewAdjustmentsDescription,
             };
@@ -49,7 +49,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [HttpPost]
         [Route("apply/{applicationId}/interview-adjustments",
             Name = RouteNames.ApplyApprenticeship.InterviewAdjustments)]
-        public async Task<IActionResult> Post([FromRoute] Guid applicationId, InterviewAdjustmentsViewModel viewModel, [FromQuery] int isEdit = 0)
+        public async Task<IActionResult> Post([FromRoute] Guid applicationId, InterviewAdjustmentsViewModel viewModel, [FromQuery] bool isEdit = false)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +64,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     ApplicationId = applicationId,
                     DoYouWantInterviewAdjustments =
                         IsNullOrEmpty(result.InterviewAdjustmentsDescription)
-                            ? isEdit == 1 ? false : null
+                            ? isEdit ? false : null
                             : true,
                     InterviewAdjustmentsDescription = result.InterviewAdjustmentsDescription
                 };

@@ -15,6 +15,7 @@ builder.Services
     .AddControllers(options =>
     {
         options.ModelBinderProviders.Insert(0, new MonthYearDateModelBinderProvider());
+        options.ModelBinderProviders.Insert(0, new DayMonthYearDateModelBinderProvider());
     });
 
 builder.Services.AddConfigurationOptions(rootConfiguration);
