@@ -13,6 +13,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     public class DisabilityConfidentController(IMediator mediator) : Controller
     {
+        private const string IndexViewPath = "~/Views/apply/DisabilityConfident/Index.cshtml";
+        private const string SummaryViewPath = "~/Views/apply/DisabilityConfident/Summary.cshtml";
+
         [HttpGet]
         [Route("apply/{applicationId}/disability-confident", Name = RouteNames.ApplyApprenticeship.DisabilityConfident)]
         public async Task<IActionResult> Get(Guid applicationId, [FromQuery] bool isEdit = false)
@@ -26,7 +29,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             if (result.ApplyUnderDisabilityConfidentScheme.HasValue && !isEdit)
             {
                 return RedirectToRoute(RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation,
-                    new { ApplicationId = applicationId });
+                    new { ApplicationId = applicationId, isEdit });
             }
 
             var viewModel = new DisabilityConfidentViewModel
@@ -36,12 +39,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 ApplyUnderDisabilityConfidentScheme = result.ApplyUnderDisabilityConfidentScheme
             };
 
-            return View("~/Views/Apply/DisabilityConfident/Index.cshtml", viewModel);
+            return View(IndexViewPath, viewModel);
         }
 
         [HttpPost]
         [Route("apply/{applicationId}/disability-confident", Name = RouteNames.ApplyApprenticeship.DisabilityConfident)]
-        public async Task<IActionResult> Post(Guid applicationId, DisabilityConfidentViewModel viewModel)
+        public async Task<IActionResult> Post(Guid applicationId, DisabilityConfidentViewModel viewModel, [FromQuery] bool isEdit = false)
         {
             if (!ModelState.IsValid)
             {
@@ -58,7 +61,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     ApplyUnderDisabilityConfidentScheme = result.ApplyUnderDisabilityConfidentScheme
                 };
 
-                return View("~/Views/Apply/DisabilityConfident/Index.cshtml", viewModel);
+                return View(IndexViewPath, viewModel);
             }
 
             await mediator.Send(new UpdateDisabilityConfidentCommand
@@ -69,15 +72,67 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             });
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation,
-                new { ApplicationId = applicationId });
+                new { ApplicationId = applicationId, isEdit });
         }
-
 
         [HttpGet]
         [Route("apply/{applicationId}/disability-confident/confirm", Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
-        public async Task<IActionResult> GetSummary(Guid applicationId)
+        public async Task<IActionResult> GetSummary([FromRoute] Guid applicationId, [FromQuery] bool isEdit = false)
         {
-            return View("~/Views/Apply/DisabilityConfident/Index.cshtml", new DisabilityConfidentViewModel());
+            var result = await mediator.Send(new GetDisabilityConfidentDetailsQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId()
+            });
+
+            var viewModel = new DisabilityConfidentSummaryViewModel
+            {
+                ApplicationId = applicationId,
+                BackLinkUrl = isEdit 
+                    ? Url.RouteUrl(RouteNames.ApplyApprenticeship.DisabilityConfident, new { applicationId, isEdit })
+                    : Url.RouteUrl(RouteNames.Apply, new { applicationId }),
+                IsApplyUnderDisabilityConfidentSchemeRequired = result.ApplyUnderDisabilityConfidentScheme ?? false,
+                IsSectionCompleted = result.IsSectionCompleted
+            };
+
+            return View(SummaryViewPath, viewModel);
+        }
+
+        [HttpPost]
+        [Route("apply/{applicationId}/disability-confident/confirm", Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
+        public async Task<IActionResult> PostSummary([FromRoute] Guid applicationId, DisabilityConfidentSummaryViewModel viewModel, [FromQuery] bool isEdit = false)
+        {
+            if (!ModelState.IsValid)
+            {
+                var result = await mediator.Send(new GetDisabilityConfidentDetailsQuery
+                {
+                    ApplicationId = applicationId,
+                    CandidateId = User.Claims.CandidateId()
+                });
+
+                viewModel = new DisabilityConfidentSummaryViewModel
+                {
+                    ApplicationId = applicationId,
+                    BackLinkUrl = isEdit
+                        ? Url.RouteUrl(RouteNames.ApplyApprenticeship.DisabilityConfident, new { applicationId, isEdit })
+                        : Url.RouteUrl(RouteNames.Apply, new { applicationId }),
+                    IsApplyUnderDisabilityConfidentSchemeRequired = result.ApplyUnderDisabilityConfidentScheme ?? false,
+                    IsSectionCompleted = result.IsSectionCompleted
+                };
+
+                return View(SummaryViewPath, viewModel);
+            }
+
+            var updateCommand = new UpdateDisabilityConfidenceApplicationCommand
+            {
+                ApplicationId = viewModel.ApplicationId,
+                CandidateId = User.Claims.CandidateId(),
+                IsSectionCompleted = viewModel.IsSectionCompleted!.Value
+            };
+
+            await mediator.Send(updateCommand);
+
+            return RedirectToRoute(RouteNames.Apply, new { applicationId });
         }
     }
 }
