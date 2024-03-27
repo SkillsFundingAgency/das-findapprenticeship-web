@@ -46,7 +46,6 @@ public record GetApplicationSummaryApiResponse
         public record TrainingCourse
         {
             public Guid Id { get; set; }
-            public Guid ApplicationId { get; set; }
             public string CourseName { get; set; }
             public int YearAchieved { get; set; }
         }
@@ -66,7 +65,6 @@ public record GetApplicationSummaryApiResponse
             public string JobTitle { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime? EndDate { get; set; }
-            public Guid ApplicationId { get; set; }
             public string Description { get; set; }
         }
 
@@ -77,7 +75,6 @@ public record GetApplicationSummaryApiResponse
             public string JobTitle { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime? EndDate { get; set; }
-            public Guid ApplicationId { get; set; }
             public string Description { get; set; }
         }
     }
@@ -101,11 +98,13 @@ public record GetApplicationSummaryApiResponse
     public record InterviewAdjustmentsSection
     {
         public SectionStatus RequestAdjustmentsStatus { get; set; }
+        public string InterviewAdjustmentsDescription { get; set; }
     }
 
     public record DisabilityConfidenceSection
     {
         public SectionStatus InterviewUnderDisabilityConfidentStatus { get; set; }
+        public bool? ApplyUnderDisabilityConfidentScheme { get; set; }
     }
 
     public record WhatIsYourInterestSection

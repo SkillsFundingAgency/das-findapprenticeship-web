@@ -103,7 +103,6 @@ public class GetApplicationSummaryQueryResult
         public record TrainingCourse
         {
             public Guid Id { get; set; }
-            public Guid ApplicationId { get; set; }
             public string? CourseName { get; set; }
             public int YearAchieved { get; set; }
 
@@ -113,7 +112,6 @@ public class GetApplicationSummaryQueryResult
 
                 return new TrainingCourse
                 {
-                    ApplicationId = source.ApplicationId,
                     Id = source.Id,
                     CourseName = source.CourseName,
                     YearAchieved = source.YearAchieved
@@ -147,7 +145,6 @@ public class GetApplicationSummaryQueryResult
             public string? JobTitle { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime? EndDate { get; set; }
-            public Guid ApplicationId { get; set; }
             public string? Description { get; set; }
 
             public static implicit operator Job?(GetApplicationSummaryApiResponse.WorkHistorySection.Job? source)
@@ -156,7 +153,6 @@ public class GetApplicationSummaryQueryResult
 
                 return new Job
                 {
-                    ApplicationId = source.ApplicationId,
                     Id = source.Id,
                     Employer = source.Employer,
                     JobTitle = source.JobTitle,
@@ -174,7 +170,6 @@ public class GetApplicationSummaryQueryResult
             public string? JobTitle { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime? EndDate { get; set; }
-            public Guid ApplicationId { get; set; }
             public string? Description { get; set; }
 
             public static implicit operator VolunteeringAndWorkExperience?(GetApplicationSummaryApiResponse.WorkHistorySection.VolunteeringAndWorkExperience? source)
@@ -183,7 +178,6 @@ public class GetApplicationSummaryQueryResult
 
                 return new VolunteeringAndWorkExperience
                 {
-                    ApplicationId = source.ApplicationId,
                     Id = source.Id,
                     Employer = source.Employer,
                     JobTitle = source.JobTitle,
@@ -238,12 +232,14 @@ public class GetApplicationSummaryQueryResult
     public class InterviewAdjustmentsSection
     {
         public SectionStatus RequestAdjustmentsStatus { get; set; }
+        public string? InterviewAdjustmentsDescription { get; set; }
 
         public static implicit operator InterviewAdjustmentsSection(GetApplicationSummaryApiResponse.InterviewAdjustmentsSection source)
         {
             return new InterviewAdjustmentsSection
             {
-                RequestAdjustmentsStatus = source.RequestAdjustmentsStatus
+                RequestAdjustmentsStatus = source.RequestAdjustmentsStatus,
+                InterviewAdjustmentsDescription = source.InterviewAdjustmentsDescription
             };
         }
     }
@@ -251,12 +247,14 @@ public class GetApplicationSummaryQueryResult
     public class DisabilityConfidenceSection
     {
         public SectionStatus InterviewUnderDisabilityConfidentStatus { get; set; }
+        public bool ApplyUnderDisabilityConfidentScheme { get; set; }
 
         public static implicit operator DisabilityConfidenceSection(GetApplicationSummaryApiResponse.DisabilityConfidenceSection source)
         {
             return new DisabilityConfidenceSection
             {
-                InterviewUnderDisabilityConfidentStatus = source.InterviewUnderDisabilityConfidentStatus
+                InterviewUnderDisabilityConfidentStatus = source.InterviewUnderDisabilityConfidentStatus,
+                ApplyUnderDisabilityConfidentScheme = source.ApplyUnderDisabilityConfidentScheme ?? false
             };
         }
     }

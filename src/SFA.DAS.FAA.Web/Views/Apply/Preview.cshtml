@@ -312,7 +312,9 @@
         <div style="text-align: right;">
             <ul class="govuk-list">
                 <li>
-                    <a class="govuk-link " href="application-question-page-input-interview-adjustments.html">Change</a>
+                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = true})">
+                        Change<span class="govuk-visually-hidden"> interview adjustments</span>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -322,19 +324,20 @@
                     Do you want to request support at an interview?
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    Yes
+                    @(Model.InterviewAdjustments.IsSupportRequestRequired ? Html.Raw("Yes") : Html.Raw("No, I don’t need support or I’ll discuss it if I get an interview"))
                 </dd>
             </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Interview support request
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    I would need a British Sign Language (BSL)
-                    interpreter
-                    to complete my interview.
-                </dd>
-            </div>
+            @if (Model.InterviewAdjustments.IsSupportRequestRequired)
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Interview support request
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.InterviewAdjustments.InterviewAdjustmentsDescription
+                    </dd>
+                </div>    
+            }
         </dl>
         @if (Model.IsDisabilityConfident)
         {
@@ -356,7 +359,7 @@
                         Do you want to apply under the Disability Confident scheme?
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @Model.InterviewAdjustments.
+                        @(Model.DisabilityConfidence.ApplyUnderDisabilityConfidentScheme ? Html.Raw("Yes") : Html.Raw("No"))
                     </dd>
                 </div>
             </dl>    

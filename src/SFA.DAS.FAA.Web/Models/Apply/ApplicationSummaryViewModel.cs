@@ -111,7 +111,6 @@ public class ApplicationSummaryViewModel
         public record TrainingCourse
         {
             public Guid Id { get; set; }
-            public Guid ApplicationId { get; set; }
             public string? CourseName { get; set; }
             public int YearAchieved { get; set; }
 
@@ -119,7 +118,6 @@ public class ApplicationSummaryViewModel
             {
                 return new TrainingCourse
                 {
-                    ApplicationId = source.ApplicationId,
                     Id = source.Id,
                     CourseName = source.CourseName,
                     YearAchieved = source.YearAchieved
@@ -150,11 +148,8 @@ public class ApplicationSummaryViewModel
         {
             public Guid Id { get; set; }
             public string JobHeader => $"{JobTitle}, {Employer}";
-            public string? Employer { get; set; }
-            public string? JobTitle { get; set; }
-            public DateTime StartDate { get; set; }
-            public DateTime? EndDate { get; set; }
-            public Guid ApplicationId { get; set; }
+            private string? Employer { get; set; }
+            private string? JobTitle { get; set; }
             public string? Description { get; set; }
             public string? JobDates { get; private init; }
 
@@ -174,10 +169,6 @@ public class ApplicationSummaryViewModel
         {
             public Guid Id { get; set; }
             public string? Employer { get; set; }
-            public string? JobTitle { get; set; }
-            public DateTime StartDate { get; set; }
-            public DateTime? EndDate { get; set; }
-            public Guid ApplicationId { get; set; }
             public string? Description { get; set; }
             public string? JobDates { get; private init; }
 
@@ -185,12 +176,8 @@ public class ApplicationSummaryViewModel
             {
                 return new VolunteeringAndWorkExperience
                 {
-                    ApplicationId = source.ApplicationId,
                     Id = source.Id,
                     Employer = source.Employer,
-                    JobTitle = source.JobTitle,
-                    StartDate = source.StartDate,
-                    EndDate = source.EndDate,
                     Description = source.Description,
                     JobDates = source.EndDate is null ? $"{source.StartDate:MMMM yyyy} onwards" : $"{source.StartDate:MMMM yyyy} to {source.EndDate:MMMM yyyy}"
                 };
@@ -241,12 +228,16 @@ public class ApplicationSummaryViewModel
     public class InterviewAdjustmentsSection
     {
         public SectionStatus RequestAdjustmentsStatus { get; private init; }
+        public bool IsSupportRequestRequired { get; set; }
+        public string? InterviewAdjustmentsDescription { get; set; }
 
         public static implicit operator InterviewAdjustmentsSection(GetApplicationSummaryQueryResult.InterviewAdjustmentsSection source)
         {
             return new InterviewAdjustmentsSection
             {
-                RequestAdjustmentsStatus = source.RequestAdjustmentsStatus
+                RequestAdjustmentsStatus = source.RequestAdjustmentsStatus,
+                InterviewAdjustmentsDescription = source.InterviewAdjustmentsDescription,
+                IsSupportRequestRequired = !string.IsNullOrEmpty(source.InterviewAdjustmentsDescription)
             };
         }
     }
@@ -254,12 +245,14 @@ public class ApplicationSummaryViewModel
     public class DisabilityConfidenceSection
     {
         public SectionStatus InterviewUnderDisabilityConfidentStatus { get; private init; }
+        public bool ApplyUnderDisabilityConfidentScheme { get; set; }
 
         public static implicit operator DisabilityConfidenceSection(GetApplicationSummaryQueryResult.DisabilityConfidenceSection source)
         {
             return new DisabilityConfidenceSection
             {
-                InterviewUnderDisabilityConfidentStatus = source.InterviewUnderDisabilityConfidentStatus
+                InterviewUnderDisabilityConfidentStatus = source.InterviewUnderDisabilityConfidentStatus,
+                ApplyUnderDisabilityConfidentScheme = source.ApplyUnderDisabilityConfidentScheme
             };
         }
     }
