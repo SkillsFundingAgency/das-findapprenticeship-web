@@ -148,8 +148,8 @@ namespace SFA.DAS.FAA.Web.Controllers
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
-
-                model = (SelectAddressViewModel)result.Addresses?.ToList();
+                var addressesModel = (SelectAddressViewModel)result.Addresses?.ToList();
+                model.Addresses = addressesModel.Addresses;
                 return View(model);
             }
 
@@ -174,9 +174,9 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
-        public IActionResult EnterAddressManually(string backLink)
+        public IActionResult EnterAddressManually(string backLink, string? selectAddressPostcode)
         {
-            var model = new EnterAddressManuallyViewModel() { BackLink = backLink };
+            var model = new EnterAddressManuallyViewModel() { BackLink = backLink, SelectAddressPostcode = selectAddressPostcode };
             return View(model);
         }
 

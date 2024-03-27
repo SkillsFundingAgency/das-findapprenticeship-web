@@ -5,14 +5,14 @@
     ViewBag.Title = "What is your address? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
+    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.SelectAddressPostcode">Back</a>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
         <form class="form" method="post">
-            <input type="hidden" asp-for="BackLink"/>
+            <input type="hidden" asp-for="BackLink" />
             <span class="govuk-caption-l">Create an account</span>
             <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
