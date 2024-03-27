@@ -10,7 +10,6 @@ public class ApplicationSummaryViewModel
 
     [BindProperty]
     public bool IsConsentProvided { get; set; }
-    public CandidateDetailsSection Candidate { get; init; } = new();
 
     public static implicit operator ApplicationSummaryViewModel(GetApplicationSummaryQueryResult source)
     {
@@ -23,8 +22,21 @@ public class ApplicationSummaryViewModel
             InterviewAdjustments = source.InterviewAdjustments,
             WorkHistory = source.WorkHistory,
             IsDisabilityConfident = source.IsDisabilityConfident,
+            WhatIsYourInterest = source.WhatIsYourInterest,
+            AboutYou = source.AboutYou
         };
     }
+
+    public bool IsDisabilityConfident { get; init; }
+    public CandidateDetailsSection Candidate { get; init; } = new();
+    public EducationHistorySection EducationHistory { get; init; } = new();
+    public WorkHistorySection WorkHistory { get; init; } = new();
+    public ApplicationQuestionsSection ApplicationQuestions { get; init; } = new();
+    public InterviewAdjustmentsSection InterviewAdjustments { get; init; } = new();
+    public DisabilityConfidenceSection DisabilityConfidence { get; init; } = new();
+    public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
+    public AboutYouSection AboutYou { get; init; } = new();
+    
 
     public class CandidateDetailsSection
     {
@@ -80,33 +92,39 @@ public class ApplicationSummaryViewModel
         }
     }
 
-    public bool IsDisabilityConfident { get; init; }
-
-    public bool IsApplicationComplete => EducationHistory is {TrainingCoursesStatus: SectionStatus.Completed, QualificationsStatus: SectionStatus.Completed} &&
-                                         WorkHistory is {VolunteeringAndWorkExperienceStatus: SectionStatus.Completed, JobsStatus: SectionStatus.Completed} &&
-                                         (ApplicationQuestions.AdditionalQuestion1Id is not null || ApplicationQuestions.AdditionalQuestion1Status == SectionStatus.Completed) &&
-                                         (ApplicationQuestions.AdditionalQuestion2Id is not null || ApplicationQuestions.AdditionalQuestion2Status == SectionStatus.Completed) &&
-                                         InterviewAdjustments.RequestAdjustmentsStatus == SectionStatus.Completed &&
-                                         (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfidentStatus == SectionStatus.Completed);
-
-    public EducationHistorySection EducationHistory { get; init; } = new();
-    public WorkHistorySection WorkHistory { get; init; } = new();
-    public ApplicationQuestionsSection ApplicationQuestions { get; init; } = new();
-    public InterviewAdjustmentsSection InterviewAdjustments { get; init; } = new();
-    public DisabilityConfidenceSection DisabilityConfidence { get; init; } = new();
-
     public class EducationHistorySection
     {
         public SectionStatus QualificationsStatus { get; private init; }
         public SectionStatus TrainingCoursesStatus { get; private init; }
+        public List<TrainingCourse> TrainingCourses { get; set; } = [];
 
         public static implicit operator EducationHistorySection(GetApplicationSummaryQueryResult.EducationHistorySection source)
         {
             return new EducationHistorySection
             {
                 QualificationsStatus = source.QualificationsStatus,
-                TrainingCoursesStatus = source.TrainingCoursesStatus
+                TrainingCoursesStatus = source.TrainingCoursesStatus,
+                TrainingCourses = source.TrainingCourses.Select(x => (TrainingCourse)x).ToList()
             };
+        }
+
+        public record TrainingCourse
+        {
+            public Guid Id { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string? CourseName { get; set; }
+            public int YearAchieved { get; set; }
+
+            public static implicit operator TrainingCourse(GetApplicationSummaryQueryResult.EducationHistorySection.TrainingCourse source)
+            {
+                return new TrainingCourse
+                {
+                    ApplicationId = source.ApplicationId,
+                    Id = source.Id,
+                    CourseName = source.CourseName,
+                    YearAchieved = source.YearAchieved
+                };
+            }
         }
     }
 
@@ -114,14 +132,69 @@ public class ApplicationSummaryViewModel
     {
         public SectionStatus JobsStatus { get; private init; }
         public SectionStatus VolunteeringAndWorkExperienceStatus { get; private init; }
+        public List<Job> Jobs { get; set; } = [];
+        public List<VolunteeringAndWorkExperience> VolunteeringAndWorkExperiences { get; set; } = [];
 
         public static implicit operator WorkHistorySection(GetApplicationSummaryQueryResult.WorkHistorySection source)
         {
             return new WorkHistorySection
             {
                 JobsStatus = source.JobsStatus,
-                VolunteeringAndWorkExperienceStatus = source.VolunteeringAndWorkExperienceStatus
+                VolunteeringAndWorkExperienceStatus = source.VolunteeringAndWorkExperienceStatus,
+                Jobs = source.Jobs.Select(x => (Job)x).ToList(),
+                VolunteeringAndWorkExperiences = source.VolunteeringAndWorkExperiences.Select(x => (VolunteeringAndWorkExperience)x).ToList(),
             };
+        }
+
+        public record Job
+        {
+            public Guid Id { get; set; }
+            public string JobHeader => $"{JobTitle}, {Employer}";
+            public string? Employer { get; set; }
+            public string? JobTitle { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string? Description { get; set; }
+            public string? JobDates { get; private init; }
+
+            public static implicit operator Job(GetApplicationSummaryQueryResult.WorkHistorySection.Job source)
+            {
+                return new Job
+                {
+                    Id = source.Id,
+                    JobTitle = source.JobTitle,
+                    Employer = source.Employer,
+                    Description = source.Description,
+                    JobDates = source.EndDate is null ? $"{source.StartDate:MMMM yyyy} onwards" : $"{source.StartDate:MMMM yyyy} to {source.EndDate:MMMM yyyy}"
+                };
+            }
+        }
+        public record VolunteeringAndWorkExperience
+        {
+            public Guid Id { get; set; }
+            public string? Employer { get; set; }
+            public string? JobTitle { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string? Description { get; set; }
+            public string? JobDates { get; private init; }
+
+            public static implicit operator VolunteeringAndWorkExperience(GetApplicationSummaryQueryResult.WorkHistorySection.VolunteeringAndWorkExperience source)
+            {
+                return new VolunteeringAndWorkExperience
+                {
+                    ApplicationId = source.ApplicationId,
+                    Id = source.Id,
+                    Employer = source.Employer,
+                    JobTitle = source.JobTitle,
+                    StartDate = source.StartDate,
+                    EndDate = source.EndDate,
+                    Description = source.Description,
+                    JobDates = source.EndDate is null ? $"{source.StartDate:MMMM yyyy} onwards" : $"{source.StartDate:MMMM yyyy} to {source.EndDate:MMMM yyyy}"
+                };
+            }
         }
     }
 
@@ -129,10 +202,8 @@ public class ApplicationSummaryViewModel
     {
         public SectionStatus SkillsAndStrengthsStatus { get; set; }
         public SectionStatus WhatInterestsYouStatus { get; set; }
-        public SectionStatus AdditionalQuestion1Status { get; private init; }
-        public SectionStatus AdditionalQuestion2Status { get; private init; }
-        public Guid? AdditionalQuestion1Id { get; private init; }
-        public Guid? AdditionalQuestion2Id { get; private init; }
+        public Question? AdditionalQuestion1 { get; set; }
+        public Question? AdditionalQuestion2 { get; set; }
 
         public static implicit operator ApplicationQuestionsSection(GetApplicationSummaryQueryResult.ApplicationQuestionsSection source)
         {
@@ -140,11 +211,30 @@ public class ApplicationSummaryViewModel
             {
                 SkillsAndStrengthsStatus = source.SkillsAndStrengthsStatus,
                 WhatInterestsYouStatus = source.WhatInterestsYouStatus,
-                AdditionalQuestion1Status = source.AdditionalQuestion1Status,
-                AdditionalQuestion2Status = source.AdditionalQuestion2Status,
-                AdditionalQuestion1Id = source.AdditionalQuestion1Id,
-                AdditionalQuestion2Id = source.AdditionalQuestion2Id,
+                AdditionalQuestion1 = source.AdditionalQuestion1,
+                AdditionalQuestion2 = source.AdditionalQuestion2,
             };
+        }
+
+        public record Question
+        {
+            public Guid Id { get; set; }
+            public SectionStatus Status { get; set; }
+            public string? QuestionLabel { get; set; }
+            public string? Answer { get; set; }
+
+            public static implicit operator Question?(GetApplicationSummaryQueryResult.ApplicationQuestionsSection.Question? source)
+            {
+                if (source is null) return null;
+
+                return new Question
+                {
+                    Id = source.Id,
+                    Answer = source.Answer,
+                    QuestionLabel = source.QuestionLabel,
+                    Status = source.Status,
+                };
+            }
         }
     }
 
@@ -160,6 +250,7 @@ public class ApplicationSummaryViewModel
             };
         }
     }
+
     public class DisabilityConfidenceSection
     {
         public SectionStatus InterviewUnderDisabilityConfidentStatus { get; private init; }
@@ -172,4 +263,44 @@ public class ApplicationSummaryViewModel
             };
         }
     }
+
+    public record WhatIsYourInterestSection
+    {
+        public string? WhatIsYourInterest { get; set; }
+
+        public static implicit operator WhatIsYourInterestSection(GetApplicationSummaryQueryResult.WhatIsYourInterestSection source)
+        {
+            return new WhatIsYourInterestSection
+            {
+                WhatIsYourInterest = source.WhatIsYourInterest
+            };
+        }
+    }
+
+    public record AboutYouSection
+    {
+        public string? SkillsAndStrengths { get; set; }
+        public string? Improvements { get; set; }
+        public string? HobbiesAndInterests { get; set; }
+        public string? Support { get; set; }
+
+        public static implicit operator AboutYouSection(GetApplicationSummaryQueryResult.AboutYouSection source)
+        {
+            return new AboutYouSection
+            {
+                Support = source.Support,
+                HobbiesAndInterests = source.HobbiesAndInterests,
+                Improvements = source.Improvements,
+                SkillsAndStrengths = source.SkillsAndStrengths
+            };
+        }
+
+    }
+
+    public bool IsApplicationComplete => EducationHistory is { TrainingCoursesStatus: SectionStatus.Completed, QualificationsStatus: SectionStatus.Completed } &&
+                                         WorkHistory is { VolunteeringAndWorkExperienceStatus: SectionStatus.Completed, JobsStatus: SectionStatus.Completed } &&
+                                         (ApplicationQuestions.AdditionalQuestion1?.Id is not null || ApplicationQuestions.AdditionalQuestion1?.Status == SectionStatus.Completed) &&
+                                         (ApplicationQuestions.AdditionalQuestion2?.Id is not null || ApplicationQuestions.AdditionalQuestion2?.Status == SectionStatus.Completed) &&
+                                         InterviewAdjustments.RequestAdjustmentsStatus == SectionStatus.Completed &&
+                                         (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfidentStatus == SectionStatus.Completed);
 }

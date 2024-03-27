@@ -6,12 +6,14 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 public class GetApplicationSummaryQueryResult
 {
     public bool IsDisabilityConfident { get; set; }
+    public CandidateDetailsSection Candidate { get; init; }
+    public AboutYouSection AboutYou { get; init; }
     public EducationHistorySection EducationHistory { get; init; }
     public WorkHistorySection WorkHistory { get; init; } 
     public ApplicationQuestionsSection ApplicationQuestions { get; init; }
     public InterviewAdjustmentsSection InterviewAdjustments { get; init; }
     public DisabilityConfidenceSection DisabilityConfidence { get; init; }
-    public CandidateDetailsSection Candidate { get; init; }
+    public WhatIsYourInterestSection WhatIsYourInterest { get; init; }
 
 
     public static implicit operator GetApplicationSummaryQueryResult(GetApplicationSummaryApiResponse source)
@@ -24,7 +26,9 @@ public class GetApplicationSummaryQueryResult
             InterviewAdjustments = source.InterviewAdjustments,
             DisabilityConfidence = source.DisabilityConfidence,
             EducationHistory = source.EducationHistory,
-            IsDisabilityConfident = source.IsDisabilityConfident
+            IsDisabilityConfident = source.IsDisabilityConfident,
+            AboutYou = source.AboutYou,
+            WhatIsYourInterest = source.WhatIsYourInterest
         };
     }
 
@@ -84,14 +88,37 @@ public class GetApplicationSummaryQueryResult
     {
         public SectionStatus QualificationsStatus { get; set; }
         public SectionStatus TrainingCoursesStatus { get; set; }
+        public List<TrainingCourse?> TrainingCourses { get; set; } = [];
 
         public static implicit operator EducationHistorySection(GetApplicationSummaryApiResponse.EducationHistorySection source)
         {
             return new EducationHistorySection
             {
                 QualificationsStatus = source.QualificationsStatus,
-                TrainingCoursesStatus = source.TrainingCoursesStatus
+                TrainingCoursesStatus = source.TrainingCoursesStatus,
+                TrainingCourses = source.TrainingCourses.Select(x => (TrainingCourse)x).ToList()
             };
+        }
+
+        public record TrainingCourse
+        {
+            public Guid Id { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string? CourseName { get; set; }
+            public int YearAchieved { get; set; }
+
+            public static implicit operator TrainingCourse?(GetApplicationSummaryApiResponse.EducationHistorySection.TrainingCourse? source)
+            {
+                if (source is null) return null;
+
+                return new TrainingCourse
+                {
+                    ApplicationId = source.ApplicationId,
+                    Id = source.Id,
+                    CourseName = source.CourseName,
+                    YearAchieved = source.YearAchieved
+                };
+            }
         }
     }
 
@@ -99,14 +126,72 @@ public class GetApplicationSummaryQueryResult
     {
         public SectionStatus JobsStatus { get; set; }
         public SectionStatus VolunteeringAndWorkExperienceStatus { get; set; }
+        public List<Job?> Jobs { get; set; } = [];
+        public List<VolunteeringAndWorkExperience?> VolunteeringAndWorkExperiences { get; set; } = [];
 
         public static implicit operator WorkHistorySection(GetApplicationSummaryApiResponse.WorkHistorySection source)
         {
             return new WorkHistorySection
             {
                 JobsStatus = source.JobsStatus,
-                VolunteeringAndWorkExperienceStatus = source.VolunteeringAndWorkExperienceStatus
+                VolunteeringAndWorkExperienceStatus = source.VolunteeringAndWorkExperienceStatus,
+                Jobs = source.Jobs.Select(x => (Job)x).ToList(),
+                VolunteeringAndWorkExperiences = source.VolunteeringAndWorkExperiences.Select(x => (VolunteeringAndWorkExperience)x).ToList(),
             };
+        }
+
+        public record Job
+        {
+            public Guid Id { get; set; }
+            public string? Employer { get; set; }
+            public string? JobTitle { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string? Description { get; set; }
+
+            public static implicit operator Job?(GetApplicationSummaryApiResponse.WorkHistorySection.Job? source)
+            {
+                if (source is null) return null;
+
+                return new Job
+                {
+                    ApplicationId = source.ApplicationId,
+                    Id = source.Id,
+                    Employer = source.Employer,
+                    JobTitle = source.JobTitle,
+                    StartDate = source.StartDate,
+                    EndDate = source.EndDate,
+                    Description = source.Description
+                };
+            }
+        }
+
+        public record VolunteeringAndWorkExperience
+        {
+            public Guid Id { get; set; }
+            public string? Employer { get; set; }
+            public string? JobTitle { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string? Description { get; set; }
+
+            public static implicit operator VolunteeringAndWorkExperience?(GetApplicationSummaryApiResponse.WorkHistorySection.VolunteeringAndWorkExperience? source)
+            {
+                if (source is null) return null;
+
+                return new VolunteeringAndWorkExperience
+                {
+                    ApplicationId = source.ApplicationId,
+                    Id = source.Id,
+                    Employer = source.Employer,
+                    JobTitle = source.JobTitle,
+                    StartDate = source.StartDate,
+                    EndDate = source.EndDate,
+                    Description = source.Description
+                };
+            }
         }
     }
 
@@ -114,10 +199,8 @@ public class GetApplicationSummaryQueryResult
     {
         public SectionStatus SkillsAndStrengthsStatus { get; init; }
         public SectionStatus WhatInterestsYouStatus { get; init; }
-        public SectionStatus AdditionalQuestion1Status { get; set; }
-        public SectionStatus AdditionalQuestion2Status { get; set; }
-        public Guid? AdditionalQuestion1Id { get; init; }
-        public Guid? AdditionalQuestion2Id { get; init; }
+        public Question? AdditionalQuestion1 { get; set; }
+        public Question? AdditionalQuestion2 { get; set; }
 
         public static implicit operator ApplicationQuestionsSection(GetApplicationSummaryApiResponse.ApplicationQuestionsSection source)
         {
@@ -125,11 +208,30 @@ public class GetApplicationSummaryQueryResult
             {
                 SkillsAndStrengthsStatus = source.SkillsAndStrengthsStatus,
                 WhatInterestsYouStatus = source.WhatInterestsYouStatus,
-                AdditionalQuestion1Status = source.AdditionalQuestion1Status,
-                AdditionalQuestion2Status = source.AdditionalQuestion2Status,
-                AdditionalQuestion1Id = source.AdditionalQuestion1Id,
-                AdditionalQuestion2Id = source.AdditionalQuestion2Id
+                AdditionalQuestion1 = source.AdditionalQuestion1,
+                AdditionalQuestion2 = source.AdditionalQuestion2,
             };
+        }
+
+        public record Question
+        {
+            public Guid Id { get; set; }
+            public SectionStatus Status { get; set; }
+            public string? QuestionLabel { get; set; }
+            public string? Answer { get; set; }
+
+            public static implicit operator Question?(GetApplicationSummaryApiResponse.ApplicationQuestionsSection.Question? source)
+            {
+                if (source is null) return null;
+
+                return new Question
+                {
+                    Id = source.Id,
+                    Answer = source.Answer,
+                    QuestionLabel = source.QuestionLabel,
+                    Status = source.Status,
+                };
+            }
         }
     }
 
@@ -155,6 +257,38 @@ public class GetApplicationSummaryQueryResult
             return new DisabilityConfidenceSection
             {
                 InterviewUnderDisabilityConfidentStatus = source.InterviewUnderDisabilityConfidentStatus
+            };
+        }
+    }
+
+    public record WhatIsYourInterestSection
+    {
+        public string? WhatIsYourInterest { get; set; }
+
+        public static implicit operator WhatIsYourInterestSection(GetApplicationSummaryApiResponse.WhatIsYourInterestSection source)
+        {
+            return new WhatIsYourInterestSection
+            {
+                WhatIsYourInterest = source.WhatIsYourInterest
+            };
+        }
+    }
+
+    public record AboutYouSection
+    {
+        public string? SkillsAndStrengths { get; set; }
+        public string? Improvements { get; set; }
+        public string? HobbiesAndInterests { get; set; }
+        public string? Support { get; set; }
+
+        public static implicit operator AboutYouSection(GetApplicationSummaryApiResponse.AboutYouSection source)
+        {
+            return new AboutYouSection
+            {
+                Support = source.Support,
+                HobbiesAndInterests = source.HobbiesAndInterests,
+                Improvements = source.Improvements,
+                SkillsAndStrengths = source.SkillsAndStrengths
             };
         }
     }

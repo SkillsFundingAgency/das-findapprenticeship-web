@@ -46,9 +46,11 @@ namespace SFA.DAS.FAA.Web.Controllers
             var viewModel = (ApplicationSummaryViewModel)result;
             viewModel.ApplicationId = applicationId;
 
-            return !viewModel.IsApplicationComplete
-                ? RedirectToRoute(RouteNames.Apply, new {applicationId})
-                : View(PreviewViewPath, viewModel);
+            return 
+                //!viewModel.IsApplicationComplete
+                //? RedirectToRoute(RouteNames.Apply, new {applicationId})
+                //: 
+                View(PreviewViewPath, viewModel);
         }
 
         [HttpPost("preview", Name = RouteNames.ApplyApprenticeship.Preview)]

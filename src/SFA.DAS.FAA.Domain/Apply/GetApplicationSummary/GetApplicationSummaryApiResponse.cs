@@ -2,18 +2,20 @@
 
 namespace SFA.DAS.FAA.Domain.Apply.GetApplicationSummary;
 
-public class GetApplicationSummaryApiResponse
+public record GetApplicationSummaryApiResponse
 {
     public bool IsDisabilityConfident { get; set; }
+    public CandidateDetailsSection Candidate { get; set; }
+    public AboutYouSection AboutYou { get; set; }
     public EducationHistorySection EducationHistory { get; set; }
     public WorkHistorySection WorkHistory { get; set; }
     public ApplicationQuestionsSection ApplicationQuestions { get; set; }
     public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
+    public WhatIsYourInterestSection WhatIsYourInterest { get; set; }
+    
 
-    public CandidateDetailsSection Candidate { get; set; }
-
-    public class CandidateDetailsSection
+    public record CandidateDetailsSection
     {
         public Guid Id { get; set; }
         public string GovUkIdentifier { get; set; } = null!;
@@ -26,7 +28,7 @@ public class GetApplicationSummaryApiResponse
         public AddressDetailsSection? Address { get; set; }
     }
 
-    public class AddressDetailsSection
+    public record AddressDetailsSection
     {
         public string AddressLine1 { get; set; } = null!;
         public string? AddressLine2 { get; set; }
@@ -34,38 +36,88 @@ public class GetApplicationSummaryApiResponse
         public string? County { get; set; }
         public string Postcode { get; set; } = null!;
     }
-    
 
-    public class EducationHistorySection
+    public record EducationHistorySection
     {
         public SectionStatus QualificationsStatus { get; set; }
         public SectionStatus TrainingCoursesStatus { get; set; }
+        public List<TrainingCourse> TrainingCourses { get; set; } = [];
+
+        public record TrainingCourse
+        {
+            public Guid Id { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string CourseName { get; set; }
+            public int YearAchieved { get; set; }
+        }
     }
 
-    public class WorkHistorySection
+    public record WorkHistorySection
     {
         public SectionStatus JobsStatus { get; set; }
         public SectionStatus VolunteeringAndWorkExperienceStatus { get; set; }
+        public List<Job> Jobs { get; set; } = [];
+        public List<VolunteeringAndWorkExperience> VolunteeringAndWorkExperiences { get; set; } = [];
+
+        public record Job
+        {
+            public Guid Id { get; set; }
+            public string Employer { get; set; }
+            public string JobTitle { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string Description { get; set; }
+        }
+
+        public record VolunteeringAndWorkExperience
+        {
+            public Guid Id { get; set; }
+            public string Employer { get; set; }
+            public string JobTitle { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public Guid ApplicationId { get; set; }
+            public string Description { get; set; }
+        }
     }
 
-    public class ApplicationQuestionsSection
+    public record ApplicationQuestionsSection
     {
         public SectionStatus SkillsAndStrengthsStatus { get; set; }
         public SectionStatus WhatInterestsYouStatus { get; set; }
-        public SectionStatus AdditionalQuestion1Status { get; set; }
-        public SectionStatus AdditionalQuestion2Status { get; set; }
-        public Guid? AdditionalQuestion1Id { get; set; }
-        public Guid? AdditionalQuestion2Id { get; set; }
-        
+        public Question? AdditionalQuestion1 { get; set; }
+        public Question? AdditionalQuestion2 { get; set; }
+
+        public record Question
+        {
+            public Guid Id { get; set; }
+            public SectionStatus Status { get; set; }
+            public string QuestionLabel { get; set; }
+            public string Answer { get; set; }
+        }
     }
 
-    public class InterviewAdjustmentsSection
+    public record InterviewAdjustmentsSection
     {
         public SectionStatus RequestAdjustmentsStatus { get; set; }
     }
 
-    public class DisabilityConfidenceSection
+    public record DisabilityConfidenceSection
     {
         public SectionStatus InterviewUnderDisabilityConfidentStatus { get; set; }
+    }
+
+    public record WhatIsYourInterestSection
+    {
+        public string WhatIsYourInterest { get; set; }
+    }
+
+    public record AboutYouSection
+    {
+        public string SkillsAndStrengths { get; set; }
+        public string Improvements { get; set; }
+        public string HobbiesAndInterests { get; set; }
+        public string Support { get; set; }
     }
 }
