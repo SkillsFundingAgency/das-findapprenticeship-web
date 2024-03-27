@@ -24,4 +24,9 @@ public static class ClaimsExtensions
     {
         return claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
     }
+
+    public static string PhoneNumber(this IEnumerable<Claim> claims)
+    {
+        return claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.MobilePhone))?.Value;
+    }
 }
