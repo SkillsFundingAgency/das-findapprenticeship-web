@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Domain.Apply.GetEmployerSkillsAndStrengths;
+﻿using SFA.DAS.FAA.Domain.Apply.GetExpectedSkillsAndStrengths;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 public class GetExpectedSkillsAndStrengthsQueryResult
@@ -6,6 +6,7 @@ public class GetExpectedSkillsAndStrengthsQueryResult
     public Guid ApplicationId { get; set; }
     public string Employer { get; set; }
     public IEnumerable<string> ExpectedSkillsAndStrengths { get; set; }
+    public bool? IsSectionCompleted { get; set; }
 
     public static implicit operator GetExpectedSkillsAndStrengthsQueryResult(GetExpectedSkillsAndStrengthsApiResponse source)
     {
@@ -13,7 +14,8 @@ public class GetExpectedSkillsAndStrengthsQueryResult
         {
             ApplicationId = source.ApplicationId,
             Employer = source.Employer,
-            ExpectedSkillsAndStrengths = source.ExpectedSkillsAndStrengths
+            ExpectedSkillsAndStrengths = source.ExpectedSkillsAndStrengths,
+            IsSectionCompleted = source.IsSectionCompleted
         };
     }
 }

@@ -8,6 +8,8 @@ public record GetAdditionalQuestionQueryResult
     public string? QuestionText { get; private init; }
     public string? Answer { get; private init; }
     public Guid ApplicationId { get; private init; }
+    public bool? IsSectionCompleted { get; private init; }
+
 
     public static implicit operator GetAdditionalQuestionQueryResult(GetAdditionalQuestionApiResponse source)
     {
@@ -17,6 +19,7 @@ public record GetAdditionalQuestionQueryResult
             QuestionText = source.QuestionText,
             ApplicationId = source.ApplicationId,
             Id = source.Id,
+            IsSectionCompleted = source.IsSectionCompleted
         };
     }
 }

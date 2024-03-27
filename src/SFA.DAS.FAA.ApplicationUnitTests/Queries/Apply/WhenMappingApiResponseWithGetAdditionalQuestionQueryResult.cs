@@ -21,5 +21,6 @@ public class WhenMappingApiResponseWithGetAdditionalQuestionQueryResult
         result.Answer.Should().Be(source.Answer);
         result.QuestionText.Should().Be(source.QuestionText);
         result.ApplicationId.Should().Be(source.ApplicationId);
+        result.IsSectionCompleted.Should().Be(source.IsSectionCompleted);
     }
 }

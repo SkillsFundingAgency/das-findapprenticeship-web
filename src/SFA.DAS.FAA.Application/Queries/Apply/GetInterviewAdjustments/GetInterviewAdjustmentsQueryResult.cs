@@ -3,7 +3,7 @@
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetInterviewAdjustments;
 public record GetInterviewAdjustmentsQueryResult
 {
-    public string? InterviewAdjustmentsDescription { get; private init; }
+    public string? InterviewAdjustmentsDescription { get; set; }
     public bool? Status { get; set; }
 
     public static implicit operator GetInterviewAdjustmentsQueryResult(GetInterviewAdjustmentsApiResponse source)

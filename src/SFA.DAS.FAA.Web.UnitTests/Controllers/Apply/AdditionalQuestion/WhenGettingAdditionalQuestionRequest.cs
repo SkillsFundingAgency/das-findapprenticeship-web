@@ -24,6 +24,7 @@ public class WhenGettingAdditionalQuestionRequest
         Guid applicationId,
         Guid candidateId,
         Guid additionalQuestionId,
+        int additionalQuestion,
         GetAdditionalQuestionQueryResult result,
         [Frozen] Mock<IMediator> mediator)
     {
@@ -35,7 +36,8 @@ public class WhenGettingAdditionalQuestionRequest
         mediator.Setup(x => x.Send(It.Is<GetAdditionalQuestionQuery>(q =>
                     q.ApplicationId == applicationId
                     && q.CandidateId == candidateId
-                    && q.AdditionQuestionId == additionalQuestionId)
+                    && q.AdditionalQuestionId == additionalQuestionId
+                    && q.AdditionalQuestion == additionalQuestion)
                 , It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
@@ -52,7 +54,7 @@ public class WhenGettingAdditionalQuestionRequest
             Url = mockUrlHelper.Object,
         };
 
-        var actual = await controller.Get(applicationId, additionalQuestionId) as ViewResult;
+        var actual = await controller.Get(applicationId, additionalQuestion, additionalQuestionId) as ViewResult;
         var actualModel = actual?.Model as AddAdditionalQuestionViewModel;
 
         using (new AssertionScope())
@@ -60,6 +62,9 @@ public class WhenGettingAdditionalQuestionRequest
             actual.Should().NotBeNull();
             actual!.Model.Should().NotBeNull();
             actualModel!.ApplicationId.Should().Be(applicationId);
+            actualModel!.AdditionalQuestionAnswer.Should().Be(result.Answer);
+            actualModel!.AdditionalQuestionLabel.Should().Be(result.QuestionText);
+            actualModel!.IsSectionCompleted.Should().Be(result.IsSectionCompleted);
         }
     }
 }

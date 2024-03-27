@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.GetEmployerSkillsAndStrengths;
+using SFA.DAS.FAA.Domain.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.SkillsAndStrengths;

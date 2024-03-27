@@ -11,10 +11,11 @@ public class WhenBuildingGetAdditionalQuestionApiRequest
     public void Then_The_Request_Url_Is_Correctly_Built(
         Guid applicationId,
         Guid candidateId,
-        Guid id)
+        Guid id,
+        int additionalQuestion)
     {
-        var actual = new GetAdditionalQuestionApiRequest(applicationId, candidateId, id);
+        var actual = new GetAdditionalQuestionApiRequest(applicationId, candidateId, id, additionalQuestion);
 
-        actual.GetUrl.Should().Be($"applications/{applicationId}/additionalquestions?candidateId={candidateId}&id={id}");
+        actual.GetUrl.Should().Be($"applications/{applicationId}/additionalquestions?candidateId={candidateId}&id={id}&additionalQuestion={additionalQuestion}");
     }
 }

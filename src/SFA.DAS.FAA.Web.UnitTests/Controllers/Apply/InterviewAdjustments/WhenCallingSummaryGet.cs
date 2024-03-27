@@ -4,6 +4,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
@@ -19,13 +20,18 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.InterviewAdjustments;
 [TestFixture]
 public class WhenCallingSummaryGet
 {
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData(true, "some text")]
+    [MoqInlineAutoData(false, "")]
     public async Task Then_View_Is_Returned(
+        bool isSupportRequestRequired,
+        string interviewAdjustmentsDescription,
         Guid applicationId,
         Guid candidateId,
         GetInterviewAdjustmentsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
+        queryResult.InterviewAdjustmentsDescription = interviewAdjustmentsDescription;
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -56,6 +62,9 @@ public class WhenCallingSummaryGet
             actual.Should().NotBeNull();
             actual.Model.Should().NotBeNull();
             actualModel.ApplicationId.Should().Be(applicationId);
+            actualModel.IsSectionCompleted.Should().Be(queryResult.Status);
+            actualModel.SupportRequestAnswer.Should().Be(queryResult.InterviewAdjustmentsDescription);
+            actualModel.IsSupportRequestRequired.Should().Be(isSupportRequestRequired);
         }
     }
 }

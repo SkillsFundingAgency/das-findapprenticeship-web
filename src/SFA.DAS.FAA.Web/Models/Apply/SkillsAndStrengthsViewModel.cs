@@ -22,12 +22,12 @@ public class SkillsAndStrengthsViewModel
         ApplicationId = applicationId;
         Employer = expectedSkillsAndStrengths.Employer;
         ExpectedSkillsAndStrengths = expectedSkillsAndStrengths.ExpectedSkillsAndStrengths.ToList();
-        SkillsAndStrengths = candidateSkillsAndStrengths.SkillsAndStrengths;
+        SkillsAndStrengths = candidateSkillsAndStrengths?.SkillsAndStrengths;
+        IsSectionComplete = expectedSkillsAndStrengths.IsSectionCompleted;
     }
 
     public SkillsAndStrengthsViewModel()
     {
         
     }
-
 }
