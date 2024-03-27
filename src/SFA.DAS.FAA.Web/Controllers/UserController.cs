@@ -7,6 +7,7 @@ using SFA.DAS.FAA.Application.Commands.UserAddress;
 using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -99,8 +100,22 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("address", Name = RouteNames.PostcodeAddress)]
-        public IActionResult PostcodeAddress()
+        public async Task<IActionResult> PostcodeAddress()
         {
+            var result = await mediator.Send(new GetCandidateAddressQuery()
+            {
+                CandidateId = User.Claims.CandidateId()
+            });
+
+            if (result.Postcode != null)
+            {
+                var model = new PostcodeAddressViewModel()
+                {
+                    Postcode = result.Postcode
+                };
+
+                return View(model);
+            }
             return View();
         }
 
@@ -132,12 +147,22 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("select-address", Name = RouteNames.SelectAddress)]
-        public async Task<IActionResult> SelectAddress(string postcode)
+        public async Task<IActionResult> SelectAddress(string? postcode)
         {
-            var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = postcode });
+            var userPostcode = postcode;
+            if (userPostcode == null)
+            {
+                var queryResult = await mediator.Send(new GetCandidateAddressQuery()
+                {
+                    CandidateId = User.Claims.CandidateId()
+                });
+
+                userPostcode = queryResult.Postcode;
+            }
+            var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = userPostcode });
 
             var model = (SelectAddressViewModel)result.Addresses?.ToList();
-            model.Postcode = model.Addresses?.FirstOrDefault()?.Postcode ?? postcode;
+            model.Postcode = model.Addresses?.FirstOrDefault()?.Postcode ?? userPostcode;
 
             return View(model);
         }
@@ -170,13 +195,28 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = selectedAdress.Postcode
             });
 
-            return RedirectToRoute(RouteNames.PhoneNumber, new {backLink = RouteNames.SelectAddress.ToString()});
+            return RedirectToRoute(RouteNames.PhoneNumber, new { backLink = RouteNames.SelectAddress.ToString() });
         }
 
         [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
-        public IActionResult EnterAddressManually(string backLink, string? selectAddressPostcode)
+        public async Task<IActionResult> EnterAddressManually(string backLink, string? selectAddressPostcode)
         {
             var model = new EnterAddressManuallyViewModel() { BackLink = backLink, SelectAddressPostcode = selectAddressPostcode };
+
+            var result = await mediator.Send(new GetCandidateAddressQuery()
+            {
+                CandidateId = User.Claims.CandidateId()
+            });
+
+            if (result.AddressLine1 != null)
+            {
+                model.AddressLine1 = result.AddressLine1;
+                model.AddressLine2 = result.AddressLine2 ?? null;
+                model.TownOrCity = result.Town;
+                model.County = result.County ?? null;
+                model.Postcode = result.Postcode ?? null;
+            }
+
             return View(model);
         }
 
@@ -199,7 +239,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = model.Postcode
             });
 
-            return RedirectToRoute(RouteNames.PhoneNumber, new {RouteNames.EnterAddressManually});
+            return RedirectToRoute(RouteNames.PhoneNumber, new { RouteNames.EnterAddressManually });
         }
 
         [HttpGet("phone-number", Name = RouteNames.PhoneNumber)]

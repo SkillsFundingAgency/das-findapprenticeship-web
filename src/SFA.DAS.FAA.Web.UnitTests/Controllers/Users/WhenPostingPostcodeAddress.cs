@@ -35,7 +35,6 @@ public class WhenPostingPostcodeAddress
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
                         new Claim(ClaimTypes.Email, email),
                     }))
-
             }
         };
 
