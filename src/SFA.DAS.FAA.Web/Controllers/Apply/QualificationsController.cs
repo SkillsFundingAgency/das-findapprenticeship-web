@@ -197,7 +197,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = User.Claims.CandidateId(),
                 ApplicationId = model.ApplicationId,
                 QualificationReferenceId = model.QualificationReferenceId,
-                Subjects = model.Subjects.Select(c => new PostUpsertQualificationsApiRequest.Subject
+                Subjects = model.Subjects
+                    .Where(c=>!string.IsNullOrEmpty(c.Name) || (model.IsApprenticeship && !string.IsNullOrEmpty(c.AdditionalInformation)))
+                    .Select(c => new PostUpsertQualificationsApiRequest.Subject
                 {
                     Grade = c.Grade,
                     Name = apprenticeshipTitle ?? c.Name,

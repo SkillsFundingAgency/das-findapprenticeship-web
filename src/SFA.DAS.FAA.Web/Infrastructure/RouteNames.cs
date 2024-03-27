@@ -45,8 +45,6 @@ public static class RouteNames
         public const string EqualityFlow = nameof(EqualityFlow);
         public const string DisabilityConfident = nameof(DisabilityConfident);
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
-        public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
-        public const string EqualityFlow = nameof(EqualityFlow);
         public const string Qualifications = nameof(Qualifications);
         public const string AddQualificationSelectType = nameof(AddQualificationSelectType);
         public const string AddQualification = nameof(AddQualification);

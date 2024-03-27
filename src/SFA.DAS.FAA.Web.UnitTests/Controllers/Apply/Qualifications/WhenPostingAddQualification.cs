@@ -18,13 +18,15 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Qualifications;
 public class WhenPostingAddQualification
 {
     [Test, MoqAutoData]
-    public async Task Then_The_Command_Is_Called_And_Redirected(
+    public async Task Then_The_Command_Is_Called_And_Redirected_With_Empty_Subjects_Ignored(
         Guid candidateId,
+        SubjectViewModel subject,
         AddQualificationViewModel model,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] QualificationsController controller)
     {
         model.IsApprenticeship = false;
+        model.Subjects = [subject, new SubjectViewModel()];
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -38,7 +40,7 @@ public class WhenPostingAddQualification
 
         actual.RouteName.Should().Be(RouteNames.ApplyApprenticeship.Qualifications);
         mediator.Verify(x=>x.Send(It.Is<UpsertQualificationCommand>(
-                c=>c.CandidateId == candidateId)
+                c=>c.CandidateId == candidateId && c.Subjects.Count == 1)
             , CancellationToken.None), Times.Once);
     }
     [Test, MoqAutoData]

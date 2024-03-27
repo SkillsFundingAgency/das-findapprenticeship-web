@@ -247,8 +247,11 @@ ExtraFieldRows.prototype.updateRowOrder = function () {
 };
 
 ExtraFieldRows.prototype.hideRow = function (row) {
-  const textInput = row.querySelector("input");
-  textInput.value = "";
+  const textInput = row.querySelector('[data-type-remove]');
+  if(textInput){
+    textInput.value = 'true';  
+  }
+  
   row.classList.add(this.hiddenClass);
   if (this.areAllRowsHidden()) {
     this.fieldset.classList.add(this.fieldsetHiddenClass);
