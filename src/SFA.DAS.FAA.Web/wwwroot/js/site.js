@@ -1,4 +1,4 @@
-﻿const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
+const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
 const apiUrl = "/locations";
 
 if (locationInputs.length > 0) {
@@ -247,17 +247,20 @@ ExtraFieldRows.prototype.updateRowOrder = function () {
 };
 
 ExtraFieldRows.prototype.hideRow = function (row) {
-  const textInput = row.querySelector('[data-type-remove]');
-  if(textInput){
-    textInput.value = 'true';  
-  }
-  
+  const inputs = row.querySelectorAll("input");
+  inputs.forEach((input) => {
+    if (input.type === "text") {
+      input.value = "";
+    }
+    if (input.type === "checkbox") {
+      input.checked = false;
+    }
+  });
+  const deleteHidden = document.createElement("input");
+  deleteHidden.type = "hidden";
+  deleteHidden.value = "IsDeleted";
+  row.appendChild(deleteHidden);
   row.classList.add(this.hiddenClass);
-  if (this.areAllRowsHidden()) {
-    this.fieldset.classList.add(this.fieldsetHiddenClass);
-  } else {
-    this.fieldset.classList.remove(this.fieldsetHiddenClass);
-  }
 };
 
 ExtraFieldRows.prototype.showRow = function (row, focus = false) {
