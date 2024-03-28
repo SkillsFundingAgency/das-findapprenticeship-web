@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.UpsertQualification;
+using SFA.DAS.FAA.Application.Queries.Apply.GetModifyQualification;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -43,21 +44,18 @@ public class WhenPostingAddQualification
                 c=>c.CandidateId == candidateId && c.Subjects.Count == 1)
             , CancellationToken.None), Times.Once);
     }
+    
     [Test, MoqAutoData]
-    public async Task Then_The_Command_Is_Called_And_Apprenticeship_Saved_If_Passed(
+    public async Task Then_If_Model_Error_View_Returned_And_Command_Not_Called(
         string id,
         string title,
         Guid candidateId,
         SubjectViewModel data,
         AddQualificationViewModel model,
+        GetModifyQualificationQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] QualificationsController controller)
     {
-        model.IsApprenticeship = true;
-        data.AdditionalInformation = null;
-        data.Level = null;
-        data.Name = $"{id}|{title}";
-        model.Subjects = [data];
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -66,14 +64,22 @@ public class WhenPostingAddQualification
                     { new(CustomClaims.CandidateId, candidateId.ToString()) }))
             }
         };
+        controller.ControllerContext.ModelState.AddModelError("error","error");
+        queryResult.QualificationType!.Name = "BTec";
+        mediator.Setup(x => x.Send(It.Is<GetModifyQualificationQuery>(c =>
+                c.QualificationReferenceId == model.QualificationReferenceId
+                && c.CandidateId == candidateId
+                && c.ApplicationId == model.ApplicationId), CancellationToken.None))
+            .ReturnsAsync(queryResult);
         
-        var actual = await controller.ModifyQualification(model) as RedirectToRouteResult;
+        var actual = await controller.ModifyQualification(model) as ViewResult;
 
-        actual.RouteName.Should().Be(RouteNames.ApplyApprenticeship.Qualifications);
-        mediator.Verify(x=>x.Send(It.Is<UpsertQualificationCommand>(
-                c=>c.CandidateId == candidateId
-                && c.Subjects.First().Name == title
-                && c.Subjects.First().AdditionalInformation == id)
-            , CancellationToken.None), Times.Once);
+        Assert.That(actual, Is.Not.Null);
+        actual!.ViewName.Should().Be("~/Views/apply/Qualifications/AddQualification.cshtml");
+        var actualModel = actual.Model as AddQualificationViewModel;
+        actualModel!.ApplicationId.Should().Be(model.ApplicationId);
+        actualModel.QualificationDisplayTypeViewModel!.Title.Should().Contain("BTEC");
+        mediator.Verify(x=>x.Send(It.IsAny<UpsertQualificationCommand>()
+            , CancellationToken.None), Times.Never);
     }
 }

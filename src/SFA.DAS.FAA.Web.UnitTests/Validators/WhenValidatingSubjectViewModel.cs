@@ -8,12 +8,29 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators;
 public class WhenValidatingSubjectViewModel
 {
     [Test]
+    public async Task Then_Not_Validated_If_Deleted()
+    {
+        var model = new SubjectViewModel
+        {
+            Id = Guid.NewGuid(),
+            Name = string.Empty,
+            IsDeleted = true
+        };
+        var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("apprenticeship", Guid.NewGuid());
+        var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
+
+        var actual = await validator.ValidateAsync(model);
+
+        actual.IsValid.Should().BeTrue();
+    }
+    [Test]
     public async Task Then_The_Apprenticeship_Qualification_Is_Validated_For_Existing()
     {
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
-            Name = string.Empty
+            Name = string.Empty,
+            IsDeleted = null
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("apprenticeship", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);

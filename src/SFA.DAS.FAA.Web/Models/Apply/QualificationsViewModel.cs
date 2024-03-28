@@ -23,6 +23,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public List<Qualification> Qualifications { get; set; } = new List<Qualification>();
             public bool AllowMultipleAdd { get; set; }
             public bool ShowAdditionalInformation { get; set; }
+            public bool? ShowLevel { get; set; }
         }
 
         public class Qualification
@@ -84,11 +85,12 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 ShowAdditionalInformation = qualificationType.ShouldDisplayAdditionalInformationField,
                 QualificationReferenceId = qualificationType.Id,
                 AllowMultipleAdd = qualificationType.AllowMultipleAdd,
+                ShowLevel = qualificationType.CanShowLevel,
                 Qualifications = qualifications
                     .Select(x => new Qualification
                     {
                         Id = x.Id,
-                        Subject = x.Subject,
+                        Subject = x.Subject.Contains('|') ? x.Subject.Split('|')[1] : x.Subject,
                         Grade = x.Grade,
                         Level = x.Level,
                         AdditionalInformation = x.AdditionalInformation,

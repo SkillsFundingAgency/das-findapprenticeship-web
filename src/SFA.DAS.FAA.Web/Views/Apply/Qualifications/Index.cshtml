@@ -66,7 +66,11 @@
                                         
                                         @if (group.ShowAdditionalInformation)
                                         {
-                                            <p class="govuk-body govuk-!-margin-top-1" style="color:#505a5f">@qualification.AdditionalInformation</p>
+                                            <p class="govuk-body govuk-!-margin-top-1 govuk-hint">@qualification.AdditionalInformation</p>
+                                        }
+                                        @if (group.ShowLevel is true)
+                                        {
+                                            <p class="govuk-body govuk-!-margin-top-1 govuk-!-font-weight-bold">(Level @qualification.AdditionalInformation)</p>
                                         }
 
                                     </dt>

@@ -167,15 +167,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/qualifications/{qualificationReferenceId}/modify", Name = RouteNames.ApplyApprenticeship.AddQualification)]
         public async Task<IActionResult> ModifyQualification(AddQualificationViewModel model)
         {
-            string? apprenticeshipTitle = null;
-            string? apprenticeshipId = null;
-            if (model.IsApprenticeship)
-            {
-                var apprenticeship = model.Subjects.First().Name.Split("|");
-                apprenticeshipId = apprenticeship[0];
-                apprenticeshipTitle = apprenticeship[1];
-            }
-
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetModifyQualificationQuery
@@ -198,13 +189,15 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 ApplicationId = model.ApplicationId,
                 QualificationReferenceId = model.QualificationReferenceId,
                 Subjects = model.Subjects
-                    .Where(c=>!string.IsNullOrEmpty(c.Name) || (model.IsApprenticeship && !string.IsNullOrEmpty(c.AdditionalInformation)))
+                    .Where(c=>!string.IsNullOrEmpty(c.Name) 
+                              || (model.IsApprenticeship && !string.IsNullOrEmpty(c.AdditionalInformation))
+                              || c is { IsDeleted: true, Id: not null })
                     .Select(c => new PostUpsertQualificationsApiRequest.Subject
                 {
                     Grade = c.Grade,
-                    Name = apprenticeshipTitle ?? c.Name,
+                    Name = c.Name,
                     Id = c.Id ?? Guid.NewGuid(),
-                    AdditionalInformation = c.Level ?? c.AdditionalInformation ?? apprenticeshipId,
+                    AdditionalInformation = c.Level ?? c.AdditionalInformation,
                     IsPredicted = c.IsPredicted.HasValue && c.IsPredicted.Value,
                     IsDeleted = c.IsDeleted
                 }).ToList()
