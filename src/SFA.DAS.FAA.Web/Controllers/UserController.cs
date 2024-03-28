@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.CandidatePreferences;
 using SFA.DAS.FAA.Application.Commands.ManuallyEnteredAddress;
 using SFA.DAS.FAA.Application.Commands.PhoneNumber;
 using SFA.DAS.FAA.Application.Commands.UserAddress;
@@ -277,7 +278,6 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet("notification-preferences", Name = RouteNames.NotificationPreferences)]
         public async Task<IActionResult> NotificationPreferences()
         {
-            // get notification preferences & any saved values
             var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
             {
                 CandidateId = User.Claims.CandidateId()
@@ -301,7 +301,44 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpPost("notification-preferences", Name = RouteNames.NotificationPreferences)]
         public async Task<IActionResult> NotificationPreferences(NotificationPreferencesViewModel model)
         {
-            throw new NotImplementedException();
+            await mediator.Send(new UpsertCandidatePreferencesCommand
+            {
+                CandidateEmail = User.Claims.Email(),
+                CandidateId = User.Claims.CandidateId(),
+                NotificationPreferences = model.NotificationPreferences.Select(x => new NotificationPreferenceItem
+                {
+                    PreferenceId = x.PreferenceId,
+                    Meaning = x.Meaning,
+                    Hint = x.Hint,
+                    EmailPreference = x.EmailPreference,
+                    TextPreference = x.TextPreference
+                }).ToList()
+            });
+
+            return RedirectToRoute(RouteNames.ConfirmAccountDetails);
+        }
+
+        [HttpGet("notification-preferences-skip", Name = RouteNames.NotificationPreferencesSkip)]
+        public async Task<IActionResult> SkipNotificationPreferences()
+        {
+            var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
+            {
+                CandidateId = User.Claims.CandidateId()
+            });
+
+            var model = new NotificationPreferencesViewModel()
+            {
+                NotificationPreferences = candidatePreferences.CandidatePreferences.Select(cp => new NotificationPreferenceItemViewModel
+                {
+                    PreferenceId = cp.PreferenceId,
+                    Meaning = cp.PreferenceMeaning,
+                    Hint = cp.PreferenceHint,
+                    EmailPreference = false,
+                    TextPreference = false
+                }).ToList()
+            };
+
+            return await NotificationPreferences(model);
         }
     }
 }
