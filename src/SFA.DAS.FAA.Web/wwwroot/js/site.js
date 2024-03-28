@@ -1,4 +1,4 @@
-const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
+﻿const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
 const apiUrl = "/locations";
 
 if (locationInputs.length > 0) {
@@ -205,6 +205,8 @@ ExtraFieldRows.prototype.appendRemoveLink = function (row) {
   row.append(removeLinkWrap);
 };
 
+ExtraFieldRows.prototype.updateRowOrder = function () {};
+
 ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
   let hiddenRowCount = 0;
   let rowToShow;
@@ -224,31 +226,13 @@ ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
   e.preventDefault();
 };
 
-ExtraFieldRows.prototype.updateRowOrder = function () {
-  /*
-  const that = this;
-  const answers = [];
-  for (let f = 0; f < that.extraFieldRows.length; f++) {
-    const extraFieldRow = that.extraFieldRows[f];
-    const textValue = extraFieldRow.querySelector("input").value;
-    if (!extraFieldRow.classList.contains(this.hiddenClass)) {
-      answers.push(textValue);
-    }
-    extraFieldRow.querySelector("input").value = "";
-    that.hideRow(extraFieldRow);
-  }
-  answers.forEach(function (answer, answerIndex) {
-    const extraFieldRow = that.extraFieldRows[answerIndex];
-    const textInput = extraFieldRow.querySelector("input");
-    textInput.value = answer;
-    that.showRow(extraFieldRow, false);
-  });
-  */
-};
-
 ExtraFieldRows.prototype.hideRow = function (row) {
+  let deleteField;
   const inputs = row.querySelectorAll("input");
   inputs.forEach((input) => {
+    if (input.type === "hidden" && input.value === "") {
+      deleteField = input;
+    }
     if (input.type === "text") {
       input.value = "";
     }
@@ -256,15 +240,18 @@ ExtraFieldRows.prototype.hideRow = function (row) {
       input.checked = false;
     }
   });
-  const deleteHidden = document.createElement("input");
-  deleteHidden.type = "hidden";
-  deleteHidden.value = "IsDeleted";
-  row.appendChild(deleteHidden);
+  if (deleteField) {
+    deleteField.dataset.typeRemove = "true";
+  }
   row.classList.add(this.hiddenClass);
 };
 
 ExtraFieldRows.prototype.showRow = function (row, focus = false) {
   const textInput = row.querySelector("input");
+  const hiddenInput = row.querySelector("[data-type-remove]");
+  if (hiddenInput) {
+    hiddenInput.dataset.typeRemove = "remove";
+  }
   this.fieldset.classList.remove(this.fieldsetHiddenClass);
   row.classList.remove(this.hiddenClass);
   if (focus) {
