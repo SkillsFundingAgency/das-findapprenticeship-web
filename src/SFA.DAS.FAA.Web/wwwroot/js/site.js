@@ -241,7 +241,7 @@ ExtraFieldRows.prototype.hideRow = function (row) {
     }
   });
   if (deleteField) {
-    deleteField.dataset.typeRemove = "true";
+    deleteField.value = "true";
   }
   row.classList.add(this.hiddenClass);
 };
@@ -250,7 +250,7 @@ ExtraFieldRows.prototype.showRow = function (row, focus = false) {
   const textInput = row.querySelector("input");
   const hiddenInput = row.querySelector("[data-type-remove]");
   if (hiddenInput) {
-    hiddenInput.dataset.typeRemove = "remove";
+    hiddenInput.value = "";
   }
   this.fieldset.classList.remove(this.fieldsetHiddenClass);
   row.classList.remove(this.hiddenClass);
