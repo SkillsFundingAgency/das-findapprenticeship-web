@@ -9,6 +9,7 @@ using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -271,6 +272,36 @@ namespace SFA.DAS.FAA.Web.Controllers
 
 
             return RedirectToRoute(RouteNames.NotificationPreferences);
+        }
+
+        [HttpGet("notification-preferences", Name = RouteNames.NotificationPreferences)]
+        public async Task<IActionResult> NotificationPreferences()
+        {
+            // get notification preferences & any saved values
+            var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
+            {
+                CandidateId = User.Claims.CandidateId()
+            });
+
+            var model = new NotificationPreferencesViewModel()
+            {
+                NotificationPreferences = candidatePreferences.CandidatePreferences.Select(cp => new NotificationPreferenceItemViewModel
+                {
+                    PreferenceId = cp.PreferenceId,
+                    Meaning = cp.PreferenceMeaning,
+                    Hint = cp.PreferenceHint,
+                    EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
+                    TextPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodText).FirstOrDefault()?.Status ?? false
+                }).ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost("notification-preferences", Name = RouteNames.NotificationPreferences)]
+        public async Task<IActionResult> NotificationPreferences(NotificationPreferencesViewModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

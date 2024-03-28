@@ -1,0 +1,59 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.User.NotificationPreferencesViewModel
+@{
+    ViewBag.Title = "Your notification preferences – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.PhoneNumber">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Create an account</span>
+        <h1 class="govuk-heading-l">Tell us your notification preferences</h1>
+
+        <form class="form" method="post">
+            <input type="hidden" asp-for="NotificationPreferences" />
+
+            @foreach(var notification in Model.NotificationPreferences)
+            {
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            <h1 class="govuk-fieldset__heading">
+                                @notification.Meaning
+                            </h1>
+                        </legend>
+                        <div id="notification-hint" class="govuk-hint">
+                            @notification.Hint
+                        </div>
+                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" asp-for="@notification.TextPreference" type="checkbox">
+                                <label class="govuk-label govuk-checkboxes__label" asp-for="@notification.TextPreference">
+                                    Text
+                                </label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" asp-for="@notification.EmailPreference" type="checkbox">
+                                <label class="govuk-label govuk-checkboxes__label" asp-for="@notification.EmailPreference">
+                                    Email
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+                <a class="govuk-link" @* asp-route="@RouteNames.EnterAddressManually" asp-route-selectAddressPostcode="@Model.Postcode" asp-route-backLink="@RouteNames.SelectAddress" *@>
+                    Skip - don't get notifications
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
