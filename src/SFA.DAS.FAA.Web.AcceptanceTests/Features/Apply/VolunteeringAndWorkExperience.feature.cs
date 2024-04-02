@@ -136,14 +136,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table10.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "DoYouWantToAddAnyVolunteeringOrWorkExperience",
                             "true"});
 #line 20
- testRunner.When("I post to the Volunteering and Work Experience page", ((string)(null)), table10, "When ");
+ testRunner.When("I post to the Volunteering and Work Experience page", ((string)(null)), table13, "When ");
 #line hidden
 #line 23
  testRunner.Then("I am redirected to the Add Work Experience page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -290,14 +290,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                             "Field",
                             "Value"});
-                table11.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "IsSectionCompleted",
                             "true"});
 #line 55
- testRunner.When("I post to the Volunteering and Work Experience Summary page", ((string)(null)), table11, "When ");
+ testRunner.When("I post to the Volunteering and Work Experience Summary page", ((string)(null)), table14, "When ");
 #line hidden
 #line 58
  testRunner.Then("I am redirected to the Application Tasklist page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
