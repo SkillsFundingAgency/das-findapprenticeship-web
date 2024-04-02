@@ -15,3 +15,12 @@
 .govuk-error-summary__list {
   margin-bottom: 0;
 }
+
+.faa-flex-row {
+  @include govuk-media-query(tablet) {
+    gap: 30px;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+  }
+}
