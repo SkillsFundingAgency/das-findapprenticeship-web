@@ -4,7 +4,7 @@
     ViewBag.Title = "Your notification preferences – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.PhoneNumber">Back</a>
+    <a class="govuk-back-link" asp-route="@RouteNames.PhoneNumber" asp-route-backLink="@Model.PhoneNumberBacklink">Back</a>
 }
 
 <div class="govuk-grid-row">

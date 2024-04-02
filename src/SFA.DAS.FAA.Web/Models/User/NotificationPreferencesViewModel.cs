@@ -3,6 +3,7 @@
 public class NotificationPreferencesViewModel : ViewModelBase
 {
     public List<NotificationPreferenceItemViewModel> NotificationPreferences { get; set; }
+    public string? PhoneNumberBacklink { get; set; }
 }
 
 public class NotificationPreferenceItemViewModel

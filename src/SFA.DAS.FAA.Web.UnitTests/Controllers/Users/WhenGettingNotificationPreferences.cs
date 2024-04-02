@@ -16,6 +16,7 @@ public class WhenGettingNotificationPreferences
 {
     [Test, MoqAutoData]
     public async Task Then_View_Is_Returned(
+        string backLink,
         string candidateId,
         GetCandidatePreferencesQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
@@ -36,7 +37,7 @@ public class WhenGettingNotificationPreferences
             , It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var result = await controller.NotificationPreferences() as ViewResult;
+        var result = await controller.NotificationPreferences(backLink) as ViewResult;
 
         result.Should().NotBeNull();
     }

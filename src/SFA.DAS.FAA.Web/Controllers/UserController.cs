@@ -272,11 +272,11 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
 
-            return RedirectToRoute(RouteNames.NotificationPreferences);
+            return RedirectToRoute(RouteNames.NotificationPreferences, new {model.Backlink});
         }
 
         [HttpGet("notification-preferences", Name = RouteNames.NotificationPreferences)]
-        public async Task<IActionResult> NotificationPreferences()
+        public async Task<IActionResult> NotificationPreferences(string? backLink)
         {
             var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
             {
@@ -292,7 +292,8 @@ namespace SFA.DAS.FAA.Web.Controllers
                     Hint = cp.PreferenceHint,
                     EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
                     TextPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodText).FirstOrDefault()?.Status ?? false
-                }).ToList()
+                }).ToList(),
+                PhoneNumberBacklink = backLink
             };
 
             return View(model);
