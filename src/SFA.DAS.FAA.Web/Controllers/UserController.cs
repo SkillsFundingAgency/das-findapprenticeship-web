@@ -101,7 +101,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         }
 
-        [HttpGet("address", Name = RouteNames.PostcodeAddress)]
+        [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
         public async Task<IActionResult> PostcodeAddress()
         {
             var result = await mediator.Send(new GetCandidateAddressQuery()
@@ -121,7 +121,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View();
         }
 
-        [HttpPost("address", Name = RouteNames.PostcodeAddress)]
+        [HttpPost("postcode-address", Name = RouteNames.PostcodeAddress)]
         public async Task<IActionResult> PostcodeAddress(PostcodeAddressViewModel model)
         {
             if (!ModelState.IsValid)
@@ -201,9 +201,9 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
-        public async Task<IActionResult> EnterAddressManually(string backLink, string? selectAddressPostcode)
+        public async Task<IActionResult> EnterAddressManually(string? backLink, string? selectAddressPostcode)
         {
-            var model = new EnterAddressManuallyViewModel() { BackLink = backLink, SelectAddressPostcode = selectAddressPostcode };
+            var model = new EnterAddressManuallyViewModel() { BackLink = backLink ?? RouteNames.PostcodeAddress, SelectAddressPostcode = selectAddressPostcode };
 
             var result = await mediator.Send(new GetCandidateAddressQuery()
             {
@@ -241,11 +241,11 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = model.Postcode
             });
 
-            return RedirectToRoute(RouteNames.PhoneNumber, new { RouteNames.EnterAddressManually });
+            return RedirectToRoute(RouteNames.PhoneNumber, new { backLink = RouteNames.EnterAddressManually });
         }
 
         [HttpGet("phone-number", Name = RouteNames.PhoneNumber)]
-        public IActionResult PhoneNumber(string backLink)
+        public IActionResult PhoneNumber(string? backLink)
         {
             var model = new PhoneNumberViewModel()
             {
@@ -272,11 +272,11 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
 
-            return RedirectToRoute(RouteNames.NotificationPreferences, new {model.Backlink});
+            return RedirectToRoute(RouteNames.NotificationPreferences, new {phoneNumberBackLink = model.Backlink});
         }
 
         [HttpGet("notification-preferences", Name = RouteNames.NotificationPreferences)]
-        public async Task<IActionResult> NotificationPreferences(string? backLink)
+        public async Task<IActionResult> NotificationPreferences(string? phoneNumberBackLink)
         {
             var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
             {
@@ -293,7 +293,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                     EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
                     TextPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodText).FirstOrDefault()?.Status ?? false
                 }).ToList(),
-                PhoneNumberBacklink = backLink
+                PhoneNumberBacklink = phoneNumberBackLink
             };
 
             return View(model);
