@@ -8,7 +8,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators;
 public class WhenValidatingCandidatePostcodeAddress
 {
     private readonly string IllegalInput = "Enter a full UK postcode";
-    private readonly string PostcodeRequired = "Enter a postcode to search for your address or select 'Enter address manually'";
+    private readonly string PostcodeRequired = "Enter a postcode to search for your address or select 'Enter my address manually'";
 
     [Test, MoqInlineAutoData("abcdefghij123")]
     public async Task And_Input_Is_Too_Long_Then_Validation_Error(string postcode, PostcodeAddressViewModel model)

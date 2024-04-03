@@ -11,9 +11,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingPostcodeAddress
 {
     [Test, MoqAutoData]
-    public void Then_View_Is_Returned([Frozen] Mock<IMediator> mediator, [Greedy] UserController controller)
+    public void Then_View_Is_Returned([Frozen] Mock<IMediator> mediator, [Greedy] UserController controller, string? postcode)
     {
-        var result = controller.PostcodeAddress() as ViewResult;
+        var result = controller.PostcodeAddress(postcode) as ViewResult;
 
         result.Should().NotBeNull();
     }

@@ -5,7 +5,7 @@ namespace SFA.DAS.FAA.Web.Validators;
 
 public class SelectAddressViewModelValidator : AbstractValidator<SelectAddressViewModel>
 {
-    private readonly string NoAddressSelected = "Select your address or select 'Enter address manually'";
+    private readonly string NoAddressSelected = "Select your address or select 'Enter my address manually'";
     public SelectAddressViewModelValidator()
     {
         RuleFor(x => x.SelectedAddress)
