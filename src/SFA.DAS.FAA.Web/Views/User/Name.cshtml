@@ -15,6 +15,7 @@
         <p class="govuk-body">Write your name as you want it to appear on your applications</p>
         <form class="form" method="post">
             <input type="hidden" asp-for="ReturnToConfirmationPage" />
+            <input type="hidden" asp-for="BackLink" />
             <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.FirstName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" asp-for="FirstName">
                     First name
