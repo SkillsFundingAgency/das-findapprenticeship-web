@@ -13,10 +13,10 @@
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Create an account</span>
         <h1 class="govuk-heading-l">Select your address</h1>
-
-        <h2 class="govuk-heading-m">Postcode</h2>
-        <p class="govuk-body"><strong>@Model.Postcode</strong> <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress">Change</a></p>
-
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Postcode</h2>
+        <p class="govuk-body govuk-!-font-weight-bold">
+            @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress">Change</a>
+        </p>
         <form class="form" method="post">
             <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                 @if (Model.Addresses.Count == 1)
