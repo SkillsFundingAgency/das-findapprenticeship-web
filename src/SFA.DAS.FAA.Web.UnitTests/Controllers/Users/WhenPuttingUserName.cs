@@ -31,6 +31,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
          [Greedy] UserController controller)
         {
             //Arrange
+            model.ReturnToConfirmationPage = false;
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext

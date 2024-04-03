@@ -25,6 +25,7 @@ public class WhenPostingPostcodeAddress
         [Greedy] UserController controller)
     {
         queryResult.PostcodeExists = true;
+        model.ReturnToConfirmationPage = false;
 
         controller.ControllerContext = new ControllerContext
         {

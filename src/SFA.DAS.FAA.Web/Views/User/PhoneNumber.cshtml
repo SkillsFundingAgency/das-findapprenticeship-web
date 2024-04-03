@@ -4,7 +4,16 @@
     ViewBag.Title = "What is your phone number? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@Model.Backlink">Back</a>
+    @if (Model.ReturnToConfirmationPage is true)
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" asp-route="@Model.Backlink">
+            Back
+        </a>
+    }
 }
 
 <div class="govuk-grid-row">
@@ -15,6 +24,7 @@
         <p class="govuk-body">Use a number that companies can phone you on. For example, to invite you to an interview</p>
         <form class="form" method="post">
             <input type="hidden" asp-for="Backlink" />
+            <input type="hidden" asp-for="ReturnToConfirmationPage" />
             <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.PhoneNumber)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" asp-for="PhoneNumber">
                     Telephone number

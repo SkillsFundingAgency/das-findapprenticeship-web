@@ -23,6 +23,7 @@ public class WhenPostingNotificationPreferences
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        model.ReturnToConfirmationPage = false;
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext

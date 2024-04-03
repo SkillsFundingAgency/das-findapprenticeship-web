@@ -4,7 +4,16 @@
     ViewBag.Title = "Your notification preferences – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.PhoneNumber" asp-route-backLink="@Model.PhoneNumberBacklink">Back</a>
+    @if (Model.ReturnToConfirmationPage is true)
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.PhoneNumber" asp-route-backLink="@Model.PhoneNumberBacklink">
+            Back
+        </a>
+    }
 }
 
 <div class="govuk-grid-row">
@@ -14,7 +23,7 @@
         <h1 class="govuk-heading-l">Tell us your notification preferences</h1>
 
         <form class="form" method="post">
-
+            <input type="hidden" asp-for="@Model.ReturnToConfirmationPage" />
             @for (var i = 0; i < Model.NotificationPreferences.Count; i++)
             {
                 <input type="hidden" asp-for="@Model.NotificationPreferences[i].PreferenceId" />

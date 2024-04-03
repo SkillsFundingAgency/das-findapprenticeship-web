@@ -14,4 +14,5 @@ public class EnterAddressManuallyViewModel
     public string? County { get; set; }
     [Required(ErrorMessage = "Enter postcode")]
     public string? Postcode { get; set; }
+    public bool? ReturnToConfirmationPage { get; set; }
 }
