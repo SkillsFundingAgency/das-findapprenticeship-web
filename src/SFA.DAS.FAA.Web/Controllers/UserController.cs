@@ -97,8 +97,16 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("address", Name = RouteNames.PostcodeAddress)]
-        public IActionResult PostcodeAddress()
+        public IActionResult PostcodeAddress(string? postcode)
         {
+            if (postcode != null)
+            {
+                var model = new PostcodeAddressViewModel()
+                {
+                    Postcode = postcode
+                };
+                return View(model);
+            }
             return View();
         }
 

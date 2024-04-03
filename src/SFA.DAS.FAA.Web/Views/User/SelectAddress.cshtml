@@ -5,7 +5,7 @@
     ViewBag.Title = "Select your address – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress">Back</a>
+    <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress" asp-route-postcode="@Model.Postcode">Back</a>
 }
 
 <div class="govuk-grid-row">
