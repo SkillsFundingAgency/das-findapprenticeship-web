@@ -15,12 +15,13 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingPostcodeAddress
 {
     [Test, MoqAutoData]
-    public async Task Then_View_Is_Returned(
+    public void Then_View_Is_Returned(
         string email,
         string candidateId,
         string govIdentifier,
+        string? postcode,
         GetCandidateAddressQueryResult queryResult,
-        [Frozen] Mock<IMediator> mediator, 
+        [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
         controller.ControllerContext = new ControllerContext
@@ -39,7 +40,7 @@ public class WhenGettingPostcodeAddress
         mediator.Setup(x => x.Send(It.Is<GetCandidateAddressQuery>(x => x.CandidateId.ToString() == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var result = await controller.PostcodeAddress() as ViewResult;
+        var result = controller.PostcodeAddress(postcode) as ViewResult;
 
         result.Should().NotBeNull();
     }
