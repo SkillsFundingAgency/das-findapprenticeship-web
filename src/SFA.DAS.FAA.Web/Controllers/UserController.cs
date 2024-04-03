@@ -416,5 +416,11 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return View(model);
         }
+
+        [HttpPost("check-your-account-details", Name = RouteNames.Apply)]
+        public IActionResult ConfirmYourAccountDetails(ConfirmAccountDetailsViewModel model)
+        {
+            return RedirectToAction(RouteNames.Apply);
+        }
     }
 }
