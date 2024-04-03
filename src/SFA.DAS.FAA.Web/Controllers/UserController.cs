@@ -411,16 +411,18 @@ namespace SFA.DAS.FAA.Web.Controllers
                     Hint = cp.Hint,
                     EmailPreference = cp.EmailPreference,
                     TextPreference = cp.TextPreference
-                }).ToList()
+                })
+                .Where(x => (x.EmailPreference != null && x.EmailPreference != false) || (x.TextPreference != null && x.TextPreference != false))
+                .ToList()
             };
 
             return View(model);
         }
 
-        [HttpPost("check-your-account-details", Name = RouteNames.Apply)]
-        public IActionResult ConfirmYourAccountDetails(ConfirmAccountDetailsViewModel model)
-        {
-            return RedirectToRoute(RouteNames.Apply);
-        }
+        //[HttpPost("check-your-account-details", Name = RouteNames.Apply)]
+        //public IActionResult ConfirmYourAccountDetails(ConfirmAccountDetailsViewModel model)
+        //{
+        //    return RedirectToRoute($"applications/{applicationId}");
+        //}
     }
 }

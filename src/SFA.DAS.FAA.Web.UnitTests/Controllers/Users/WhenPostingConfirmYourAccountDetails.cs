@@ -12,15 +12,15 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenPostingConfirmYourAccountDetails
 {
-    [Test, MoqAutoData]
-    public async Task When_Model_State_Is_Valid_Should_Redirect_To_Search_Results(
-     ConfirmAccountDetailsViewModel model,
-     [Frozen] Mock<IMediator> mediator,
-     [Greedy] UserController controller)
-    {
-        var result = controller.ConfirmYourAccountDetails(model) as RedirectToRouteResult;
+    //[Test, MoqAutoData]
+    //public async Task When_Model_State_Is_Valid_Should_Redirect_To_Search_Results(
+    // ConfirmAccountDetailsViewModel model,
+    // [Frozen] Mock<IMediator> mediator,
+    // [Greedy] UserController controller)
+    //{
+    //    var result = controller.ConfirmYourAccountDetails(model) as RedirectToRouteResult;
 
-        result.Should().NotBeNull();
-        result.RouteName.Should().Be(RouteNames.Apply);
-    }
+    //    result.Should().NotBeNull();
+    //    result.RouteName.Should().Be(RouteNames.Apply);
+    //}
 }
