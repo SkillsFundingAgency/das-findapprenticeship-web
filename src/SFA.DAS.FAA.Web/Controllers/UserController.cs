@@ -10,6 +10,7 @@ using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidateAccountDetails;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidateDateOfBirth;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidateName;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
@@ -34,10 +35,17 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
-        public IActionResult Name(bool? change = false)
+        public async Task<IActionResult> Name(bool? change = false)
         {
+            var name = await mediator.Send(new GetCandidateNameQuery
+            {
+                GovUkIdentifier = User.Claims.GovIdentifier()
+            });
+
             var model = new NameViewModel
             {
+                FirstName = name?.FirstName ?? null,
+                LastName = name?.LastName ?? null,
                 ReturnToConfirmationPage = change,
                 BackLink = change is true ? RouteNames.ConfirmAccountDetails : RouteNames.CreateAccount
             };
