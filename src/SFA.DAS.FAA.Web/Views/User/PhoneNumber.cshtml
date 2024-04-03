@@ -12,7 +12,7 @@
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Create an account</span>
         <h1 class="govuk-heading-l">What is your phone number?</h1>
-        <p class="govuk-body">Use a number that companies can phone you on. For example, to invite you to an interview.</p>
+        <p class="govuk-body">Use a number that companies can phone you on. For example, to invite you to an interview</p>
         <form class="form" method="post">
             <input type="hidden" asp-for="Backlink" />
             <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.PhoneNumber)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">

@@ -7,6 +7,7 @@ using SFA.DAS.FAA.Application.Commands.UserAddress;
 using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidateDateOfBirth;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Web.Authentication;
@@ -119,21 +120,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
         public IActionResult PostcodeAddress(string? postcode)
         {
-            if (postcode != null)
+            var model = new PostcodeAddressViewModel()
             {
-                var model = new PostcodeAddressViewModel()
-                {
-                    Postcode = postcode
-                };
-                return View(model);
-            }
-                {
-                    Postcode = result.Postcode
-                };
-
-                return View(model);
-            }
-            return View();
+                Postcode = postcode
+            };
+            return View(model);
         }
 
         [HttpPost("postcode-address", Name = RouteNames.PostcodeAddress)]
