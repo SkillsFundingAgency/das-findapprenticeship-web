@@ -5,7 +5,7 @@
     ViewBag.Title = "Select your address – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress">Back</a>
+    <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress" asp-route-postcode="@Model.Postcode">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -13,10 +13,10 @@
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Create an account</span>
         <h1 class="govuk-heading-l">Select your address</h1>
-
-        <h2 class="govuk-heading-m">Postcode</h2>
-        <p class="govuk-body"><strong>@Model.Postcode</strong> <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress">Change</a></p>
-
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Postcode</h2>
+        <p class="govuk-body govuk-!-font-weight-bold">
+            @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress">Change</a>
+        </p>
         <form class="form" method="post">
             <input type="hidden" asp-for="Postcode" />
             <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
@@ -59,7 +59,7 @@
                     Continue
                 </button>
                 <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-selectAddressPostcode="@Model.Postcode" asp-route-backLink="@RouteNames.SelectAddress">
-                    Enter address manually
+                    Enter my address manually
                 </a>
             </div>
         </form>

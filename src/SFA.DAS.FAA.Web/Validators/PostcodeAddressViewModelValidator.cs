@@ -6,7 +6,7 @@ namespace SFA.DAS.FAA.Web.Validators;
 public class PostcodeAddressViewModelValidator : AbstractValidator<PostcodeAddressViewModel>
 {
     private readonly string IllegalInput = "Enter a full UK postcode";
-    private readonly string PostcodeRequired = "Enter a postcode to search for your address or select 'Enter address manually'";
+    private readonly string PostcodeRequired = "Enter a postcode to search for your address or select 'Enter my address manually'";
     public PostcodeAddressViewModelValidator()
     {
         RuleFor(x => x.Postcode).Cascade(CascadeMode.Stop)

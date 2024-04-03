@@ -15,7 +15,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingPostcodeAddress
 {
     [Test, MoqAutoData]
-    public async Task Then_View_Is_Returned(
+    public void Then_View_Is_Returned([Frozen] Mock<IMediator> mediator, [Greedy] UserController controller)
         string email,
         string candidateId,
         string govIdentifier,

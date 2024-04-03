@@ -12,6 +12,7 @@ using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Custom;
 using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.Controllers
@@ -65,9 +66,25 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("date-of-birth", Name = RouteNames.DateOfBirth)]
-        public IActionResult DateOfBirth()
+        public async Task<IActionResult> DateOfBirth()
         {
-            return View();
+            var result = await mediator.Send(new GetCandidateDateOfBirthQuery
+            {
+                GovUkIdentifier = User.Claims.GovIdentifier()
+            });
+
+            if (result.DateOfBirth != null)
+            {
+                var model = new DateOfBirthViewModel
+                {
+                    DateOfBirth = new DayMonthYearDate(result.DateOfBirth)
+                };
+                return View(model);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
@@ -99,17 +116,17 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         }
 
-        [HttpGet("address", Name = RouteNames.PostcodeAddress)]
-        public async Task<IActionResult> PostcodeAddress()
+        [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
+        public IActionResult PostcodeAddress(string? postcode)
         {
-            var result = await mediator.Send(new GetCandidateAddressQuery()
-            {
-                CandidateId = User.Claims.CandidateId()
-            });
-
-            if (result.Postcode != null)
+            if (postcode != null)
             {
                 var model = new PostcodeAddressViewModel()
+                {
+                    Postcode = postcode
+                };
+                return View(model);
+            }
                 {
                     Postcode = result.Postcode
                 };
@@ -119,7 +136,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View();
         }
 
-        [HttpPost("address", Name = RouteNames.PostcodeAddress)]
+        [HttpPost("postcode-address", Name = RouteNames.PostcodeAddress)]
         public async Task<IActionResult> PostcodeAddress(PostcodeAddressViewModel model)
         {
             if (!ModelState.IsValid)
