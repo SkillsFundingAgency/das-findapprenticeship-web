@@ -420,7 +420,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpPost("check-your-account-details", Name = RouteNames.Apply)]
         public IActionResult ConfirmYourAccountDetails(ConfirmAccountDetailsViewModel model)
         {
-            return RedirectToAction(RouteNames.Apply);
+            return RedirectToRoute(RouteNames.Apply);
         }
     }
 }
