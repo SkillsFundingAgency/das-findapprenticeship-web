@@ -21,9 +21,9 @@ The [Find an apprenticeship](https://www.gov.uk/apply-apprenticeship) service is
 
 - You must have the Azure storage emulator running. In it you will need a table called 'Configuration'. In that table add the following row:
 
-PartitionKey: LOCAL
-RowKey: SFA.DAS.FindApprenticeship.Web_1.0
-Data:
+PartitionKey: LOCAL  
+RowKey: SFA.DAS.FindApprenticeship.Web_1.0  
+Data:  
 ```
 {
       "FindAnApprenticeship": {},
