@@ -12,7 +12,7 @@ public class PhoneNumberViewModelValidator : AbstractValidator<PhoneNumberViewMo
         RuleFor(x => x.PhoneNumber).Cascade(CascadeMode.Stop)
             .NotNull()
             .WithMessage(NoInput)
-            .Matches(@"^(?:(?:\+?44\s?|0)(?:11|2\d|3[0-9]|4[0-8]|5[0-5]|7[0-9])\s?\d{4}\s?\d{3,4})$")
+            .Matches(@"^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$")
             .WithMessage(InvalidInput);
     }
 }
