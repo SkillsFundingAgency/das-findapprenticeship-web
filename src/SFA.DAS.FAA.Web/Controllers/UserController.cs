@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.UserName;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidateDateOfBirth;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Custom;
 using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.Controllers
@@ -19,7 +22,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             return View();
         }
-        
+
         [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
         public IActionResult Name()
@@ -29,9 +32,9 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("user-name", Name = RouteNames.UserName)]
-        public async Task<IActionResult> Name(NameViewModel model) 
+        public async Task<IActionResult> Name(NameViewModel model)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -47,21 +50,37 @@ namespace SFA.DAS.FAA.Web.Controllers
                 };
                 await mediator.Send(command);
             }
-            catch (InvalidOperationException e)
+            catch
             {
                 ModelState.AddModelError(nameof(NameViewModel), "There's been a problem");
                 return View(model);
             }
 
             return RedirectToRoute(RouteNames.DateOfBirth);
-            
+
         }
 
         [HttpGet]
         [Route("date-of-birth", Name = RouteNames.DateOfBirth)]
-        public IActionResult DateOfBirth() 
+        public async Task<IActionResult> DateOfBirth()
         {
-            return View();
+            var result = await mediator.Send(new GetCandidateDateOfBirthQuery
+            {
+                GovUkIdentifier = User.Claims.GovIdentifier()
+            });
+
+            if (result.DateOfBirth != null)
+            {
+                var model = new DateOfBirthViewModel
+                {
+                    DateOfBirth = new DayMonthYearDate(result.DateOfBirth)
+                };
+                return View(model);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
@@ -83,14 +102,47 @@ namespace SFA.DAS.FAA.Web.Controllers
                 };
                 await mediator.Send(command);
             }
-            catch (InvalidOperationException e)
+            catch
             {
                 ModelState.AddModelError(nameof(NameViewModel), "There's been a problem");
                 return View(model);
             }
 
-            return RedirectToRoute(RouteNames.SearchResults);
+            return RedirectToRoute(RouteNames.PostcodeAddress);
 
+        }
+
+        [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
+        public IActionResult PostcodeAddress()
+        {
+            return View();
+        }
+
+        [HttpPost("postcode-address", Name = RouteNames.PostcodeAddress)]
+        public async Task<IActionResult> PostcodeAddress(PostcodeAddressViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var postcodeExists = await mediator.Send(new GetCandidatePostcodeAddressQuery() { Postcode = model.Postcode! });
+
+                if (!postcodeExists.PostcodeExists)
+                {
+                    ModelState.AddModelError(nameof(PostcodeAddressViewModel.Postcode), "Enter a recognised postcode or select 'Enter my address manually'");
+                    return View(model);
+                }
+            }
+            catch
+            {
+                ModelState.AddModelError(nameof(NameViewModel), "There's been a problem");
+                return View(model);
+            }
+
+            return RedirectToRoute(RouteNames.SelectAddress);
         }
     }
 }

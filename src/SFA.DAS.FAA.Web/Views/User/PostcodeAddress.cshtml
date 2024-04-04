@@ -1,0 +1,37 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.User
+@model PostcodeAddressViewModel
+@{
+    ViewBag.Title = "What is your address? – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.DateOfBirth">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Create an account</span>
+        <h1 class="govuk-heading-l">What is your address?</h1>
+        <p class="govuk-body">Use the address you want to appear on your applications</p>
+        <form class="form" method="post">
+            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.Postcode)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" asp-for="Postcode">
+                    UK postcode
+                </label>
+                <div id="postcode-address-hint" class="govuk-hint">
+                    For example, SW1A 2AA
+                </div>
+                <span asp-validation-for="Postcode" class="govuk-error-message"></span>
+                <input asp-for="Postcode" class="govuk-input govuk-!-width-one-quarter" />
+            </div>
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Find my address
+                </button>
+                <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually">Enter my address manually</a>
+            </div>
+        </form>
+    </div>
+</div>
