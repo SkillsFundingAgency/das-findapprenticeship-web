@@ -18,6 +18,7 @@
             @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress">Change</a>
         </p>
         <form class="form" method="post">
+            <input type="hidden" asp-for="Postcode" />
             <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                 @if (Model.Addresses.Count == 1)
                 {
@@ -57,7 +58,9 @@
                 <button class="govuk-button" data-module="govuk-button">
                     Continue
                 </button>
-                <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually">Enter my address manually</a>
+                <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-selectAddressPostcode="@Model.Postcode" asp-route-backLink="@RouteNames.SelectAddress">
+                    Enter my address manually
+                </a>
             </div>
         </form>
     </div>
