@@ -4,7 +4,7 @@
     ViewBag.Title = "Confirm your account details – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.PhoneNumber">Back</a>
+    <a class="govuk-back-link" asp-route="@RouteNames.NotificationPreferences">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -94,13 +94,20 @@
                     {
                         <strong>@preference.Meaning</strong>
                         <ul class="govuk-list govuk-list--bullet">
-                            @if (preference.TextPreference != null && preference.TextPreference == true)
+                            @if(preference.TextPreference == false && preference.EmailPreference == false)
                             {
-                                <li>Text</li>
+                                <li>Don't notify me</li>
                             }
-                            @if (preference.EmailPreference != null && preference.EmailPreference == true)
+                            else
                             {
-                                <li>Email</li>
+                                @if (preference.TextPreference == true)
+                                {
+                                    <li>Text</li>
+                                }
+                                @if (preference.EmailPreference == true)
+                                {
+                                    <li>Email</li>
+                                }
                             }
                         </ul>
                     }

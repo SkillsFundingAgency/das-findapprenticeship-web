@@ -411,9 +411,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                     Hint = cp.Hint,
                     EmailPreference = cp.EmailPreference,
                     TextPreference = cp.TextPreference
-                })
-                .Where(x => (x.EmailPreference != null && x.EmailPreference != false) || (x.TextPreference != null && x.TextPreference != false))
-                .ToList()
+                }).ToList()
             };
 
             return View(model);
