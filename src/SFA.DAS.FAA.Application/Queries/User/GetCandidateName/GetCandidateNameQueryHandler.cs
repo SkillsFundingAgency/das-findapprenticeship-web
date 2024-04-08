@@ -14,6 +14,6 @@ public class GetCandidateNameQueryHandler : IRequestHandler<GetCandidateNameQuer
 
     public async Task<GetCandidateNameQueryResult> Handle(GetCandidateNameQuery request, CancellationToken cancellationToken)
     {
-        return await _apiClient.Get<GetCandidateNameApiResponse>(new GetCandidateNameApiRequest(request.GovUkIdentifier));
+        return await _apiClient.Get<GetCandidateNameApiResponse>(new GetCandidateNameApiRequest(request.CandidateId));
     }
 }

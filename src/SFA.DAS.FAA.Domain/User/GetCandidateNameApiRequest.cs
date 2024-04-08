@@ -1,14 +1,7 @@
 ﻿using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.User;
-public class GetCandidateNameApiRequest : IGetApiRequest
+public class GetCandidateNameApiRequest(Guid candidateId) : IGetApiRequest
 {
-    private readonly string _govUkIdentifier;
-
-    public GetCandidateNameApiRequest(string govUkIdentifier)
-    {
-        _govUkIdentifier = govUkIdentifier;
-    }
-
-    public string GetUrl => $"users/{_govUkIdentifier}/user-name";
+    public string GetUrl => $"users/{candidateId}/user-name";
 }

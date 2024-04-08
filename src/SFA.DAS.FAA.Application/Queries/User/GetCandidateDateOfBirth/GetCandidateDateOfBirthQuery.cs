@@ -3,5 +3,5 @@
 namespace SFA.DAS.FAA.Application.Queries.User.GetCandidateDateOfBirth;
 public class GetCandidateDateOfBirthQuery : IRequest<GetCandidateDateOfBirthQueryResult>
 {
-    public string GovUkIdentifier { get; set; }
+    public Guid CandidateId { get; set; }
 }

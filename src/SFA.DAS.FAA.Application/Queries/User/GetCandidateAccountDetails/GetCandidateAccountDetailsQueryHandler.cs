@@ -3,36 +3,27 @@ using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
 namespace SFA.DAS.FAA.Application.Queries.User.GetCandidateAccountDetails;
-public class GetCandidateAccountDetailsQueryHandler : IRequestHandler<GetCandidateAccountDetailsQuery, GetCandidateAccountDetailsQueryResult>
+public class GetCandidateAccountDetailsQueryHandler(IApiClient apiClient)
+    : IRequestHandler<GetCandidateAccountDetailsQuery, GetCandidateAccountDetailsQueryResult>
 {
-    private readonly IApiClient _apiClient;
-
-    public GetCandidateAccountDetailsQueryHandler(IApiClient apiClient)
-    {
-        _apiClient = apiClient;
-    }
-
     public async Task<GetCandidateAccountDetailsQueryResult> Handle(GetCandidateAccountDetailsQuery request, CancellationToken cancellationToken)
     {
-        var name = _apiClient.Get<GetCandidateNameApiResponse>(new GetCandidateNameApiRequest(request.GovUkIdentifier));
-        var dateOfBirth = _apiClient.Get<GetCandidateDateOfBirthApiResponse>(new GetCandidateDateOfBirthApiRequest(request.GovUkIdentifier));
-        var address = _apiClient.Get<GetCandidateAddressApiResponse>(new GetCandidateAddressApiRequest(request.CandidateId));
-        var candidatePreferences = _apiClient.Get<GetCandidatePreferencesApiResponse>(new GetCandidatePreferencesApiRequest(request.CandidateId));
-
-        await Task.WhenAll(dateOfBirth, address, candidatePreferences);
+        var checkAnswersResponse = await
+            apiClient.Get<GetCandidateCheckAnswersApiResponse>(
+                new GetCandidateCheckAnswersApiRequest(request.GovUkIdentifier));
 
         return new GetCandidateAccountDetailsQueryResult
         {
-            FirstName = name.Result.FirstName,
-            MiddleNames = name.Result.MiddleNames,
-            LastName = name.Result.LastName,
-            DateOfBirth = dateOfBirth.Result.DateOfBirth.Value,
-            AddressLine1 = address.Result.AddressLine1,
-            AddressLine2 = address.Result.AddressLine2,
-            Town = address.Result.Town,
-            County = address.Result.County,
-            Postcode = address.Result.Postcode,
-            CandidatePreferences = candidatePreferences.Result.CandidatePreferences.Select(x => new GetCandidateAccountDetailsQueryResult.CandidatePreference
+            FirstName = checkAnswersResponse.FirstName,
+            MiddleNames = checkAnswersResponse.MiddleNames,
+            LastName = checkAnswersResponse.LastName,
+            DateOfBirth = checkAnswersResponse.DateOfBirth ?? DateTime.MinValue,
+            AddressLine1 = checkAnswersResponse.AddressLine1,
+            AddressLine2 = checkAnswersResponse.AddressLine2,
+            Town = checkAnswersResponse.Town,
+            County = checkAnswersResponse.County,
+            Postcode = checkAnswersResponse.Postcode,
+            CandidatePreferences = checkAnswersResponse.CandidatePreferences.Select(x => new GetCandidateAccountDetailsQueryResult.CandidatePreference
             {
                 PreferenceId = x.PreferenceId,
                 Meaning = x.PreferenceMeaning,

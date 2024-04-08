@@ -39,7 +39,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var name = await mediator.Send(new GetCandidateNameQuery
             {
-                GovUkIdentifier = User.Claims.GovIdentifier()
+                CandidateId = User.Claims.CandidateId()
             });
 
             var model = new NameViewModel
@@ -90,7 +90,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var result = await mediator.Send(new GetCandidateDateOfBirthQuery
             {
-                GovUkIdentifier = User.Claims.GovIdentifier()
+                CandidateId = User.Claims.CandidateId()
             });
 
             var model = new DateOfBirthViewModel
