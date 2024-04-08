@@ -1,0 +1,84 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.EqualityGenderViewModel
+@{
+    ViewData["Title"] = "Sex and gender identity – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Equality questions</span>
+        <h1 class="govuk-heading-l">Sex and gender identity</h1>
+        <form class="form" method="post">
+            <div class="govuk-form-group" das-highlight-error-for="Sex" error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            What is your sex?
+                        </h1>
+                    </legend>
+                    <span das-validation-for="Sex" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios" id="Sex">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="Female" id="Sex-Female">
+                            <label class="govuk-label govuk-radios__label" for="Sex-Female">
+                                Female
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="Male" id="Sex-Male">
+                            <label class="govuk-label govuk-radios__label" for="Sex-Male">
+                                Male
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="PreferNotToSay" id="Sex-NA">
+                            <label class="govuk-label govuk-radios__label" for="Sex-NA">
+                                Prefer not to say
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-form-group" das-highlight-error-for="Gender" error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            Is the gender you identify with the same as your sex registered at birth?
+                        </h1>
+                    </legend>
+                    <span das-validation-for="Gender" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios" id="Gender">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="Yes" id="Gender-Yes">
+                            <label class="govuk-label govuk-radios__label" for="Gender-Yes">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="No" id="Gender-No">
+                            <label class="govuk-label govuk-radios__label" for="Gender-No">
+                                No
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="PreferNotToSay" id="Gender-NA">
+                            <label class="govuk-label govuk-radios__label" for="Gender-NA">
+                                Prefer not to say
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+                <a class="govuk-link" href="#">Skip</a>
+            </div>
+        </form>
+    </div>
+</div>

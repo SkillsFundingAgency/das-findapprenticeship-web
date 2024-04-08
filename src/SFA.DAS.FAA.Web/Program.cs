@@ -11,6 +11,7 @@ var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTes
 
 builder.Services
     .AddOptions()
+    .AddMemoryCache()
     .AddValidatorsFromAssembly(typeof(Program).Assembly)
     .AddControllers(options =>
     {

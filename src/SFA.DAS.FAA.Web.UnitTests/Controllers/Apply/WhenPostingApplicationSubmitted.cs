@@ -19,7 +19,8 @@ public class WhenPostingApplicationSubmitted
 
         var result = await controller.ApplicationSubmitted(model) as RedirectToRouteResult;
 
-        result.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityFlow);
+        result.Should().NotBeNull();
+        result!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityFlowGender);
     }
 
     [Test, MoqAutoData]
@@ -31,6 +32,7 @@ public class WhenPostingApplicationSubmitted
 
         var result = await controller.ApplicationSubmitted(model) as RedirectToRouteResult;
 
-        result.RouteName.Should().Be(RouteNames.UserProfile.YourApplications);
+        result.Should().NotBeNull();
+        result!.RouteName.Should().Be(RouteNames.UserProfile.YourApplications);
     }
 }

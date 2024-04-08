@@ -48,7 +48,9 @@ public static class RouteNames
         public const string DisabilityConfident = nameof(DisabilityConfident);
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
         public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
-        public const string EqualityFlow = nameof(EqualityFlow);
+        public const string EqualityFlowGender = nameof(EqualityFlowGender);
+        public const string EqualityFlowEthnicGroup = nameof(EqualityFlowEthnicGroup);
+
     }
 
     public static class UserProfile
