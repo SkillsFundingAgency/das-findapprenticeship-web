@@ -10,5 +10,5 @@ public class GetCandidateAddressApiRequest : IGetApiRequest
         _candidateId = candidateId;
     }
 
-    public string GetUrl => $"users/{_candidateId}/user-address";
+    public string GetUrl => $"users/{_candidateId}/create-account/user-address";
 }

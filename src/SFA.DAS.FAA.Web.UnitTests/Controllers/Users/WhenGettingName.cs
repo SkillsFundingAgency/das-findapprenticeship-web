@@ -33,8 +33,8 @@ public class WhenGettingName
                     }))
             }
         };
-        mediator.Setup(x => x.Send(It.Is<GetCandidateNameQuery>(x => x.GovUkIdentifier == govIdentifier), It.IsAny<CancellationToken>()))
-    .ReturnsAsync(queryResult);
+        mediator.Setup(x => x.Send(It.Is<GetCandidateNameQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
 
         var result = await controller.Name() as ViewResult;
 

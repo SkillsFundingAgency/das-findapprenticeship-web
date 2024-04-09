@@ -13,7 +13,7 @@ public class WhenHandlingCreateUserPhoneNumberCommand
 {
     [Test, MoqAutoData]
     public async Task Handle_WhenApiClientReturnsSuccess_ShouldReturnUnit(
-        string govUkIdentifier,
+        Guid candidateId,
         string email,
         string phoneNumber,
         [Frozen] Mock<IApiClient> apiClientMock,
@@ -21,12 +21,12 @@ public class WhenHandlingCreateUserPhoneNumberCommand
     {
         var command = new UpdatePhoneNumberCommand()
         {
-            GovUkIdentifier = govUkIdentifier,
+            CandidateId = candidateId,
             Email = email,
             PhoneNumber = phoneNumber
         };
 
-        var request = new CreateUserPhoneNumberApiRequest(command.GovUkIdentifier, new CreateUserPhoneNumberApiRequestData
+        var request = new CreateUserPhoneNumberApiRequest(command.CandidateId, new CreateUserPhoneNumberApiRequestData
         {
             Email = command.Email,
             PhoneNumber = command.PhoneNumber

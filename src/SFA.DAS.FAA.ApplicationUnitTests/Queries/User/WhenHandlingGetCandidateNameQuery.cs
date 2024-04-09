@@ -17,7 +17,7 @@ public class WhenHandlingGetCandidateNameQuery
         [Frozen] Mock<IApiClient> apiClientMock,
         GetCandidateNameQueryHandler handler)
     {
-        var apiRequestUri = new GetCandidateNameApiRequest(query.GovUkIdentifier);
+        var apiRequestUri = new GetCandidateNameApiRequest(query.CandidateId);
 
         apiClientMock.Setup(client =>
                 client.Get<GetCandidateNameApiResponse>(

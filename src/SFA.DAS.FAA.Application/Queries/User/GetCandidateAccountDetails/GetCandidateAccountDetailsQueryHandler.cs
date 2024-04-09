@@ -10,7 +10,7 @@ public class GetCandidateAccountDetailsQueryHandler(IApiClient apiClient)
     {
         var checkAnswersResponse = await
             apiClient.Get<GetCandidateCheckAnswersApiResponse>(
-                new GetCandidateCheckAnswersApiRequest(request.GovUkIdentifier));
+                new GetCandidateCheckAnswersApiRequest(request.CandidateId));
 
         return new GetCandidateAccountDetailsQueryResult
         {

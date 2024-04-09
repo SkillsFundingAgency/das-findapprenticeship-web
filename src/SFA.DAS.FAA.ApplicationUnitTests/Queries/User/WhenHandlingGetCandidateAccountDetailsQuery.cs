@@ -28,12 +28,12 @@ public class WhenHandlingGetCandidateAccountDetailsQuery
 
         apiClientMock.Setup(client =>
                 client.Get<GetCandidateNameApiResponse>(
-                    It.Is<GetCandidateNameApiRequest>(x => x.GetUrl.Contains(query.GovUkIdentifier))))
+                    It.Is<GetCandidateNameApiRequest>(x => x.GetUrl.Contains(query.CandidateId.ToString()))))
             .ReturnsAsync(name);
 
         apiClientMock.Setup(client =>
                 client.Get<GetCandidateDateOfBirthApiResponse>(
-                    It.Is<GetCandidateDateOfBirthApiRequest>(x => x.GetUrl.Contains(query.GovUkIdentifier))))
+                    It.Is<GetCandidateDateOfBirthApiRequest>(x => x.GetUrl.Contains(query.CandidateId.ToString()))))
             .ReturnsAsync(dateOfBirth);
 
         apiClientMock.Setup(client =>

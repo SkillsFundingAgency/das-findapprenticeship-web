@@ -10,5 +10,5 @@ public class GetAddressesByPostcodeApiRequest : IGetApiRequest
         _postcode = postcode;
     }
 
-    public string GetUrl => $"users/select-address?postcode={_postcode}";
+    public string GetUrl => $"users/create-account/select-address?postcode={_postcode}";
 }

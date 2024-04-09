@@ -3,15 +3,15 @@
 namespace SFA.DAS.FAA.Domain.User;
 public class CreateUserPhoneNumberApiRequest : IPostApiRequest
 {
-    private readonly string _govUkIdentifier;
+    private readonly Guid _candidateId;
 
-    public CreateUserPhoneNumberApiRequest(string govUkIdentifier, CreateUserPhoneNumberApiRequestData data)
+    public CreateUserPhoneNumberApiRequest(Guid candidateId, CreateUserPhoneNumberApiRequestData data)
     {
-        _govUkIdentifier = govUkIdentifier;
+        _candidateId = candidateId;
         Data = data;
     }
     public object Data { get; set; }
-    public string PostUrl => $"users/{_govUkIdentifier}/phone-number";
+    public string PostUrl => $"users/{_candidateId}/create-account/phone-number";
 }
 public class CreateUserPhoneNumberApiRequestData
 {

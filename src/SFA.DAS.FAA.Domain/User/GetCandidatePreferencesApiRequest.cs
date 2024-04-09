@@ -10,5 +10,5 @@ public class GetCandidatePreferencesApiRequest : IGetApiRequest
         _candidateId = candidateId;
     }
 
-    public string GetUrl => $"users/{_candidateId}/candidate-preferences";
+    public string GetUrl => $"users/{_candidateId}/create-account/candidate-preferences";
 }

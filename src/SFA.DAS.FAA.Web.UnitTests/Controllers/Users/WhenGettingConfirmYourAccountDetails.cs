@@ -40,7 +40,7 @@ public class WhenGettingConfirmYourAccountDetails
         mediator.Setup(x => x.Send(It.Is<GetCandidateAccountDetailsQuery>(x => x.GovUkIdentifier == govIdentifier), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var result = await controller.ConfirmYourAccountDetails() as ViewResult;
+        var result = await controller.CheckAnswers() as ViewResult;
         var resultModel = result.Model as ConfirmAccountDetailsViewModel;
 
         resultModel.Postcode.Should().BeEquivalentTo(queryResult.Postcode);

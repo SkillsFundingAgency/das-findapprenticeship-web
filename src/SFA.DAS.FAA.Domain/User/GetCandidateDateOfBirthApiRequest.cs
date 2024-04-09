@@ -3,5 +3,5 @@
 namespace SFA.DAS.FAA.Domain.User;
 public class GetCandidateDateOfBirthApiRequest(Guid candidateId) : IGetApiRequest
 {
-    public string GetUrl => $"users/{candidateId}/date-of-birth";
+    public string GetUrl => $"users/{candidateId}/create-account/date-of-birth";
 }

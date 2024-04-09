@@ -11,7 +11,7 @@ public class UpsertCandidatePreferencesApiRequest : IPostApiRequest
         Data = data;
     }
     public object Data { get; set; }
-    public string PostUrl => $"users/{_candidateId}/candidate-preferences";
+    public string PostUrl => $"users/{_candidateId}/create-account/candidate-preferences";
 }
 public class UpsertCandidatePreferencesData
 {

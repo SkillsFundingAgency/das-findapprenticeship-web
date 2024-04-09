@@ -24,7 +24,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.UserName
         {
 
             // Arrange
-            var request = new UpdateNameApiRequest(command.GovIdentifier, new UpdateNameApiRequestData
+            var request = new UpdateNameApiRequest(command.CandidateId, new UpdateNameApiRequestData
             {
                 Email = command.Email,
                 FirstName = command.FirstName,

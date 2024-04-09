@@ -9,7 +9,7 @@ public class UpdateDateOfBirthCommandHandler(IApiClient apiClient)
 {
     public async Task<Unit> Handle(UpdateDateOfBirthCommand request, CancellationToken cancellationToken)
     {
-        var postRequest = new UpdateDateOfBirthApiRequest(request.GovIdentifier, new UpdateDateOfBirthRequestData
+        var postRequest = new UpdateDateOfBirthApiRequest(request.CandidateId, new UpdateDateOfBirthRequestData
         {
             DateOfBirth = request.DateOfBirth,
             Email = request.Email

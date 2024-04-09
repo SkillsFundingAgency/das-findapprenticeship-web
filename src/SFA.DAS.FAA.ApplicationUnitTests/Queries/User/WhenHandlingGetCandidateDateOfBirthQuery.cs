@@ -17,7 +17,7 @@ public class WhenHandlingGetCandidateDateOfBirthQuery
         [Frozen] Mock<IApiClient> apiClientMock,
         GetCandidateDateOfBirthQueryHandler handler)
     {
-        var apiRequestUri = new GetCandidateDateOfBirthApiRequest(query.GovUkIdentifier);
+        var apiRequestUri = new GetCandidateDateOfBirthApiRequest(query.CandidateId);
 
         apiClientMock.Setup(client =>
                 client.Get<GetCandidateDateOfBirthApiResponse>(

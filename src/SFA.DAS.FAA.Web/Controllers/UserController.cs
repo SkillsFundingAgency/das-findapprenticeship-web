@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CandidatePreferences;
+using SFA.DAS.FAA.Application.Commands.CreateAccount.CheckAnswers;
 using SFA.DAS.FAA.Application.Commands.ManuallyEnteredAddress;
 using SFA.DAS.FAA.Application.Commands.PhoneNumber;
 using SFA.DAS.FAA.Application.Commands.UserAddress;
@@ -24,10 +25,11 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("create-account")]
     public class UserController(IMediator mediator) : Controller
     {
         [HttpGet]
-        [Route("create-account", Name = RouteNames.CreateAccount)]
+        [Route("", Name = RouteNames.CreateAccount)]
         public IActionResult CreateAccount()
         {
             return View();
@@ -67,7 +69,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    GovIdentifier = User.Claims.GovIdentifier(),
+                    CandidateId = User.Claims.CandidateId(),
                     Email = User.Claims.Email(),
                 };
                 await mediator.Send(command);
@@ -115,7 +117,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             {
                 var command = new UpdateDateOfBirthCommand
                 {
-                    GovIdentifier = User.Claims.GovIdentifier(),
+                    CandidateId = User.Claims.CandidateId(),
                     Email = User.Claims.Email(),
                     DateOfBirth = model.DateOfBirth.DateTimeValue.Value
                 };
@@ -301,7 +303,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             await mediator.Send(new UpdatePhoneNumberCommand()
             {
-                GovUkIdentifier = User.Claims.GovIdentifier(),
+                CandidateId = User.Claims.CandidateId(),
                 Email = User.Claims.Email(),
                 PhoneNumber = model.PhoneNumber
             });
@@ -382,13 +384,12 @@ namespace SFA.DAS.FAA.Web.Controllers
             return await NotificationPreferences(model);
         }
 
-        [HttpGet("check-your-account-details", Name = RouteNames.ConfirmAccountDetails)]
-        public async Task<IActionResult> ConfirmYourAccountDetails()
+        [HttpGet("check-answers", Name = RouteNames.ConfirmAccountDetails)]
+        public async Task<IActionResult> CheckAnswers()
         {
             var accountDetails = await mediator.Send(new GetCandidateAccountDetailsQuery
             {
-                CandidateId = User.Claims.CandidateId(),
-                GovUkIdentifier = User.Claims.GovIdentifier()
+                CandidateId = User.Claims.CandidateId()
             });
 
             var model = new ConfirmAccountDetailsViewModel
@@ -417,10 +418,15 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
-        //[HttpPost("check-your-account-details", Name = RouteNames.Apply)]
-        //public IActionResult ConfirmYourAccountDetails(ConfirmAccountDetailsViewModel model)
-        //{
-        //    return RedirectToRoute($"applications/{applicationId}");
-        //}
+        [HttpPost("check-answers", Name = RouteNames.ConfirmAccountDetails)]
+        public async Task<IActionResult> ConfirmYourAccountDetails(ConfirmAccountDetailsViewModel model)
+        {
+            await mediator.Send(new UpdateCheckAnswersCommand
+            {
+                CandidateId = User.Claims.CandidateId()
+            });
+
+            return RedirectToRoute(RouteNames.SearchResults);
+        }
     }
 }

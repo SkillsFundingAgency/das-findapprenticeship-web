@@ -15,18 +15,18 @@ public class WhenHandlingUpdateUserDateOfBirthCommand
     public async Task Handle_WhenApiClientReturnsSuccess_ShouldReturnUnit(
         [Frozen] Mock<IApiClient> apiClientMock,
         UpdateDateOfBirthCommandHandler handler,
-        string govUkIdentifier,
+        Guid candidateId,
         string email,
         DateTime dob)
     {
         var command = new UpdateDateOfBirthCommand()
         {
-            GovIdentifier = govUkIdentifier,
+            CandidateId = candidateId,
             Email = email,
             DateOfBirth = dob
         };
            
-        var request = new UpdateDateOfBirthApiRequest(command.GovIdentifier, new UpdateDateOfBirthRequestData
+        var request = new UpdateDateOfBirthApiRequest(command.CandidateId, new UpdateDateOfBirthRequestData
         {
             Email = command.Email,
             DateOfBirth = command.DateOfBirth

@@ -11,7 +11,7 @@ public class CreateUserManuallyEnteredAddressApiRequest : IPostApiRequest
         Data = data;
     }
     public object Data { get; set; }
-    public string PostUrl => $"users/{_candidateId}/enter-address";
+    public string PostUrl => $"users/{_candidateId}/create-account/enter-address";
 }
 public class CreateUserManuallyEnteredAddressApiRequestData
 {

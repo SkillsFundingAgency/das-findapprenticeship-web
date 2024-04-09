@@ -11,7 +11,7 @@ public class CreateUserAddressApiRequest : IPostApiRequest
         Data = data;
     }
     public object Data { get; set; }
-    public string PostUrl => $"users/{_candidateId}/select-address";
+    public string PostUrl => $"users/{_candidateId}/create-account/select-address";
 }
 public class CreateUserAddressApiRequestData
 {
