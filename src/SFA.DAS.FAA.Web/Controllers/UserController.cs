@@ -426,7 +426,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = User.Claims.CandidateId()
             });
 
-            return RedirectToRoute(RouteNames.SearchResults);
+            return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
     }
 }

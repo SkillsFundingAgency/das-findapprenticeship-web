@@ -40,6 +40,11 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
             claims.Add(new Claim(ClaimTypes.Surname, candidate.LastName));
             claims.Add(new Claim(CustomClaims.DisplayName, $"{candidate.FirstName} {candidate.LastName}"));
 
+            if (candidate.Status == UserStatus.Completed)
+            {
+                claims.Add(new Claim(CustomClaims.AccountSetupCompleted, "true"));
+            }
+
             if (candidate.PhoneNumber != null)
             {
                 claims.Add(new Claim(ClaimTypes.MobilePhone, candidate.PhoneNumber));

@@ -18,7 +18,7 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
     {
         var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
 
-        if (identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.DisplayName))
+        if (identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
         {
             if (!context.ActionDescriptor.DisplayName.Contains("UserController", StringComparison.CurrentCultureIgnoreCase) &&
                 !context.ActionDescriptor.DisplayName.Contains("ServiceController", StringComparison.CurrentCultureIgnoreCase))
@@ -30,12 +30,10 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
                 {
                     Email = email
                 };
-                var candidate = await service.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
-                if (string.IsNullOrEmpty(candidate.FirstName))
-                {
-                    context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, null);
-                    return;    
-                }
+
+                await service.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
+                context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, null);
+                return;    
             }
         }
         await next();
