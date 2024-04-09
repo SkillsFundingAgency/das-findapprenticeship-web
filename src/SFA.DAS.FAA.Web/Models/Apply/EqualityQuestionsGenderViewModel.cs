@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
-    public class EqualityGenderViewModel : ViewModelBase
+    public class EqualityQuestionsGenderViewModel : ViewModelBase
     {
         [FromRoute]
         public Guid ApplicationId { get; set; }

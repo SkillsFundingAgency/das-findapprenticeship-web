@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Infrastructure
@@ -15,20 +16,30 @@ namespace SFA.DAS.FAA.Web.UnitTests.Infrastructure
             string objectToCache)
         {
             //Arrange
-            var memoryCache = Mock.Of<IMemoryCache>();
-            var cacheEntry = Mock.Of<ICacheEntry>();
+            var mockCache = new Mock<IMemoryCache>();
+            var mockCacheEntry = new Mock<ICacheEntry>();
 
-            var mockMemoryCache = Mock.Get(memoryCache);
-            mockMemoryCache
-                .Setup(m => m.CreateEntry(key))
-            .Returns(cacheEntry);
+            mockCache
+                .Setup(mc => mc.CreateEntry(It.IsAny<object>()))
+                .Callback((object k) => _ = (string)k)
+                .Returns(mockCacheEntry.Object);
 
-            //Act
-            var actual = memoryCache.Set<string>(key, objectToCache);
+            mockCacheEntry
+                .SetupSet(mce => mce.Value = It.IsAny<object>())
+                .Callback<object>(v => _ = v);
 
-            //Assert
+            mockCacheEntry
+                .SetupSet(mce => mce.AbsoluteExpirationRelativeToNow = It.IsAny<TimeSpan?>())
+                .Callback<TimeSpan?>(dto => _ = dto);
+
+            // Act
+            var sut = new CacheStorageService(mockCache.Object);
+            
+            var actual = sut.Set(key, objectToCache);
+
+            // Assert
             actual.Should().NotBeNull();
-            actual.Should().BeEquivalentTo(objectToCache);
+            actual.Should().Be(objectToCache);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model SFA.DAS.FAA.Web.Models.Apply.EqualityGenderViewModel
+@model SFA.DAS.FAA.Web.Models.Apply.EqualityQuestionsGenderViewModel
 @{
     ViewData["Title"] = "Sex and gender identity – Find an apprenticeship – GOV.UK";
 }
@@ -23,19 +23,19 @@
                     <span das-validation-for="Sex" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios" id="Sex">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="Female" id="Sex-Female">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="1" id="Sex-Female">
                             <label class="govuk-label govuk-radios__label" for="Sex-Female">
                                 Female
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="Male" id="Sex-Male">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="2" id="Sex-Male">
                             <label class="govuk-label govuk-radios__label" for="Sex-Male">
                                 Male
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="PreferNotToSay" id="Sex-NA">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="3" id="Sex-NA">
                             <label class="govuk-label govuk-radios__label" for="Sex-NA">
                                 Prefer not to say
                             </label>
@@ -53,19 +53,19 @@
                     <span das-validation-for="Gender" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios" id="Gender">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="Yes" id="Gender-Yes">
+                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="1" id="Gender-Yes">
                             <label class="govuk-label govuk-radios__label" for="Gender-Yes">
                                 Yes
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="No" id="Gender-No">
+                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="2" id="Gender-No">
                             <label class="govuk-label govuk-radios__label" for="Gender-No">
                                 No
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="PreferNotToSay" id="Gender-NA">
+                            <input class="govuk-radios__input" asp-for="Gender" type="radio" value="3" id="Gender-NA">
                             <label class="govuk-label govuk-radios__label" for="Gender-NA">
                                 Prefer not to say
                             </label>

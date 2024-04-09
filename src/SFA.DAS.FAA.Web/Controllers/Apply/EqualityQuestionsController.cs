@@ -16,15 +16,15 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         private const string GenderQuestionsViewPath = "~/Views/apply/EqualityQuestions/Gender.cshtml";
 
         [HttpGet]
-        [Route("apply/{applicationId}/EqualityQuestions/gender", Name = RouteNames.ApplyApprenticeship.EqualityFlowGender)]
+        [Route("apply/{applicationId}/equality-questions/gender", Name = RouteNames.ApplyApprenticeship.EqualityFlowGender)]
         public IActionResult Gender([FromRoute] Guid applicationId)
         {
-            return View(GenderQuestionsViewPath, new EqualityGenderViewModel { ApplicationId = applicationId });
+            return View(GenderQuestionsViewPath, new EqualityQuestionsGenderViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
-        [Route("apply/{applicationId}/EqualityQuestions/gender", Name = RouteNames.ApplyApprenticeship.EqualityFlowGender)]
-        public IActionResult Gender([FromRoute] Guid applicationId, EqualityGenderViewModel viewModel)
+        [Route("apply/{applicationId}/equality-questions/gender", Name = RouteNames.ApplyApprenticeship.EqualityFlowGender)]
+        public IActionResult Gender([FromRoute] Guid applicationId, EqualityQuestionsGenderViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -36,10 +36,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 User.Claims.GovIdentifier());
 
             cacheStorageService.Set(
-                $"{dataProtectorKey}-{CacheKeys.EqualityQuestionsGender}",
-                JsonConvert.SerializeObject(viewModel),
-                null,
-                null);
+                $"{dataProtectorKey}-{CacheKeys.EqualityQuestions}",
+                JsonConvert.SerializeObject(new EqualityQuestionsModel
+                {
+                    ApplicationId = applicationId,
+                    Sex = viewModel.Sex,
+                    IsGenderIdentifySameSexAtBirth = viewModel.Gender
+                }));
 
             var dataProtectorEncodedKey = dataProtectorService.EncodedData(dataProtectorKey);
 

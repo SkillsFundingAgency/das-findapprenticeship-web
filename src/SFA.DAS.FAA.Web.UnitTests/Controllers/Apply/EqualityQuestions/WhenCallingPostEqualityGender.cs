@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         public void And_ModelState_Is_InValid_Then_Return_View(
             Guid applicationId,
             Guid govIdentifier,
-            EqualityGenderViewModel viewModel,
+            EqualityQuestionsGenderViewModel viewModel,
             [Frozen] Mock<IDataProtectorService> dataProtectorService,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
@@ -49,7 +49,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             controller.ModelState.AddModelError("test", "message");
 
             var actual = controller.Gender(applicationId, viewModel) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityGenderViewModel>();
+            var actualModel = actual!.Model.As<EqualityQuestionsGenderViewModel>();
 
             using (new AssertionScope())
             {
@@ -65,7 +65,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 Guid applicationId,
                 Guid govIdentifier,
                 string dataProtectorEncodedKey,
-                EqualityGenderViewModel viewModel,
+                EqualityQuestionsGenderViewModel viewModel,
                 [Frozen] Mock<IDataProtectorService> dataProtectorService,
                 [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {

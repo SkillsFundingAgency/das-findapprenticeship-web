@@ -15,7 +15,7 @@ public class EqualityQuestionsGenderViewModelValidatorTest
     [TestCase(null, true, "Female", "No")]
     public async Task Validate_Sex_EqualityGenderViewModel(string? errorMessage, bool isValid, string? sex, string? gender)
     {
-        var model = new EqualityGenderViewModel
+        var model = new EqualityQuestionsGenderViewModel
         {
             ApplicationId = Guid.NewGuid(),
             Sex = sex,
@@ -42,7 +42,7 @@ public class EqualityQuestionsGenderViewModelValidatorTest
     [TestCase(null, true, "Female", "No")]
     public async Task Validate_Gender_EqualityGenderViewModel(string? errorMessage, bool isValid, string? sex, string? gender)
     {
-        var model = new EqualityGenderViewModel
+        var model = new EqualityQuestionsGenderViewModel
         {
             ApplicationId = Guid.NewGuid(),
             Sex = sex,

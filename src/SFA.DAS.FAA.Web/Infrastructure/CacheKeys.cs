@@ -3,6 +3,6 @@
     public static class CacheKeys
     {
         public static string EqualityQuestionsDataProtectionKey => "govIdentifier-{0}";
-        public static string EqualityQuestionsGender => nameof(EqualityQuestionsGender);
+        public static string EqualityQuestions => nameof(EqualityQuestions);
     }
 }

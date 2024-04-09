@@ -43,7 +43,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             };
 
             var actual = controller.Gender(applicationId) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityGenderViewModel>();
+            var actualModel = actual!.Model.As<EqualityQuestionsGenderViewModel>();
 
             using (new AssertionScope())
             {
