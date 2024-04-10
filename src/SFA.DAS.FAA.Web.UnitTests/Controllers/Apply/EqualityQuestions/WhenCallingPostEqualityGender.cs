@@ -26,7 +26,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
 
-            viewModel.Gender = null;
+            viewModel.IsGenderIdentifySameSexAtBirth = null;
             viewModel.Sex = null;
 
             var mockUrlHelper = new Mock<IUrlHelper>();

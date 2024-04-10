@@ -28,7 +28,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         {
             if (!ModelState.IsValid)
             {
-                viewModel.ApplicationId = applicationId;
                 return View(GenderQuestionsViewPath, viewModel);
             }
 
@@ -37,12 +36,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             cacheStorageService.Set(
                 $"{dataProtectorKey}-{CacheKeys.EqualityQuestions}",
-                JsonConvert.SerializeObject(new EqualityQuestionsModel
-                {
-                    ApplicationId = applicationId,
-                    Sex = viewModel.Sex,
-                    IsGenderIdentifySameSexAtBirth = viewModel.Gender
-                }));
+                JsonConvert.SerializeObject((EqualityQuestionsModel)viewModel));
 
             var dataProtectorEncodedKey = dataProtectorService.EncodedData(dataProtectorKey);
 

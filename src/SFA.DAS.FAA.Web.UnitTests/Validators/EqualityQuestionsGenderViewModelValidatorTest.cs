@@ -19,10 +19,10 @@ public class EqualityQuestionsGenderViewModelValidatorTest
         {
             ApplicationId = Guid.NewGuid(),
             Sex = sex,
-            Gender = gender
+            IsGenderIdentifySameSexAtBirth = gender
         };
 
-        var sut = new EqualityGenderViewModelValidator();
+        var sut = new EqualityQuestionsGenderViewModelValidator();
         var result = await sut.TestValidateAsync(model);
 
         if (!isValid)
@@ -46,20 +46,20 @@ public class EqualityQuestionsGenderViewModelValidatorTest
         {
             ApplicationId = Guid.NewGuid(),
             Sex = sex,
-            Gender = gender
+            IsGenderIdentifySameSexAtBirth = gender
         };
 
-        var sut = new EqualityGenderViewModelValidator();
+        var sut = new EqualityQuestionsGenderViewModelValidator();
         var result = await sut.TestValidateAsync(model);
 
         if (!isValid)
         {
-            result.ShouldHaveValidationErrorFor(c => c.Gender)
+            result.ShouldHaveValidationErrorFor(c => c.IsGenderIdentifySameSexAtBirth)
                 .WithErrorMessage(errorMessage);
         }
         else
         {
-            result.ShouldNotHaveValidationErrorFor(c => c.Gender);
+            result.ShouldNotHaveValidationErrorFor(c => c.IsGenderIdentifySameSexAtBirth);
         }
     }
 }
