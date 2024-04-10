@@ -56,7 +56,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 actual.Should().NotBeNull();
                 actual.Model.Should().NotBeNull();
                 actualModel.Valid.Should().BeFalse();
-                actualModel.ApplicationId.Should().Be(applicationId);
+                actualModel.ApplicationId.Should().Be(viewModel.ApplicationId);
             }
         }
 
