@@ -30,8 +30,13 @@ namespace SFA.DAS.FAA.Web.Controllers
     {
         [HttpGet]
         [Route("", Name = RouteNames.CreateAccount)]
-        public IActionResult CreateAccount()
+        public IActionResult CreateAccount([FromQuery] string returnUrl)
         {
+            //var result = mediator.Send(new GetCreateAccountInformQuery
+            //{
+
+            //})
+
             return View();
         }
 

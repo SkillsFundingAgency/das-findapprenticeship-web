@@ -1,8 +1,6 @@
 using System.Security.Claims;
-using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Domain.Candidates;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
@@ -32,7 +30,8 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
                 };
 
                 await service.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
-                context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, null);
+                var requestPath = context.HttpContext.Request.Path;
+                context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new {returnUrl = requestPath});
                 return;    
             }
         }
