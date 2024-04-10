@@ -1,0 +1,72 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.EqualityQuestionsEthnicGroupViewModel
+@{
+    ViewData["Title"] = "What is your ethnic group? – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">Back</a>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Equality questions</span>
+        <h1 class="govuk-heading-l">What is your ethnic group?</h1>
+        <form class="form" method="post">
+            <div class="govuk-form-group" das-highlight-error-for="EthnicGroup" error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            What is your sex?
+                        </h1>
+                    </legend>
+                    <span das-validation-for="EthnicGroup" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios" id="EthnicGroup">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="1" id="EthnicGroup-White">
+                            <label class="govuk-label govuk-radios__label" for="EthnicGroup-White">
+                                White
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="2" id="EthnicGroup-Mixed">
+                            <label class="govuk-label govuk-radios__label" for="EthnicGroup-Mixed">
+                                Mixed or multiple ethnic groups
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="3" id="EthnicGroup-Asian">
+                            <label class="govuk-label govuk-radios__label" for="EthnicGroup-Asian">
+                                Asian or Asian British
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="4" id="EthnicGroup-Black">
+                            <label class="govuk-label govuk-radios__label" for="EthnicGroup-Black">
+                                Black, African, Caribbean or Black British
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="5" id="EthnicGroup-Other">
+                            <label class="govuk-label govuk-radios__label" for="EthnicGroup-Other">
+                                Other ethnic group
+                            </label>
+                        </div>
+                        <div class="govuk-radios__divider">or</div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="0" id="EthnicGroup-NA">
+                            <label class="govuk-label govuk-radios__label" for="EthnicGroup-NA">
+                                Prefer not to say
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

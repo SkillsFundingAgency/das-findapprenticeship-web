@@ -15,7 +15,7 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
     [TestFixture]
-    public class WhenCallingGetEqualityGender
+    public class WhenCallingGetEthnicGroup
     {
         [Test, MoqAutoData]
         public void Then_View_Is_Returned(
@@ -41,8 +41,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.Gender(applicationId) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityQuestionsGenderViewModel>();
+            var actual = controller.EthnicGroup(applicationId) as ViewResult;
+            var actualModel = actual!.Model.As<EqualityQuestionsEthnicGroupViewModel>();
 
             using (new AssertionScope())
             {

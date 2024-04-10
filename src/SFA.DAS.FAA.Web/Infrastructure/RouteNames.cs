@@ -48,9 +48,18 @@ public static class RouteNames
         public const string DisabilityConfident = nameof(DisabilityConfident);
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
         public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
-        public const string EqualityFlowGender = nameof(EqualityFlowGender);
-        public const string EqualityFlowEthnicGroup = nameof(EqualityFlowEthnicGroup);
 
+        public static class EqualityQuestions
+        {
+            public const string EqualityFlowGender = nameof(EqualityFlowGender);
+            public const string EqualityFlowEthnicGroup = nameof(EqualityFlowEthnicGroup);
+            public const string EqualityFlowEthnicSubGroupWhite = nameof(EqualityFlowEthnicSubGroupWhite);
+            public const string EqualityFlowEthnicSubGroupMixed = nameof(EqualityFlowEthnicSubGroupMixed);
+            public const string EqualityFlowEthnicSubGroupAsian = nameof(EqualityFlowEthnicSubGroupAsian);
+            public const string EqualityFlowEthnicSubGroupBlack = nameof(EqualityFlowEthnicSubGroupBlack);
+            public const string EqualityFlowEthnicSubGroupOther = nameof(EqualityFlowEthnicSubGroupOther);
+            public const string EqualityFlowEthnicSubGroupPreferNotToSay = nameof(EqualityFlowEthnicSubGroupPreferNotToSay);
+        }
     }
 
     public static class UserProfile

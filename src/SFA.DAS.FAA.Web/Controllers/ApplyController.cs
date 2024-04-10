@@ -81,7 +81,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             return model.AnswerEqualityQuestions.Value is true ?
-                RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityFlowGender, new { model.ApplicationId })
+                RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { model.ApplicationId })
                 : RedirectToRoute(RouteNames.UserProfile.YourApplications);
         }
     }

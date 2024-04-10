@@ -11,6 +11,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
@@ -22,7 +23,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             Guid applicationId,
             Guid govIdentifier,
             EqualityQuestionsGenderViewModel viewModel,
-            [Frozen] Mock<IDataProtectorService> dataProtectorService,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
 
@@ -34,7 +34,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
 
-            var controller = new EqualityQuestionsController(dataProtectorService.Object, cacheStorageService.Object)
+            var controller = new EqualityQuestionsController(cacheStorageService.Object)
             {
                 Url = mockUrlHelper.Object,
                 ControllerContext = new ControllerContext
@@ -64,25 +64,17 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         public void And_ModelState_Is_Valid_Then_Redirected_To_EqualityEthnicGroup(
                 Guid applicationId,
                 Guid govIdentifier,
-                string dataProtectorEncodedKey,
+                GenderIdentity gender,
                 EqualityQuestionsGenderViewModel viewModel,
-                [Frozen] Mock<IDataProtectorService> dataProtectorService,
                 [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-
-            var dataProtectorKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}",
-                govIdentifier.ToString());
-
+            viewModel.Sex = gender.ToString();
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
 
-            dataProtectorService
-                .Setup(x => x.EncodedData(dataProtectorKey))
-                .Returns(dataProtectorEncodedKey);
-
-            var controller = new EqualityQuestionsController(dataProtectorService.Object, cacheStorageService.Object)
+            var controller = new EqualityQuestionsController(cacheStorageService.Object)
             {
                 Url = mockUrlHelper.Object,
                 ControllerContext = new ControllerContext
@@ -101,7 +93,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             {
                 actual.Should().NotBeNull();
                 actual!.RouteName.Should().NotBeNull();
-                actual.RouteName.Should().BeEquivalentTo(RouteNames.ApplyApprenticeship.EqualityFlowEthnicGroup);
+                actual.RouteName.Should().BeEquivalentTo(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup);
             }
         }
     }

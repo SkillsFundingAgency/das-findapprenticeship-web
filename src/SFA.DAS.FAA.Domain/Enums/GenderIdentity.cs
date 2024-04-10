@@ -2,8 +2,8 @@
 {
     public enum GenderIdentity : short
     {
+        PreferNotToSay = 0,
         Female = 1,
         Male = 2,
-        PreferNotToSay = 3,
     }
 }

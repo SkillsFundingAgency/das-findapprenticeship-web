@@ -1,6 +1,6 @@
 using SFA.DAS.FAT.Domain.Interfaces;
 
-namespace SFA.DAS.FAT.Web.Services;
+namespace SFA.DAS.FAA.Web.Services;
 
 public class DateTimeService : IDateTimeService
 {
