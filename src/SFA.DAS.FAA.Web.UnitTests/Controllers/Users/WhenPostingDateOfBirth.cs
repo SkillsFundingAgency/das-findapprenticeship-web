@@ -39,7 +39,7 @@ public class WhenPostingDateOfBirth
         var result = await controller.DateOfBirth(model) as RedirectToRouteResult;
 
         result.Should().NotBeNull();
-        result.RouteName.Should().Be(RouteNames.SearchResults);
+        result.RouteName.Should().Be(RouteNames.PostcodeAddress);
         mediator.Verify(x => x.Send(It.Is<UpdateDateOfBirthCommand>(c =>
             c.GovIdentifier.Equals(govIdentifier)
             && c.DateOfBirth.Equals(model.DateOfBirth.DateTimeValue.Value)

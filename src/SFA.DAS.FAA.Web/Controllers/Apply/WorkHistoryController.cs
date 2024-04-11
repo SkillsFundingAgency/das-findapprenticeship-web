@@ -208,7 +208,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 };
                 await mediator.Send(command);
             }
-            catch (InvalidOperationException e)
+            catch
             {
                 ModelState.AddModelError(nameof(DeleteJobViewModel), "There's been a problem");
                 return View("~/Views/apply/workhistory/DeleteJob.cshtml");
