@@ -59,6 +59,7 @@ public static class RouteNames
             public const string EqualityFlowEthnicSubGroupBlack = nameof(EqualityFlowEthnicSubGroupBlack);
             public const string EqualityFlowEthnicSubGroupOther = nameof(EqualityFlowEthnicSubGroupOther);
             public const string EqualityFlowEthnicSubGroupPreferNotToSay = nameof(EqualityFlowEthnicSubGroupPreferNotToSay);
+            public const string EqualityFlowSummary = nameof(EqualityFlowSummary);
         }
     }
 

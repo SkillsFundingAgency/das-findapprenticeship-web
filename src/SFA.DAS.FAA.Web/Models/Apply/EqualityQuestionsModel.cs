@@ -8,6 +8,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public GenderIdentity Sex { get; init; }
         public string? IsGenderIdentifySameSexAtBirth { get; init; }
         public EthnicGroup EthnicGroup { get; set; }
+        public EthnicSubGroup EthnicSubGroup { get; set; }
+        public string? OtherEthnicSubGroupAnswer { get; set; }
 
         public static implicit operator EqualityQuestionsModel(EqualityQuestionsGenderViewModel source)
         {
