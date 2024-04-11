@@ -12,6 +12,7 @@ using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidateAccountDetails;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidateDateOfBirth;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidateName;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePhoneNumber;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
@@ -282,15 +283,19 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("phone-number", Name = RouteNames.PhoneNumber)]
-        public IActionResult PhoneNumber(string? backLink, bool? change = false)
+        public async Task<IActionResult> PhoneNumber(string? backLink, bool change=false)
         {
+            var queryResult = await mediator.Send(new GetCandidatePhoneNumberQuery
+            {
+                CandidateId = User.Claims.CandidateId()
+            });
+
             var model = new PhoneNumberViewModel()
             {
-                PhoneNumber = User.Claims.PhoneNumber() != null ? User.Claims.PhoneNumber() : null,
-                Backlink = backLink,
-                ReturnToConfirmationPage = change
+                PhoneNumber = queryResult.PhoneNumber,
+                ReturnToConfirmationPage = change,
+                BackLink = change is true ? RouteNames.ConfirmAccountDetails : RouteNames.CreateAccount
             };
-
             return View(model);
         }
 
@@ -312,7 +317,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return model.ReturnToConfirmationPage is true ?
                RedirectToRoute(RouteNames.ConfirmAccountDetails)
-               : RedirectToRoute(RouteNames.NotificationPreferences, new { phoneNumberBackLink = model.Backlink });
+               : RedirectToRoute(RouteNames.NotificationPreferences, new { phoneNumberBackLink = model.BackLink });
         }
 
         [HttpGet("notification-preferences", Name = RouteNames.NotificationPreferences)]
