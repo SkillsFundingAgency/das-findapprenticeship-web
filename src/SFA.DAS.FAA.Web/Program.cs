@@ -47,7 +47,6 @@ builder.Services.Configure<RouteOptions>(options =>
 });
 
 builder.Services.AddDataProtection(rootConfiguration);
-builder.Services.AddCache(rootConfiguration);
 builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();

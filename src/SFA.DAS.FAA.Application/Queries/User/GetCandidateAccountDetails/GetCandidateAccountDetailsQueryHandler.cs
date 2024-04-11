@@ -23,6 +23,7 @@ public class GetCandidateAccountDetailsQueryHandler(IApiClient apiClient)
             Town = checkAnswersResponse.Town,
             County = checkAnswersResponse.County,
             Postcode = checkAnswersResponse.Postcode,
+            PhoneNumber = checkAnswersResponse.PhoneNumber,
             CandidatePreferences = checkAnswersResponse.CandidatePreferences.Select(x => new GetCandidateAccountDetailsQueryResult.CandidatePreference
             {
                 PreferenceId = x.PreferenceId,

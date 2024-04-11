@@ -13,41 +13,38 @@ public class WhenHandlingGetCandidateAccountDetailsQuery
     [Test, MoqAutoData]
     public async Task Then_Result_Is_Returned(
         GetCandidateAccountDetailsQuery query,
-        GetCandidateAddressApiResponse address,
-        GetCandidateNameApiResponse name,
-        GetCandidateDateOfBirthApiResponse dateOfBirth,
-        GetCandidatePreferencesApiResponse preferences,
+        GetCandidateCheckAnswersApiResponse apiResponse,
         [Frozen] Mock<IApiClient> apiClientMock,
         GetCandidateAccountDetailsQueryHandler handler)
     {
         apiClientMock.Setup(client =>
-                client.Get<GetCandidateAddressApiResponse>(
-                    It.Is<GetCandidateAddressApiRequest>(c =>
+                client.Get<GetCandidateCheckAnswersApiResponse>(
+                    It.Is<GetCandidateCheckAnswersApiRequest>(c =>
                         c.GetUrl.Contains(query.CandidateId.ToString()))))
-            .ReturnsAsync(address);
-
-        apiClientMock.Setup(client =>
-                client.Get<GetCandidateNameApiResponse>(
-                    It.Is<GetCandidateNameApiRequest>(x => x.GetUrl.Contains(query.CandidateId.ToString()))))
-            .ReturnsAsync(name);
-
-        apiClientMock.Setup(client =>
-                client.Get<GetCandidateDateOfBirthApiResponse>(
-                    It.Is<GetCandidateDateOfBirthApiRequest>(x => x.GetUrl.Contains(query.CandidateId.ToString()))))
-            .ReturnsAsync(dateOfBirth);
-
-        apiClientMock.Setup(client =>
-        client.Get<GetCandidatePreferencesApiResponse>(
-            It.Is<GetCandidatePreferencesApiRequest>(x => x.GetUrl.Contains(query.CandidateId.ToString()))))
-            .ReturnsAsync(preferences);
+            .ReturnsAsync(apiResponse);
 
         var result = await handler.Handle(query, CancellationToken.None);
 
-        result.Should().NotBeNull();
-        apiClientMock.Verify(x => x.Get<GetCandidateAddressApiResponse>(It.IsAny<GetCandidateAddressApiRequest>()), Times.Once);
-        apiClientMock.Verify(x => x.Get<GetCandidateDateOfBirthApiResponse>(It.IsAny<GetCandidateDateOfBirthApiRequest>()), Times.Once);
-        apiClientMock.Verify(x => x.Get<GetCandidateNameApiResponse>(It.IsAny<GetCandidateNameApiRequest>()), Times.Once);
-        apiClientMock.Verify(x => x.Get<GetCandidatePreferencesApiResponse>(It.IsAny<GetCandidatePreferencesApiRequest>()), Times.Once);
+        var expectedResult = new
+        {
+            apiResponse.AddressLine1,
+            apiResponse.AddressLine2,
+            apiResponse.Town,
+            apiResponse.County,
+            apiResponse.Postcode,
+            apiResponse.DateOfBirth,
+            apiResponse.FirstName,
+            apiResponse.LastName,
+            CandidatePreferences = apiResponse.CandidatePreferences.Select(x => new
+            {
+                x.PreferenceId,
+                Meaning = x.PreferenceMeaning,
+                Hint = x.PreferenceHint,
+                EmailPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
+                TextPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodText).FirstOrDefault()?.Status ?? false
+            }).ToList()
+        };
 
+        result.Should().BeEquivalentTo(expectedResult);
     }
 }

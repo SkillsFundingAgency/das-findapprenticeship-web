@@ -19,6 +19,7 @@ public static class AddServiceRegistrationExtension
         services.AddHttpClient<IApiClient, ApiClient>();
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
+        services.AddTransient<ICacheStorageService, CacheStorageService>();
         services.AddFluentValidationAutoValidation();
         if (devDecrypt)
         {

@@ -26,17 +26,13 @@ namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("create-account")]
-    public class UserController(IMediator mediator) : Controller
+    public class UserController(IMediator mediator, ICacheStorageService cacheStorageService) : Controller
     {
         [HttpGet]
         [Route("", Name = RouteNames.CreateAccount)]
         public IActionResult CreateAccount([FromQuery] string returnUrl)
         {
-            //var result = mediator.Send(new GetCreateAccountInformQuery
-            //{
-
-            //})
-
+            cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
             return View();
         }
 
@@ -402,9 +398,9 @@ namespace SFA.DAS.FAA.Web.Controllers
                 FirstName = accountDetails.FirstName,
                 MiddleNames = accountDetails.MiddleNames,
                 LastName = accountDetails.LastName,
-                PhoneNumber = User.Claims.PhoneNumber(),
+                PhoneNumber = accountDetails.PhoneNumber,
                 DateOfBirth = accountDetails.DateOfBirth,
-                EmailAddress = User.Claims.Email(),
+                EmailAddress = accountDetails.Email,
                 AddressLine1 = accountDetails.AddressLine1,
                 AddressLine2 = accountDetails.AddressLine2,
                 County = accountDetails.County,
@@ -430,6 +426,14 @@ namespace SFA.DAS.FAA.Web.Controllers
             {
                 CandidateId = User.Claims.CandidateId()
             });
+
+
+            var returnUrl = cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
+
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
 
             return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
