@@ -10,6 +10,10 @@ public static class RouteNames
     public const string Apply = "apply";
     public const string UserName = "user-name";
     public const string DateOfBirth = "date-of-birth";
+    public const string PostcodeAddress = "postcode-address";
+    public const string SelectAddress = "select-address";
+    public const string EnterAddressManually = "enter-address";
+    public const string PhoneNumber = "phone-number";
     public const string CreateAccount = "create-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
