@@ -41,7 +41,6 @@ public class GetApplicationSummaryQueryResult
         public string? MiddleName { get; init; }
         public string? LastName { get; init; }
         public string? PhoneNumber { get; init; }
-        public DateTime? DateOfBirth { get; init; }
         public AddressDetailsSection? Address { get; init; }
 
         public static implicit operator CandidateDetailsSection(GetApplicationSummaryApiResponse.CandidateDetailsSection source)
@@ -55,7 +54,6 @@ public class GetApplicationSummaryQueryResult
                 MiddleName = source.MiddleName,
                 LastName = source.LastName,
                 PhoneNumber = source.PhoneNumber,
-                DateOfBirth = source.DateOfBirth,
                 Address = source.Address
             };
         }

@@ -48,8 +48,6 @@ public class ApplicationSummaryViewModel
         public string? MiddleName { get; set; }
         private string? LastName { get; init; }
         public string? PhoneNumber { get; init; }
-        private DateTime? DateOfBirth { get; init; }
-        public string BirthDate => DateOfBirth.HasValue ? DateOfBirth.Value.ToString("dd MMM yyyy") : string.Empty;
         public AddressDetailsSection? Address { get; init; } = new();
 
         public static implicit operator CandidateDetailsSection(GetApplicationSummaryQueryResult.CandidateDetailsSection source)
@@ -63,7 +61,6 @@ public class ApplicationSummaryViewModel
                 MiddleName = source.MiddleName,
                 LastName = source.LastName,
                 PhoneNumber = source.PhoneNumber,
-                DateOfBirth = source.DateOfBirth,
                 Address = source.Address
             };
         }
