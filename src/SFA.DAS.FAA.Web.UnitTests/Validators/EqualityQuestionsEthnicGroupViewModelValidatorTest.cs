@@ -12,7 +12,7 @@ public class EqualityQuestionsEthnicGroupViewModelValidatorTest
     [TestCase(NoEthnicGroupSelectionErrorMessage, false, "")]
     [TestCase(null, true, "British")]
     [TestCase(null, true, "Mixed")]
-    public async Task Validate_Sex_EqualityGenderViewModel(string? errorMessage, bool isValid, string? group)
+    public async Task Validate_EthnicGroup_EqualityGenderViewModel(string? errorMessage, bool isValid, string? group)
     {
         var model = new EqualityQuestionsEthnicGroupViewModel
         {

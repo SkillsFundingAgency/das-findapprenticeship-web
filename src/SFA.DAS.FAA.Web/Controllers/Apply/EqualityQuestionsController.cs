@@ -81,25 +81,26 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/equality-questions/ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
         public IActionResult EthnicGroupWhite([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupViewModel viewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(EthnicSubGroupWhiteQuestionsViewPath, viewModel);
-            }
+            return !ModelState.IsValid 
+                ? View(EthnicSubGroupWhiteQuestionsViewPath, viewModel) 
+                : UpdateEqualityQuestionModel(applicationId, viewModel);
+        }
 
+        private RedirectToRouteResult UpdateEqualityQuestionModel(Guid applicationId, EqualityQuestionsEthnicSubGroupViewModel viewModel)
+        {
             var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
             var equalityQuestions = cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
 
-            if (equalityQuestions is not null)
-            {
-                equalityQuestions.EthnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), viewModel.EthnicSubGroup!, true);
-                equalityQuestions.OtherEthnicSubGroupAnswer = viewModel.OtherEthnicSubGroupAnswer;
+            if (equalityQuestions is null)
+                return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender,
+                    new {applicationId});
 
-                cacheStorageService.Set(cacheKey, equalityQuestions);
+            equalityQuestions.EthnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), viewModel.EthnicSubGroup!, true);
+            equalityQuestions.OtherEthnicSubGroupAnswer = viewModel.OtherEthnicSubGroupAnswer;
 
-                return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary, new { applicationId });
-            }
+            cacheStorageService.Set(cacheKey, equalityQuestions);
 
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { applicationId });
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary, new { applicationId });
         }
     }
 }
