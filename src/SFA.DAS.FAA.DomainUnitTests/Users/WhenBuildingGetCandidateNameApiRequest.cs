@@ -11,6 +11,6 @@ public class WhenBuildingGetCandidateNameApiRequest
     {
         var actual = new GetCandidateNameApiRequest(candidateId);
 
-        actual.GetUrl.Should().Be($"users/{candidateId}/user-name");
+        actual.GetUrl.Should().Be($"users/{candidateId}/create-account/user-name");
     }
 }

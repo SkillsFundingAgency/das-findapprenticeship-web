@@ -16,6 +16,6 @@ public class WhenBuildingUpdatePhoneNumberApiRequest
         };
         var actual = new CreateUserPhoneNumberApiRequest(candidateId, data);
 
-        actual.PostUrl.Should().Be($"users/{candidateId}/phone-number");
+        actual.PostUrl.Should().Be($"users/{candidateId}/create-account/phone-number");
     }
 }

@@ -12,7 +12,7 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Users
         {
             var actual = new UpdateNameApiRequest(candidateId, data);
 
-            actual.PutUrl.Should().Be($"users/{candidateId}/add-details");
+            actual.PutUrl.Should().Be($"users/{candidateId}/create-account/add-details");
             ((UpdateNameApiRequestData)actual.Data).Should().BeEquivalentTo(data);
         }
     }

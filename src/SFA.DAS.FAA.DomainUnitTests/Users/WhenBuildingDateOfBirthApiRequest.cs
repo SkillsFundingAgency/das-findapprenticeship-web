@@ -16,7 +16,7 @@ public class WhenBuildingDateOfBirthApiRequest
         };
         var actual = new UpdateDateOfBirthApiRequest(candidateId, data);
 
-        actual.PostUrl.Should().Be($"users/{candidateId}/date-of-birth");
+        actual.PostUrl.Should().Be($"users/{candidateId}/create-account/date-of-birth");
 
         ((UpdateDateOfBirthRequestData)actual.Data).Should().BeEquivalentTo(data);
     }

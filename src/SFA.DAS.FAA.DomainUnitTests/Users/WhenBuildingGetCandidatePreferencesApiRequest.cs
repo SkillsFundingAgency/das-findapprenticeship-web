@@ -11,6 +11,6 @@ public class WhenBuildingGetCandidatePreferencesApiRequest
     {
         var actual = new GetCandidatePreferencesApiRequest(candidateId);
 
-        actual.GetUrl.Should().Be($"users/{candidateId}/candidate-preferences");
+        actual.GetUrl.Should().Be($"users/{candidateId}/create-account/candidate-preferences");
     }
 }

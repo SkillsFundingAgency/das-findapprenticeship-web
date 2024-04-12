@@ -11,6 +11,6 @@ public class WhenBuildingPutCandidatePreferencesApiRequest
     {
         var actual = new UpsertCandidatePreferencesApiRequest(candidateId, new UpsertCandidatePreferencesData());
 
-        actual.PostUrl.Should().Be($"users/{candidateId}/candidate-preferences");
+        actual.PostUrl.Should().Be($"users/{candidateId}/create-account/candidate-preferences");
     }
 }

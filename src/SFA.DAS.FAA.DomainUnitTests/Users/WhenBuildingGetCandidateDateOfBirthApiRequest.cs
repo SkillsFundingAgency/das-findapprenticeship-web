@@ -11,6 +11,6 @@ public class WhenBuildingGetCandidateDateOfBirthApiRequest
     {
         var actual = new GetCandidateDateOfBirthApiRequest(candidateId);
 
-        actual.GetUrl.Should().Be($"users/{candidateId}/date-of-birth");
+        actual.GetUrl.Should().Be($"users/{candidateId}/create-account/date-of-birth");
     }
 }

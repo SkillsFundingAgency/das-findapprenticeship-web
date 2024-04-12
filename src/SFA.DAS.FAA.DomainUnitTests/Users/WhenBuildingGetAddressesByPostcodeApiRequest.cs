@@ -12,6 +12,6 @@ public class WhenBuildingGetAddressesByPostcodeApiRequest
     {
         var actual = new GetAddressesByPostcodeApiRequest(candidateId, HttpUtility.UrlEncode(postcode));
 
-        actual.GetUrl.Should().Be($"users/{candidateId}/select-address?postcode={postcode}");
+        actual.GetUrl.Should().Be($"users/{candidateId}/create-account/select-address?postcode={postcode}");
     }
 }
