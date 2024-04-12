@@ -239,7 +239,8 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var model = new EnterAddressManuallyViewModel
             {
-                SelectAddressPostcode = selectAddressPostcode
+                SelectAddressPostcode = selectAddressPostcode,
+                IsEdit = change
             };
 
             if (change)
