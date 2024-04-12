@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.UserName;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
@@ -12,6 +11,7 @@ using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
