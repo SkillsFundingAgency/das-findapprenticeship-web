@@ -123,6 +123,20 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithStatusCode(202)
                         .WithBodyFromFile("put-candidate.json"));
 
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"/vacancies/{Constants.NewVacancyReference}", RegexOptions.None, regexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithBodyFromFile("post-application-details-new.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"/vacancies/{Constants.ExistingVacancyReference}", RegexOptions.None, regexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithBodyFromFile("post-application-details-existing.json"));
+
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/users/\\S+/user-name", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
                 .RespondWith(
