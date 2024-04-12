@@ -31,7 +31,7 @@
                      <option value=""></option>
                      @foreach (var course in Model.Courses)
                      {
-                        <!option @(existingApplicationQualification.Name.Split("|'")[0] == $"{course.Id}|{course.Title}" ? " selected='selected'":"") value="@($"{course.Id}|{course.Title}")">@course.Title</!option>
+                        <!option @(existingApplicationQualification?.Name?.Split("|'")[0] == $"{course.Id}|{course.Title}" ? " selected='selected'":"") value="@($"{course.Id}|{course.Title}")">@course.Title</!option>
                      }
                   </select>
                </div>
