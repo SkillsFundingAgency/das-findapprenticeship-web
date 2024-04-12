@@ -18,7 +18,7 @@ public class WhenGettingConfirmYourAccountDetails
     [Test, MoqAutoData]
     public async Task Then_View_Is_Returned(
         string govIdentifier,
-        string candidateId,
+        Guid candidateId,
         string phoneNumber,
         GetCandidateAccountDetailsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
@@ -31,13 +31,13 @@ public class WhenGettingConfirmYourAccountDetails
                 User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(CustomClaims.CandidateId, candidateId),
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
                         new Claim(ClaimTypes.MobilePhone, phoneNumber)
                     }))
             }
         };
 
-        mediator.Setup(x => x.Send(It.Is<GetCandidateAccountDetailsQuery>(x => x.GovUkIdentifier == govIdentifier), It.IsAny<CancellationToken>()))
+        mediator.Setup(x => x.Send(It.Is<GetCandidateAccountDetailsQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
         var result = await controller.CheckAnswers() as ViewResult;

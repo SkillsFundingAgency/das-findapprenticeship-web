@@ -11,9 +11,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingCreateAccount
 {
     [Test, MoqAutoData]
-    public async Task Then_View_Is_Returned([Frozen] Mock<IMediator> mediator, [Greedy] UserController controller)
+    public async Task Then_View_Is_Returned([Frozen] Mock<IMediator> mediator, string returnUrl, [Greedy] UserController controller)
     {
-        var result = controller.CreateAccount() as ViewResult;
+        var result = controller.CreateAccount(returnUrl) as ViewResult;
 
         result.Should().NotBeNull();
     }

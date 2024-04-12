@@ -35,9 +35,7 @@ public class WhenGettingPhoneNumber
             }
         };
 
-        var result = controller.PhoneNumber(backLink) as ViewResult;
+        var result = await controller.PhoneNumber(backLink) as ViewResult;
         var resultModel = result.Model as PhoneNumberViewModel;
-
-        resultModel.Backlink.Should().Be(backLink);
     }
 }

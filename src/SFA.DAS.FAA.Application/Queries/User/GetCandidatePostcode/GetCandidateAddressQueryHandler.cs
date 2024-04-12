@@ -18,11 +18,12 @@ public class GetCandidateAddressQueryHandler : IRequestHandler<GetCandidateAddre
 
         return new GetCandidateAddressQueryResult
         {
-            Postcode = result?.Postcode,
-            AddressLine1 = result?.AddressLine1,
-            AddressLine2 = result?.AddressLine2,
-            Town = result?.Town,
-            County = result?.County
+            IsAddressFromLookup = result.IsAddressFromLookup,
+            Postcode = result.Postcode,
+            AddressLine1 = result.AddressLine1,
+            AddressLine2 = result.AddressLine2,
+            Town = result.Town,
+            County = result.County
         };
     }
 }

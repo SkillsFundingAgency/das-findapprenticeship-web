@@ -33,7 +33,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("", Name = RouteNames.CreateAccount)]
         public IActionResult CreateAccount([FromQuery] string returnUrl)
         {
-            cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
+            }
+
             return View();
         }
 
@@ -138,13 +142,13 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
-        public IActionResult PostcodeAddress(string? postcode, bool? change = false)
+        public IActionResult PostcodeAddress(string? postcode, bool change = false)
         {
             var model = new PostcodeAddressViewModel()
             {
                 Postcode = postcode,
                 ReturnToConfirmationPage = change,
-                BackLink = change is true ? RouteNames.ConfirmAccountDetails : RouteNames.DateOfBirth
+                IsEdit = change
             };
             return View(model);
         }
@@ -178,23 +182,17 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("select-address", Name = RouteNames.SelectAddress)]
-        public async Task<IActionResult> SelectAddress(string? postcode, bool? change = false)
+        public async Task<IActionResult> SelectAddress(string? postcode, bool change = false)
         {
-            var userPostcode = postcode;
-            if (userPostcode == null)
+            var result = await mediator.Send(new GetAddressesByPostcodeQuery
             {
-                var queryResult = await mediator.Send(new GetCandidateAddressQuery()
-                {
-                    CandidateId = User.Claims.CandidateId()
-                });
+                CandidateId = User.Claims.CandidateId(),
+                Postcode = postcode
+            });
 
-                userPostcode = queryResult.Postcode;
-            }
-            var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = userPostcode });
-
-            var model = (SelectAddressViewModel)result.Addresses?.ToList();
-            model.Postcode = model.Addresses?.FirstOrDefault()?.Postcode ?? userPostcode;
+            var model = (SelectAddressViewModel)result;
             model.ReturnToConfirmationPage = change;
+            model.IsEdit = change;
 
             return View(model);
         }
@@ -205,26 +203,26 @@ namespace SFA.DAS.FAA.Web.Controllers
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
-                var addressesModel = (SelectAddressViewModel)result.Addresses?.ToList();
-                model.Addresses = addressesModel.Addresses;
-                return View(model);
+                var addressesModel = (SelectAddressViewModel) result;
+                return View(addressesModel);
             }
 
             var addresses = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
             model.Addresses = addresses.Addresses?.Select(x => (AddressViewModel)x).ToList();
 
-            var selectedAdress = addresses.Addresses?.Where(x => x.Uprn == model.SelectedAddress).SingleOrDefault();
+            var selectedAddress = addresses.Addresses?.Where(x => x.Uprn == model.SelectedAddress).SingleOrDefault();
             await mediator.Send(new UpdateAddressCommand()
             {
                 CandidateId = User.Claims.CandidateId(),
                 Email = User.Claims.Email(),
-                Thoroughfare = selectedAdress.Thoroughfare,
-                Organisation = selectedAdress.Organisation,
-                AddressLine1 = selectedAdress.AddressLine1,
-                AddressLine2 = selectedAdress.AddressLine2,
-                AddressLine3 = selectedAdress.PostTown,
-                AddressLine4 = selectedAdress.County,
-                Postcode = selectedAdress.Postcode
+                Uprn = selectedAddress.Uprn,
+                Thoroughfare = selectedAddress.Thoroughfare,
+                Organisation = selectedAddress.Organisation,
+                AddressLine1 = selectedAddress.AddressLine1,
+                AddressLine2 = selectedAddress.AddressLine2,
+                AddressLine3 = selectedAddress.PostTown,
+                AddressLine4 = selectedAddress.County,
+                Postcode = selectedAddress.Postcode
             });
             return model.ReturnToConfirmationPage is true ?
                 RedirectToRoute(RouteNames.ConfirmAccountDetails)
@@ -232,20 +230,37 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
-        public async Task<IActionResult> EnterAddressManually(string? backLink, string? selectAddressPostcode, bool? change = false)
+        public async Task<IActionResult> EnterAddressManually(string? backLink, string? selectAddressPostcode, bool change = false)
         {
-            var model = new EnterAddressManuallyViewModel()
-            {
-                BackLink = backLink ?? RouteNames.PostcodeAddress,
-                SelectAddressPostcode = selectAddressPostcode,
-                ReturnToConfirmationPage = change
-            };
-
             var result = await mediator.Send(new GetCandidateAddressQuery()
             {
                 CandidateId = User.Claims.CandidateId()
             });
 
+            var model = new EnterAddressManuallyViewModel();
+
+            if (change && !result.IsAddressFromLookup)
+            {
+                model.BackLink = RouteNames.ConfirmAccountDetails;
+                model.IsEdit = change;
+            }
+            else if (!change && result.IsAddressFromLookup)
+            {
+                model.BackLink = RouteNames.SelectAddress;
+                model.IsEdit = change;
+            }
+            else if (!change)
+            {
+                model.BackLink = RouteNames.PostcodeAddress;
+                model.IsEdit = change;
+            }
+            else
+            {
+                model.BackLink = backLink;
+                model.SelectAddressPostcode = selectAddressPostcode;
+                model.IsEdit = change;
+            }
+        
             if (result.AddressLine1 != null)
             {
                 model.AddressLine1 = result.AddressLine1;
@@ -294,7 +309,8 @@ namespace SFA.DAS.FAA.Web.Controllers
             {
                 PhoneNumber = queryResult.PhoneNumber,
                 ReturnToConfirmationPage = change,
-                BackLink = change is true ? RouteNames.ConfirmAccountDetails : RouteNames.CreateAccount
+                BackLink = change ? RouteNames.ConfirmAccountDetails 
+                    : queryResult.IsAddressFromLookup ? RouteNames.SelectAddress : RouteNames.EnterAddressManually
             };
             return View(model);
         }
@@ -405,12 +421,14 @@ namespace SFA.DAS.FAA.Web.Controllers
                 LastName = accountDetails.LastName,
                 PhoneNumber = accountDetails.PhoneNumber,
                 DateOfBirth = accountDetails.DateOfBirth,
+                IsAddressFromLookup = accountDetails.Uprn != null,
                 EmailAddress = accountDetails.Email,
                 AddressLine1 = accountDetails.AddressLine1,
                 AddressLine2 = accountDetails.AddressLine2,
                 County = accountDetails.County,
                 Town = accountDetails.Town,
                 Postcode = accountDetails.Postcode,
+                Uprn = accountDetails.Uprn,
                 CandidatePreferences = accountDetails.CandidatePreferences.Select(cp => new ConfirmAccountDetailsViewModel.CandidatePreference
                 {
                     PreferenceId = cp.PreferenceId,

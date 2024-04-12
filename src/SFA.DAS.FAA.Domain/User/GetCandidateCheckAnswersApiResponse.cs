@@ -6,6 +6,7 @@ public class GetCandidateCheckAnswersApiResponse
     public string MiddleNames { get; set; }
     public string LastName { get; set; }
     public DateTime? DateOfBirth { get; set; }
+    public string? Uprn { get; set; }
     public string AddressLine1 { get; set; }
     public string AddressLine2 { get; set; }
     public string Town { get; set; }

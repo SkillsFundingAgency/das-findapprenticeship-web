@@ -21,6 +21,7 @@ public class UpdateAddressCommandHandler(IApiClient apiClient)
 
         var postRequest = new CreateUserAddressApiRequest(request.CandidateId, new CreateUserAddressApiRequestData
         {
+            Uprn = request.Uprn,
             Email = request.Email,
             AddressLine1 = addressLine1,
             AddressLine2 = request.AddressLine2,

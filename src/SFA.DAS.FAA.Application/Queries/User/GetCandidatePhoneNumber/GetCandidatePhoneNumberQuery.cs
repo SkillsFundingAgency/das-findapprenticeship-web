@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
-using SFA.DAS.FAA.Infrastructure.Api;
 
 namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePhoneNumber
 {
@@ -16,10 +15,12 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePhoneNumber
         {
             return new GetCandidatePhoneNumberQueryResult
             {
+                IsAddressFromLookup = source.IsAddressFromLookup,
                 PhoneNumber = source.PhoneNumber
             };
         }
 
+        public bool IsAddressFromLookup { get; set; }
         public string? PhoneNumber { get; set; }
     }
 

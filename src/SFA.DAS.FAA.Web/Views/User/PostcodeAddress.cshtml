@@ -5,7 +5,14 @@
     ViewBag.Title = "What is your address? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.DateOfBirth">Back</a>
+    @if (Model.IsEdit)
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.DateOfBirth">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">

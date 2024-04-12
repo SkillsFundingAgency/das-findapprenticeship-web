@@ -1,19 +1,23 @@
-﻿using SFA.DAS.FAA.Domain.User;
+﻿using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+using SFA.DAS.FAA.Domain.User;
 
 namespace SFA.DAS.FAA.Web.Models.User;
 
 public class SelectAddressViewModel : ViewModelBase
 {
+    public bool IsEdit { get; set; }
     public List<AddressViewModel>? Addresses {  get; set; }
     public string? SelectedAddress { get; set; }
     public string Postcode { get; set; }
     public bool? ReturnToConfirmationPage { get; set; }
 
-    public static implicit operator SelectAddressViewModel(List<GetAddressesByPostcodeApiResponse.AddressListItem>? source)
+    public static implicit operator SelectAddressViewModel(GetAddressesByPostcodeQueryResult source)
     {
         return new SelectAddressViewModel
         {
-            Addresses = source?.Select(c => (AddressViewModel)c).GroupBy(x => x.AddressLine1).Select(x => x.First()).ToList() ?? new List<AddressViewModel>()
+            Postcode = source.Postcode ?? string.Empty,
+            SelectedAddress = source.Uprn,
+            Addresses = source?.Addresses?.Select(c => (AddressViewModel)c).GroupBy(x => x.AddressLine1).Select(x => x.First()).ToList() ?? new List<AddressViewModel>()
         };
     }
 }

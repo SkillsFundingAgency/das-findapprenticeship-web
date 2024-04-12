@@ -18,6 +18,7 @@ public class GetCandidateAccountDetailsQueryHandler(IApiClient apiClient)
             MiddleNames = checkAnswersResponse.MiddleNames,
             LastName = checkAnswersResponse.LastName,
             DateOfBirth = checkAnswersResponse.DateOfBirth ?? DateTime.MinValue,
+            Uprn = checkAnswersResponse.Uprn,
             AddressLine1 = checkAnswersResponse.AddressLine1,
             AddressLine2 = checkAnswersResponse.AddressLine2,
             Town = checkAnswersResponse.Town,

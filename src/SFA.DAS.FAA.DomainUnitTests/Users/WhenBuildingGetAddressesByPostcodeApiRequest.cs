@@ -8,10 +8,10 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Users;
 public class WhenBuildingGetAddressesByPostcodeApiRequest
 {
     [Test, AutoData]
-    public void Then_Then_Request_Is_built(string postcode)
+    public void Then_Then_Request_Is_built(Guid candidateId, string postcode)
     {
-        var actual = new GetAddressesByPostcodeApiRequest(HttpUtility.UrlEncode(postcode));
+        var actual = new GetAddressesByPostcodeApiRequest(candidateId, HttpUtility.UrlEncode(postcode));
 
-        actual.GetUrl.Should().Be($"users/select-address?postcode={postcode}");
+        actual.GetUrl.Should().Be($"users/{candidateId}/select-address?postcode={postcode}");
     }
 }

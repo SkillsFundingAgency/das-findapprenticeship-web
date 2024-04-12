@@ -10,7 +10,7 @@ public class WhenCreatingSelectAddressViewModel
     [Test, MoqAutoData]
     public async Task Then_Addresses_Found_Are_Mapped(GetAddressesByPostcodeQueryResult queryResult)
     {
-        var model = (SelectAddressViewModel)queryResult.Addresses.ToList();
+        var model = (SelectAddressViewModel)queryResult;
 
         model.Addresses.Count().Should().Be(queryResult.Addresses.Count());
     }

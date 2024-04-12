@@ -5,14 +5,13 @@
     ViewBag.Title = "Select your address – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    @if (Model.ReturnToConfirmationPage is true)
+    @if (Model.IsEdit)
     {
         <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
     }
     else
     {
-        <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress" asp-route-postcode="@Model.Postcode"
-           asp-route-change="false">
+        <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress" asp-route-postcode="@Model.Postcode">
             Back
         </a>
     }
@@ -25,7 +24,7 @@
         <h1 class="govuk-heading-l">Select your address</h1>
         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Postcode</h2>
         <p class="govuk-body govuk-!-font-weight-bold">
-            @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress">Change</a>
+            @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-change="@Model.IsEdit" asp-route-backlink="@RouteNames.SelectAddress">Change</a>
         </p>
         <form class="form" method="post">
             <input type="hidden" asp-for="Postcode" />

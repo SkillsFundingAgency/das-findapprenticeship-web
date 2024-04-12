@@ -1,21 +1,10 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using SFA.DAS.FAA.Web.Models.User
+﻿@using SFA.DAS.FAA.Web.Models.User
 @model EnterAddressManuallyViewModel
 @{
     ViewBag.Title = "What is your address? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    @if (Model.ReturnToConfirmationPage is true)
-    {
-        <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
-    }
-    else
-    {
-        <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.SelectAddressPostcode"
-           asp-route-change="false">
-            Back
-        </a>
-    }
+    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.SelectAddressPostcode" asp-route-change="@Model.IsEdit">Back</a>
 }
 
 <div class="govuk-grid-row">

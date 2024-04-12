@@ -55,9 +55,19 @@
                     @Model.Postcode
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-change="@true" id="address-change-link">
-                        Change<span class="govuk-visually-hidden"> address</span>
-                    </a>
+                    
+                    @if (Model.IsAddressFromLookup)
+                    {
+                        <a class="govuk-link" asp-route="@RouteNames.SelectAddress" asp-route-change="@true" id="address-change-link">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-change="@true" id="address-change-manual-link">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    }
                 </dd>
             </div>
             <div class="govuk-summary-list__row">

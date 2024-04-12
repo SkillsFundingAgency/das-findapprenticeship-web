@@ -17,7 +17,7 @@ public class WhenHandlingGetAddressesByPostcodeQuery
         [Frozen] Mock<IApiClient> apiClientMock,
         GetAddressesByPostcodeQueryHandler handler)
     {
-        var apiRequestUri = new GetAddressesByPostcodeApiRequest(query.Postcode);
+        var apiRequestUri = new GetAddressesByPostcodeApiRequest(query.CandidateId, query.Postcode);
 
         apiClientMock.Setup(client =>
                 client.Get<GetAddressesByPostcodeApiResponse>(

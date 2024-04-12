@@ -1,6 +1,7 @@
 ﻿namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 public class GetCandidateAddressQueryResult
 {
+    public bool IsAddressFromLookup { get; set; }
     public string? Postcode { get; set; }
     public string AddressLine1 { get; set; } = null!;
     public string? AddressLine2 { get; set; }

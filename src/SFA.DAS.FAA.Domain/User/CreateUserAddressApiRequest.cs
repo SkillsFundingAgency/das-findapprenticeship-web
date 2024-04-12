@@ -15,6 +15,7 @@ public class CreateUserAddressApiRequest : IPostApiRequest
 }
 public class CreateUserAddressApiRequestData
 {
+    public string? Uprn { get; set; }
     public string Email { get; set; }
     public string AddressLine1 { get; set; }
     public string AddressLine2 { get; set; }
