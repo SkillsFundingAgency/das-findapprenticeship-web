@@ -226,7 +226,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
             return model.ReturnToConfirmationPage is true ?
                 RedirectToRoute(RouteNames.ConfirmAccountDetails)
-                : RedirectToRoute(RouteNames.PhoneNumber, new { backLink = RouteNames.SelectAddress.ToString() });
+                : RedirectToRoute(RouteNames.PhoneNumber, new { backLink = RouteNames.SelectAddress });
         }
 
         [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
@@ -237,30 +237,20 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = User.Claims.CandidateId()
             });
 
-            var model = new EnterAddressManuallyViewModel();
+            var model = new EnterAddressManuallyViewModel
+            {
+                SelectAddressPostcode = selectAddressPostcode
+            };
 
-            if (change && !result.IsAddressFromLookup)
+            if (change)
             {
-                model.BackLink = RouteNames.ConfirmAccountDetails;
-                model.IsEdit = change;
-            }
-            else if (!change && result.IsAddressFromLookup)
-            {
-                model.BackLink = RouteNames.SelectAddress;
-                model.IsEdit = change;
-            }
-            else if (!change)
-            {
-                model.BackLink = RouteNames.PostcodeAddress;
-                model.IsEdit = change;
+                model.BackLink = !result.IsAddressFromLookup ? RouteNames.ConfirmAccountDetails : backLink ?? RouteNames.PostcodeAddress;
             }
             else
             {
-                model.BackLink = backLink;
-                model.SelectAddressPostcode = selectAddressPostcode;
-                model.IsEdit = change;
+                model.BackLink = result.IsAddressFromLookup ? RouteNames.SelectAddress : RouteNames.PostcodeAddress;
             }
-        
+
             if (result.AddressLine1 != null)
             {
                 model.AddressLine1 = result.AddressLine1;
