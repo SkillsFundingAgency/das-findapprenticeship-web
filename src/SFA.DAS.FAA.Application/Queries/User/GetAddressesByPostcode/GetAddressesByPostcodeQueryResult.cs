@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+namespace CreateAccount.GetAddressesByPostcode;
 public class GetAddressesByPostcodeQueryResult
 {
     public string? Uprn { get; set; }

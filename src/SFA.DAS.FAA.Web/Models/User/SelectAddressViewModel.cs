@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+﻿using CreateAccount.GetAddressesByPostcode;
 using SFA.DAS.FAA.Domain.User;
 
 namespace SFA.DAS.FAA.Web.Models.User;

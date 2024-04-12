@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
+﻿namespace CreateAccount.GetCandidatePreferences;
 public class GetCandidatePreferencesQueryResult
 {
     public List<CandidatePreference> CandidatePreferences { get; set; } = new List<CandidatePreference>();

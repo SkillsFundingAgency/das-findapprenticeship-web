@@ -2,7 +2,7 @@
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
+namespace CreateAccount.GetCandidatePreferences;
 public class GetCandidatePreferencesQueryHandler(IApiClient apiClient) : IRequestHandler<GetCandidatePreferencesQuery, GetCandidatePreferencesQueryResult>
 {
     public async Task<GetCandidatePreferencesQueryResult> Handle(GetCandidatePreferencesQuery request, CancellationToken cancellationToken)

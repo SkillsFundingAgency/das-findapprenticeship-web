@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+using CreateAccount.GetAddressesByPostcode;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.Testing.AutoFixture;
 

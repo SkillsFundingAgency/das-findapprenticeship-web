@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
+using CreateAccount.GetCandidatePostcode;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 using SFA.DAS.Testing.AutoFixture;

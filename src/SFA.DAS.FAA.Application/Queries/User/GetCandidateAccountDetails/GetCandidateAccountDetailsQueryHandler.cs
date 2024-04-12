@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetCandidateAccountDetails;
+namespace CreateAccount.GetCandidateAccountDetails;
 public class GetCandidateAccountDetailsQueryHandler(IApiClient apiClient)
     : IRequestHandler<GetCandidateAccountDetailsQuery, GetCandidateAccountDetailsQueryResult>
 {
@@ -31,8 +32,8 @@ public class GetCandidateAccountDetailsQueryHandler(IApiClient apiClient)
                 PreferenceId = x.PreferenceId,
                 Meaning = x.PreferenceMeaning,
                 Hint = x.PreferenceHint,
-                EmailPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
-                TextPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodText).FirstOrDefault()?.Status ?? false
+                EmailPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.CandidatePreferences.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
+                TextPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.CandidatePreferences.ContactMethodText).FirstOrDefault()?.Status ?? false
             }).ToList()
         };
     }

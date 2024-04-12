@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+namespace CreateAccount.GetAddressesByPostcode;
 public class GetAddressesByPostcodeQuery : IRequest<GetAddressesByPostcodeQueryResult>
 {
     public Guid CandidateId { get; set; }

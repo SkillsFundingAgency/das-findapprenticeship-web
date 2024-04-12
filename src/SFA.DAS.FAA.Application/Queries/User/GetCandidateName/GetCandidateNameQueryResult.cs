@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetCandidateName;
+namespace CreateAccount.GetCandidateName;
 public class GetCandidateNameQueryResult
 {
     public string FirstName { get; set; }

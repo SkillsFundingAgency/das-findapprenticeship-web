@@ -2,7 +2,7 @@
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetCandidateDateOfBirth;
+namespace CreateAccount.GetCandidateDateOfBirth;
 public class GetCandidateDateOfBirthQueryHandler(IApiClient apiClient)
     : IRequestHandler<GetCandidateDateOfBirthQuery, GetCandidateDateOfBirthQueryResult>
 {

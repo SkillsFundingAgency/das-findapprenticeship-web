@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
-using SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+using CreateAccount.GetAddressesByPostcode;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;

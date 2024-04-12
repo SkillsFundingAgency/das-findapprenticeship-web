@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
+namespace CreateAccount.GetCandidatePreferences;
 public class GetCandidatePreferencesQuery : IRequest<GetCandidatePreferencesQueryResult>
 {
     public Guid CandidateId { get; set; }

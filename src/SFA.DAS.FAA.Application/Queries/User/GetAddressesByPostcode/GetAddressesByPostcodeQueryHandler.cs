@@ -3,7 +3,7 @@ using MediatR;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+namespace CreateAccount.GetAddressesByPostcode;
 public class GetAddressesByPostcodeQueryHandler : IRequestHandler<GetAddressesByPostcodeQuery, GetAddressesByPostcodeQueryResult>
 {
     private readonly IApiClient _apiClient;

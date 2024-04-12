@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.FAA.Application.Queries.User.GetCandidateAccountDetails;
+﻿namespace CreateAccount.GetCandidateAccountDetails;
 public class GetCandidateAccountDetailsQueryResult
 {
     public string FirstName { get; set; }
