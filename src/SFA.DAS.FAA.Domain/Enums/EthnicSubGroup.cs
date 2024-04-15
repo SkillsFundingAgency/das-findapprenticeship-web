@@ -7,5 +7,10 @@
         GypsyOrIrishTraveller = 3,
         AnyOtherWhiteBackground = 4,
         PreferNotToSayWhite = 5,
+        WhiteAndBlackCaribbean = 6,
+        WhiteAndBlackAfrican = 7,
+        WhiteAndAsian = 8,
+        AnyOtherMixedBackground = 9,
+        PreferNotToSayMixed = 10,
     }
 }

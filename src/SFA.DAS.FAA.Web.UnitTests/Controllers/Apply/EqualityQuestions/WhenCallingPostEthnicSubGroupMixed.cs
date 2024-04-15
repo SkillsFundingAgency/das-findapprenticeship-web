@@ -16,13 +16,13 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
     [TestFixture]
-    public class WhenCallingPostEthnicSubGroupWhite
+    public class WhenCallingPostEthnicSubGroupMixed
     {
         [Test, MoqAutoData]
         public void And_ModelState_Is_InValid_Then_Return_View(
             Guid applicationId,
             Guid govIdentifier,
-            EqualityQuestionsEthnicSubGroupWhiteViewModel viewModel,
+            EqualityQuestionsEthnicSubGroupMixedViewModel viewModel,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             viewModel.EthnicSubGroup = null;
@@ -45,8 +45,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             };
             controller.ModelState.AddModelError("test", "message");
 
-            var actual = controller.EthnicGroupWhite(applicationId, viewModel) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupWhiteViewModel>();
+            var actual = controller.EthnicGroupMixed(applicationId, viewModel) as ViewResult;
+            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupMixedViewModel>();
 
             using (new AssertionScope())
             {
@@ -62,7 +62,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 Guid applicationId,
                 Guid govIdentifier,
                 EthnicSubGroup ethnicSubGroup,
-                EqualityQuestionsEthnicSubGroupWhiteViewModel viewModel,
+                EqualityQuestionsEthnicSubGroupMixedViewModel viewModel,
                 [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             var cacheKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}", govIdentifier);
@@ -88,7 +88,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.EthnicGroupWhite(applicationId, viewModel) as RedirectToRouteResult;
+            var actual = controller.EthnicGroupMixed(applicationId, viewModel) as RedirectToRouteResult;
 
             using (new AssertionScope())
             {
@@ -104,7 +104,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             Guid govIdentifier,
             EthnicSubGroup ethnicSubGroup,
             EqualityQuestionsModel equalityQuestionsModel,
-            EqualityQuestionsEthnicSubGroupWhiteViewModel viewModel,
+            EqualityQuestionsEthnicSubGroupMixedViewModel viewModel,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             var cacheKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}", govIdentifier);
@@ -130,7 +130,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.EthnicGroupWhite(applicationId, viewModel) as RedirectToRouteResult;
+            var actual = controller.EthnicGroupMixed(applicationId, viewModel) as RedirectToRouteResult;
 
             using (new AssertionScope())
             {

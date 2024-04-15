@@ -10,22 +10,25 @@ using SFA.DAS.FAA.Web.Services;
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("apply/{applicationId}/equality-questions")]
     public class EqualityQuestionsController(ICacheStorageService cacheStorageService) : Controller
     {
         private static readonly string Key = $"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}";
+
         private const string GenderQuestionsViewPath = "~/Views/apply/EqualityQuestions/Gender.cshtml";
         private const string EthnicGroupQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicGroup.cshtml";
         private const string EthnicSubGroupWhiteQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupWhite.cshtml";
+        private const string EthnicSubGroupMixedQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupMixed.cshtml";
 
         [HttpGet]
-        [Route("apply/{applicationId}/equality-questions/gender", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender)]
+        [Route("gender", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender)]
         public IActionResult Gender([FromRoute] Guid applicationId)
         {
             return View(GenderQuestionsViewPath, new EqualityQuestionsGenderViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
-        [Route("apply/{applicationId}/equality-questions/gender", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender)]
+        [Route("gender", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender)]
         public IActionResult Gender([FromRoute] Guid applicationId, EqualityQuestionsGenderViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -40,14 +43,14 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         }
 
         [HttpGet]
-        [Route("apply/{applicationId}/equality-questions/ethnic-group", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup)]
+        [Route("ethnic-group", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup)]
         public IActionResult EthnicGroup([FromRoute] Guid applicationId)
         {
             return View(EthnicGroupQuestionsViewPath, new EqualityQuestionsEthnicGroupViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
-        [Route("apply/{applicationId}/equality-questions/ethnic-group", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup)]
+        [Route("ethnic-group", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup)]
         public IActionResult EthnicGroup([FromRoute] Guid applicationId, EqualityQuestionsEthnicGroupViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -71,22 +74,38 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         }
 
         [HttpGet]
-        [Route("apply/{applicationId}/equality-questions/ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
+        [Route("ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
         public IActionResult EthnicGroupWhite([FromRoute] Guid applicationId)
         {
-            return View(EthnicSubGroupWhiteQuestionsViewPath, new EqualityQuestionsEthnicSubGroupViewModel { ApplicationId = applicationId });
+            return View(EthnicSubGroupWhiteQuestionsViewPath, new EqualityQuestionsEthnicSubGroupWhiteViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
-        [Route("apply/{applicationId}/equality-questions/ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
-        public IActionResult EthnicGroupWhite([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupViewModel viewModel)
+        [Route("ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
+        public IActionResult EthnicGroupWhite([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupWhiteViewModel viewModel)
         {
             return !ModelState.IsValid 
                 ? View(EthnicSubGroupWhiteQuestionsViewPath, viewModel) 
-                : UpdateEqualityQuestionModel(applicationId, viewModel);
+                : UpdateEqualityQuestionModel(applicationId, viewModel.EthnicSubGroup, viewModel.OtherEthnicSubGroupAnswer);
         }
 
-        private RedirectToRouteResult UpdateEqualityQuestionModel(Guid applicationId, EqualityQuestionsEthnicSubGroupViewModel viewModel)
+        [HttpGet]
+        [Route("ethnic-group/mixed", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupMixed)]
+        public IActionResult EthnicGroupMixed([FromRoute] Guid applicationId)
+        {
+            return View(EthnicSubGroupMixedQuestionsViewPath, new EqualityQuestionsEthnicSubGroupMixedViewModel { ApplicationId = applicationId });
+        }
+
+        [HttpPost]
+        [Route("ethnic-group/mixed", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupMixed)]
+        public IActionResult EthnicGroupMixed([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupMixedViewModel viewModel)
+        {
+            return !ModelState.IsValid
+                ? View(EthnicSubGroupMixedQuestionsViewPath, viewModel)
+                : UpdateEqualityQuestionModel(applicationId, viewModel.EthnicSubGroup, viewModel.OtherEthnicSubGroupAnswer);
+        }
+
+        private RedirectToRouteResult UpdateEqualityQuestionModel(Guid applicationId, string? subGroup, string? subGroupAnswer)
         {
             var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
             var equalityQuestions = cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
@@ -95,8 +114,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender,
                     new {applicationId});
 
-            equalityQuestions.EthnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), viewModel.EthnicSubGroup!, true);
-            equalityQuestions.OtherEthnicSubGroupAnswer = viewModel.OtherEthnicSubGroupAnswer;
+            equalityQuestions.EthnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), subGroup!, true);
+            equalityQuestions.OtherEthnicSubGroupAnswer = subGroupAnswer;
 
             cacheStorageService.Set(cacheKey, equalityQuestions);
 

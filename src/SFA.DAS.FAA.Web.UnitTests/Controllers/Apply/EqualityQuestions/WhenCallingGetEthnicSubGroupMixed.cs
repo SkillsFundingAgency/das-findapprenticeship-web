@@ -15,7 +15,7 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
     [TestFixture]
-    public class WhenCallingGetEthnicSubGroupWhite
+    public class WhenCallingGetEthnicSubGroupMixed
     {
         [Test, MoqAutoData]
         public void Then_View_Is_Returned(
@@ -41,8 +41,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.EthnicGroupWhite(applicationId) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupWhiteViewModel>();
+            var actual = controller.EthnicGroupMixed(applicationId) as ViewResult;
+            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupMixedViewModel>();
 
             using (new AssertionScope())
             {
