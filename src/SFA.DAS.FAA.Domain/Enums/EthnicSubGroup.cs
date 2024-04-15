@@ -18,5 +18,9 @@
         Chinese = 14,
         AnyOtherAsianBackground = 15,
         PreferNotToSayAsian = 16,
+        African = 17,
+        Caribbean = 18,
+        AnyOtherBlackAfricanOrCaribbeanBackground = 19,
+        PreferNotToSayBlack = 20,
     }
 }

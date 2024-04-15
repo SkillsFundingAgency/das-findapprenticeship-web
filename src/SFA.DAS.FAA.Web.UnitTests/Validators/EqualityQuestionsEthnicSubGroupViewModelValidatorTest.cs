@@ -9,6 +9,7 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
     private const string NoEthnicWhiteSubGroupSelectionErrorMessage = "Select which of the following best describes your white background, or select 'Prefer not to say'";
     private const string NoEthnicMixedSubGroupSelectionErrorMessage = "Select which of the following best describes your mixed or multiple ethnic groups background, or select 'Prefer not to say'";
     private const string NoEthnicAsianSubGroupSelectionErrorMessage = "Select which of the following best describes your Asian or Asian British background, or select 'Prefer not to say'";
+    private const string NoEthnicBlackSubGroupSelectionErrorMessage = "Select which of the following best describes your Black, African, Caribbean or Black British background, or select 'Prefer not to say'";
 
     [TestCase(NoEthnicWhiteSubGroupSelectionErrorMessage, false, null)]
     [TestCase(NoEthnicWhiteSubGroupSelectionErrorMessage, false, "")]
@@ -78,6 +79,33 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
         };
 
         var sut = new EqualityEthnicSubGroupAsianViewModelValidator();
+        var result = await sut.TestValidateAsync(model);
+
+        if (!isValid)
+        {
+            result.ShouldHaveValidationErrorFor(c => c.EthnicSubGroup)
+                .WithErrorMessage(errorMessage);
+        }
+        else
+        {
+            result.ShouldNotHaveValidationErrorFor(c => c.EthnicSubGroup);
+        }
+    }
+
+    [TestCase(NoEthnicBlackSubGroupSelectionErrorMessage, false, null)]
+    [TestCase(NoEthnicBlackSubGroupSelectionErrorMessage, false, "")]
+    [TestCase(null, true, "African")]
+    [TestCase(null, true, "Caribbean")]
+    [TestCase(null, true, "Any other Black, African or Caribbean background")]
+    public async Task Validate_EthnicSubGroup_Black_EqualityGenderViewModel(string? errorMessage, bool isValid, string? group)
+    {
+        var model = new EqualityQuestionsEthnicSubGroupBlackViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            EthnicSubGroup = group
+        };
+
+        var sut = new EqualityEthnicSubGroupBlackViewModelValidator();
         var result = await sut.TestValidateAsync(model);
 
         if (!isValid)
