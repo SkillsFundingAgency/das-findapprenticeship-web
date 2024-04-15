@@ -7,6 +7,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply.Base
         [FromRoute]
         public Guid ApplicationId { get; init; }
         public string? EthnicSubGroup { get; set; }
-        public string? OtherEthnicSubGroupAnswer { get; set; }
+        public string? OtherEthnicSubGroupAnswer { get; init; }
     }
 }

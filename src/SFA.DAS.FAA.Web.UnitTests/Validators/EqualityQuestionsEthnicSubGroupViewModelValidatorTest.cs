@@ -8,6 +8,7 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
 {
     private const string NoEthnicWhiteSubGroupSelectionErrorMessage = "Select which of the following best describes your white background, or select 'Prefer not to say'";
     private const string NoEthnicMixedSubGroupSelectionErrorMessage = "Select which of the following best describes your mixed or multiple ethnic groups background, or select 'Prefer not to say'";
+    private const string NoEthnicAsianSubGroupSelectionErrorMessage = "Select which of the following best describes your Asian or Asian British background, or select 'Prefer not to say'";
 
     [TestCase(NoEthnicWhiteSubGroupSelectionErrorMessage, false, null)]
     [TestCase(NoEthnicWhiteSubGroupSelectionErrorMessage, false, "")]
@@ -48,6 +49,35 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
         };
 
         var sut = new EqualityEthnicSubGroupMixedViewModelValidator();
+        var result = await sut.TestValidateAsync(model);
+
+        if (!isValid)
+        {
+            result.ShouldHaveValidationErrorFor(c => c.EthnicSubGroup)
+                .WithErrorMessage(errorMessage);
+        }
+        else
+        {
+            result.ShouldNotHaveValidationErrorFor(c => c.EthnicSubGroup);
+        }
+    }
+
+    [TestCase(NoEthnicAsianSubGroupSelectionErrorMessage, false, null)]
+    [TestCase(NoEthnicAsianSubGroupSelectionErrorMessage, false, "")]
+    [TestCase(null, true, "Indian")]
+    [TestCase(null, true, "Pakistani")]
+    [TestCase(null, true, "Bangladeshi ")]
+    [TestCase(null, true, "Chinese")]
+    [TestCase(null, true, "Any other Asian background")]
+    public async Task Validate_EthnicSubGroup_Asian_EqualityGenderViewModel(string? errorMessage, bool isValid, string? group)
+    {
+        var model = new EqualityQuestionsEthnicSubGroupAsianViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            EthnicSubGroup = group
+        };
+
+        var sut = new EqualityEthnicSubGroupAsianViewModelValidator();
         var result = await sut.TestValidateAsync(model);
 
         if (!isValid)

@@ -12,5 +12,11 @@
         WhiteAndAsian = 8,
         AnyOtherMixedBackground = 9,
         PreferNotToSayMixed = 10,
+        Indian = 11,
+        Pakistani = 12,
+        Bangladeshi = 13,
+        Chinese = 14,
+        AnyOtherAsianBackground = 15,
+        PreferNotToSayAsian = 16,
     }
 }
