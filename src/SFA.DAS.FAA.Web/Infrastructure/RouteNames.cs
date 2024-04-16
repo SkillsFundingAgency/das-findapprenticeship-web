@@ -28,6 +28,7 @@ public static class RouteNames
 
     public static class ApplyApprenticeship
     {
+        public const string Preview = nameof(Preview);
         public const string AddJob = nameof(AddJob);
         public const string Jobs = nameof(Jobs);
         public const string JobsSummary = nameof(JobsSummary);
