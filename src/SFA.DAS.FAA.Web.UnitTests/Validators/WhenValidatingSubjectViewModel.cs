@@ -356,18 +356,18 @@ public class WhenValidatingSubjectViewModel
 
         actual.IsValid.Should().BeFalse();
         actual.Errors.Count.Should().Be(1);
-        actual.Errors.SingleOrDefault(c => c.ErrorMessage == qualificationDisplayTypeViewModel.AdditionalInformationErrorMessage)
+        actual.Errors.SingleOrDefault(c => c.ErrorMessage == qualificationDisplayTypeViewModel.SubjectErrorMessage)
             .Should().NotBeNull();
     }
     
     [TestCase("", false)]
     [TestCase("name", true)]
-    public async Task Then_The_Other_Qualification_Is_Validated_For_New(string additionalInformation, bool isValid)
+    public async Task Then_The_Other_Qualification_Is_Validated_For_New(string name, bool isValid)
     {
         var model = new SubjectViewModel
         {
             Id = null,
-            AdditionalInformation = additionalInformation
+            Name = name
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("Other", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);

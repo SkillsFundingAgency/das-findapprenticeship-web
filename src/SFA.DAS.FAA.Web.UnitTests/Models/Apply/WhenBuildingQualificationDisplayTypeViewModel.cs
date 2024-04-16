@@ -161,11 +161,13 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Title.Should().Be("Add other qualifications");
         actual.GroupTitle.Should().Be("Other qualifications");
         actual.ErrorSummary.Should().Be("Enter your other qualification");
-        actual.AdditionalInformationErrorMessage.Should().Be("Enter the type of the qualification you want to add");
+        actual.SubjectErrorMessage.Should().Be("Enter the type of the qualification you want to add");
+        actual.SubjectLabel.Should().Be("Name of qualification");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
         actual.ShouldDisplayAdditionalInformationField.Should().BeTrue();
         actual.SelectHintText.Should().Be("(including international qualifications)");
+        actual.SubjectHintText.Should().Be("For example, NVQ, International Baccalaureate");
     }
 }
