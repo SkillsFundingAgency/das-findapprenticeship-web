@@ -1,0 +1,42 @@
+.faa-tab-nav {
+  @include govuk-font($size: 19);
+  border-bottom: 1px solid $govuk-border-colour;
+}
+
+.faa-tab-nav__list {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  @include govuk-media-query(tablet) {
+    gap: 20px;
+  }
+}
+
+.faa-tab-nav__list-item {
+}
+
+.faa-tab-nav__link {
+  @include govuk-link-common;
+  color: $govuk-link-colour;
+  text-decoration: none;
+  position: relative;
+  &:hover {
+    color: $govuk-link-hover-colour;
+  }
+}
+
+.faa-tab-nav__link--active {
+  color: $govuk-link-active-colour;
+  &:after {
+    height: 5px;
+    position: absolute;
+    background-color: $govuk-brand-colour;
+    content: "";
+    left: 0;
+    right: 0;
+    bottom: -17px;
+  }
+}
