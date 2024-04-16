@@ -15,7 +15,7 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
     [TestFixture]
-    public class WhenCallingGetEthnicSubGroupAsian
+    public class WhenCallingGetEthnicSubGroupOther
     {
         [Test, MoqAutoData]
         public void Then_View_Is_Returned(
@@ -41,15 +41,15 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.EthnicGroupAsian(applicationId) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupAsianViewModel>();
+            var actual = controller.EthnicGroupOther(applicationId) as ViewResult;
+            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupOtherViewModel>();
 
             using (new AssertionScope())
             {
                 actual.Should().NotBeNull();
                 actual.Model.Should().NotBeNull();
                 actualModel.ApplicationId.Should().Be(applicationId);
-                actual.ViewName.Should().Be("~/Views/apply/EqualityQuestions/EthnicSubGroupAsian.cshtml");
+                actual.ViewName.Should().Be("~/Views/apply/EqualityQuestions/EthnicSubGroupOther.cshtml");
             }
         }
     }

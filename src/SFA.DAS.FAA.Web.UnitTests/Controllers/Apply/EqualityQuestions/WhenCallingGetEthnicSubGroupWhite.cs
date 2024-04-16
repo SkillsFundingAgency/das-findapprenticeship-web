@@ -49,6 +49,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 actual.Should().NotBeNull();
                 actual.Model.Should().NotBeNull();
                 actualModel.ApplicationId.Should().Be(applicationId);
+                actual.ViewName.Should().Be("~/Views/apply/EqualityQuestions/EthnicSubGroupWhite.cshtml");
             }
         }
     }

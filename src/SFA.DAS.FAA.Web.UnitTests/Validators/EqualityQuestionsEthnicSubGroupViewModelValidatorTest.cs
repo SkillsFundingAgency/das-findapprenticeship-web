@@ -10,6 +10,7 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
     private const string NoEthnicMixedSubGroupSelectionErrorMessage = "Select which of the following best describes your mixed or multiple ethnic groups background, or select 'Prefer not to say'";
     private const string NoEthnicAsianSubGroupSelectionErrorMessage = "Select which of the following best describes your Asian or Asian British background, or select 'Prefer not to say'";
     private const string NoEthnicBlackSubGroupSelectionErrorMessage = "Select which of the following best describes your Black, African, Caribbean or Black British background, or select 'Prefer not to say'";
+    private const string NoEthnicOtherSubGroupSelectionErrorMessage = "Select which of the following best describes your background, or select 'Prefer not to say'";
 
     [TestCase(NoEthnicWhiteSubGroupSelectionErrorMessage, false, null)]
     [TestCase(NoEthnicWhiteSubGroupSelectionErrorMessage, false, "")]
@@ -106,6 +107,32 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
         };
 
         var sut = new EqualityEthnicSubGroupBlackViewModelValidator();
+        var result = await sut.TestValidateAsync(model);
+
+        if (!isValid)
+        {
+            result.ShouldHaveValidationErrorFor(c => c.EthnicSubGroup)
+                .WithErrorMessage(errorMessage);
+        }
+        else
+        {
+            result.ShouldNotHaveValidationErrorFor(c => c.EthnicSubGroup);
+        }
+    }
+
+    [TestCase(NoEthnicOtherSubGroupSelectionErrorMessage, false, null)]
+    [TestCase(NoEthnicOtherSubGroupSelectionErrorMessage, false, "")]
+    [TestCase(null, true, "Arab")]
+    [TestCase(null, true, "Any other ethnic group")]
+    public async Task Validate_EthnicSubGroup_Other_EqualityGenderViewModel(string? errorMessage, bool isValid, string? group)
+    {
+        var model = new EqualityQuestionsEthnicSubGroupOtherViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            EthnicSubGroup = group
+        };
+
+        var sut = new EqualityEthnicSubGroupOtherViewModelValidator();
         var result = await sut.TestValidateAsync(model);
 
         if (!isValid)

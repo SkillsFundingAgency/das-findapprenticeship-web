@@ -21,6 +21,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         private const string EthnicSubGroupMixedQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupMixed.cshtml";
         private const string EthnicSubGroupAsianQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupAsian.cshtml";
         private const string EthnicSubGroupBlackQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupBlack.cshtml";
+        private const string EthnicSubGroupOtherQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupOther.cshtml";
 
         [HttpGet]
         [Route("gender", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender)]
@@ -136,6 +137,22 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         {
             return !ModelState.IsValid
                 ? View(EthnicSubGroupBlackQuestionsViewPath, viewModel)
+                : UpdateEqualityQuestionModel(applicationId, viewModel.EthnicSubGroup, viewModel.OtherEthnicSubGroupAnswer);
+        }
+
+        [HttpGet]
+        [Route("ethnic-group/other", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupOther)]
+        public IActionResult EthnicGroupOther([FromRoute] Guid applicationId)
+        {
+            return View(EthnicSubGroupOtherQuestionsViewPath, new EqualityQuestionsEthnicSubGroupOtherViewModel { ApplicationId = applicationId });
+        }
+
+        [HttpPost]
+        [Route("ethnic-group/other", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupOther)]
+        public IActionResult EthnicGroupOther([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupOtherViewModel viewModel)
+        {
+            return !ModelState.IsValid
+                ? View(EthnicSubGroupOtherQuestionsViewPath, viewModel)
                 : UpdateEqualityQuestionModel(applicationId, viewModel.EthnicSubGroup, viewModel.OtherEthnicSubGroupAnswer);
         }
 

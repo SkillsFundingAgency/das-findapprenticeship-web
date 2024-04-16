@@ -22,6 +22,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         public void And_ModelState_Is_InValid_Then_Return_View(
             Guid applicationId,
             Guid govIdentifier,
+            string modelStateError,
             EqualityQuestionsEthnicSubGroupMixedViewModel viewModel,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
@@ -43,7 +44,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     }
                 }
             };
-            controller.ModelState.AddModelError("test", "message");
+            controller.ModelState.AddModelError("test", modelStateError);
 
             var actual = controller.EthnicGroupMixed(applicationId, viewModel) as ViewResult;
             var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupMixedViewModel>();
@@ -52,8 +53,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             {
                 actual.Should().NotBeNull();
                 actual.Model.Should().NotBeNull();
+                actual.ViewName.Should().Be("~/Views/apply/EqualityQuestions/EthnicSubGroupMixed.cshtml");
                 actualModel.Valid.Should().BeFalse();
                 actualModel.ApplicationId.Should().Be(viewModel.ApplicationId);
+                controller.ModelState.ContainsKey(nameof(EqualityQuestionsEthnicSubGroupMixedViewModel)).Should().BeFalse();
+                controller.ModelState[nameof(EqualityQuestionsEthnicSubGroupMixedViewModel)]?.Errors.Should().Contain(e => e.ErrorMessage == modelStateError);
             }
         }
 

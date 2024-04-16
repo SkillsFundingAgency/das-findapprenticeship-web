@@ -22,5 +22,8 @@
         Caribbean = 18,
         AnyOtherBlackAfricanOrCaribbeanBackground = 19,
         PreferNotToSayBlack = 20,
+        Arab = 21,
+        AnyOtherEthnicGroup = 22,
+        PreferNotToSayArab = 23
     }
 }
