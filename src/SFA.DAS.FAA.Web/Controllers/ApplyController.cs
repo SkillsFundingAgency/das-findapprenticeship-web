@@ -100,8 +100,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var model = new ApplicationSubmittedViewModel
             {
-                VacancyTitle = result.VacancyTitle,
-                EmployerName = result.EmployerName,
+                VacancyInfo = result,
                 ApplicationId = applicationId
             };
 
@@ -124,17 +123,36 @@ namespace SFA.DAS.FAA.Web.Controllers
 
                 model = new ApplicationSubmittedViewModel
                 {
-                    VacancyTitle = result.VacancyTitle,
-                    EmployerName = result.EmployerName,
+                    VacancyInfo = result,
                     ApplicationId = model.ApplicationId
                 };
 
                 return View(model);
             }
 
-            return model.AnswerEqualityQuestions.Value is true ?
-                RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { model.ApplicationId })
-                : RedirectToRoute(RouteNames.UserProfile.YourApplications);
+            return model.AnswerEqualityQuestions is true 
+                ? RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityFlow, new { model.ApplicationId })
+                : RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation, new { model.ApplicationId });
+        }
+
+        [HttpGet]
+        [Route("application-submitted-confirmation", Name = RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation)]
+        public async Task<IActionResult> ApplicationSubmittedConfirmation([FromRoute] Guid applicationId)
+        {
+            var query = new GetApplicationSubmittedQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId()
+            };
+
+            var result = await mediator.Send(query);
+
+            var model = new ApplicationSubmittedConfirmationViewModel
+            {
+                VacancyInfo = result,
+            };
+
+            return View(model);
         }
     }
 }

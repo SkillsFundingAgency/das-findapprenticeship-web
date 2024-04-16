@@ -49,7 +49,6 @@ public static class RouteNames
         public const string InterviewAdjustments = nameof(InterviewAdjustments);
         public const string InterviewAdjustmentsSummary = nameof(InterviewAdjustmentsSummary);
         public const string WhatInterestsYou = nameof(WhatInterestsYou);
-        public const string EqualityFlow = nameof(EqualityFlow);
         public const string DisabilityConfident = nameof(DisabilityConfident);
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
         public const string Qualifications = nameof(Qualifications);
@@ -57,6 +56,7 @@ public static class RouteNames
         public const string AddQualification = nameof(AddQualification);
         public const string DeleteQualifications = nameof(DeleteQualifications);
         public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
+        public const string ApplicationSubmittedConfirmation = nameof(ApplicationSubmittedConfirmation);
 
         public static class EqualityQuestions
         {

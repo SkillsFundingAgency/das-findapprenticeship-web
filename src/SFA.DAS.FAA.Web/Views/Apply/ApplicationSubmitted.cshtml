@@ -1,38 +1,12 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using SFA.DAS.FAA.Web.Models.Apply
+﻿@using SFA.DAS.FAA.Web.Models.Apply
 @model ApplicationSubmittedViewModel
 @{
     ViewData["Title"] = "Do you want to answer equality questions? - Find an apprenticeship - GOV.UK";
 }
-
 <partial name="_ValidationSummary" />
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-panel govuk-panel--confirmation">
-            <h1 class="govuk-panel__title">
-                Application submitted
-            </h1>
-            <div class="govuk-panel__body">
-                @Model.VacancyTitle, @Model.EmployerName
-            </div>
-        </div>
-
-        <div class="govuk-!-padding-bottom-5"></div>
-
-        <h2 class="govuk-heading-m">What happens next</h2>
-        <p class="govuk-body">The company will contact you if you're invited to an interview. They'll contact you using the telephone number or 
-            email address on your application.</p>
-        <p class="govuk-body">Check your application status in <a class="govuk-link" href="#">your applications.</a></p>
-
-        <h2 class="govuk-heading-m">Tell us more about yourself (optional)</h2>
-        <p class="govuk-body">
-            Answer 4 equality questions. Your answers will help us check that apprenticeship recruitment is inclusive and fair.
-        </p>
-        <p class="govuk-body">
-            We'll never share your answers when you apply for an apprenticeship.
-        </p>
-
+        <partial name="_ApplicationSubmittedPartial" model="@Model.VacancyInfo" />
         <form class="form" method="post">
             <div class="govuk-form-group" das-highlight-error-for="AnswerEqualityQuestions" error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
