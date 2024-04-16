@@ -14,6 +14,9 @@ public static class RouteNames
     public const string SelectAddress = "select-address";
     public const string EnterAddressManually = "enter-address";
     public const string PhoneNumber = "phone-number";
+    public const string NotificationPreferences = "notification-preferences";
+    public const string NotificationPreferencesSkip = "notification-preferences-skip";
+    public const string ConfirmAccountDetails = "check-your-account-details";
     public const string CreateAccount = "create-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";

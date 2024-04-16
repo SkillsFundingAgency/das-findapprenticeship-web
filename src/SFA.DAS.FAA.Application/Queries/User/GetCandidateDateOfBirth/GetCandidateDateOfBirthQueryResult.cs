@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetCandidateDateOfBirth;
+namespace CreateAccount.GetCandidateDateOfBirth;
 public class GetCandidateDateOfBirthQueryResult
 {
     public DateTime? DateOfBirth { get; set; }

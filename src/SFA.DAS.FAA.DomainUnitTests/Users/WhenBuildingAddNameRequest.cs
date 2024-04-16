@@ -8,11 +8,11 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Users
     public class WhenBuildingAddNameRequest
     {
         [Test, AutoData]
-        public void Then_Then_Request_Is_built(string govIdentifier, UpdateNameApiRequestData data)
+        public void Then_Then_Request_Is_built(Guid candidateId, UpdateNameApiRequestData data)
         {
-            var actual = new UpdateNameApiRequest(govIdentifier, data);
+            var actual = new UpdateNameApiRequest(candidateId, data);
 
-            actual.PutUrl.Should().Be($"users/{govIdentifier}/add-details");
+            actual.PutUrl.Should().Be($"users/{candidateId}/create-account/add-details");
             ((UpdateNameApiRequestData)actual.Data).Should().BeEquivalentTo(data);
         }
     }
