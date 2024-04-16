@@ -11,7 +11,8 @@ var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTes
 
 builder.Services
     .AddOptions()
-    .AddValidatorsFromAssembly(typeof(Program).Assembly)
+    .AddMemoryCache()
+.AddValidatorsFromAssembly(typeof(Program).Assembly)
     .AddControllers(options =>
     {
         options.ModelBinderProviders.Insert(0, new MonthYearDateModelBinderProvider());

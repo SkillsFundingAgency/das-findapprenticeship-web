@@ -45,7 +45,6 @@ public static class RouteNames
         public const string InterviewAdjustments = nameof(InterviewAdjustments);
         public const string InterviewAdjustmentsSummary = nameof(InterviewAdjustmentsSummary);
         public const string WhatInterestsYou = nameof(WhatInterestsYou);
-        public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
         public const string EqualityFlow = nameof(EqualityFlow);
         public const string DisabilityConfident = nameof(DisabilityConfident);
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
@@ -53,6 +52,20 @@ public static class RouteNames
         public const string AddQualificationSelectType = nameof(AddQualificationSelectType);
         public const string AddQualification = nameof(AddQualification);
         public const string DeleteQualifications = nameof(DeleteQualifications);
+        public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
+
+        public static class EqualityQuestions
+        {
+            public const string EqualityFlowGender = nameof(EqualityFlowGender);
+            public const string EqualityFlowEthnicGroup = nameof(EqualityFlowEthnicGroup);
+            public const string EqualityFlowEthnicSubGroupWhite = nameof(EqualityFlowEthnicSubGroupWhite);
+            public const string EqualityFlowEthnicSubGroupMixed = nameof(EqualityFlowEthnicSubGroupMixed);
+            public const string EqualityFlowEthnicSubGroupAsian = nameof(EqualityFlowEthnicSubGroupAsian);
+            public const string EqualityFlowEthnicSubGroupBlack = nameof(EqualityFlowEthnicSubGroupBlack);
+            public const string EqualityFlowEthnicSubGroupOther = nameof(EqualityFlowEthnicSubGroupOther);
+            public const string EqualityFlowEthnicSubGroupPreferNotToSay = nameof(EqualityFlowEthnicSubGroupPreferNotToSay);
+            public const string EqualityFlowSummary = nameof(EqualityFlowSummary);
+        }
     }
 
     public static class UserProfile
