@@ -73,7 +73,9 @@ public class WhenValidatingSubjectViewModel
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
-            Name = string.Empty
+            Name = string.Empty,
+            Grade = string.Empty,
+            Level = "select"
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("btec", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -90,17 +92,17 @@ public class WhenValidatingSubjectViewModel
             .Should().NotBeNull();
     }
     
-    [TestCase("","additionalInfo","", false)]
-    [TestCase("name","","", false)]
-    [TestCase("","","grade", false)]
+    [TestCase("","value","", false)]
+    [TestCase("name","select","", false)]
+    [TestCase("","select","grade", false)]
     [TestCase("name","additionalInfo","grade", true)]
-    public async Task Then_The_Btec_Qualification_Is_Validated_For_New(string name, string additionalInformation,string grade, bool isValid)
+    public async Task Then_The_Btec_Qualification_Is_Validated_For_New(string name, string level,string grade, bool isValid)
     {
         var model = new SubjectViewModel
         {
             Id = null,
             Name = name,
-            AdditionalInformation = additionalInformation,
+            Level = level,
             Grade = grade
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("btec", Guid.NewGuid());

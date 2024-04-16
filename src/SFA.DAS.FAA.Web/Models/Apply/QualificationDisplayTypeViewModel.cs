@@ -120,7 +120,11 @@ public class QualificationDisplayTypeViewModel
                 Title = "Add other qualifications";
                 GroupTitle = "Other qualifications";
                 ErrorSummary = "Enter your other qualification";
-                AdditionalInformationErrorMessage = "Enter the type of the qualification you want to add";
+                AdditionalInformationLabel = "Subject";
+                SubjectLabel = "Name of qualification";
+                SubjectHintText = "For example, NVQ, International Baccalaureate";
+                SubjectErrorMessage = "Enter the type of the qualification you want to add";
+                GradeLabel = "Grade (optional)";
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;
@@ -140,6 +144,7 @@ public class QualificationDisplayTypeViewModel
     public string? SubjectHintText { get; set; }
     public string? AdditionalInformationLabel { get; set; }
     public string? SubjectLabel { get; set; }
+    public string GradeLabel { get; set; } = "Grade";
     public bool CanShowLevel { get; }
     public bool CanShowPredicted { get; }
     public bool AllowMultipleAdd { get; }

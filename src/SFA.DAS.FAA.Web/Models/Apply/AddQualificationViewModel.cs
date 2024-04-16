@@ -15,6 +15,21 @@ public class AddQualificationViewModel
     public bool IsApprenticeship { get; set; }
     public Guid? SingleQualificationId { get; set; }
     public string QualificationType { get; set; }
+    public static Dictionary<string, int> BuildPropertyOrderDictionary()
+    {   
+        var itemCount = 0;
+
+        var properties = new List<string>();
+        properties.AddRange(typeof(SubjectViewModel).GetProperties().Select(c => c.Name).ToList());
+        
+        var propertyOrderDictionary = properties.Select(c => new
+        {
+            Order = itemCount++,
+            Name = c
+        }).ToDictionary(key => key.Name, value => value.Order);
+        
+        return propertyOrderDictionary;
+    }
 }
 
 public class SubjectViewModel
@@ -36,11 +51,12 @@ public class SubjectViewModel
     public Guid QualificationReferenceId { get; set; }
 
     public Guid? Id { get; set; }
-    public string? Grade { get; set; }
     public string? Name { get; set; }
     public string? Level { get; set; }
-    public bool? IsPredicted { get; set; }
     public string? AdditionalInformation { get; set; }
+    public string? Grade { get; set; }
+    public bool? IsPredicted { get; set; }
+    
     public bool? IsDeleted { get; set; }
 }
 

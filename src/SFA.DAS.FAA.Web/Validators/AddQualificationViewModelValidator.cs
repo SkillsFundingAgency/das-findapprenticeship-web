@@ -25,10 +25,10 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
 
             if (isOther)
             {
-                RuleFor(x => x.AdditionalInformation)
+                RuleFor(x => x.Name)
                     .Cascade(CascadeMode.Continue)
                     .NotEmpty()
-                    .WithMessage(model.AdditionalInformationErrorMessage);
+                    .WithMessage(model.SubjectErrorMessage);
                 return;
             }
             
@@ -36,10 +36,7 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
                 .Cascade(CascadeMode.Continue)
                 .NotEmpty()
                 .WithMessage(model.SubjectErrorMessage)
-                .When(c => !string.IsNullOrEmpty(c.Grade) || c.Id.HasValue 
-                                                          || (isApprenticeship && !string.IsNullOrEmpty(c.AdditionalInformation))
-                                                          || (isDegree && !string.IsNullOrEmpty(c.AdditionalInformation))
-                           || (model.CanShowLevel && !string.IsNullOrEmpty(c.AdditionalInformation)) );
+                .When(c => c.IsDeleted is null or false);
             
             When(c => !isApprenticeship, () =>
             {
@@ -47,17 +44,26 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
                     .Cascade(CascadeMode.Continue)
                     .NotEmpty()
                     .WithMessage(model.GradeErrorMessage)
-                    .When(c => (!string.IsNullOrEmpty(c.Name) || c.Id.HasValue 
-                                                              || (model.CanShowLevel && !string.IsNullOrEmpty(c.AdditionalInformation))
-                                                              || (isDegree && !string.IsNullOrEmpty(c.AdditionalInformation))
+                    .When(c => (c.IsDeleted is null or false 
+                                || (model.CanShowLevel )
+                                || !string.IsNullOrEmpty(c.AdditionalInformation)
+                                || (isDegree && !string.IsNullOrEmpty(c.AdditionalInformation))
                                                               ) && model.GradeErrorMessage != null);
             });
 
-            When(c => model.ShouldDisplayAdditionalInformationField || model.CanShowLevel, () =>
+            When(c => model.ShouldDisplayAdditionalInformationField, () =>
             {
                 RuleFor(x => x.AdditionalInformation)
                     .Cascade(CascadeMode.Continue)
                     .NotEmpty()
+                    .WithMessage(model.AdditionalInformationErrorMessage);
+            });
+            When(c => model.CanShowLevel, () =>
+            {
+                RuleFor(x => x.Level)
+                    .Cascade(CascadeMode.Continue)
+                    .NotEmpty()
+                    .NotEqual("select", StringComparer.CurrentCultureIgnoreCase)
                     .WithMessage(model.AdditionalInformationErrorMessage);
             });
         });

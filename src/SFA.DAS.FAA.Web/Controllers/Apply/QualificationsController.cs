@@ -174,12 +174,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     ApplicationId = model.ApplicationId,
                     QualificationReferenceId = model.QualificationReferenceId,
                     CandidateId = User.Claims.CandidateId(),
-                    QualificationId = model.SingleQualificationId
+                    QualificationId = model.SingleQualificationId,
                 });
                 var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name, result.QualificationType.Id);
                 
                 model.QualificationDisplayTypeViewModel = qualificationDisplayTypeViewModel;
-                ModelState.AddModelError(nameof(model.Subjects), qualificationDisplayTypeViewModel.ErrorSummary);
+                model.Courses = result.Courses.Select(c => (CourseDataListItem)c).ToList();
                 return View(AddQualificationViewName, model);
             }
             

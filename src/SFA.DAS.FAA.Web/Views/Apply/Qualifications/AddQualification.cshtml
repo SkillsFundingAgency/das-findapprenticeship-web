@@ -1,8 +1,10 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Models.Apply
 @model SFA.DAS.FAA.Web.Models.Apply.AddQualificationViewModel
 @{
     ViewData["Title"] = $"{Model.QualificationDisplayTypeViewModel.Title} – Find an apprenticeship – GOV.UK";
+    ViewData["CustomOrder"] = AddQualificationViewModel.BuildPropertyOrderDictionary();
 }
 
 @section BackLink {

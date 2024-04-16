@@ -14,7 +14,7 @@
       <div class="govuk-form-group" das-highlight-error-for="Subjects[0].Name" error-class="govuk-form-group--error">
          <div class="govuk-form-group">
 
-            <label class="govuk-label govuk-label--m" for="subjects[0][name]">
+            <label class="govuk-label govuk-label--m" for="subjects[0].Name">
                @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subject")
                @if (!string.IsNullOrEmpty(Model.QualificationDisplayTypeViewModel.SubjectHintText))
                {
@@ -27,7 +27,7 @@
             {
                <span das-validation-for="Subjects[0].Name" class="govuk-error-message"></span>
                <div class="faa-course-select">
-                  <select class="govuk-select" id="subjects[0][name]" name="subjects[0][name]" data-autocomplete="true">
+                  <select class="govuk-select" id="Subjects[0].Name" name="subjects[0][name]" data-autocomplete="true">
                      <option value=""></option>
                      @foreach (var course in Model.Courses)
                      {
@@ -39,7 +39,7 @@
             else
             {
                <span das-validation-for="Subjects[0].Name" class="govuk-error-message"></span>
-               <input class="govuk-input" id="subjects[0][name]" name="subjects[0][name]" type="text" value="@existingApplicationQualification.Name">
+               <input class="govuk-input" id="Subjects[0].Name" name="subjects[0][name]" type="text" value="@existingApplicationQualification.Name">
             }
 
 
@@ -48,40 +48,46 @@
       </div>
       @if (Model.QualificationDisplayTypeViewModel.CanShowLevel)
       {
-         <div class="govuk-form-group">
-            <label class="govuk-label govuk-label--m" for="subjects[0][level]">
-               Level
-            </label>
-            <select class="govuk-select" id="subjects[0][level]" name="subjects[0][level]">
-               <option value="select" selected="">Select a level</option>
-               <!option value="1" @(existingApplicationQualification.Level == "1" ? " selected='selected'":"")>Level 1</!option>
-               <!option value="2" @(existingApplicationQualification.Level == "2" ? " selected='selected'":"")>Level 2</!option>
-               <!option value="3" @(existingApplicationQualification.Level == "3" ? " selected='selected'":"")>Level 3</!option>
-               <!option value="4" @(existingApplicationQualification.Level == "4" ? " selected='selected'":"")>Level 4</!option>
-               <!option value="5" @(existingApplicationQualification.Level == "5" ? " selected='selected'":"")>Level 5</!option>
-               <!option value="6" @(existingApplicationQualification.Level == "6" ? " selected='selected'":"")>Level 6</!option>
-               <!option value="7" @(existingApplicationQualification.Level == "7" ? " selected='selected'":"")>Level 7</!option>
-            </select>
+         <div class="govuk-form-group" das-highlight-error-for="Subjects[0].Level" error-class="govuk-form-group--error">
+            <div class="govuk-form-group">
+               <label class="govuk-label govuk-label--m" for="Subjects[0].Level">
+                  Level
+               </label>
+               <span das-validation-for="Subjects[0].Level" class="govuk-error-message"></span>
+               <select class="govuk-select" id="Subjects[0].Level" name="subjects[0][level]">
+                  <option value="select" selected="">Select a level</option>
+                  <!option value="1" @(existingApplicationQualification.Level == "1" ? " selected='selected'":"")>Level 1</!option>
+                  <!option value="2" @(existingApplicationQualification.Level == "2" ? " selected='selected'":"")>Level 2</!option>
+                  <!option value="3" @(existingApplicationQualification.Level == "3" ? " selected='selected'":"")>Level 3</!option>
+                  <!option value="4" @(existingApplicationQualification.Level == "4" ? " selected='selected'":"")>Level 4</!option>
+                  <!option value="5" @(existingApplicationQualification.Level == "5" ? " selected='selected'":"")>Level 5</!option>
+                  <!option value="6" @(existingApplicationQualification.Level == "6" ? " selected='selected'":"")>Level 6</!option>
+                  <!option value="7" @(existingApplicationQualification.Level == "7" ? " selected='selected'":"")>Level 7</!option>
+               </select>
+            </div>
          </div>
       }
       @if (Model.QualificationDisplayTypeViewModel.ShouldDisplayAdditionalInformationField)
       {
-         <div class="govuk-form-group">
-            <label class="govuk-label govuk-label--m" for="subjects[0][additionalInformation]">
-               @Model.QualificationDisplayTypeViewModel.AdditionalInformationLabel
-            </label>
-            <input class="govuk-input" id="subjects[0][additionalInformation]" name="subjects[0][AdditionalInformation]" type="text" value="@existingApplicationQualification.AdditionalInformation">
+         <div class="govuk-form-group" das-highlight-error-for="Subjects[0].AdditionalInformation" error-class="govuk-form-group--error">
+            <div class="govuk-form-group">
+               <label class="govuk-label govuk-label--m" for="Subjects[0].AdditionalInformation">
+                  @Model.QualificationDisplayTypeViewModel.AdditionalInformationLabel
+               </label>
+               <span das-validation-for="Subjects[0].AdditionalInformation" class="govuk-error-message"></span>
+               <input class="govuk-input" id="Subjects[0].AdditionalInformation" name="subjects[0][AdditionalInformation]" type="text" value="@existingApplicationQualification.AdditionalInformation">
+            </div>
          </div>
       }
       <div class="govuk-form-group" das-highlight-error-for="Subjects[0].Grade" error-class="govuk-form-group--error">
          <div class="govuk-form-group">
             <div class="govuk-grid-row faa-grid-row--flex-from-tablet">
                <div class="govuk-grid-column-one-third">
-                  <label class="govuk-heading-m" for="subjects[0][grade]">
-                     Grade
+                  <label class="govuk-heading-m" for="Subjects[0].Grade">
+                     @Model.QualificationDisplayTypeViewModel.GradeLabel
                   </label>
                   <span das-validation-for="Subjects[0].Grade" class="govuk-error-message"></span>
-                  <input class="govuk-input" id="subjects[0][grade]" name="subjects[0][grade]" type="text" value="@existingApplicationQualification.Grade">
+                  <input class="govuk-input" id="Subjects[0].Grade" name="subjects[0][grade]" type="text" value="@existingApplicationQualification.Grade">
                </div>
                <div class="govuk-grid-column-two-thirds">
                   @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
