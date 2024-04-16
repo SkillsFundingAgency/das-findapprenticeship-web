@@ -48,8 +48,8 @@ public class QualificationDisplayTypeViewModel
                 GroupTitle = "A levels";
                 Title = "Add A levels";
                 ErrorSummary = "Enter your A level subjects and grades";
-                SubjectErrorMessage = "Enter the subject for this grade";
-                GradeErrorMessage = "Enter the grade for this subject";
+                SubjectErrorMessage = "Enter the subject";
+                GradeErrorMessage = "Enter the grade";
                 CanShowLevel = false;
                 CanShowPredicted = true;
                 AllowMultipleAdd = true;
@@ -74,8 +74,8 @@ public class QualificationDisplayTypeViewModel
                 GroupTitle = "AS levels";
                 Title = "Add AS levels";
                 ErrorSummary = "Enter your AS level subjects and grades";
-                SubjectErrorMessage = "Enter the subject for this grade";
-                GradeErrorMessage = "Enter the grade for this subject";
+                SubjectErrorMessage = "Enter the subject";
+                GradeErrorMessage = "Enter the grade";
                 CanShowLevel = false;
                 CanShowPredicted = true;
                 AllowMultipleAdd = true;
@@ -108,8 +108,8 @@ public class QualificationDisplayTypeViewModel
                 AllowMultipleAdd = true;
                 ShouldDisplayAdditionalInformationField = false;
                 ErrorSummary = "Enter your GCSE subjects and grades";
-                SubjectErrorMessage = "Enter the subject for this grade";
-                GradeErrorMessage = "Enter the grade for this subject";
+                SubjectErrorMessage = "Enter the subject";
+                GradeErrorMessage = "Enter the grade";
                 Title = "Add GCSEs";
                 GroupTitle = "GCSEs";
                 AddOrder = 1;

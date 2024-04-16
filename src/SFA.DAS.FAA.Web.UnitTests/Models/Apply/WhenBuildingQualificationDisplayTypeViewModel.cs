@@ -62,8 +62,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Title.Should().Be("Add A levels");
         actual.GroupTitle.Should().Be("A levels");
         actual.ErrorSummary.Should().Be("Enter your A level subjects and grades");
-        actual.SubjectErrorMessage.Should().Be("Enter the subject for this grade");
-        actual.GradeErrorMessage.Should().Be("Enter the grade for this subject");
+        actual.SubjectErrorMessage.Should().Be("Enter the subject");
+        actual.GradeErrorMessage.Should().Be("Enter the grade");
         actual.AllowMultipleAdd.Should().BeTrue();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
@@ -82,8 +82,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Title.Should().Be("Add AS levels");
         actual.GroupTitle.Should().Be("AS levels");
         actual.ErrorSummary.Should().Be("Enter your AS level subjects and grades");
-        actual.SubjectErrorMessage.Should().Be("Enter the subject for this grade");
-        actual.GradeErrorMessage.Should().Be("Enter the grade for this subject");
+        actual.SubjectErrorMessage.Should().Be("Enter the subject");
+        actual.GradeErrorMessage.Should().Be("Enter the grade");
         actual.AllowMultipleAdd.Should().BeTrue();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
@@ -143,8 +143,8 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.Title.Should().Be("Add GCSEs");
         actual.GroupTitle.Should().Be("GCSEs");
         actual.ErrorSummary.Should().Be("Enter your GCSE subjects and grades");
-        actual.SubjectErrorMessage.Should().Be("Enter the subject for this grade");
-        actual.GradeErrorMessage.Should().Be("Enter the grade for this subject");
+        actual.SubjectErrorMessage.Should().Be("Enter the subject");
+        actual.GradeErrorMessage.Should().Be("Enter the grade");
         actual.AllowMultipleAdd.Should().BeTrue();
         actual.CanShowPredicted.Should().BeTrue();
         actual.CanShowLevel.Should().BeFalse();
