@@ -159,7 +159,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         var actual = new QualificationDisplayTypeViewModel("MAgic", id);
 
         actual.Id.Should().Be(id);
-        actual.Title.Should().Be("Add other qualifications");
+        actual.Title.Should().Be("Add other qualification");
         actual.GroupTitle.Should().Be("Other qualifications");
         actual.ErrorSummary.Should().Be("Enter your other qualification");
         actual.SubjectErrorMessage.Should().Be("Enter the type of the qualification you want to add");

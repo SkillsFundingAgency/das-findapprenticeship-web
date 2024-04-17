@@ -118,7 +118,7 @@ public class QualificationDisplayTypeViewModel
                 break;
             default:
                 Id = id;
-                Title = "Add other qualifications";
+                Title = "Add other qualification";
                 GroupTitle = "Other qualifications";
                 ErrorSummary = "Enter your other qualification";
                 AdditionalInformationLabel = "Subject (optional)";
