@@ -22,12 +22,16 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         private const string EthnicSubGroupAsianQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupAsian.cshtml";
         private const string EthnicSubGroupBlackQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupBlack.cshtml";
         private const string EthnicSubGroupOtherQuestionsViewPath = "~/Views/apply/EqualityQuestions/EthnicSubGroupOther.cshtml";
+        private const string SummaryViewPath = "~/Views/apply/EqualityQuestions/Summary.cshtml";
 
         [HttpGet]
         [Route("gender", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender)]
         public IActionResult Gender([FromRoute] Guid applicationId)
         {
-            return View(GenderQuestionsViewPath, new EqualityQuestionsGenderViewModel { ApplicationId = applicationId });
+            var equalityQuestions = GetEqualityQuestionsFromCacheMemory();
+            return equalityQuestions is not null
+                ? View(GenderQuestionsViewPath, (EqualityQuestionsGenderViewModel)equalityQuestions)
+                : View(GenderQuestionsViewPath, new EqualityQuestionsGenderViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
@@ -49,7 +53,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("ethnic-group", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup)]
         public IActionResult EthnicGroup([FromRoute] Guid applicationId)
         {
-            return View(EthnicGroupQuestionsViewPath, new EqualityQuestionsEthnicGroupViewModel { ApplicationId = applicationId });
+            var equalityQuestions = GetEqualityQuestionsFromCacheMemory();
+            return equalityQuestions is not null
+                ? View(EthnicGroupQuestionsViewPath, (EqualityQuestionsEthnicGroupViewModel)equalityQuestions)
+                : View(EthnicGroupQuestionsViewPath, new EqualityQuestionsEthnicGroupViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
@@ -67,9 +74,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             if (equalityQuestions is not null)
             {
                 equalityQuestions.EthnicGroup = (EthnicGroup)Enum.Parse(typeof(EthnicGroup), viewModel.EthnicGroup!, true);
-                
+
                 cacheStorageService.Set(cacheKey, equalityQuestions);
-                
+
                 return RedirectToRoute(RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(equalityQuestions.EthnicGroup), new { applicationId });
             }
 
@@ -80,15 +87,18 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
         public IActionResult EthnicGroupWhite([FromRoute] Guid applicationId)
         {
-            return View(EthnicSubGroupWhiteQuestionsViewPath, new EqualityQuestionsEthnicSubGroupWhiteViewModel { ApplicationId = applicationId });
+            var equalityQuestions = GetEqualityQuestionsFromCacheMemory();
+            return equalityQuestions is not null
+                ? View(EthnicSubGroupWhiteQuestionsViewPath, (EqualityQuestionsEthnicSubGroupWhiteViewModel)equalityQuestions)
+                : View(EthnicSubGroupWhiteQuestionsViewPath, new EqualityQuestionsEthnicSubGroupWhiteViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
         [Route("ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
         public IActionResult EthnicGroupWhite([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupWhiteViewModel viewModel)
         {
-            return !ModelState.IsValid 
-                ? View(EthnicSubGroupWhiteQuestionsViewPath, viewModel) 
+            return !ModelState.IsValid
+                ? View(EthnicSubGroupWhiteQuestionsViewPath, viewModel)
                 : UpdateEqualityQuestionModel(applicationId, viewModel.EthnicSubGroup, viewModel.OtherEthnicSubGroupAnswer);
         }
 
@@ -96,7 +106,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("ethnic-group/mixed", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupMixed)]
         public IActionResult EthnicGroupMixed([FromRoute] Guid applicationId)
         {
-            return View(EthnicSubGroupMixedQuestionsViewPath, new EqualityQuestionsEthnicSubGroupMixedViewModel { ApplicationId = applicationId });
+            var equalityQuestions = GetEqualityQuestionsFromCacheMemory();
+            return equalityQuestions is not null
+                ? View(EthnicSubGroupMixedQuestionsViewPath, (EqualityQuestionsEthnicSubGroupMixedViewModel)equalityQuestions)
+                : View(EthnicSubGroupMixedQuestionsViewPath, new EqualityQuestionsEthnicSubGroupMixedViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
@@ -112,7 +125,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("ethnic-group/asian", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupAsian)]
         public IActionResult EthnicGroupAsian([FromRoute] Guid applicationId)
         {
-            return View(EthnicSubGroupAsianQuestionsViewPath, new EqualityQuestionsEthnicSubGroupAsianViewModel { ApplicationId = applicationId });
+            var equalityQuestions = GetEqualityQuestionsFromCacheMemory();
+            return equalityQuestions is not null
+                ? View(EthnicSubGroupAsianQuestionsViewPath, (EqualityQuestionsEthnicSubGroupAsianViewModel)equalityQuestions)
+                : View(EthnicSubGroupAsianQuestionsViewPath, new EqualityQuestionsEthnicSubGroupAsianViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
@@ -128,7 +144,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("ethnic-group/black", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupBlack)]
         public IActionResult EthnicGroupBlack([FromRoute] Guid applicationId)
         {
-            return View(EthnicSubGroupBlackQuestionsViewPath, new EqualityQuestionsEthnicSubGroupBlackViewModel { ApplicationId = applicationId });
+            var equalityQuestions = GetEqualityQuestionsFromCacheMemory();
+            return equalityQuestions is not null
+                ? View(EthnicSubGroupBlackQuestionsViewPath, (EqualityQuestionsEthnicSubGroupBlackViewModel)equalityQuestions)
+                : View(EthnicSubGroupBlackQuestionsViewPath, new EqualityQuestionsEthnicSubGroupBlackViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
@@ -144,7 +163,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("ethnic-group/other", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupOther)]
         public IActionResult EthnicGroupOther([FromRoute] Guid applicationId)
         {
-            return View(EthnicSubGroupOtherQuestionsViewPath, new EqualityQuestionsEthnicSubGroupOtherViewModel { ApplicationId = applicationId });
+            var equalityQuestions = GetEqualityQuestionsFromCacheMemory();
+            return equalityQuestions is not null
+                ? View(EthnicSubGroupOtherQuestionsViewPath, (EqualityQuestionsEthnicSubGroupOtherViewModel)equalityQuestions)
+                : View(EthnicSubGroupOtherQuestionsViewPath, new EqualityQuestionsEthnicSubGroupOtherViewModel { ApplicationId = applicationId });
         }
 
         [HttpPost]
@@ -156,18 +178,47 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 : UpdateEqualityQuestionModel(applicationId, viewModel.EthnicSubGroup, viewModel.OtherEthnicSubGroupAnswer);
         }
 
-        private RedirectToRouteResult UpdateEqualityQuestionModel(Guid applicationId, string? subGroup, string? subGroupAnswer)
+        [HttpGet]
+        [Route("summary", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary)]
+        public IActionResult Summary([FromRoute] Guid applicationId)
         {
             var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
             var equalityQuestions = cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
 
             if (equalityQuestions is null)
                 return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender,
-                    new {applicationId});
+                    new { applicationId });
 
-            equalityQuestions.EthnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), subGroup!, true);
-            equalityQuestions.OtherEthnicSubGroupAnswer = subGroupAnswer;
+            return View(SummaryViewPath, (EqualityQuestionsSummaryViewModel)equalityQuestions);
+        }
 
+        private EqualityQuestionsModel? GetEqualityQuestionsFromCacheMemory()
+        {
+            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
+            var equalityQuestions = cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
+            return equalityQuestions ?? null;
+        }
+
+        private RedirectToRouteResult UpdateEqualityQuestionModel(Guid applicationId, string? subGroup, string? subGroupAnswer)
+        {
+            var equalityQuestions = GetEqualityQuestionsFromCacheMemory();
+
+            if (equalityQuestions is null)
+                return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender,
+                    new { applicationId });
+
+            var ethnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), subGroup!, true);
+
+            equalityQuestions.EthnicSubGroup = ethnicSubGroup;
+            equalityQuestions.OtherEthnicSubGroupAnswer = ethnicSubGroup is EthnicSubGroup.AnyOtherWhiteBackground
+                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherAsianBackground
+                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherBlackAfricanOrCaribbeanBackground
+                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherMixedBackground
+                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherEthnicGroup
+                ? subGroupAnswer
+                : string.Empty;
+
+            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
             cacheStorageService.Set(cacheKey, equalityQuestions);
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary, new { applicationId });
