@@ -164,6 +164,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.ErrorSummary.Should().Be("Enter your other qualification");
         actual.SubjectErrorMessage.Should().Be("Enter the type of the qualification you want to add");
         actual.SubjectLabel.Should().Be("Name of qualification");
+        actual.AdditionalInformationLabel.Should().Be("Subject (optional)");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();

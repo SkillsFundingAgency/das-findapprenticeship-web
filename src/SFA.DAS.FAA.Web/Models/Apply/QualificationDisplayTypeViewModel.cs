@@ -121,7 +121,7 @@ public class QualificationDisplayTypeViewModel
                 Title = "Add other qualifications";
                 GroupTitle = "Other qualifications";
                 ErrorSummary = "Enter your other qualification";
-                AdditionalInformationLabel = "Subject";
+                AdditionalInformationLabel = "Subject (optional)";
                 SubjectLabel = "Name of qualification";
                 SubjectHintText = "For example, NVQ, International Baccalaureate";
                 SubjectErrorMessage = "Enter the type of the qualification you want to add";
