@@ -136,7 +136,7 @@ ExtraFieldRows.prototype.init = function () {
   // Append the remove links
   for (let f = 0; f < this.extraFieldRows.length; f++) {
     const extraFieldRow = this.extraFieldRows[f];
-    this.appendRemoveLink(extraFieldRow);
+    this.appendRemoveLink(extraFieldRow, f);
   }
 
   // If all rows are hidden, show the first row
@@ -151,6 +151,9 @@ ExtraFieldRows.prototype.showHideEmptyRows = function () {
   for (let f = 0; f < this.extraFieldRows.length; f++) {
     const extraFieldRow = this.extraFieldRows[f];
     const inputs = extraFieldRow.querySelectorAll("input:not([type=hidden])");
+    const errorMessages = extraFieldRow.querySelectorAll(
+      ".govuk-form-group--error"
+    );
     let areAllFieldsEmpty = true;
     inputs.forEach((input) => {
       if (input.type === "text" && input.value.length > 0) {
@@ -160,6 +163,9 @@ ExtraFieldRows.prototype.showHideEmptyRows = function () {
         areAllFieldsEmpty = false;
       }
     });
+    if (errorMessages.length > 0) {
+      areAllFieldsEmpty = false;
+    }
     if (areAllFieldsEmpty) {
       this.hideRow(extraFieldRow);
       hiddenRowCount++;
@@ -184,14 +190,15 @@ ExtraFieldRows.prototype.insertAddLink = function () {
   );
 };
 
-ExtraFieldRows.prototype.appendRemoveLink = function (row) {
+ExtraFieldRows.prototype.appendRemoveLink = function (row, index) {
   const that = this;
   const removeLinkWrap = document.createElement("span");
   removeLinkWrap.className = "faa-extra-field__form-group-link--remove-wrap";
   const removeLink = document.createElement("a");
   removeLink.innerHTML = "Remove";
-  removeLink.className =
-    "govuk-button govuk-button--secondary faa-extra-field__form-group-link--remove";
+  removeLink.className = `govuk-button govuk-button--secondary faa-extra-field__form-group-link--remove ${
+    index === 0 ? "faa-visibly-hidden" : ""
+  }`;
   removeLink.href = "#";
   removeLink.addEventListener("click", function (e) {
     e.preventDefault();
@@ -201,7 +208,6 @@ ExtraFieldRows.prototype.appendRemoveLink = function (row) {
   });
 
   removeLinkWrap.append(removeLink);
-
   row.append(removeLinkWrap);
 };
 
@@ -222,7 +228,7 @@ ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
   if (hiddenRowCount === 1) {
     this.addLink.classList.add(this.hiddenClass);
   }
-  this.showRow(rowToShow, true);
+  this.showRow(rowToShow, true, true);
   e.preventDefault();
 };
 
@@ -246,11 +252,16 @@ ExtraFieldRows.prototype.hideRow = function (row) {
   row.classList.add(this.hiddenClass);
 };
 
-ExtraFieldRows.prototype.showRow = function (row, focus = false) {
+ExtraFieldRows.prototype.showRow = function (
+  row,
+  focus = false,
+  clickedToAdd = false
+) {
+  console.log(clickedToAdd);
   const textInput = row.querySelector("input");
   const hiddenInput = row.querySelector("[data-type-remove]");
   if (hiddenInput) {
-    hiddenInput.value = "";
+    hiddenInput.value = clickedToAdd ? "false" : "";
   }
   this.fieldset.classList.remove(this.fieldsetHiddenClass);
   row.classList.remove(this.hiddenClass);

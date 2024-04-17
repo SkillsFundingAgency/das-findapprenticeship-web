@@ -31,3 +31,8 @@
     justify-content: space-between;
   }
 }
+
+.faa-visibly-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
