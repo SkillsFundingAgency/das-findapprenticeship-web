@@ -21,6 +21,7 @@ public class QualificationDisplayTypeViewModel
                 AdditionalInformationErrorMessage = "Enter the company you worked for during your apprenticeship";
                 GradeErrorMessage = "Select a grade";
                 ShouldDisplayAdditionalInformationField = true;
+                GradeLabel = "Grade (optional)";
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;

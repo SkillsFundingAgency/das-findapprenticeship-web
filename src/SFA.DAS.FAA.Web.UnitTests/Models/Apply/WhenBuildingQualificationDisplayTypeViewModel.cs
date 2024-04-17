@@ -22,6 +22,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.SubjectErrorMessage.Should().Be("Enter the training course you studied during your apprenticeship");
         actual.AdditionalInformationLabel.Should().Be("Company");
         actual.GradeErrorMessage.Should().Be("Select a grade");
+        actual.GradeLabel.Should().Be("Grade (optional)");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
