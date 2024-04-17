@@ -190,7 +190,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 QualificationReferenceId = model.QualificationReferenceId,
                 Subjects = model.Subjects
                     .Where(c=>!string.IsNullOrEmpty(c.Name) 
-                              || (model.IsApprenticeship && !string.IsNullOrEmpty(c.AdditionalInformation))
+                              || (model.IsApprenticeship && !string.IsNullOrEmpty(c.Name))
                               || c is { IsDeleted: true, Id: not null })
                     .Select(c => new PostUpsertQualificationsApiRequest.Subject
                 {
