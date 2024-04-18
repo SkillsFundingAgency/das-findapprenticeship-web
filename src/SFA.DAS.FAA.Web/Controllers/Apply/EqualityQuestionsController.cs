@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.EqualityQuestions;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -11,7 +13,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("apply/{applicationId}/equality-questions")]
-    public class EqualityQuestionsController(ICacheStorageService cacheStorageService) : Controller
+    public class EqualityQuestionsController(IMediator mediator, ICacheStorageService cacheStorageService) : Controller
     {
         private static readonly string Key = $"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}";
 
@@ -190,6 +192,32 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     new { applicationId });
 
             return View(SummaryViewPath, (EqualityQuestionsSummaryViewModel)equalityQuestions);
+        }
+
+        [HttpPost]
+        [Route("summary", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary)]
+        public async Task<IActionResult> Summary([FromRoute] Guid applicationId, EqualityQuestionsSummaryViewModel viewModel)
+        {
+            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
+            var equalityQuestions = cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
+
+            if (equalityQuestions is null)
+                return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender,
+                    new { applicationId });
+
+            await mediator.Send(new CreateEqualityQuestionsCommand
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId(),
+                EthnicGroup = equalityQuestions.EthnicGroup,
+                EthnicSubGroup = equalityQuestions.EthnicSubGroup,
+                Sex = equalityQuestions.Sex,
+                IsGenderIdentifySameSexAtBirth = equalityQuestions.IsGenderIdentifySameSexAtBirth,
+                OtherEthnicSubGroupAnswer = equalityQuestions.OtherEthnicSubGroupAnswer,
+            });
+
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation,
+                new { applicationId });
         }
 
         private EqualityQuestionsModel? GetEqualityQuestionsFromCacheMemory()

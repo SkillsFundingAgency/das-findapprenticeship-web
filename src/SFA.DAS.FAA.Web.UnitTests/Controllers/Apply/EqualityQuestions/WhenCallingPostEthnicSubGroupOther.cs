@@ -1,6 +1,8 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using MediatR;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +27,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             Guid govIdentifier,
             string modelStateError,
             EqualityQuestionsEthnicSubGroupOtherViewModel viewModel,
+            [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             viewModel.EthnicSubGroup = null;
@@ -33,7 +36,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
 
-            var controller = new EqualityQuestionsController(cacheStorageService.Object)
+            var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
                 Url = mockUrlHelper.Object,
                 ControllerContext = new ControllerContext
@@ -68,6 +71,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 Guid govIdentifier,
                 EthnicSubGroup ethnicSubGroup,
                 EqualityQuestionsEthnicSubGroupOtherViewModel viewModel,
+                [Frozen] Mock<IMediator> mediator,
                 [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             var cacheKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}", govIdentifier);
@@ -78,9 +82,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 .Returns("https://baseUrl");
 
             cacheStorageService.Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .Returns((EqualityQuestionsModel?)null);
+            .Returns((EqualityQuestionsModel?)null);
 
-            var controller = new EqualityQuestionsController(cacheStorageService.Object)
+            var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
                 Url = mockUrlHelper.Object,
                 ControllerContext = new ControllerContext
@@ -110,6 +114,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             EthnicSubGroup ethnicSubGroup,
             EqualityQuestionsModel equalityQuestionsModel,
             EqualityQuestionsEthnicSubGroupOtherViewModel viewModel,
+            [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             var cacheKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}", govIdentifier);
@@ -122,7 +127,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             cacheStorageService.Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
                 .Returns(equalityQuestionsModel);
 
-            var controller = new EqualityQuestionsController(cacheStorageService.Object)
+            var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
                 Url = mockUrlHelper.Object,
                 ControllerContext = new ControllerContext

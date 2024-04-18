@@ -1,6 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model SFA.DAS.FAA.Web.Models.Apply.EqualityQuestionsSummaryViewModel;
+@using Microsoft.AspNetCore.Mvc.TagHelpers;
+@model SFA.DAS.FAA.Web.Models.Apply.EqualityQuestionsSummaryViewModel
 @{
     ViewData["Title"] = "Check your answers to the equality questions – Find an apprenticeship – GOV.UK";
 }
@@ -10,58 +10,60 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Check your answers to the equality question</h1>
-        <p class="govuk-body">These answers will not be shared outside of DfE. Your answers will not affect your
+        <p class="govuk-body">
+            These answers will not be shared outside of DfE. Your answers will not affect your
             apprenticeship applications.
-        </p>   
-        <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Sex
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.Sex
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">Change<span class="govuk-visually-hidden">
-                        sex</span>
-                    </a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Is the gender you identify with the same as your sex registered at birth?
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.IsGenderIdentifySameSexAtBirth
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })" ">
-                        Change<span class="govuk-visually-hidden"> Is the gender you identify with the same as your sex registered
-                            at birth?</span>
-                    </a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Ethnic group
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.EthnicGroup
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">
-                        Change<span class="govuk-visually-hidden"> ethnic group</span>
-                    </a>
-                </dd>
-            </div>
-        </dl>
+        </p>
+        <div>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Sex
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Sex
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">
+                            Change
+                        </a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Is the gender you identify with the same as your sex registered at birth?
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.IsGenderIdentifySameSexAtBirth
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">
+                            Change
+                        </a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Ethnic group
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.EthnicGroup
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">
+                            Change
+                        </a>
+                    </dd>
+                </div>
+            </dl>
+        </div>
         <p class="govuk-body">After continuing, you can still change these answers in your settings.</p>
-        <form class="form" method="post">
-            <div class="govuk-button-group">
+        <div class="govuk-button-group">
+            <form class="form" method="post">
                 <button class="govuk-button" data-module="govuk-button">
                     Save and continue
                 </button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>

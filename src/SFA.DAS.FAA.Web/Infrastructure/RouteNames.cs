@@ -48,6 +48,7 @@ public static class RouteNames
         public const string DisabilityConfident = nameof(DisabilityConfident);
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
         public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
+        public const string ApplicationSubmittedConfirmation = nameof(ApplicationSubmittedConfirmation);
 
         public static class EqualityQuestions
         {
