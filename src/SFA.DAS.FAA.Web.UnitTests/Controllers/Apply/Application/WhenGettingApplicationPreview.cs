@@ -30,16 +30,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
             [Frozen] Mock<IMediator> mediator,
             [Greedy] ApplyController controller)
         {
-            queryResult.EducationHistory.TrainingCoursesStatus = SectionStatus.Completed;
-            queryResult.EducationHistory.QualificationsStatus = SectionStatus.Completed;
-            queryResult.WorkHistory.JobsStatus = SectionStatus.Completed;
-            queryResult.WorkHistory.VolunteeringAndWorkExperienceStatus = SectionStatus.Completed;
-            queryResult.ApplicationQuestions.AdditionalQuestion1!.Status = SectionStatus.Completed;
-            queryResult.ApplicationQuestions.AdditionalQuestion2!.Status = SectionStatus.Completed;
-            queryResult.InterviewAdjustments.RequestAdjustmentsStatus = SectionStatus.Completed;
+            
             queryResult.IsDisabilityConfident = true;
-            queryResult.DisabilityConfidence.InterviewUnderDisabilityConfidentStatus = SectionStatus.Completed;
-
+            queryResult.IsApplicationComplete = true;
+            
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))

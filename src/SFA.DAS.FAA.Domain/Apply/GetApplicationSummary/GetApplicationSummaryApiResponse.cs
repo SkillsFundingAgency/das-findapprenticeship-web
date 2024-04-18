@@ -5,6 +5,7 @@ namespace SFA.DAS.FAA.Domain.Apply.GetApplicationSummary;
 public record GetApplicationSummaryApiResponse
 {
     public bool IsDisabilityConfident { get; set; }
+    public bool IsApplicationComplete { get; set; }
     public CandidateDetailsSection Candidate { get; set; }
     public AboutYouSection AboutYou { get; set; }
     public EducationHistorySection EducationHistory { get; set; }

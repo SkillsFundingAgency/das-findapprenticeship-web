@@ -23,11 +23,13 @@ public class ApplicationSummaryViewModel
             WorkHistory = source.WorkHistory,
             IsDisabilityConfident = source.IsDisabilityConfident,
             WhatIsYourInterest = source.WhatIsYourInterest,
-            AboutYou = source.AboutYou
+            AboutYou = source.AboutYou,
+            IsApplicationComplete = source.IsApplicationComplete
         };
     }
 
     public bool IsDisabilityConfident { get; init; }
+    public bool IsApplicationComplete {get;init;}
     public CandidateDetailsSection Candidate { get; init; } = new();
     public EducationHistorySection EducationHistory { get; init; } = new();
     public WorkHistorySection WorkHistory { get; init; } = new();
@@ -287,10 +289,5 @@ public class ApplicationSummaryViewModel
 
     }
 
-    public bool IsApplicationComplete => EducationHistory is { TrainingCoursesStatus: SectionStatus.Completed, QualificationsStatus: SectionStatus.Completed } &&
-                                         WorkHistory is { VolunteeringAndWorkExperienceStatus: SectionStatus.Completed, JobsStatus: SectionStatus.Completed } &&
-                                         (ApplicationQuestions.AdditionalQuestion1?.Id is not null || ApplicationQuestions.AdditionalQuestion1?.Status == SectionStatus.Completed) &&
-                                         (ApplicationQuestions.AdditionalQuestion2?.Id is not null || ApplicationQuestions.AdditionalQuestion2?.Status == SectionStatus.Completed) &&
-                                         InterviewAdjustments.RequestAdjustmentsStatus == SectionStatus.Completed &&
-                                         (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfidentStatus == SectionStatus.Completed);
+    
 }
