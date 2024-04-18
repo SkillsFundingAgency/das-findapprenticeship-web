@@ -236,7 +236,10 @@ ExtraFieldRows.prototype.hideRow = function (row) {
   let deleteField;
   const inputs = row.querySelectorAll("input");
   inputs.forEach((input) => {
-    if (input.type === "hidden" && input.value === "") {
+    if (
+      input.type === "hidden" &&
+      (input.value === "" || input.value === "false")
+    ) {
       deleteField = input;
     }
     if (input.type === "text") {
