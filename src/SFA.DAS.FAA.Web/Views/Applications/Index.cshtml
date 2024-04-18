@@ -1,19 +1,52 @@
-﻿<h1 class="govuk-heading-l">Applications</h1>
+﻿@using SFA.DAS.FAA.Web.Models.Applications
+@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel;
+
+<h1 class="govuk-heading-l">Your applications</h1>
 
 
 <nav class="faa-tab-nav">
     <ul class="faa-tab-nav__list">
         <li class="faa-tab-nav__list-item">
-            <a href="Started" class="faa-tab-nav__link faa-tab-nav__link--active">Started</a>
+            <a href="@Url.RouteUrl(RouteNames.Applications, new { tab = ApplicationsTab.Started})" class="faa-tab-nav__link faa-tab-nav__link--active">Started</a>
         </li>
         <li class="faa-tab-nav__list-item">
-            <a href="Submitted" class="faa-tab-nav__link">Submitted</a>
+            <a href="@Url.RouteUrl(RouteNames.Applications, new { tab = ApplicationsTab.Submitted})" class="faa-tab-nav__link">Submitted</a>
         </li>
         <li class="faa-tab-nav__list-item">
-            <a href="Successful" class="faa-tab-nav__link">Successful</a>
+            <a href="@Url.RouteUrl(RouteNames.Applications, new { tab = ApplicationsTab.Successful})" class="faa-tab-nav__link">Successful</a>
         </li>
         <li class="faa-tab-nav__list-item">
-            <a href="Unsuccessful" class="faa-tab-nav__link">Unsuccessful</a>
+            <a href="@Url.RouteUrl(RouteNames.Applications, new { tab = ApplicationsTab.Unsuccessful})" class="faa-tab-nav__link">Unsuccessful</a>
         </li>
     </ul>
 </nav>
+
+<br/>
+
+<h2 class="govuk-heading-m">@Model.TabTitle</h2>
+
+<div class="@Model.TabTextStyle">@Model.TabText</div> 
+
+@{
+    foreach (var application in Model.Applications)
+    {
+        @if (application.IsClosingSoon)
+        {
+            <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
+        }
+
+        <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+            <a class="" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = application.Id})">
+                @application.Title
+            </a>
+        </h2>
+
+        <p class="govuk-body" style="color:#505a5f">@application.EmployerName</p>
+
+        <p class="govuk-body govuk-!-margin-bottom-0">@application.StartedOn</p>
+        
+        <p class="govuk-body" style="color:#505a5f">@application.ClosingDate</p>
+        
+    }
+}

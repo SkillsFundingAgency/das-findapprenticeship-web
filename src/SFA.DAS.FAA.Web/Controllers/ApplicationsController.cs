@@ -1,12 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Applications;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
-    public class ApplicationsController : Controller
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("applications", Name = RouteNames.Applications)]
+    public class ApplicationsController(IMediator mediator, IDateTimeService dateTimeService) : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index(ApplicationsTab tab = ApplicationsTab.Started)
         {
-            return View();
+            var result = await mediator.Send(new GetIndexQuery
+            {
+                CandidateId = User.Claims.CandidateId(),
+                Status = tab.ToApplicationStatus()
+            });
+
+            var viewModel = IndexViewModel.Create(tab, result, dateTimeService);
+
+            return View(viewModel);
         }
     }
 }
