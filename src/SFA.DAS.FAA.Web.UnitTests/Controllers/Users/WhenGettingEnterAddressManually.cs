@@ -1,26 +1,138 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Security.Claims;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
+using CreateAccount.GetCandidatePostcode;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingEnterAddressManually
 {
-    [Test, MoqAutoData]
-    public async Task Then_View_Is_Returned(
+    [Test(Description = "This scenario covers the user opting to manually enter an address from either Enter Postcode or Select Address The back link should return them to the Enter Postcode page."), MoqAutoData]
+    public async Task When_Not_Editing_BackLink_Returns_User_To_EnterPostcode(
+        Guid candidateId,
         string? postcode,
         string backLink,
+        GetCandidateAddressQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        var result = controller.EnterAddressManually(backLink, postcode) as ViewResult;
+        queryResult.IsAddressFromLookup = false;
+
+        controller.ControllerContext = CreateControllerContext(candidateId);
+
+        mediator.Setup(x => x.Send(It.Is<GetCandidateAddressQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
+
+        var result = await controller.EnterAddressManually(backLink, postcode) as ViewResult;
         var resultModel = result.Model as EnterAddressManuallyViewModel;
 
-        resultModel.BackLink.Should().BeEquivalentTo(backLink);
+        resultModel.BackLink.Should().BeEquivalentTo(RouteNames.PostcodeAddress);
+    }
+
+    [Test(Description = "This scenario covers the user coming back from the phone number page having previously selected an address, but then opting to enter their address manually. The back link should return them to the select address page."), MoqAutoData]
+    public async Task When_Not_Editing_But_Having_Previously_Selected_An_Address_From_Lookup_Then_BackLink_Returns_User_To_SelectAddress(
+        Guid candidateId,
+        string? postcode,
+        string backLink,
+        GetCandidateAddressQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        queryResult.IsAddressFromLookup = true;
+
+        controller.ControllerContext = CreateControllerContext(candidateId);
+
+        mediator.Setup(x => x.Send(It.Is<GetCandidateAddressQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
+
+        var result = await controller.EnterAddressManually(backLink, postcode) as ViewResult;
+        var resultModel = result.Model as EnterAddressManuallyViewModel;
+
+        resultModel.BackLink.Should().BeEquivalentTo(RouteNames.SelectAddress);
+    }
+
+    [Test(Description = "This scenario covers the user opting to edit a manually keyed address. The back link should return them to the check answers page."), MoqAutoData]
+    public async Task When_Editing_A_Manually_Added_Address_Then_BackLink_Should_Return_User_To_CheckAnswers(
+        Guid candidateId,
+        GetCandidateAddressQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        queryResult.IsAddressFromLookup = false;
+
+        controller.ControllerContext = CreateControllerContext(candidateId);
+
+        mediator.Setup(x => x.Send(It.Is<GetCandidateAddressQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
+
+        var result = await controller.EnterAddressManually(string.Empty, string.Empty, true) as ViewResult;
+        var resultModel = result.Model as EnterAddressManuallyViewModel;
+
+        resultModel.BackLink.Should().BeEquivalentTo(RouteNames.ConfirmAccountDetails);
+    }
+
+    [Test(Description = "This scenario covers the user opting to edit an address they have selected from the lookup, but then opting to key their address manually. They should be returned to the address lookup page."), MoqAutoData]
+    public async Task When_Entering_An_Address_Manually_From_SelectAddress_Edit_Then_BackLink_Should_Return_User_To_SelectAddress(
+        Guid candidateId,
+        string keyedPostcode,
+        GetCandidateAddressQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        queryResult.IsAddressFromLookup = true;
+
+        controller.ControllerContext = CreateControllerContext(candidateId);
+
+        mediator.Setup(x => x.Send(It.Is<GetCandidateAddressQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
+
+        var result = await controller.EnterAddressManually(RouteNames.SelectAddress, keyedPostcode, true) as ViewResult;
+        var resultModel = result.Model as EnterAddressManuallyViewModel;
+
+        resultModel.BackLink.Should().BeEquivalentTo(RouteNames.SelectAddress);
+    }
+
+    [Test(Description = "This scenario covers the user opting to edit an address they have selected from the lookup, but then opting to change their postcode and then opting to key their address manually. They should be returned to the postcode page."), MoqAutoData]
+    public async Task When_Entering_An_Address_Manually_From_EnterPostcode_Edit_Then_BackLink_Should_Return_User_To_EnterPostcode(
+        Guid candidateId,
+        string keyedPostcode,
+        GetCandidateAddressQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        queryResult.IsAddressFromLookup = true;
+
+        controller.ControllerContext = CreateControllerContext(candidateId);
+
+        mediator.Setup(x => x.Send(It.Is<GetCandidateAddressQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
+
+        var result = await controller.EnterAddressManually(RouteNames.PostcodeAddress, keyedPostcode, true) as ViewResult;
+        var resultModel = result.Model as EnterAddressManuallyViewModel;
+
+        resultModel.BackLink.Should().BeEquivalentTo(RouteNames.PostcodeAddress);
+    }
+
+    private ControllerContext CreateControllerContext(Guid candidateId)
+    {
+        return new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                {
+                    new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                }))
+            }
+        };
     }
 }

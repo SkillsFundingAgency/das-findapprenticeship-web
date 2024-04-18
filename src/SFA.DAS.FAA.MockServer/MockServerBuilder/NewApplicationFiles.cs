@@ -20,7 +20,8 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                 .WithJobsFiles()
                 .WithTrainingCoursesFiles()
                 .WithVolunteeringAndWorkExperienceFiles()
-                .WithDisabilityConfidentFiles();
+                .WithDisabilityConfidentFiles()
+                .WithQualificationsFiles();
         }
 
         private static WireMockServer WithApplicationFiles(this WireMockServer server)
@@ -154,6 +155,54 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithHeader("Content-Type", "application/json")
                         .WithBody(string.Empty));
 
+            return server;
+        }
+
+        private static WireMockServer WithQualificationsFiles(this WireMockServer server)
+        {
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Qualifications/get-qualifications.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
+            
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications/\\S*/modify", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Qualifications/add-qualification.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"{BaseRoute}/qualifications/add/select-type", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{BaseFilePath}/Qualifications/qualification-types.json"));
+            
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}/qualifications/\\S*/modify", RegexOptions.None, RegexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
             return server;
         }
     }

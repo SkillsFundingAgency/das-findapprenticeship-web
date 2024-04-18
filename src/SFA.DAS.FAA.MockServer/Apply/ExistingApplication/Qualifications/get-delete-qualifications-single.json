@@ -1,0 +1,12 @@
+﻿{
+    "QualificationReference": "A Levels",
+    "Qualifications": [
+        {
+            "Subject": "Art",
+            "Grade": "B",
+            "Level": "",
+            "IsPredicted": false,
+            "AdditionalInformation": ""
+        }
+    ]
+}

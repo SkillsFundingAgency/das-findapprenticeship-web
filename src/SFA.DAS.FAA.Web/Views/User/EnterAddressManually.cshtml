@@ -1,11 +1,10 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using SFA.DAS.FAA.Web.Models.User
+﻿@using SFA.DAS.FAA.Web.Models.User
 @model EnterAddressManuallyViewModel
 @{
     ViewBag.Title = "What is your address? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.SelectAddressPostcode">Back</a>
+    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.SelectAddressPostcode" asp-route-change="@Model.IsEdit">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -13,6 +12,8 @@
         <partial name="_ValidationSummary" />
         <form class="form" method="post">
             <input type="hidden" asp-for="BackLink" />
+            <input type="hidden" asp-for="ReturnToConfirmationPage" />
+            <input type="hidden" asp-for="IsEdit" />
             <span class="govuk-caption-l">Create an account</span>
             <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">

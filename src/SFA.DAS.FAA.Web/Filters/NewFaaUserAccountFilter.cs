@@ -1,8 +1,6 @@
 using System.Security.Claims;
-using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Domain.Candidates;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
@@ -18,7 +16,7 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
     {
         var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
 
-        if (identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.DisplayName))
+        if (identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
         {
             if (!context.ActionDescriptor.DisplayName.Contains("UserController", StringComparison.CurrentCultureIgnoreCase) &&
                 !context.ActionDescriptor.DisplayName.Contains("ServiceController", StringComparison.CurrentCultureIgnoreCase))
@@ -30,12 +28,11 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
                 {
                     Email = email
                 };
-                var candidate = await service.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
-                if (string.IsNullOrEmpty(candidate.FirstName))
-                {
-                    context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, null);
-                    return;    
-                }
+
+                await service.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
+                var requestPath = context.HttpContext.Request.Path;
+                context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new {returnUrl = requestPath});
+                return;    
             }
         }
         await next();

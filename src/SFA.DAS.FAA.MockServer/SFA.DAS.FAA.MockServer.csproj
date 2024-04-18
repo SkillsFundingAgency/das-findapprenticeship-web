@@ -15,11 +15,29 @@
     <None Remove="Apply\NewApplication\TrainingCourses\post-add-trainingcourse.json" />
     <None Remove="Apply\NewApplication\WorkExperience\get-workexperiences.json" />
     <None Remove="jobs.json" />
+    <None Update="Apply\ExistingApplication\Qualifications\get-delete-qualifications-multiple.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\Qualifications\get-delete-qualifications-single.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\Qualifications\qualification-types.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\NewApplication\Qualifications\qualification-types.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\Qualifications\modify-qualification-single.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\Qualifications\modify-qualification-multiple.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.2.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.5.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
     <PackageReference Include="WireMock.Net.StandAlone" Version="1.5.41" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -79,6 +97,7 @@
     <Content Include="search-vacancy-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+
   </ItemGroup>
   <ItemGroup>
     <None Update="Apply\ExistingApplication\DisabilityConfident\get-disabilityconfident.json">
@@ -88,6 +107,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Apply\ExistingApplication\Jobs\get-job.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\ExistingApplication\Qualifications\get-qualifications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Apply\ExistingApplication\TrainingCourses\get-delete-trainingcourse.json">
@@ -114,7 +136,22 @@
     <None Update="Apply\ExistingApplication\post-application-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Apply\NewApplication\Qualifications\get-qualifications.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Apply\NewApplication\Qualifications\add-qualification.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Update="Apply\NewApplication\Qualifications\qualification-types.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Update="Apply\NewApplication\TrainingCourses\get-trainingcourses.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="post-application-details-existing.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="post-application-details-new.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -4,6 +4,7 @@ namespace SFA.DAS.FAA.Web.Models.User;
 
 public class EnterAddressManuallyViewModel
 {
+    public bool IsEdit { get; set; }
     public string BackLink { get; set; }
     public string? SelectAddressPostcode { get; set; }
     [Required(ErrorMessage = "Enter address line 1, typically the building and street")]
@@ -14,4 +15,5 @@ public class EnterAddressManuallyViewModel
     public string? County { get; set; }
     [Required(ErrorMessage = "Enter postcode")]
     public string? Postcode { get; set; }
+    public bool? ReturnToConfirmationPage { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -122,6 +122,48 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                     Response.Create()
                         .WithStatusCode(202)
                         .WithBodyFromFile("put-candidate.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"/vacancies/{Constants.NewVacancyReference}", RegexOptions.None, regexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithBodyFromFile("post-application-details-new.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"/vacancies/{Constants.ExistingVacancyReference}", RegexOptions.None, regexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithBodyFromFile("post-application-details-existing.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/users/\\S+/user-name", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+                .RespondWith(
+                Response.Create()
+                .WithStatusCode(200)
+                .WithBodyFromFile("get-user-name.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/users/\\S+/date-of-birth", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+                .RespondWith(
+                Response.Create()
+                .WithStatusCode(200)
+                .WithBodyFromFile("get-user-date-of-birth.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/users/\\S+/postcode-address", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+                .RespondWith(
+                Response.Create()
+                .WithStatusCode(200)
+                .WithBodyFromFile("get-postcode-address.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/users/\\S+/select-address", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet())
+                .RespondWith(
+                Response.Create()
+                .WithStatusCode(200)
+                .WithBodyFromFile("get-select-address.json"));
 
             return server;
         }

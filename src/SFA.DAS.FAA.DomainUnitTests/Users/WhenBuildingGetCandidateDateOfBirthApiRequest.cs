@@ -7,10 +7,10 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Users;
 public class WhenBuildingGetCandidateDateOfBirthApiRequest
 {
     [Test, AutoData]
-    public void Then_Then_Request_Is_built(string govUkIdentifier)
+    public void Then_Then_Request_Is_built(Guid candidateId)
     {
-        var actual = new GetCandidateDateOfBirthApiRequest(govUkIdentifier);
+        var actual = new GetCandidateDateOfBirthApiRequest(candidateId);
 
-        actual.GetUrl.Should().Be($"users/{govUkIdentifier}/date-of-birth");
+        actual.GetUrl.Should().Be($"users/{candidateId}/create-account/date-of-birth");
     }
 }

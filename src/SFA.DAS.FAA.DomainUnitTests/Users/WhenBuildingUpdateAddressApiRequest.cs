@@ -24,6 +24,6 @@ public class WhenBuildingUpdateAddressApiRequest
         };
         var actual = new CreateUserAddressApiRequest(candidateId, data);
 
-        actual.PostUrl.Should().Be($"users/{candidateId}/select-address");
+        actual.PostUrl.Should().Be($"users/{candidateId}/create-account/select-address");
     }
 }

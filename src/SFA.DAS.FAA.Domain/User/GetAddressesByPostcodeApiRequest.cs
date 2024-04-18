@@ -1,14 +1,7 @@
 ﻿using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.User;
-public class GetAddressesByPostcodeApiRequest : IGetApiRequest
+public class GetAddressesByPostcodeApiRequest(Guid candidateId, string postcode) : IGetApiRequest
 {
-    private readonly string _postcode;
-
-    public GetAddressesByPostcodeApiRequest(string postcode)
-    {
-        _postcode = postcode;
-    }
-
-    public string GetUrl => $"users/select-address?postcode={_postcode}";
+    public string GetUrl => $"users/{candidateId}/create-account/select-address?postcode={postcode}";
 }

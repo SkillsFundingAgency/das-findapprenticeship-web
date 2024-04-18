@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using System.Collections
+@using System.Text.RegularExpressions
 @using SFA.DAS.FAA.Web.Models.Custom
 @if (!ViewData.ModelState.IsValid)
 {
@@ -12,6 +13,8 @@
 
                 @{
                     var explorer = ViewData.ModelExplorer;
+                    var customOrder = ViewData["CustomOrder"] as Dictionary<string, int>;
+                    
                     foreach (var property in explorer.Properties)
                     {
                         // Need to explicitly check that the type isn't string -
@@ -20,7 +23,19 @@
                         ? GetErrorsForIEnumerable(property.Metadata)
                         : GetErrors(property.Metadata);
 
-                        foreach (var error in errors)
+
+                        var orderedListOfErrors = errors.Select(errorValue =>
+                                new
+                                {
+                                    errorValue.Key,
+                                    errorValue.Value,
+                                    Order = customOrder?.FirstOrDefault(c => errorValue.Key.EndsWith(c.Key)).Value ?? 0
+                                })
+                            .OrderBy(c => c.Order).ToList();
+                        
+                        
+                        
+                        foreach (var error in orderedListOfErrors)
                         {
                             <li>
                                 <a href="#@error.Key">
@@ -79,10 +94,30 @@
         {
             var key = $"{property.PropertyName}[{i}]";
 
+            if (ViewData.ModelState.Where(c => c.Key.StartsWith(key)).Any())
+            {
+                foreach (var value in ViewData.ModelState.Where(c=>c.Key.StartsWith(key)).ToList())
+                {
+                    var state = ViewData.ModelState[value.Key];
+                    var errors = state?.Errors ?? null;
+                    if (errors != null)
+                    {
+                        foreach (var error in errors)
+                        {
+                            result.Add(value.Key, error.ErrorMessage);
+                            break;
+                        }
+                    }
+                }
+
+                break;
+            }
+            
             if (!ViewData.ModelState.ContainsKey(key))
             {
                 break;
             }
+            
             else
             {
                 var state = ViewData.ModelState[key];

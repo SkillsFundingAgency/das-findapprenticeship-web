@@ -11,7 +11,8 @@ var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTes
 
 builder.Services
     .AddOptions()
-    .AddValidatorsFromAssembly(typeof(Program).Assembly)
+    .AddMemoryCache()
+.AddValidatorsFromAssembly(typeof(Program).Assembly)
     .AddControllers(options =>
     {
         options.ModelBinderProviders.Insert(0, new MonthYearDateModelBinderProvider());
@@ -47,9 +48,7 @@ builder.Services.Configure<RouteOptions>(options =>
 });
 
 builder.Services.AddDataProtection(rootConfiguration);
-
 builder.Services.AddApplicationInsightsTelemetry();
-
 
 var app = builder.Build();
 

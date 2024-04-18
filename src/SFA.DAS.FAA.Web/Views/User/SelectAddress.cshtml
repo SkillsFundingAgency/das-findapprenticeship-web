@@ -5,7 +5,16 @@
     ViewBag.Title = "Select your address – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress" asp-route-postcode="@Model.Postcode">Back</a>
+    @if (Model.IsEdit)
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress" asp-route-postcode="@Model.Postcode">
+            Back
+        </a>
+    }
 }
 
 <div class="govuk-grid-row">
@@ -15,15 +24,15 @@
         <h1 class="govuk-heading-l">Select your address</h1>
         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Postcode</h2>
         <p class="govuk-body govuk-!-font-weight-bold">
-            @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress">Change</a>
+            @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-change="@Model.IsEdit" asp-route-backlink="@RouteNames.SelectAddress">Change</a>
         </p>
         <form class="form" method="post">
             <input type="hidden" asp-for="Postcode" />
+            <input type="hidden" asp-for="ReturnToConfirmationPage" />
             <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                 @if (Model.Addresses.Count == 1)
                 {
                     <div id="location-hint" class="govuk-hint">
-
                         1 address found
                     </div>
                 }
@@ -58,7 +67,9 @@
                 <button class="govuk-button" data-module="govuk-button">
                     Continue
                 </button>
-                <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-selectAddressPostcode="@Model.Postcode" asp-route-backLink="@RouteNames.SelectAddress">
+                <a class="govuk-link" id="enter-address-manually-link" asp-route="@RouteNames.EnterAddressManually"
+                   asp-route-selectAddressPostcode="@Model.Postcode" asp-route-backLink="@RouteNames.SelectAddress"
+                   asp-route-change="@Model.ReturnToConfirmationPage">
                     Enter my address manually
                 </a>
             </div>
