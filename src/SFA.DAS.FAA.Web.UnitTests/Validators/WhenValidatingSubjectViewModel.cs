@@ -24,13 +24,29 @@ public class WhenValidatingSubjectViewModel
         actual.IsValid.Should().BeTrue();
     }
     [Test]
-    public async Task Then_The_Apprenticeship_Qualification_Is_Validated_For_Existing()
+    public async Task Then_Not_Validated_If_Deleted_Is_Null()
     {
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
             Name = string.Empty,
             IsDeleted = null
+        };
+        var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("apprenticeship", Guid.NewGuid());
+        var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
+
+        var actual = await validator.ValidateAsync(model);
+
+        actual.IsValid.Should().BeTrue();
+    }
+    [Test]
+    public async Task Then_The_Apprenticeship_Qualification_Is_Validated_For_Existing()
+    {
+        var model = new SubjectViewModel
+        {
+            Id = Guid.NewGuid(),
+            Name = string.Empty,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("apprenticeship", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -53,7 +69,8 @@ public class WhenValidatingSubjectViewModel
         {
             Id = null,
             Name = name,
-            AdditionalInformation = additionalInformation
+            AdditionalInformation = additionalInformation,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("apprenticeship", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -75,7 +92,8 @@ public class WhenValidatingSubjectViewModel
             Id = Guid.NewGuid(),
             Name = string.Empty,
             Grade = string.Empty,
-            Level = "select"
+            Level = "select",
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("btec", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -103,7 +121,8 @@ public class WhenValidatingSubjectViewModel
             Id = null,
             Name = name,
             Level = level,
-            Grade = grade
+            Grade = grade,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("btec", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -123,7 +142,8 @@ public class WhenValidatingSubjectViewModel
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
-            Name = string.Empty
+            Name = string.Empty,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("degree", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -151,7 +171,8 @@ public class WhenValidatingSubjectViewModel
             Id = null,
             Name = name,
             AdditionalInformation = additionalInformation,
-            Grade = grade
+            Grade = grade,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("degree", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -171,7 +192,8 @@ public class WhenValidatingSubjectViewModel
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
-            Name = string.Empty
+            Name = string.Empty,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("a Level", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -195,7 +217,8 @@ public class WhenValidatingSubjectViewModel
         {
             Id = null,
             Name = name,
-            Grade = grade
+            Grade = grade,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("a level", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -215,7 +238,8 @@ public class WhenValidatingSubjectViewModel
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
-            Name = string.Empty
+            Name = string.Empty,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("T Level", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -239,7 +263,8 @@ public class WhenValidatingSubjectViewModel
         {
             Id = null,
             Name = name,
-            Grade = grade
+            Grade = grade,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("T level", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -259,7 +284,8 @@ public class WhenValidatingSubjectViewModel
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
-            Name = string.Empty
+            Name = string.Empty,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("AS Level", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -283,7 +309,8 @@ public class WhenValidatingSubjectViewModel
         {
             Id = null,
             Name = name,
-            Grade = grade
+            Grade = grade,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("as level", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -303,7 +330,8 @@ public class WhenValidatingSubjectViewModel
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
-            Name = string.Empty
+            Name = string.Empty,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("GCSE", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -327,7 +355,8 @@ public class WhenValidatingSubjectViewModel
         {
             Id = null,
             Name = name,
-            Grade = grade
+            Grade = grade,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("gcse", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -347,7 +376,8 @@ public class WhenValidatingSubjectViewModel
         var model = new SubjectViewModel
         {
             Id = Guid.NewGuid(),
-            Name = string.Empty
+            Name = string.Empty,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("other", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
@@ -367,7 +397,8 @@ public class WhenValidatingSubjectViewModel
         var model = new SubjectViewModel
         {
             Id = null,
-            Name = name
+            Name = name,
+            IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("Other", Guid.NewGuid());
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
