@@ -228,7 +228,7 @@ ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
   if (hiddenRowCount === 1) {
     this.addLink.classList.add(this.hiddenClass);
   }
-  this.showRow(rowToShow, true, true);
+  this.showRow(rowToShow, true);
   e.preventDefault();
 };
 
@@ -252,17 +252,10 @@ ExtraFieldRows.prototype.hideRow = function (row) {
   row.classList.add(this.hiddenClass);
 };
 
-ExtraFieldRows.prototype.showRow = function (
-  row,
-  focus = false,
-  clickedToAdd = false
-) {
-  console.log(clickedToAdd);
+ExtraFieldRows.prototype.showRow = function (row, focus = false) {
   const textInput = row.querySelector("input");
   const hiddenInput = row.querySelector("[data-type-remove]");
-  if (hiddenInput) {
-    hiddenInput.value = clickedToAdd ? "false" : "";
-  }
+  hiddenInput.value = "false";
   this.fieldset.classList.remove(this.fieldsetHiddenClass);
   row.classList.remove(this.hiddenClass);
   if (focus) {
