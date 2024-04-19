@@ -6,14 +6,15 @@
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
-<partial name="_ValidationSummary" />
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
         <h1 class="govuk-heading-l">Check your application before submitting</h1>
         <div class="govuk-inset-text">
             This is what the company will see when they view your application.
         </div>
-        <a href="#print"
+        <a href="#"
            class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
                 <path fill="currentColor"
@@ -290,7 +291,7 @@
                     Do you want to request support at an interview?
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @(Model.InterviewAdjustments.IsSupportRequestRequired ? Html.Raw("Yes") : Html.Raw("No, I don’t need support or I’ll discuss it if I get an interview"))
+                    @(Model.InterviewAdjustments.IsSupportRequestRequired ? "Yes" : "No, I don’t need support or I’ll discuss it if I get an interview")
                 </dd>
             </div>
             @if (Model.InterviewAdjustments.IsSupportRequestRequired)
@@ -312,8 +313,7 @@
             <div class="faa-flex-row">
                 <h2 class="govuk-heading-m">Disability Confident scheme</h2>
                 <p class="govuk-body">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident" asp-route-applicationId="@Model.ApplicationId"
-                    class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
                         Change
                     </a>
                 </p>
@@ -324,7 +324,7 @@
                         Interview under the Disability Confident scheme
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @(Model.DisabilityConfidence.ApplyUnderDisabilityConfidentScheme ? Html.Raw("Yes") : Html.Raw("No"))
+                        @(Model.DisabilityConfidence.ApplyUnderDisabilityConfidentScheme ? "Yes" : "No")
                     </dd>
                 </div>
             </dl>    
