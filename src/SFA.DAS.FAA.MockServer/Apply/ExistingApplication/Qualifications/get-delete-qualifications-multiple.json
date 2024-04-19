@@ -1,0 +1,20 @@
+﻿{
+    "QualificationReference": "Degree",
+    "Qualifications": [
+        {
+            "Subject": "Linguistics MA (Hons)",
+            "Grade": "2:1",
+            "Level": "",
+            "IsPredicted": false,
+            "AdditionalInformation": "University of Edinburgh"
+        },
+        {
+            "QualificationType": "Apprenticeship",
+            "Subject": "Business admin (level 3)",
+            "Grade": "",
+            "Level": "",
+            "IsPredicted": false,
+            "AdditionalInformation": ""
+        }
+    ]
+}

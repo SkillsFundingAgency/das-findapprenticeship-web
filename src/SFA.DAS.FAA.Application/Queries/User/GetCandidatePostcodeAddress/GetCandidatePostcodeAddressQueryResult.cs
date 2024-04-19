@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
+namespace CreateAccount.GetCandidatePostcodeAddress;
 public class GetCandidatePostcodeAddressQueryResult
 {
     public bool PostcodeExists { get; set; }

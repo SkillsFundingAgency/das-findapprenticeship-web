@@ -43,7 +43,7 @@
         <ul class="govuk-task-list">
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a href="#" class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.Qualifications" asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
                         School, college and university qualifications
                     </a>
                 </div>
@@ -186,14 +186,11 @@
         <div class="govuk-button-group govuk-!-margin-top-8">
             @if (Model.IsApplicationComplete)
             {
-                <form class="form" method="post">
-                    <button class="govuk-button" data-module="govuk-button">
-                        Continue
-                    </button>
-                </form>
+                <a class="govuk-button" data-module="govuk-button" asp-route="@RouteNames.ApplyApprenticeship.Preview" asp-route-applicationId="@Model.ApplicationId">
+                    Continue
+                </a>
             }
             <a class="govuk-link" href="#">Save and finish later</a>
         </div>
-
     </div>
 </div>

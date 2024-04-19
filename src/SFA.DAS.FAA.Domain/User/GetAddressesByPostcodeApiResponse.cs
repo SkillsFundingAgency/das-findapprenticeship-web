@@ -3,6 +3,9 @@
 namespace SFA.DAS.FAA.Domain.User;
 public class GetAddressesByPostcodeApiResponse
 {
+    public string? Postcode { get; set; }
+    public string? Uprn { get; set; }
+
     [JsonProperty("addresses")]
     public List<AddressListItem>? Addresses { get; set; }
 

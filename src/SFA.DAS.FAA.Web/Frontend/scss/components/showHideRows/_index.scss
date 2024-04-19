@@ -1,0 +1,37 @@
+.faa-extra-fields__fieldset {
+  margin: 0 0 30px;
+  padding-top: 10px;
+}
+
+.js-enabled .faa-extra-fields__fieldset {
+  margin-bottom: 0;
+}
+
+.js-enabled .faa-extra-fields__fieldset--all-hidden {
+  padding: 0;
+  margin: 0;
+}
+
+.faa-extra-fields__form-group {
+  position: relative;
+}
+
+.faa-extra-field__form-group-link--add {
+  margin-bottom: 50px;
+}
+
+.faa-extra-field__form-group-link--remove-wrap {
+  padding: 0 15px;
+  margin-bottom: 10px;
+  display: block;
+  border-bottom: 1px solid $govuk-border-colour;
+  @include govuk-media-query(tablet) {
+    border-bottom: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.faa-extra-field__form-group--hidden {
+  display: none;
+}

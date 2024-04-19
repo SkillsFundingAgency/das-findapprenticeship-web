@@ -1,0 +1,10 @@
+﻿@using SFA.DAS.FAA.Web.Models.Apply
+@model ApplicationSubmittedConfirmationViewModel
+@{
+    ViewData["Title"] = "Application submitted – Find an apprenticeship – GOV.UK";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ApplicationSubmittedPartial" model="@Model.VacancyInfo" />
+    </div>
+</div>

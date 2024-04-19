@@ -359,3 +359,5 @@ src/SFA.DAS.FAA.ApplicationUnitTests/.DS_Store
 src/SFA.DAS.FAA.Web.AcceptanceTests/Features/*.feature.cs
 /src/SFA.DAS.FAA.Web/wwwroot/css/faa.css
 /src/SFA.DAS.FAA.Web/wwwroot/css/faa.css.map
+
+src/SFA.DAS.FAA.Web.AcceptanceTests/**/**/*.feature.cs

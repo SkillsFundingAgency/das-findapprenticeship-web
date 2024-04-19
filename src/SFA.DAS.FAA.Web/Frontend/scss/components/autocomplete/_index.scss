@@ -10,3 +10,12 @@
 .page--faa-homepage .autocomplete__wrapper {
   max-width: 100%;
 }
+
+.faa-course-select .autocomplete__wrapper {
+  max-width: 100%;
+  & .autocomplete__input {
+    height: 50px;
+    line-height: 50px;
+    padding-left: 10px;
+  }
+}

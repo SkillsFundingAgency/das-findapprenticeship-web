@@ -1,0 +1,38 @@
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Models.Apply
+@model SFA.DAS.FAA.Web.Models.Apply.AddQualificationViewModel
+@{
+    ViewData["Title"] = $"{Model.QualificationDisplayTypeViewModel.Title} – Find an apprenticeship – GOV.UK";
+    ViewData["CustomOrder"] = AddQualificationViewModel.BuildPropertyOrderDictionary();
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Qualifications, new { Model.ApplicationId })">Back</a>
+}
+
+<div class="govuk-grid-row">
+   <div class="govuk-grid-column-two-thirds">
+      <partial name="_ValidationSummary" />
+      <span class="govuk-caption-l">Education history</span>
+      <h1 class="govuk-heading-l">@Model.QualificationDisplayTypeViewModel.Title</h1>
+   </div>
+</div>
+<form class="form" method="post">
+   <input type="hidden" asp-for="QualificationType"/>
+   <input type="hidden" asp-for="QualificationReferenceId"/>
+   @if (Model.QualificationDisplayTypeViewModel.AllowMultipleAdd)
+   {
+      <partial name="_MultiQualification" model="@Model"/>
+   }
+   else
+   {
+      <partial name="_SingleQualification" model="@Model"/>
+   }
+   <div class="govuk-button-group">
+      <button class="govuk-button" data-module="govuk-button">
+         Save and continue
+      </button>
+   </div>
+</form>
+

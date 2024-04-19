@@ -11,6 +11,6 @@ public class WhenBuildingPostcodeAddressApiRequest
     {
         var actual = new GetCandidatePostcodeAddressApiRequest(postcode);
 
-        actual.GetUrl.Should().Be($"users/postcode-address?postcode={postcode}");
+        actual.GetUrl.Should().Be($"users/create-account/postcode-address?postcode={postcode}");
     }
 }

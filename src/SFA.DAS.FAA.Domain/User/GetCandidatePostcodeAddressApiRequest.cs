@@ -10,5 +10,5 @@ public class GetCandidatePostcodeAddressApiRequest : IGetApiRequest
         _postcode = postcode;
     }
 
-    public string GetUrl => $"users/postcode-address?postcode={_postcode}";
+    public string GetUrl => $"users/create-account/postcode-address?postcode={_postcode}";
 }

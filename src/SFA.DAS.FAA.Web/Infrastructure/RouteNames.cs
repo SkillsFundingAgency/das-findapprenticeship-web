@@ -14,6 +14,9 @@ public static class RouteNames
     public const string SelectAddress = "select-address";
     public const string EnterAddressManually = "enter-address";
     public const string PhoneNumber = "phone-number";
+    public const string NotificationPreferences = "notification-preferences";
+    public const string NotificationPreferencesSkip = "notification-preferences-skip";
+    public const string ConfirmAccountDetails = "check-your-account-details";
     public const string CreateAccount = "create-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
@@ -25,6 +28,7 @@ public static class RouteNames
 
     public static class ApplyApprenticeship
     {
+        public const string Preview = nameof(Preview);
         public const string AddJob = nameof(AddJob);
         public const string Jobs = nameof(Jobs);
         public const string JobsSummary = nameof(JobsSummary);
@@ -45,8 +49,13 @@ public static class RouteNames
         public const string InterviewAdjustments = nameof(InterviewAdjustments);
         public const string InterviewAdjustmentsSummary = nameof(InterviewAdjustmentsSummary);
         public const string WhatInterestsYou = nameof(WhatInterestsYou);
+        public const string EqualityFlow = nameof(EqualityFlow);
         public const string DisabilityConfident = nameof(DisabilityConfident);
         public const string DisabilityConfidentConfirmation = nameof(DisabilityConfidentConfirmation);
+        public const string Qualifications = nameof(Qualifications);
+        public const string AddQualificationSelectType = nameof(AddQualificationSelectType);
+        public const string AddQualification = nameof(AddQualification);
+        public const string DeleteQualifications = nameof(DeleteQualifications);
         public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
         public const string ApplicationSubmittedConfirmation = nameof(ApplicationSubmittedConfirmation);
 

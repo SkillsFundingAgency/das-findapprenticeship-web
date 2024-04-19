@@ -1,0 +1,28 @@
+{
+  "QualificationType":
+  {
+    "id": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+    "name": "GCSE",
+    "order": 1
+  },
+  "Qualifications": [
+    {
+      "Id": "24C98000-3456-45F9-AE92-715DDE1971DD",
+      "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+      "Subject": "Maths",
+      "Grade": "C",
+      "Level": "",
+      "IsPredicted": true,
+      "AdditionalInformation": ""
+    },
+    {
+      "Id": "1B238CD5-D0B2-41D4-B85F-0D10B92EC651",
+      "QualificationReference": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+      "Subject": "Science",
+      "Grade": "B",
+      "Level": "",
+      "IsPredicted": false,
+      "AdditionalInformation": ""
+    }
+  ]
+}

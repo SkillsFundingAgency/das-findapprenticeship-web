@@ -2,9 +2,8 @@
 using MediatR;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
-using static SFA.DAS.FAA.Domain.User.GetAddressesByPostcodeApiResponse;
 
-namespace SFA.DAS.FAA.Application.Queries.User.GetAddressesByPostcode;
+namespace CreateAccount.GetAddressesByPostcode;
 public class GetAddressesByPostcodeQueryHandler : IRequestHandler<GetAddressesByPostcodeQuery, GetAddressesByPostcodeQueryResult>
 {
     private readonly IApiClient _apiClient;
@@ -16,20 +15,9 @@ public class GetAddressesByPostcodeQueryHandler : IRequestHandler<GetAddressesBy
 
     public async Task<GetAddressesByPostcodeQueryResult> Handle(GetAddressesByPostcodeQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetAddressesByPostcodeApiRequest(HttpUtility.UrlEncode(query.Postcode));
+        var request = new GetAddressesByPostcodeApiRequest(query.CandidateId, HttpUtility.UrlEncode(query.Postcode));
         var results = await _apiClient.Get<GetAddressesByPostcodeApiResponse>(request);
 
-        if (results is null)
-        {
-            return new GetAddressesByPostcodeQueryResult
-            {
-                Addresses = Enumerable.Empty<AddressListItem>()
-            };
-        }
-
-        return new GetAddressesByPostcodeQueryResult
-        {
-            Addresses = results.Addresses
-        };
+        return results;
     }
 }

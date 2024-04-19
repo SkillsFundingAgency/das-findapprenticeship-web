@@ -14,8 +14,11 @@ public class WhenValidatingApplicationSubmittedViewModel
         {
             AnswerEqualityQuestions = null,
             ApplicationId = applicationId,
-            EmployerName = employerName,
-            VacancyTitle = vacancyTitle
+            VacancyInfo = new ApplicationSubmittedVacancyInfo
+            {
+                EmployerName = employerName,
+                VacancyTitle = vacancyTitle,
+            }
         };
 
         var validator = new ApplicationSubmittedViewModelValidator();
