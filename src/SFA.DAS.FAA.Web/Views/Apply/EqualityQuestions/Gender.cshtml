@@ -35,7 +35,7 @@
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="0" id="Sex-NA">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="3" id="Sex-NA">
                             <label class="govuk-label govuk-radios__label" for="Sex-NA">
                                 Prefer not to say
                             </label>
@@ -77,7 +77,7 @@
                 <button class="govuk-button" data-module="govuk-button">
                     Continue
                 </button>
-                <a class="govuk-link" href="#">Skip</a>
+                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation, new { Model.ApplicationId })">Skip</a>
             </div>
         </form>
     </div>

@@ -25,6 +25,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         {
             switch (group)
             {
+                case Domain.Enums.EthnicGroup.PreferNotToSay:
+                    return $"{group.GetDescription()}";
                 case Domain.Enums.EthnicGroup.Other when subGroup is EthnicSubGroup.Arab:
                     return $"{subGroup.GetDescription()}";
                 case Domain.Enums.EthnicGroup.White when subGroup is EthnicSubGroup.AnyOtherWhiteBackground:

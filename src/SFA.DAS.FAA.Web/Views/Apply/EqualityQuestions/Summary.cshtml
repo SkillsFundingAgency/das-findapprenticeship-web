@@ -14,49 +14,47 @@
             These answers will not be shared outside of DfE. Your answers will not affect your
             apprenticeship applications.
         </p>
-        <div>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Sex
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Model.Sex
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">
-                            Change
-                        </a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Is the gender you identify with the same as your sex registered at birth?
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Model.IsGenderIdentifySameSexAtBirth
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">
-                            Change
-                        </a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Ethnic group
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Model.EthnicGroup
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">
-                            Change
-                        </a>
-                    </dd>
-                </div>
-            </dl>
-        </div>
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Sex
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Sex
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">
+                        Change
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Is the gender you identify with the same as your sex registered at birth?
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.IsGenderIdentifySameSexAtBirth
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">
+                        Change
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Ethnic group
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.EthnicGroup
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">
+                        Change
+                    </a>
+                </dd>
+            </div>
+        </dl>
         <p class="govuk-body">After continuing, you can still change these answers in your settings.</p>
         <div class="govuk-button-group">
             <form class="form" method="post">
