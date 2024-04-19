@@ -23,7 +23,7 @@
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h2 class="govuk-heading-m">Personal details</h2>
         <p class="govuk-body">
-            You can change your personal details in your <a href="#" class="govuk-link">settings</a>.
+            You can change your personal details in <a href="#" class="govuk-link">settings</a>.
         </p>
         <dl class="govuk-summary-list govuk-summary-list--no-border">
             <div class="govuk-summary-list__row">
@@ -58,7 +58,7 @@
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    Phone number
+                    Telephone number
                 </dt>
                 <dd class="govuk-summary-list__value">
                     @Model.Candidate.PhoneNumber
@@ -109,7 +109,6 @@
         {
             <div class="faa-flex-row">
                 <p class="govuk-hint">You haven’t added any training courses.</p>
-                
             </div>
         }
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
@@ -211,7 +210,7 @@
         <h2 class="govuk-heading-m">Application questions</h2>
 
         <div class="faa-flex-row">
-            <h3 class="govuk-heading-s">What is your skills and strengths?</h3>
+            <h3 class="govuk-heading-s">What are your skills and strengths?</h3>
             <p class="govuk-body">
                 <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
                     Change
@@ -311,7 +310,7 @@
             <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
 
             <div class="faa-flex-row">
-                <h2 class="govuk-heading-m">Disability Confidence scheme</h2>
+                <h2 class="govuk-heading-m">Disability Confident scheme</h2>
                 <p class="govuk-body">
                     <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident" asp-route-applicationId="@Model.ApplicationId"
                     class="govuk-link govuk-task-list__link">
@@ -322,7 +321,7 @@
             <dl class="govuk-summary-list govuk-summary-list--no-border">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                        Do you want to apply under the Disability Confident scheme?
+                        Interview under the Disability Confident scheme
                     </dt>
                     <dd class="govuk-summary-list__value">
                         @(Model.DisabilityConfidence.ApplyUnderDisabilityConfidentScheme ? Html.Raw("Yes") : Html.Raw("No"))
