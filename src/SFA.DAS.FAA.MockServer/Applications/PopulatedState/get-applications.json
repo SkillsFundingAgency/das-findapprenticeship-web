@@ -6,6 +6,13 @@
             "employerName": "Mega Corp Limited",
             "createdDate": "2025-03-23T00:00:00Z",
             "closingDate": "2024-09-23T00:00:00Z"
+        },
+        {
+            "id": "676476cc-525a-4a13-8da7-cf36345e6f61",
+            "title": "Hairdressing",
+            "employerName": "A Cut Above Salon",
+            "createdDate": "2021-03-23T00:00:00Z",
+            "closingDate": "2021-09-23T00:00:00Z"
         }
     ]
 }

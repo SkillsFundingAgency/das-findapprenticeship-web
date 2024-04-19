@@ -12,7 +12,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("applications", Name = RouteNames.Applications)]
+    [Route("applications", Name = RouteNames.Applications.ViewApplications)]
     public class ApplicationsController(IMediator mediator, IDateTimeService dateTimeService) : Controller
     {
         public async Task<IActionResult> Index(ApplicationsTab tab = ApplicationsTab.Started)
@@ -27,5 +27,12 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return View(viewModel);
         }
+
+        [Route("applications/{applicationId}/delete", Name = RouteNames.Applications.DeleteApplication)]
+        public IActionResult Delete(Guid applicationId)
+        {
+            return Ok("Delete application placeholder");
+        }
+
     }
 }

@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
+﻿using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 using System.Globalization;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAA.Domain.SearchResults;
 
 namespace SFA.DAS.FAA.Web.Models.Applications
 {
@@ -15,6 +13,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         public string TabTextStyle => IsTabTextInset ? "govuk-inset-text" : "govuk-body";
 
         public List<Application> Applications { get; set; } = [];
+        public List<Application> ExpiredApplications { get; set; } = [];
 
         public class Application
         {
@@ -24,16 +23,12 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public string StartedOn { get; set; }
             public string ClosingDate { get; set; }
             public bool IsClosingSoon { get; set; }
+            public bool IsClosed { get; set; }
         }
 
         public static IndexViewModel Create(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
         {
-            var result = new IndexViewModel
-            {
-                TabTitle = tab.GetTabTitle(),
-                TabText = source.Applications.Any() ? tab.GetTabPopulatedText() : tab.GetTabEmptyText(),
-                IsTabTextInset = tab == ApplicationsTab.Started && source.Applications.Any()
-            };
+            var result = new IndexViewModel();
 
             foreach (var application in source.Applications.OrderByDescending(x => x.CreatedDate))
             {
@@ -42,6 +37,9 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                 var closingDate = "";
                 switch (daysToExpiry)
                 {
+                    case < 0:
+                        closingDate = $"Closed {application.ClosingDate.ToString("dddd dd MMMM yyyy", CultureInfo.InvariantCulture)}";
+                        break;
                     case 0:
                         closingDate = "Closes today at 11:59pm";
                         break;
@@ -64,11 +62,23 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     StartedOn =
                         $"Started on {application.CreatedDate.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = closingDate,
-                    IsClosingSoon = daysToExpiry <= 7
+                    IsClosingSoon = daysToExpiry <= 7,
+                    IsClosed = daysToExpiry < 0
                 };
 
-                result.Applications.Add(applicationViewModel);
+                if (applicationViewModel.IsClosed)
+                {
+                    result.ExpiredApplications.Add(applicationViewModel);
+                }
+                else
+                {
+                    result.Applications.Add(applicationViewModel);
+                }
             }
+
+            result.TabTitle = tab.GetTabTitle();
+            result.TabText = source.Applications.Any() ? tab.GetTabPopulatedText() : tab.GetTabEmptyText();
+            result.IsTabTextInset = tab == ApplicationsTab.Started && source.Applications.Any();
 
             return result;
         }

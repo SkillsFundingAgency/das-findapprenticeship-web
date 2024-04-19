@@ -15,6 +15,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Applications
         [TestCase("2024-04-18", "2024-04-03T08:30", "Closes in 15 days (Thursday 18 April 2024 at 11:59pm)")]
         [TestCase("2024-04-18", "2024-04-17T19:41", "Closes tomorrow (Thursday 18 April 2024 at 11:59pm)")]
         [TestCase("2024-04-18", "2024-04-18T19:41", "Closes today at 11:59pm")]
+        [TestCase("2024-04-18", "2024-04-19T00:01:01", "Closed Thursday 18 April 2024")]
         public void Then_Application_ClosingDate_Is_Expected_Value(DateTime closingDate, DateTime currentDate, string expectedValue)
         {
             closingDate = closingDate.AddDays(1).Date.Subtract(new TimeSpan(0,0,1));
