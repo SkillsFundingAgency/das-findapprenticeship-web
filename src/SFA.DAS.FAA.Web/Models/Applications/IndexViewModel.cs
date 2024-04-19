@@ -7,6 +7,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 {
     public class IndexViewModel
     {
+        public ApplicationsTab SelectedTab { get; set; }
         public string TabTitle { get; set; }
         public string TabText { get; set; }
         public bool IsTabTextInset { get; set; }
@@ -28,7 +29,10 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
         public static IndexViewModel Create(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
         {
-            var result = new IndexViewModel();
+            var result = new IndexViewModel
+            {
+                SelectedTab = tab
+            };
 
             foreach (var application in source.Applications.OrderByDescending(x => x.CreatedDate))
             {
@@ -62,7 +66,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     StartedOn =
                         $"Started on {application.CreatedDate.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = closingDate,
-                    IsClosingSoon = daysToExpiry <= 7,
+                    IsClosingSoon = daysToExpiry is >= 0 and <= 7,
                     IsClosed = daysToExpiry < 0
                 };
 
@@ -77,8 +81,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             }
 
             result.TabTitle = tab.GetTabTitle();
-            result.TabText = source.Applications.Any() ? tab.GetTabPopulatedText() : tab.GetTabEmptyText();
-            result.IsTabTextInset = tab == ApplicationsTab.Started && source.Applications.Any();
+            result.TabText = result.Applications.Count > 0 ? tab.GetTabPopulatedText() : tab.GetTabEmptyText();
+            result.IsTabTextInset = tab == ApplicationsTab.Started && result.Applications.Count > 0;
 
             return result;
         }

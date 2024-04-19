@@ -1,0 +1,51 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel.Application
+
+@if (Model.IsClosingSoon)
+{
+    <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
+}
+
+@if (Model.IsClosed)
+{
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">@Model.Title</h2>
+}
+else
+{
+    <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+        <a class="" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id})">
+            @Model.Title
+        </a>
+    </h2>
+}
+
+
+<p class="govuk-body" style="color:#505a5f">@Model.EmployerName</p>
+
+<p class="govuk-body govuk-!-margin-bottom-0">@Model.StartedOn</p>
+        
+<p class="govuk-body" style="color:#505a5f">@Model.ClosingDate</p>
+
+
+<ul class="govuk-summary-list__actions-list">
+    
+    @if (!Model.IsClosed)
+    {
+        <li class="govuk-summary-list__actions-list-item">
+            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id })">
+                Continue application
+            </a>
+        </li>
+    }
+
+    <li class="govuk-summary-list__actions-list-item">
+        <a href="@Url.RouteUrl(RouteNames.Applications.DeleteApplication, new { applicationId = Model.Id })" class="govuk-link">
+            Delete
+        </a>
+    </li>
+</ul>
+
+        
+        
+<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6">
+<br/>

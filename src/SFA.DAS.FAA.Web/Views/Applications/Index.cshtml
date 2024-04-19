@@ -4,20 +4,31 @@
 
 <h1 class="govuk-heading-l">Your applications</h1>
 
-
 <nav class="faa-tab-nav">
     <ul class="faa-tab-nav__list">
         <li class="faa-tab-nav__list-item">
-            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started})" class="faa-tab-nav__link faa-tab-nav__link--active">Started</a>
+            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started })"
+               class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
+                Started
+            </a>
         </li>
         <li class="faa-tab-nav__list-item">
-            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted})" class="faa-tab-nav__link">Submitted</a>
+            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted })"
+               class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
+                Submitted
+            </a>
         </li>
         <li class="faa-tab-nav__list-item">
-            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Successful})" class="faa-tab-nav__link">Successful</a>
+            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Successful })"
+               class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
+                Successful
+            </a>
         </li>
         <li class="faa-tab-nav__list-item">
-            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Unsuccessful})" class="faa-tab-nav__link">Unsuccessful</a>
+            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Unsuccessful })"
+               class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
+                Unsuccessful
+            </a>
         </li>
     </ul>
 </nav>
@@ -31,41 +42,7 @@
 @{
     foreach (var application in Model.Applications)
     {
-        @if (application.IsClosingSoon)
-        {
-            <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
-        }
-
-        <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-            <a class="" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = application.Id})">
-                @application.Title
-            </a>
-        </h2>
-
-        <p class="govuk-body" style="color:#505a5f">@application.EmployerName</p>
-
-        <p class="govuk-body govuk-!-margin-bottom-0">@application.StartedOn</p>
-        
-        <p class="govuk-body" style="color:#505a5f">@application.ClosingDate</p>
-
-
-        <ul class="govuk-summary-list__actions-list">
-            <li class="govuk-summary-list__actions-list-item">
-                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = application.Id})">
-                    Continue application
-                </a>
-            </li>
-            <li class="govuk-summary-list__actions-list-item">
-                <a href="@Url.RouteUrl(RouteNames.Applications.DeleteApplication, new { applicationId = application.Id })" class="govuk-link">
-                    Delete
-                </a>            
-            </li>
-        </ul>
-
-        
-        
-        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 ">
-        
+        <partial model="application" name="_Application" />
     }
 }
 
@@ -84,18 +61,7 @@
             
             @foreach (var application in Model.ExpiredApplications)
             {
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-1">@application.Title</h2>
-
-                <p class="govuk-body" style="color:#505a5f">@application.EmployerName</p>
-
-                <p class="govuk-body govuk-!-margin-bottom-0">@application.StartedOn</p>
-            
-                <p class="govuk-body" style="color:#505a5f">@application.ClosingDate</p>
-
-                <a href="@Url.RouteUrl(RouteNames.Applications.DeleteApplication, new { applicationId = application.Id})" class="govuk-link">Delete</a>
-
-                <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 ">
-            
+               <partial model="application" name="_Application" />
             }
         </div>
     </details>

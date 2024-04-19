@@ -24,7 +24,7 @@ namespace SFA.DAS.FAA.Web.Extensions
                 ApplicationsTab.Started => "Started",
                 ApplicationsTab.Submitted => "Submitted",
                 ApplicationsTab.Successful => "Successful",
-                ApplicationsTab.Unsuccessful => "Unsucessful",
+                ApplicationsTab.Unsuccessful => "Unsuccessful",
                 _ => ""
             };
         }

@@ -27,13 +27,46 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
                     .WithParam("candidateId", Constants.CandidateIdWithApplications)
                     .WithParam("status", "Draft")
-                    //.WithParam("status", ["Draft", "Submitted", "Successful", "Unsuccessful"])
                     .UsingGet())
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(200)
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile($"{PopulatedStateBaseFilePath}/get-applications.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
+                    .WithParam("candidateId", Constants.CandidateIdWithApplications)
+                    .WithParam("status", "Submitted")
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{PopulatedStateBaseFilePath}/get-applications-submitted.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
+                    .WithParam("candidateId", Constants.CandidateIdWithApplications)
+                    .WithParam("status", "Successful")
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{PopulatedStateBaseFilePath}/get-applications-successful.json"));
+
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
+                    .WithParam("candidateId", Constants.CandidateIdWithApplications)
+                    .WithParam("status", "Unsuccessful")
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile($"{PopulatedStateBaseFilePath}/get-applications-unsuccessful.json"));
+
 
             return server;
         }

@@ -18,6 +18,15 @@
     <None Update="Applications\EmptyState\get-applications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Applications\PopulatedState\get-applications-successful.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Applications\PopulatedState\get-applications-unsuccessful.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Applications\PopulatedState\get-applications-submitted.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Applications\PopulatedState\get-applications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
