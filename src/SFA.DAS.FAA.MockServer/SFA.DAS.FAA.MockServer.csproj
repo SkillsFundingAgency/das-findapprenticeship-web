@@ -15,6 +15,12 @@
     <None Remove="Apply\NewApplication\TrainingCourses\post-add-trainingcourse.json" />
     <None Remove="Apply\NewApplication\WorkExperience\get-workexperiences.json" />
     <None Remove="jobs.json" />
+    <None Update="Applications\EmptyState\get-applications.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Applications\PopulatedState\get-applications.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Apply\ExistingApplication\Qualifications\get-delete-qualifications-multiple.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
