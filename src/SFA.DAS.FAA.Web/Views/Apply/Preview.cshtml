@@ -21,7 +21,7 @@
                       d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
             </svg>Print your application
         </a>
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <h2 class="govuk-heading-m">Personal details</h2>
         <p class="govuk-body">
             You can change your personal details in <a href="#" class="govuk-link">settings</a>.
@@ -74,7 +74,7 @@
                 </dd>
             </div>
         </dl>
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <div class="faa-flex-row">
             <h2 class="govuk-heading-m">Training courses</h2>
             <p class="govuk-body">
@@ -108,11 +108,9 @@
         }
         else
         {
-            <div class="faa-flex-row">
-                <p class="govuk-hint">You haven’t added any training courses.</p>
-            </div>
+            <p class="govuk-hint">You haven’t added any training courses.</p>   
         }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <div class="faa-flex-row">
             <h2 class="govuk-heading-m">Jobs</h2>
             <p class="govuk-body">
@@ -154,11 +152,9 @@
         }
         else
         {
-            <div class="faa-flex-row">
-                <p class="govuk-hint">You haven’t added any jobs.</p>
-            </div>
+            <p class="govuk-hint">You haven’t added any jobs.</p>
         }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <div class="faa-flex-row">
             <h2 class="govuk-heading-m">Volunteering and work experience</h2>    
             <p class="govuk-body">
@@ -202,11 +198,9 @@
         }
         else
         {
-            <div class="faa-flex-row">
-                <p class="govuk-hint">You haven’t added any volunteering or work experience.</p>
-            </div>
+            <p class="govuk-hint">You haven’t added any volunteering or work experience.</p>
         }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
         <h2 class="govuk-heading-m">Application questions</h2>
 
@@ -274,7 +268,7 @@
                 @Model.ApplicationQuestions.AdditionalQuestion2.Answer
             </p>
         }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
         <div class="faa-flex-row">
             <h2 class="govuk-heading-m">Get support at an interview</h2>
@@ -308,7 +302,7 @@
         </dl>
         @if (Model.IsDisabilityConfident)
         {
-            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
             <div class="faa-flex-row">
                 <h2 class="govuk-heading-m">Disability Confident scheme</h2>
@@ -329,19 +323,17 @@
                 </div>
             </dl>    
         }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <form class="form" method="post">
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        <h1 class="govuk-fieldset__heading">
-                            Submit your application
-                        </h1>
+                        Submit your application
                     </legend>
                     <span das-validation-for="IsConsentProvided" class="govuk-error-message"></span>
                     <div class="govuk-checkboxes" data-module="govuk-checkboxes" das-highlight-error-for="IsConsentProvided" error-class="govuk-form-group--error">
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" asp-for="IsConsentProvided" type="checkbox" value="true" id="IsConsentProvided">
+                            <input class="govuk-checkboxes__input" asp-for="IsConsentProvided" type="checkbox" value="true" id="IsConsentProvided" />
                             <label class="govuk-label govuk-checkboxes__label" for="IsConsentProvided">
                                 I understand that I won't be able to make any changes after I submit my application
                             </label>
