@@ -74,6 +74,78 @@
             </div>
         </dl>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <h2 class="govuk-heading-m">School, college and university qualifications</h2>
+        @if(Model.EducationHistory.Qualifications.ShowQualifications)
+        {
+            @foreach (var group in Model.EducationHistory.Qualifications.QualificationGroups)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">@group.DisplayName</h2>
+                        <ul class="govuk-summary-card__actions">
+                            @if (group.AllowMultipleAdd)
+                            {
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteQualifications, new { Model.ApplicationId, group.QualificationReferenceId })">
+                                        Delete<span class="govuk-visually-hidden"> qualification</span>
+                                    </a>
+                                </li>
+
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualification, new { Model.ApplicationId,group.QualificationReferenceId })">
+                                        Change<span class="govuk-visually-hidden"> qualification</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteQualifications, new { Model.ApplicationId, group.QualificationReferenceId, group.Qualifications.First().Id })">
+                                        Delete<span class="govuk-visually-hidden"> qualification</span>
+                                    </a>
+                                </li>
+
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualification, new { Model.ApplicationId,group.QualificationReferenceId, group.Qualifications.First().Id })">
+                                        Change<span class="govuk-visually-hidden"> qualification</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            @foreach (var qualification in group.Qualifications)
+                            {
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        @qualification.Subject
+                                        @if (group.ShowAdditionalInformation)
+                                        {
+                                            <p class="govuk-body govuk-!-margin-top-1 govuk-hint">@qualification.AdditionalInformation</p>
+                                        }
+                                        @if (group.ShowLevel is true)
+                                        {
+                                            <p class="govuk-body govuk-!-margin-top-1 govuk-!-font-weight-bold">(Level @qualification.AdditionalInformation)</p>
+                                        }
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @qualification.GradeLabel
+                                    </dd>
+                                </div>
+                            }
+                        </dl>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="faa-flex-row">
+                <p class="govuk-hint">You haven’t added any school, college or university qualifications.</p>
+            </div>
+        }
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h2 class="govuk-heading-m">Training courses</h2>
         @if (Model.EducationHistory.TrainingCourses is { Count: > 0 })
         {

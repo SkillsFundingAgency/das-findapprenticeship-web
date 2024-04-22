@@ -41,12 +41,30 @@ public record GetApplicationSummaryApiResponse
         public SectionStatus QualificationsStatus { get; set; }
         public SectionStatus TrainingCoursesStatus { get; set; }
         public List<TrainingCourse> TrainingCourses { get; set; } = [];
+        public List<Qualification> Qualifications { get; set; }
+        public List<QualificationReference> QualificationTypes { get; set; }
 
         public record TrainingCourse
         {
             public Guid Id { get; set; }
             public string CourseName { get; set; }
             public int YearAchieved { get; set; }
+        }
+        public record Qualification
+        {
+            public Guid QualificationReferenceId { get; set; }
+            public Guid Id { get; set; }
+            public string? Subject { get; set; }
+            public string? Grade { get; set; }
+            public string? AdditionalInformation { get; set; }
+            public bool? IsPredicted { get; set; }
+            public QualificationReference QualificationReference { get; set; }
+        }
+
+        public record QualificationReference
+        {
+            public Guid Id { get; set; }
+            public string? Name { get; set; }
         }
     }
 

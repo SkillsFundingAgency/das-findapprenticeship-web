@@ -61,11 +61,11 @@ public class GetApplicationSummaryQueryResult
 
     public class AddressDetailsSection
     {
-        public string AddressLine1 { get; init; }
+        public string? AddressLine1 { get; init; }
         public string? AddressLine2 { get; init; }
         public string? Town { get; init; }
         public string? County { get; init; }
-        public string Postcode { get; init; }
+        public string? Postcode { get; init; }
 
         public static implicit operator AddressDetailsSection?(GetApplicationSummaryApiResponse.AddressDetailsSection? source)
         {
@@ -87,6 +87,8 @@ public class GetApplicationSummaryQueryResult
         public SectionStatus QualificationsStatus { get; set; }
         public SectionStatus TrainingCoursesStatus { get; set; }
         public List<TrainingCourse?> TrainingCourses { get; set; } = [];
+        public List<Qualification?> Qualifications { get; set; } = [];
+        public List<QualificationReference?> QualificationTypes { get; set; } = [];
 
         public static implicit operator EducationHistorySection(GetApplicationSummaryApiResponse.EducationHistorySection source)
         {
@@ -94,7 +96,9 @@ public class GetApplicationSummaryQueryResult
             {
                 QualificationsStatus = source.QualificationsStatus,
                 TrainingCoursesStatus = source.TrainingCoursesStatus,
-                TrainingCourses = source.TrainingCourses.Select(x => (TrainingCourse)x).ToList()
+                TrainingCourses = source.TrainingCourses.Select(x => (TrainingCourse)x).ToList(),
+                Qualifications = source.Qualifications.Select(x => (Qualification)x).ToList(),
+                QualificationTypes = source.QualificationTypes.Select(x => (QualificationReference)x).ToList()
             };
         }
 
@@ -113,6 +117,50 @@ public class GetApplicationSummaryQueryResult
                     Id = source.Id,
                     CourseName = source.CourseName,
                     YearAchieved = source.YearAchieved
+                };
+            }
+        }
+
+        public record Qualification
+        {
+            public Guid QualificationReferenceId { get; set; }
+            public Guid Id { get; set; }
+            public string? Subject { get; set; }
+            public string? Grade { get; set; }
+            public string? AdditionalInformation { get; set; }
+            public bool? IsPredicted { get; set; }
+            public QualificationReference? QualificationReference { get; set; }
+
+            public static implicit operator Qualification?(GetApplicationSummaryApiResponse.EducationHistorySection.Qualification? source)
+            {
+                if (source is null) return null;
+
+                return new Qualification
+                {
+                    Id = source.Id,
+                    Subject = source.Subject,
+                    Grade = source.Grade,
+                    AdditionalInformation = source.AdditionalInformation,
+                    IsPredicted = source.IsPredicted,
+                    QualificationReferenceId = source.QualificationReferenceId,
+                    QualificationReference = source.QualificationReference
+                };
+            }
+        }
+
+        public record QualificationReference
+        {
+            public Guid Id { get; set; }
+            public string? Name { get; set; }
+
+            public static implicit operator QualificationReference?(GetApplicationSummaryApiResponse.EducationHistorySection.QualificationReference? source)
+            {
+                if (source is null) return null;
+
+                return new QualificationReference
+                {
+                    Id = source.Id,
+                    Name = source.Name
                 };
             }
         }

@@ -36,7 +36,7 @@ public class ApplicationSummaryViewModel
     public DisabilityConfidenceSection DisabilityConfidence { get; init; } = new();
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
     public AboutYouSection AboutYou { get; init; } = new();
-    
+
 
     public class CandidateDetailsSection
     {
@@ -94,6 +94,7 @@ public class ApplicationSummaryViewModel
         public SectionStatus QualificationsStatus { get; private init; }
         public SectionStatus TrainingCoursesStatus { get; private init; }
         public List<TrainingCourse> TrainingCourses { get; set; } = [];
+        public QualificationsViewModel Qualifications { get; set; } = new();
 
         public static implicit operator EducationHistorySection(GetApplicationSummaryQueryResult.EducationHistorySection source)
         {
@@ -101,7 +102,9 @@ public class ApplicationSummaryViewModel
             {
                 QualificationsStatus = source.QualificationsStatus,
                 TrainingCoursesStatus = source.TrainingCoursesStatus,
-                TrainingCourses = source.TrainingCourses.Select(x => (TrainingCourse)x).ToList()
+                TrainingCourses = source.TrainingCourses.Select(x => (TrainingCourse)x).ToList(),
+                Qualifications = QualificationsViewModel.MapFromQueryResult(source)
+
             };
         }
 
@@ -120,6 +123,93 @@ public class ApplicationSummaryViewModel
                     YearAchieved = source.YearAchieved
                 };
             }
+        }
+
+        public class QualificationsViewModel
+        {
+            public List<QualificationGroup> QualificationGroups { get; set; } = [];
+
+            public bool ShowQualifications { get; set; }
+
+            public class QualificationGroup
+            {
+                public Guid QualificationReferenceId { get; set; }
+                public string? DisplayName { get; set; }
+                public List<Qualification> Qualifications { get; set; } = [];
+                public bool AllowMultipleAdd { get; set; }
+                public bool ShowAdditionalInformation { get; set; }
+                public bool? ShowLevel { get; set; }
+            }
+
+            public class Qualification
+            {
+                public Guid? Id { get; set; }
+                public string? Subject { get; set; }
+                internal string? Grade { get; set; }
+                public string? AdditionalInformation { get; set; }
+                internal bool? IsPredicted { get; set; }
+                public string? GradeLabel => IsPredicted is true ? $"{Grade} (predicted)" : Grade;
+            }
+
+            public static QualificationsViewModel MapFromQueryResult(GetApplicationSummaryQueryResult.EducationHistorySection source)
+            {
+                var result = new QualificationsViewModel
+                {
+                    ShowQualifications = source.Qualifications.Count != 0
+                };
+
+                var viewModelQualificationTypes =
+                    source.QualificationTypes.Select(c => new QualificationDisplayTypeViewModel(c?.Name!, c!.Id)).ToList();
+
+                foreach (var qualificationType in viewModelQualificationTypes.OrderBy(x => x.ListOrder))
+                {
+                    if (source.Qualifications.Any(x => x?.QualificationReferenceId == qualificationType.Id))
+                    {
+                        if (qualificationType.AllowMultipleAdd)
+                        {
+                            var group = MapGroup(qualificationType,
+                                source.Qualifications.Where(x => x.QualificationReferenceId == qualificationType.Id));
+                            result.QualificationGroups.Add(group);
+                        }
+                        else
+                        {
+                            foreach (var qualification in source.Qualifications.Where(x =>
+                                         x?.QualificationReferenceId == qualificationType.Id))
+                            {
+                                var group = MapGroup(qualificationType, new[] { qualification }!);
+                                result.QualificationGroups.Add(group);
+                            }
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            private static QualificationGroup MapGroup(QualificationDisplayTypeViewModel qualificationType,
+                IEnumerable<GetApplicationSummaryQueryResult.EducationHistorySection.Qualification> qualifications)
+            {
+                var result = new QualificationGroup
+                {
+                    DisplayName = qualificationType.GroupTitle,
+                    ShowAdditionalInformation = qualificationType.ShouldDisplayAdditionalInformationField,
+                    QualificationReferenceId = qualificationType.Id,
+                    AllowMultipleAdd = qualificationType.AllowMultipleAdd,
+                    ShowLevel = qualificationType.CanShowLevel,
+                    Qualifications = qualifications
+                        .Select(x => new Qualification
+                        {
+                            Id = x.Id,
+                            Subject = x.Subject != null && x.Subject.Contains('|') ? x.Subject.Split('|')[1] : x.Subject,
+                            Grade = x.Grade,
+                            AdditionalInformation = x.AdditionalInformation,
+                            IsPredicted = x.IsPredicted
+                        }).ToList()
+                };
+
+                return result;
+            }
+
         }
     }
 
