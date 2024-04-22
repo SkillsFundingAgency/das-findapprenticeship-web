@@ -46,19 +46,19 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                 switch (daysToExpiry)
                 {
                     case < 0:
-                        closingDate = $"Closed {application.ClosingDate.ToString("dddd dd MMMM yyyy", CultureInfo.InvariantCulture)}";
+                        closingDate = $"Closed on {application.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)}";
                         break;
                     case 0:
                         closingDate = "Closes today at 11:59pm";
                         break;
                     case 1:
-                        closingDate = $"Closes tomorrow ({application.ClosingDate.ToString("dddd dd MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm)";
+                        closingDate = $"Closes tomorrow ({application.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm)";
                         break;
                     case <= 31:
-                        closingDate = $"Closes in {daysToExpiry} days ({application.ClosingDate.ToString("dddd dd MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm)";
+                        closingDate = $"Closes in {daysToExpiry} days ({application.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm)";
                         break;
                     default:
-                        closingDate = $"Closes on {application.ClosingDate.ToString("dddd dd MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm";
+                        closingDate = $"Closes on {application.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm";
                         break;
                 }
 
@@ -69,7 +69,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     Title = application.Title,
                     EmployerName = application.EmployerName,
                     StartedOn =
-                        $"Started on {application.CreatedDate.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        $"Started on {application.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = closingDate,
                     IsClosingSoon = daysToExpiry is >= 0 and <= 7,
                     IsClosed = daysToExpiry < 0

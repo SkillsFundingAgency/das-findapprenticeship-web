@@ -6,18 +6,12 @@
     <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
 }
 
-@if (Model.IsClosed)
-{
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">@Model.Title</h2>
-}
-else
-{
-    <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-        <a class="" href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference})">
-            @Model.Title
-        </a>
-    </h2>
-}
+<h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+    <a class="" href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference})">
+        @Model.Title
+    </a>
+</h2>
+
 
 <p class="govuk-body" style="color:#505a5f">@Model.EmployerName</p>
 <p class="govuk-body govuk-!-margin-bottom-0">@Model.StartedOn</p>
