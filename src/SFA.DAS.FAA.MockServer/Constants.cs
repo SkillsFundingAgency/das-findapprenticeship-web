@@ -8,7 +8,6 @@
         public const string NewVacancyReference = "2000012013";
         public const string ExistingVacancyReference = "1000012013";
 
-        public const string CandidateIdWithNoApplications = "7d9ce612-65b3-4eaf-95fb-78982c8cc20b"; //todo: this will have to change
         public const string CandidateIdWithApplications = "7d9ce612-65b3-4eaf-95fb-78982c8cc20b";
     }
 }

@@ -35,9 +35,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Applications
             var dateTimeService = new Mock<IDateTimeService>();
             dateTimeService.Setup(x => x.GetDateTime()).Returns(currentDate);
 
-            var result = IndexViewModel.Create(ApplicationsTab.Started, queryResult, dateTimeService.Object);
+            var result = IndexViewModel.Map(ApplicationsTab.Started, queryResult, dateTimeService.Object);
 
-            result.Applications.First().ClosingDate.Should().Be(expectedValue);
+            var application = result.Applications.SingleOrDefault() ?? result.ExpiredApplications.First();
+            application.ClosingDate.Should().Be(expectedValue);
         }
     }
 }

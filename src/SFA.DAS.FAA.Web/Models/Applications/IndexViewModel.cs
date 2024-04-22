@@ -27,7 +27,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public bool IsClosed { get; set; }
         }
 
-        public static IndexViewModel Create(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
+        public static IndexViewModel Map(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
         {
             var result = new IndexViewModel
             {
@@ -36,7 +36,9 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
             foreach (var application in source.Applications.OrderByDescending(x => x.CreatedDate))
             {
-                var daysToExpiry = (application.ClosingDate - dateTimeService.GetDateTime()).Days;
+                //var daysToExpiry = (application.ClosingDate - dateTimeService.GetDateTime()).Days;
+                var timeUntilClosing = application.ClosingDate.Date - dateTimeService.GetDateTime();
+                var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
 
                 var closingDate = "";
                 switch (daysToExpiry)

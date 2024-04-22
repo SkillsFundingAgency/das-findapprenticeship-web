@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Status = tab.ToApplicationStatus()
             });
 
-            var viewModel = IndexViewModel.Create(tab, result, dateTimeService);
+            var viewModel = IndexViewModel.Map(tab, result, dateTimeService);
 
             return View(viewModel);
         }
