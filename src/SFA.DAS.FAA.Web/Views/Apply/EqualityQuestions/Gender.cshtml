@@ -21,10 +21,10 @@
                         </h1>
                     </legend>
                     <span das-validation-for="Sex" class="govuk-error-message"></span>
-                    <div class="govuk-radios" data-module="govuk-radios" id="Sex">
+                    <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="1" id="Sex-Female">
-                            <label class="govuk-label govuk-radios__label" for="Sex-Female">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="1" id="Sex">
+                            <label class="govuk-label govuk-radios__label" for="Sex">
                                 Female
                             </label>
                         </div>
@@ -51,10 +51,10 @@
                         </h1>
                     </legend>
                     <span das-validation-for="IsGenderIdentifySameSexAtBirth" class="govuk-error-message"></span>
-                    <div class="govuk-radios" data-module="govuk-radios" id="IsGenderIdentifySameSexAtBirth">
+                    <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsGenderIdentifySameSexAtBirth" type="radio" value="Yes" id="Gender-Yes">
-                            <label class="govuk-label govuk-radios__label" for="Gender-Yes">
+                            <input class="govuk-radios__input" asp-for="IsGenderIdentifySameSexAtBirth" type="radio" value="Yes" id="IsGenderIdentifySameSexAtBirth">
+                            <label class="govuk-label govuk-radios__label" for="IsGenderIdentifySameSexAtBirth">
                                 Yes
                             </label>
                         </div>
@@ -77,7 +77,6 @@
                 <button class="govuk-button" data-module="govuk-button">
                     Continue
                 </button>
-                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation, new { Model.ApplicationId })">Skip</a>
             </div>
         </form>
     </div>
