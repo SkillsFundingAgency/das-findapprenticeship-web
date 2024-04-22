@@ -344,7 +344,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                     Hint = cp.PreferenceHint,
                     EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
                     TextPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodText).FirstOrDefault()?.Status ?? false
-                }).ToList(),
+                }).OrderByDescending(c=>c.Meaning).ToList(),
                 PhoneNumberBacklink = phoneNumberBackLink,
                 ReturnToConfirmationPage = change
             };
