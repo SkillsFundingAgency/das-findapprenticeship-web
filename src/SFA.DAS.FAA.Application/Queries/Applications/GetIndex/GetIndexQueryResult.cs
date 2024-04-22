@@ -10,6 +10,7 @@ public class GetIndexQueryResult
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
+        public string VacancyReference { get; set; }
         public string EmployerName { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ClosingDate { get; set; }
@@ -23,6 +24,7 @@ public class GetIndexQueryResult
             {
                 Id = x.Id,
                 Title = x.Title,
+                VacancyReference = x.VacancyReference,
                 EmployerName = x.EmployerName,
                 CreatedDate = x.CreatedDate,
                 ClosingDate = x.ClosingDate,

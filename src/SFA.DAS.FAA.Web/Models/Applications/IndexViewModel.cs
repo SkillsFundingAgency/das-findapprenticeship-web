@@ -8,6 +8,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
     public class IndexViewModel
     {
         public ApplicationsTab SelectedTab { get; set; }
+        public string PageTitle { get; set; }
         public string TabTitle { get; set; }
         public string TabText { get; set; }
         public bool IsTabTextInset { get; set; }
@@ -19,6 +20,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         public class Application
         {
             public Guid Id { get; set; }
+            public string VacancyReference { get; set; }
             public string Title { get; set; }
             public string EmployerName { get; set; }
             public string StartedOn { get; set; }
@@ -31,7 +33,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         {
             var result = new IndexViewModel
             {
-                SelectedTab = tab
+                SelectedTab = tab,
+                PageTitle = $"{tab.GetTabTitle()} applications"
             };
 
             foreach (var application in source.Applications.OrderByDescending(x => x.CreatedDate))
@@ -62,6 +65,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                 var applicationViewModel = new Application
                 {
                     Id = application.Id,
+                    VacancyReference = application.VacancyReference,
                     Title = application.Title,
                     EmployerName = application.EmployerName,
                     StartedOn =

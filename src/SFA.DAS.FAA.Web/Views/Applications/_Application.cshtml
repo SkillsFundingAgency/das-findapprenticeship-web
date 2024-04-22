@@ -13,7 +13,7 @@
 else
 {
     <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-        <a class="" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id})">
+        <a class="" href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference})">
             @Model.Title
         </a>
     </h2>
@@ -33,12 +33,12 @@ else
             </a>
         </li>
     }
-
+@* 
     <li class="govuk-summary-list__actions-list-item">
         <a href="@Url.RouteUrl(RouteNames.Applications.DeleteApplication, new { applicationId = Model.Id })" class="govuk-link">
             Delete
         </a>
-    </li>
+    </li> *@
 </ul>
 
 <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6">
