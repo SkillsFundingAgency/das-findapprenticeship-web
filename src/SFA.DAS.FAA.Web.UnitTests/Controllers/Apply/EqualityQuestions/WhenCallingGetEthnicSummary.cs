@@ -1,4 +1,10 @@
-﻿using AutoFixture.NUnit3;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using MediatR;
@@ -11,24 +17,21 @@ using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
-    [TestFixture]
-    public class WhenCallingGetEthnicSubGroupBlack
+    public class WhenCallingGetEthnicSummary
     {
         private static readonly string Key = $"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}";
 
         [Test, MoqAutoData]
-        public void Then_View_Is_Returned(
+        public void Then_RedirectRoute_Is_Returned(
             Guid applicationId,
             Guid govIdentifier,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             var cacheKey = string.Format($"{Key}", govIdentifier);
-
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -51,15 +54,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.EthnicGroupBlack(applicationId) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupBlackViewModel>();
+            var actual = controller.Summary(applicationId) as RedirectToRouteResult;
 
             using (new AssertionScope())
             {
                 actual.Should().NotBeNull();
-                actual.Model.Should().NotBeNull();
-                actualModel.ApplicationId.Should().Be(applicationId);
-                actual.ViewName.Should().Be("~/Views/apply/EqualityQuestions/EthnicSubGroupBlack.cshtml");
+                actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender);
             }
         }
 
@@ -94,8 +94,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.EthnicGroupBlack(applicationId) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupBlackViewModel>();
+            var actual = controller.Summary(applicationId) as ViewResult;
+            var actualModel = actual!.Model.As<EqualityQuestionsSummaryViewModel>();
 
             using (new AssertionScope())
             {

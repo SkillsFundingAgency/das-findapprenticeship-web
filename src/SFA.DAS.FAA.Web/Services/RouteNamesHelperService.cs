@@ -10,7 +10,7 @@ namespace SFA.DAS.FAA.Web.Services
             return group switch
             {
                 EthnicGroup.PreferNotToSay => RouteNames.ApplyApprenticeship.EqualityQuestions
-                    .EqualityFlowEthnicSubGroupPreferNotToSay,
+                    .EqualityFlowSummary,
                 EthnicGroup.White => RouteNames.ApplyApprenticeship.EqualityQuestions
                     .EqualityFlowEthnicSubGroupWhite,
                 EthnicGroup.MixedOrMultiple => RouteNames.ApplyApprenticeship.EqualityQuestions

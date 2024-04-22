@@ -1,17 +1,18 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
-using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
@@ -23,6 +24,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             Guid applicationId,
             Guid govIdentifier,
             EqualityQuestionsGenderViewModel viewModel,
+            [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
 
@@ -32,9 +34,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns("https://baseUrl");
+            .Returns("https://baseUrl");
 
-            var controller = new EqualityQuestionsController(cacheStorageService.Object)
+            var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
                 Url = mockUrlHelper.Object,
                 ControllerContext = new ControllerContext
@@ -66,6 +68,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 Guid govIdentifier,
                 GenderIdentity gender,
                 EqualityQuestionsGenderViewModel viewModel,
+                [Frozen] Mock<IMediator> mediator,
                 [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             viewModel.Sex = gender.ToString();
@@ -74,7 +77,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
 
-            var controller = new EqualityQuestionsController(cacheStorageService.Object)
+            var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
                 Url = mockUrlHelper.Object,
                 ControllerContext = new ControllerContext

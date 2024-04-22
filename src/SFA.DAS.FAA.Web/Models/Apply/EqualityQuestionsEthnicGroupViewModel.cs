@@ -7,5 +7,14 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         [FromRoute]
         public Guid ApplicationId { get; init; }
         public string? EthnicGroup { get; set; }
+
+        public static implicit operator EqualityQuestionsEthnicGroupViewModel(EqualityQuestionsModel source)
+        {
+            return new EqualityQuestionsEthnicGroupViewModel
+            {
+                ApplicationId = source.ApplicationId,
+                EthnicGroup = ((int)source.EthnicGroup).ToString(),
+            };
+        }
     }
 }
