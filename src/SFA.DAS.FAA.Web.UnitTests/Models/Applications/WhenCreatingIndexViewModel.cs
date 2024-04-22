@@ -18,8 +18,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Applications
         [TestCase("2024-04-18", "2024-04-19T00:01:01", "Closed Thursday 18 April 2024")]
         public void Then_Application_ClosingDate_Is_Expected_Value(DateTime closingDate, DateTime currentDate, string expectedValue)
         {
-            closingDate = closingDate.AddDays(1).Date.Subtract(new TimeSpan(0,0,1));
-
             var queryResult = new GetIndexQueryResult
             {
                 Applications =
