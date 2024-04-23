@@ -67,7 +67,7 @@ public class CourseDataListItem
         return new CourseDataListItem
         {
             Id = source.Id,
-            Title = $"{source.Title}{(source.IsStandard?" (Standard)":"")}"
+            Title = source.Title
         };
     }
     public string Id { get; set; }

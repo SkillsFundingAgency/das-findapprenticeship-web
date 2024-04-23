@@ -21,6 +21,7 @@ public class QualificationDisplayTypeViewModel
                 AdditionalInformationErrorMessage = "Enter the company you worked for during your apprenticeship";
                 GradeErrorMessage = "Select a grade";
                 ShouldDisplayAdditionalInformationField = true;
+                GradeLabel = "Grade (optional)";
                 CanShowLevel = false;
                 CanShowPredicted = false;
                 AllowMultipleAdd = false;
@@ -117,10 +118,10 @@ public class QualificationDisplayTypeViewModel
                 break;
             default:
                 Id = id;
-                Title = "Add other qualifications";
+                Title = "Add other qualification";
                 GroupTitle = "Other qualifications";
                 ErrorSummary = "Enter your other qualification";
-                AdditionalInformationLabel = "Subject";
+                AdditionalInformationLabel = "Subject (optional)";
                 SubjectLabel = "Name of qualification";
                 SubjectHintText = "For example, NVQ, International Baccalaureate";
                 SubjectErrorMessage = "Enter the type of the qualification you want to add";

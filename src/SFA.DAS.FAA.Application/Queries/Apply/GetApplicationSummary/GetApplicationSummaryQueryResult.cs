@@ -6,6 +6,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 public class GetApplicationSummaryQueryResult
 {
     public bool IsDisabilityConfident { get; set; }
+    public bool IsApplicationComplete { get; set; }
     public CandidateDetailsSection Candidate { get; init; }
     public AboutYouSection AboutYou { get; init; }
     public EducationHistorySection EducationHistory { get; init; }
@@ -28,7 +29,8 @@ public class GetApplicationSummaryQueryResult
             EducationHistory = source.EducationHistory,
             IsDisabilityConfident = source.IsDisabilityConfident,
             AboutYou = source.AboutYou,
-            WhatIsYourInterest = source.WhatIsYourInterest
+            WhatIsYourInterest = source.WhatIsYourInterest,
+            IsApplicationComplete = source.IsApplicationComplete
         };
     }
 

@@ -17,7 +17,7 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
     }
     public SubjectViewModelValidator(QualificationDisplayTypeViewModel model)
     {
-        When(x => x.IsDeleted is null or false, () =>
+        When(x => x.IsDeleted is false, () =>
         {
             var isApprenticeship = model.GroupTitle.Equals("apprenticeships", StringComparison.CurrentCultureIgnoreCase);
             var isDegree = model.GroupTitle.Equals("degree", StringComparison.CurrentCultureIgnoreCase);

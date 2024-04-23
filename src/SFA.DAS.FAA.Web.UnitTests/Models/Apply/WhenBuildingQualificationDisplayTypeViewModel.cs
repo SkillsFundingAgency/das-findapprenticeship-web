@@ -22,6 +22,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         actual.SubjectErrorMessage.Should().Be("Enter the training course you studied during your apprenticeship");
         actual.AdditionalInformationLabel.Should().Be("Company");
         actual.GradeErrorMessage.Should().Be("Select a grade");
+        actual.GradeLabel.Should().Be("Grade (optional)");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
@@ -158,11 +159,12 @@ public class WhenBuildingQualificationDisplayTypeViewModel
         var actual = new QualificationDisplayTypeViewModel("MAgic", id);
 
         actual.Id.Should().Be(id);
-        actual.Title.Should().Be("Add other qualifications");
+        actual.Title.Should().Be("Add other qualification");
         actual.GroupTitle.Should().Be("Other qualifications");
         actual.ErrorSummary.Should().Be("Enter your other qualification");
         actual.SubjectErrorMessage.Should().Be("Enter the type of the qualification you want to add");
         actual.SubjectLabel.Should().Be("Name of qualification");
+        actual.AdditionalInformationLabel.Should().Be("Subject (optional)");
         actual.AllowMultipleAdd.Should().BeFalse();
         actual.CanShowPredicted.Should().BeFalse();
         actual.CanShowLevel.Should().BeFalse();
