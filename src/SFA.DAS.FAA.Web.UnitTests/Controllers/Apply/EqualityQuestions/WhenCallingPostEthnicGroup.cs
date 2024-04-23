@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
     public class WhenCallingPostEthnicGroup
     {
         [Test, MoqAutoData]
-        public void And_ModelState_Is_InValid_Then_Return_View(
+        public async Task And_ModelState_Is_InValid_Then_Return_View(
             Guid applicationId,
             Guid govIdentifier,
             EqualityQuestionsEthnicGroupViewModel viewModel,
@@ -48,7 +48,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             };
             controller.ModelState.AddModelError("test", "message");
 
-            var actual = controller.EthnicGroup(applicationId, viewModel) as ViewResult;
+            var actual = await controller.EthnicGroup(applicationId, viewModel) as ViewResult;
             var actualModel = actual!.Model.As<EqualityQuestionsEthnicGroupViewModel>();
 
             using (new AssertionScope())
@@ -61,7 +61,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         }
 
         [Test, MoqAutoData]
-        public void And_Cache_Is_InValid_Then_Redirected_To_EqualityFlowGender(
+        public async Task And_Cache_Is_InValid_Then_Redirected_To_EqualityFlowGender(
                 Guid applicationId,
                 Guid govIdentifier,
                 EthnicGroup ethnicGroup,
@@ -77,7 +77,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 .Returns("https://baseUrl");
 
             cacheStorageService.Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .Returns((EqualityQuestionsModel?)null);
+                .ReturnsAsync((EqualityQuestionsModel?)null);
 
             var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
@@ -92,7 +92,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.EthnicGroup(applicationId, viewModel) as RedirectToRouteResult;
+            var actual = await controller.EthnicGroup(applicationId, viewModel) as RedirectToRouteResult;
 
             using (new AssertionScope())
             {
@@ -103,7 +103,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         }
 
         [Test, MoqAutoData]
-        public void Then_Redirected_To_EthnicSubPage(
+        public async Task Then_Redirected_To_EthnicSubPage(
             Guid applicationId,
             Guid govIdentifier,
             EthnicGroup ethnicGroup,
@@ -120,7 +120,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 .Returns("https://baseUrl");
 
             cacheStorageService.Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .Returns(equalityQuestionsModel);
+                .ReturnsAsync(equalityQuestionsModel);
 
             var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
@@ -135,7 +135,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.EthnicGroup(applicationId, viewModel) as RedirectToRouteResult;
+            var actual = await controller.EthnicGroup(applicationId, viewModel) as RedirectToRouteResult;
             var route = RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(ethnicGroup);
 
             using (new AssertionScope())

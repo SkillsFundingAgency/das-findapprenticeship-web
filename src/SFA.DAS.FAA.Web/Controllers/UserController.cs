@@ -442,7 +442,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
 
-            var returnUrl = cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
+            var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
 
             if (returnUrl != null)
             {

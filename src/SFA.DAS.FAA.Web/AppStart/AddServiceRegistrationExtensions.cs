@@ -19,7 +19,8 @@ public static class AddServiceRegistrationExtension
         services.AddHttpClient<IApiClient, ApiClient>();
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
-        services.AddTransient<ICacheStorageService, CacheStorageService>();
+        
+       
         services.AddFluentValidationAutoValidation();
         if (devDecrypt)
         {
@@ -29,6 +30,25 @@ public static class AddServiceRegistrationExtension
         {
             services.AddTransient<IDataProtectorService, DataProtectorService>();
         }
+    }
+
+    public static void AddCacheServices(this IServiceCollection services,  IConfiguration configuration)
+    {
+        var config = configuration.GetSection(nameof(FindAnApprenticeship))
+            .Get<Domain.Configuration.FindAnApprenticeship>();
+        
+        if (string.IsNullOrEmpty(config.RedisConnectionString))
+        {
+            services.AddDistributedMemoryCache();
+        }
+        else
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = config.RedisConnectionString;
+            });
+        }
+        services.AddTransient<ICacheStorageService, CacheStorageService>();
     }
 
     public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)

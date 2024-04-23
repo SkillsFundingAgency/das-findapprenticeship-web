@@ -20,7 +20,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
     public class WhenCallingPostEqualityGender
     {
         [Test, MoqAutoData]
-        public void And_ModelState_Is_InValid_Then_Return_View(
+        public async Task And_ModelState_Is_InValid_Then_Return_View(
             Guid applicationId,
             Guid govIdentifier,
             EqualityQuestionsGenderViewModel viewModel,
@@ -50,7 +50,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             };
             controller.ModelState.AddModelError("test", "message");
 
-            var actual = controller.Gender(applicationId, viewModel) as ViewResult;
+            var actual = await controller.Gender(applicationId, viewModel) as ViewResult;
             var actualModel = actual!.Model.As<EqualityQuestionsGenderViewModel>();
 
             using (new AssertionScope())
@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         }
 
         [Test, MoqAutoData]
-        public void And_ModelState_Is_Valid_Then_Redirected_To_EqualityEthnicGroup(
+        public async Task And_ModelState_Is_Valid_Then_Redirected_To_EqualityEthnicGroup(
                 Guid applicationId,
                 Guid govIdentifier,
                 GenderIdentity gender,
@@ -90,7 +90,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.Gender(applicationId, viewModel) as RedirectToRouteResult;
+            var actual = await controller.Gender(applicationId, viewModel) as RedirectToRouteResult;
 
             using (new AssertionScope())
             {

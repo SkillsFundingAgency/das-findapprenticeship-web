@@ -25,7 +25,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         private static readonly string Key = $"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}";
 
         [Test, MoqAutoData]
-        public void Then_RedirectRoute_Is_Returned(
+        public async Task Then_RedirectRoute_Is_Returned(
             Guid applicationId,
             Guid govIdentifier,
             [Frozen] Mock<IMediator> mediator,
@@ -39,7 +39,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 
             cacheStorageService
                 .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .Returns((EqualityQuestionsModel)null!);
+                .ReturnsAsync((EqualityQuestionsModel)null!);
 
             var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
@@ -54,7 +54,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.Summary(applicationId) as RedirectToRouteResult;
+            var actual = await controller.Summary(applicationId) as RedirectToRouteResult;
 
             using (new AssertionScope())
             {
@@ -64,7 +64,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         }
 
         [Test, MoqAutoData]
-        public void Then_Cached_Value_View_Is_Returned(
+        public async Task Then_Cached_Value_View_Is_Returned(
             Guid applicationId,
             Guid govIdentifier,
             EqualityQuestionsModel model,
@@ -79,7 +79,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 
             cacheStorageService
                 .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .Returns(model);
+                .ReturnsAsync(model);
 
             var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
@@ -94,7 +94,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 }
             };
 
-            var actual = controller.Summary(applicationId) as ViewResult;
+            var actual = await controller.Summary(applicationId) as ViewResult;
             var actualModel = actual!.Model.As<EqualityQuestionsSummaryViewModel>();
 
             using (new AssertionScope())
