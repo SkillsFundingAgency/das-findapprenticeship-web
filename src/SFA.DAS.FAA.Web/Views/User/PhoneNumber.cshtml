@@ -1,7 +1,6 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
-@model SFA.DAS.FAA.Web.Models.User.PhoneNumberViewModel
+﻿@model SFA.DAS.FAA.Web.Models.User.PhoneNumberViewModel
 @{
-    ViewBag.Title = "What is your phone number? – Find an apprenticeship – GOV.UK";
+    ViewBag.Title = "What is your telephone number? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
     <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
@@ -11,7 +10,7 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Create an account</span>
-        <h1 class="govuk-heading-l">What is your phone number?</h1>
+        <h1 class="govuk-heading-l">What is your telephone number?</h1>
         <p class="govuk-body">Use a number that companies can phone you on. For example, to invite you to an interview</p>
         <form class="form" method="post">
             <input type="hidden" asp-for="BackLink" />
