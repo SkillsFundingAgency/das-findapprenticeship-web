@@ -20,7 +20,7 @@ public class WhenHandlingAdditionalQuestionQueryHandler
         GetAdditionalQuestionQueryHandler handler)
     {
         // Arrange
-        var apiRequestUri = new GetAdditionalQuestionApiRequest(query.ApplicationId, query.CandidateId, query.AdditionQuestionId);
+        var apiRequestUri = new GetAdditionalQuestionApiRequest(query.ApplicationId, query.CandidateId, query.AdditionalQuestionId, query.AdditionalQuestion);
 
         apiClientMock.Setup(client =>
                 client.Get<GetAdditionalQuestionApiResponse>(
