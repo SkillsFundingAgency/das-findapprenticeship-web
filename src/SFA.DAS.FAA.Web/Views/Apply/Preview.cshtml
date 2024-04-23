@@ -1,7 +1,7 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Apply.ApplicationSummaryViewModel;
 @{
-    ViewBag.Title = "Check your application before submitting – Find an apprenticeship – GOV.UK ";
+    ViewBag.Title = "Check your application before submitting – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
@@ -75,7 +75,7 @@
         </dl>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h2 class="govuk-heading-m">School, college and university qualifications</h2>
-        @if(Model.EducationHistory.Qualifications.ShowQualifications)
+        @if (Model.EducationHistory.Qualifications.ShowQualifications)
         {
             @foreach (var group in Model.EducationHistory.Qualifications.QualificationGroups)
             {
@@ -86,12 +86,6 @@
                             @if (group.AllowMultipleAdd)
                             {
                                 <li class="govuk-summary-card__action">
-                                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteQualifications, new { Model.ApplicationId, group.QualificationReferenceId })">
-                                        Delete<span class="govuk-visually-hidden"> qualification</span>
-                                    </a>
-                                </li>
-
-                                <li class="govuk-summary-card__action">
                                     <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualification, new { Model.ApplicationId,group.QualificationReferenceId })">
                                         Change<span class="govuk-visually-hidden"> qualification</span>
                                     </a>
@@ -99,12 +93,6 @@
                             }
                             else
                             {
-                                <li class="govuk-summary-card__action">
-                                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteQualifications, new { Model.ApplicationId, group.QualificationReferenceId, group.Qualifications.First().Id })">
-                                        Delete<span class="govuk-visually-hidden"> qualification</span>
-                                    </a>
-                                </li>
-
                                 <li class="govuk-summary-card__action">
                                     <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualification, new { Model.ApplicationId,group.QualificationReferenceId, group.Qualifications.First().Id })">
                                         Change<span class="govuk-visually-hidden"> qualification</span>
@@ -319,18 +307,18 @@
         <p class="govuk-body govuk-!-margin-bottom-3">
             @Model.WhatIsYourInterest.WhatIsYourInterest
         </p>
-        
+
         @if (Model.ApplicationQuestions.AdditionalQuestion1 != null)
         {
 
             <div class="faa-flex-row">
                 <h3 class="govuk-heading-s">@Model.ApplicationQuestions.AdditionalQuestion1.QuestionLabel</h3>
                 <p class="govuk-body">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion" 
-                        asp-route-applicationId="@Model.ApplicationId" 
-                        asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1.Id"
-                        asp-route-additionalQuestion="1"
-                        class="govuk-link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
+                       asp-route-applicationId="@Model.ApplicationId"
+                       asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1.Id"
+                       asp-route-additionalQuestion="1"
+                       class="govuk-link">
                         Change
                     </a>
                 </p>
@@ -345,11 +333,11 @@
             <div class="faa-flex-row">
                 <h3 class="govuk-heading-s">@Model.ApplicationQuestions.AdditionalQuestion2.QuestionLabel</h3>
                 <p class="govuk-body">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion" 
-                        asp-route-applicationId="@Model.ApplicationId" 
-                        asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2.Id"
-                        asp-route-additionalQuestion="2"
-                        class="govuk-link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
+                       asp-route-applicationId="@Model.ApplicationId"
+                       asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2.Id"
+                       asp-route-additionalQuestion="2"
+                       class="govuk-link">
                         Change
                     </a>
                 </p>
@@ -366,7 +354,7 @@
                 <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = true})">
                     Change<span class="govuk-visually-hidden"> interview adjustments</span>
                 </a>
-           </p>
+            </p>
         </div>
 
         <dl class="govuk-summary-list govuk-summary-list--no-border">
@@ -387,7 +375,7 @@
                     <dd class="govuk-summary-list__value">
                         @Model.InterviewAdjustments.InterviewAdjustmentsDescription
                     </dd>
-                </div>    
+                </div>
             }
         </dl>
         @if (Model.IsDisabilityConfident)
@@ -398,7 +386,7 @@
                 <h2 class="govuk-heading-m">Disability Confidence scheme</h2>
                 <p class="govuk-body">
                     <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident" asp-route-applicationId="@Model.ApplicationId"
-                    class="govuk-link govuk-task-list__link">
+                       class="govuk-link govuk-task-list__link">
                         Change
                     </a>
                 </p>
@@ -412,7 +400,7 @@
                         @(Model.DisabilityConfidence.ApplyUnderDisabilityConfidentScheme ? Html.Raw("Yes") : Html.Raw("No"))
                     </dd>
                 </div>
-            </dl>    
+            </dl>
         }
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <form class="form" method="post">
@@ -438,7 +426,7 @@
             <button class="govuk-button" data-module="govuk-button">
                 Submit
             </button>
-           
+
         </form>
     </div>
 </div>
