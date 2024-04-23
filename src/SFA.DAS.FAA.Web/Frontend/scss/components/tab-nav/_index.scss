@@ -1,6 +1,7 @@
 .faa-tab-nav {
   @include govuk-font($size: 19);
   border-bottom: 1px solid $govuk-border-colour;
+  margin-bottom: 20px;
 }
 
 .faa-tab-nav__list {
@@ -13,9 +14,6 @@
   @include govuk-media-query(tablet) {
     gap: 20px;
   }
-}
-
-.faa-tab-nav__list-item {
 }
 
 .faa-tab-nav__link {

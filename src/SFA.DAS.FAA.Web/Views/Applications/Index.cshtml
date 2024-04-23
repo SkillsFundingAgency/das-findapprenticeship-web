@@ -6,68 +6,75 @@
     ViewBag.Title = $"{Model.PageTitle} - Find an apprenticeship - GOV.UK";
 }
 
-<h1 class="govuk-heading-l">Your applications</h1>
-
-<nav class="faa-tab-nav">
-    <ul class="faa-tab-nav__list">
-        <li class="faa-tab-nav__list-item">
-            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started })"
-               class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
-                Started
-            </a>
-        </li>
-        <li class="faa-tab-nav__list-item">
-            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted })"
-               class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
-                Submitted
-            </a>
-        </li>
-        <li class="faa-tab-nav__list-item">
-            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Successful })"
-               class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
-                Successful
-            </a>
-        </li>
-        <li class="faa-tab-nav__list-item">
-            <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Unsuccessful })"
-               class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
-                Unsuccessful
-            </a>
-        </li>
-    </ul>
-</nav>
-
-<br/>
-
-<h2 class="govuk-heading-m">@Model.TabTitle</h2>
-
-<div class="@Model.TabTextStyle">@Model.TabText</div> 
-
-@{
-    foreach (var application in Model.Applications)
-    {
-        <partial model="application" name="_Application" />
-    }
-}
-
-@if (Model.ExpiredApplications.Any())
-{
-    <h2 class="govuk-heading-m govuk-!-margin-top-9">Expired</h2>
-    <p class="govuk-body">Applications for vacancies that have now closed.</p>
-
-    <details class="govuk-details">
-        <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
-                Show expired applications (@Model.ExpiredApplications.Count)
-            </span>
-        </summary>
-        <div class="govuk-details__text">
-            
-            @foreach (var application in Model.ExpiredApplications)
-            {
-               <partial model="application" name="_Application" />
-            }
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Your applications</h1>
+        <nav class="faa-tab-nav">
+            <ul class="faa-tab-nav__list">
+                <li class="faa-tab-nav__list-item">
+                    <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started })"
+                    class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
+                        Started
+                    </a>
+                </li>
+                <li class="faa-tab-nav__list-item">
+                    <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted })"
+                    class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
+                        Submitted
+                    </a>
+                </li>
+                <li class="faa-tab-nav__list-item">
+                    <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Successful })"
+                    class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
+                        Successful
+                    </a>
+                </li>
+                <li class="faa-tab-nav__list-item">
+                    <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Unsuccessful })"
+                    class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
+                        Unsuccessful
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <h2 class="govuk-heading-m">@Model.TabTitle</h2>
+        <div class="@Model.TabTextStyle">@Model.TabText</div> 
+        <div class="das-search-results">
+            <ol class="das-search-results__list">
+                @{
+                    foreach (var application in Model.Applications)
+                    {
+                        <partial model="application" name="_Application" />
+                    }
+                }
+            </ol>
         </div>
-    </details>
+        
 
-}
+        @if (Model.ExpiredApplications.Any())
+        {
+            <hr class="govuk-section-break govuk-section-break--visible" />
+            <h2 class="govuk-heading-m govuk-!-margin-top-9">Expired</h2>
+            <p class="govuk-body">Applications for vacancies that have now closed.</p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Show expired applications (@Model.ExpiredApplications.Count)
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <div class="das-search-results">
+                        <ol class="das-search-results__list">
+                            @foreach (var application in Model.ExpiredApplications)
+                            {
+                                <partial model="application" name="_Application" />
+                            }
+                        </ol>
+                    </div>
+                </div>
+            </details>
+
+        }
+
+        </div>
+</div>
