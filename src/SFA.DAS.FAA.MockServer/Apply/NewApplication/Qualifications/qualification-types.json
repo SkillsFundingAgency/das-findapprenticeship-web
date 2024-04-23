@@ -1,0 +1,45 @@
+{
+    "HasAddedQualifications": false,
+    "QualificationTypes": [
+        {
+            "id": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+            "name": "GCSE",
+            "order": 1
+        },
+        {
+            "id": "7e709598-c0c8-42c1-9588-b9ce61b167f8",
+            "name": "BTEC",
+            "order": 2
+        },
+        {
+            "id": "f5cd9f3f-472a-4eae-a666-2b5702bacafb",
+            "name": "T level",
+            "order": 3
+        },
+        {
+            "id": "2cb6af9b-77f9-4f47-af64-253a8bcc87bb",
+            "name": "AS level",
+            "order": 4
+        },
+        {
+            "id": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
+            "name": "A level",
+            "order": 5
+        },
+        {
+            "id": "b3bcd911-8c76-4c84-a17a-ec4e64dd111e",
+            "name": "Apprenticeship",
+            "order": 6
+        },
+        {
+            "id": "20d1923f-25b4-4a37-8580-d04643cf1fba",
+            "name": "Degree",
+            "order": 7
+        },
+        {
+            "id": "e57b417e-2953-4af7-8b60-87508b199ce9",
+            "name": "Other",
+            "order": 99
+        }
+    ]
+}

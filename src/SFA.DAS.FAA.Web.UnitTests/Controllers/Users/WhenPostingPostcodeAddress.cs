@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcodeAddress;
+using CreateAccount.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
@@ -25,6 +25,7 @@ public class WhenPostingPostcodeAddress
         [Greedy] UserController controller)
     {
         queryResult.PostcodeExists = true;
+        model.ReturnToConfirmationPage = false;
 
         controller.ControllerContext = new ControllerContext
         {
@@ -35,7 +36,6 @@ public class WhenPostingPostcodeAddress
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
                         new Claim(ClaimTypes.Email, email),
                     }))
-
             }
         };
 

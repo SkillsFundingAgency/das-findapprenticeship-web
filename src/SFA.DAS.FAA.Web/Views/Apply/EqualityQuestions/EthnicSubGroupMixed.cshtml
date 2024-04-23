@@ -1,0 +1,69 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.EqualityQuestionsEthnicSubGroupMixedViewModel
+@{
+    ViewData["Title"] = "Which of the following best describes your mixed or multiple ethnic groups background? – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">Back</a>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <span class="govuk-caption-l">Equality questions</span>
+        <h1 class="govuk-heading-l">Which of the following best describes your mixed or multiple ethnic groups background?</h1>
+        <form class="form" method="post">
+            <div class="govuk-form-group" das-highlight-error-for="EthnicSubGroup" error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <span das-validation-for="EthnicSubGroup" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="6" id="EthnicSubGroup">
+                            <label class="govuk-label govuk-radios__label" for="EthnicSubGroup">
+                                White and Black Caribbean
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="7" id="EthnicSubGroup-White-Black-African">
+                            <label class="govuk-label govuk-radios__label" for="EthnicSubGroup-White-Black-African">
+                                White and Black African
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="8" id="EthnicSubGroup-White-Asian">
+                            <label class="govuk-label govuk-radios__label" for="EthnicSubGroup-White-Asian">
+                                White and Asian
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="9" id="EthnicSubGroup-Mixed-Other" aria-controls="conditional-EthnicSubGroup-Mixed-Other" aria-expanded="false">
+                            <label class="govuk-label govuk-radios__label" for="EthnicSubGroup-Mixed-Other">
+                                Any other mixed or multiple ethnic background
+                            </label>
+                        </div>
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-EthnicSubGroup-Mixed-Other">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="OtherEthnicSubGroupAnswer">
+                                    How would you describe your background? (optional)
+                                </label>
+                                <input class="govuk-input govuk-!-width-one-half" asp-for="OtherEthnicSubGroupAnswer" type="text" id="OtherEthnicSubGroupAnswer">
+                            </div>
+                        </div>
+                        <div class="govuk-radios__divider">or</div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="10" id="EthnicSubGroup-Mixed-NA">
+                            <label class="govuk-label govuk-radios__label" for="EthnicSubGroup-Mixed-NA">
+                                Prefer not to say
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

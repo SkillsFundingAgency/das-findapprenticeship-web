@@ -3,7 +3,7 @@ using static SFA.DAS.FAA.Domain.Vacancies.VacancyDetails.PostApplicationDetailsA
 
 namespace SFA.DAS.FAA.Domain.Vacancies.VacancyDetails
 {
-    public class PostApplicationDetailsApiRequest(Guid candidateId, string vacancyReference, RequestBody data) : IPostApiRequest
+    public class PostApplicationDetailsApiRequest(string vacancyReference, RequestBody data) : IPostApiRequest
     {
         public string PostUrl => $"vacancies/{vacancyReference}";
 

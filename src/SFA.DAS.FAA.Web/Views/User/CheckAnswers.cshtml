@@ -1,0 +1,138 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.User.ConfirmAccountDetailsViewModel
+@{
+    ViewBag.Title = "Confirm your account details – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.NotificationPreferences">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Create an account</span>
+        <h1 class="govuk-heading-l">Check your account details</h1>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @if (String.IsNullOrEmpty(Model.MiddleNames))
+                    {
+                        <p class="govuk-body">@Model.FirstName @Model.LastName</p>
+                    }
+                    else
+                    {
+                        <p class="govuk-body">@Model.FirstName @Model.MiddleNames @Model.LastName</p>
+                    }
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.UserName" asp-route-change="@true" id="name-change-link">
+                        Change<span class="govuk-visually-hidden"> name</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Date of birth
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.DateOfBirth.ToString("dd MMMM yyyy")
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.DateOfBirth" asp-route-change="@true" id="dob-change-link">
+                        Change<span class="govuk-visually-hidden"> date of birth</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.AddressLine1<br />
+                    @Model.Town<br />
+                    @Model.Postcode
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    
+                    @if (Model.IsAddressFromLookup)
+                    {
+                        <a class="govuk-link" asp-route="@RouteNames.SelectAddress" asp-route-change="@true" asp-route-postcode="@Model.Postcode" id="address-change-link">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-change="@true" id="address-change-manual-link">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    }
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Telephone number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.PhoneNumber
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.PhoneNumber" asp-route-change="@true" id="phone-number-change-link">
+                        Change<span class="govuk-visually-hidden"> phone number</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.EmailAddress
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    @* where is this going?  *@
+                    <a class="govuk-link" asp-route="#">Change<span class="govuk-visually-hidden"> email address</span></a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Notification preferences
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @foreach (var preference in Model.CandidatePreferences.OrderByDescending(c=>c.Meaning))
+                    {
+                        <strong>@preference.Meaning</strong>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @if(preference.TextPreference == false && preference.EmailPreference == false)
+                            {
+                                <li>Don't notify me</li>
+                            }
+                            else
+                            {
+                                @if (preference.TextPreference == true)
+                                {
+                                    <li>Text</li>
+                                }
+                                @if (preference.EmailPreference == true)
+                                {
+                                    <li>Email</li>
+                                }
+                            }
+                        </ul>
+                    }
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences" asp-route-change="@true" id="notification-preferences-change-link">
+                        Change<span class="govuk-visually-hidden"> notification preferences</span>
+                    </a>
+                </dd>
+            </div>
+        </dl>
+        <form class="form" method="post">
+            <button class="govuk-button" data-module="govuk-button">
+                Create your account
+            </button>
+        </form>
+    </div>
+</div>

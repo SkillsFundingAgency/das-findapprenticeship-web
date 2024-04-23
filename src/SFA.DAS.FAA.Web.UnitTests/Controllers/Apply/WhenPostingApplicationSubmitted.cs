@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -19,7 +19,8 @@ public class WhenPostingApplicationSubmitted
 
         var result = await controller.ApplicationSubmitted(model) as RedirectToRouteResult;
 
-        result.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityFlow);
+        result.Should().NotBeNull();
+        result!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender);
     }
 
     [Test, MoqAutoData]
@@ -31,6 +32,7 @@ public class WhenPostingApplicationSubmitted
 
         var result = await controller.ApplicationSubmitted(model) as RedirectToRouteResult;
 
-        result.RouteName.Should().Be(RouteNames.UserProfile.YourApplications);
+        result.Should().NotBeNull();
+        result!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation);
     }
 }

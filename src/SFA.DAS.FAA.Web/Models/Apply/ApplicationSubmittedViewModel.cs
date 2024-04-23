@@ -1,9 +1,8 @@
 ﻿namespace SFA.DAS.FAA.Web.Models.Apply;
 
-public class ApplicationSubmittedViewModel
+public record ApplicationSubmittedViewModel
 {
-    public string? VacancyTitle { get; set; }
-    public string? EmployerName { get; set; }
-    public Guid ApplicationId { get; set; }
+    public Guid ApplicationId { get; init; }
+    public ApplicationSubmittedVacancyInfo? VacancyInfo { get; init; }
     public bool? AnswerEqualityQuestions { get; set; }
 }

@@ -1,0 +1,351 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Apply.ApplicationSummaryViewModel;
+@{
+    ViewBag.Title = "Check your application before submitting – Find an apprenticeship – GOV.UK ";
+}
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <h1 class="govuk-heading-l">Check your application before submitting</h1>
+        <div class="govuk-inset-text">
+            This is what the company will see when they view your application.
+        </div>
+        <a href="#"
+           class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
+                <path fill="currentColor"
+                      d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+            </svg>Print your application
+        </a>
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+        <h2 class="govuk-heading-m">Personal details</h2>
+        <p class="govuk-body">
+            You can change your personal details in <a href="#" class="govuk-link">settings</a>.
+        </p>
+        <dl class="govuk-summary-list govuk-summary-list--no-border">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Candidate.FullName
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.AddressLine1
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.AddressLine2
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.Town
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.County
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        @Model.Candidate.Address?.Postcode
+                    </p>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Telephone number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Candidate.PhoneNumber
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value govuk-!-padding-bottom-5">
+                    @Model.Candidate.Email
+                </dd>
+            </div>
+        </dl>
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+        <div class="faa-flex-row">
+            <h2 class="govuk-heading-m">Training courses</h2>
+            <p class="govuk-body">
+                <a asp-route="@RouteNames.ApplyApprenticeship.TrainingCourses" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
+                    Change
+                </a>
+            </p>
+        </div>
+        @if (Model.EducationHistory.TrainingCourses is { Count: > 0 })
+        {
+            foreach (var trainingCourse in Model.EducationHistory.TrainingCourses)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Year
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @trainingCourse.YearAchieved
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="govuk-hint">You haven’t added any training courses.</p>   
+        }
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+        <div class="faa-flex-row">
+            <h2 class="govuk-heading-m">Jobs</h2>
+            <p class="govuk-body">
+                <a asp-route="@RouteNames.ApplyApprenticeship.Jobs" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
+                    Change
+                </a>
+            </p>
+        </div>
+        @if (Model.WorkHistory.Jobs is { Count: > 0 })
+        {
+            foreach (var job in Model.WorkHistory.Jobs)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">@job.JobHeader</h2>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Responsibilities
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @job.Description
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Dates
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @job.JobDates
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="govuk-hint">You haven’t added any jobs.</p>
+        }
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+        <div class="faa-flex-row">
+            <h2 class="govuk-heading-m">Volunteering and work experience</h2>    
+            <p class="govuk-body">
+                <a asp-route="@RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
+                    Change
+                </a>
+            </p>
+        </div>
+        
+        @if (Model.WorkHistory.VolunteeringAndWorkExperiences is { Count: > 0 })
+        {
+            foreach (var experience in Model.WorkHistory.VolunteeringAndWorkExperiences)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">@experience.Employer</h2>
+                        
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    What you did
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @experience.Description
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Dates
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @experience.JobDates
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="govuk-hint">You haven’t added any volunteering or work experience.</p>
+        }
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+
+        <h2 class="govuk-heading-m">Application questions</h2>
+
+        <div class="faa-flex-row">
+            <h3 class="govuk-heading-s">What are your skills and strengths?</h3>
+            <p class="govuk-body">
+                <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
+                    Change
+                </a>
+            </p>
+        </div>
+
+        <p class="govuk-body govuk-!-margin-bottom-3">
+            @Model.AboutYou.SkillsAndStrengths
+        </p>
+
+        <div class="faa-flex-row">
+            <h3 class="govuk-heading-s">What interests you about this apprenticeship?</h3>
+            <p class="govuk-body">
+                <a asp-route="@RouteNames.ApplyApprenticeship.WhatInterestsYou" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
+                    Change
+                </a>
+            </p>
+        </div>
+
+        <p class="govuk-body govuk-!-margin-bottom-3">
+            @Model.WhatIsYourInterest.WhatIsYourInterest
+        </p>
+        
+        @if (Model.ApplicationQuestions.AdditionalQuestion1 != null)
+        {
+
+            <div class="faa-flex-row">
+                <h3 class="govuk-heading-s">@Model.ApplicationQuestions.AdditionalQuestion1.QuestionLabel</h3>
+                <p class="govuk-body">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion" 
+                        asp-route-applicationId="@Model.ApplicationId" 
+                        asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1.Id"
+                        asp-route-additionalQuestion="1"
+                        class="govuk-link">
+                        Change
+                    </a>
+                </p>
+            </div>
+
+            <p class="govuk-body govuk-!-margin-bottom-3">
+                @Model.ApplicationQuestions.AdditionalQuestion1.Answer
+            </p>
+        }
+        @if (Model.ApplicationQuestions.AdditionalQuestion2 != null)
+        {
+            <div class="faa-flex-row">
+                <h3 class="govuk-heading-s">@Model.ApplicationQuestions.AdditionalQuestion2.QuestionLabel</h3>
+                <p class="govuk-body">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion" 
+                        asp-route-applicationId="@Model.ApplicationId" 
+                        asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2.Id"
+                        asp-route-additionalQuestion="2"
+                        class="govuk-link">
+                        Change
+                    </a>
+                </p>
+            </div>
+            <p class="govuk-body govuk-!-margin-bottom-3">
+                @Model.ApplicationQuestions.AdditionalQuestion2.Answer
+            </p>
+        }
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+
+        <div class="faa-flex-row">
+            <h2 class="govuk-heading-m">Get support at an interview</h2>
+            <p class="govuk-body">
+                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = true})">
+                    Change<span class="govuk-visually-hidden"> interview adjustments</span>
+                </a>
+           </p>
+        </div>
+
+        <dl class="govuk-summary-list govuk-summary-list--no-border">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Do you want to request support at an interview?
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @(Model.InterviewAdjustments.IsSupportRequestRequired ? "Yes" : "No, I don’t need support or I’ll discuss it if I get an interview")
+                </dd>
+            </div>
+            @if (Model.InterviewAdjustments.IsSupportRequestRequired)
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Interview support request
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.InterviewAdjustments.InterviewAdjustmentsDescription
+                    </dd>
+                </div>    
+            }
+        </dl>
+        @if (Model.IsDisabilityConfident)
+        {
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">Disability Confident scheme</h2>
+                <p class="govuk-body">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
+                        Change
+                    </a>
+                </p>
+            </div>
+            <dl class="govuk-summary-list govuk-summary-list--no-border">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Interview under the Disability Confident scheme
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @(Model.DisabilityConfidence.ApplyUnderDisabilityConfidentScheme ? "Yes" : "No")
+                    </dd>
+                </div>
+            </dl>    
+        }
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+        <form class="form" method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Submit your application
+                    </legend>
+                    <span das-validation-for="IsConsentProvided" class="govuk-error-message"></span>
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes" das-highlight-error-for="IsConsentProvided" error-class="govuk-form-group--error">
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" asp-for="IsConsentProvided" type="checkbox" value="true" id="IsConsentProvided" />
+                            <label class="govuk-label govuk-checkboxes__label" for="IsConsentProvided">
+                                I understand that I won't be able to make any changes after I submit my application
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button class="govuk-button" data-module="govuk-button">
+                Submit
+            </button>
+           
+        </form>
+    </div>
+</div>
