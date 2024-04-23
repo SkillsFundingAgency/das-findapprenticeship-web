@@ -31,10 +31,13 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                     return $"{subGroup.GetDescription()}";
                 case Domain.Enums.EthnicGroup.White when subGroup is EthnicSubGroup.AnyOtherWhiteBackground:
                 case Domain.Enums.EthnicGroup.AsianOrAsianBritish when subGroup is EthnicSubGroup.AnyOtherAsianBackground:
+                    return !string.IsNullOrEmpty(otherEthnicSubGroupAnswer) ? otherEthnicSubGroupAnswer : "Asian or Asian British background (Any other Asian background)";
                 case Domain.Enums.EthnicGroup.MixedOrMultiple when subGroup is EthnicSubGroup.AnyOtherMixedBackground:
+                    return !string.IsNullOrEmpty(otherEthnicSubGroupAnswer) ? otherEthnicSubGroupAnswer : "Mixed background (Any other mixed background)";
                 case Domain.Enums.EthnicGroup.BlackOrAfricanOrCaribbeanOrBlackBritish when subGroup is EthnicSubGroup.AnyOtherBlackAfricanOrCaribbeanBackground:
+                    return !string.IsNullOrEmpty(otherEthnicSubGroupAnswer) ? otherEthnicSubGroupAnswer : "Black, African, Caribbean or Black British background (Any other Black, African, Caribbean or Black British background)";
                 case Domain.Enums.EthnicGroup.Other when subGroup is EthnicSubGroup.AnyOtherEthnicGroup:
-                    return $"{otherEthnicSubGroupAnswer}";
+                    return !string.IsNullOrEmpty(otherEthnicSubGroupAnswer) ? otherEthnicSubGroupAnswer : "Other ethnic background (Any other ethnic background)";
                 default:
                     return $"{group.GetDescription()} ({subGroup.GetDescription()})";
             }
