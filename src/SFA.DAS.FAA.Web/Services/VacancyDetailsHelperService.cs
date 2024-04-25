@@ -24,16 +24,21 @@ namespace SFA.DAS.FAA.Web.Services
             var timeUntilClosing = closingDate.Date - dateTimeService.GetDateTime();
             var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
 
-            return daysToExpiry switch
+            switch (daysToExpiry)
             {
-                < 0 => $"Closed on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}",
-                0 => "Closes today at 11:59pm",
-                1 =>
-                    $"Closes tomorrow ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)",
-                <= 31 =>
-                    $"Closes in {daysToExpiry} days ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)",
-                _ => $"Closes on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm"
-            };
+                case < 0:
+                    return $"Closed on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}";
+                case 0:
+                    return "Closes today at 11:59pm";
+                case 1:
+                    return
+                        $"Closes tomorrow ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)";
+                case <= 31:
+                    return
+                        $"Closes in {daysToExpiry} days ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)";
+                default:
+                    return $"Closes on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm";
+            }
         }
 
         public static string? FormatEmployerWebsiteUrl(string? url)
