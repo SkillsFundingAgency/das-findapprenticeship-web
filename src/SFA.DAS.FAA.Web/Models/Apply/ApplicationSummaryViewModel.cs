@@ -135,7 +135,6 @@ public class ApplicationSummaryViewModel
 
             public class QualificationGroup
             {
-                public Guid QualificationReferenceId { get; set; }
                 public string? DisplayName { get; set; }
                 public List<Qualification> Qualifications { get; set; } = [];
                 public bool AllowMultipleAdd { get; set; }
@@ -195,7 +194,6 @@ public class ApplicationSummaryViewModel
                 {
                     DisplayName = qualificationType.GroupTitle,
                     ShowAdditionalInformation = qualificationType.ShouldDisplayAdditionalInformationField,
-                    QualificationReferenceId = qualificationType.Id,
                     AllowMultipleAdd = qualificationType.AllowMultipleAdd,
                     ShowLevel = qualificationType.CanShowLevel,
                     Qualifications = qualifications
