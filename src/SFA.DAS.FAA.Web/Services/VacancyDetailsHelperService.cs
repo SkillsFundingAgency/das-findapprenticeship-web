@@ -26,13 +26,13 @@ namespace SFA.DAS.FAA.Web.Services
 
             return daysToExpiry switch
             {
-                < 0 => $"Closed on {closingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                < 0 => $"Closed on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}",
                 0 => "Closes today at 11:59pm",
                 1 =>
-                    $"Closes tomorrow ({closingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm)",
+                    $"Closes tomorrow ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)",
                 <= 31 =>
-                    $"Closes in {daysToExpiry} days ({closingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm)",
-                _ => $"Closes on {closingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm"
+                    $"Closes in {daysToExpiry} days ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)",
+                _ => $"Closes on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm"
             };
         }
 
