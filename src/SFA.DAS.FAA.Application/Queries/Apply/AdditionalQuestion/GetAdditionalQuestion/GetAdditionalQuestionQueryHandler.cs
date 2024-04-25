@@ -9,7 +9,7 @@ public record GetAdditionalQuestionQueryHandler(IApiClient ApiClient)
 {
     public async Task<GetAdditionalQuestionQueryResult> Handle(GetAdditionalQuestionQuery query, CancellationToken cancellationToken)
     {
-        var response = await ApiClient.Get<GetAdditionalQuestionApiResponse>(new GetAdditionalQuestionApiRequest(query.ApplicationId, query.CandidateId, query.AdditionQuestionId));
+        var response = await ApiClient.Get<GetAdditionalQuestionApiResponse>(new GetAdditionalQuestionApiRequest(query.ApplicationId, query.CandidateId, query.AdditionalQuestionId, query.AdditionalQuestion));
         return response;
     }
 }

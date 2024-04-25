@@ -29,5 +29,6 @@ public class WhenHandlingGetCandidatePhoneNumberQuery
 
         result.Should().NotBeNull();
         result.PhoneNumber.Should().BeEquivalentTo(apiResponse.PhoneNumber);
+        result.Postcode.Should().BeEquivalentTo(apiResponse.Postcode);
     }
 }

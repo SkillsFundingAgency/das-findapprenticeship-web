@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace SFA.DAS.FAA.Web.Infrastructure
@@ -10,7 +12,7 @@ namespace SFA.DAS.FAA.Web.Infrastructure
         /// <typeparam name="T">Object of type T</typeparam>
         /// <param name="key">CacheKey</param>
         /// <returns>Object of type T</returns>
-        T? Get<T>(string key);
+        Task<T?> Get<T>(string key);
 
         /// <summary>
         /// Contract to store the object value in MemoryCache by given CacheKey.
@@ -21,41 +23,42 @@ namespace SFA.DAS.FAA.Web.Infrastructure
         /// <param name="slidingExpiration">Timespan value in Minutes</param>
         /// <param name="absoluteExpiration">Timespan value in Minutes</param>
         /// <returns>Object of type T</returns>
-        T? Set<T>(string key, T? objectToCache, int slidingExpiration = 30, int absoluteExpiration = 60);
+        Task Set<T>(string key, T? objectToCache, int slidingExpiration = 30, int absoluteExpiration = 60);
 
         /// <summary>
         /// Contract to removes the object value from MemoryCache by given CacheKey.
         /// </summary>
         /// <param name="key">CacheKey</param>
-        void Remove(string key);
+        Task Remove(string key);
     }
 
-    public class CacheStorageService(IMemoryCache memoryCache) : ICacheStorageService
+    public class CacheStorageService(IDistributedCache distributedCache) : ICacheStorageService
     {
         ///<inheritdoc/>
-        public T? Get<T>(string key)
+        public async Task<T?> Get<T>(string key)
         {
-            return memoryCache.TryGetValue(key, out T? objectFromCache) ? objectFromCache : default;
+            var json = await distributedCache.GetStringAsync(key);
+            return json == null ? default : JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions{});
         }
 
         ///<inheritdoc/>
-        public T? Set<T>(string key, T? objectToCache, int slidingExpiration = 30, int absoluteExpiration = 60)
+        public async Task Set<T>(string key, T? objectToCache, int slidingExpiration = 30, int absoluteExpiration = 60)
         {
-            return memoryCache.Set(key, objectToCache, new MemoryCacheEntryOptions
+            var json = JsonSerializer.Serialize(objectToCache);
+
+            await distributedCache.SetStringAsync(key, json, new DistributedCacheEntryOptions
             {
-                Size = 1024,
-                Priority = CacheItemPriority.High,
                 SlidingExpiration = TimeSpan.FromMinutes(slidingExpiration),
-                AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(absoluteExpiration)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(absoluteExpiration)
             });
         }
 
         ///<inheritdoc/>
-        public void Remove(string key)
+        public async Task Remove(string key)
         {
-            if (memoryCache.TryGetValue(key, out _))
+            if (await distributedCache.GetAsync(key) != null)
             {
-                memoryCache.Remove(key);
+                distributedCache.Remove(key);
             }
         }
     }

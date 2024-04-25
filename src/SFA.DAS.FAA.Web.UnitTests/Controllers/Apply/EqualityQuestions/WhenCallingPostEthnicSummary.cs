@@ -40,7 +40,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 
             cacheStorageService
                 .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .Returns((EqualityQuestionsModel)null!);
+                .ReturnsAsync((EqualityQuestionsModel)null!);
 
             var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
             {
@@ -82,7 +82,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 
             cacheStorageService
                 .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .Returns(model);
+                .ReturnsAsync(model);
 
             mediator.Setup(x => x.Send(It.Is<CreateEqualityQuestionsCommand>(c =>
                     c.ApplicationId.Equals(applicationId)
