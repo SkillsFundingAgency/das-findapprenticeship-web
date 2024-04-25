@@ -26,54 +26,56 @@
         <p class="govuk-body">
             You can change your personal details in <a href="#" class="govuk-link">settings</a>.
         </p>
-        <dl class="govuk-summary-list govuk-summary-list--no-border">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Name
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.Candidate.FullName
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Address
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <p class="govuk-body govuk-!-margin-bottom-0">
-                        @Model.Candidate.Address?.AddressLine1
-                    </p>
-                    <p class="govuk-body govuk-!-margin-bottom-0">
-                        @Model.Candidate.Address?.AddressLine2
-                    </p>
-                    <p class="govuk-body govuk-!-margin-bottom-0">
-                        @Model.Candidate.Address?.Town
-                    </p>
-                    <p class="govuk-body govuk-!-margin-bottom-0">
-                        @Model.Candidate.Address?.County
-                    </p>
-                    <p class="govuk-body govuk-!-margin-bottom-0">
-                        @Model.Candidate.Address?.Postcode
-                    </p>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Telephone number
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.Candidate.PhoneNumber
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Email address
-                </dt>
-                <dd class="govuk-summary-list__value govuk-!-padding-bottom-5">
-                    @Model.Candidate.Email
-                </dd>
-            </div>
-        </dl>
+        <div class="faa-flex-row">
+            <dl class="govuk-summary-list govuk-summary-list--no-border">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Candidate.FullName
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Address
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        <p class="govuk-body govuk-!-margin-bottom-0">
+                            @Model.Candidate.Address?.AddressLine1
+                        </p>
+                        <p class="govuk-body govuk-!-margin-bottom-0">
+                            @Model.Candidate.Address?.AddressLine2
+                        </p>
+                        <p class="govuk-body govuk-!-margin-bottom-0">
+                            @Model.Candidate.Address?.Town
+                        </p>
+                        <p class="govuk-body govuk-!-margin-bottom-0">
+                            @Model.Candidate.Address?.County
+                        </p>
+                        <p class="govuk-body govuk-!-margin-bottom-0">
+                            @Model.Candidate.Address?.Postcode
+                        </p>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Telephone number
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Candidate.PhoneNumber
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Email address
+                    </dt>
+                    <dd class="govuk-summary-list__value govuk-!-padding-bottom-5">
+                        @Model.Candidate.Email
+                    </dd>
+                </div>
+            </dl>
+        </div>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <div class="faa-flex-row">
             <h2 class="govuk-heading-m">School, college and university qualifications</h2>
