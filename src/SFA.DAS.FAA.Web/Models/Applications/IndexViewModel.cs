@@ -27,6 +27,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public string? StartedOn { get; set; }
             public string? ClosingDate { get; set; }
             public string? SubmittedDate { get; set; }
+            public string? ResponseDate { get; set; }
             public bool IsClosingSoon { get; set; }
             public bool IsClosed { get; set; }
             public ApplicationStatus Status { get; set; }
@@ -79,6 +80,9 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     Status = application.Status,
                     SubmittedDate = application.Status is (ApplicationStatus.Submitted)
                         ? $"Submitted on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
+                        : string.Empty,
+                    ResponseDate = application.Status is (ApplicationStatus.Successful)
+                        ? $"Offered to you on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}"
                         : string.Empty
                 };
 

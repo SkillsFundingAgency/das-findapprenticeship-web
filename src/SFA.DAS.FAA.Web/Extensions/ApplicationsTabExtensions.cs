@@ -35,7 +35,7 @@ namespace SFA.DAS.FAA.Web.Extensions
             {
                 ApplicationsTab.Started => "Apply as soon as you can. A company may close their vacancy early if they receive a lot of applications.",
                 ApplicationsTab.Submitted => "Companies will contact you using the telephone number or email address on your application.",
-                ApplicationsTab.Successful => "",
+                ApplicationsTab.Successful => "The company will contact you to discuss your next steps.",
                 ApplicationsTab.Unsuccessful => "",
                 _ => ""
             };
@@ -46,8 +46,8 @@ namespace SFA.DAS.FAA.Web.Extensions
             return tab switch
             {
                 ApplicationsTab.Started => "You have no applications to finish.",
-                ApplicationsTab.Submitted => "",
-                ApplicationsTab.Successful => "",
+                ApplicationsTab.Submitted => "You have no submitted applications that are waiting for a response.",
+                ApplicationsTab.Successful => "If an application you make is successful, it’ll appear here.",
                 ApplicationsTab.Unsuccessful => "",
                 _ => ""
             };

@@ -7,7 +7,7 @@
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Your applications</h1>
+        <h1 class="govuk-heading-xl">Your applications</h1>
         <nav class="faa-tab-nav">
             <ul class="faa-tab-nav__list">
                 <li class="faa-tab-nav__list-item">
@@ -45,15 +45,18 @@
                     switch (application.Status)
                     {
                         case ApplicationStatus.Draft:
-                        default:
                             <partial model="application" name="_Application" />
                             break;
                         case ApplicationStatus.Submitted:
                             <partial model="application" name="_SubmittedApplication" />
                             break;
                         case ApplicationStatus.Successful:
+                            <partial model="application" name="_SuccessfulApplication" />
                             break;
                         case ApplicationStatus.Unsuccessful:
+                            break;
+                        default:
+                            <partial model="application" name="_Application" />
                             break;
                     }
                 }
