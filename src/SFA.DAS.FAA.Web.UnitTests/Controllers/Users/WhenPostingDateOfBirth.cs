@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.UserDateOfBirth;
+using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
@@ -17,12 +18,14 @@ public class WhenPostingDateOfBirth
 {
     [Test, MoqAutoData]
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Search_Results(
+         Guid candidateId,
          string govIdentifier,
          string email,
          DateOfBirthViewModel model,
          [Frozen] Mock<IMediator> mediator,
          [Greedy] UserController controller)
     {
+        model.ReturnToConfirmationPage = false; 
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -31,8 +34,8 @@ public class WhenPostingDateOfBirth
                     {
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
                         new Claim(ClaimTypes.Email, email),
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
                     }))
-
             }
         };
 
@@ -41,7 +44,7 @@ public class WhenPostingDateOfBirth
         result.Should().NotBeNull();
         result.RouteName.Should().Be(RouteNames.PostcodeAddress);
         mediator.Verify(x => x.Send(It.Is<UpdateDateOfBirthCommand>(c =>
-            c.GovIdentifier.Equals(govIdentifier)
+            c.CandidateId.Equals(candidateId)
             && c.DateOfBirth.Equals(model.DateOfBirth.DateTimeValue.Value)
             && c.Email.Equals(email)
             ), It.IsAny<CancellationToken>()), Times.Once);

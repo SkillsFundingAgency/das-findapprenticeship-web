@@ -23,6 +23,7 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
         var email = ctx.Principal.Claims
             .First(c => c.Type.Equals(ClaimTypes.Email))
             .Value;
+
         var requestData = new PutCandidateApiRequestData()
         {
             Email = email
@@ -38,6 +39,16 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
             claims.Add(new Claim(ClaimTypes.GivenName, candidate.FirstName));
             claims.Add(new Claim(ClaimTypes.Surname, candidate.LastName));
             claims.Add(new Claim(CustomClaims.DisplayName, $"{candidate.FirstName} {candidate.LastName}"));
+
+            if (candidate.Status == UserStatus.Completed)
+            {
+                claims.Add(new Claim(CustomClaims.AccountSetupCompleted, "true"));
+            }
+
+            if (candidate.PhoneNumber != null)
+            {
+                claims.Add(new Claim(ClaimTypes.MobilePhone, candidate.PhoneNumber));
+            }
         }
         
         return claims;

@@ -1,0 +1,55 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.AddQualificationSelectTypeViewModel
+@{
+    ViewData["Title"] = $"{Model.PageTitle} – Find an apprenticeship – GOV.UK";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Qualifications, new { Model.ApplicationId })">Back</a>
+}
+
+<div class="govuk-grid-row">
+   <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post" asp-route="@RouteNames.ApplyApprenticeship.AddQualificationSelectType" asp-route-applicationId="@Model.ApplicationId">
+         <partial name="_ValidationSummary" />
+         <span class="govuk-caption-l">Education history</span>
+         <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+               <h1 class="govuk-fieldset__heading">
+                  @Model.PageTitle
+               </h1>
+            </legend>
+            @if (!Model.HasAddedQualifications)
+            {
+               <p class="govuk-hint">You'll be able to add your other qualifications later</p>
+            }
+            <div class="govuk-form-group" das-highlight-error-for="QualificationReferenceId"
+               error-class="govuk-form-group--error">
+               <span das-validation-for="QualificationReferenceId" class="govuk-error-message"></span>
+               <div class="govuk-radios" data-module="govuk-radios" id="QualificationReferenceId">
+                  @foreach (var qualificationType in Model.Qualifications.OrderBy(c=>c.QualificationDisplayTypeViewModel.AddOrder))
+                  {
+                     if (qualificationType.Name.Equals("other", StringComparison.CurrentCultureIgnoreCase))
+                     {
+                        <div class="govuk-radios__divider">or</div>
+                     }
+                     <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="qualification-@qualificationType.Id" name="QualificationReferenceId" type="radio" value="@qualificationType.Id">
+                        <label class="govuk-label govuk-radios__label" for="qualification-@qualificationType.Id">
+                        @qualificationType.Name @qualificationType.QualificationDisplayTypeViewModel.SelectHintText
+                        </label>
+                     </div>
+                  }
+               </div>
+            </div>
+         </fieldset>
+         <div class="govuk-button-group">
+            <button class="govuk-button" id="submit-button" type="submit" data-module="govuk-button">
+            Continue
+            </button>
+         </div>
+      </form>
+   </div>
+</div>
+

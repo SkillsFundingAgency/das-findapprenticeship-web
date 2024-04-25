@@ -24,6 +24,6 @@ public class WhenBuildingUpdateManuallyEnteredAddressRequest
         };
         var actual = new CreateUserManuallyEnteredAddressApiRequest(candidateId, data);
 
-        actual.PostUrl.Should().Be($"users/{candidateId}/enter-address");
+        actual.PostUrl.Should().Be($"users/{candidateId}/create-account/enter-address");
     }
 }

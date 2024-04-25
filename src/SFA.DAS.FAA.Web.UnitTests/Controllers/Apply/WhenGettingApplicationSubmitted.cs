@@ -21,7 +21,6 @@ public class WhenGettingApplicationSubmitted
         Guid candidateId,
         Guid applicationId,
         GetApplicationSubmittedQueryResponse result,
-        [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] ApplyController controller)
     {
@@ -40,8 +39,8 @@ public class WhenGettingApplicationSubmitted
 
         var actual = await controller.ApplicationSubmitted(applicationId) as ViewResult;
 
-        Assert.That(actual, Is.Not.Null);
-        var actualModel = actual.Model as ApplicationSubmittedViewModel;
+        actual?.Should().NotBeNull();
+        var actualModel = actual!.Model as ApplicationSubmittedViewModel;
         actualModel?.ApplicationId.Should().Be(applicationId);
     }
 }

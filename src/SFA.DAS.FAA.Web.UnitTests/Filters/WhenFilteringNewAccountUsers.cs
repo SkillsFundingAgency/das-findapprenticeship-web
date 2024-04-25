@@ -14,7 +14,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Filters;
 public class WhenFilteringNewAccountUsers
 {
     [Test, MoqAutoData]
-    public async Task And_Has_Candidate_And_Display_Name_The_Continues(
+    public async Task And_Has_Candidate_And_Account_Setup_Completed_The_Continues(
         [ArrangeActionContext<SearchApprenticeshipsController>] ActionExecutingContext context,
         [Frozen] Mock<ActionExecutionDelegate> nextMethod,
         NewFaaUserAccountFilter filter)
@@ -22,7 +22,7 @@ public class WhenFilteringNewAccountUsers
         //Arrange
         context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
         {
-            new Claim(CustomClaims.DisplayName, "Test User"),
+            new Claim(CustomClaims.AccountSetupCompleted, "true"),
             new Claim(CustomClaims.CandidateId, "Candidate1")
         }));
             

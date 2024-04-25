@@ -7,11 +7,13 @@ using SFA.DAS.FAA.Web.Filters;
 var builder = WebApplication.CreateBuilder(args);
 
 var isIntegrationTest = builder.Environment.EnvironmentName.Equals("IntegrationTest", StringComparison.CurrentCultureIgnoreCase);
+var isLocal = builder.Environment.EnvironmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase);
 var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTest);
 
 builder.Services
     .AddOptions()
-    .AddValidatorsFromAssembly(typeof(Program).Assembly)
+    .AddMemoryCache()
+.AddValidatorsFromAssembly(typeof(Program).Assembly)
     .AddControllers(options =>
     {
         options.ModelBinderProviders.Insert(0, new MonthYearDateModelBinderProvider());
@@ -25,7 +27,7 @@ builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthe
 
 builder.Services.AddServiceRegistration(isIntegrationTest);
 builder.Services.AddAuthenticationServices(rootConfiguration);
-
+builder.Services.AddCacheServices(rootConfiguration);
 builder.Services.AddHealthChecks();
 
 
@@ -47,9 +49,7 @@ builder.Services.Configure<RouteOptions>(options =>
 });
 
 builder.Services.AddDataProtection(rootConfiguration);
-
 builder.Services.AddApplicationInsightsTelemetry();
-
 
 var app = builder.Build();
 

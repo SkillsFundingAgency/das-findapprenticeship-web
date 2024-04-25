@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.User.GetCandidateDateOfBirth;
+using CreateAccount.GetCandidateDateOfBirth;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 

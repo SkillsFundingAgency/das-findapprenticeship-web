@@ -5,8 +5,8 @@ using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Infrastructure.Api;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAT.Web.Services;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.GovUK.Auth.Services;
 
@@ -19,6 +19,8 @@ public static class AddServiceRegistrationExtension
         services.AddHttpClient<IApiClient, ApiClient>();
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
+        
+       
         services.AddFluentValidationAutoValidation();
         if (devDecrypt)
         {
@@ -28,6 +30,25 @@ public static class AddServiceRegistrationExtension
         {
             services.AddTransient<IDataProtectorService, DataProtectorService>();
         }
+    }
+
+    public static void AddCacheServices(this IServiceCollection services,  IConfiguration configuration)
+    {
+        var config = configuration.GetSection(nameof(FindAnApprenticeship))
+            .Get<Domain.Configuration.FindAnApprenticeship>();
+        
+        if (string.IsNullOrEmpty(config.RedisConnectionString))
+        {
+            services.AddDistributedMemoryCache();
+        }
+        else
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = config.RedisConnectionString;
+            });
+        }
+        services.AddTransient<ICacheStorageService, CacheStorageService>();
     }
 
     public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)

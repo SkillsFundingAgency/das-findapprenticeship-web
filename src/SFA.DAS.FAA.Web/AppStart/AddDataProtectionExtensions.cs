@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.DataProtection;
-using SFA.DAS.FAA.Domain.Configuration;
 using StackExchange.Redis;
 
 namespace SFA.DAS.FAA.Web.AppStart;
