@@ -7,6 +7,7 @@
 }
 
 <div class="govuk-grid-row">
+   <input type="hidden" name="subjects[0][isDeleted]" value="false"/>
    <input type="hidden" asp-for="SingleQualificationId"/>
    <input type="hidden" asp-for="IsApprenticeship" value="@Model.QualificationDisplayTypeViewModel.HasDataLookup"/>
    <input type="hidden" name="subjects[0][id]" value="@existingApplicationQualification.Id" id="subjects[0][id]"/>
@@ -31,7 +32,7 @@
                      <option value=""></option>
                      @foreach (var course in Model.Courses)
                      {
-                        <!option @(existingApplicationQualification?.Name?.Split("|'")[0] == $"{course.Id}|{course.Title}" ? " selected='selected'":"") value="@($"{course.Id}|{course.Title}")">@course.Title</!option>
+                        <!option @(existingApplicationQualification?.Name?.Split("|'")[0] == $"{course.Id}|{course.Title}" ? " selected='selected'" : "") value="@($"{course.Id}|{course.Title}")">@course.Title</!option>
                      }
                   </select>
                </div>
@@ -56,13 +57,13 @@
                <span das-validation-for="Subjects[0].Level" class="govuk-error-message"></span>
                <select class="govuk-select" id="Subjects[0].Level" name="subjects[0][level]">
                   <option value="select" selected="">Select a level</option>
-                  <!option value="1" @(existingApplicationQualification.Level == "1" ? " selected='selected'":"")>Level 1</!option>
-                  <!option value="2" @(existingApplicationQualification.Level == "2" ? " selected='selected'":"")>Level 2</!option>
-                  <!option value="3" @(existingApplicationQualification.Level == "3" ? " selected='selected'":"")>Level 3</!option>
-                  <!option value="4" @(existingApplicationQualification.Level == "4" ? " selected='selected'":"")>Level 4</!option>
-                  <!option value="5" @(existingApplicationQualification.Level == "5" ? " selected='selected'":"")>Level 5</!option>
-                  <!option value="6" @(existingApplicationQualification.Level == "6" ? " selected='selected'":"")>Level 6</!option>
-                  <!option value="7" @(existingApplicationQualification.Level == "7" ? " selected='selected'":"")>Level 7</!option>
+                  <!option value="1" @(existingApplicationQualification.Level == "1" ? " selected='selected'" : "")>Level 1</!option>
+                  <!option value="2" @(existingApplicationQualification.Level == "2" ? " selected='selected'" : "")>Level 2</!option>
+                  <!option value="3" @(existingApplicationQualification.Level == "3" ? " selected='selected'" : "")>Level 3</!option>
+                  <!option value="4" @(existingApplicationQualification.Level == "4" ? " selected='selected'" : "")>Level 4</!option>
+                  <!option value="5" @(existingApplicationQualification.Level == "5" ? " selected='selected'" : "")>Level 5</!option>
+                  <!option value="6" @(existingApplicationQualification.Level == "6" ? " selected='selected'" : "")>Level 6</!option>
+                  <!option value="7" @(existingApplicationQualification.Level == "7" ? " selected='selected'" : "")>Level 7</!option>
                </select>
             </div>
          </div>
@@ -94,7 +95,7 @@
                   {
                      <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
                         <div class="govuk-checkboxes__item">
-                           <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" type="checkbox" value="@existingApplicationQualification.IsPredicted">
+                           <input class="govuk-checkboxes__input" id="subjects[0][IsPredicted]" name="subjects[0][IsPredicted]" @(existingApplicationQualification.IsPredicted.HasValue && existingApplicationQualification.IsPredicted.Value ? "checked='checked'" : "") type="checkbox" value="true">
                            <label class="govuk-label govuk-checkboxes__label" for="subjects[0][IsPredicted]">
                               Predicted grade
                            </label>

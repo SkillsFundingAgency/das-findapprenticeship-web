@@ -6,5 +6,6 @@ public record GetAdditionalQuestionQuery : IRequest<GetAdditionalQuestionQueryRe
 {
     public Guid CandidateId { get; init; }
     public Guid ApplicationId { get; init; }
-    public Guid AdditionQuestionId { get; init; }
+    public Guid AdditionalQuestionId { get; init; }
+    public int AdditionalQuestion { get; init; }
 }

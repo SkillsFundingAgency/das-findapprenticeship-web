@@ -14,6 +14,12 @@
 
 .faa-extra-fields__form-group {
   position: relative;
+  .js-enabled & {
+    display: none;
+  }
+  .js-enabled .faa-extra-fields__form-group--loaded & {
+    display: flex;
+  }
 }
 
 .faa-extra-field__form-group-link--add {
@@ -34,4 +40,7 @@
 
 .faa-extra-field__form-group--hidden {
   display: none;
+  .js-enabled .faa-extra-fields__form-group--loaded & {
+    display: none;
+  }
 }

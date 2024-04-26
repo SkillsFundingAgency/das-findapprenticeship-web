@@ -90,10 +90,10 @@
             result.Add(property.PropertyName, propertyErrors.First().ErrorMessage);
 
         var i = 0;
-        while (true)
+        while (i < 21)
         {
             var key = $"{property.PropertyName}[{i}]";
-
+            
             if (ViewData.ModelState.Where(c => c.Key.StartsWith(key)).Any())
             {
                 foreach (var value in ViewData.ModelState.Where(c=>c.Key.StartsWith(key)).ToList())
@@ -110,15 +110,10 @@
                     }
                 }
 
-                break;
+                //break;
             }
             
-            if (!ViewData.ModelState.ContainsKey(key))
-            {
-                break;
-            }
-            
-            else
+            if (ViewData.ModelState.ContainsKey(key))
             {
                 var state = ViewData.ModelState[key];
                 var errors = state?.Errors ?? null;

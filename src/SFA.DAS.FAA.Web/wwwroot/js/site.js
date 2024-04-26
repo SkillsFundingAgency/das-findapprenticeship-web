@@ -129,6 +129,7 @@ function ExtraFieldRows(container) {
   );
   this.hiddenClass = "faa-extra-field__form-group--hidden";
   this.addButtonText = this.container.dataset.addButtonText || "Add another";
+  this.fieldset.classList.add("faa-extra-fields__form-group--loaded");
 }
 
 ExtraFieldRows.prototype.init = function () {

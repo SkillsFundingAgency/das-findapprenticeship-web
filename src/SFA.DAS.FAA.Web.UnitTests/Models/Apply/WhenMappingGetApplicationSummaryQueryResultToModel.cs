@@ -27,7 +27,9 @@ public class WhenMappingGetApplicationSummaryQueryResultToModel
                 .Excluding(fil => fil!.StartDate)
                 .Excluding(fil => fil!.EndDate)
                 .Excluding(fil => fil!.JobTitle));
-            result.EducationHistory.Should().BeEquivalentTo(source.EducationHistory);
+            result.EducationHistory.Should().BeEquivalentTo(source.EducationHistory, options => options
+                .Excluding(fil => fil.Qualifications)
+                .Excluding(fil => fil.QualificationTypes));
             result.InterviewAdjustments.Should().BeEquivalentTo(source.InterviewAdjustments);
             result.ApplicationQuestions.Should().BeEquivalentTo(source.ApplicationQuestions);
             result.IsDisabilityConfident.Should().Be(source.IsDisabilityConfident);

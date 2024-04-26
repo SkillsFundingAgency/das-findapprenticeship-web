@@ -31,7 +31,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public Guid? Id { get; set; }
             public string Subject { get; set; }
             public string Grade { get; set; }
-            public string Level { get; set; }
             public string AdditionalInformation { get; set; }
             public bool? IsPredicted { get; set; }
 
@@ -92,7 +91,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                         Id = x.Id,
                         Subject = x.Subject.Contains('|') ? x.Subject.Split('|')[1] : x.Subject,
                         Grade = x.Grade,
-                        Level = x.Level,
                         AdditionalInformation = x.AdditionalInformation,
                         IsPredicted = x.IsPredicted
                     }).ToList()

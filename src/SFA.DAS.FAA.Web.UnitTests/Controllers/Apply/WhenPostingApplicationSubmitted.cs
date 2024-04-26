@@ -20,7 +20,7 @@ public class WhenPostingApplicationSubmitted
         var result = await controller.ApplicationSubmitted(model) as RedirectToRouteResult;
 
         result.Should().NotBeNull();
-        result!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityFlow);
+        result!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender);
     }
 
     [Test, MoqAutoData]

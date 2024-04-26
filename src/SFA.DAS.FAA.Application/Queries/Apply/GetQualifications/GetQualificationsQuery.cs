@@ -49,7 +49,6 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
         {
             public Guid QualificationReferenceId { get; set; }
             public string Subject { get; set; }
-            public string Level { get; set; }
             public string Grade { get; set; }
             public string AdditionalInformation { get; set; }
             public bool? IsPredicted { get; set; }
@@ -63,7 +62,6 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
                     AdditionalInformation = source.AdditionalInformation,
                     IsPredicted = source.IsPredicted,
                     Grade = source.Grade,
-                    Level = source.Level,
                     Subject = source.Subject,
                     Id = source.Id
                 };

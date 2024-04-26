@@ -296,12 +296,13 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = User.Claims.CandidateId()
             });
 
-            var model = new PhoneNumberViewModel()
+            var model = new PhoneNumberViewModel
             {
                 PhoneNumber = queryResult.PhoneNumber,
                 ReturnToConfirmationPage = change,
                 BackLink = change ? RouteNames.ConfirmAccountDetails 
-                    : queryResult.IsAddressFromLookup ? RouteNames.SelectAddress : RouteNames.EnterAddressManually
+                    : queryResult.IsAddressFromLookup ? RouteNames.SelectAddress : RouteNames.EnterAddressManually,
+                Postcode = queryResult.Postcode
             };
             return View(model);
         }
@@ -344,7 +345,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                     Hint = cp.PreferenceHint,
                     EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
                     TextPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodText).FirstOrDefault()?.Status ?? false
-                }).ToList(),
+                }).OrderByDescending(c=>c.Meaning).ToList(),
                 PhoneNumberBacklink = phoneNumberBackLink,
                 ReturnToConfirmationPage = change
             };
@@ -442,7 +443,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
 
-            var returnUrl = cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
+            var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
 
             if (returnUrl != null)
             {

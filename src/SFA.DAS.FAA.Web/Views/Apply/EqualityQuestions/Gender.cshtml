@@ -21,10 +21,10 @@
                         </h1>
                     </legend>
                     <span das-validation-for="Sex" class="govuk-error-message"></span>
-                    <div class="govuk-radios" data-module="govuk-radios" id="Sex">
+                    <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="1" id="Sex-Female">
-                            <label class="govuk-label govuk-radios__label" for="Sex-Female">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="1" id="Sex">
+                            <label class="govuk-label govuk-radios__label" for="Sex">
                                 Female
                             </label>
                         </div>
@@ -35,7 +35,7 @@
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="0" id="Sex-NA">
+                            <input class="govuk-radios__input" asp-for="Sex" type="radio" value="3" id="Sex-NA">
                             <label class="govuk-label govuk-radios__label" for="Sex-NA">
                                 Prefer not to say
                             </label>
@@ -51,21 +51,21 @@
                         </h1>
                     </legend>
                     <span das-validation-for="IsGenderIdentifySameSexAtBirth" class="govuk-error-message"></span>
-                    <div class="govuk-radios" data-module="govuk-radios" id="IsGenderIdentifySameSexAtBirth">
+                    <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsGenderIdentifySameSexAtBirth" type="radio" value="1" id="Gender-Yes">
-                            <label class="govuk-label govuk-radios__label" for="Gender-Yes">
+                            <input class="govuk-radios__input" asp-for="IsGenderIdentifySameSexAtBirth" type="radio" value="Yes" id="IsGenderIdentifySameSexAtBirth">
+                            <label class="govuk-label govuk-radios__label" for="IsGenderIdentifySameSexAtBirth">
                                 Yes
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsGenderIdentifySameSexAtBirth" type="radio" value="2" id="Gender-No">
+                            <input class="govuk-radios__input" asp-for="IsGenderIdentifySameSexAtBirth" type="radio" value="No" id="Gender-No">
                             <label class="govuk-label govuk-radios__label" for="Gender-No">
                                 No
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsGenderIdentifySameSexAtBirth" type="radio" value="0" id="Gender-NA">
+                            <input class="govuk-radios__input" asp-for="IsGenderIdentifySameSexAtBirth" type="radio" value="Prefer not to say" id="Gender-NA">
                             <label class="govuk-label govuk-radios__label" for="Gender-NA">
                                 Prefer not to say
                             </label>
@@ -77,7 +77,6 @@
                 <button class="govuk-button" data-module="govuk-button">
                     Continue
                 </button>
-                <a class="govuk-link" href="#">Skip</a>
             </div>
         </form>
     </div>
