@@ -274,7 +274,6 @@
         </p>
         @if (Model.ApplicationQuestions.AdditionalQuestion1 != null)
         {
-
             <div class="faa-flex-row">
                 <h3 class="govuk-heading-s">@Model.ApplicationQuestions.AdditionalQuestion1.QuestionLabel</h3>
                 <p class="govuk-body">
@@ -348,8 +347,8 @@
                 <h2 class="govuk-heading-m">Disability Confident scheme</h2>
                 <p class="govuk-body">
                     <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident" asp-route-applicationId="@Model.ApplicationId"
-                       class="govuk-link govuk-task-list__link">
-                        Change
+                       class="govuk-link">
+                        Change<span class="govuk-visually-hidden"> Disability Confident</span>
                     </a>
                 </p>
             </div>
