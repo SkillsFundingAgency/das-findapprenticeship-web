@@ -2,6 +2,7 @@
 using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Extensions;
+using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Models.Applications
@@ -27,6 +28,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public string? StartedOn { get; set; }
             public string? ClosingDate { get; set; }
             public string? SubmittedDate { get; set; }
+            public string? ResponseDate { get; set; }
             public bool IsClosingSoon { get; set; }
             public bool IsClosed { get; set; }
             public ApplicationStatus Status { get; set; }
@@ -45,26 +47,6 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                 var timeUntilClosing = application.ClosingDate.Date - dateTimeService.GetDateTime();
                 var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
 
-                var closingDate = "";
-                switch (daysToExpiry)
-                {
-                    case < 0:
-                        closingDate = $"Closed on {application.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)}";
-                        break;
-                    case 0:
-                        closingDate = "Closes today at 11:59pm";
-                        break;
-                    case 1:
-                        closingDate = $"Closes tomorrow ({application.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm)";
-                        break;
-                    case <= 31:
-                        closingDate = $"Closes in {daysToExpiry} days ({application.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm)";
-                        break;
-                    default:
-                        closingDate = $"Closes on {application.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture)} at 11:59pm";
-                        break;
-                }
-
                 var applicationViewModel = new Application
                 {
                     Id = application.Id,
@@ -73,12 +55,15 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     EmployerName = application.EmployerName,
                     StartedOn =
                         $"Started on {application.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
-                    ClosingDate = closingDate,
+                    ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, application.ClosingDate),
                     IsClosingSoon = daysToExpiry is >= 0 and <= 7,
                     IsClosed = daysToExpiry < 0,
                     Status = application.Status,
                     SubmittedDate = application.Status is (ApplicationStatus.Submitted)
                         ? $"Submitted on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
+                        : string.Empty,
+                    ResponseDate = application.Status is (ApplicationStatus.Successful)
+                        ? $"Offered to you on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}"
                         : string.Empty
                 };
 

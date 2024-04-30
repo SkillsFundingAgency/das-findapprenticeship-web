@@ -16,6 +16,7 @@ public class GetIndexQueryResult
         public DateTime CreatedDate { get; set; }
         public DateTime ClosingDate { get; set; }
         public DateTime? SubmittedDate { get; set; }
+        public DateTime? ResponseDate { get; set; }
         public ApplicationStatus Status { get; set; }
     }
 
@@ -32,6 +33,7 @@ public class GetIndexQueryResult
                 CreatedDate = x.CreatedDate,
                 ClosingDate = x.ClosingDate,
                 SubmittedDate = x.SubmittedDate,
+                ResponseDate = x.ResponseDate,
                 Status = x.Status,
             }).ToList()
         };
