@@ -28,7 +28,10 @@ public class VacanciesController(
 
         var result = await mediator.Send(new GetApprenticeshipVacancyQuery
         {
-            VacancyReference = request.VacancyReference
+            VacancyReference = request.VacancyReference,
+            CandidateId = User.Claims.CandidateId().Equals(Guid.Empty)
+                ? null
+                : User.Claims.CandidateId().ToString()
         });
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);

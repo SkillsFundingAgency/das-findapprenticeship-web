@@ -13,8 +13,9 @@ public class GetSearchResultsApiRequest : IGetApiRequest
     private readonly int? _pageSize;
     private readonly VacancySort _sort;
     private readonly bool _disabilityConfident;
+    private readonly string? _candidateId;
 
-    public GetSearchResultsApiRequest(string? location, IReadOnlyCollection<string>? routes, IReadOnlyCollection<string>? levels, int? distance, string? searchTerm, int? pageNumber, int? pageSize, VacancySort sort, bool disabilityConfident)
+    public GetSearchResultsApiRequest(string? location, IReadOnlyCollection<string>? routes, IReadOnlyCollection<string>? levels, int? distance, string? searchTerm, int? pageNumber, int? pageSize, VacancySort sort, bool disabilityConfident, string? candidateId)
     {
         _location = location;
         _routes = routes != null ? string.Join("&routeIds=", routes) : string.Empty;
@@ -25,7 +26,9 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         _pageSize = pageSize;
         _sort = sort;
         _disabilityConfident = disabilityConfident;
+        _candidateId = candidateId;
     }
 
-    public string GetUrl => $"searchapprenticeships/searchResults?location={_location}&routeIds={_routes}&distance={_distance}&searchTerm={_searchTerm}&pageNumber={_pageNumber}&pageSize={_pageSize}&sort={_sort}&levelIds={_levels}&disabilityConfident={_disabilityConfident}";
+    public string GetUrl =>
+        $"searchapprenticeships/searchResults?location={_location}&routeIds={_routes}&distance={_distance}&searchTerm={_searchTerm}&pageNumber={_pageNumber}&pageSize={_pageSize}&sort={_sort}&levelIds={_levels}&disabilityConfident={_disabilityConfident}&candidateId={_candidateId}";
 }

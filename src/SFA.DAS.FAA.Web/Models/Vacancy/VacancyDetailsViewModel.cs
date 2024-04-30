@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
@@ -44,11 +45,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public List<string>? CourseSkills { get; init; } = [];
         public List<LevelResponse>? CourseLevels { get; init; } = [];
         public string? CourseLevelMapper { get; init; }
+        public CandidateApplicationDetails? ApplicationDetails { get; set; }
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
-            GetApprenticeshipVacancyQueryResult source)
-        {
-            return new VacancyDetailsViewModel
+            GetApprenticeshipVacancyQueryResult source) => new VacancyDetailsViewModel
             {
                 Title = source.Vacancy?.Title,
                 VacancyReference = source.Vacancy?.VacancyReference,
@@ -87,11 +87,11 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 StandardPageUrl = source.Vacancy?.StandardPageUrl,
                 IsDisabilityConfident = source.Vacancy is { IsDisabilityConfident: true },
                 CourseLevels = source.Vacancy?.Levels,
-                CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0 
+                CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0
                     ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
-                    : string.Empty
+                    : string.Empty,
+                ApplicationDetails = source.Vacancy?.Application
             };
-        }
     }
 
     public class Address
@@ -130,6 +130,23 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Grade = source.Grade,
                 Subject = source.Subject,
                 Weighting = source.Weighting,
+            };
+        }
+    }
+
+    public class CandidateApplicationDetails
+    {
+        public ApplicationStatus? Status { get; init; }
+        public string? SubmittedDate { get; init; }
+
+        public static implicit operator CandidateApplicationDetails?(Domain.GetApprenticeshipVacancy.CandidateApplicationDetails? source)
+        {
+            if (source is null) return null;
+
+            return new CandidateApplicationDetails
+            {
+                Status = source.Status,
+                SubmittedDate = $"{source.SubmittedDate:dd MMMM yyyy}",
             };
         }
     }

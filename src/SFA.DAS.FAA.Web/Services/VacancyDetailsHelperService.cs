@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Services
@@ -55,6 +56,21 @@ namespace SFA.DAS.FAA.Web.Services
         public static string GetStartDate(this DateTime startDate)
         {
             return $"{startDate:dddd dd MMMM}";
+        }
+
+        public static string GetVacancyBadgeCss(ApplicationStatus? status)
+        {
+            if (status is null) return string.Empty;
+
+            return status switch
+            {
+                ApplicationStatus.Draft =>
+                    "<strong class='govuk-tag govuk-tag--yellow govuk-!-margin-bottom-2'>Application started</strong>",
+                ApplicationStatus.Submitted or ApplicationStatus.Withdrawn or ApplicationStatus.Successful
+                    or ApplicationStatus.Unsuccessful =>
+                    "<strong class='govuk-tag govuk-tag--green govuk-!-margin-bottom-2'>Applied</strong>",
+                _ => ""
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Domain.SearchResults;
+﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.SearchResults;
 
 namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
 {
@@ -76,6 +77,8 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public string? CourseOverviewOfRole { get; init; }
         public string? StandardPageUrl { get; init; }
         public List<LevelResponse>? Levels { get; init; }
+
+        public CandidateApplicationDetails? Application { get; set; }
     }
 
     public class VacancyQualificationApiResponse
@@ -100,6 +103,12 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public string? Postcode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+    }
+
+    public class CandidateApplicationDetails
+    {
+        public ApplicationStatus? Status { get; set; }
+        public DateTime? SubmittedDate { get; set; }
     }
 
     public enum Weighting
