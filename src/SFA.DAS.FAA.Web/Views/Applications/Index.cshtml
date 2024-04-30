@@ -1,11 +1,10 @@
-﻿@using SFA.DAS.FAA.Web.Models.Applications
+﻿@using SFA.DAS.FAA.Domain.Enums
+@using SFA.DAS.FAA.Web.Models.Applications
 @using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel;
-
 @{
     ViewBag.Title = $"{Model.PageTitle} - Find an apprenticeship - GOV.UK";
 }
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Your applications</h1>
@@ -13,44 +12,53 @@
             <ul class="faa-tab-nav__list">
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started })"
-                    class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
+                       class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
                         Started
                     </a>
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted })"
-                    class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
+                       class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
                         Submitted
                     </a>
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Successful })"
-                    class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
+                       class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
                         Successful
                     </a>
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Unsuccessful })"
-                    class="faa-tab-nav__link @(@Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
+                       class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
                         Unsuccessful
                     </a>
                 </li>
             </ul>
         </nav>
         <h2 class="govuk-heading-m">@Model.TabTitle</h2>
-        <div class="@Model.TabTextStyle">@Model.TabText</div> 
+        <div class="@Model.TabTextStyle">@Model.TabText</div>
         <div class="das-search-results">
             <ol class="das-search-results__list">
-                @{
-                    foreach (var application in Model.Applications)
+                @foreach (var application in Model.Applications)
+                {
+                    switch (application.Status)
                     {
-                        <partial model="application" name="_Application" />
+                        case ApplicationStatus.Draft:
+                        default:
+                            <partial model="application" name="_Application" />
+                            break;
+                        case ApplicationStatus.Submitted:
+                            <partial model="application" name="_SubmittedApplication" />
+                            break;
+                        case ApplicationStatus.Successful:
+                            break;
+                        case ApplicationStatus.Unsuccessful:
+                            break;
                     }
                 }
             </ol>
         </div>
-        
-
         @if (Model.ExpiredApplications.Any())
         {
             <hr class="govuk-section-break govuk-section-break--visible" />
@@ -73,8 +81,6 @@
                     </div>
                 </div>
             </details>
-
         }
-
-        </div>
+    </div>
 </div>
