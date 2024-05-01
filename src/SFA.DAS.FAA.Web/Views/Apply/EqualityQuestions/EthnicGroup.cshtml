@@ -15,16 +15,11 @@
         <form class="form" method="post">
             <div class="govuk-form-group" das-highlight-error-for="EthnicGroup" error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        <h1 class="govuk-fieldset__heading">
-                            What is your sex?
-                        </h1>
-                    </legend>
                     <span das-validation-for="EthnicGroup" class="govuk-error-message"></span>
-                    <div class="govuk-radios" data-module="govuk-radios" id="EthnicGroup">
+                    <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="1" id="EthnicGroup-White">
-                            <label class="govuk-label govuk-radios__label" for="EthnicGroup-White">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="1" id="EthnicGroup">
+                            <label class="govuk-label govuk-radios__label" for="EthnicGroup">
                                 White
                             </label>
                         </div>
@@ -54,7 +49,7 @@
                         </div>
                         <div class="govuk-radios__divider">or</div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="0" id="EthnicGroup-NA">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="6" id="EthnicGroup-NA">
                             <label class="govuk-label govuk-radios__label" for="EthnicGroup-NA">
                                 Prefer not to say
                             </label>

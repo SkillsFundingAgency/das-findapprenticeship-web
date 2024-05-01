@@ -18,13 +18,14 @@ public class AdditionalQuestionController(IMediator mediator) : Controller
 
     [HttpGet]
     [Route("apply/{applicationId}/additional-question/{additionalQuestion}/{additionalQuestionId}", Name = RouteNames.ApplyApprenticeship.AddAdditionalQuestion)]
-    public async Task<IActionResult> Get([FromRoute] Guid applicationId, [FromRoute] Guid additionalQuestionId)
+    public async Task<IActionResult> Get([FromRoute] Guid applicationId, [FromRoute] int additionalQuestion, [FromRoute] Guid additionalQuestionId)
     {
         var result = await mediator.Send(new GetAdditionalQuestionQuery
         {
             ApplicationId = applicationId,
+            AdditionalQuestion = additionalQuestion,
             CandidateId = (Guid)User.Claims.CandidateId()!,
-            AdditionQuestionId = additionalQuestionId
+            AdditionalQuestionId = additionalQuestionId
         });
 
         return View(AddViewPath, new AddAdditionalQuestionViewModel
@@ -32,6 +33,7 @@ public class AdditionalQuestionController(IMediator mediator) : Controller
             ApplicationId = applicationId,
             AdditionalQuestionLabel = result.QuestionText,
             AdditionalQuestionAnswer = result.Answer,
+            IsSectionCompleted = result.IsSectionCompleted
         });
     }
 
@@ -51,7 +53,7 @@ public class AdditionalQuestionController(IMediator mediator) : Controller
             Id = additionalQuestionId,
             Answer = viewModel.AdditionalQuestionAnswer,
             UpdatedAdditionalQuestion = additionalQuestion,
-            AdditionalQuestionSectionStatus = viewModel.IsSectionCompleted != null && viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.InProgress
+            AdditionalQuestionSectionStatus = viewModel.IsSectionCompleted != null && viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.Incomplete
         };
 
         await mediator.Send(command);

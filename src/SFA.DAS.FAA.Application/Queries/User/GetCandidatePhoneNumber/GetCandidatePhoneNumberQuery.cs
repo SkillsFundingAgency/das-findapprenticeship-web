@@ -16,12 +16,14 @@ namespace CreateAccount.GetCandidatePhoneNumber
             return new GetCandidatePhoneNumberQueryResult
             {
                 IsAddressFromLookup = source.IsAddressFromLookup,
-                PhoneNumber = source.PhoneNumber
+                PhoneNumber = source.PhoneNumber,
+                Postcode = source.Postcode
             };
         }
 
         public bool IsAddressFromLookup { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? Postcode { get; set; }
     }
 
     public class GetCandidatePhoneNumberQueryHandler(IApiClient apiClient) : IRequestHandler<GetCandidatePhoneNumberQuery, GetCandidatePhoneNumberQueryResult>

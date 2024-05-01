@@ -103,7 +103,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 ApplicationId = applicationId,
                 SupportRequestAnswer = result.InterviewAdjustmentsDescription,
-                IsSupportRequestRequired = !IsNullOrEmpty(result.InterviewAdjustmentsDescription)
+                IsSupportRequestRequired = !IsNullOrEmpty(result.InterviewAdjustmentsDescription),
+                IsSectionCompleted = result.Status
             };
 
             return View(SummaryViewPath, viewModel);
@@ -126,7 +127,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 {
                     ApplicationId = applicationId,
                     SupportRequestAnswer = result.InterviewAdjustmentsDescription,
-                    IsSupportRequestRequired = !IsNullOrEmpty(result.InterviewAdjustmentsDescription)
+                    IsSupportRequestRequired = !IsNullOrEmpty(result.InterviewAdjustmentsDescription),
+                    IsSectionCompleted = result.Status
                 };
 
                 return View(SummaryViewPath, viewModel);
@@ -137,7 +139,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = viewModel.ApplicationId,
                 InterviewAdjustmentsDescription = !IsNullOrEmpty(viewModel.SupportRequestAnswer) ? viewModel.SupportRequestAnswer : string.Empty,
-                InterviewAdjustmentsSectionStatus = viewModel.IsSectionCompleted!.Value ? SectionStatus.Completed : SectionStatus.InProgress
+                InterviewAdjustmentsSectionStatus = viewModel.IsSectionCompleted!.Value ? SectionStatus.Completed : SectionStatus.Incomplete
             };
 
             await mediator.Send(updateCommand);

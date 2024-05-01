@@ -1,4 +1,8 @@
-﻿using FluentAssertions;
+﻿using System.Text;
+using System.Text.Json;
+using AutoFixture.NUnit3;
+using FluentAssertions;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using NUnit.Framework;
@@ -11,35 +15,33 @@ namespace SFA.DAS.FAA.Web.UnitTests.Infrastructure
     public class WhenUsingCacheStorageService
     {
         [Test, MoqAutoData]
-        public void Then_The_Data_Is_Cached(
+        public async Task Then_The_Data_Is_Cached(
             string key,
-            string objectToCache)
+            TestObject objectToCache,
+            [Frozen] Mock<IDistributedCache> mockCache,
+            CacheStorageService sut)
         {
-            //Arrange
-            var mockCache = new Mock<IMemoryCache>();
-            var mockCacheEntry = new Mock<ICacheEntry>();
-
-            mockCache
-                .Setup(mc => mc.CreateEntry(It.IsAny<object>()))
-                .Callback((object k) => _ = (string)k)
-                .Returns(mockCacheEntry.Object);
-
-            mockCacheEntry
-                .SetupSet(mce => mce.Value = It.IsAny<object>())
-                .Callback<object>(v => _ = v);
-
-            mockCacheEntry
-                .SetupSet(mce => mce.AbsoluteExpirationRelativeToNow = It.IsAny<TimeSpan?>())
-                .Callback<TimeSpan?>(dto => _ = dto);
-
             // Act
-            var sut = new CacheStorageService(mockCache.Object);
-            
-            var actual = sut.Set(key, objectToCache);
+            await sut.Set(key, objectToCache);
 
             // Assert
-            actual.Should().NotBeNull();
-            actual.Should().Be(objectToCache);
+            mockCache.Verify(x =>
+                    x.SetAsync(
+                        key,
+                        It.Is<byte[]>(c =>
+                            Encoding.UTF8.GetString(c)
+                                .Equals(JsonSerializer.Serialize(objectToCache, new JsonSerializerOptions()))),
+                        It.Is<DistributedCacheEntryOptions>(c
+                            => c.AbsoluteExpirationRelativeToNow.Value.Minutes == TimeSpan.FromMinutes(60).Minutes
+                            && c.SlidingExpiration.Value.Minutes == TimeSpan.FromMinutes(30).Minutes),
+                        It.IsAny<CancellationToken>()),
+                Times.Once);
+            
+        }
+
+        public class TestObject
+        {
+            public string TestValue { get; set; }
         }
     }
 }

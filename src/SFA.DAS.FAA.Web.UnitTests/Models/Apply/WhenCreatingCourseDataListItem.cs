@@ -9,7 +9,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply;
 public class WhenCreatingCourseDataListItem
 {
     [Test, AutoData]
-    public void Then_Fields_Are_Mapped_And_Title_Same_For_Not_Standard(CourseApiResponse source)
+    public void Then_Fields_Are_Mapped(CourseApiResponse source)
     {
         source.IsStandard = false;
         
@@ -19,14 +19,4 @@ public class WhenCreatingCourseDataListItem
         actual.Title.Should().Be(source.Title);
     }
     
-    [Test, AutoData]
-    public void Then_Fields_Are_Mapped_And_Title_Adjusted_For_Standard(CourseApiResponse source)
-    {
-        source.IsStandard = true;
-        
-        var actual = (CourseDataListItem)source;
-
-        actual.Id.Should().Be(source.Id);
-        actual.Title.Should().Be($"{source.Title} (Standard)");
-    }
 }
