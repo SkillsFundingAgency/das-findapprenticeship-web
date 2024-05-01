@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidatePreferences;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
@@ -31,7 +32,7 @@ public class WhenPostingNotificationPreferences
                 User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
                         new Claim(ClaimTypes.Email, email),
-                        new Claim(ClaimTypes.NameIdentifier, candidateId.ToString())
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
                     }))
             }
         };

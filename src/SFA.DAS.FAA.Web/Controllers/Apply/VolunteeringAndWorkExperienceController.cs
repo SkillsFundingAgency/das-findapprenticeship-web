@@ -32,7 +32,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         var result = await mediator.Send(new GetVolunteeringAndWorkExperiencesQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId()
+            CandidateId = (Guid)User.Claims.CandidateId()!
         });
 
         if (result.VolunteeringAndWorkExperiences.Count > 0)
@@ -64,7 +64,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         var command = new UpdateVolunteeringAndWorkExperienceApplicationCommand
         {
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             ApplicationId = model.ApplicationId,
             VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? SectionStatus.Incomplete : SectionStatus.Completed
         };
@@ -100,7 +100,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         var command = new AddVolunteeringAndWorkExperienceCommand
         {
             ApplicationId = request.ApplicationId,
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             CompanyName = request.CompanyName,
             Description = request.Description,
             StartDate = request.StartDate.DateTimeValue.Value,
@@ -119,7 +119,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         var query = new GetVolunteeringAndWorkExperiencesQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId()
+            CandidateId = (Guid)User.Claims.CandidateId()!
         };
 
         var result = await mediator.Send(query);
@@ -148,7 +148,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             var result = await mediator.Send(new GetVolunteeringAndWorkExperiencesQuery
             {
                 ApplicationId = viewModel.ApplicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             viewModel = new VolunteeringAndWorkExperienceSummaryViewModel
@@ -163,7 +163,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
         var command = new UpdateVolunteeringAndWorkExperienceApplicationCommand
         {
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             ApplicationId = viewModel.ApplicationId,
             VolunteeringAndWorkExperienceSectionStatus = viewModel.IsSectionCompleted.HasValue && viewModel.IsSectionCompleted.Value
                 ? SectionStatus.Completed 
@@ -182,7 +182,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         var result = await mediator.Send(new GetVolunteeringOrWorkExperienceItemQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             Id = volunteeringWorkExperienceId
         });
 
@@ -204,7 +204,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         {
             VolunteeringOrWorkExperienceId = request.VolunteeringOrWorkExperienceId,
             ApplicationId = request.ApplicationId,
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             CompanyName = request.CompanyName,
             Description = request.Description,
             StartDate = request.StartDate.DateTimeValue.Value,
@@ -223,7 +223,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         var result = await mediator.Send(new GetVolunteeringOrWorkExperienceItemQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             Id = volunteeringWorkExperienceId
         });
 
@@ -240,7 +240,7 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
         {
             var command = new DeleteVolunteeringOrWorkExperienceCommand
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = model.ApplicationId,
                 Id = model.VolunteeringWorkExperienceId
             };

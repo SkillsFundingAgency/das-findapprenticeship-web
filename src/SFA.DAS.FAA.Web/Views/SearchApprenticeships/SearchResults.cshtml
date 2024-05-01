@@ -1,5 +1,6 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Domain.Enums
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @section BackLink {
     @if (Model.SelectedRouteIds != null && Model.SelectedRouteIds.Any())
@@ -164,7 +165,10 @@
                                 New
                             </strong>
                         }
-                        @Html.Raw(vacancy.VacancyStatusBadge)
+                        @if(vacancy.ApplicationStatus != null)
+                        {
+                            <application-status-badge status="@vacancy.ApplicationStatus"></application-status-badge>    
+                        }
                         <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
                             <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference"
                                 class="das-search-results__link" id="standard-274">

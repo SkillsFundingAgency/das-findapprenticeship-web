@@ -29,9 +29,8 @@ public class VacanciesController(
         var result = await mediator.Send(new GetApprenticeshipVacancyQuery
         {
             VacancyReference = request.VacancyReference,
-            CandidateId = User.Claims.CandidateId().Equals(Guid.Empty)
-                ? null
-                : User.Claims.CandidateId().ToString()
+            CandidateId = User.Claims.CandidateId().Equals(null) ? null
+                : User.Claims.CandidateId()!.ToString()
         });
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
@@ -46,7 +45,7 @@ public class VacanciesController(
         var result = await mediator.Send(new ApplyCommand
         {
             VacancyReference = request.VacancyReference,
-            CandidateId = User.Claims.CandidateId() 
+            CandidateId = (Guid)User.Claims.CandidateId()! 
         });
 
         return RedirectToAction("Index", "Apply", new { result.ApplicationId });

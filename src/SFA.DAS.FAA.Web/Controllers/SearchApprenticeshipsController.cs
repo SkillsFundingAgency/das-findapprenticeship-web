@@ -138,9 +138,8 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             PageSize = 10,
             Sort = request.Sort,
             DisabilityConfident = request.DisabilityConfident,
-            CandidateId = User.Claims.CandidateId().Equals(Guid.Empty) 
-                ? null
-                : User.Claims.CandidateId().ToString()
+            CandidateId = User.Claims.CandidateId().Equals(null) ? null
+                : User.Claims.CandidateId()!.ToString()
         });
 
         if (result.VacancyReference != null)

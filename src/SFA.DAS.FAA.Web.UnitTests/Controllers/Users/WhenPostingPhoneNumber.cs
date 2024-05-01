@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.PhoneNumber;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
@@ -20,6 +21,7 @@ public class WhenPostingPhoneNumber
         string govIdentifier,
         string email,
         string phone,
+        Guid candidateId,
         PhoneNumberViewModel model,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
@@ -33,7 +35,8 @@ public class WhenPostingPhoneNumber
                     {
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
                         new Claim(ClaimTypes.Email, email),
-                        new Claim(ClaimTypes.MobilePhone, phone)
+                        new Claim(ClaimTypes.MobilePhone, phone),
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
                     }))
             }
         };

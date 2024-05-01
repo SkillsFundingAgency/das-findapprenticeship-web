@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Domain.SearchResults;
+﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -26,7 +27,7 @@ public class VacanciesViewModel
     public string CourseLevel { get; set; }
     public string VacancyReference { get; private set; }
     public string WageText { get; set; }
-    public string VacancyStatusBadge { get; set; }
+    public ApplicationStatus? ApplicationStatus { get; set; }
     public bool IsClosingSoon { get; set; }
     public bool IsNew { get; set; }
     public bool IsDisabilityConfident { get; set; }
@@ -59,10 +60,10 @@ public class VacanciesViewModel
             CourseLevel = vacancies.CourseLevel,
             VacancyReference = vacancies.VacancyReference,
             WageText = vacancies.WageText,
-            IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7), 
+            IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
             IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsDisabilityConfident = vacancies.IsDisabilityConfident,
-            VacancyStatusBadge = VacancyDetailsHelperService.GetVacancyBadgeCss(vacancies.CandidateApplicationDetails?.Status)
+            ApplicationStatus = vacancies.CandidateApplicationDetails?.Status
         };
     }
 

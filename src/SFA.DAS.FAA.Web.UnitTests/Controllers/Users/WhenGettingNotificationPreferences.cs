@@ -17,7 +17,7 @@ public class WhenGettingNotificationPreferences
     [Test, MoqAutoData]
     public async Task Then_View_Is_Returned(
         string backLink,
-        string candidateId,
+        Guid candidateId,
         GetCandidatePreferencesQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
@@ -28,12 +28,12 @@ public class WhenGettingNotificationPreferences
             {
                 User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
-                        new Claim(CustomClaims.CandidateId, candidateId)
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
                     }))
             }
         };
 
-        mediator.Setup(x => x.Send(It.Is<GetCandidatePreferencesQuery>(x => x.CandidateId.ToString() == candidateId)
+        mediator.Setup(x => x.Send(It.Is<GetCandidatePreferencesQuery>(x => x.CandidateId == candidateId)
             , It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
