@@ -16,6 +16,7 @@ public class GetIndexQueryResult
     public ApplicationQuestionsSection ApplicationQuestions { get; set; }
     public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
+    public PreviousApplicationDetails? PreviousApplication { get; set; }
 
     public class EducationHistorySection
     {
@@ -99,6 +100,25 @@ public class GetIndexQueryResult
         }
     }
 
+    public class PreviousApplicationDetails
+    {
+        public string VacancyTitle { get; set; }
+        public string EmployerName { get; set; }
+        public DateTime SubmissionDate { get; set; }
+
+        public static implicit operator PreviousApplicationDetails?(GetIndexApiResponse.PreviousApplicationDetails? source)
+        {
+            if (source == null) return null;
+
+            return new PreviousApplicationDetails
+            {
+                EmployerName = source.EmployerName,
+                SubmissionDate = source.SubmissionDate,
+                VacancyTitle = source.VacancyTitle
+            };
+        }
+    }
+
     public static implicit operator GetIndexQueryResult(GetIndexApiResponse source)
     {
         return new GetIndexQueryResult
@@ -112,7 +132,8 @@ public class GetIndexQueryResult
             WorkHistory = source.WorkHistory,
             ApplicationQuestions = source.ApplicationQuestions,
             InterviewAdjustments = source.InterviewAdjustments,
-            DisabilityConfidence = source.DisabilityConfidence
+            DisabilityConfidence = source.DisabilityConfidence,
+            PreviousApplication = source.PreviousApplication
         };
     }
 }
