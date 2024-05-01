@@ -20,7 +20,8 @@ public static class MockApiServer
         var server = StandAloneApp.Start(settings)
             .WithSearchApprenticeshipsFiles()
             .WithNewApplicationFiles()
-            .WithExistingApplicationFiles();
+            .WithExistingApplicationFiles()
+            .WithApplicationsFiles();
 
         return server;
     }

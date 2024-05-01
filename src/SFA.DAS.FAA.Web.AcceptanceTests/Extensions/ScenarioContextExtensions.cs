@@ -1,5 +1,4 @@
-﻿
-using SFA.DAS.FAA.Web.AcceptanceTests.Data;
+﻿using SFA.DAS.FAA.Web.AcceptanceTests.Data;
 using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
 
@@ -16,9 +15,20 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Extensions
                 throw new InvalidOperationException($"Unable to Get Page {pageName} - not found in dictionary");
             }
 
-            page.Url = page.Url
-                .Replace(Constants.ApplicationIdKey, context.Get<string>(ContextKeys.ApplicationId))
-                .Replace(Constants.VacancyReferenceKey, context.Get<string>(ContextKeys.VacancyReference));
+            var url = page.Url;
+
+            if (context.ContainsKey(ContextKeys.ApplicationId))
+            {
+                url = url.Replace(Constants.ApplicationIdKey, context.Get<string>(ContextKeys.ApplicationId));
+            }
+
+            if (context.ContainsKey(ContextKeys.VacancyReference))
+            {
+                url = url.Replace(Constants.VacancyReferenceKey, context.Get<string>(ContextKeys.VacancyReference));
+            }
+
+            page.Url = url;
+            
             return page;
         }
     }

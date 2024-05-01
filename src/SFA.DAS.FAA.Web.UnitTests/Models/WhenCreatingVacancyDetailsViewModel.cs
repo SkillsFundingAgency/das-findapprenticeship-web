@@ -50,8 +50,8 @@ public class WhenCreatingVacancyDetailsViewModel
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
-        dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow);
-        var dateLessThan31Days = DateTime.UtcNow.AddDays(-30);
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(new DateTime(2000, 01, 01));
+        var dateLessThan31Days = new DateTime(2000, 02, 01);
         if (result.Vacancy != null) result.Vacancy.ClosingDate = dateLessThan31Days;
 
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
@@ -65,9 +65,9 @@ public class WhenCreatingVacancyDetailsViewModel
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
-        dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow);
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(new DateTime(2000, 01, 01));
 
-        var dateMoreThan31Days = DateTime.UtcNow.AddDays(60);
+        var dateMoreThan31Days = new DateTime(2000, 04, 01);
         if (result.Vacancy != null) result.Vacancy.ClosingDate = dateMoreThan31Days;
 
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
