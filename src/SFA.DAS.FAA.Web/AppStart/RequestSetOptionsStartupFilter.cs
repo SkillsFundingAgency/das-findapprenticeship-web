@@ -2,24 +2,24 @@
 {
     public class RequestSetOptionsStartupFilter : IStartupFilter
     {
-        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> app)
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
         {
             return builder =>
             {
                 builder.UseStatusCodePagesWithReExecute("/error/{0}");
-                builder.Use(async (context, next) =>
+                builder.Use(async (context, middleware) =>
                 {
-                    await next();
+                    await middleware();
                     if (context.Response is { StatusCode: 404 or 500, HasStarted: false })
                     {
                         //Re-execute the request so the user gets the error page
                         var originalPath = context.Request.Path.Value;
                         context.Items["originalPath"] = originalPath;
                         context.Request.Path = $"/error/{context.Response.StatusCode}";
-                        await next();
+                        await middleware();
                     }
                 });
-                app(builder);
+                next(builder);
             };
         }
     }
