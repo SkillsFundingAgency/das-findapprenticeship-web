@@ -14,6 +14,7 @@
     <None Remove="Apply\NewApplication\post-add-job.json" />
     <None Remove="Apply\NewApplication\TrainingCourses\post-add-trainingcourse.json" />
     <None Remove="Apply\NewApplication\WorkExperience\get-workexperiences.json" />
+    <None Remove="closed-vacancy-details.json" />
     <None Remove="jobs.json" />
     <None Update="Applications\EmptyState\get-applications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -107,6 +108,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="put-candidate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="closed-vacancy-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="search-vacancy-details.json">
