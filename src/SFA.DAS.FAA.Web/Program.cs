@@ -48,6 +48,9 @@ builder.Services.Configure<RouteOptions>(options =>
     options.Filters.Add(new NewFaaUserAccountFilter());
 });
 
+builder.Services.AddTransient<IStartupFilter,
+    RequestSetOptionsStartupFilter>();
+
 builder.Services.AddDataProtection(rootConfiguration);
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -75,20 +78,6 @@ app.UseEndpoints(endpointBuilder =>
     endpointBuilder.MapControllerRoute(
         name: "default",
         pattern: "{controller=SearchApprenticeshipsController}/{action=Index}/{id?}");
-});
-
-app.UseStatusCodePages();
-app.Use(async (context, next) =>
-{
-    await next();
-    if (context.Response is { StatusCode: 404, HasStarted: false })
-    {
-        //Re-execute the request so the user gets the error page
-        var originalPath = context.Request.Path.Value;
-        context.Items["originalPath"] = originalPath;
-        context.Request.Path = $"/error/{context.Response.StatusCode}";
-        await next();
-    }
 });
 
 app.Run();
