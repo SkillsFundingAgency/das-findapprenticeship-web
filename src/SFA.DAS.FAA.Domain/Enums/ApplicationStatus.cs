@@ -4,6 +4,8 @@
     {
         Draft = 0,
         Submitted = 1,
-        Withdrawn = 2
+        Withdrawn = 2,
+        Successful,
+        Unsuccessful
     }
 }
