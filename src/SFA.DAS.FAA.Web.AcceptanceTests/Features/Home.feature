@@ -86,7 +86,7 @@ Scenario: Navigate to search results page with no filters
 Scenario: Navigate to search results page with no results found
 	When I navigate to the following url: /search-results?location=manchester
 	Then a http status code of 200 is returned
-	And the page content includes the following: No apprenticeships currently match your search
+	And the page content includes the following: No apprenticeships found
 
 @WireMockServer
 Scenario: Navigate to vacancy details page with vacancy found
