@@ -172,6 +172,8 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
         viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
         viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
+        viewmodel.IsNoSearchResultsByLocation = !string.IsNullOrEmpty(request.Location) && result.Vacancies.Count == 0;
+        viewmodel.PageTitle = GetPageTitle(viewmodel);
 
         return View(viewmodel);
     }
@@ -192,4 +194,15 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
                 Lookups = levels.OrderBy(x => x.Id).Select(level => new ChecklistLookup($"Level {level.Id}", level.Id.ToString(), $"Equal to {level.Name}", level.Selected)).ToList()
             }
         };
+
+    private static string GetPageTitle(SearchResultsViewModel model)
+    {
+        return model.Total switch
+        {
+            0 => "No apprenticeships found",
+            <= 10 => "Apprenticeships found",
+            _ =>
+                $"Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
+        };
+    }
 }

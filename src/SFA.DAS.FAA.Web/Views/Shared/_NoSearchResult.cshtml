@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
+
+@if (Model.IsNoSearchResultsByLocation)
+{
+    <h2 class="govuk-heading-m">We can’t find the location you entered</h2>
+    <p class="govuk-body">We don’t recognise <b>@Model.Location</b>.</p>
+    <p class="govuk-body">Check the location you’ve entered or enter a different location that’s nearby.</p>
+    <p class="govuk-body">
+        Change your search by using the filters on this page or  <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">start a new search</a>.
+    </p>
+}
+else
+{
+    <h2 class="govuk-heading-m">No apprenticeships currently match your search</h2>
+    <p class="govuk-body">We can’t find anything that matches your search.</p>
+    <p class="govuk-body">You may need to:</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>change the job or company you entered</li>
+        <li>increase the area of your search</li>
+        <li>remove filters you’ve selected</li>
+    </ul>
+    <p class="govuk-body">
+        Change your search by using the filters on this page or
+        <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">start a new search</a>.
+    </p>
+    <div class="govuk-inset-text">
+        <h3 class="govuk-heading-s">Get notified if an apprenticeship matches this search</h3>
+        <p class="govuk-body">Be notified if a future apprenticeship matches this search.</p>
+        <form method="post" novalidate="">
+            <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                Create a saved search
+            </button>
+        </form>
+    </div>
+}

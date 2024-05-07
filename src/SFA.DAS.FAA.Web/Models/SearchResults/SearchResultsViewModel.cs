@@ -28,6 +28,8 @@ public class SearchResultsViewModel : ViewModelBase
     public bool DisabilityConfident { get; set; } = false; 
     public int SelectedLevelCount { get; set; }
     public int SelectedRouteCount { get; set; }
+    public string? PageTitle { get; set; }
+    public bool IsNoSearchResultsByLocation { get; set; } = false;
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
