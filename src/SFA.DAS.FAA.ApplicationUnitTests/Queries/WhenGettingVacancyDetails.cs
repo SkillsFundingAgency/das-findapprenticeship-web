@@ -21,7 +21,7 @@ public class WhenGettingVacancyDetails
             GetApprenticeshipVacancyQueryHandler handler)
     {
         // Mock the response from the API client
-        var expectedGetUrl = new GetApprenticeshipVacancyApiRequest(query.VacancyReference);
+        var expectedGetUrl = new GetApprenticeshipVacancyApiRequest(query.VacancyReference, query.CandidateId);
         apiClient.Setup(client => client.Get<GetApprenticeshipVacancyApiResponse>(It.Is<GetApprenticeshipVacancyApiRequest>(c => c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 

@@ -12,6 +12,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Web.AppStart;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenPostingSelectAddress
@@ -20,6 +21,7 @@ public class WhenPostingSelectAddress
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Phone_Number_Page(
         string govIdentifier,
         string email,
+        Guid candidateId,
         GetAddressesByPostcodeQueryResult addressesByPostcodeQueryResult,
         SelectAddressViewModel model,
         [Frozen] Mock<IMediator> mediator,
@@ -36,6 +38,7 @@ public class WhenPostingSelectAddress
                     {
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
                         new Claim(ClaimTypes.Email, email),
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
                     }))
 
             }

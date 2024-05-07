@@ -13,4 +13,5 @@ public class GetSearchResultsQuery : IRequest<GetSearchResultsResult>
     public int? PageSize { get; set; }
     public string? Sort { get; set; }
     public bool DisabilityConfident { get; set; }
+    public string? CandidateId { get; set; }
 }

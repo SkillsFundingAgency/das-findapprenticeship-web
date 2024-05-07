@@ -29,7 +29,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetJobsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var viewModel = new JobsViewModel
@@ -53,7 +53,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetJobsQuery
                 {
                     ApplicationId = viewModel.ApplicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 });
 
                 viewModel = new JobsViewModel
@@ -72,7 +72,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 var completeSectionCommand = new UpdateWorkHistoryApplicationCommand
                 {
-                    CandidateId = User.Claims.CandidateId(),
+                    CandidateId = (Guid)User.Claims.CandidateId()!,
                     ApplicationId = viewModel.ApplicationId,
                     WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.Incomplete
                 };
@@ -86,7 +86,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 var command = new UpdateWorkHistoryApplicationCommand
                 {
-                    CandidateId = User.Claims.CandidateId(),
+                    CandidateId = (Guid)User.Claims.CandidateId()!,
                     ApplicationId = viewModel.ApplicationId,
                     WorkHistorySectionStatus = SectionStatus.Completed
                 };
@@ -123,7 +123,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var command = new AddJobCommand
             {
                 ApplicationId = request.ApplicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 EmployerName = request.EmployerName,
                 JobDescription = request.JobDescription,
                 JobTitle = request.JobTitle,
@@ -143,7 +143,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetJobQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 JobId = jobId
             });
 
@@ -165,7 +165,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 JobId = request.JobId,
                 ApplicationId = request.ApplicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 EmployerName = request.EmployerName,
                 JobDescription = request.JobDescription,
                 JobTitle = request.JobTitle,
@@ -185,7 +185,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetDeleteJobQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 JobId = jobId
             });
 
@@ -202,7 +202,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 var command = new PostDeleteJobCommand
                 {
-                    CandidateId = User.Claims.CandidateId(),
+                    CandidateId = (Guid)User.Claims.CandidateId()!,
                     ApplicationId = model.ApplicationId,
                     JobId = model.JobId
                 };
