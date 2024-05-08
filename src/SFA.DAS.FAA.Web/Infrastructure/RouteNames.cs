@@ -30,6 +30,7 @@ public static class RouteNames
     {
         public const string ViewApplications = "view-applications";
         public const string DeleteApplication = "delete-application";
+        public const string ViewApplication = "view-application";
     }
 
     public static class ApplyApprenticeship
