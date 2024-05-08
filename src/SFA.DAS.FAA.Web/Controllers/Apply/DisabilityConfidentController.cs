@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetDisabilityConfidentQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             if (result.ApplyUnderDisabilityConfidentScheme.HasValue && !isEdit)
@@ -51,7 +51,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetDisabilityConfidentQuery
                 {
                     ApplicationId = applicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 });
 
                 viewModel = new DisabilityConfidentViewModel
@@ -67,7 +67,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(new UpdateDisabilityConfidentCommand
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplyUnderDisabilityConfidentScheme = viewModel.ApplyUnderDisabilityConfidentScheme ?? false
             });
 
@@ -82,7 +82,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetDisabilityConfidentDetailsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var viewModel = new DisabilityConfidentSummaryViewModel
@@ -107,7 +107,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetDisabilityConfidentDetailsQuery
                 {
                     ApplicationId = applicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 });
 
                 viewModel = new DisabilityConfidentSummaryViewModel
@@ -126,7 +126,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var updateCommand = new UpdateDisabilityConfidenceApplicationCommand
             {
                 ApplicationId = viewModel.ApplicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 IsSectionCompleted = viewModel.IsSectionCompleted!.Value
             };
 

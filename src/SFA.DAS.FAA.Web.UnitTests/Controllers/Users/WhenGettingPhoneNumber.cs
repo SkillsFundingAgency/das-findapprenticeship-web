@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.Testing.AutoFixture;
@@ -19,6 +20,7 @@ public class WhenGettingPhoneNumber
         string govIdentifier,
         string email,
         string phone,
+        Guid candidateId,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
@@ -30,7 +32,8 @@ public class WhenGettingPhoneNumber
                     {
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
                         new Claim(ClaimTypes.Email, email),
-                        new Claim(ClaimTypes.MobilePhone, phone)
+                        new Claim(ClaimTypes.MobilePhone, phone),
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
                     }))
             }
         };

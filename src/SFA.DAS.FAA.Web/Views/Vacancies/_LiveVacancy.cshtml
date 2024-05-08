@@ -1,4 +1,5 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 @{
@@ -6,6 +7,48 @@
 }
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
+}
+@if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted })
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
+                    </p>
+                    <p class="govuk-body">Check its status in your 
+                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">submitted applications</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.ApplicationDetails is { Status: ApplicationStatus.Draft })
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        Application started.
+                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">Continue your application</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
     <h1 class="govuk-heading-l faa-vacancy__title"><span itemprop="title">@Model.Title</span></h1>

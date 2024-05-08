@@ -47,7 +47,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var name = await mediator.Send(new GetCandidateNameQuery
             {
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var model = new NameViewModel
@@ -75,7 +75,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    CandidateId = User.Claims.CandidateId(),
+                    CandidateId = (Guid)User.Claims.CandidateId()!,
                     Email = User.Claims.Email(),
                 };
                 await mediator.Send(command);
@@ -98,7 +98,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var result = await mediator.Send(new GetCandidateDateOfBirthQuery
             {
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var model = new DateOfBirthViewModel
@@ -123,7 +123,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             {
                 var command = new UpdateDateOfBirthCommand
                 {
-                    CandidateId = User.Claims.CandidateId(),
+                    CandidateId = (Guid)User.Claims.CandidateId()!,
                     Email = User.Claims.Email(),
                     DateOfBirth = model.DateOfBirth.DateTimeValue.Value
                 };
@@ -186,7 +186,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var result = await mediator.Send(new GetAddressesByPostcodeQuery
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 Postcode = postcode
             });
 
@@ -213,7 +213,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var selectedAddress = addresses.Addresses?.Where(x => x.Uprn == model.SelectedAddress).SingleOrDefault();
             await mediator.Send(new UpdateAddressCommand()
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 Email = User.Claims.Email(),
                 Uprn = selectedAddress.Uprn,
                 Thoroughfare = selectedAddress.Thoroughfare,
@@ -234,7 +234,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var result = await mediator.Send(new GetCandidateAddressQuery()
             {
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var model = new EnterAddressManuallyViewModel
@@ -274,7 +274,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             await mediator.Send(new UpdateManuallyEnteredAddressCommand()
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 Email = User.Claims.Email(),
                 AddressLine1 = model.AddressLine1,
                 AddressLine2 = model.AddressLine2,
@@ -293,7 +293,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var queryResult = await mediator.Send(new GetCandidatePhoneNumberQuery
             {
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var model = new PhoneNumberViewModel
@@ -317,7 +317,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             await mediator.Send(new UpdatePhoneNumberCommand()
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 Email = User.Claims.Email(),
                 PhoneNumber = model.PhoneNumber
             });
@@ -333,7 +333,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
             {
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var model = new NotificationPreferencesViewModel()
@@ -359,7 +359,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             await mediator.Send(new UpsertCandidatePreferencesCommand
             {
                 CandidateEmail = User.Claims.Email(),
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 NotificationPreferences = model.NotificationPreferences.Select(x => new NotificationPreferenceItem
                 {
                     PreferenceId = x.PreferenceId,
@@ -380,7 +380,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
             {
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var model = new NotificationPreferencesViewModel()
@@ -403,7 +403,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var accountDetails = await mediator.Send(new GetCandidateAccountDetailsQuery
             {
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var model = new ConfirmAccountDetailsViewModel
@@ -439,7 +439,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             await mediator.Send(new UpdateCheckAnswersCommand
             {
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
 

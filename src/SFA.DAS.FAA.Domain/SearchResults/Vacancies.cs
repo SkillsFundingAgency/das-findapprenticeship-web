@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Text.Json.Serialization;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
@@ -61,5 +62,15 @@ public class Vacancies
 
     [JsonProperty("isDisabilityConfident")]
     public bool IsDisabilityConfident { get; set; }
+
+    [JsonProperty("application")]
+    public CandidateApplicationDetails? CandidateApplicationDetails { get; set; }
+}
+
+public class CandidateApplicationDetails
+{
+    [JsonProperty("status")]
+    public ApplicationStatus? Status { get; set; }
+    
 }
 

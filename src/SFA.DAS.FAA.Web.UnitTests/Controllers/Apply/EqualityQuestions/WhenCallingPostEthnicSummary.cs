@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.EqualityQuestions;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -103,7 +104,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()), new(CustomClaims.CandidateId, candidateId.ToString()) }))
                     }
                 }
             };

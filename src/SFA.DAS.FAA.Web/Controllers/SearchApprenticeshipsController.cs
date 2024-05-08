@@ -4,6 +4,7 @@ using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
@@ -136,7 +137,9 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             PageNumber = request.PageNumber,
             PageSize = 10,
             Sort = request.Sort,
-            DisabilityConfident = request.DisabilityConfident
+            DisabilityConfident = request.DisabilityConfident,
+            CandidateId = User.Claims.CandidateId().Equals(null) ? null
+                : User.Claims.CandidateId()!.ToString()
         });
 
         if (result.VacancyReference != null)

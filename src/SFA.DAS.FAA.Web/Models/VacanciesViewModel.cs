@@ -1,4 +1,6 @@
-﻿using SFA.DAS.FAA.Domain.SearchResults;
+﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Models;
@@ -6,18 +8,16 @@ namespace SFA.DAS.FAA.Web.Models;
 public class VacanciesViewModel
 {
     public string Title { get; private set; }
-
     public string EmployerName { get; private set; }
     public string? AddressLine1 { get; private set; }
     public string? AddressLine2 { get; private set; }
     public string? AddressLine3 { get; private set; }
     public string? AddressLine4 { get; private set; }
-
     public string VacancyPostCode { get; private set;}
     public string CourseTitle { get;  private set; }
     public string WageAmount { get; private set;  }
-    public string AdvertClosing { get; private set; }
-    public string PostedDate { get; private set; }
+    public string? AdvertClosing { get; private set; }
+    public string? PostedDate { get; private set; }
     public int WageType { get; private set; }
     public string VacancyLocation { get; private set; }
     public decimal? Distance { get; private set; }
@@ -27,6 +27,7 @@ public class VacanciesViewModel
     public string CourseLevel { get; set; }
     public string VacancyReference { get; private set; }
     public string WageText { get; set; }
+    public ApplicationStatus? ApplicationStatus { get; set; }
     public bool IsClosingSoon { get; set; }
     public bool IsNew { get; set; }
     public bool IsDisabilityConfident { get; set; }
@@ -59,9 +60,10 @@ public class VacanciesViewModel
             CourseLevel = vacancies.CourseLevel,
             VacancyReference = vacancies.VacancyReference,
             WageText = vacancies.WageText,
-            IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7), 
+            IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
             IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
-            IsDisabilityConfident = vacancies.IsDisabilityConfident
+            IsDisabilityConfident = vacancies.IsDisabilityConfident,
+            ApplicationStatus = vacancies.CandidateApplicationDetails?.Status
         };
     }
 
@@ -69,26 +71,20 @@ public class VacanciesViewModel
 
     public static int? CalculateDaysUntilClosing(IDateTimeService dateTimeService, DateTime? closingDate)
     {
-        if (closingDate.HasValue)
-        {
-            DateTime currentDate = dateTimeService.GetDateTime();
-            TimeSpan timeUntilClosing = closingDate.Value.Date - currentDate;
-            return (int)Math.Ceiling(timeUntilClosing.TotalDays);
-        }
+        if (!closingDate.HasValue) return null;
 
-        return null; 
+        var currentDate = dateTimeService.GetDateTime();
+        var timeUntilClosing = closingDate.Value.Date - currentDate;
+        return (int)Math.Ceiling(timeUntilClosing.TotalDays);
     }
 
-    private static string FormatCloseDate(DateTime? date)
+    private static string? FormatCloseDate(DateTime? date)
     {
-        return date.HasValue ? date.Value.ToString("dddd dd MMMM") : null;
-
+        return date?.ToString("dddd dd MMMM");
     }
 
-    private static string FormatPostDate(DateTime? date)
+    private static string? FormatPostDate(DateTime? date)
     {
-        return date.HasValue ? date.Value.ToString("dd MMMM") : null;
-
+        return date?.ToString("dd MMMM");
     }
-
 }

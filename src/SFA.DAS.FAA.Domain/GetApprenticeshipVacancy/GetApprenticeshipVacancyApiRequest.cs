@@ -2,12 +2,8 @@
 
 namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
 {
-    public class GetApprenticeshipVacancyApiRequest : IGetApiRequest
+    public class GetApprenticeshipVacancyApiRequest(string vacancyReference, string? candidateId) : IGetApiRequest
     {
-        private readonly string _vacancyReference;
-
-        public GetApprenticeshipVacancyApiRequest(string vacancyReference) => _vacancyReference = vacancyReference;
-
-        public string GetUrl => $"vacancies/{_vacancyReference}";
+        public string GetUrl => $"vacancies/{vacancyReference}?candidateId={candidateId}";
     }
 }
