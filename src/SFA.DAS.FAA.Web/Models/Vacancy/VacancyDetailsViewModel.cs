@@ -152,7 +152,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
             return new CandidateApplicationDetails
             {
                 Status = source.Status,
-                SubmittedDate = $"{source.SubmittedDate:dd MMMM yyyy}",
+                SubmittedDate = $"{source.SubmittedDate:d MMMM yyyy}",
                 ApplicationId = source.ApplicationId
             };
         }

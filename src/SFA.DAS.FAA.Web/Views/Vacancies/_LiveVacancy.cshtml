@@ -8,7 +8,7 @@
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
 }
-@if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted })
+@if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted} or {Status : ApplicationStatus.Successful} or {Status : ApplicationStatus.Unsuccessful})
 {
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
