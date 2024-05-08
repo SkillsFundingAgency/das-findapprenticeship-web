@@ -110,6 +110,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
     {
         public ApplicationStatus? Status { get; set; }
         public DateTime? SubmittedDate { get; set; }
+        public Guid ApplicationId { get; set; }
     }
 
     public enum Weighting

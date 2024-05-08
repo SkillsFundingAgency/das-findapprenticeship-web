@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
@@ -143,6 +143,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
     {
         public ApplicationStatus? Status { get; init; }
         public string? SubmittedDate { get; init; }
+        public Guid ApplicationId { get; init; }
 
         public static implicit operator CandidateApplicationDetails?(Domain.GetApprenticeshipVacancy.CandidateApplicationDetails? source)
         {
@@ -152,6 +153,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
             {
                 Status = source.Status,
                 SubmittedDate = $"{source.SubmittedDate:dd MMMM yyyy}",
+                ApplicationId = source.ApplicationId
             };
         }
     }
