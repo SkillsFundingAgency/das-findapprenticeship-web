@@ -46,14 +46,14 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                                              DisabilityConfidence.InterviewUnderDisabilityConfident == SectionStatus.PreviousAnswer;
 
 
-        public bool IsApplicationComplete => EducationHistory.TrainingCourses == SectionStatus.Completed &&
-                                             EducationHistory.Qualifications == SectionStatus.Completed &&
-                                             WorkHistory.VolunteeringAndWorkExperience == SectionStatus.Completed &&
-                                             WorkHistory.Jobs == SectionStatus.Completed &&
-                                             (!ApplicationQuestions.ShowAdditionalQuestion1 || ApplicationQuestions.AdditionalQuestion1 == SectionStatus.Completed) &&
-                                             (!ApplicationQuestions.ShowAdditionalQuestion2 || ApplicationQuestions.AdditionalQuestion2 == SectionStatus.Completed) &&
-                                             InterviewAdjustments.RequestAdjustments == SectionStatus.Completed &&
-                                             (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfident == SectionStatus.Completed);
+        public bool IsApplicationComplete => (EducationHistory.TrainingCourses is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (EducationHistory.Qualifications is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (WorkHistory.VolunteeringAndWorkExperience is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (WorkHistory.Jobs is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (!ApplicationQuestions.ShowAdditionalQuestion1 || ApplicationQuestions.AdditionalQuestion1 is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (!ApplicationQuestions.ShowAdditionalQuestion2 || ApplicationQuestions.AdditionalQuestion2 is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (InterviewAdjustments.RequestAdjustments is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfident is SectionStatus.Completed or SectionStatus.PreviousAnswer);
 
         public EducationHistorySection EducationHistory { get; set; } = new();
         public WorkHistorySection WorkHistory { get; set; } = new();
