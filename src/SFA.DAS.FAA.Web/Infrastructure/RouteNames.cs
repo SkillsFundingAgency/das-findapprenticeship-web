@@ -82,4 +82,11 @@ public static class RouteNames
     {
         public const string YourApplications = nameof(YourApplications);
     }
+
+    public static class Error
+    {
+        public const string Error403 = "403";
+        public const string Error404 = "404";
+        public const string Error500 = "500";
+    }
 }
