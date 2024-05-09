@@ -364,15 +364,52 @@
                 <p class="govuk-body">
                     When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create
                     one at the same time as applying for this apprenticeship.
+                    @if (User == null)
+                    {
+                        <form class="form" method="post">
 
-                    <form class="form" method="post">
+                            <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                    Sign in to apply
+                                </button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        if (Model.ApplicationDetails is {Status : ApplicationStatus.Draft})
+                        {
+                            <form class="form" method="post">
 
-                        <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
-                            <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                Apply for apprenticeship
-                            </button>
-                        </div>
-                    </form>
+                                <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                    <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                        Continue your application
+                                    </button>
+                                </div>
+                            </form>
+                        }
+                        else if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted} or {Status : ApplicationStatus.Successful} or {Status : ApplicationStatus.Unsuccessful})
+                        {
+                            <p class="govuk-notification-banner__heading">
+                                You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
+                            </p>
+                            <p class="govuk-body">Check its status in your 
+                                <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">submitted applications</a>.
+                            </p>
+                        }
+                        else
+                        {
+                            <form class="form" method="post">
+
+                                <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                    <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                        Apply for apprenticeship
+                                    </button>
+                                </div>
+                            </form>
+                        }
+                    }
+                    
             </section>
         </div>
     </div>
