@@ -357,15 +357,13 @@
                 </p>
             </section>
             <section class="faa-vacancy__section faa-vacancy__section--last" id="apply">
-                <h2 class="govuk-heading-m">Apply now</h2>
-                <p>
-                    @Model.ClosingDate
-                </p>
-                <p class="govuk-body">
-                    When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create
-                    one at the same time as applying for this apprenticeship.
-                    @if (User == null)
+                
+                
+                    @if (User.Identity is { IsAuthenticated: false })
                     {
+                        <h2 class="govuk-heading-m">Apply now</h2>
+                        <p>@Model.ClosingDate</p>
+                        <p class="govuk-body"> When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create one at the same time as applying for this apprenticeship.</p>
                         <form class="form" method="post">
 
                             <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
@@ -377,31 +375,24 @@
                     }
                     else
                     {
-                        switch (Model.ApplicationDetails)
+                        if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted } or { Status : ApplicationStatus.Successful } or { Status : ApplicationStatus.Unsuccessful })
                         {
-                            case {Status : ApplicationStatus.Draft}:
-                                <form class="form" method="post">
-                                    <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
-                                        <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                            Continue your application
-                                        </button>
-                                    </div>
-                                </form>
-                                break;
-                            case { Status: ApplicationStatus.Submitted} or {Status : ApplicationStatus.Successful} or {Status : ApplicationStatus.Unsuccessful}:
-                                break;
-                            default:
-                                <form class="form" method="post">
-
-                                    <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
-                                        <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                        Apply for apprenticeship
-                                        </button>
-                                    </div>
-                                </form>
-                            break;
+                        }
+                        else
+                        {
+                            <h2 class="govuk-heading-m">Apply now</h2>
+                            <p>@Model.ClosingDate</p>
+                            <p class="govuk-body"> When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create one at the same time as applying for this apprenticeship.</p>
+                            <form class="form" method="post">
+                                <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                    <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                        @(Model.ApplicationDetails.Status == ApplicationStatus.Draft ? "Continue your application":" Apply for apprenticeship")
+                                    </button>
+                                </div>
+                            </form>
                         }
                     }
+                    
                     
             </section>
         </div>
