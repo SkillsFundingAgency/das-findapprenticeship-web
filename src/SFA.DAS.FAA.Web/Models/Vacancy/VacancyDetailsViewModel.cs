@@ -138,6 +138,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
     {
         public ApplicationStatus? Status { get; init; }
         public string? SubmittedDate { get; init; }
+        public string? WithdrawnDate { get; init; }
 
         public static implicit operator CandidateApplicationDetails?(Domain.GetApprenticeshipVacancy.CandidateApplicationDetails? source)
         {
@@ -146,7 +147,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
             return new CandidateApplicationDetails
             {
                 Status = source.Status,
-                SubmittedDate = $"{source.SubmittedDate:dd MMMM yyyy}",
+                SubmittedDate = $"{source.SubmittedDate:d MMMM yyyy}",
+                WithdrawnDate = $"{source.WithdrawnDate:d MMMM yyyy}"
             };
         }
     }
