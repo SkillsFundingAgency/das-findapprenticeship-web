@@ -386,7 +386,7 @@
                             <form class="form" method="post">
                                 <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
                                     <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                        @(Model.ApplicationDetails.Status == ApplicationStatus.Draft ? "Continue your application":" Apply for apprenticeship")
+                                        @(Model.ApplicationDetails !=null && Model.ApplicationDetails.Status == ApplicationStatus.Draft ? "Continue your application":" Apply for apprenticeship")
                                     </button>
                                 </div>
                             </form>
