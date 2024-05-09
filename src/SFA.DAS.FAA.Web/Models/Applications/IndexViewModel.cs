@@ -32,6 +32,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public bool IsClosingSoon { get; set; }
             public bool IsClosed { get; set; }
             public ApplicationStatus Status { get; set; }
+            public string ResponseNotes { get; set; } = null!;
         }
 
         public static IndexViewModel Map(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
@@ -42,7 +43,12 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                 PageTitle = $"{tab.GetTabTitle()} applications"
             };
 
-            foreach (var application in source.Applications.OrderByDescending(x => x.CreatedDate))
+            var applications = source.Applications.OrderByDescending(
+                x => tab == ApplicationsTab.Unsuccessful
+                    ? x.ResponseDate
+                    : x.CreatedDate);
+
+            foreach (var application in applications)
             {
                 var timeUntilClosing = application.ClosingDate.Date - dateTimeService.GetDateTime();
                 var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
@@ -62,8 +68,14 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     SubmittedDate = application.Status is (ApplicationStatus.Submitted)
                         ? $"Submitted on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
                         : string.Empty,
-                    ResponseDate = application.Status is (ApplicationStatus.Successful)
-                        ? $"Offered to you on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}"
+                    ResponseDate = application.Status switch
+                    {
+                        (ApplicationStatus.Successful) => $"Offered to you on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        ApplicationStatus.Unsuccessful => $"Feedback received {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        _ => string.Empty
+                    },
+                    ResponseNotes = application.Status is ApplicationStatus.Unsuccessful
+                        ? application.ResponseNotes
                         : string.Empty
                 };
 
