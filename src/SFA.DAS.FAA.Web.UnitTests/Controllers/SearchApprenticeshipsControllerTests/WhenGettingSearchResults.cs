@@ -104,6 +104,7 @@ public class WhenGettingSearchResults
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.PageNumber.Should().Be(pageNumber);
             actualModel?.Vacancies.Should().NotBeNullOrEmpty();
+            actualModel?.MapData.Should().NotBeNullOrEmpty();
             actualModel?.Sort.Should().Be(sort.ToString());
             actualModel?.SelectedRoutes.Should()
                 .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)

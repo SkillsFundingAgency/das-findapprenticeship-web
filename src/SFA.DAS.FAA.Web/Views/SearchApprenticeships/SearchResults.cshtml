@@ -1,6 +1,9 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
 @using SFA.DAS.FAA.Domain.Enums
+@using SFA.DAS.FAA.Web.TagHelpers
+@using WebEssentials.AspNetCore.CdnTagHelpers
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @section BackLink {
     @if (Model.SelectedRouteIds != null && Model.SelectedRouteIds.Any())
@@ -204,3 +207,6 @@
     </div>
 </div>
 <partial name="_Pagination" Model="@Model.PaginationViewModel" />
+<script>
+const roles = @Html.Raw(Json.Serialize(Model.MapData));
+</script>

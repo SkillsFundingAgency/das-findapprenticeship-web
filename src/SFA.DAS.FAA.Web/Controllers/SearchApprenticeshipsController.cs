@@ -158,6 +158,9 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         viewmodel.Vacancies = result.Vacancies.Count != 0
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : [];
+        viewmodel.MapData = result.Vacancies.Count != 0
+            ? result.Vacancies.Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService, c)).ToList()
+            : [];
         viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
         viewmodel.DisabilityConfident = request.DisabilityConfident;
         viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.TotalPages, filterUrl);
