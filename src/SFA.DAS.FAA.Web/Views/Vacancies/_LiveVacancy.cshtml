@@ -377,36 +377,29 @@
                     }
                     else
                     {
-                        if (Model.ApplicationDetails is {Status : ApplicationStatus.Draft})
+                        switch (Model.ApplicationDetails)
                         {
-                            <form class="form" method="post">
+                            case {Status : ApplicationStatus.Draft}:
+                                <form class="form" method="post">
+                                    <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                        <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                            Continue your application
+                                        </button>
+                                    </div>
+                                </form>
+                                break;
+                            case { Status: ApplicationStatus.Submitted} or {Status : ApplicationStatus.Successful} or {Status : ApplicationStatus.Unsuccessful}:
+                                break;
+                            default:
+                                <form class="form" method="post">
 
-                                <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
-                                    <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                        Continue your application
-                                    </button>
-                                </div>
-                            </form>
-                        }
-                        else if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted} or {Status : ApplicationStatus.Successful} or {Status : ApplicationStatus.Unsuccessful})
-                        {
-                            <p class="govuk-notification-banner__heading">
-                                You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
-                            </p>
-                            <p class="govuk-body">Check its status in your 
-                                <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">submitted applications</a>.
-                            </p>
-                        }
-                        else
-                        {
-                            <form class="form" method="post">
-
-                                <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
-                                    <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                    <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                        <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
                                         Apply for apprenticeship
-                                    </button>
-                                </div>
-                            </form>
+                                        </button>
+                                    </div>
+                                </form>
+                            break;
                         }
                     }
                     
