@@ -4,6 +4,7 @@ using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
+using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
@@ -147,8 +148,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
             return new CandidateApplicationDetails
             {
                 Status = source.Status,
-                SubmittedDate = $"{source.SubmittedDate:d MMMM yyyy}",
-                WithdrawnDate = $"{source.WithdrawnDate:d MMMM yyyy}"
+                SubmittedDate = source.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture),
+                WithdrawnDate = source.WithdrawnDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture),
             };
         }
     }
