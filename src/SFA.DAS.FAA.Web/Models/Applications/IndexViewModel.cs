@@ -21,18 +21,19 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
         public class Application
         {
-            public Guid Id { get; init; }
-            public string? VacancyReference { get; init; }
-            public string? Title { get; init; }
-            public string? EmployerName { get; init; }
-            public string? StartedOn { get; init; }
-            public string? ClosingDate { get; init; }
-            public string? SubmittedDate { get; init; }
-            public string? ResponseDate { get; init; }
-            public bool IsClosingSoon { get; init; }
-            public bool IsClosed { get; init; }
+            public Guid Id { get; set; }
+            public string? VacancyReference { get; set; }
+            public string? Title { get; set; }
+            public string? EmployerName { get; set; }
+            public string? StartedOn { get; set; }
+            public string? ClosingDate { get; set; }
+            public string? SubmittedDate { get; set; }
+            public string? ResponseDate { get; set; }
+            public bool IsClosingSoon { get; set; }
+            public bool IsClosed { get; set; }
+            public ApplicationStatus Status { get; set; }
+            public string ResponseNotes { get; set; } = null!;
             public DateTime CloseDateTime { get; set; }
-            public ApplicationStatus Status { get; init; }
         }
 
         public static IndexViewModel Map(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
@@ -44,7 +45,12 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                 PageTitle = $"{tab.GetTabTitle()} applications"
             };
 
-            foreach (var application in source.Applications.OrderByDescending(x => x.CreatedDate))
+            var applications = source.Applications.OrderByDescending(
+                x => tab == ApplicationsTab.Unsuccessful
+                    ? x.ResponseDate
+                    : x.CreatedDate);
+
+            foreach (var application in applications)
             {
                 var timeUntilClosing = application.ClosingDate.Date - dateTimeService.GetDateTime();
                 var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
@@ -65,8 +71,14 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     SubmittedDate = application.Status is (ApplicationStatus.Submitted)
                         ? $"Submitted on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
                         : string.Empty,
-                    ResponseDate = application.Status is (ApplicationStatus.Successful)
-                        ? $"Offered to you on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}"
+                    ResponseDate = application.Status switch
+                    {
+                        (ApplicationStatus.Successful) => $"Offered to you on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        ApplicationStatus.Unsuccessful => $"Feedback received {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        _ => string.Empty
+                    },
+                    ResponseNotes = application.Status is ApplicationStatus.Unsuccessful
+                        ? application.ResponseNotes
                         : string.Empty
                 };
 

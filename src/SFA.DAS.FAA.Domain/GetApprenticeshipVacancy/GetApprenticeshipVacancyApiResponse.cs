@@ -12,7 +12,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public string? OutcomeDescription { get; init; }
         public string? TrainingDescription { get; init; }
         public string? ThingsToConsider { get; init; }
-        public IEnumerable<string> Skills { get; init; }
+        public IEnumerable<string>? Skills { get; init; }
 
         public DateTime StartDate { get; init; }
         public DateTime ClosingDate { get; set; }
@@ -70,9 +70,10 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public string? ProviderContactName { get; init; }
         public string? AnonymousEmployerName { get; init; }
         public bool IsEmployerAnonymous { get; init; }
+        public bool IsClosed { get; set; }
 
-        public IEnumerable<VacancyQualificationApiResponse> Qualifications { get; init; }
-        public AddressApiResponse Address { get; init; }
+        public IEnumerable<VacancyQualificationApiResponse>? Qualifications { get; init; }
+        public AddressApiResponse? Address { get; init; }
         public List<string> CourseSkills { get; init; }
         public List<string> CourseCoreDuties { get; init; }
         public string? CourseOverviewOfRole { get; init; }

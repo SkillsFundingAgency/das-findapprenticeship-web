@@ -13,23 +13,20 @@
     <p class="govuk-hint">@Model.EmployerName</p>
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.StartedOn</p>
     <p class="govuk-hint">@Model.ClosingDate</p>
-    @if (!Model.IsClosed)
-    {
-        <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
-            @if (!Model.IsClosed)
-            {
-                <li>
-                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id })">
-                        Continue application
-                    </a>
-                </li>
-            }
-            @* 
-            <li class="govuk-summary-list__actions-list-item">
-                <a href="@Url.RouteUrl(RouteNames.Applications.DeleteApplication, new { applicationId = Model.Id })" class="govuk-link">
-                    Delete
+    <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
+        @if (!Model.IsClosed)
+        {
+            <li>
+                <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id })">
+                    Continue application
                 </a>
-            </li> *@
-        </ul>
-    }
+            </li>
+        }
+        @* <li class="govuk-summary-list__actions-list-item">
+            <a href="#" class="govuk-link">
+                <!--#TODO: Application delete link has to be updated -->
+                Delete
+            </a>
+        </li> *@
+    </ul>
 </li>

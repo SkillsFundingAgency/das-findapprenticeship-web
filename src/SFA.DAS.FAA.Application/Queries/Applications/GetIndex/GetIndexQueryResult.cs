@@ -18,6 +18,7 @@ public class GetIndexQueryResult
         public DateTime? SubmittedDate { get; set; }
         public DateTime? ResponseDate { get; set; }
         public ApplicationStatus Status { get; set; }
+        public string ResponseNotes { get; set; }
     }
 
     public static implicit operator GetIndexQueryResult(GetApplicationsApiResponse source)
@@ -35,6 +36,7 @@ public class GetIndexQueryResult
                 SubmittedDate = x.SubmittedDate,
                 ResponseDate = x.ResponseDate,
                 Status = x.Status,
+                ResponseNotes = x.ResponseNotes
             }).ToList()
         };
     }

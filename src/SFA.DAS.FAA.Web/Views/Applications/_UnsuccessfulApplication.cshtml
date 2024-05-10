@@ -1,0 +1,26 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel.Application
+<li class="das-search-results__list-item">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+        <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference })">
+            @Model.Title
+        </a>
+    </h2>
+    <p class="govuk-hint">@Model.EmployerName</p>
+    
+    <div class="feedback-card govuk-!-margin-bottom-3" style="background-color:#f4f4f4;padding:20px;margin-bottom:30px;">
+        <h3 class="govuk-heading-s">Feedback:</h3>
+        <p class="govuk-body">
+            @Model.ResponseNotes
+        </p>
+    </div>
+
+    <p class="govuk-body">@Model.ResponseDate</p>
+    <ul class="govuk-summary-list__actions-list">
+        <li class="govuk-summary-list__actions-list-item">
+            <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id })">
+                View application
+            </a>
+        </li>
+    </ul>
+</li>

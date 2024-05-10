@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
+using System.Globalization;
+using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.SearchResults;
@@ -27,6 +28,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? StartDate { get; init; }
         public string? PostedDate { get; init; }
         public string? ClosingDate { get; init; }
+        public string ClosedDate { get; init; }
         public string? Duration { get; init; }
         public int? PositionsAvailable { get; init; }
         public Address WorkLocation { get; init; } = new();
@@ -46,6 +48,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public List<string>? CourseSkills { get; init; } = [];
         public List<LevelResponse>? CourseLevels { get; init; } = [];
         public string? CourseLevelMapper { get; init; }
+        public bool IsClosed { get; set; }
         public CandidateApplicationDetails? ApplicationDetails { get; set; }
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
@@ -68,7 +71,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 TrainingProviderName = source.Vacancy?.ProviderName,
                 TrainingDescription = source.Vacancy?.TrainingDescription,
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
-                Skills = source.Vacancy?.Skills.ToList(),
+                Skills = source.Vacancy?.Skills?.ToList(),
                 EmployerWebsite =
                     VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
                 EmployerDescription = source.Vacancy?.EmployerDescription,
@@ -78,10 +81,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 ContactEmail = source.Vacancy?.EmployerContactEmail ?? source.Vacancy?.ProviderContactEmail,
                 ContactPhone = source.Vacancy?.EmployerContactPhone ?? source.Vacancy?.ProviderContactPhone,
                 CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
-                EssentialQualifications = source.Vacancy?.Qualifications
-                    .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
-                DesiredQualifications = source.Vacancy?.Qualifications.Where(fil => fil.Weighting == Weighting.Desired)
-                    .Select(l => (Qualification)l).ToList(),
+                EssentialQualifications = source.Vacancy?.Qualifications?
+                .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
+                DesiredQualifications = source.Vacancy?.Qualifications?.Where(fil => fil.Weighting == Weighting.Desired)
+                .Select(l => (Qualification)l).ToList(),
                 CourseSkills = source.Vacancy?.CourseSkills,
                 CourseCoreDuties = source.Vacancy?.CourseCoreDuties,
                 CourseOverviewOfRole = source.Vacancy?.CourseOverviewOfRole,
@@ -91,7 +94,9 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0
                     ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
                     : string.Empty,
-                ApplicationDetails = source.Vacancy?.Application
+                ApplicationDetails = source.Vacancy?.Application,
+                IsClosed = source.Vacancy?.IsClosed ?? false,
+                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}."
             };
     }
 
