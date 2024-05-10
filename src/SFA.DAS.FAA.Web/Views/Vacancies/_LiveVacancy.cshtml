@@ -1,6 +1,7 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 @{
     ViewBag.Title = Model.Title!;
@@ -23,7 +24,7 @@
                         You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
                     </p>
                     <p class="govuk-body">Check its status in your 
-                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">submitted applications</a>.
+                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications" asp-route-tab="@ApplicationsTab.Submitted">submitted applications</a>.
                     </p>
                 </div>
             </div>
