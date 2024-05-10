@@ -21,21 +21,23 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
         public class Application
         {
-            public Guid Id { get; set; }
-            public string? VacancyReference { get; set; }
-            public string? Title { get; set; }
-            public string? EmployerName { get; set; }
-            public string? StartedOn { get; set; }
-            public string? ClosingDate { get; set; }
-            public string? SubmittedDate { get; set; }
-            public string? ResponseDate { get; set; }
-            public bool IsClosingSoon { get; set; }
-            public bool IsClosed { get; set; }
-            public ApplicationStatus Status { get; set; }
+            public Guid Id { get; init; }
+            public string? VacancyReference { get; init; }
+            public string? Title { get; init; }
+            public string? EmployerName { get; init; }
+            public string? StartedOn { get; init; }
+            public string? ClosingDate { get; init; }
+            public string? SubmittedDate { get; init; }
+            public string? ResponseDate { get; init; }
+            public bool IsClosingSoon { get; init; }
+            public bool IsClosed { get; init; }
+            public DateTime CloseDateTime { get; set; }
+            public ApplicationStatus Status { get; init; }
         }
 
         public static IndexViewModel Map(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
         {
+            var expiredApplications = new List<Application>();
             var result = new IndexViewModel
             {
                 SelectedTab = tab,
@@ -53,6 +55,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     VacancyReference = application.VacancyReference,
                     Title = application.Title,
                     EmployerName = application.EmployerName,
+                    CloseDateTime = application.ClosingDate,
                     StartedOn =
                         $"Started on {application.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, application.ClosingDate),
@@ -69,17 +72,19 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
                 if (applicationViewModel.IsClosed)
                 {
-                    result.ExpiredApplications.Add(applicationViewModel);
+                    expiredApplications.Add(applicationViewModel);
                 }
                 else
                 {
                     result.Applications.Add(applicationViewModel);
                 }
             }
-
             result.TabTitle = tab.GetTabTitle();
             result.TabText = result.Applications.Count > 0 ? tab.GetTabPopulatedText() : tab.GetTabEmptyText();
             result.IsTabTextInset = tab == ApplicationsTab.Started && result.Applications.Count > 0;
+            result.ExpiredApplications = [.. expiredApplications
+                .OrderByDescending(fil => fil.CloseDateTime)
+                .ThenBy(fil => fil.Title)];
 
             return result;
         }
