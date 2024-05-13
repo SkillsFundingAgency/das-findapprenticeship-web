@@ -14,15 +14,23 @@ public class ApprenticeshipMapData
         {
             Job = new ApprenticeshipMapJob
             {
+                Id = source.Id,
                 Title = source.Title,
+                Company = source.EmployerName,
+                AddressLine1 = source.AddressLine1,
+                AddressLine2 = source.AddressLine2,
+                AddressLine3 = source.AddressLine3,
+                AddressLine4 = source.AddressLine4,
+                Postcode = source.Postcode,
+                Distance = source.Distance,
+                Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
                 Wage = source.WageText,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
-                Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
-                Company = source.EmployerName
+                PostedDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.PostedDate)
             },
             Position = new MapPosition
             {
-                Lon = source.Lon,
+                Lng = source.Lon,
                 Lat = source.Lat
             }
         };
@@ -32,22 +40,22 @@ public class ApprenticeshipMapData
 public class MapPosition
 {
     public double? Lat { get; set; }
-    public double? Lon { get; set; }
+    public double? Lng { get; set; }
 }
 
 public class ApprenticeshipMapJob
 {
-    public string Title { get; set; }
-    public string Company { get; set; }
-    public string Apprenticeship { get; set; }
-    public string Wage { get; set; }
-    public string ClosingDate { get; set; }
-    // job: {
-    //     title: 'Business Apprenticeship',
-    //     company: 'AOF Consulting Ltd',
-    //     standard: 'Business analyst (Level 4)',
-    //     wage: '£25,000',
-    //     closes: '30 October at 11:59pm',
-    //     status: ''
-    // }
+    public long Id { get; set; }
+    public string? Title { get; set; }
+    public string? Company { get; set; }
+    public string? AddressLine1 { get; set; }
+    public string? AddressLine2 { get; set; }
+    public string? AddressLine3 { get; set; }
+    public string? AddressLine4 { get; set; }
+    public string? Postcode { get; set; }
+    public decimal? Distance { get; set; }
+    public string? Apprenticeship { get; set; }
+    public string? Wage { get; set; }
+    public string? ClosingDate { get; set; }
+    public string? PostedDate { get; set; }
 }
