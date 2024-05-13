@@ -44,6 +44,9 @@ public class WhenGettingSearchResults
         bool disabilityConfident,
         VacancySort sort,
         Guid candidateId,
+        Guid govIdentifier,
+        bool showBanner,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageNumber = pageNumber;
@@ -55,7 +58,11 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        cacheStorageService
+            .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
+            .ReturnsAsync(showBanner);
+
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -64,9 +71,9 @@ public class WhenGettingSearchResults
                 {
                     User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
                     }))
-
                 }
             }
         };
@@ -115,6 +122,7 @@ public class WhenGettingSearchResults
             actualModel?.Levels.Where(x => x.Id.ToString() != levelIds.First()).Select(x => x.Selected).ToList()
                 .TrueForAll(x => x).Should().BeFalse();
             actualModel.DisabilityConfident.Should().Be(disabilityConfident);
+            actualModel.ShowAccountCreatedBanner.Should().Be(showBanner);
 
             if (distanceIsValid) 
             {
@@ -139,6 +147,7 @@ public class WhenGettingSearchResults
         Guid candidateId,
         GetSearchResultsResult queryResult,
         [Frozen] Mock<IMediator> mediator,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         // Arrange
@@ -157,7 +166,7 @@ public class WhenGettingSearchResults
                 && c.DisabilityConfident!.Equals(disabilityConfident)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -197,6 +206,7 @@ public class WhenGettingSearchResults
         GetSearchResultsResult result,
         List<string>? routeIds,
         Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -207,7 +217,7 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -245,6 +255,7 @@ public class WhenGettingSearchResults
         GetSearchResultsResult result,
         List<string>? routeIds,
         Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -255,7 +266,7 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -289,6 +300,7 @@ public class WhenGettingSearchResults
         GetSearchResultsResult result,
         List<string>? routeIds,
         Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -299,7 +311,7 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -334,6 +346,7 @@ public class WhenGettingSearchResults
         GetSearchResultsResult result,
         List<string>? routeIds,
         Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -345,7 +358,7 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext

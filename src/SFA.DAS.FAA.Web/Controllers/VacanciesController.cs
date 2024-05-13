@@ -8,6 +8,7 @@ using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Vacancy;
+using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
@@ -15,6 +16,7 @@ namespace SFA.DAS.FAA.Web.Controllers;
 public class VacanciesController(
     IMediator mediator,
     IDateTimeService dateTimeService,
+    ICacheStorageService cacheStorageService,
     IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
     [Route("vacancies/{vacancyReference}", Name = RouteNames.Vacancies)]
@@ -34,6 +36,10 @@ public class VacanciesController(
         });
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
+        viewModel.ShowAccountCreatedBanner =
+            await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
+                $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
+
         return View(viewModel);
     }
 

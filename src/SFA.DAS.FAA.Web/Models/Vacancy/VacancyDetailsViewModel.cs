@@ -50,6 +50,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? CourseLevelMapper { get; init; }
         public bool IsClosed { get; set; }
         public CandidateApplicationDetails? ApplicationDetails { get; set; }
+        public bool ShowAccountCreatedBanner { get; set; } = false;
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source) => new VacancyDetailsViewModel

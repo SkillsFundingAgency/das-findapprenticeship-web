@@ -445,6 +445,8 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
 
+            await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
+
             if (returnUrl != null)
             {
                 return Redirect(returnUrl);
