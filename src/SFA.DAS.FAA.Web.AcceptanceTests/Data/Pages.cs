@@ -8,6 +8,8 @@ public static class Pages
         [
             //Vacancies
             new Page { Name = "Vacancy Details", Url= "/vacancies/{vacancyReference}" },
+            //Applications
+            new Page { Name = "Applications", Url = "/applications" },
             //TaskList
             new Page { Name = "Application Tasklist", Url = "/applications/{applicationId}" },
             //Jobs

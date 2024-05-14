@@ -1,0 +1,24 @@
+.faa-inline-list {
+  @include govuk-font($size: 19);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  & > li {
+    display: inline-block;
+  }
+}
+
+.faa-inline-list:empty {
+  background-color: red;
+}
+
+.faa-inline-list--bar {
+  & > li {
+    border-right: 1px solid $govuk-border-colour;
+    padding-right: 13px;
+    margin-right: 10px;
+    &:last-child {
+      border-right: none;
+    }
+  }
+}
