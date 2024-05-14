@@ -2,7 +2,7 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 
-@if (Model.IsNoSearchResultsByLocation)
+@if (Model.NoSearchResultsByUnknownLocation)
 {
     <h2 class="govuk-heading-m">We can’t find the location you entered</h2>
     <p class="govuk-body">We don’t recognise <b>@Model.Location</b>.</p>

@@ -298,12 +298,9 @@ public class WhenGettingSearchResults
         actualModel?.PageNumber.Should().Be(result.PageNumber);
     }
 
-    [Test]
-    [MoqInlineAutoData("some unknown location", true)]
-    [MoqInlineAutoData("", false)]
+    [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_No_Search_Results_Found_View_Returned(
         string? location,
-        bool isNoSearchResultsByLocation,
         int? distance,
         GetSearchResultsResult result,
         List<string>? routeIds,
@@ -375,7 +372,88 @@ public class WhenGettingSearchResults
             actualModel?.Levels.Where(x => x.Id.ToString() != levelIds!.First()).Select(x => x.Selected).ToList()
                 .TrueForAll(x => x).Should().BeFalse();
             actualModel?.DisabilityConfident.Should().Be(disabilityConfident);
-            actualModel?.IsNoSearchResultsByLocation.Should().Be(isNoSearchResultsByLocation);
+            actualModel?.NoSearchResultsByUnknownLocation.Should().BeFalse();
+            actualModel?.Distance.Should().Be(10);
+            actualModel?.PageTitle.Should().Be("No apprenticeships found");
+        }
+    }
+
+    [Test, MoqAutoData]
+    public async Task Then_The_Mediator_Query_Is_Called_And_No_Search_Results_Found_With_UnknownLocation_View_Returned(
+        string? location,
+        int? distance,
+        GetSearchResultsResult result,
+        List<string>? routeIds,
+        List<string>? levelIds,
+        string? searchTerm,
+        int pageNumber,
+        bool disabilityConfident,
+        VacancySort sort,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        result.PageNumber = pageNumber;
+        result.Sort = sort.ToString();
+        result.VacancyReference = null;
+        result.Vacancies = [];
+        result.Location = null;
+        result.Total = 0;
+        distance = 3;
+        var mediator = new Mock<IMediator>();
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        {
+            Url = mockUrlHelper.Object
+        };
+        routeIds = [result.Routes.First().Id.ToString()];
+        result.VacancyReference = null;
+        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
+                c.SearchTerm!.Equals(searchTerm)
+                && c.Location!.Equals(location)
+                && c.SelectedRouteIds!.Equals(routeIds)
+                && c.PageNumber!.Equals(pageNumber)
+                && c.PageSize!.Equals(10)
+                && c.DisabilityConfident!.Equals(disabilityConfident)
+            ), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        var actual = await controller.SearchResults(new GetSearchResultsRequest
+        {
+            Location = location,
+            Distance = distance,
+            RouteIds = routeIds,
+            SearchTerm = searchTerm,
+            PageNumber = pageNumber,
+            LevelIds = levelIds,
+            DisabilityConfident = disabilityConfident
+        }) as ViewResult;
+
+        using (new AssertionScope())
+        {
+            Assert.That(actual, Is.Not.Null);
+            var actualModel = actual!.Model as SearchResultsViewModel;
+            actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
+            actualModel?.SelectedRouteIds.Should().Equal(routeIds);
+            actualModel?.SelectedRouteCount.Should().Be(routeIds.Count);
+            actualModel?.SelectedLevelCount.Should().Be(levelIds!.Count);
+            actualModel?.Location.Should().BeEquivalentTo(location);
+            actualModel?.PageNumber.Should().Be(pageNumber);
+            actualModel?.Vacancies.Should().BeNullOrEmpty();
+            actualModel?.Sort.Should().Be(sort.ToString());
+            actualModel?.SelectedRoutes.Should()
+                .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)
+                    .ToList());
+            actualModel?.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First())?.Selected.Should().BeTrue();
+            actualModel?.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
+                .TrueForAll(x => x).Should().BeFalse();
+            actualModel?.Levels.FirstOrDefault(x => x.Id.ToString() == levelIds!.First())?.Selected.Should().BeTrue();
+            actualModel?.Levels.Where(x => x.Id.ToString() != levelIds!.First()).Select(x => x.Selected).ToList()
+                .TrueForAll(x => x).Should().BeFalse();
+            actualModel?.DisabilityConfident.Should().Be(disabilityConfident);
+            actualModel?.NoSearchResultsByUnknownLocation.Should().BeTrue();
             actualModel?.Distance.Should().Be(10);
             actualModel?.PageTitle.Should().Be("No apprenticeships found");
         }

@@ -126,7 +126,7 @@
         </div>
     </div>
     <div class="govuk-grid-column-two-thirds">
-        @if (Model.Vacancies is { Count: 0 })
+        @if (Model.Vacancies is { Count: 0 } || Model.NoSearchResultsByUnknownLocation)
         {
             <partial name="_NoSearchResult" model="Model" />
         }

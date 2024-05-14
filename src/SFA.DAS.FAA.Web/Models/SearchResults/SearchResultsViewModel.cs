@@ -29,7 +29,7 @@ public class SearchResultsViewModel : ViewModelBase
     public int SelectedLevelCount { get; set; }
     public int SelectedRouteCount { get; set; }
     public string? PageTitle { get; set; }
-    public bool IsNoSearchResultsByLocation { get; set; } = false;
+    public bool NoSearchResultsByUnknownLocation { get; set; }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {

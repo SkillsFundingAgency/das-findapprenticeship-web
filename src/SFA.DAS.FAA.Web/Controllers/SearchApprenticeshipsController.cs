@@ -172,7 +172,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
         viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
         viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
-        viewmodel.IsNoSearchResultsByLocation = !string.IsNullOrEmpty(request.Location) && result.Vacancies.Count == 0;
+        viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
         viewmodel.PageTitle = GetPageTitle(viewmodel);
 
         return View(viewmodel);
