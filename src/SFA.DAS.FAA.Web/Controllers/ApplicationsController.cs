@@ -18,6 +18,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("applications", Name = RouteNames.Applications.ViewApplications)]
         public async Task<IActionResult> Index(ApplicationsTab tab = ApplicationsTab.Started)
         {
+            var bannerMessage = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-VacancyWithdrawn");
+            if (!string.IsNullOrEmpty(bannerMessage))
+            {
+                await cacheStorageService.Remove($"{User.Claims.GovIdentifier()}-VacancyWithdrawn");
+            }
             var result = await mediator.Send(new GetIndexQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
@@ -25,7 +30,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
             var viewModel = IndexViewModel.Map(tab, result, dateTimeService);
-
+            viewModel.BannerMessage = bannerMessage;
             return View(viewModel);
         }
 
