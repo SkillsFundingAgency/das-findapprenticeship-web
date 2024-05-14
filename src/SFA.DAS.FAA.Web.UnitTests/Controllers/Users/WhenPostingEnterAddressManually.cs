@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.ManuallyEnteredAddress;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
@@ -19,6 +20,7 @@ public class WhenPostingEnterAddressManually
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Phone_Number_Page(
         string govIdentifier,
         string email,
+        Guid candidateId,
         EnterAddressManuallyViewModel model,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
@@ -32,6 +34,7 @@ public class WhenPostingEnterAddressManually
                     {
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
                         new Claim(ClaimTypes.Email, email),
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
                     }))
 
             }

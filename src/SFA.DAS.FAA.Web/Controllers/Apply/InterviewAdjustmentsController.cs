@@ -25,7 +25,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetInterviewAdjustmentsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             if (!isEdit && result.Status is not null)
@@ -56,7 +56,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetInterviewAdjustmentsQuery
                 {
                     ApplicationId = applicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 });
 
                 var model = new InterviewAdjustmentsViewModel
@@ -74,7 +74,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             var updateCommand = new UpdateInterviewAdjustmentsCommand
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = viewModel.ApplicationId,
                 InterviewAdjustmentsDescription = viewModel.DoYouWantInterviewAdjustments!.Value
                     ? viewModel.InterviewAdjustmentsDescription
@@ -96,7 +96,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetInterviewAdjustmentsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
             
             var viewModel = new InterviewAdjustmentSummaryViewModel
@@ -120,7 +120,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetInterviewAdjustmentsQuery
                 {
                     ApplicationId = applicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 });
 
                 viewModel = new InterviewAdjustmentSummaryViewModel
@@ -136,7 +136,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             var updateCommand = new UpdateInterviewAdjustmentsCommand
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = viewModel.ApplicationId,
                 InterviewAdjustmentsDescription = !IsNullOrEmpty(viewModel.SupportRequestAnswer) ? viewModel.SupportRequestAnswer : string.Empty,
                 InterviewAdjustmentsSectionStatus = viewModel.IsSectionCompleted!.Value ? SectionStatus.Completed : SectionStatus.Incomplete

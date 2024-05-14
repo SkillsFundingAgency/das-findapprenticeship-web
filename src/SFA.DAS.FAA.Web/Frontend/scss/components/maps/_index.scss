@@ -1,0 +1,121 @@
+.faa-map__container {
+  display: none;
+  position: fixed !important;
+  z-index: 999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #b1c7ee;
+}
+
+.faa-map__body--open .faa-map__container {
+  display: block;
+}
+
+.faa-map__close {
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+  border-radius: 2px;
+}
+
+.faa-map__close a {
+  display: flex;
+  align-items: end;
+}
+
+.faa-map__close-label {
+  display: none;
+}
+
+@media (min-width: 40.0625em) {
+  .faa-map__close-label {
+    color: #0b0c0c;
+    font-size: 19px;
+    display: block;
+    margin-right: 10px;
+  }
+}
+
+.faa-map__close-icon {
+  display: block;
+  height: 20px;
+  width: 20px;
+  position: relative;
+}
+
+.faa-map__close-icon:after,
+.faa-map__close-icon:before {
+  width: 24px;
+  height: 3px;
+  content: "";
+  display: block;
+  background-color: #0b0c0c;
+  position: absolute;
+  transform: rotate(45deg);
+  top: 8px;
+  left: -2px;
+}
+
+.faa-map__close-icon:before {
+  transform: rotate(135deg);
+}
+
+.faa-map__panel {
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+  border-radius: 2px;
+  font-size: 20px;
+  color: #0b0c0c;
+  font-family: "GDS Transport", arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.faa-map__panel--hidden {
+  display: none;
+}
+
+.faa-map__panel--role {
+  width: 100%;
+}
+
+@media (min-width: 40.0625em) {
+  .faa-map__panel--role {
+    width: 380px;
+    margin-right: 10px;
+  }
+}
+
+.faa-map__body--open {
+  overflow: hidden;
+}
+
+.faa-map__marker {
+  height: 40px;
+  width: 30px;
+}
+
+.faa-map__marker > svg {
+  height: 40px;
+}
+
+.faa-map__marker.highlight > svg > path {
+  fill: #1d70b8;
+}
+
+a[href^="http://maps.google.com/maps"],
+a[href^="https://maps.google.com/maps"],
+a[href^="https://www.google.com/maps"]
+{
+  display: none !important;
+}
+.gm-bundled-control .gmnoprint {
+  display: block;
+}
+.gmnoprint:not(.gm-bundled-control) {
+  display: none;
+}

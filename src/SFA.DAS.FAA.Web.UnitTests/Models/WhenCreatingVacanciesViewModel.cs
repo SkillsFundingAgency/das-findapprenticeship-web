@@ -22,7 +22,10 @@ public class WhenCreatingVacanciesViewModel
             .Excluding(c=>c.Id)
             .Excluding(c=>c.CourseTitle)
             .Excluding(c=>c.Postcode)
-            );
+            .Excluding(c => c.CandidateApplicationDetails)
+            .Excluding(c => c.Lat)
+            .Excluding(c => c.Lon)
+        );
         actual.CourseTitle.Should().Be($"{vacancies.CourseTitle} (level {vacancies.CourseLevel})");
         actual.VacancyPostCode.Should().Be(vacancies.Postcode);
     }

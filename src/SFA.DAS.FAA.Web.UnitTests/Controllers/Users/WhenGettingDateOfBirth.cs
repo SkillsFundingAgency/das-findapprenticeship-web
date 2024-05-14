@@ -9,12 +9,13 @@ using NUnit.Framework;
 using CreateAccount.GetCandidateDateOfBirth;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.Testing.AutoFixture;
+using SFA.DAS.FAA.Web.AppStart;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingDateOfBirth
 {
     [Test, MoqAutoData]
-    public async Task Then_View_Is_Returned(string govIdentifier, [Frozen] Mock<IMediator> mediator, [Greedy] UserController controller)
+    public async Task Then_View_Is_Returned(string govIdentifier, Guid candidateId, [Frozen] Mock<IMediator> mediator, [Greedy] UserController controller)
     {
         controller.ControllerContext = new ControllerContext
         {
@@ -22,7 +23,8 @@ public class WhenGettingDateOfBirth
             {
                 User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier)
+                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
                     }))
 
             }

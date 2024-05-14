@@ -1,7 +1,7 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Apply.ApplicationSummaryViewModel;
 @{
-    ViewBag.Title = "Check your application before submitting – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = "Check your application before submitting – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>

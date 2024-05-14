@@ -29,10 +29,14 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
                     Email = email
                 };
 
-                await service.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
-                var requestPath = context.HttpContext.Request.Path;
-                context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new {returnUrl = requestPath});
-                return;    
+                var response = await service.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
+
+                if (response.Status != UserStatus.Completed)
+                {
+                    var requestPath = context.HttpContext.Request.Path;
+                    context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new {returnUrl = requestPath});
+                    return;    
+                }
             }
         }
         await next();
