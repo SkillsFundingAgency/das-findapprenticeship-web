@@ -18,7 +18,7 @@
             <a class="govuk-link" href="#">View application</a> <!--#TODO: Application preview link has to be updated -->
         </li>
         <li class="govuk-summary-list__actions-list-item">
-            <a class="govuk-link" href="#">Withdraw application</a> <!--#TODO: Application withdrawn link has to be updated -->
+            <a class="govuk-link" asp-route="@RouteNames.Applications.WithdrawApplicationGet" asp-route-applicationId="@Model.Id">Withdraw application</a> 
         </li>
     </ul>
 </li>
