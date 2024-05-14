@@ -8,7 +8,7 @@ public class GetWithdrawApplicationQueryResult
 
     public string? EmployerName { get; set; }
 
-    public DateTimeOffset SubmittedDate { get; set; }
+    public DateTime? SubmittedDate { get; set; }
 
-    public DateTimeOffset ClosingDate { get; set; }
+    public DateTime ClosingDate { get; set; }
 }
