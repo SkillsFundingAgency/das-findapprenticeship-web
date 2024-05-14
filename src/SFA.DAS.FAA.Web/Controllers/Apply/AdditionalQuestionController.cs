@@ -23,9 +23,9 @@ public class AdditionalQuestionController(IMediator mediator) : Controller
         var result = await mediator.Send(new GetAdditionalQuestionQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId(),
-            AdditionalQuestionId = additionalQuestionId,
             AdditionalQuestion = additionalQuestion,
+            CandidateId = (Guid)User.Claims.CandidateId()!,
+            AdditionalQuestionId = additionalQuestionId
         });
 
         return View(AddViewPath, new AddAdditionalQuestionViewModel
@@ -48,7 +48,7 @@ public class AdditionalQuestionController(IMediator mediator) : Controller
 
         var command = new AddAdditionalQuestionCommand
         {
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             ApplicationId = applicationId,
             Id = additionalQuestionId,
             Answer = viewModel.AdditionalQuestionAnswer,

@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using SFA.DAS.FAT.Domain.Interfaces;
+﻿using SFA.DAS.FAT.Domain.Interfaces;
+using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Services
 {

@@ -1,7 +1,7 @@
 ﻿@using SFA.DAS.FAA.Web.Models.User
 @model EnterAddressManuallyViewModel
 @{
-    ViewBag.Title = "What is your address? – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = "What is your address? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
     <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.SelectAddressPostcode" asp-route-change="@Model.IsEdit">Back</a>

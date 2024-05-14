@@ -31,7 +31,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetQualificationsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var viewModel = QualificationsViewModel.MapFromQueryResult(applicationId, result);
@@ -48,7 +48,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetQualificationsQuery
                 {
                     ApplicationId = model.ApplicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 });
 
                 var viewModel = QualificationsViewModel.MapFromQueryResult(model.ApplicationId, result);
@@ -59,7 +59,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 var completeSectionCommand = new UpdateQualificationsCommand
                 {
-                    CandidateId = User.Claims.CandidateId(),
+                    CandidateId = (Guid)User.Claims.CandidateId()!,
                     ApplicationId = model.ApplicationId,
                     IsComplete = model.IsSectionCompleted ?? false
                 };
@@ -77,7 +77,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(new UpdateQualificationsCommand
             {
                 ApplicationId = model.ApplicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 IsComplete = model.DoYouWantToAddAnyQualifications == false
             });
 
@@ -88,7 +88,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("apply/{applicationId}/qualifications/add/select-type", Name = RouteNames.ApplyApprenticeship.AddQualificationSelectType)]
         public async Task<IActionResult> AddQualificationSelectType(Guid applicationId)
         {
-            var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery{ ApplicationId = applicationId, CandidateId = User.Claims.CandidateId()});
+            var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery{ ApplicationId = applicationId, CandidateId = (Guid)User.Claims.CandidateId()!});
             
             var viewModel = new AddQualificationSelectTypeViewModel
             {
@@ -110,7 +110,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         {
             if (model.QualificationReferenceId == Guid.Empty)
             {
-                var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery{ ApplicationId = model.ApplicationId, CandidateId = User.Claims.CandidateId()});
+                var qualificationTypes = await mediator.Send(new GetQualificationTypesQuery{ ApplicationId = model.ApplicationId, CandidateId = (Guid)User.Claims.CandidateId()!});
             
                 var viewModel = new AddQualificationSelectTypeViewModel
                 {
@@ -139,7 +139,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             {
                 ApplicationId = applicationId,
                 QualificationReferenceId = qualificationReferenceId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 QualificationId = id
             });
 
@@ -173,7 +173,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 {
                     ApplicationId = model.ApplicationId,
                     QualificationReferenceId = model.QualificationReferenceId,
-                    CandidateId = User.Claims.CandidateId(),
+                    CandidateId = (Guid)User.Claims.CandidateId()!,
                     QualificationId = model.SingleQualificationId,
                 });
                 var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel(result.QualificationType.Name, result.QualificationType.Id);
@@ -185,7 +185,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             
             await mediator.Send(new UpsertQualificationCommand
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = model.ApplicationId,
                 QualificationReferenceId = model.QualificationReferenceId,
                 Subjects = model.Subjects
@@ -214,7 +214,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetDeleteQualificationsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 QualificationType = qualificationReferenceId,
                 Id = id
             });
@@ -231,7 +231,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(new DeleteQualificationsCommand
             {
                 ApplicationId = viewModel.ApplicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 QualificationReferenceId = viewModel.QualificationReferenceId,
                 Id = viewModel.Id
             });

@@ -27,7 +27,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         var result = await mediator.Send(new GetTrainingCoursesQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId()
+            CandidateId = (Guid)User.Claims.CandidateId()!
         });
 
         var viewModel = new TrainingCoursesViewModel
@@ -52,7 +52,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             var result = await mediator.Send(new GetTrainingCoursesQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             viewModel = new TrainingCoursesViewModel
@@ -73,7 +73,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             viewModel.DoYouWantToAddAnyTrainingCourses = viewModel.DoYouWantToAddAnyTrainingCourses == null ? false : viewModel.DoYouWantToAddAnyTrainingCourses;
             var completeSectionCommand = new UpdateTrainingCoursesApplicationCommand
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = viewModel.ApplicationId,
                 TrainingCoursesSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.Incomplete
             };
@@ -87,7 +87,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         {
             var command = new UpdateTrainingCoursesApplicationCommand
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = viewModel.ApplicationId,
                 TrainingCoursesSectionStatus = SectionStatus.Completed
             };
@@ -123,7 +123,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
         var command = new AddTrainingCourseCommand
         {
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             ApplicationId = request.ApplicationId,
             CourseName = request.CourseName,
             YearAchieved = int.Parse(request.YearAchieved)
@@ -141,7 +141,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         var result = await mediator.Send(new GetTrainingCourseQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             TrainingCourseId = trainingCourseId
         });
 
@@ -163,7 +163,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         {
             TrainingCourseId = request.TrainingCourseId,
             ApplicationId = request.ApplicationId,
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             CourseName = request.CourseName,
             YearAchieved = int.Parse(request.YearAchieved)
         };
@@ -180,7 +180,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         var result = await mediator.Send(new GetDeleteTrainingCourseQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             TrainingCourseId = trainingCourseId
         });
 
@@ -197,7 +197,7 @@ public class TrainingCoursesController(IMediator mediator) : Controller
         {
             var command = new DeleteTrainingCourseCommand
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = model.ApplicationId,
                 TrainingCourseId = model.TrainingCourseId
             };
