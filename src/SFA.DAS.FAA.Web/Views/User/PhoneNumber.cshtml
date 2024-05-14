@@ -1,6 +1,6 @@
 ﻿@model SFA.DAS.FAA.Web.Models.User.PhoneNumberViewModel
 @{
-    ViewBag.Title = "What is your telephone number? – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = "What is your telephone number? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
     <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@(!Model.ReturnToConfirmationPage ? Model.Postcode : "")">Back</a>

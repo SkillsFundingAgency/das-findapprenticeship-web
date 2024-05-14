@@ -32,7 +32,7 @@ public class WhenGettingUserClaims
 
         var actual = user.Claims.CandidateId();
 
-        actual.Should().Be(Guid.Empty);
+        actual.Should().BeNull();
     }
     
     [Test]
@@ -45,7 +45,7 @@ public class WhenGettingUserClaims
 
         var actual = user.Claims.CandidateId();
 
-        actual.Should().Be(Guid.Empty);
+        actual.Should().BeNull();
     }
     
     [Test, AutoData]

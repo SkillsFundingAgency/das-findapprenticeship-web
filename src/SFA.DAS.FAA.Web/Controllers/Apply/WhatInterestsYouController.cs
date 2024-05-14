@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var result = await mediator.Send(new GetWhatInterestsYouQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var viewModel = new WhatInterestsYouViewModel
@@ -45,7 +45,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 var result = await mediator.Send(new GetWhatInterestsYouQuery
                 {
                     ApplicationId = applicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 });
 
                 var viewModel = new WhatInterestsYouViewModel
@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(new UpdateWhatInterestsYouCommand
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 AnswerText = model.AnswerText ?? string.Empty,
                 IsComplete = model.IsSectionCompleted ?? false
             });

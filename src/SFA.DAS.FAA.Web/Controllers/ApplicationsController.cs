@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             var result = await mediator.Send(new GetIndexQuery
             {
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 Status = tab.ToApplicationStatus()
             });
 

@@ -1,6 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel.Application
-<li class="das-search-results__list-item">
+<li class="das-search-results__list-item govuk-!-margin-bottom-4">
     @if (Model.IsClosingSoon)
     {
         <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
@@ -13,7 +13,7 @@
     <p class="govuk-hint">@Model.EmployerName</p>
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.SubmittedDate</p>
     <p class="govuk-hint">@Model.ClosingDate</p>
-    <ul class="govuk-summary-list__actions-list">
+    <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
         <li class="govuk-summary-list__actions-list-item">
             <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplication, new { applicationId = Model.Id })">View application</a>
         </li>

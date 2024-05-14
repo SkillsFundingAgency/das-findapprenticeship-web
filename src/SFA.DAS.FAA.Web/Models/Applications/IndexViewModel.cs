@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                         ? $"Submitted on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
                         : string.Empty,
                     ResponseDate = application.Status is (ApplicationStatus.Successful)
-                        ? $"Offered to you on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}"
+                        ? $"Offered on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}"
                         : string.Empty
                 };
 
