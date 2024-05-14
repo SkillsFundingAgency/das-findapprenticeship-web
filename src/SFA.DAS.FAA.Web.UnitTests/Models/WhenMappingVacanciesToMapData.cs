@@ -22,7 +22,7 @@ public class WhenMappingVacanciesToMapData
         var actual = new ApprenticeshipMapData().MapToViewModel(dateTimeService.Object, source);
 
         actual.Position.Lat.Should().Be(source.Lat);
-        actual.Position.Lon.Should().Be(source.Lon);
+        actual.Position.Lng.Should().Be(source.Lon);
         actual.Job.Title.Should().Be(source.Title);
         actual.Job.Apprenticeship.Should().Be($"{source.CourseTitle} (level {source.CourseLevel})");
         actual.Job.Company.Should().Be(source.EmployerName);
