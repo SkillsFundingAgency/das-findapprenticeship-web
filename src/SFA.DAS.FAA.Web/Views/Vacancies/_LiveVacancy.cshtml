@@ -4,7 +4,7 @@
 @using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 @{
-    ViewBag.Title = Model.Title!;
+    ViewData["Title"] = Model.Title!;
 }
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
