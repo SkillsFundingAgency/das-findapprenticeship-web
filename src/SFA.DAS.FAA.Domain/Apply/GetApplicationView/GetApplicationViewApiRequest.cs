@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
 {
-    public record GetApplicationViewApiRequest(Guid ApplicationId, Guid CandidateId) : IGetApiRequest
+    public record GetApplicationViewApiRequest(Guid ApplicationId, Guid? CandidateId) : IGetApiRequest
     {
         public string GetUrl => $"applications/{ApplicationId}/{CandidateId}/view";
     }

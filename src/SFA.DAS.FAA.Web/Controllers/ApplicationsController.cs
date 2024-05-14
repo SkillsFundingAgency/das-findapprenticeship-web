@@ -43,7 +43,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var query = new GetApplicationViewQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = User.Claims.CandidateId()!
             };
             var result = await mediator.Send(query);
 
