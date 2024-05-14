@@ -17,6 +17,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public DateTime StartDate { get; init; }
         public DateTime ClosingDate { get; set; }
         public DateTime PostedDate { get; init; }
+        public DateTime? WithdrawnDate { get; init; }
 
 
         public string? WageAmount { get; init; }
@@ -110,6 +111,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
     {
         public ApplicationStatus? Status { get; set; }
         public DateTime? SubmittedDate { get; set; }
+        public DateTime? WithdrawnDate { get; set; }
     }
 
     public enum Weighting

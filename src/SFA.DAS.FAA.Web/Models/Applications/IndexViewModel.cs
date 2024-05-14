@@ -33,10 +33,12 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public bool IsClosed { get; set; }
             public ApplicationStatus Status { get; set; }
             public string ResponseNotes { get; set; } = null!;
+            public DateTime CloseDateTime { get; set; }
         }
 
         public static IndexViewModel Map(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
         {
+            var expiredApplications = new List<Application>();
             var result = new IndexViewModel
             {
                 SelectedTab = tab,
@@ -59,6 +61,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     VacancyReference = application.VacancyReference,
                     Title = application.Title,
                     EmployerName = application.EmployerName,
+                    CloseDateTime = application.ClosingDate,
                     StartedOn =
                         $"Started on {application.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, application.ClosingDate),
@@ -81,17 +84,19 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
                 if (applicationViewModel.IsClosed)
                 {
-                    result.ExpiredApplications.Add(applicationViewModel);
+                    expiredApplications.Add(applicationViewModel);
                 }
                 else
                 {
                     result.Applications.Add(applicationViewModel);
                 }
             }
-
             result.TabTitle = tab.GetTabTitle();
             result.TabText = result.Applications.Count > 0 ? tab.GetTabPopulatedText() : tab.GetTabEmptyText();
             result.IsTabTextInset = tab == ApplicationsTab.Started && result.Applications.Count > 0;
+            result.ExpiredApplications = [.. expiredApplications
+                .OrderByDescending(fil => fil.CloseDateTime)
+                .ThenBy(fil => fil.Title)];
 
             return result;
         }

@@ -45,7 +45,7 @@
                     switch (application.Status)
                     {
                         case ApplicationStatus.Draft:
-                            <partial model="application" name="_Application" />
+                            <partial model="application" name="_StartedApplication" />
                             break;
                         case ApplicationStatus.Submitted:
                             <partial model="application" name="_SubmittedApplication" />
@@ -57,7 +57,7 @@
                             <partial model="application" name="_UnsuccessfulApplication" />
                             break;
                         default:
-                            <partial model="application" name="_Application" />
+                            <partial model="application" name="_StartedApplication" />
                             break;
                     }
                 }
@@ -79,7 +79,7 @@
                         <ol class="das-search-results__list">
                             @foreach (var application in Model.ExpiredApplications)
                             {
-                                <partial model="application" name="_Application" />
+                                <partial model="application" name="_ExpiredApplication" />
                             }
                         </ol>
                     </div>

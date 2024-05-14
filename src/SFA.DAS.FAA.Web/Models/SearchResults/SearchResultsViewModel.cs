@@ -29,6 +29,8 @@ public class SearchResultsViewModel : ViewModelBase
     public int SelectedLevelCount { get; set; }
     public int SelectedRouteCount { get; set; }
 
+    public bool ShowAccountCreatedBanner { get; set; } = false;
+
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
         return new SearchResultsViewModel

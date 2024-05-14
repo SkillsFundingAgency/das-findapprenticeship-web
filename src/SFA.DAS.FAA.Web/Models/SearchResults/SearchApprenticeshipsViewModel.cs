@@ -8,6 +8,7 @@ public class SearchApprenticeshipsViewModel
     public string? WhereSearchTerm { get; set; }
     public string? WhatSearchTerm { get; set; }
     public int? Distance { get; set; } = 10;
+    public bool ShowAccountCreatedBanner { get; set; } = false;
 
     public static implicit operator SearchApprenticeshipsViewModel(GetSearchApprenticeshipsIndexResult source)
     {
@@ -16,6 +17,4 @@ public class SearchApprenticeshipsViewModel
             TotalText = $"{source.Total:N0} {(source.Total == 1 ? "apprenticeship" : "apprenticeships")} currently listed"
         };
     }
-
 }
-
