@@ -22,7 +22,8 @@
                     <p class="govuk-notification-banner__heading">
                         You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
                     </p>
-                    <p class="govuk-body">Check its status in your 
+                    <p class="govuk-body">
+                        Check its status in your
                         <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">submitted applications</a>.
                     </p>
                 </div>
@@ -44,6 +45,25 @@
                     <p class="govuk-notification-banner__heading">
                         Application started.
                         <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">Continue your application</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.ApplicationDetails is { Status: ApplicationStatus.Withdrawn })
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        You withdrew your application for this apprenticeship on @Model.ApplicationDetails.WithdrawnDate.
                     </p>
                 </div>
             </div>
@@ -364,27 +384,37 @@
                         @Model.ClosingDate
                     </p>
                     <p class="govuk-body">
-                    When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create
-                    one at the same time as applying for this apprenticeship.
-                        @if (Model.ApplicationDetails is { Status: ApplicationStatus.Draft })
+                        @if (Model.ApplicationDetails is { Status: ApplicationStatus.Withdrawn })
                         {
-                            <div class="govuk-button-group">
-                                <a class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button" asp-route="@RouteNames.Applications.ViewApplications">
-                                    Continue your application
-                                </a>
+                            <div class="govuk-inset-text">
+                                You withdrew your application. If you want to apply again, you can start a new application.
                             </div>
                         }
                         else
                         {
-                            <form class="form" method="post">
-                                <div class="govuk-button-group">
-                                    <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                        Apply for apprenticeship
-                                    </button>
-                                </div>
-                            </form>    
+                            <p class="govuk-body">
+                                When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create one at the same time as applying for this apprenticeship.
+                            </p>
                         }
-                </section>    
+                        @if (Model.ApplicationDetails is { Status: ApplicationStatus.Draft })
+                        {
+                        <div class="govuk-button-group">
+                            <a class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button" asp-route="@RouteNames.Applications.ViewApplications">
+                                Continue your application
+                            </a>
+                        </div>
+                        }
+                        else
+                        {
+                        <form class="form" method="post">
+                            <div class="govuk-button-group">
+                                <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                    Apply for apprenticeship
+                                </button>
+                            </div>
+                        </form>
+                        }
+                </section>
             }
         </div>
     </div>
