@@ -4,4 +4,6 @@ public class FindAnApprenticeship
 {
     public string? DataProtectionKeysDatabase { get; set; }
     public string? RedisConnectionString { get; set; }
+    public string? GoogleMapsApiKey { get; set; }
+    public string? GoogleMapsId { get; set; }
 }

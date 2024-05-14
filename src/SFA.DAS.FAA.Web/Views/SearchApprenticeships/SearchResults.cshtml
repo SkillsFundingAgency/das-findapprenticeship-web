@@ -226,7 +226,7 @@
         const mapLink = document.getElementById('map-link')
         const mapContainer = document.getElementById('map')
         if (mapLink && mapContainer) {
-            new FaaMap("da8f0829c4984d4a", mapLink, mapContainer, roles, 52.400575, -1.507825).init()
+            new FaaMap("@Model.MapId", mapLink, mapContainer, roles, 52.400575, -1.507825).init()
         }
     </script>
 }
