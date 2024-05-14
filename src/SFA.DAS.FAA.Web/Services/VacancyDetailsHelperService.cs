@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAT.Domain.Interfaces;
+﻿using System.Globalization;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Services
 {
@@ -20,17 +21,24 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate)
         {
-            var currentDate = dateTimeService.GetDateTime();
-            if (closingDate < currentDate.AddDays(31))
-            {
-                var timeUntilClosing = closingDate.Date - currentDate;
-                var days = (int) Math.Ceiling(timeUntilClosing.TotalDays);
-                return days > 1
-                    ? $"Closes in {days} days ({closingDate:dddd dd MMMM} at 11:59pm)"
-                    : $"Closes in {days} day ({closingDate:dddd dd MMMM} at 11:59pm)";
-            }
+            var timeUntilClosing = closingDate.Date - dateTimeService.GetDateTime();
+            var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
 
-            return $"Closes on {closingDate:dddd dd MMMM}";
+            switch (daysToExpiry)
+            {
+                case < 0:
+                    return $"Closed on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}";
+                case 0:
+                    return "Closes today at 11:59pm";
+                case 1:
+                    return
+                        $"Closes tomorrow ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)";
+                case <= 31:
+                    return
+                        $"Closes in {daysToExpiry} days ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)";
+                default:
+                    return $"Closes on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm";
+            }
         }
 
         public static string? FormatEmployerWebsiteUrl(string? url)
