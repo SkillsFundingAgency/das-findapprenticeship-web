@@ -13,7 +13,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService) : Controller
+public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService, ICacheStorageService cacheStorageService) : Controller
 {
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index([FromQuery] string? whereSearchTerm = null, [FromQuery] string? whatSearchTerm = null, [FromQuery] int? search = null)
@@ -37,6 +37,9 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
+        viewModel.ShowAccountCreatedBanner =
+            await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
+                $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
 
         return View(viewModel);
     }
@@ -175,6 +178,9 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
         viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
         viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
+        viewmodel.ShowAccountCreatedBanner =
+            await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
+                $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
 
         return View(viewmodel);
     }
