@@ -146,6 +146,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public ApplicationStatus? Status { get; init; }
         public string? SubmittedDate { get; init; }
         public string? WithdrawnDate { get; init; }
+        public Guid ApplicationId { get; init; }
 
         public static implicit operator CandidateApplicationDetails?(Domain.GetApprenticeshipVacancy.CandidateApplicationDetails? source)
         {
@@ -156,6 +157,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Status = source.Status,
                 SubmittedDate = source.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture),
                 WithdrawnDate = source.WithdrawnDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture),
+                ApplicationId = source.ApplicationId
             };
         }
     }

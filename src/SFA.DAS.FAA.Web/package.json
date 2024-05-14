@@ -7,10 +7,12 @@
   "license": "ISC",
   "scripts": {
     "develop": "sass --update --style=expanded --load-path=node_modules/govuk-frontend/dist Frontend/scss:wwwroot/css",
+    "watch": "watch 'npm run develop' ./Frontend/scss",
     "build": "sass --no-source-map --quiet-deps --style=compressed --load-path=node_modules/govuk-frontend/dist Frontend/scss/:wwwroot/css"
   },
   "dependencies": {
-    "govuk-frontend": "^5.1.0",
-    "sass": "^1.69.7"
+    "govuk-frontend": "^5.3.1",
+    "sass": "^1.77.1",
+    "watch": "^1.0.2"
   }
 }

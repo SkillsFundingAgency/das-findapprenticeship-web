@@ -28,6 +28,8 @@ public class SearchResultsViewModel : ViewModelBase
     public bool DisabilityConfident { get; set; } = false; 
     public int SelectedLevelCount { get; set; }
     public int SelectedRouteCount { get; set; }
+    public List<ApprenticeshipMapData> MapData { get; set; }
+    public string? MapId { get; set; }
 
     public bool ShowAccountCreatedBanner { get; set; } = false;
 

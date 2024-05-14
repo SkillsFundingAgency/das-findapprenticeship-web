@@ -9,6 +9,7 @@ public static class AddConfigurationOptionsExtension
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddOptions();
         services.Configure<Domain.Configuration.FindAnApprenticeship>(configuration.GetSection(nameof(FindAnApprenticeship)));
         services.AddSingleton(cfg => cfg.GetService<IOptions<Domain.Configuration.FindAnApprenticeship>>().Value);
         services.Configure<FindAnApprenticeshipOuterApi>(configuration.GetSection(nameof(FindAnApprenticeshipOuterApi)));

@@ -15,6 +15,7 @@ using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using Microsoft.Extensions.Options;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 public class WhenGettingIndex
@@ -40,7 +41,7 @@ public class WhenGettingIndex
         .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
         .ReturnsAsync(showBanner);
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -83,7 +84,7 @@ public class WhenGettingIndex
         mediator.Setup(x => x.Send(It.IsAny<GetSearchApprenticeshipsIndexQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -124,7 +125,7 @@ public class WhenGettingIndex
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext

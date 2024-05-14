@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
+using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Extensions;
@@ -73,7 +73,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                         : string.Empty,
                     ResponseDate = application.Status switch
                     {
-                        (ApplicationStatus.Successful) => $"Offered to you on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        (ApplicationStatus.Successful) => $"Offered on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                         ApplicationStatus.Unsuccessful => $"Feedback received {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                         _ => string.Empty
                     },

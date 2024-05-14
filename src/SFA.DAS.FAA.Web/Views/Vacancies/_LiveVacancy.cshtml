@@ -1,14 +1,15 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 @{
-    ViewBag.Title = Model.Title!;
+    ViewData["Title"] = Model.Title!;
 }
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
 }
-@if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted })
+@if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted} or {Status : ApplicationStatus.Successful} or {Status : ApplicationStatus.Unsuccessful})
 {
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -23,7 +24,7 @@
                         You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
                     </p>
                     <p class="govuk-body">Check its status in your 
-                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">submitted applications</a>.
+                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications" asp-route-tab="@ApplicationsTab.Submitted">submitted applications</a>.
                     </p>
                 </div>
             </div>
@@ -43,7 +44,7 @@
                 <div class="govuk-notification-banner__content">
                     <p class="govuk-notification-banner__heading">
                         Application started.
-                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications">Continue your application</a>.
+                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Apply" asp-route-ApplicationId="@Model.ApplicationDetails.ApplicationId">Continue your application</a>.
                     </p>
                 </div>
             </div>
@@ -357,22 +358,43 @@
                 </p>
             </section>
             <section class="faa-vacancy__section faa-vacancy__section--last" id="apply">
-                <h2 class="govuk-heading-m">Apply now</h2>
-                <p>
-                    @Model.ClosingDate
-                </p>
-                <p class="govuk-body">
-                    When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create
-                    one at the same time as applying for this apprenticeship.
+                
+                
+                    @if (User.Identity is { IsAuthenticated: false })
+                    {
+                        <h2 class="govuk-heading-m">Apply now</h2>
+                        <p>@Model.ClosingDate</p>
+                        <p class="govuk-body"> When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create one at the same time as applying for this apprenticeship.</p>
+                        <form class="form" method="post">
 
-                    <form class="form" method="post">
-
-                        <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
-                            <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                Apply for apprenticeship
-                            </button>
-                        </div>
-                    </form>
+                            <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                    Sign in to apply
+                                </button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted } or { Status : ApplicationStatus.Successful } or { Status : ApplicationStatus.Unsuccessful })
+                        {
+                        }
+                        else
+                        {
+                            <h2 class="govuk-heading-m">Apply now</h2>
+                            <p>@Model.ClosingDate</p>
+                            <p class="govuk-body"> When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can create one at the same time as applying for this apprenticeship.</p>
+                            <form class="form" method="post">
+                                <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                    <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                        @(Model.ApplicationDetails !=null && Model.ApplicationDetails.Status == ApplicationStatus.Draft ? "Continue your application":" Apply for apprenticeship")
+                                    </button>
+                                </div>
+                            </form>
+                        }
+                    }
+                    
+                    
             </section>
         </div>
     </div>

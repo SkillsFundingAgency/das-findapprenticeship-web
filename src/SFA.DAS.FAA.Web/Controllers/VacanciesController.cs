@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Net;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ public class VacanciesController(
         var validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)
         {
-            //upcoming stories will be cover this section. 404 not found.
+            return NotFound();
         }
 
         var result = await mediator.Send(new GetApprenticeshipVacancyQuery

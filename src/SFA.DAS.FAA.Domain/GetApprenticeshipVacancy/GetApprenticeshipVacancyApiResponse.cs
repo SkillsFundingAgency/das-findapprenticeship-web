@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 
 namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
@@ -111,6 +111,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
     {
         public ApplicationStatus? Status { get; set; }
         public DateTime? SubmittedDate { get; set; }
+        public Guid ApplicationId { get; set; }
         public DateTime? WithdrawnDate { get; set; }
     }
 
