@@ -55,8 +55,7 @@ public class WhenGettingSearchResults
         {
             Url = mockUrlHelper.Object
         };
-        routeIds = new() {result.Routes.First().Id.ToString()};
-        result.VacancyReference = null;
+        routeIds = [result.Routes.First().Id.ToString()];
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
                 c.SearchTerm!.Equals(searchTerm)
                 && c.Location!.Equals(location)
@@ -100,6 +99,23 @@ public class WhenGettingSearchResults
             actualModel?.Levels.Where(x => x.Id.ToString() != levelIds.First()).Select(x => x.Selected).ToList()
                 .TrueForAll(x => x).Should().BeFalse();
             actualModel.DisabilityConfident.Should().Be(disabilityConfident);
+
+            switch (actualModel.Total)
+            {
+                case 0:
+                    actualModel.PageTitle.Should()
+                        .Be("No apprenticeships found");
+                    break;
+                case > 10:
+                    actualModel.PageTitle.Should()
+                        .Be(
+                            $"Apprenticeships found (page {actualModel.PaginationViewModel.CurrentPage} of {actualModel.PaginationViewModel.TotalPages})");
+                    break;
+                default:
+                    actualModel.PageTitle.Should()
+                        .Be("Apprenticeships found");
+                    break;
+            }
 
             if (distanceIsValid) 
             {
