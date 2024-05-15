@@ -197,9 +197,10 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
 
     private static string GetPageTitle(SearchResultsViewModel model)
     {
+        if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
+            return "No apprenticeships found";
         return model.Total switch
         {
-            0 => "No apprenticeships found",
             <= 10 => "Apprenticeships found",
             _ =>
                 $"Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
