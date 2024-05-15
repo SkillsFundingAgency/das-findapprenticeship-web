@@ -434,10 +434,6 @@ FaaMap.prototype.loadMap = async function () {
     });
     this.map.markers.push(Marker);
   }
-  const filterControls = document.getElementById("controls");
-  this.map.controls[google.maps.ControlPosition.BLOCK_START_INLINE_START].push(
-    filterControls
-  );
   this.map.controls[google.maps.ControlPosition.BLOCK_START_INLINE_END].push(
     mapCloseButtonWrap
   );

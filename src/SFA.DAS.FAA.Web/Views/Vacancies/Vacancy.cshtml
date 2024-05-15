@@ -1,7 +1,10 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Domain.Enums
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 
+@if (Model.ShowAccountCreatedBanner)
+{
+    <partial name="_AccountCreatedBanner" />
+}
 @if (Model.IsClosed)
 {
     <partial name="_ClosedVacancy" model="Model"/>
