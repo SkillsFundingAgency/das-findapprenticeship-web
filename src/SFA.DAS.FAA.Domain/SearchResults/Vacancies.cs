@@ -62,6 +62,10 @@ public class Vacancies
 
     [JsonProperty("isDisabilityConfident")]
     public bool IsDisabilityConfident { get; set; }
+    [JsonProperty("lat")]
+    public double? Lat { get; set; }
+    [JsonProperty("lon")]
+    public double? Lon { get; set; }
 
     [JsonProperty("application")]
     public CandidateApplicationDetails? CandidateApplicationDetails { get; set; }

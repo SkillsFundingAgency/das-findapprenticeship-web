@@ -331,3 +331,169 @@ if (autocompleteSelects) {
     new Autocomplete(select).init();
   });
 }
+
+// Maps
+
+function FaaMap(mapId, link, container, data, centerLat, centerLng) {
+  this.container = container;
+  this.link = link;
+  this.data = data;
+  this.mapId = mapId;
+  this.centerLat = centerLat;
+  this.centerLng = centerLng;
+}
+
+FaaMap.prototype.init = function () {
+  this.setUpEvents();
+};
+
+FaaMap.prototype.setUpEvents = function () {
+  var that = this;
+  this.link.addEventListener("click", this.showMap.bind(this));
+  document.body.addEventListener("keydown", (e) => {
+    if (e.code === "Escape") {
+      that.hideMap();
+    }
+  });
+};
+
+FaaMap.prototype.showMap = function (e) {
+  e.preventDefault();
+  document.documentElement.classList.add("faa-map__body--open");
+  document.body.classList.add("faa-map__body--open");
+  if (!this.map) {
+    this.loadMap();
+  }
+};
+
+FaaMap.prototype.hideMap = function () {
+  document.documentElement.classList.remove("faa-map__body--open");
+  document.body.classList.remove("faa-map__body--open");
+};
+
+FaaMap.prototype.loadMap = async function () {
+  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+    "marker"
+  );
+  this.map = new google.maps.Map(this.container, {
+    center: new google.maps.LatLng(this.centerLat, this.centerLng),
+    zoom: 7,
+    mapId: this.mapId,
+    mapTypeControl: false,
+    fullscreenControl: false,
+    streetViewControl: false,
+    zoomControl: true,
+    zoomControlOptions: {
+      position: google.maps.ControlPosition.LEFT_BOTTOM,
+    },
+  });
+  const searchRadius = new google.maps.Circle({
+    strokeColor: "#1D70B8",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#1D70B8",
+    fillOpacity: 0.1,
+    map: this.map,
+    center: new google.maps.LatLng(52.400575, -1.507825),
+    radius: 750,
+  });
+
+  const mapCloseButtonWrap = document.createElement("div");
+  mapCloseButtonWrap.classList.add("faa-map__close");
+
+  const mapCloseButton = document.createElement("a");
+  mapCloseButton.classList.add("govuk-link");
+  mapCloseButton.classList.add("govuk-link--no-visited-state");
+  mapCloseButton.innerHTML =
+    '<span class="faa-map__close-label">Close map</span><span class="faa-map__close-icon" />';
+  mapCloseButton.setAttribute("href", "#");
+
+  mapCloseButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    this.hideMap();
+  });
+
+  mapCloseButtonWrap.append(mapCloseButton);
+
+  const mapRoleDetailsWrap = document.createElement("div");
+  mapRoleDetailsWrap.classList.add("faa-map__panel");
+  mapRoleDetailsWrap.classList.add("faa-map__panel--role");
+  mapRoleDetailsWrap.classList.add("faa-map__panel--hidden");
+
+  this.map.markers = [];
+
+  for (const role of this.data) {
+    const Marker = new google.maps.marker.AdvancedMarkerElement({
+      map: this.map,
+      position: role.position,
+      content: this.markerHtml(),
+    });
+    Marker.addListener("click", () => {
+      this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+    });
+    this.map.markers.push(Marker);
+  }
+  const filterControls = document.getElementById("controls");
+  this.map.controls[google.maps.ControlPosition.BLOCK_START_INLINE_START].push(
+    filterControls
+  );
+  this.map.controls[google.maps.ControlPosition.BLOCK_START_INLINE_END].push(
+    mapCloseButtonWrap
+  );
+  this.map.controls[google.maps.ControlPosition.INLINE_END_BLOCK_END].push(
+    mapRoleDetailsWrap
+  );
+};
+
+FaaMap.prototype.showRoleOverLay = function (role, panel) {
+  panel.innerHTML = `
+      <strong class="govuk-tag govuk-!-margin-bottom-2 ${
+        role.job.status ? "" : "govuk-visually-hidden"
+      } ${role.job.status === "New" ? "" : "govuk-tag--orange"}">${
+    role.job.status
+  }</strong>
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="#" class="govuk-link govuk-link--no-visited-state">${
+        role.job.title
+      }</a></h2>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
+        role.job.company
+      }</p>
+      <p class="govuk-!-font-size-16 govuk-hint">${role.job.addressLine1}, ${
+    role.job.postcode
+  }</p>
+      <ul class="govuk-list govuk-!-font-size-16">
+      <li><strong>Distance</strong> ${role.job.distance}</li>
+      <li><strong>Training course</strong> ${role.job.apprenticeship}</li>
+      <li><strong>Annual wage</strong>  ${role.job.wage}</li>
+      </ul>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
+        role.job.closingDate
+      }</p>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0 govuk-hint">${
+        role.job.postedDate
+      }</p>
+  `;
+  panel.classList.remove("faa-map__panel--hidden");
+};
+
+FaaMap.prototype.toggleMarker = function (markerElement, role, panel) {
+  this.map.markers.forEach((mrk) => {
+    mrk.content.classList.remove("highlight");
+  });
+
+  markerElement.content.classList.add("highlight");
+  markerElement.zIndex = 1;
+  this.showRoleOverLay(role, panel);
+};
+
+FaaMap.prototype.markerHtml = function () {
+  const pinSvgString =
+    '<svg viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path fill="#000" stroke="black" stroke-width="1.5" d="M19.25 9.75C19.25 10.7082 18.9155 11.923 18.3178 13.3034C17.7257 14.671 16.9022 16.1408 15.9852 17.591C14.152 20.4903 11.9832 23.2531 10.6551 24.8737C10.3145 25.2858 9.68536 25.2857 9.34482 24.8735C8.0167 23.2529 5.8479 20.4903 4.01478 17.591C3.09784 16.1408 2.27428 14.671 1.68215 13.3034C1.08446 11.923 0.75 10.7082 0.75 9.75C0.75 4.79919 4.87537 0.75 10 0.75C15.1246 0.75 19.25 4.79919 19.25 9.75ZM12.8806 6.9149C12.1135 6.16693 11.0769 5.75 10 5.75C8.92307 5.75 7.88655 6.16693 7.1194 6.9149C6.35161 7.6635 5.91667 8.68292 5.91667 9.75C5.91667 10.8171 6.35161 11.8365 7.1194 12.5851C7.88655 13.3331 8.92307 13.75 10 13.75C11.0769 13.75 12.1135 13.3331 12.8806 12.5851C13.6484 11.8365 14.0833 10.8171 14.0833 9.75C14.0833 8.68292 13.6484 7.6635 12.8806 6.9149Z" />' +
+    "</svg>";
+  const content = document.createElement("div");
+  content.classList.add("faa-map__marker");
+  content.innerHTML = pinSvgString;
+  return content;
+};

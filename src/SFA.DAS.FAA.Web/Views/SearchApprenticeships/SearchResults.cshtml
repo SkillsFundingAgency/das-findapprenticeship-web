@@ -1,6 +1,9 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
 @using SFA.DAS.FAA.Domain.Enums
+@using SFA.DAS.FAA.Web.TagHelpers
+@using WebEssentials.AspNetCore.CdnTagHelpers
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @section BackLink {
     @if (Model.SelectedRouteIds != null && Model.SelectedRouteIds.Any())
@@ -132,7 +135,7 @@
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-half">
-                &nbsp;
+                <p><a href="#maps" class="govuk-link govuk-link--no-visited-state" id="map-link">View map</a></p>
             </div>
             <div class="govuk-grid-column-one-half">
                 <div class="faa-search-results-sort">
@@ -165,9 +168,9 @@
                                 New
                             </strong>
                         }
-                        @if(vacancy.ApplicationStatus != null)
+                        @if (vacancy.ApplicationStatus != null)
                         {
-                            <application-status-badge status="@vacancy.ApplicationStatus"></application-status-badge>    
+                            <application-status-badge status="@vacancy.ApplicationStatus"></application-status-badge>
                         }
                         <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
                             <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference"
@@ -203,4 +206,27 @@
         </div>
     </div>
 </div>
+<div id="map" class="faa-map__container"></div>
+<div id="controls" class="faa-map__panel">
+    <select class="govuk-select" id="within" name="distance">
+        <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
+        <option value="5" selected="@(Model.Distance == 5)">5 miles</option>
+        <option value="10" selected="@(Model.Distance == 10)">10 miles</option>
+        <option value="15" selected="@(Model.Distance == 15)">15 miles</option>
+        <option value="20" selected="@(Model.Distance == 20)">20 miles</option>
+        <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
+        <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
+        <option value="all" selected="@(Model.Distance == null)">Across England</option>
+    </select>
+</div>
 <partial name="_Pagination" Model="@Model.PaginationViewModel" />
+@section AfterJSScripts {
+    <script>
+        const roles = @Html.Raw(Json.Serialize(Model.MapData));
+        const mapLink = document.getElementById('map-link')
+        const mapContainer = document.getElementById('map')
+        if (mapLink && mapContainer) {
+            new FaaMap("@Model.MapId", mapLink, mapContainer, roles, 52.400575, -1.507825).init()
+        }
+    </script>
+}

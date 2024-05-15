@@ -48,6 +48,9 @@ builder.Services.Configure<RouteOptions>(options =>
     options.Filters.Add(new NewFaaUserAccountFilter());
 });
 
+builder.Services.AddTransient<IStartupFilter,
+    RequestSetOptionsStartupFilter>();
+
 builder.Services.AddDataProtection(rootConfiguration);
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -56,7 +59,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-
+}
+else
+{
+    app.UseExceptionHandler("/error/500");
 }
 
 app.UseHealthChecks("/ping");
