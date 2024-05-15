@@ -43,12 +43,13 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             result.ApplicationId.Should().Be(request.ApplicationId);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void IsApplicationComplete_Is_Set_Correctly(bool isComplete)
+        [TestCase(SectionStatus.NotStarted, false)]
+        [TestCase(SectionStatus.PreviousAnswer, true)]
+        [TestCase(SectionStatus.Completed, true)]
+        public void IsApplicationComplete_Is_Set_Correctly(SectionStatus sectionStatus, bool expectComplete)
         {
-            var viewModel = CreateViewModel(isComplete);
-            viewModel.IsApplicationComplete.Should().Be(isComplete);
+            var viewModel = CreateViewModel(sectionStatus);
+            viewModel.IsApplicationComplete.Should().Be(expectComplete);
         }
 
         [Test]
@@ -73,10 +74,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             viewModel.IsApplicationComplete.Should().Be(true);
         }
 
-        private IndexViewModel CreateViewModel(bool isComplete = true)
+        private IndexViewModel CreateViewModel(SectionStatus status = SectionStatus.Completed)
         {
-            var status = isComplete ? SectionStatus.Completed : SectionStatus.NotStarted;
-
             var viewModel = new IndexViewModel();
             viewModel.EducationHistory.TrainingCourses = status;
             viewModel.EducationHistory.Qualifications = status;
