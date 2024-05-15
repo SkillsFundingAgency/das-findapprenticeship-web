@@ -74,7 +74,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     ResponseDate = application.Status switch
                     {
                         (ApplicationStatus.Successful) => $"Offered on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
-                        ApplicationStatus.Unsuccessful => $"Feedback received {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        ApplicationStatus.Unsuccessful => $"Feedback received on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                         _ => string.Empty
                     },
                     ResponseNotes = application.Status is ApplicationStatus.Unsuccessful
