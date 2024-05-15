@@ -11,7 +11,7 @@ public class SearchResultsViewModel : ViewModelBase
     public List<RouteViewModel> Routes { get; set; }
     public List<LevelViewModel> Levels { get; set; }
     public int Total { get; set; }
-    public string TotalMessage => $"{(Total == 0 ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
+    public string TotalMessage => $"{(Total == 0 || NoSearchResultsByUnknownLocation ? "No" : Total.ToString("N0"))} apprenticeship{(Total != 1 ? "s" : "")} found";
     public int? Distance { get; set; }
     public string? SearchTerm { get; set; }
 
@@ -28,6 +28,8 @@ public class SearchResultsViewModel : ViewModelBase
     public bool DisabilityConfident { get; set; } = false; 
     public int SelectedLevelCount { get; set; }
     public int SelectedRouteCount { get; set; }
+    public string? PageTitle { get; set; }
+    public bool NoSearchResultsByUnknownLocation { get; set; }
     public List<ApprenticeshipMapData> MapData { get; set; }
     public string? MapId { get; set; }
 

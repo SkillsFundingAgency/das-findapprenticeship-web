@@ -186,6 +186,8 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         viewmodel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
+        viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
+        viewmodel.PageTitle = GetPageTitle(viewmodel);
 
         return View(viewmodel);
     }
@@ -206,4 +208,16 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
                 Lookups = levels.OrderBy(x => x.Id).Select(level => new ChecklistLookup($"Level {level.Id}", level.Id.ToString(), $"Equal to {level.Name}", level.Selected)).ToList()
             }
         };
+
+    private static string GetPageTitle(SearchResultsViewModel model)
+    {
+        if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
+            return "No apprenticeships found";
+        return model.Total switch
+        {
+            <= 10 => "Apprenticeships found",
+            _ =>
+                $"Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
+        };
+    }
 }
