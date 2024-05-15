@@ -6,6 +6,10 @@
 }
 
 <div class="page--faa-homepage">
+    @if (Model.ShowAccountCreatedBanner)
+    {
+        <partial name="_AccountCreatedBanner" />
+    }
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <partial model="@ViewData.ModelState" name="_ValidationSummary" />
@@ -14,9 +18,7 @@
             <p class="govuk-hint govuk-!-font-size-24">@Model.TotalText</p>
         </div>
     </div>
-
     <div class="faa-home-panel">
-
         <form class="form" method="get">
             <input type="hidden" name="search" value="1" />
             <div class="govuk-grid-row">

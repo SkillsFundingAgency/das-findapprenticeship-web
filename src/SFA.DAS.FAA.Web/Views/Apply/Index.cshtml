@@ -26,7 +26,22 @@
                     </p>
                 </div>
             </div>
-
+        }
+        
+        @if (Model.ShowPreviousAnswersBanner)
+        {
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-import">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">We’ve imported your previous answers. Check they’re suitable for
+                        this application.</p>
+                    <p class="govuk-body">Answers from your application for <b>@Model.PreviousApplication.VacancyTitle</b> at <b>@Model.PreviousApplication.EmployerName</b> (submitted @Model.PreviousApplication.SubmissionDate.ToString("d MMMM yyyy")).</p>
+                </div>
+            </div>
         }
 
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Apply for @Model.VacancyTitle</h1>

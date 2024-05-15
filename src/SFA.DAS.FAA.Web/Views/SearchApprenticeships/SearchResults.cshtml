@@ -15,6 +15,10 @@
         <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
     }
 }
+@if (Model.ShowAccountCreatedBanner)
+{
+    <partial name="_AccountCreatedBanner" />
+}
 <h1 class="govuk-heading-l govuk-!-margin-bottom-8"> @Model.TotalMessage </h1>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
