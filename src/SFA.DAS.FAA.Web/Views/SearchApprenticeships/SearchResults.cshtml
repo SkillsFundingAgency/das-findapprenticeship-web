@@ -211,18 +211,6 @@
     </div>
 </div>
 <div id="map" class="faa-map__container"></div>
-<div id="controls" class="faa-map__panel">
-    <select class="govuk-select" id="within" name="distance">
-        <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
-        <option value="5" selected="@(Model.Distance == 5)">5 miles</option>
-        <option value="10" selected="@(Model.Distance == 10)">10 miles</option>
-        <option value="15" selected="@(Model.Distance == 15)">15 miles</option>
-        <option value="20" selected="@(Model.Distance == 20)">20 miles</option>
-        <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
-        <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
-        <option value="all" selected="@(Model.Distance == null)">Across England</option>
-    </select>
-</div>
 <partial name="_Pagination" Model="@Model.PaginationViewModel" />
 @section AfterJSScripts {
     <script>
