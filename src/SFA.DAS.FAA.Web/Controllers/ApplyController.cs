@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.SubmitApplication;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.ApplicationStatus;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
@@ -26,7 +27,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var query = new GetIndexQuery
             {
                 ApplicationId = request.ApplicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             };
 
             var result = await mediator.Send(query);
@@ -40,7 +41,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var query = new GetApplicationSummaryQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             };
             var result = await mediator.Send(query);
             
@@ -61,20 +62,19 @@ namespace SFA.DAS.FAA.Web.Controllers
                 var query = new GetApplicationSummaryQuery
                 {
                     ApplicationId = applicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 };
 
                 var result = await mediator.Send(query);
-                viewModel = (ApplicationSummaryViewModel)result;
+                viewModel = result;
                 viewModel.ApplicationId = applicationId;
                 return View(PreviewViewPath, viewModel);
             }
 
-            await mediator.Send(new UpdateApplicationStatusCommand
+            await mediator.Send(new SubmitApplicationCommand
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId(),
-                Status = ApplicationStatus.Submitted
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmitted, new {applicationId});
@@ -93,7 +93,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var query = new GetApplicationSubmittedQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             };
 
             var result = await mediator.Send(query);
@@ -116,7 +116,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 var query = new GetApplicationSubmittedQuery
                 {
                     ApplicationId = model.ApplicationId,
-                    CandidateId = User.Claims.CandidateId()
+                    CandidateId = (Guid)User.Claims.CandidateId()!
                 };
 
                 var result = await mediator.Send(query);
@@ -142,7 +142,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var query = new GetApplicationSubmittedQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             };
 
             var result = await mediator.Send(query);

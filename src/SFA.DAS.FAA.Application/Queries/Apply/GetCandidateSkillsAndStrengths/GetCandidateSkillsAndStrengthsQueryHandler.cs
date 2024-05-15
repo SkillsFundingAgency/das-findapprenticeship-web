@@ -16,8 +16,6 @@ public class GetCandidateSkillsAndStrengthsQueryHandler(IApiClient apiClient)
         return new GetCandidateSkillsAndStrengthsQueryResult
         {
             SkillsAndStrengths = response.AboutYou.SkillsAndStrengths,
-            Improvements = response.AboutYou.Improvements,
-            HobbiesAndInterests = response.AboutYou.HobbiesAndInterests,
             Support = response.AboutYou.Support,
             ApplicationId = response.AboutYou.ApplicationId
         };

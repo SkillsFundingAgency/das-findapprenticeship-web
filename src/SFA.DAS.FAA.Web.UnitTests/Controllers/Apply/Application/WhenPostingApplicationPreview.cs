@@ -16,6 +16,7 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Application.Commands.SubmitApplication;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
 {
@@ -42,12 +43,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
 
-            mediator.Setup(x => x.Send(It.Is<UpdateApplicationStatusCommand>(c =>
-                    c.ApplicationId.Equals(applicationId) &&
-                    c.Status.Equals(ApplicationStatus.Submitted) &&
-                    c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(updateApplicationStatusCommandResult);
-
             var controller = new ApplyController(mediator.Object, dateTimeService.Object)
             {
                 Url = mockUrlHelper.Object,
@@ -68,6 +63,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
                 actual!.RouteName.Should().NotBeNull();
                 actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.ApplicationSubmitted);
             }
+            mediator.Verify(x => x.Send(It.Is<SubmitApplicationCommand>(c =>
+                c.ApplicationId.Equals(applicationId) &&
+                c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

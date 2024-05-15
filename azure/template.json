@@ -79,7 +79,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "configNames": "SFA.DAS.FindApprenticeship.Web,SFA.DAS.Employer.GovSignIn"
+        "configNames": "SFA.DAS.FindApprenticeship.Web,SFA.DAS.Candidate.GovSignIn"
     },
     "resources": [
         {

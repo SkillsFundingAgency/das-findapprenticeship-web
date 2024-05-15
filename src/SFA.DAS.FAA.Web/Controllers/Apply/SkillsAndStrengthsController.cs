@@ -24,13 +24,13 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
         var expectedResult = await mediator.Send(new GetExpectedSkillsAndStrengthsQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId()
+            CandidateId = (Guid)User.Claims.CandidateId()!
         });
 
         var candidateResult = await mediator.Send(new GetCandidateSkillsAndStrengthsQuery
         {
             ApplicationId = applicationId,
-            CandidateId = User.Claims.CandidateId()
+            CandidateId = (Guid)User.Claims.CandidateId()!
         });
 
         var viewModel = new SkillsAndStrengthsViewModel(expectedResult, candidateResult, applicationId);
@@ -46,13 +46,13 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
             var expectedResult = await mediator.Send(new GetExpectedSkillsAndStrengthsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             var candidateResult = await mediator.Send(new GetCandidateSkillsAndStrengthsQuery
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId()
+                CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             viewModel = new SkillsAndStrengthsViewModel(expectedResult, candidateResult, applicationId);
@@ -61,7 +61,7 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
 
         var updateCommand = new UpdateSkillsAndStrengthsCommand
         {
-            CandidateId = User.Claims.CandidateId(),
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             ApplicationId = viewModel.ApplicationId,
             SkillsAndStrengths = viewModel.SkillsAndStrengths,
             SkillsAndStrengthsSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.Incomplete

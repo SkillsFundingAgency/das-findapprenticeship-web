@@ -1,9 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
@@ -12,7 +14,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService) : Controller
+public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService, IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration) : Controller
 {
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index([FromQuery] string? whereSearchTerm = null, [FromQuery] string? whatSearchTerm = null, [FromQuery] int? search = null)
@@ -136,7 +138,9 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             PageNumber = request.PageNumber,
             PageSize = 10,
             Sort = request.Sort,
-            DisabilityConfident = request.DisabilityConfident
+            DisabilityConfident = request.DisabilityConfident,
+            CandidateId = User.Claims.CandidateId().Equals(null) ? null
+                : User.Claims.CandidateId()!.ToString()
         });
 
         if (result.VacancyReference != null)
@@ -155,6 +159,10 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         viewmodel.Vacancies = result.Vacancies.Count != 0
             ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
             : [];
+        viewmodel.MapData = result.Vacancies.Count != 0
+            ? result.Vacancies.Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService, c)).ToList()
+            : [];
+        viewmodel.MapId = faaConfiguration.Value.GoogleMapsId;
         viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
         viewmodel.DisabilityConfident = request.DisabilityConfident;
         viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.TotalPages, filterUrl);

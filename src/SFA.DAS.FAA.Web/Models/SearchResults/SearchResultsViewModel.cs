@@ -30,6 +30,8 @@ public class SearchResultsViewModel : ViewModelBase
     public int SelectedRouteCount { get; set; }
     public string? PageTitle { get; set; }
     public bool NoSearchResultsByUnknownLocation { get; set; }
+    public List<ApprenticeshipMapData> MapData { get; set; }
+    public string? MapId { get; set; }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {

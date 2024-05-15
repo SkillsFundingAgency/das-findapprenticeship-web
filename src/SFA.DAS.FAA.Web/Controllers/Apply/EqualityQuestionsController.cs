@@ -208,7 +208,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             await mediator.Send(new CreateEqualityQuestionsCommand
             {
                 ApplicationId = applicationId,
-                CandidateId = User.Claims.CandidateId(),
+                CandidateId = (Guid)User.Claims.CandidateId()!,
                 EthnicGroup = equalityQuestions.EthnicGroup,
                 EthnicSubGroup = equalityQuestions.EthnicSubGroup,
                 Sex = equalityQuestions.Sex,

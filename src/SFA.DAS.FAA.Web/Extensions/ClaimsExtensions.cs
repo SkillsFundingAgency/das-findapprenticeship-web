@@ -5,14 +5,11 @@ namespace SFA.DAS.FAA.Web.Extensions;
 
 public static class ClaimsExtensions
 {
-    public static Guid CandidateId(this IEnumerable<Claim> claims)
+    public static Guid? CandidateId(this IEnumerable<Claim> claims)
     {
-        if (Guid.TryParse(claims.FirstOrDefault(c => c.Type.Equals(CustomClaims.CandidateId))?.Value, out var id))
-        {
-            return id;    
-        }
-
-        return Guid.Empty;
+        return Guid.TryParse(claims.FirstOrDefault(c => c.Type.Equals(CustomClaims.CandidateId))?.Value, out var id)
+            ? id
+            : null;
     }
 
     public static string? Email(this IEnumerable<Claim> claims)

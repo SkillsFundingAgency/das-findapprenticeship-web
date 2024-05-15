@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
@@ -47,11 +48,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public List<LevelResponse>? CourseLevels { get; init; } = [];
         public string? CourseLevelMapper { get; init; }
         public bool IsClosed { get; set; }
+        public CandidateApplicationDetails? ApplicationDetails { get; set; }
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
-            GetApprenticeshipVacancyQueryResult source)
-        {
-            return new VacancyDetailsViewModel
+            GetApprenticeshipVacancyQueryResult source) => new VacancyDetailsViewModel
             {
                 Title = source.Vacancy?.Title,
                 VacancyReference = source.Vacancy?.VacancyReference,
@@ -91,12 +91,12 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 IsDisabilityConfident = source.Vacancy is { IsDisabilityConfident: true },
                 CourseLevels = source.Vacancy?.Levels,
                 CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0
-                    ? source.Vacancy?.Levels?.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
+                    ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
                     : string.Empty,
+                ApplicationDetails = source.Vacancy?.Application,
                 IsClosed = source.Vacancy?.IsClosed ?? false,
                 ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}."
             };
-        }
     }
 
     public class Address
@@ -135,6 +135,25 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Grade = source.Grade,
                 Subject = source.Subject,
                 Weighting = source.Weighting,
+            };
+        }
+    }
+
+    public class CandidateApplicationDetails
+    {
+        public ApplicationStatus? Status { get; init; }
+        public string? SubmittedDate { get; init; }
+        public Guid ApplicationId { get; init; }
+
+        public static implicit operator CandidateApplicationDetails?(Domain.GetApprenticeshipVacancy.CandidateApplicationDetails? source)
+        {
+            if (source is null) return null;
+
+            return new CandidateApplicationDetails
+            {
+                Status = source.Status,
+                SubmittedDate = $"{source.SubmittedDate:d MMMM yyyy}",
+                ApplicationId = source.ApplicationId
             };
         }
     }

@@ -2,17 +2,21 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
+using System.Security.Claims;
+using Microsoft.Extensions.Options;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -32,6 +36,7 @@ public class WhenGettingSearchResults
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
         int? distance,
         bool distanceIsValid,
+        string mapId,
         GetSearchResultsResult result,
         List<string>? routeIds,
         List<string>? levelIds,
@@ -40,6 +45,7 @@ public class WhenGettingSearchResults
         int pageNumber,
         bool disabilityConfident,
         VacancySort sort,
+        Guid candidateId,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageNumber = pageNumber;
@@ -50,10 +56,23 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
         {
-            Url = mockUrlHelper.Object
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
         };
         routeIds = [result.Routes.First().Id.ToString()];
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
@@ -88,6 +107,7 @@ public class WhenGettingSearchResults
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.PageNumber.Should().Be(pageNumber);
             actualModel?.Vacancies.Should().NotBeNullOrEmpty();
+            actualModel?.MapData.Should().NotBeNullOrEmpty();
             actualModel?.Sort.Should().Be(sort.ToString());
             actualModel?.SelectedRoutes.Should()
                 .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)
@@ -125,6 +145,8 @@ public class WhenGettingSearchResults
             {
                 actualModel.Distance.Should().Be(10);
             }
+
+            actualModel.MapId.Should().Be(mapId);
         }
     }
 
@@ -132,11 +154,13 @@ public class WhenGettingSearchResults
     public async Task Then_When_Vacancy_Reference_Has_Value_It_Is_Redirected_To_Vacancy_Details(
         List<string>? routeIds,
         List<string>? levelIds,
+        string mapId,
         string? location,
         string? searchTerm,
         int pageNumber,
         int pageSize,
         bool disabilityConfident,
+        Guid candidateId,
         GetSearchResultsResult queryResult,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<IDateTimeService> dateTimeService)
@@ -157,9 +181,22 @@ public class WhenGettingSearchResults
                 && c.DisabilityConfident!.Equals(disabilityConfident)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>())
         {
-            Url = mockUrlHelper.Object
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
         };
 
         // Act
@@ -184,7 +221,9 @@ public class WhenGettingSearchResults
     public async Task And_The_Request_Distance_Is_Negative_Value_Then_It_Is_Defaulted_To_Null(
         GetSearchResultsRequest request,
         GetSearchResultsResult result,
+        string mapId,
         List<string>? routeIds,
+        Guid candidateId,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -194,10 +233,23 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
-
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
         {
-            Url = mockUrlHelper.Object
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
         };
 
         result.VacancyReference = null;
@@ -221,6 +273,8 @@ public class WhenGettingSearchResults
         GetSearchResultsRequest request,
         GetSearchResultsResult result,
         List<string>? routeIds,
+        Guid candidateId,
+        string mapId,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -230,10 +284,23 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
         {
-            Url = mockUrlHelper.Object
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
         };
 
         result.VacancyReference = null;
@@ -252,7 +319,9 @@ public class WhenGettingSearchResults
     public async Task And_The_Request_Page_Number_Is_Invalid_Then_It_Is_Set_To_One(
         GetSearchResultsRequest request,
         GetSearchResultsResult result,
+        string mapId,
         List<string>? routeIds,
+        Guid candidateId,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -262,10 +331,23 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
         {
-            Url = mockUrlHelper.Object
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
         };
 
         result.VacancyReference = null;
@@ -285,7 +367,9 @@ public class WhenGettingSearchResults
     public async Task Then_The_Page_Size_Defaults_To_10(
         GetSearchResultsRequest request,
         GetSearchResultsResult result,
+        string mapId,
         List<string>? routeIds,
+        Guid candidateId,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -296,10 +380,23 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
         {
-            Url = mockUrlHelper.Object
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
         };
         result.VacancyReference = null;
 
@@ -318,6 +415,7 @@ public class WhenGettingSearchResults
     public async Task Then_The_Mediator_Query_Is_Called_And_No_Search_Results_Found_View_Returned(
         string? location,
         int? distance,
+        string mapId,
         GetSearchResultsResult result,
         List<string>? routeIds,
         List<string>? levelIds,
@@ -325,6 +423,7 @@ public class WhenGettingSearchResults
         int pageNumber,
         bool disabilityConfident,
         VacancySort sort,
+        Guid candidateId,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageNumber = pageNumber;
@@ -339,9 +438,22 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
         {
-            Url = mockUrlHelper.Object
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
         };
         routeIds = [result.Routes.First().Id.ToString()];
         result.VacancyReference = null;
@@ -398,6 +510,7 @@ public class WhenGettingSearchResults
     public async Task Then_The_Mediator_Query_Is_Called_And_No_Search_Results_Found_With_UnknownLocation_View_Returned(
         string? location,
         int? distance,
+        string mapId,
         GetSearchResultsResult result,
         List<string>? routeIds,
         List<string>? levelIds,
@@ -405,6 +518,7 @@ public class WhenGettingSearchResults
         int pageNumber,
         bool disabilityConfident,
         VacancySort sort,
+        Guid candidateId,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageNumber = pageNumber;
@@ -419,10 +533,23 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
         {
-            Url = mockUrlHelper.Object
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
         };
         routeIds = [result.Routes.First().Id.ToString()];
         result.VacancyReference = null;
