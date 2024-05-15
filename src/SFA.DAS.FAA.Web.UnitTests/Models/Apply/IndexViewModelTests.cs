@@ -3,7 +3,6 @@ using FluentAssertions.Execution;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
-using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -41,54 +40,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             result.InterviewAdjustments.RequestAdjustments.Should().Be(source.InterviewAdjustments.RequestAdjustments);
             result.DisabilityConfidence.InterviewUnderDisabilityConfident.Should().Be(source.DisabilityConfidence.InterviewUnderDisabilityConfident);
             result.ApplicationId.Should().Be(request.ApplicationId);
-        }
-
-        [TestCase(SectionStatus.NotStarted, false)]
-        [TestCase(SectionStatus.PreviousAnswer, true)]
-        [TestCase(SectionStatus.Completed, true)]
-        public void IsApplicationComplete_Is_Set_Correctly(SectionStatus sectionStatus, bool expectComplete)
-        {
-            var viewModel = CreateViewModel(sectionStatus);
-            viewModel.IsApplicationComplete.Should().Be(expectComplete);
-        }
-
-        [Test]
-        public void IsApplicationComplete_Is_Set_Correctly_With_No_Additional_Questions()
-        {
-            var viewModel = CreateViewModel();
-            viewModel.ApplicationQuestions.AdditionalQuestion1Label = string.Empty;
-            viewModel.ApplicationQuestions.AdditionalQuestion2Label = string.Empty;
-            viewModel.ApplicationQuestions.AdditionalQuestion1 = SectionStatus.NotStarted;
-            viewModel.ApplicationQuestions.AdditionalQuestion2 = SectionStatus.NotStarted;
-
-            viewModel.IsApplicationComplete.Should().Be(true);
-        }
-
-        [Test]
-        public void IsApplicationComplete_Is_Set_Correctly_Without_Disability()
-        {
-            var viewModel = CreateViewModel();
-            viewModel.IsDisabilityConfident = false;
-            viewModel.DisabilityConfidence.InterviewUnderDisabilityConfident = SectionStatus.NotStarted;
-
-            viewModel.IsApplicationComplete.Should().Be(true);
-        }
-
-        private IndexViewModel CreateViewModel(SectionStatus status = SectionStatus.Completed)
-        {
-            var viewModel = new IndexViewModel();
-            viewModel.EducationHistory.TrainingCourses = status;
-            viewModel.EducationHistory.Qualifications = status;
-            viewModel.IsDisabilityConfident = true;
-            viewModel.DisabilityConfidence.InterviewUnderDisabilityConfident = status;
-            viewModel.InterviewAdjustments.RequestAdjustments = status;
-            viewModel.WorkHistory.VolunteeringAndWorkExperience = status;
-            viewModel.WorkHistory.Jobs = status;
-            viewModel.ApplicationQuestions.AdditionalQuestion1 = status;
-            viewModel.ApplicationQuestions.AdditionalQuestion2 = status;
-            viewModel.ApplicationQuestions.AdditionalQuestion1Label = "x";
-            viewModel.ApplicationQuestions.AdditionalQuestion2Label = "x";
-            return viewModel;
         }
     }
 }
