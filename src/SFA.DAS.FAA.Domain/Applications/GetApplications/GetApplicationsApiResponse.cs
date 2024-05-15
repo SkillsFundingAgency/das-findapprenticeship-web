@@ -17,5 +17,6 @@ public class GetApplicationsApiResponse
         public DateTime? SubmittedDate { get; set; }
         public DateTime? ResponseDate { get; set; }
         public ApplicationStatus Status { get; set; }
+        public string ResponseNotes { get; set; }
     }
 }

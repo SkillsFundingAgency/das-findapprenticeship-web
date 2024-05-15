@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
+using SFA.DAS.FAA.Domain.Apply.GetIndex;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -22,7 +23,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 ApplicationQuestions = source.ApplicationQuestions,
                 InterviewAdjustments = source.InterviewAdjustments,
                 DisabilityConfidence = source.DisabilityConfidence,
-                ApplicationId = request.ApplicationId
+                PreviousApplication = source.PreviousApplication,
+                ApplicationId = request.ApplicationId,
             };
         }
 
@@ -34,20 +36,32 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public string ClosingDate { get; set; }
         public bool IsDisabilityConfident { get; set; }
 
-        public bool IsApplicationComplete => EducationHistory.TrainingCourses == SectionStatus.Completed &&
-                                             EducationHistory.Qualifications == SectionStatus.Completed &&
-                                             WorkHistory.VolunteeringAndWorkExperience == SectionStatus.Completed &&
-                                             WorkHistory.Jobs == SectionStatus.Completed &&
-                                             (!ApplicationQuestions.ShowAdditionalQuestion1 || ApplicationQuestions.AdditionalQuestion1 == SectionStatus.Completed) &&
-                                             (!ApplicationQuestions.ShowAdditionalQuestion2 || ApplicationQuestions.AdditionalQuestion2 == SectionStatus.Completed) &&
-                                             InterviewAdjustments.RequestAdjustments == SectionStatus.Completed &&
-                                             (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfident == SectionStatus.Completed);
+        public bool HasAnyPreviousAnswers => EducationHistory.TrainingCourses == SectionStatus.PreviousAnswer ||
+                                             EducationHistory.Qualifications == SectionStatus.PreviousAnswer ||
+                                             WorkHistory.VolunteeringAndWorkExperience == SectionStatus.PreviousAnswer ||
+                                             WorkHistory.Jobs == SectionStatus.PreviousAnswer ||
+                                             ApplicationQuestions.AdditionalQuestion1 == SectionStatus.PreviousAnswer ||
+                                             ApplicationQuestions.AdditionalQuestion2 == SectionStatus.PreviousAnswer ||
+                                             InterviewAdjustments.RequestAdjustments == SectionStatus.PreviousAnswer ||
+                                             DisabilityConfidence.InterviewUnderDisabilityConfident == SectionStatus.PreviousAnswer;
+
+
+        public bool IsApplicationComplete => (EducationHistory.TrainingCourses is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (EducationHistory.Qualifications is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (WorkHistory.VolunteeringAndWorkExperience is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (WorkHistory.Jobs is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (!ApplicationQuestions.ShowAdditionalQuestion1 || ApplicationQuestions.AdditionalQuestion1 is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (!ApplicationQuestions.ShowAdditionalQuestion2 || ApplicationQuestions.AdditionalQuestion2 is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (InterviewAdjustments.RequestAdjustments is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
+                                             (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfident is SectionStatus.Completed or SectionStatus.PreviousAnswer);
 
         public EducationHistorySection EducationHistory { get; set; } = new();
         public WorkHistorySection WorkHistory { get; set; } = new();
         public ApplicationQuestionsSection ApplicationQuestions { get; set; } = new();
         public InterviewAdjustmentsSection InterviewAdjustments { get; set; } = new();
         public DisabilityConfidenceSection DisabilityConfidence { get; set; } = new();
+        public PreviousApplicationDetails? PreviousApplication { get; set; }
+        public bool ShowPreviousAnswersBanner => PreviousApplication != null && HasAnyPreviousAnswers;
 
         public class EducationHistorySection
         {
@@ -129,6 +143,25 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 return new DisabilityConfidenceSection
                 {
                     InterviewUnderDisabilityConfident = source.InterviewUnderDisabilityConfident
+                };
+            }
+        }
+
+        public class PreviousApplicationDetails
+        {
+            public string VacancyTitle { get; set; }
+            public string EmployerName { get; set; }
+            public DateTime SubmissionDate { get; set; }
+
+            public static implicit operator PreviousApplicationDetails?(GetIndexQueryResult.PreviousApplicationDetails? source)
+            {
+                if (source == null) return null;
+
+                return new PreviousApplicationDetails
+                {
+                    EmployerName = source.EmployerName,
+                    SubmissionDate = source.SubmissionDate,
+                    VacancyTitle = source.VacancyTitle
                 };
             }
         }

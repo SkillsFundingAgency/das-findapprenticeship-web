@@ -33,6 +33,8 @@ public class SearchResultsViewModel : ViewModelBase
     public List<ApprenticeshipMapData> MapData { get; set; }
     public string? MapId { get; set; }
 
+    public bool ShowAccountCreatedBanner { get; set; } = false;
+
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
         return new SearchResultsViewModel

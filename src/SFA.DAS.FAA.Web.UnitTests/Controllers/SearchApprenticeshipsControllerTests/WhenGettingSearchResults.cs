@@ -46,6 +46,9 @@ public class WhenGettingSearchResults
         bool disabilityConfident,
         VacancySort sort,
         Guid candidateId,
+        Guid govIdentifier,
+        bool showBanner,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageNumber = pageNumber;
@@ -59,7 +62,11 @@ public class WhenGettingSearchResults
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
+        cacheStorageService
+            .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
+            .ReturnsAsync(showBanner);
+
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -68,9 +75,9 @@ public class WhenGettingSearchResults
                 {
                     User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
                     }))
-
                 }
             }
         };
@@ -119,6 +126,7 @@ public class WhenGettingSearchResults
             actualModel?.Levels.Where(x => x.Id.ToString() != levelIds.First()).Select(x => x.Selected).ToList()
                 .TrueForAll(x => x).Should().BeFalse();
             actualModel.DisabilityConfident.Should().Be(disabilityConfident);
+            actualModel.ShowAccountCreatedBanner.Should().Be(showBanner);
 
             switch (actualModel.Total)
             {
@@ -163,6 +171,7 @@ public class WhenGettingSearchResults
         Guid candidateId,
         GetSearchResultsResult queryResult,
         [Frozen] Mock<IMediator> mediator,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         // Arrange
@@ -183,7 +192,7 @@ public class WhenGettingSearchResults
             .ReturnsAsync(queryResult);
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>())
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -224,6 +233,7 @@ public class WhenGettingSearchResults
         string mapId,
         List<string>? routeIds,
         Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -235,8 +245,7 @@ public class WhenGettingSearchResults
             .Returns("https://baseUrl");
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
-        
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -274,6 +283,7 @@ public class WhenGettingSearchResults
         GetSearchResultsResult result,
         List<string>? routeIds,
         Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         string mapId,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
@@ -287,7 +297,7 @@ public class WhenGettingSearchResults
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -322,6 +332,7 @@ public class WhenGettingSearchResults
         string mapId,
         List<string>? routeIds,
         Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -334,7 +345,7 @@ public class WhenGettingSearchResults
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -370,6 +381,7 @@ public class WhenGettingSearchResults
         string mapId,
         List<string>? routeIds,
         Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
 
     {
@@ -383,7 +395,7 @@ public class WhenGettingSearchResults
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -424,6 +436,9 @@ public class WhenGettingSearchResults
         bool disabilityConfident,
         VacancySort sort,
         Guid candidateId,
+        Guid govIdentifier,
+        bool showBanner,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageNumber = pageNumber;
@@ -437,10 +452,12 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
-
+        cacheStorageService
+            .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
+            .ReturnsAsync(showBanner);
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -449,7 +466,8 @@ public class WhenGettingSearchResults
                 {
                     User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
                     }))
 
                 }
@@ -519,6 +537,9 @@ public class WhenGettingSearchResults
         bool disabilityConfident,
         VacancySort sort,
         Guid candidateId,
+        Guid govIdentifier,
+        bool showBanner,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         result.PageNumber = pageNumber;
@@ -533,10 +554,12 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
+        cacheStorageService
+            .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
+            .ReturnsAsync(showBanner);
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
-
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -545,7 +568,8 @@ public class WhenGettingSearchResults
                 {
                     User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
                     }))
 
                 }

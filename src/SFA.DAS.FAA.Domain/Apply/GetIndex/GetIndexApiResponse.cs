@@ -15,6 +15,7 @@ public class GetIndexApiResponse
     public ApplicationQuestionsSection ApplicationQuestions { get; set; }
     public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
+    public PreviousApplicationDetails? PreviousApplication { get; set; }
 
     public class EducationHistorySection
     {
@@ -47,5 +48,12 @@ public class GetIndexApiResponse
     public class DisabilityConfidenceSection
     {
         public SectionStatus InterviewUnderDisabilityConfident { get; set; }
+    }
+
+    public class PreviousApplicationDetails
+    {
+        public string VacancyTitle { get; set; }
+        public string EmployerName { get; set; }
+        public DateTime SubmissionDate { get; set; }
     }
 }
