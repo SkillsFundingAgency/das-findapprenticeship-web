@@ -18,5 +18,6 @@ public class GetApplicationsApiResponse
         public DateTime? WithdrawnDate { get; set; }
         public DateTime? ResponseDate { get; set; }
         public ApplicationStatus Status { get; set; }
+        public string ResponseNotes { get; set; }
     }
 }

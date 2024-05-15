@@ -36,7 +36,7 @@ namespace SFA.DAS.FAA.Web.Extensions
                 ApplicationsTab.Started => "Apply as soon as you can. A company may close their advert early if they receive a lot of applications.",
                 ApplicationsTab.Submitted => "Companies will contact you using the telephone number or email address on your application.",
                 ApplicationsTab.Successful => "The company will contact you to discuss your next steps.",
-                ApplicationsTab.Unsuccessful => "",
+                ApplicationsTab.Unsuccessful => "You’ve been given feedback to help you improve your future applications.",
                 _ => ""
             };
         }
@@ -48,7 +48,7 @@ namespace SFA.DAS.FAA.Web.Extensions
                 ApplicationsTab.Started => "You have no applications to finish.",
                 ApplicationsTab.Submitted => "You have no submitted applications that are waiting for a response.",
                 ApplicationsTab.Successful => "If an application you make is successful, it’ll appear here.",
-                ApplicationsTab.Unsuccessful => "",
+                ApplicationsTab.Unsuccessful => "If an application you make is unsuccessful, you’ll get feedback here to help you improve your future applications.",
                 _ => ""
             };
         }

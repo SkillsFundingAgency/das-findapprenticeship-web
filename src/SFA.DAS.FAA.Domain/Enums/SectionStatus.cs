@@ -6,6 +6,7 @@
         InProgress,
         Incomplete,
         Completed,
-        NotRequired
+        NotRequired,
+        PreviousAnswer
     }
 }
