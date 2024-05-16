@@ -13,6 +13,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             {
                 VacancyReference = source.VacancyReference,
                 ShowAccountCreatedBanner = false,
+                ShowApplicationMigratedBanner = source is { IsMigrated: true, IsApplicationComplete: false },
                 VacancyTitle = source.VacancyTitle,
                 EmployerName = source.EmployerName,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
