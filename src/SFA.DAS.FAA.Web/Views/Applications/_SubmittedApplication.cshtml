@@ -15,7 +15,7 @@
     <p class="govuk-hint">@Model.ClosingDate</p>
     <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
         <li class="govuk-summary-list__actions-list-item">
-            <a class="govuk-link" href="#">View application</a> <!--#TODO: Application preview link has to be updated -->
+            <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Applications.ViewApplication, new { applicationId = Model.Id })">View application</a>
         </li>
         <li class="govuk-summary-list__actions-list-item">
             <a class="govuk-link" href="#">Withdraw application</a> <!--#TODO: Application withdrawn link has to be updated -->
