@@ -1,8 +1,9 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.Applications.Withdraw;
 using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
+using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Application.Queries.Applications.Withdraw;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -15,6 +16,8 @@ namespace SFA.DAS.FAA.Web.Controllers
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     public class ApplicationsController(IMediator mediator, IDateTimeService dateTimeService, ICacheStorageService cacheStorageService) : Controller
     {
+        private const string ApplicationPreviewViewPath = "~/Views/applications/ViewApplication.cshtml";
+
         [Route("applications", Name = RouteNames.Applications.ViewApplications)]
         public async Task<IActionResult> Index(ApplicationsTab tab = ApplicationsTab.Started)
         {
@@ -81,6 +84,22 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
             
             return RedirectToRoute(RouteNames.Applications.ViewApplications,new {tab = ApplicationsTab.Submitted});
+        }
+        [HttpGet]
+        [Route("applications/{applicationId}/view", Name = RouteNames.Applications.ViewApplication)]
+        public async Task<IActionResult> View([FromRoute] Guid applicationId)
+        {
+            var query = new GetApplicationViewQuery
+            {
+                ApplicationId = applicationId,
+                CandidateId = User.Claims.CandidateId()!
+            };
+            var result = await mediator.Send(query);
+
+            var viewModel = (ApplicationViewModel)result;
+            viewModel.ApplicationId = applicationId;
+
+            return View(ApplicationPreviewViewPath, viewModel);
         }
     }
 }

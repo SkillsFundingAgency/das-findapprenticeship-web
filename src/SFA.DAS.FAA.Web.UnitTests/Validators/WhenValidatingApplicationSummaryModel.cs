@@ -2,6 +2,7 @@
 using FluentAssertions.Execution;
 using FluentValidation.TestHelper;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.Models.Applications;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.Testing.AutoFixture;
