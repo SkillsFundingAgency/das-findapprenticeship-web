@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.Models.Applications;
@@ -21,8 +22,11 @@ public class ApplicationViewModel
             WhatIsYourInterest = source.WhatIsYourInterest,
             AboutYou = source.AboutYou,
             VacancyDetails = source.VacancyDetails,
+            ApplicationStatus = source.ApplicationStatus
         };
     }
+
+    public ApplicationStatus ApplicationStatus { get; set; }
 
     public bool IsDisabilityConfident { get; init; }
     public CandidateDetailsSection Candidate { get; init; } = new();
