@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Apply.GetApplicationView;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -19,6 +20,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
             GetApplicationViewQueryHandler handler)
         {
             // Arrange
+            apiResponse.ApplicationStatus = "Withdrawn";
             var apiRequestUri = new GetApplicationViewApiRequest(query.ApplicationId, query.CandidateId);
 
             apiClientMock.Setup(client =>
@@ -31,7 +33,8 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            result.Should().BeEquivalentTo(apiResponse);
+            result.Should().BeEquivalentTo(apiResponse, options=> options.Excluding(c=>c.ApplicationStatus));
+            result.ApplicationStatus.Should().Be(ApplicationStatus.Withdrawn);
         }
     }
 }

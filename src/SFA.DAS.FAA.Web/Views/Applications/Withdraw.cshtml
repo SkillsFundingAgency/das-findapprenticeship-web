@@ -1,0 +1,75 @@
+@using SFA.DAS.FAA.Web.Models.Applications
+@using SFA.DAS.FAA.Web.Infrastructure
+@model WithdrawApplicationViewModel
+@{
+    ViewBag.Title = "Withdraw your application - Find an apprenticeship - GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.Applications.ViewApplications" asp-route-tab="@ApplicationsTab.Submitted.ToString()">Back</a>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <h1 class="govuk-heading-l">Withdraw your application</h1>
+        <div class="das-highlight">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-1">@Model.AdvertTitle</h2>
+            <p class="govuk-hint">@Model.EmployerName</p>
+            <p class="govuk-!-margin-bottom-0">Submitted on @Model.SubmittedDate</p>
+            <p class="govuk-!-margin-bottom-0">@Model.ClosesOnDate</p>
+        </div>
+        <p>Withdraw this application if:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>you're no longer interested in this apprenticeship</li>
+            <li>you need to change something in your application</li>
+        </ul>
+        
+        @if (Model.ClosesToday)
+        {
+            <div class="govuk-inset-text">
+                You can submit another application after withdrawing. Submit your new application before this apprenticeship closes today at 11:59pm.
+            </div>    
+        }
+        @if (Model.ClosesTomorrow)
+        {
+            <div class="govuk-inset-text">
+                You can submit another application after withdrawing. Submit your new application before this apprenticeship closes tomorrow at 11:59pm.
+            </div>    
+        }
+        else
+        {
+            <div class="govuk-inset-text">
+                You can submit another application after withdrawing. Submit your new application before this apprenticeship @Model.ClosesOnDate!.Replace("C","c")
+            </div>    
+        }
+        
+        <form class="form" method="post">
+            <input asp-for="EmployerName" type="hidden"/>
+            <input asp-for="AdvertTitle" type="hidden"/>
+            <div class="govuk-form-group" das-highlight-error-for="WithdrawApplication" error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Do you want to withdraw this application?
+                    </legend>
+                    <span das-validation-for="WithdrawApplication" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input id="WithdrawApplication" class="govuk-radios__input" type="radio" asp-for="WithdrawApplication" value="true"/>
+                            <label class="govuk-label govuk-radios__label" for="WithdrawApplication">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input id="withdraw-no" class="govuk-radios__input" type="radio" asp-for="WithdrawApplication" value="false"/>
+                            <label class="govuk-label govuk-radios__label" for="withdraw-no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Confirm
+            </button>
+        </form>
+    </div>
+</div>

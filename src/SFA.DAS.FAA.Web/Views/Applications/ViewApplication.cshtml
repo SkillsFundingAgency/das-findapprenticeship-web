@@ -1,10 +1,18 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.Applications
+@using SFA.DAS.FAA.Domain.Enums
 @model SFA.DAS.FAA.Web.Models.Applications.ApplicationViewModel;
 @{
     ViewBag.Title = $"Your application to {@Model.VacancyDetails.EmployerName} – Find an apprenticeship – GOV.UK";
+    var tagName = Model.ApplicationStatus switch
+    {
+        ApplicationStatus.Successful => ApplicationsTab.Successful.ToString(),
+        ApplicationStatus.Unsuccessful => ApplicationsTab.Unsuccessful.ToString(),
+        _ => ApplicationsTab.Submitted.ToString()
+    };
 }
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">Back</a>
+    <a class="govuk-back-link" asp-route="@RouteNames.Applications.ViewApplications" asp-route-tab="@tagName">Back</a>
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

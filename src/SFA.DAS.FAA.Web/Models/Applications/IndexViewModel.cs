@@ -18,6 +18,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
         public List<Application> Applications { get; set; } = [];
         public List<Application> ExpiredApplications { get; set; } = [];
+        public List<Application> WithdrawnApplications { get; set; } = [];
+        public string? BannerMessage { get; set; }
 
         public class Application
         {
@@ -27,6 +29,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public string? EmployerName { get; set; }
             public string? StartedOn { get; set; }
             public string? ClosingDate { get; set; }
+            public string? WithdrawnDate { get; set; }
             public string? SubmittedDate { get; set; }
             public string? ResponseDate { get; set; }
             public bool IsClosingSoon { get; set; }
@@ -71,6 +74,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     SubmittedDate = application.Status is (ApplicationStatus.Submitted)
                         ? $"Submitted on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
                         : string.Empty,
+                    WithdrawnDate = $"Withdrawn application on {application.WithdrawnDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ResponseDate = application.Status switch
                     {
                         (ApplicationStatus.Successful) => $"Offered on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
@@ -85,6 +89,10 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                 if (applicationViewModel.IsClosed)
                 {
                     expiredApplications.Add(applicationViewModel);
+                }
+                else if (applicationViewModel.Status == ApplicationStatus.Withdrawn)
+                {
+                    result.WithdrawnApplications.Add(applicationViewModel);
                 }
                 else
                 {

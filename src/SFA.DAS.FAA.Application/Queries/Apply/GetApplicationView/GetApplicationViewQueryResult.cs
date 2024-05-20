@@ -15,10 +15,11 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
         public InterviewAdjustmentsSection InterviewAdjustments { get; init; }
         public DisabilityConfidenceSection DisabilityConfidence { get; init; }
         public WhatIsYourInterestSection WhatIsYourInterest { get; init; }
-
+        public ApplicationStatus ApplicationStatus { get; set; }
 
         public static implicit operator GetApplicationViewQueryResult(GetApplicationViewApiResponse source)
         {
+            Enum.TryParse<Domain.Enums.ApplicationStatus>(source.ApplicationStatus, out var applicationStatus);
             return new GetApplicationViewQueryResult
             {
                 Candidate = source.Candidate,
@@ -30,7 +31,8 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
                 IsDisabilityConfident = source.IsDisabilityConfident,
                 AboutYou = source.AboutYou,
                 WhatIsYourInterest = source.WhatIsYourInterest,
-                VacancyDetails = source.VacancyDetails
+                VacancyDetails = source.VacancyDetails,
+                ApplicationStatus = applicationStatus
             };
         }
 
