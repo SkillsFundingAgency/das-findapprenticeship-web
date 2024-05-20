@@ -26,7 +26,7 @@ public class ApprenticeshipMapData
                 Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
                 Wage = source.WageText,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
-                PostedDate = VacancyDetailsHelperService.GetPostedDate(source.PostedDate)
+                PostedDate = source.PostedDate.GetPostedDate()
             },
             Position = new MapPosition
             {

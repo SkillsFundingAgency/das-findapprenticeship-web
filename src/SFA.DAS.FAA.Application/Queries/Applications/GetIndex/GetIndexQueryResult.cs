@@ -16,8 +16,10 @@ public class GetIndexQueryResult
         public DateTime CreatedDate { get; set; }
         public DateTime ClosingDate { get; set; }
         public DateTime? SubmittedDate { get; set; }
+        public DateTime? WithdrawnDate { get; set; }
         public DateTime? ResponseDate { get; set; }
         public ApplicationStatus Status { get; set; }
+        public string ResponseNotes { get; set; }
     }
 
     public static implicit operator GetIndexQueryResult(GetApplicationsApiResponse source)
@@ -33,8 +35,10 @@ public class GetIndexQueryResult
                 CreatedDate = x.CreatedDate,
                 ClosingDate = x.ClosingDate,
                 SubmittedDate = x.SubmittedDate,
+                WithdrawnDate = x.WithdrawnDate,
                 ResponseDate = x.ResponseDate,
                 Status = x.Status,
+                ResponseNotes = x.ResponseNotes
             }).ToList()
         };
     }

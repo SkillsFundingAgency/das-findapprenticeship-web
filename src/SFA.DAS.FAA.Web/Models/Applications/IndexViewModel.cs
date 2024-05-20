@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
+using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Extensions;
@@ -18,6 +18,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
         public List<Application> Applications { get; set; } = [];
         public List<Application> ExpiredApplications { get; set; } = [];
+        public List<Application> WithdrawnApplications { get; set; } = [];
+        public string? BannerMessage { get; set; }
 
         public class Application
         {
@@ -27,22 +29,31 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public string? EmployerName { get; set; }
             public string? StartedOn { get; set; }
             public string? ClosingDate { get; set; }
+            public string? WithdrawnDate { get; set; }
             public string? SubmittedDate { get; set; }
             public string? ResponseDate { get; set; }
             public bool IsClosingSoon { get; set; }
             public bool IsClosed { get; set; }
             public ApplicationStatus Status { get; set; }
+            public string ResponseNotes { get; set; } = null!;
+            public DateTime CloseDateTime { get; set; }
         }
 
         public static IndexViewModel Map(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
         {
+            var expiredApplications = new List<Application>();
             var result = new IndexViewModel
             {
                 SelectedTab = tab,
                 PageTitle = $"{tab.GetTabTitle()} applications"
             };
 
-            foreach (var application in source.Applications.OrderByDescending(x => x.CreatedDate))
+            var applications = source.Applications.OrderByDescending(
+                x => tab == ApplicationsTab.Unsuccessful
+                    ? x.ResponseDate
+                    : x.CreatedDate);
+
+            foreach (var application in applications)
             {
                 var timeUntilClosing = application.ClosingDate.Date - dateTimeService.GetDateTime();
                 var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
@@ -53,6 +64,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     VacancyReference = application.VacancyReference,
                     Title = application.Title,
                     EmployerName = application.EmployerName,
+                    CloseDateTime = application.ClosingDate,
                     StartedOn =
                         $"Started on {application.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, application.ClosingDate),
@@ -62,24 +74,37 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     SubmittedDate = application.Status is (ApplicationStatus.Submitted)
                         ? $"Submitted on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
                         : string.Empty,
-                    ResponseDate = application.Status is (ApplicationStatus.Successful)
-                        ? $"Offered on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}"
+                    WithdrawnDate = $"Withdrawn application on {application.WithdrawnDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                    ResponseDate = application.Status switch
+                    {
+                        (ApplicationStatus.Successful) => $"Offered on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        ApplicationStatus.Unsuccessful => $"Feedback received on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        _ => string.Empty
+                    },
+                    ResponseNotes = application.Status is ApplicationStatus.Unsuccessful
+                        ? application.ResponseNotes
                         : string.Empty
                 };
 
                 if (applicationViewModel.IsClosed)
                 {
-                    result.ExpiredApplications.Add(applicationViewModel);
+                    expiredApplications.Add(applicationViewModel);
+                }
+                else if (applicationViewModel.Status == ApplicationStatus.Withdrawn)
+                {
+                    result.WithdrawnApplications.Add(applicationViewModel);
                 }
                 else
                 {
                     result.Applications.Add(applicationViewModel);
                 }
             }
-
             result.TabTitle = tab.GetTabTitle();
             result.TabText = result.Applications.Count > 0 ? tab.GetTabPopulatedText() : tab.GetTabEmptyText();
             result.IsTabTextInset = tab == ApplicationsTab.Started && result.Applications.Count > 0;
+            result.ExpiredApplications = [.. expiredApplications
+                .OrderByDescending(fil => fil.CloseDateTime)
+                .ThenBy(fil => fil.Title)];
 
             return result;
         }
