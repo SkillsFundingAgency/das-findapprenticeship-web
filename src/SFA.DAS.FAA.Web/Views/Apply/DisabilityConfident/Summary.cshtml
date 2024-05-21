@@ -23,14 +23,16 @@
                         @Html.HiddenFor(x => x.IsApplyUnderDisabilityConfidentSchemeRequired)
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DisabilityConfident, new {Model.ApplicationId, isEdit = true})">
+                        <a class="govuk-link"
+                            href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DisabilityConfident, new {Model.ApplicationId, isEdit = true})">
                             Change<span class="govuk-visually-hidden"> Disability Confident</span>
                         </a>
                     </dd>
                 </div>
             </dl>
             <div class="govuk-!-padding-bottom-5"></div>
-            <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted" error-class="govuk-form-group--error">
+            <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted"
+                error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Have you completed this section?
@@ -38,13 +40,15 @@
                     <span das-validation-for="IsSectionCompleted" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsSectionCompleted" type="radio" value="true" id="IsSectionCompleted">
+                            <input class="govuk-radios__input" asp-for="IsSectionCompleted" type="radio" value="true"
+                                id="IsSectionCompleted">
                             <label class="govuk-label govuk-radios__label" for="IsSectionCompleted">
                                 Yes, I've completed this section
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsSectionCompleted" id="IsSectionComplete-No" type="radio" value="false">
+                            <input class="govuk-radios__input" asp-for="IsSectionCompleted" id="IsSectionCompleted-No"
+                                type="radio" value="false">
                             <label class="govuk-label govuk-radios__label" for="IsSectionCompleted-No">
                                 No, I'll come back to it later
                             </label>
