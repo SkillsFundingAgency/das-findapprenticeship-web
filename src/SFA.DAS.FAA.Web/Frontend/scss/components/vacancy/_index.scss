@@ -35,17 +35,27 @@
 }
 
 .faa-vacancy-actions {
-  margin: 20px 0 30px;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  @include govuk-media-query(tablet) {
+    flex-direction: row;
+  }
 }
 
 .faa-vacancy-actions__link {
-  margin-right: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  @include govuk-media-query(tablet) {
+    margin-right: 15px;
+  }
 }
 
 .faa-vacancy-actions__icon {
   max-height: 1em;
-  position: relative;
-  top: 3px;
+  min-width: 1em;
   margin-right: 5px;
 }
 
@@ -91,11 +101,4 @@
   width: 130px;
   display: block;
   margin-bottom: 20px;
-}
-
-.faa-vacancy-actions__link--print {
-  display: none;
-  .js-enabled & {
-    display: inline;
-  }
 }
