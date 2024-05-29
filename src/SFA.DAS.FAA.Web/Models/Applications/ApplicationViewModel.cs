@@ -22,11 +22,14 @@ public class ApplicationViewModel
             WhatIsYourInterest = source.WhatIsYourInterest,
             AboutYou = source.AboutYou,
             VacancyDetails = source.VacancyDetails,
-            ApplicationStatus = source.ApplicationStatus
+            ApplicationStatus = source.ApplicationStatus,
+            WithdrawnDate = source.WithdrawnDate
         };
     }
 
+    public string? BannerMessage => GetBannerMessage();
     public ApplicationStatus ApplicationStatus { get; set; }
+    public DateTime? WithdrawnDate { get; set; }
 
     public bool IsDisabilityConfident { get; init; }
     public CandidateDetailsSection Candidate { get; init; } = new();
@@ -357,5 +360,15 @@ public class ApplicationViewModel
                 SkillsAndStrengths = source.SkillsAndStrengths
             };
         }
+    }
+
+    private string GetBannerMessage()
+    {
+        return ApplicationStatus switch
+        {
+            ApplicationStatus.Withdrawn =>
+                $"You withdrew your application for this apprenticeship on {WithdrawnDate:dd MMM yyyy}.",
+            _ => string.Empty
+        };
     }
 }

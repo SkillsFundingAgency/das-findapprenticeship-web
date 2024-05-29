@@ -16,6 +16,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
         public DisabilityConfidenceSection DisabilityConfidence { get; init; }
         public WhatIsYourInterestSection WhatIsYourInterest { get; init; }
         public ApplicationStatus ApplicationStatus { get; set; }
+        public DateTime? WithdrawnDate { get; set; }
 
         public static implicit operator GetApplicationViewQueryResult(GetApplicationViewApiResponse source)
         {
@@ -32,7 +33,8 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
                 AboutYou = source.AboutYou,
                 WhatIsYourInterest = source.WhatIsYourInterest,
                 VacancyDetails = source.VacancyDetails,
-                ApplicationStatus = applicationStatus
+                ApplicationStatus = applicationStatus,
+                WithdrawnDate = source.WithdrawnDate,
             };
         }
 
