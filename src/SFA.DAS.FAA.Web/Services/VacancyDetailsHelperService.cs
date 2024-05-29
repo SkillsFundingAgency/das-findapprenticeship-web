@@ -21,8 +21,7 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate)
         {
-            var timeUntilClosing = closingDate.Date - dateTimeService.GetDateTime();
-            var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
+            var daysToExpiry = GetDaysUntilExpiry(dateTimeService, closingDate);
 
             switch (daysToExpiry)
             {
@@ -39,6 +38,12 @@ namespace SFA.DAS.FAA.Web.Services
                 default:
                     return $"Closes on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm";
             }
+        }
+
+        public static int GetDaysUntilExpiry(IDateTimeService dateTimeService, DateTime closingDate)
+        {
+            var timeUntilClosing = closingDate.Date - dateTimeService.GetDateTime();
+            return (int)Math.Ceiling(timeUntilClosing.TotalDays);
         }
 
         public static string? FormatEmployerWebsiteUrl(string? url)
