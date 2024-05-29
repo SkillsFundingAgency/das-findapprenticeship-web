@@ -16,6 +16,7 @@ using CreateAccount.GetCandidatePhoneNumber;
 using CreateAccount.GetCandidatePostcode;
 using CreateAccount.GetCandidatePostcodeAddress;
 using CreateAccount.GetCandidatePreferences;
+using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -31,14 +32,24 @@ namespace SFA.DAS.FAA.Web.Controllers
     {
         [HttpGet]
         [Route("", Name = RouteNames.CreateAccount)]
-        public IActionResult CreateAccount([FromQuery] string returnUrl)
+        public async Task<IActionResult> CreateAccount([FromQuery] string returnUrl)
         {
             if (!string.IsNullOrWhiteSpace(returnUrl))
             {
                 cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
             }
 
-            return View();
+            var result = await mediator.Send(new GetInformQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            });
+
+            var model = new InformViewModel
+            {
+                ShowAccountRecoveryBanner = result.ShowAccountRecoveryBanner
+            };
+
+            return View(model);
         }
 
         [HttpGet]
