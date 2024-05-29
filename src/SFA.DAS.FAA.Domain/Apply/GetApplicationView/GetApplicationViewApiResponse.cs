@@ -14,6 +14,7 @@
         public WhatIsYourInterestSection WhatIsYourInterest { get; set; }
         public string ApplicationStatus { get; set; }
         public DateTime? WithdrawnDate { get; set; }
+        public DateTime? MigrationDate { get; set; }
 
         public record VacancyDetailsSection
         {

@@ -17,10 +17,11 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
         public WhatIsYourInterestSection WhatIsYourInterest { get; init; }
         public ApplicationStatus ApplicationStatus { get; set; }
         public DateTime? WithdrawnDate { get; set; }
+        public DateTime? MigrationDate { get; set; }
 
         public static implicit operator GetApplicationViewQueryResult(GetApplicationViewApiResponse source)
         {
-            Enum.TryParse<Domain.Enums.ApplicationStatus>(source.ApplicationStatus, out var applicationStatus);
+            Enum.TryParse<ApplicationStatus>(source.ApplicationStatus, out var applicationStatus);
             return new GetApplicationViewQueryResult
             {
                 Candidate = source.Candidate,
@@ -35,6 +36,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
                 VacancyDetails = source.VacancyDetails,
                 ApplicationStatus = applicationStatus,
                 WithdrawnDate = source.WithdrawnDate,
+                MigrationDate = source.MigrationDate,
             };
         }
 

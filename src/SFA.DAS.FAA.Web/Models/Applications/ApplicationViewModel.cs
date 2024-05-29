@@ -23,13 +23,15 @@ public class ApplicationViewModel
             AboutYou = source.AboutYou,
             VacancyDetails = source.VacancyDetails,
             ApplicationStatus = source.ApplicationStatus,
-            WithdrawnDate = source.WithdrawnDate
+            WithdrawnDate = source.WithdrawnDate,
+            MigrationDate = source.MigrationDate,
         };
     }
 
     public string? BannerMessage => GetBannerMessage();
     public ApplicationStatus ApplicationStatus { get; set; }
     public DateTime? WithdrawnDate { get; set; }
+    public DateTime? MigrationDate { get; set; }
 
     public bool IsDisabilityConfident { get; init; }
     public CandidateDetailsSection Candidate { get; init; } = new();
