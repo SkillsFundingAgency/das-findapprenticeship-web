@@ -18,6 +18,7 @@ public static class RouteNames
     public const string NotificationPreferencesSkip = "notification-preferences-skip";
     public const string ConfirmAccountDetails = "check-your-account-details";
     public const string CreateAccount = "create-account";
+    public const string TransferYourData = "transfer-your-data";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
     public const string SignedOut = "signed-out";

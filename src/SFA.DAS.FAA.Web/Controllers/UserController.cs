@@ -53,6 +53,13 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet]
+        [Route("transfer-your-data", Name = RouteNames.TransferYourData)]
+        public IActionResult TransferYourData()
+        {
+            return View();
+        }
+
+        [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
         public async Task<IActionResult> Name(bool? change = false)
         {
