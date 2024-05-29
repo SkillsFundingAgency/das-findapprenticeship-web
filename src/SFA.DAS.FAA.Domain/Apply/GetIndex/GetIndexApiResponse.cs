@@ -8,7 +8,9 @@ public class GetIndexApiResponse
     public string VacancyTitle { get; set; }
     public string EmployerName { get; set; }
     public DateTime ClosingDate { get; set; }
+    public bool IsMigrated { get; set; }
     public bool IsDisabilityConfident { get; set; }
+    public bool IsApplicationComplete { get; set; }
 
     public EducationHistorySection EducationHistory { get; set; }
     public WorkHistorySection WorkHistory { get; set; }

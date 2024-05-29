@@ -1,5 +1,4 @@
 ﻿using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
-using SFA.DAS.FAA.Domain.Apply.GetIndex;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -14,10 +13,12 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             {
                 VacancyReference = source.VacancyReference,
                 ShowAccountCreatedBanner = false,
+                ShowApplicationMigratedBanner = source is { IsMigrated: true, IsApplicationComplete: false },
                 VacancyTitle = source.VacancyTitle,
                 EmployerName = source.EmployerName,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
                 IsDisabilityConfident = source.IsDisabilityConfident,
+                IsApplicationComplete = source.IsApplicationComplete,
                 EducationHistory = source.EducationHistory,
                 WorkHistory = source.WorkHistory,
                 ApplicationQuestions = source.ApplicationQuestions,
@@ -31,6 +32,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public Guid ApplicationId { get; set; }
         public string VacancyReference { get; set; }
         public bool ShowAccountCreatedBanner { get; set; }
+        public bool ShowApplicationMigratedBanner { get; set; }
         public string VacancyTitle { get; set; }
         public string EmployerName { get; set; }
         public string ClosingDate { get; set; }
@@ -46,14 +48,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                                              DisabilityConfidence.InterviewUnderDisabilityConfident == SectionStatus.PreviousAnswer;
 
 
-        public bool IsApplicationComplete => (EducationHistory.TrainingCourses is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
-                                             (EducationHistory.Qualifications is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
-                                             (WorkHistory.VolunteeringAndWorkExperience is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
-                                             (WorkHistory.Jobs is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
-                                             (!ApplicationQuestions.ShowAdditionalQuestion1 || ApplicationQuestions.AdditionalQuestion1 is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
-                                             (!ApplicationQuestions.ShowAdditionalQuestion2 || ApplicationQuestions.AdditionalQuestion2 is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
-                                             (InterviewAdjustments.RequestAdjustments is SectionStatus.Completed or SectionStatus.PreviousAnswer) &&
-                                             (!IsDisabilityConfident || DisabilityConfidence.InterviewUnderDisabilityConfident is SectionStatus.Completed or SectionStatus.PreviousAnswer);
+        public bool IsApplicationComplete { get; set; }
 
         public EducationHistorySection EducationHistory { get; set; } = new();
         public WorkHistorySection WorkHistory { get; set; } = new();
