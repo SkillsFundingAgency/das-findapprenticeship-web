@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Domain.User
 {
     public class GetInformApiRequest(Guid candidateId) : IGetApiRequest
     {
-        public string GetUrl => $"users/create-account?candidateId={candidateId}";
+        public string GetUrl => $"candidates/create-account?candidateId={candidateId}";
     }
 
     public class GetInformApiResponse
