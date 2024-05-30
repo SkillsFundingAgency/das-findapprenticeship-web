@@ -60,6 +60,21 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet]
+        [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
+        public IActionResult SignInToYourOldAccount()
+        {
+            var viewModel = new SignInToYourOldAccountViewModel();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
+        public IActionResult SignInToYourOldAccount(SignInToYourOldAccountViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
         public async Task<IActionResult> Name(bool? change = false)
         {
