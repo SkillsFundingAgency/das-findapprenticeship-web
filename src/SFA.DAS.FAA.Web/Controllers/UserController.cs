@@ -71,6 +71,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
         public IActionResult SignInToYourOldAccount(SignInToYourOldAccountViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
             throw new NotImplementedException();
         }
 
