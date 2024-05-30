@@ -50,8 +50,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Applications
             Assert.That(actual, Is.Not.Null);
             var expected = IndexViewModel.Map(ApplicationsTab.Started, result, dateTimeService.Object);
             var actualModel = actual.Model as IndexViewModel;
-            actualModel.Should().BeEquivalentTo(expected, options=>options.Excluding(c=>c.BannerMessage));
-            actualModel!.BannerMessage.Should().Be(bannerMessage);
+            actualModel.Should().BeEquivalentTo(expected, options=>options.Excluding(c=>c.WithdrawnBannerMessage));
+            actualModel!.WithdrawnBannerMessage.Should().Be(bannerMessage);
             cacheStorageService.Verify(x=>x.Remove($"{govIdentifier}-VacancyWithdrawn"), Times.Once);
         }
     }

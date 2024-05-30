@@ -19,7 +19,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         public List<Application> Applications { get; set; } = [];
         public List<Application> ExpiredApplications { get; set; } = [];
         public List<Application> WithdrawnApplications { get; set; } = [];
-        public string? BannerMessage { get; set; }
+        public string? WithdrawnBannerMessage { get; set; }
+        public bool ShowTransferDataBannerMessage { get; set; }
 
         public class Application
         {
@@ -105,7 +106,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             result.ExpiredApplications = [.. expiredApplications
                 .OrderByDescending(fil => fil.CloseDateTime)
                 .ThenBy(fil => fil.Title)];
-
+            result.ShowTransferDataBannerMessage = source.Applications.Count == 0 && source.ShowAccountRecoveryBanner;
             return result;
         }
     }
