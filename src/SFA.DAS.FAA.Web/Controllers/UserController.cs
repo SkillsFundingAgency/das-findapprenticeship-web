@@ -16,6 +16,8 @@ using CreateAccount.GetCandidatePhoneNumber;
 using CreateAccount.GetCandidatePostcode;
 using CreateAccount.GetCandidatePostcodeAddress;
 using CreateAccount.GetCandidatePreferences;
+using SFA.DAS.FAA.Application.Commands.Applications.LegacyApplications;
+using SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -471,6 +473,30 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             return RedirectToRoute(RouteNames.ServiceStartDefault);
+        }
+
+        [HttpGet("confirm-transfer", Name = RouteNames.ConfirmTransferYourData)]
+        public async Task<IActionResult> ConfirmDataTransfer()
+        {
+            var legacyApplicationStats = await mediator.Send(new GetTransferUserDataQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                EmailAddress = User.Claims.Email()!
+            });
+
+            return View((ConfirmTransferViewModel)legacyApplicationStats);
+        }
+
+        [HttpPost("confirm-transfer", Name = RouteNames.ConfirmTransferYourData)]
+        public async Task<IActionResult> ConfirmDataTransfer(ConfirmTransferViewModel viewModel)
+        {
+            await mediator.Send(new MigrateLegacyApplicationsCommand
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                EmailAddress = User.Claims.Email()!
+            });
+
+            return RedirectToRoute(RouteNames.FinishAccountSetup);
         }
     }
 }
