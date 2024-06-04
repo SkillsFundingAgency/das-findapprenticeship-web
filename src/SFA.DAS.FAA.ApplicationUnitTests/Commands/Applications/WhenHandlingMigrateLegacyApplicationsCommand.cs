@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.Applications.LegacyApplications;
-using SFA.DAS.FAA.Domain.Applications.MigrateApplications;
+using SFA.DAS.FAA.Domain.Applications.MigrateData;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Applications
             await handler.Handle(request, CancellationToken.None);
 
             apiClient.Verify(x => x.PostWithResponseCode(
-                It.Is<PostMigrateLegacyApplicationsApiRequest>(c =>
+                It.Is<PostMigrateDataTransferApiRequest>(c =>
                     c.PostUrl.Contains(request.CandidateId.ToString()))), Times.Once());
         }
     }
