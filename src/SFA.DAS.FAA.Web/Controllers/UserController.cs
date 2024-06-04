@@ -17,6 +17,7 @@ using CreateAccount.GetCandidatePostcode;
 using CreateAccount.GetCandidatePostcodeAddress;
 using CreateAccount.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
+using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -69,14 +70,28 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
-        public IActionResult SignInToYourOldAccount(SignInToYourOldAccountViewModel viewModel)
+        public async Task<IActionResult> SignInToYourOldAccount(SignInToYourOldAccountViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
 
-            throw new NotImplementedException();
+            var result = await mediator.Send(new GetSignIntoYourOldAccountQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                Email = viewModel.Email ?? "",
+                Password = viewModel.Password ?? ""
+            });
+
+            if (!result.IsValid)
+            {
+                ModelState.AddModelError(nameof(SignInToYourOldAccountViewModel.Password), "Check your account details. You’ve entered an incorrect email address or password.");
+                return View(viewModel);
+            }
+
+            //todo: replace with redirect to preview page
+            return Ok("Login successful");
         }
 
         [HttpGet]
