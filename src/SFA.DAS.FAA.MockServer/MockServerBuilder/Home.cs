@@ -110,7 +110,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile("closed-vacancy-details.json"));
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/candidates/\\S+$", RegexOptions.None, regexMaxTimeOut))
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"/candidates/{Constants.CandidateIdWithApplications}", RegexOptions.None, regexMaxTimeOut))
                      .UsingPut())
                   .RespondWith(
                      Response.Create()

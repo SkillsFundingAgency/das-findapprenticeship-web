@@ -6,6 +6,10 @@ public static class Pages
     {
         return
         [
+            //Create Account
+            new Page { Name = "Create Account", Url= "/create-account"},
+            new Page { Name = "Transfer Your Data", Url = "/create-account/transfer-your-data" },
+            new Page { Name = "Sign into your Old Account", Url = "/create-account/sign-in-to-your-old-account" },
             //Vacancies
             new Page { Name = "Vacancy Details", Url= "/vacancies/{vacancyReference}" },
             //Applications
