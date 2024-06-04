@@ -90,6 +90,8 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(viewModel);
             }
 
+            await cacheStorageService.Set($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}", viewModel.Email);
+
             //todo: replace with redirect to preview page
             return Ok("Login successful");
         }

@@ -10,8 +10,10 @@ using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.Testing.AutoFixture;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
@@ -54,11 +56,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
         }
 
         [Test, MoqAutoData]
-        public async Task Then_When_The_Credentials_Are_Valid_Then_View_OkResult_Is_Returned(
+        public async Task Then_When_The_Credentials_Are_Valid_Then_LegacyEmail_Is_Stored_In_Cache(
             SignInToYourOldAccountViewModel viewModel,
             GetSignIntoYourOldAccountQueryResult queryResult,
             Guid candidateId,
             [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICacheStorageService> cacheStorageService,
             [Greedy] UserController controller)
         {
             controller.ControllerContext = new ControllerContext
@@ -85,6 +88,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             using var scope = new AssertionScope();
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>(); //todo: this will need to change to be a redirect in next ticket
+
+            cacheStorageService.Verify(x => x.Set(It.Is<string>(key => key == $"{candidateId}-{CacheKeys.LegacyEmail}"), It.Is<string>(v => v == viewModel.Email), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
         }
     }
 }
