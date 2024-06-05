@@ -10,6 +10,6 @@ namespace SFA.DAS.FAA.Web.Models.User
         [Required(ErrorMessage = "Enter your last name")]
         public string LastName { get; set; }
         public bool? ReturnToConfirmationPage { get; set; }
-        public string BackLink { get; set; }
+        public string? BackLink { get; set; }
     }
 }

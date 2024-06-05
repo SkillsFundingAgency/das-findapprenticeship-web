@@ -171,6 +171,12 @@
     <None Update="Apply\NewApplication\TrainingCourses\get-trainingcourses.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="CreateAccount\get-user-date-of-birth.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CreateAccount\get-user-name.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="CreateAccount\get-inform.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

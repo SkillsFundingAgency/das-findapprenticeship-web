@@ -28,11 +28,11 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("create-account")]
+    [Route("user")]
     public class UserController(IMediator mediator, ICacheStorageService cacheStorageService) : Controller
     {
         [HttpGet]
-        [Route("", Name = RouteNames.CreateAccount)]
+        [Route("create-account", Name = RouteNames.CreateAccount)]
         public async Task<IActionResult> CreateAccount([FromQuery] string returnUrl)
         {
             if (!string.IsNullOrWhiteSpace(returnUrl))
@@ -54,14 +54,14 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet]
-        [Route("transfer-your-data", Name = RouteNames.TransferYourData)]
+        [Route("create-account/transfer-your-data", Name = RouteNames.TransferYourData)]
         public IActionResult TransferYourData()
         {
             return View();
         }
 
         [HttpGet]
-        [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
+        [Route("create-account/sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
         public IActionResult SignInToYourOldAccount()
         {
             var viewModel = new SignInToYourOldAccountViewModel();
@@ -69,7 +69,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpPost]
-        [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
+        [Route("create-account/sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
         public async Task<IActionResult> SignInToYourOldAccount(SignInToYourOldAccountViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -453,7 +453,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             return await NotificationPreferences(model);
         }
 
-        [HttpGet("check-answers", Name = RouteNames.ConfirmAccountDetails)]
+        [HttpGet("create-account/check-answers", Name = RouteNames.ConfirmAccountDetails)]
         public async Task<IActionResult> CheckAnswers()
         {
             var accountDetails = await mediator.Send(new GetCandidateAccountDetailsQuery
@@ -489,7 +489,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
-        [HttpPost("check-answers", Name = RouteNames.ConfirmAccountDetails)]
+        [HttpPost("create-account/check-answers", Name = RouteNames.ConfirmAccountDetails)]
         public async Task<IActionResult> ConfirmYourAccountDetails(ConfirmAccountDetailsViewModel model)
         {
             await mediator.Send(new UpdateCheckAnswersCommand
