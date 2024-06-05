@@ -11,41 +11,45 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-l">Transfer your data</span>
-        <h1 class="govuk-heading-l">Confirm your data transfer</h1>
-        <p class="govuk-body">
-            <b>@Model.Name</b>, we’ve found your:
-        </p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>
-                personal details
-            </li>
-            @if(Model.ShowStartedApplicationsCount)
-            {
+        <form class="form" method="post">
+            <span class="govuk-caption-l">Transfer your data</span>
+            <h1 class="govuk-heading-l">Confirm your data transfer</h1>
+            <p class="govuk-body">
+                <b>@Model.Name</b>, we’ve found your:
+            </p>
+            <ul class="govuk-list govuk-list--bullet">
                 <li>
-                    <b>@Model.StartedApplicationsCount</b> started applications
+                    personal details
                 </li>
-            }
-            @if(Model.ShowSubmittedApplicationsCount)
-            {
-                <li>
-                    <b>@Model.SubmittedApplicationsCount</b> submitted applications
-                </li>
-            }
-            @if (Model.ShowSavedApplicationsCount)
-            {
-                <li>
-                    <b>@Model.SavedApplicationsCount</b> saved vacancies
-                </li>
-            }
-        </ul>
-        <div class="govuk-!-padding-bottom-5"></div>
-        <p class="govuk-body">We’ll transfer this to your new Find an apprenticeship account:</p>
-        <p class="govuk-body govuk-!-margin-bottom-1">
-            <b>@Model.EmailAddress</b>
-        </p>
-        <p class="govuk-body" style="color:#505a5f">Sign in with GOV.UK One Login</p>
-        <div class="govuk-!-padding-bottom-3"></div>
-        <a asp-route="@RouteNames.FinishAccountSetup" class="govuk-button" role="button">Continue</a>
+                @if (Model.ShowStartedApplicationsCount)
+                {
+                    <li>
+                        <b>@Model.StartedApplicationsCount</b> started applications
+                    </li>
+                }
+                @if (Model.ShowSubmittedApplicationsCount)
+                {
+                    <li>
+                        <b>@Model.SubmittedApplicationsCount</b> submitted applications
+                    </li>
+                }
+                @if (Model.ShowSavedApplicationsCount)
+                {
+                    <li>
+                        <b>@Model.SavedApplicationsCount</b> saved vacancies
+                    </li>
+                }
+            </ul>
+            <div class="govuk-!-padding-bottom-5"></div>
+            <p class="govuk-body">We’ll transfer this to your new Find an apprenticeship account:</p>
+            <p class="govuk-body govuk-!-margin-bottom-1">
+                <b>@Model.EmailAddress</b>
+            </p>
+            <p class="govuk-body" style="color:#505a5f">Sign in with GOV.UK One Login</p>
+            <div class="govuk-!-padding-bottom-3"></div>
+            <button class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
     </div>
 </div>

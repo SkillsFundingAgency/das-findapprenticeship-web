@@ -1,10 +1,10 @@
 ﻿using SFA.DAS.FAA.Domain.Interfaces;
 
-namespace SFA.DAS.FAA.Domain.Applications.MigrateData
+namespace SFA.DAS.FAA.Domain.User
 {
     public record PostMigrateDataTransferApiRequest(Guid CandidateId, PostMigrateDataTransferApiRequest.PostMigrateDataTransferApiRequestData Body) : IPostApiRequest
     {
-        public string PostUrl => $"user/{CandidateId}/migrate";
+        public string PostUrl => $"users/{CandidateId}/migrate";
         public object Data { get; set; } = Body;
 
         public class PostMigrateDataTransferApiRequestData

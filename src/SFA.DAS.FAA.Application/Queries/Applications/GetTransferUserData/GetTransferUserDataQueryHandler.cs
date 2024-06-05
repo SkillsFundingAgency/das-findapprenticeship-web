@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using SFA.DAS.FAA.Domain.Applications.GetLegacyApplications;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
@@ -12,7 +11,7 @@ namespace SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData
         public async Task<GetTransferUserDataQueryResult> Handle(GetTransferUserDataQuery request,
             CancellationToken cancellationToken)
         {
-            var applicationsApiResponseTask = ApiClient.Get<GetLegacyApplicationsApiResponse>(new GetLegacyApplicationsApiRequest(request.EmailAddress));
+            var applicationsApiResponseTask = ApiClient.Get<GetMigrateDataTransferApiResponse>(new GetMigrateDataTransferApiRequest(request.EmailAddress));
             var candidateApiResponseTask = ApiClient.Get<GetCandidateNameApiResponse>(new GetCandidateNameApiRequest(request.CandidateId));
 
             await Task.WhenAll(applicationsApiResponseTask, candidateApiResponseTask);
@@ -24,7 +23,6 @@ namespace SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData
             {
                 CandidateFirstName = candidateApiResponse.FirstName,
                 CandidateLastName = candidateApiResponse.LastName,
-                CandidateEmailAddress = request.EmailAddress,
                 SubmittedApplications = applicationsApiResponse.Applications.Count(fil => fil.Status == LegacyApplicationStatus.Submitted),
                 SavedApplications = applicationsApiResponse.Applications.Count(fil => fil.Status == LegacyApplicationStatus.Saved),
                 StartedApplications = applicationsApiResponse.Applications.Count(fil => fil.Status == LegacyApplicationStatus.Draft),

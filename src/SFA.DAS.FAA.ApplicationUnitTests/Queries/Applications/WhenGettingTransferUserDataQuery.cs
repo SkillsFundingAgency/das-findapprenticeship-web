@@ -3,7 +3,6 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData;
-using SFA.DAS.FAA.Domain.Applications.GetLegacyApplications;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
@@ -16,16 +15,16 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
         [Test, MoqAutoData]
         public async Task Then_Result_Is_Returned(
             GetTransferUserDataQuery query,
-            GetLegacyApplicationsApiResponse legacyApplicationsApiResponse,
+            GetMigrateDataTransferApiResponse legacyApplicationsApiResponse,
             GetCandidateNameApiResponse candidateNameApiResponse,
             [Frozen] Mock<IApiClient> apiClientMock,
             GetTransferUserDataQueryHandler handler)
         {
             // Arrange
-            var apiRequestUri = new GetLegacyApplicationsApiRequest(query.EmailAddress);
+            var apiRequestUri = new GetMigrateDataTransferApiRequest(query.EmailAddress);
             apiClientMock.Setup(client =>
-                    client.Get<GetLegacyApplicationsApiResponse>(
-                        It.Is<GetLegacyApplicationsApiRequest>(c =>
+                    client.Get<GetMigrateDataTransferApiResponse>(
+                        It.Is<GetMigrateDataTransferApiRequest>(c =>
                             c.GetUrl == apiRequestUri.GetUrl)))
                 .ReturnsAsync(legacyApplicationsApiResponse);
 
@@ -42,7 +41,6 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
             // Assert
             result.CandidateFirstName.Should().Be(candidateNameApiResponse.FirstName);
             result.CandidateLastName.Should().Be(candidateNameApiResponse.LastName);
-            result.CandidateEmailAddress.Should().Be(query.EmailAddress);
 
             result.SubmittedApplications.Should().Be(legacyApplicationsApiResponse.Applications.Count(fil => fil.Status == LegacyApplicationStatus.Submitted));
             result.SavedApplications.Should().Be(legacyApplicationsApiResponse.Applications.Count(fil => fil.Status == LegacyApplicationStatus.Saved));

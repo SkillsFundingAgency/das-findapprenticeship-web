@@ -1,7 +1,7 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Applications.MigrateData;
+using SFA.DAS.FAA.Domain.User;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Applications
 {
@@ -12,7 +12,7 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Applications
         {
             var actual = new PostMigrateDataTransferApiRequest(candidateId, data);
 
-            actual.PostUrl.Should().Be($"user/{candidateId}/migrate");
+            actual.PostUrl.Should().Be($"users/{candidateId}/migrate");
         }
     }
 }

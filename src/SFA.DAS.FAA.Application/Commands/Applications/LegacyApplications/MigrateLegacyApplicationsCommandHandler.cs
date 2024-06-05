@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using SFA.DAS.FAA.Domain.Applications.MigrateData;
 using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.User;
 
 namespace SFA.DAS.FAA.Application.Commands.Applications.LegacyApplications
 {

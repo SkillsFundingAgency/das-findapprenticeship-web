@@ -1,8 +1,8 @@
 ﻿using SFA.DAS.FAA.Domain.Enums;
 
-namespace SFA.DAS.FAA.Domain.Applications.GetLegacyApplications
+namespace SFA.DAS.FAA.Domain.User
 {
-    public class GetLegacyApplicationsApiResponse
+    public class GetMigrateDataTransferApiResponse
     {
         public List<Application> Applications { get; set; } = [];
 

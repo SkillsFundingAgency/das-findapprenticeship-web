@@ -478,13 +478,16 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet("confirm-transfer", Name = RouteNames.ConfirmTransferYourData)]
         public async Task<IActionResult> ConfirmDataTransfer()
         {
-            var legacyApplicationStats = await mediator.Send(new GetTransferUserDataQuery
+            var response = await mediator.Send(new GetTransferUserDataQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                EmailAddress = User.Claims.Email()!
+                EmailAddress = "Email from cache"
             });
 
-            return View((ConfirmTransferViewModel)legacyApplicationStats);
+            var model = (ConfirmTransferViewModel) response;
+            model.EmailAddress = User.Claims.Email()!;
+            
+            return View(model);
         }
 
         [HttpPost("confirm-transfer", Name = RouteNames.ConfirmTransferYourData)]
@@ -493,7 +496,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             await mediator.Send(new MigrateLegacyApplicationsCommand
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                EmailAddress = User.Claims.Email()!
+                EmailAddress = "Email from cache"
             });
 
             return RedirectToRoute(RouteNames.FinishAccountSetup);

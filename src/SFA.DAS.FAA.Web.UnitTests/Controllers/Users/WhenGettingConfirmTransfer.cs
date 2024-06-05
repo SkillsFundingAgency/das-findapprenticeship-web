@@ -46,7 +46,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             resultModel.Should().NotBeNull();
 
             using var scope = new AssertionScope();
-            resultModel!.EmailAddress.Should().Be(queryResult.CandidateEmailAddress);
+            resultModel!.EmailAddress.Should().Be(email);
             resultModel.Name.Should().Be(queryResult.CandidateFirstName);
             resultModel.SavedApplicationsCount.Should().Be(queryResult.SavedApplications);
             resultModel.StartedApplicationsCount.Should().Be(queryResult.StartedApplications);

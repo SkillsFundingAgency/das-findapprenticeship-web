@@ -5,7 +5,7 @@ namespace SFA.DAS.FAA.Web.Models.User
     public class ConfirmTransferViewModel
     {
         public string? Name { get; init; }
-        public string? EmailAddress { get; init; }
+        public string EmailAddress { get; set; }
 
         public bool ShowStartedApplicationsCount => StartedApplicationsCount > 0;
         public long StartedApplicationsCount { get; init; } = 0;
@@ -21,7 +21,6 @@ namespace SFA.DAS.FAA.Web.Models.User
             return new ConfirmTransferViewModel
             {
                 Name = source.CandidateFirstName,
-                EmailAddress = source.CandidateEmailAddress,
                 SavedApplicationsCount = source.SavedApplications,
                 StartedApplicationsCount = source.StartedApplications,
                 SubmittedApplicationsCount = source.SubmittedApplications,
