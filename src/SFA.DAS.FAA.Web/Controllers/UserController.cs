@@ -56,6 +56,13 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet]
+        [Route("transfer-your-data", Name = RouteNames.TransferYourData)]
+        public IActionResult TransferYourData()
+        {
+            return View();
+        }
+
+        [HttpGet]
         [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
         public IActionResult SignInToYourOldAccount()
         {
@@ -535,6 +542,12 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
             return RedirectToRoute(RouteNames.FinishAccountSetup);
+        }
+
+        [HttpGet("finish-account-setup", Name = RouteNames.FinishAccountSetup)]
+        public IActionResult FinishAccountSetup()
+        {
+            return View();
         }
     }
 }
