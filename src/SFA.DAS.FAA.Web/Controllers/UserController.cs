@@ -56,6 +56,13 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet]
+        [Route("transfer-your-data", Name = RouteNames.TransferYourData)]
+        public IActionResult TransferYourData()
+        {
+            return View();
+        }
+
+        [HttpGet]
         [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
         public IActionResult SignInToYourOldAccount()
         {
@@ -87,7 +94,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             await cacheStorageService.Set($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}", viewModel.Email);
             
-            return RedirectToRoute(RouteNames.TransferYourData);
+            return RedirectToRoute(RouteNames.ConfirmDataTransfer);
         }
 
         [HttpGet]
@@ -504,7 +511,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
 
-        [HttpGet("confirm-transfer", Name = RouteNames.TransferYourData)]
+        [HttpGet("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
         public async Task<IActionResult> ConfirmDataTransfer()
         {
             var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
@@ -522,7 +529,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
-        [HttpPost("confirm-transfer", Name = RouteNames.TransferYourData)]
+        [HttpPost("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
         public async Task<IActionResult> ConfirmDataTransfer(ConfirmTransferViewModel viewModel)
         {
             var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
