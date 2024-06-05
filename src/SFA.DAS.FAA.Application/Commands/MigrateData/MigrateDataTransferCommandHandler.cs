@@ -2,12 +2,12 @@
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Commands.Applications.LegacyApplications
+namespace SFA.DAS.FAA.Application.Commands.MigrateData
 {
-    public record MigrateLegacyApplicationsCommandHandler(IApiClient ApiClient)
-        : IRequestHandler<MigrateLegacyApplicationsCommand, Unit>
+    public record MigrateDataTransferCommandHandler(IApiClient ApiClient)
+        : IRequestHandler<MigrateDataTransferCommand, Unit>
     {
-        public async Task<Unit> Handle(MigrateLegacyApplicationsCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(MigrateDataTransferCommand request, CancellationToken cancellationToken)
         {
             await ApiClient.PostWithResponseCode(
                 new PostMigrateDataTransferApiRequest(request.CandidateId, new PostMigrateDataTransferApiRequest.PostMigrateDataTransferApiRequestData

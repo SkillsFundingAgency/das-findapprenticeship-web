@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData;
+using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;

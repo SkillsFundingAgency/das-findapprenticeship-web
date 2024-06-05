@@ -1,7 +1,7 @@
 ﻿using AutoFixture.NUnit3;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.Applications.LegacyApplications;
+using SFA.DAS.FAA.Application.Commands.MigrateData;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 using SFA.DAS.Testing.AutoFixture;
@@ -12,9 +12,9 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Applications
     {
         [Test, MoqAutoData]
         public async Task Then_The_Command_Is_Handled_And_Api_Request_Made(
-            MigrateLegacyApplicationsCommand request,
+            MigrateDataTransferCommand request,
             [Frozen] Mock<IApiClient> apiClient,
-            MigrateLegacyApplicationsCommandHandler handler)
+            MigrateDataTransferCommandHandler handler)
         {
             await handler.Handle(request, CancellationToken.None);
 

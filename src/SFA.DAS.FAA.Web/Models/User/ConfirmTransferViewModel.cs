@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData;
+﻿using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
 
 namespace SFA.DAS.FAA.Web.Models.User
 {

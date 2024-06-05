@@ -1,4 +1,12 @@
-﻿using MediatR;
+﻿using CreateAccount.GetAddressesByPostcode;
+using CreateAccount.GetCandidateAccountDetails;
+using CreateAccount.GetCandidateDateOfBirth;
+using CreateAccount.GetCandidateName;
+using CreateAccount.GetCandidatePhoneNumber;
+using CreateAccount.GetCandidatePostcode;
+using CreateAccount.GetCandidatePostcodeAddress;
+using CreateAccount.GetCandidatePreferences;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidatePreferences;
@@ -8,18 +16,10 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.PhoneNumber;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
-using CreateAccount.GetAddressesByPostcode;
-using CreateAccount.GetCandidateAccountDetails;
-using CreateAccount.GetCandidateDateOfBirth;
-using CreateAccount.GetCandidateName;
-using CreateAccount.GetCandidatePhoneNumber;
-using CreateAccount.GetCandidatePostcode;
-using CreateAccount.GetCandidatePostcodeAddress;
-using CreateAccount.GetCandidatePreferences;
-using SFA.DAS.FAA.Application.Commands.Applications.LegacyApplications;
-using SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData;
+using SFA.DAS.FAA.Application.Commands.MigrateData;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
+using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -56,13 +56,6 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet]
-        [Route("transfer-your-data", Name = RouteNames.TransferYourData)]
-        public IActionResult TransferYourData()
-        {
-            return View();
-        }
-
-        [HttpGet]
         [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
         public IActionResult SignInToYourOldAccount()
         {
@@ -93,9 +86,8 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             await cacheStorageService.Set($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}", viewModel.Email);
-
-            //todo: replace with redirect to preview page
-            return Ok("Login successful");
+            
+            return RedirectToRoute(RouteNames.TransferYourData);
         }
 
         [HttpGet]
@@ -512,13 +504,16 @@ namespace SFA.DAS.FAA.Web.Controllers
             return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
 
-        [HttpGet("confirm-transfer", Name = RouteNames.ConfirmTransferYourData)]
+        [HttpGet("confirm-transfer", Name = RouteNames.TransferYourData)]
         public async Task<IActionResult> ConfirmDataTransfer()
         {
+            var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
+            if(string.IsNullOrEmpty(legacyEmailAddress)) return RedirectToRoute(RouteNames.ServiceStartDefault);
+
             var response = await mediator.Send(new GetTransferUserDataQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                EmailAddress = "Email from cache"
+                EmailAddress = legacyEmailAddress!
             });
 
             var model = (ConfirmTransferViewModel) response;
@@ -527,13 +522,16 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
-        [HttpPost("confirm-transfer", Name = RouteNames.ConfirmTransferYourData)]
+        [HttpPost("confirm-transfer", Name = RouteNames.TransferYourData)]
         public async Task<IActionResult> ConfirmDataTransfer(ConfirmTransferViewModel viewModel)
         {
-            await mediator.Send(new MigrateLegacyApplicationsCommand
+            var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
+            if (string.IsNullOrEmpty(legacyEmailAddress)) return RedirectToRoute(RouteNames.ServiceStartDefault);
+
+            await mediator.Send(new MigrateDataTransferCommand
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                EmailAddress = "Email from cache"
+                EmailAddress = legacyEmailAddress!
             });
 
             return RedirectToRoute(RouteNames.FinishAccountSetup);

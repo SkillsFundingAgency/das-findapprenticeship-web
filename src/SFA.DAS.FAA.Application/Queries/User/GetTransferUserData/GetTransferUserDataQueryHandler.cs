@@ -3,7 +3,7 @@ using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData
+namespace SFA.DAS.FAA.Application.Queries.User.GetTransferUserData
 {
     public record GetTransferUserDataQueryHandler(IApiClient ApiClient)
         : IRequestHandler<GetTransferUserDataQuery, GetTransferUserDataQueryResult>

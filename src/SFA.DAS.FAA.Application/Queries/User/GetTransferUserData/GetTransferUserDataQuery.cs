@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData
+namespace SFA.DAS.FAA.Application.Queries.User.GetTransferUserData
 {
     public class GetTransferUserDataQuery : IRequest<GetTransferUserDataQueryResult>
     {

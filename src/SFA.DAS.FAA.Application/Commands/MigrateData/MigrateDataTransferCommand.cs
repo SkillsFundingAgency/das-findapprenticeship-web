@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.FAA.Application.Commands.Applications.LegacyApplications
+namespace SFA.DAS.FAA.Application.Commands.MigrateData
 {
-    public class MigrateLegacyApplicationsCommand : IRequest<Unit>
+    public class MigrateDataTransferCommand : IRequest<Unit>
     {
         public required Guid CandidateId { get; init; }
         public required string EmailAddress { get; init; }
