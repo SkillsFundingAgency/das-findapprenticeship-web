@@ -27,6 +27,7 @@ public static class RouteNames
     public const string StubAccountDetailsGet = "account-details-get";
     public const string StubAccountDetailsPost = "account-details-post";
     public const string StubSignedIn = "stub-signedin-get";
+    public const string ConfirmDataTransfer = "confirm-data-transfer";
     public const string FinishAccountSetup = "finish-account-setup";
 
     public static class Applications
