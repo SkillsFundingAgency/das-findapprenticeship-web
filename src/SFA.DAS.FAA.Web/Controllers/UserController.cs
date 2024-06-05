@@ -19,6 +19,7 @@ using CreateAccount.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Commands.Applications.LegacyApplications;
 using SFA.DAS.FAA.Application.Queries.Applications.GetTransferUserData;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
+using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -59,6 +60,42 @@ namespace SFA.DAS.FAA.Web.Controllers
         public IActionResult TransferYourData()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
+        public IActionResult SignInToYourOldAccount()
+        {
+            var viewModel = new SignInToYourOldAccountViewModel();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
+        public async Task<IActionResult> SignInToYourOldAccount(SignInToYourOldAccountViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var result = await mediator.Send(new GetSignIntoYourOldAccountQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                Email = viewModel.Email ?? "",
+                Password = viewModel.Password ?? ""
+            });
+
+            if (!result.IsValid)
+            {
+                ModelState.AddModelError(nameof(SignInToYourOldAccountViewModel.Password), "Check your account details. You’ve entered an incorrect email address or password.");
+                return View(viewModel);
+            }
+
+            await cacheStorageService.Set($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}", viewModel.Email);
+
+            //todo: replace with redirect to preview page
+            return Ok("Login successful");
         }
 
         [HttpGet]
