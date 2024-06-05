@@ -16,6 +16,7 @@
     <None Remove="Apply\NewApplication\WorkExperience\get-workexperiences.json" />
     <None Remove="closed-vacancy-details.json" />
     <None Remove="jobs.json" />
+    <None Remove="put-candidate-incomplete.json" />
     <None Update="Applications\EmptyState\get-applications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -87,6 +88,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="browse-location-search.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="put-candidate-incomplete.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="search-apprentices-index.json">
@@ -165,6 +169,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Update="Apply\NewApplication\TrainingCourses\get-trainingcourses.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CreateAccount\get-inform.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CreateAccount\get-sign-in-to-your-old-account-success.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CreateAccount\get-sign-in-to-your-old-account-failure.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="post-application-details-existing.json">
