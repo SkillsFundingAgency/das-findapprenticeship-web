@@ -86,3 +86,39 @@ Scenario: Opt to add my address
 	When I navigate to the User Address - Postcode page
 	Then a http status code of 200 is returned
 	And the page content includes the following: What is your address?
+
+@WireMockServer
+@AuthenticatedUserWithIncompleteSetup
+Scenario: Enter my postcode with no value
+	When I post to the User Address - Postcode page
+		| Field    | Value |
+		| Postcode |       |
+	Then a http status code of 200 is returned
+	And the page content includes the following: There is a problem
+
+@WireMockServer
+@AuthenticatedUserWithIncompleteSetup
+Scenario: Enter my postcode with an unrecognised value
+	When I post to the User Address - Postcode page
+		| Field    | Value   |
+		| Postcode | B61 0JU |
+	Then a http status code of 200 is returned
+	And the page content includes the following: There is a problem
+
+
+@WireMockServer
+@AuthenticatedUserWithIncompleteSetup
+Scenario: Enter my postcode with a valid value
+	When I post to the User Address - Postcode page
+		| Field    | Value   |
+		| Postcode | B61 0UA |
+	Then I am redirected to the User Address - Select page
+
+@WireMockServer
+@AuthenticatedUserWithIncompleteSetup
+Scenario: Select my address based on my postcode
+	When I navigate to the User Address - Select page with querystring parameters
+	  | Field    | Value   |
+	  | Postcode | B61 0UA |
+	Then a http status code of 200 is returned
+	And the page content includes the following: Select your address

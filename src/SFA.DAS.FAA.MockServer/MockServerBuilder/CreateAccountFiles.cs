@@ -77,6 +77,30 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                 Response.Create()
                     .WithStatusCode(202));
 
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"users/create-account/postcode-address", RegexOptions.None, RegexMaxTimeOut))
+                .UsingGet()
+                .WithParam("postcode", "B61 0UA")
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(202)
+                    .WithBodyFromFile($"{BaseFilePath}/get-user-postcode-address-success.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"users/create-account/postcode-address", RegexOptions.None, RegexMaxTimeOut))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(202)
+                    .WithBodyFromFile($"{BaseFilePath}/get-user-postcode-address-failure.json"));
+
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"users/{Constants.CandidateIdIncomplete}/create-account/select-address", RegexOptions.None, RegexMaxTimeOut))
+                .UsingGet()
+                .WithParam("postcode", "B61 0UA")
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(202)
+                    .WithBodyFromFile($"{BaseFilePath}/get-user-select-address.json"));
+
             return server;
         }
     }

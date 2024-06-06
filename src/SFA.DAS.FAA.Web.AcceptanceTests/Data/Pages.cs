@@ -13,6 +13,7 @@ public static class Pages
             new Page { Name = "User Name", Url = "/user/user-name" },
             new Page { Name = "User Date of Birth", Url = "/user/date-of-birth" },
             new Page { Name = "User Address - Postcode", Url = "/user/postcode-address"},
+            new Page { Name = "User Address - Select", Url = "/user/select-address" },
             //Vacancies
             new Page { Name = "Vacancy Details", Url= "/vacancies/{vacancyReference}" },
             //Applications

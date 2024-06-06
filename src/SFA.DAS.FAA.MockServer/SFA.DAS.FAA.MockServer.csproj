@@ -171,6 +171,12 @@
     <None Update="Apply\NewApplication\TrainingCourses\get-trainingcourses.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="CreateAccount\get-user-postcode-address-failure.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CreateAccount\get-user-postcode-address-success.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="CreateAccount\get-user-date-of-birth.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -184,6 +190,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="CreateAccount\get-sign-in-to-your-old-account-failure.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CreateAccount\get-user-select-address.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="post-application-details-existing.json">
