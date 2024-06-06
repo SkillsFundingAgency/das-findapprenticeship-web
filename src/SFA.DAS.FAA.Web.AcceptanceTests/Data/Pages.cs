@@ -12,6 +12,7 @@ public static class Pages
             new Page { Name = "Sign into your Old Account", Url = "/user/create-account/sign-in-to-your-old-account" },
             new Page { Name = "User Name", Url = "/user/user-name" },
             new Page { Name = "User Date of Birth", Url = "/user/date-of-birth" },
+            new Page { Name = "User Address - Postcode", Url = "/user/postcode-address"},
             //Vacancies
             new Page { Name = "Vacancy Details", Url= "/vacancies/{vacancyReference}" },
             //Applications
