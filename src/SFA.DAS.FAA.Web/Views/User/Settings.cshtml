@@ -1,0 +1,127 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.User.SettingsViewModel
+@{
+    ViewData["Title"] = "Settings – Find an apprenticeship – GOV.UK";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Settings</h1>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @if (String.IsNullOrEmpty(Model.MiddleNames))
+                    {
+                        <p class="govuk-body">@Model.FirstName @Model.LastName</p>
+                    }
+                    else
+                    {
+                        <p class="govuk-body">@Model.FirstName @Model.MiddleNames @Model.LastName</p>
+                    }
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.UserName" asp-route-change="@true" id="name-change-link">
+                        Change<span class="govuk-visually-hidden"> name</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Date of birth
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.DateOfBirth.ToString("dd MMMM yyyy")
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.DateOfBirth" asp-route-change="@true" id="dob-change-link">
+                        Change<span class="govuk-visually-hidden"> date of birth</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.AddressLine1<br />
+                    @Model.Town<br />
+                    @Model.Postcode
+                </dd>
+                <dd class="govuk-summary-list__actions">
+
+                    @if (Model.IsAddressFromLookup)
+                    {
+                        <a class="govuk-link" asp-route="@RouteNames.SelectAddress" asp-route-change="@true" asp-route-postcode="@Model.Postcode" id="address-change-link">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-change="@true" id="address-change-manual-link">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    }
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Phone number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.PhoneNumber
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.PhoneNumber" asp-route-change="@true" id="phone-number-change-link">
+                        Change<span class="govuk-visually-hidden"> phone number</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.EmailAddress
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    @* where is this going?  *@
+                    <a class="govuk-link" asp-route="#">Change<span class="govuk-visually-hidden"> email address</span></a>
+                </dd>
+            </div>
+        </dl>
+
+        <a href="#" class="govuk-link">Change your answers to the equality questions</a>
+        <div class="govuk-!-padding-bottom-9"></div>
+        
+        <h3 class="govuk-heading-m">Email notifications</h3>
+        
+        <p class="govuk-body">We’ll automatically email you when a company tell us if your application is successful or
+            unsuccessful.
+        </p>
+        
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Do you want to get reminders about unfinished applications?
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    Yes
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="change-notifications.html">
+                        Change<span class="govuk-visually-hidden"> first name</span>
+                    </a>
+                </dd>
+            </div>
+        </dl>
+        
+        <div class="govuk-!-padding-bottom-9"></div>
+        
+        <h3 class="govuk-heading-m">Delete your account</h3>
+        <a href="delete-your-account.html" class="govuk-link">Delete my account</a>
+
+    </div>
+</div>

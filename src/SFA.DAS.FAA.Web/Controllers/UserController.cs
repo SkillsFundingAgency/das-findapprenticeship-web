@@ -17,6 +17,7 @@ using CreateAccount.GetCandidatePostcode;
 using CreateAccount.GetCandidatePostcodeAddress;
 using CreateAccount.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
+using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -509,5 +510,43 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
+
+        [HttpGet]
+        [Route("settings", Name = RouteNames.Settings)]
+        public async Task<IActionResult> Settings()
+        {
+            var accountDetails = await mediator.Send(new GetSettingsQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            });
+
+            var model = new SettingsViewModel
+            {
+                FirstName = accountDetails.FirstName,
+                MiddleNames = accountDetails.MiddleNames,
+                LastName = accountDetails.LastName,
+                PhoneNumber = accountDetails.PhoneNumber,
+                DateOfBirth = accountDetails.DateOfBirth,
+                IsAddressFromLookup = accountDetails.Uprn != null,
+                EmailAddress = accountDetails.Email,
+                AddressLine1 = accountDetails.AddressLine1,
+                AddressLine2 = accountDetails.AddressLine2,
+                County = accountDetails.County,
+                Town = accountDetails.Town,
+                Postcode = accountDetails.Postcode,
+                Uprn = accountDetails.Uprn,
+                CandidatePreferences = accountDetails.CandidatePreferences.Select(cp => new SettingsViewModel.CandidatePreference
+                {
+                    PreferenceId = cp.PreferenceId,
+                    Meaning = cp.Meaning,
+                    Hint = cp.Hint,
+                    EmailPreference = cp.EmailPreference,
+                    TextPreference = cp.TextPreference
+                }).ToList()
+            };
+
+            return View(model);
+        }
+
     }
 }

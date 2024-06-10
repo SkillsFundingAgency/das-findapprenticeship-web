@@ -101,6 +101,22 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                     .WithStatusCode(202)
                     .WithBodyFromFile($"{BaseFilePath}/get-user-select-address.json"));
 
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"users/{Constants.CandidateIdIncomplete}/create-account/check-answers", RegexOptions.None, RegexMaxTimeOut))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(202)
+                    .WithBodyFromFile($"{BaseFilePath}/get-user-check-answers.json"));
+
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"user/settings", RegexOptions.None, RegexMaxTimeOut))
+                .UsingGet()
+                .WithParam("candidateId", Constants.CandidateIdWithApplications)
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(202)
+                    .WithBodyFromFile($"{BaseFilePath}/get-user-settings.json"));
+
             return server;
         }
     }
