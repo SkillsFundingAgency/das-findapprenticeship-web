@@ -93,7 +93,7 @@
             </div>
         </dl>
 
-        <a href="#" class="govuk-link">Change your answers to the equality questions</a>
+        <a href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary, new { ApplicationId = Guid.Empty})" class="govuk-link">Change your answers to the equality questions</a>
         <div class="govuk-!-padding-bottom-9"></div>
         
         <h3 class="govuk-heading-m">Email notifications</h3>
@@ -108,11 +108,18 @@
                     Do you want to get reminders about unfinished applications?
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    Yes
+                    @if (Model.UnfinishedApplicationReminders)
+                    {
+                        <text>Yes</text>
+                    }
+                    else
+                    {
+                        <text>No</text>                        
+                    }
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="change-notifications.html">
-                        Change<span class="govuk-visually-hidden"> first name</span>
+                    <a class="govuk-link" href="">
+                        Change<span class="govuk-visually-hidden"> notification settings</span>
                     </a>
                 </dd>
             </div>

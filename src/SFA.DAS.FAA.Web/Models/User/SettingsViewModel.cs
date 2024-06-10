@@ -17,6 +17,14 @@ public class SettingsViewModel
     public string EmailAddress { get; set; }
     public List<CandidatePreference> CandidatePreferences { get; set; }
 
+    public bool UnfinishedApplicationReminders
+    {
+        get
+        {
+            return CandidatePreferences.Any(x => x is { Meaning: "A vacancy is closing soon", EmailPreference: true });
+        }
+    }
+
     public class CandidatePreference 
     {
         public Guid PreferenceId { get; set; }
