@@ -109,7 +109,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                     .WithBodyFromFile($"{BaseFilePath}/get-user-check-answers.json"));
 
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"user/settings", RegexOptions.None, RegexMaxTimeOut))
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"users/settings", RegexOptions.None, RegexMaxTimeOut))
                 .UsingGet()
                 .WithParam("candidateId", Constants.CandidateIdWithApplications)
             ).RespondWith(
