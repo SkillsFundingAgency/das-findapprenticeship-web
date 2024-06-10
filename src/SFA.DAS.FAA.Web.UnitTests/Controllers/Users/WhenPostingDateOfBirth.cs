@@ -16,8 +16,13 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenPostingDateOfBirth
 {
-    [Test, MoqAutoData]
-    public async Task When_Model_State_Is_Valid_Should_Redirect_To_Search_Results(
+    [Test]
+    [MoqInlineAutoData(NameViewModel.UserJourneyPath.CreateAccount, RouteNames.PostcodeAddress)]
+    [MoqInlineAutoData(NameViewModel.UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(NameViewModel.UserJourneyPath.Settings, RouteNames.Settings)]
+    public async Task When_Model_State_Is_Valid_Should_Redirect(
+         DateOfBirthViewModel.UserJourneyPath journeyPath,
+         string redirectRoute,
          Guid candidateId,
          string govIdentifier,
          string email,
@@ -25,7 +30,7 @@ public class WhenPostingDateOfBirth
          [Frozen] Mock<IMediator> mediator,
          [Greedy] UserController controller)
     {
-        model.ReturnToConfirmationPage = false; 
+        model.JourneyPath = journeyPath; 
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -42,7 +47,7 @@ public class WhenPostingDateOfBirth
         var result = await controller.DateOfBirth(model) as RedirectToRouteResult;
 
         result.Should().NotBeNull();
-        result.RouteName.Should().Be(RouteNames.PostcodeAddress);
+        result.RouteName.Should().Be(redirectRoute);
         mediator.Verify(x => x.Send(It.Is<UpdateDateOfBirthCommand>(c =>
             c.CandidateId.Equals(candidateId)
             && c.DateOfBirth.Equals(model.DateOfBirth.DateTimeValue.Value)

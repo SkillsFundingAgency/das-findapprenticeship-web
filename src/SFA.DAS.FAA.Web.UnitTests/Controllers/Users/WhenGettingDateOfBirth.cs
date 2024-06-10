@@ -1,21 +1,38 @@
-﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
+using CreateAccount.GetCandidateDateOfBirth;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using CreateAccount.GetCandidateDateOfBirth;
-using SFA.DAS.FAA.Web.Controllers;
-using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.User;
+using SFA.DAS.Testing.AutoFixture;
+using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingDateOfBirth
 {
-    [Test, MoqAutoData]
-    public async Task Then_View_Is_Returned(string govIdentifier, Guid candidateId, [Frozen] Mock<IMediator> mediator, [Greedy] UserController controller)
+    [Test]
+    [MoqInlineAutoData(null, RouteNames.UserName, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
+    [MoqInlineAutoData(DateOfBirthViewModel.UserJourneyPath.CreateAccount, RouteNames.UserName, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
+    [MoqInlineAutoData(DateOfBirthViewModel.UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
+    [MoqInlineAutoData(DateOfBirthViewModel.UserJourneyPath.Settings, RouteNames.Settings, "Change your date of birth – Find an apprenticeship – GOV.UK", "", "Change your date of birth", "Save")]
+
+    public async Task Then_View_Is_Returned(
+        DateOfBirthViewModel.UserJourneyPath journeyPath,
+        string pageBackLink,
+        string pageTitle,
+        string pageCaption,
+        string pageHeading,
+        string pageCtaButtonLabel,
+        string govIdentifier,
+        Guid candidateId,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
     {
         controller.ControllerContext = new ControllerContext
         {
@@ -23,19 +40,28 @@ public class WhenGettingDateOfBirth
             {
                 User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                     {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                        new(ClaimTypes.NameIdentifier, govIdentifier),
+                        new(CustomClaims.CandidateId, candidateId.ToString()),
                     }))
 
             }
         };
 
         mediator.Setup(x => x.Send(It.IsAny<GetCandidateDateOfBirthQuery>(), CancellationToken.None))
-            .ReturnsAsync(new GetCandidateDateOfBirthQueryResult { DateOfBirth = null});
+            .ReturnsAsync(new GetCandidateDateOfBirthQueryResult { DateOfBirth = null });
 
-        var result = await controller.DateOfBirth() as ViewResult;
+        var result = await controller.DateOfBirth(journeyPath) as ViewResult;
 
         result.Should().NotBeNull();
+
+        var actualModel = result!.Model as DateOfBirthViewModel;
+
+        actualModel!.PageTitle.Should().Be(pageTitle);
+        actualModel.PageCaption.Should().Be(pageCaption);
+        actualModel.PageHeading.Should().Be(pageHeading);
+        actualModel.PageCtaButtonLabel.Should().Be(pageCtaButtonLabel);
+        actualModel.JourneyPath.Should().Be(journeyPath);
+        actualModel.BackLink.Should().Be(pageBackLink);
         mediator.Verify(x => x.Send(It.IsAny<GetCandidateDateOfBirthQuery>(), CancellationToken.None), Times.Once());
     }
 }

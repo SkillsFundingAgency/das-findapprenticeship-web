@@ -90,7 +90,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("date-of-birth", Name = RouteNames.DateOfBirth)]
-        public async Task<IActionResult> DateOfBirth(bool? change = false)
+        public async Task<IActionResult> DateOfBirth(DateOfBirthViewModel.UserJourneyPath journeyPath = DateOfBirthViewModel.UserJourneyPath.CreateAccount)
         {
             var result = await mediator.Send(new GetCandidateDateOfBirthQuery
             {
@@ -100,8 +100,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var model = new DateOfBirthViewModel
             {
                 DateOfBirth = result.DateOfBirth != null ? new DayMonthYearDate(result.DateOfBirth) : null,
-                ReturnToConfirmationPage = change,
-                BackLink = change is true ? RouteNames.ConfirmAccountDetails : RouteNames.UserName
+                JourneyPath = journeyPath
             };
             return View(model);
         }
@@ -120,8 +119,8 @@ namespace SFA.DAS.FAA.Web.Controllers
                 var command = new UpdateDateOfBirthCommand
                 {
                     CandidateId = (Guid)User.Claims.CandidateId()!,
-                    Email = User.Claims.Email(),
-                    DateOfBirth = model.DateOfBirth.DateTimeValue.Value
+                    Email = User.Claims.Email()!,
+                    DateOfBirth = model.DateOfBirth!.DateTimeValue!.Value
                 };
                 await mediator.Send(command);
             }
@@ -131,10 +130,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return model.ReturnToConfirmationPage is true ?
-                RedirectToRoute(RouteNames.ConfirmAccountDetails)
-                : RedirectToRoute(RouteNames.PostcodeAddress);
-
+            return RedirectToRoute(model.RedirectRoute);
         }
 
         [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]

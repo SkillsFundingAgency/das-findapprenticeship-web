@@ -41,7 +41,7 @@
                     @Model.DateOfBirth.ToString("dd MMMM yyyy")
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-route="@RouteNames.DateOfBirth" asp-route-change="@true" id="dob-change-link">
+                    <a class="govuk-link" asp-route="@RouteNames.DateOfBirth" asp-route-journeyPath="@NameViewModel.UserJourneyPath.ConfirmAccountDetails" id="dob-change-link">
                         Change<span class="govuk-visually-hidden"> date of birth</span>
                     </a>
                 </dd>
