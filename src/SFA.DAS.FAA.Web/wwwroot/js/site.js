@@ -443,15 +443,31 @@ FaaMap.prototype.loadMap = async function () {
 };
 
 FaaMap.prototype.showRoleOverLay = function (role, panel) {
+  function statusTag(vacancy) {
+    if (vacancy.isClosingSoon) {
+      return `<strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
+                Closing soon
+            </strong>`;
+    }
+    if (vacancy.isNew) {
+      return `<strong class="govuk-tag govuk-!-margin-bottom-2">
+                New
+            </strong>`;
+    }
+    if (vacancy.applicationStatus != null) {
+      return `<strong class="govuk-tag govuk-!-margin-bottom-2">
+                ${vacancy.applicationStatus}
+            </strong>`;
+    }
+    return "";
+  }
   panel.innerHTML = `
-      <strong class="govuk-tag govuk-!-margin-bottom-2 ${
-        role.job.status ? "" : "govuk-visually-hidden"
-      } ${role.job.status === "New" ? "" : "govuk-tag--orange"}">${
-    role.job.status
-  }</strong>
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="#" class="govuk-link govuk-link--no-visited-state">${
-        role.job.title
-      }</a></h2>
+      ${statusTag(role.job)}
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/vacancies/VAC${
+        role.job.id
+      }" class="govuk-link govuk-link--no-visited-state das-breakable" target="_blank">${
+    role.job.title
+  }</a></h2>
       <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
         role.job.company
       }</p>
@@ -459,7 +475,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     role.job.postcode
   }</p>
       <ul class="govuk-list govuk-!-font-size-16">
-      <li><strong>Distance</strong> ${role.job.distance}</li>
+      <li><strong>Distance</strong> ${role.job.distance} miles</li>
       <li><strong>Training course</strong> ${role.job.apprenticeship}</li>
       <li><strong>Annual wage</strong>  ${role.job.wage}</li>
       </ul>
