@@ -1,6 +1,7 @@
 ﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Models.Apply;
+using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Models.Applications;
 
@@ -369,7 +370,7 @@ public class ApplicationViewModel
         return ApplicationStatus switch
         {
             ApplicationStatus.Withdrawn =>
-                $"You withdrew your application for this apprenticeship on {WithdrawnDate:dd MMM yyyy}.",
+                $"You withdrew your application for this apprenticeship on {WithdrawnDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}.",
             _ => string.Empty
         };
     }
