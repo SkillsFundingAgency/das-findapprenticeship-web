@@ -1,4 +1,12 @@
-﻿using MediatR;
+﻿using CreateAccount.GetAddressesByPostcode;
+using CreateAccount.GetCandidateAccountDetails;
+using CreateAccount.GetCandidateDateOfBirth;
+using CreateAccount.GetCandidateName;
+using CreateAccount.GetCandidatePhoneNumber;
+using CreateAccount.GetCandidatePostcode;
+using CreateAccount.GetCandidatePostcodeAddress;
+using CreateAccount.GetCandidatePreferences;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidatePreferences;
@@ -8,14 +16,6 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.PhoneNumber;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
-using CreateAccount.GetAddressesByPostcode;
-using CreateAccount.GetCandidateAccountDetails;
-using CreateAccount.GetCandidateDateOfBirth;
-using CreateAccount.GetCandidateName;
-using CreateAccount.GetCandidatePhoneNumber;
-using CreateAccount.GetCandidatePostcode;
-using CreateAccount.GetCandidatePostcodeAddress;
-using CreateAccount.GetCandidatePreferences;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -43,7 +43,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
-        public async Task<IActionResult> Name(bool? change = false)
+        public async Task<IActionResult> Name(NameViewModel.UserJourneyPath journeyPath = NameViewModel.UserJourneyPath.CreateAccount)
         {
             var name = await mediator.Send(new GetCandidateNameQuery
             {
@@ -52,10 +52,9 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var model = new NameViewModel
             {
-                FirstName = name?.FirstName ?? null,
-                LastName = name?.LastName ?? null,
-                ReturnToConfirmationPage = change,
-                BackLink = change is true ? RouteNames.ConfirmAccountDetails : RouteNames.CreateAccount
+                FirstName = name.FirstName,
+                LastName = name.LastName,
+                JourneyPath = journeyPath,
             };
             return View(model);
         }
@@ -76,7 +75,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     CandidateId = (Guid)User.Claims.CandidateId()!,
-                    Email = User.Claims.Email(),
+                    Email = User.Claims.Email()!,
                 };
                 await mediator.Send(command);
             }
@@ -86,10 +85,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return model.ReturnToConfirmationPage is true ?
-                RedirectToRoute(RouteNames.ConfirmAccountDetails)
-                : RedirectToRoute(RouteNames.DateOfBirth);
-
+            return RedirectToRoute(model.RedirectRoute);
         }
 
         [HttpGet]
