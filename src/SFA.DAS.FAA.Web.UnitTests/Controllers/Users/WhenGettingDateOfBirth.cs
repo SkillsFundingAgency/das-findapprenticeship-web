@@ -18,12 +18,12 @@ public class WhenGettingDateOfBirth
 {
     [Test]
     [MoqInlineAutoData(null, RouteNames.UserName, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
-    [MoqInlineAutoData(DateOfBirthViewModel.UserJourneyPath.CreateAccount, RouteNames.UserName, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
-    [MoqInlineAutoData(DateOfBirthViewModel.UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
-    [MoqInlineAutoData(DateOfBirthViewModel.UserJourneyPath.Settings, RouteNames.Settings, "Change your date of birth – Find an apprenticeship – GOV.UK", "", "Change your date of birth", "Save")]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.UserName, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
+    [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings, "Change your date of birth – Find an apprenticeship – GOV.UK", "", "Change your date of birth", "Save")]
 
     public async Task Then_View_Is_Returned(
-        DateOfBirthViewModel.UserJourneyPath journeyPath,
+        UserJourneyPath journeyPath,
         string pageBackLink,
         string pageTitle,
         string pageCaption,

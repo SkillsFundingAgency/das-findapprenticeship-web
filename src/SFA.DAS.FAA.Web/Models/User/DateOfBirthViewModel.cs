@@ -14,13 +14,6 @@ public class DateOfBirthViewModel
     public string PageHeading => JourneyPath == UserJourneyPath.Settings ? "Change your date of birth" : "What is your date of birth?";
     public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
 
-    public enum UserJourneyPath
-    {
-        CreateAccount,
-        ConfirmAccountDetails,
-        Settings
-    }
-
     private string GetBackLink()
     {
         return JourneyPath switch

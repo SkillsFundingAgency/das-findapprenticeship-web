@@ -17,13 +17,6 @@ namespace SFA.DAS.FAA.Web.Models.User
         public string PageHeading => JourneyPath == UserJourneyPath.Settings ? "Change your name" : "What is your name?";
         public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
 
-        public enum UserJourneyPath
-        {
-            CreateAccount,
-            ConfirmAccountDetails,
-            Settings
-        }
-
         private string GetBackLink()
         {
             return JourneyPath switch

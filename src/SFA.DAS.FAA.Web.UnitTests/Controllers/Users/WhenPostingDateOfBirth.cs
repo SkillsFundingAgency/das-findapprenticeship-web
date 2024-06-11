@@ -17,11 +17,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenPostingDateOfBirth
 {
     [Test]
-    [MoqInlineAutoData(NameViewModel.UserJourneyPath.CreateAccount, RouteNames.PostcodeAddress)]
-    [MoqInlineAutoData(NameViewModel.UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
-    [MoqInlineAutoData(NameViewModel.UserJourneyPath.Settings, RouteNames.Settings)]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.PostcodeAddress)]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
     public async Task When_Model_State_Is_Valid_Should_Redirect(
-         DateOfBirthViewModel.UserJourneyPath journeyPath,
+         UserJourneyPath journeyPath,
          string redirectRoute,
          Guid candidateId,
          string govIdentifier,
