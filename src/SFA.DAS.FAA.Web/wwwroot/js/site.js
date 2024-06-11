@@ -461,11 +461,24 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     }
     return "";
   }
+
+  function closePanelButton(t) {
+    const that = t;
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("faa-map__panel-close");
+    closeButton.innerHTML = `<span class="faa-map__close-icon"></span>`;
+    closeButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      that.hideRoleOverLay(panel);
+    });
+    return closeButton;
+  }
+
   panel.innerHTML = `
       ${statusTag(role.job)}
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/vacancies/VAC${
         role.job.id
-      }" class="govuk-link govuk-link--no-visited-state das-breakable" target="_blank">${
+      }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading" target="_blank">${
     role.job.title
   }</a></h2>
       <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
@@ -486,7 +499,15 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
         role.job.postedDate
       }</p>
   `;
+  panel.append(closePanelButton(this));
   panel.classList.remove("faa-map__panel--hidden");
+};
+
+FaaMap.prototype.hideRoleOverLay = function (panel) {
+  panel.classList.add("faa-map__panel--hidden");
+  this.map.markers.forEach((mrk) => {
+    mrk.content.classList.remove("highlight");
+  });
 };
 
 FaaMap.prototype.toggleMarker = function (markerElement, role, panel) {

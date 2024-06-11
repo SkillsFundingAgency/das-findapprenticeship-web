@@ -85,8 +85,26 @@
 
 @media (min-width: 40.0625em) {
   .faa-map__panel--role {
-    width: 380px;
-    margin-right: 10px;
+    width: 400px;
+  }
+}
+
+.faa-role-panel-heading {
+  display: inline-block;
+  margin-right: 30px;
+}
+
+.faa-map__panel-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  &:focus {
+    background-color: $govuk-focus-colour;
+    box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
   }
 }
 
