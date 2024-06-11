@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
 
         public static implicit operator GetApplicationViewQueryResult(GetApplicationViewApiResponse source)
         {
-            Enum.TryParse<ApplicationStatus>(source.ApplicationStatus, out var applicationStatus);
+            Enum.TryParse<ApplicationStatus>(source.ApplicationStatus, true, out var applicationStatus);
             return new GetApplicationViewQueryResult
             {
                 Candidate = source.Candidate,
