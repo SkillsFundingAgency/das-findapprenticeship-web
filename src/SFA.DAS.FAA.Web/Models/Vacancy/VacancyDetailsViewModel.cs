@@ -51,6 +51,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool IsClosed { get; set; }
         public CandidateApplicationDetails? ApplicationDetails { get; set; }
         public bool ShowAccountCreatedBanner { get; set; } = false;
+        public string? TrainingPlan { get; set; } //TODO
+        public string? CompanyBenefits { get; set; }//TODO
+        public string? WageAdditionalInformation { get; set; }//TODO
+        public string? AdditionalTrainingInformation { get; set; }//TODO
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source) => new VacancyDetailsViewModel
@@ -70,7 +74,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 WorkLocation = source.Vacancy.Address,
                 WorkingPattern = source.Vacancy?.WorkingWeek,
                 TrainingProviderName = source.Vacancy?.ProviderName,
-                TrainingDescription = source.Vacancy?.TrainingDescription,
+                TrainingDescription = source.Vacancy?.TrainingDescription,//TODO This isn't correct
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
                 Skills = source.Vacancy?.Skills?.ToList(),
                 EmployerWebsite =
