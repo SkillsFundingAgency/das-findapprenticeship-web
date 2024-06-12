@@ -30,32 +30,40 @@ public class WhenCreatingVacanciesViewModel
         actual.VacancyPostCode.Should().Be(vacancies.Postcode);
     }
     
-    [Test, MoqAutoData]
-    public void Then_The_Closing_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
+    [Test]
+    [MoqInlineAutoData("30 Jan 2000", "Sunday 30 January")]
+    [MoqInlineAutoData("01 Jan 2000", "Saturday 1 January")]
+    [MoqInlineAutoData("04 Jun 2024", "Tuesday 4 June")]
+    public void Then_The_Closing_Date_Is_Shown_Correctly(
+        string closeDate,
+        string expectedResult,
+        Vacancies vacancies,
+        [Frozen] Mock <IDateTimeService> dateTimeService)
     {
-
-        var closingDate = new DateTime(2023, 11, 16) ;
-        var expectedClosingDate = "Thursday 16 November";
+        var closingDate = Convert.ToDateTime(closeDate) ;
 
         vacancies.ClosingDate = closingDate;
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies); 
 
-        Assert.That(actual.AdvertClosing, Is.EqualTo(expectedClosingDate));
+        Assert.That(actual.AdvertClosing, Is.EqualTo(expectedResult));
     }
 
-    [Test, MoqAutoData]
-    public void Then_The_Posted_Date_Is_Shown_Correctly(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    [Test]
+    [MoqInlineAutoData("30 Jan 2000", "30 January")]
+    [MoqInlineAutoData("01 Jan 2000", "1 January")]
+    [MoqInlineAutoData("04 Jun 2024", "4 June")]
+    public void Then_The_Posted_Date_Is_Shown_Correctly(
+        string postedDate,
+        string expectedResult,
+        Vacancies vacancies,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
     {
-
-        var postedDate = new DateTime(2023, 11, 16);
-        var expectedPostedDate = "16 November";
-
-        vacancies.PostedDate = postedDate;
+        vacancies.PostedDate = Convert.ToDateTime(postedDate);
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
-        Assert.That(actual.PostedDate, Is.EqualTo(expectedPostedDate));
+        Assert.That(actual.PostedDate, Is.EqualTo(expectedResult));
     }
 
     [Test, MoqAutoData]
