@@ -11,13 +11,10 @@ public class GetCandidateSkillsAndStrengthsQueryHandler(IApiClient apiClient)
         var response = await apiClient.Get<GetCandidateSkillsAndStrengthsApiResponse>
             (new GetCandidateSkillsAndStrengthsApiRequest(request.CandidateId, request.ApplicationId));
 
-        if (response.AboutYou == null) return new GetCandidateSkillsAndStrengthsQueryResult();
-
         return new GetCandidateSkillsAndStrengthsQueryResult
         {
-            SkillsAndStrengths = response.AboutYou.SkillsAndStrengths,
-            Support = response.AboutYou.Support,
-            ApplicationId = response.AboutYou.ApplicationId
+            Strengths = response.Strengths,
+            ApplicationId = response.ApplicationId
         };
     }
 }

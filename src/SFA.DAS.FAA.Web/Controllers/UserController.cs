@@ -498,7 +498,6 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-
             var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
 
             await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
