@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.EqualityQuestions;
+using SFA.DAS.FAA.Application.Queries.EqualityQuestions;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Services;
+using static SFA.DAS.FAA.Web.Infrastructure.RouteNames.ApplyApprenticeship;
+using System;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -45,7 +48,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return View(GenderQuestionsViewPath, viewModel);
             }
 
-            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
+            var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             await cacheStorageService.Set(cacheKey, (EqualityQuestionsModel)viewModel);
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { applicationId });
@@ -70,7 +73,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 return View(EthnicGroupQuestionsViewPath, viewModel);
             }
 
-            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
+            var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
 
             if (equalityQuestions is not null)
@@ -181,15 +184,48 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         }
 
         [HttpGet]
-        [Route("summary", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary)]
+        [Route("edit", Name = EqualityQuestions.EditEqualityQuestions)]
+        public async Task<IActionResult> Edit([FromRoute] Guid applicationId)
+        {
+            var candidateId = User.Claims.CandidateId();
+            var queryResult = await mediator.Send(new GetEqualityQuestionsQuery
+            {
+                CandidateId = candidateId ?? Guid.Empty
+            });
+
+            if (queryResult.EqualityQuestions == null)
+            {
+                throw new InvalidOperationException($"Unable to edit equality questions for candidate {candidateId}");
+            }
+
+            var equalityQuestions = new EqualityQuestionsModel
+            {
+                ApplicationId = Guid.Empty,
+                EthnicGroup = queryResult.EqualityQuestions.EthnicGroup.GetValueOrDefault(),
+                EthnicSubGroup = queryResult.EqualityQuestions.EthnicSubGroup.GetValueOrDefault(),
+                IsGenderIdentifySameSexAtBirth = queryResult.EqualityQuestions.IsGenderIdentifySameSexAtBirth,
+                OtherEthnicSubGroupAnswer = queryResult.EqualityQuestions.OtherEthnicSubGroupAnswer,
+                Sex = queryResult.EqualityQuestions.Sex.GetValueOrDefault()
+            };
+
+            var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
+            await cacheStorageService.Set(cacheKey, equalityQuestions);
+
+            return RedirectToRoute(EqualityQuestions.EqualityFlowSummary, new { applicationId});
+        }
+
+        [HttpGet]
+        [Route("summary", Name = EqualityQuestions.EqualityFlowSummary)]
         public async Task<IActionResult> Summary([FromRoute] Guid applicationId)
         {
-            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
+            var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
 
             if (equalityQuestions is null)
-                return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender,
+            {
+                return RedirectToRoute(EqualityQuestions.EqualityFlowGender,
                     new { applicationId });
+            }
 
             return View(SummaryViewPath, (EqualityQuestionsSummaryViewModel)equalityQuestions);
         }
@@ -198,7 +234,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [Route("summary", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary)]
         public async Task<IActionResult> Summary([FromRoute] Guid applicationId, EqualityQuestionsSummaryViewModel viewModel)
         {
-            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
+            var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
 
             if (equalityQuestions is null)
@@ -207,7 +243,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             await mediator.Send(new CreateEqualityQuestionsCommand
             {
-                ApplicationId = applicationId,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
                 EthnicGroup = equalityQuestions.EthnicGroup,
                 EthnicSubGroup = equalityQuestions.EthnicSubGroup,
@@ -222,7 +257,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         private async Task<EqualityQuestionsModel?> GetEqualityQuestionsFromCacheMemory()
         {
-            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
+            var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
             return equalityQuestions ?? null;
         }
@@ -246,7 +281,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 ? subGroupAnswer
                 : string.Empty;
 
-            var cacheKey = string.Format($"{Key}", User.Claims.GovIdentifier());
+            var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             await cacheStorageService.Set(cacheKey, equalityQuestions);
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary, new { applicationId });

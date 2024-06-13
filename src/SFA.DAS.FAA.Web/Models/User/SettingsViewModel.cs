@@ -15,6 +15,7 @@ public class SettingsViewModel
     public string? Uprn { get; set; }
     public string PhoneNumber { get; set; }
     public string EmailAddress { get; set; }
+    public bool HasAnsweredEqualityQuestions { get; set; }
     public List<CandidatePreference> CandidatePreferences { get; set; }
 
     public bool UnfinishedApplicationReminders

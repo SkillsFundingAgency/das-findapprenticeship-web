@@ -23,6 +23,7 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetSettings
         public string Postcode { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public bool HasAnsweredEqualityQuestions { get; set; }
         public List<CandidatePreference> CandidatePreferences { get; set; }
 
         public class CandidatePreference
@@ -57,6 +58,7 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetSettings
                 Postcode = checkAnswersResponse.Postcode,
                 PhoneNumber = checkAnswersResponse.PhoneNumber,
                 Email = checkAnswersResponse.Email,
+                HasAnsweredEqualityQuestions = checkAnswersResponse.HasAnsweredEqualityQuestions,
                 CandidatePreferences = checkAnswersResponse.CandidatePreferences.Select(x => new GetSettingsQueryResult.CandidatePreference
                 {
                     PreferenceId = x.PreferenceId,

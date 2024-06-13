@@ -1,11 +1,12 @@
-﻿using MediatR;
-using SFA.DAS.FAA.Domain.Enums;
+﻿using SFA.DAS.FAA.Domain.Enums;
 
-namespace SFA.DAS.FAA.Application.Commands.EqualityQuestions
+namespace SFA.DAS.FAA.Domain.Apply.EqualityQuestions;
+
+public class GetEqualityQuestionsApiResponse
 {
-    public class CreateEqualityQuestionsCommand : IRequest<CreateEqualityQuestionsCommandResult>
+    public EqualityQuestionsItem? EqualityQuestions { get; set; }
+    public class EqualityQuestionsItem
     {
-        public Guid CandidateId { get; set; }
         public GenderIdentity? Sex { get; set; }
         public EthnicGroup? EthnicGroup { get; set; }
         public EthnicSubGroup? EthnicSubGroup { get; set; }

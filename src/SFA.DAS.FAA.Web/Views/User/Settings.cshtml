@@ -93,8 +93,11 @@
             </div>
         </dl>
 
-        <a href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary, new { ApplicationId = Guid.Empty})" class="govuk-link">Change your answers to the equality questions</a>
-        <div class="govuk-!-padding-bottom-9"></div>
+        @if (Model.HasAnsweredEqualityQuestions)
+        {
+            <a href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EditEqualityQuestions, new { ApplicationId = Guid.Empty})" class="govuk-link">Change your answers to the equality questions</a>
+            <div class="govuk-!-padding-bottom-9"></div>
+        }
         
         <h3 class="govuk-heading-m">Email notifications</h3>
         
