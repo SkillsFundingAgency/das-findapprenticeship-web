@@ -10,7 +10,6 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Services;
 using static SFA.DAS.FAA.Web.Infrastructure.RouteNames.ApplyApprenticeship;
-using System;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -49,7 +48,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             }
 
             var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
-            await cacheStorageService.Set(cacheKey, (EqualityQuestionsModel)viewModel);
+            var cacheItem = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
+            if (cacheItem == null) return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { applicationId });
+            cacheItem.Apply(viewModel);
+            await cacheStorageService.Set(cacheKey, cacheItem);
 
             return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { applicationId });
         }
@@ -74,18 +76,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             }
 
             var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
-            var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
+            var cacheItem = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
+            if (cacheItem == null) return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { applicationId });
+            cacheItem.Apply(viewModel);
+            await cacheStorageService.Set(cacheKey, cacheItem);
 
-            if (equalityQuestions is not null)
-            {
-                equalityQuestions.EthnicGroup = (EthnicGroup)Enum.Parse(typeof(EthnicGroup), viewModel.EthnicGroup!, true);
-
-                await cacheStorageService.Set(cacheKey, equalityQuestions);
-
-                return RedirectToRoute(RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(equalityQuestions.EthnicGroup), new { applicationId });
-            }
-
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { applicationId });
+            return RedirectToRoute(RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(cacheItem.EthnicGroup), new { applicationId });
         }
 
         [HttpGet]
@@ -193,26 +189,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 CandidateId = candidateId ?? Guid.Empty
             });
 
-            if (queryResult.EqualityQuestions == null)
-            {
-                throw new InvalidOperationException($"Unable to edit equality questions for candidate {candidateId}");
-            }
-
-            var equalityQuestions = new EqualityQuestionsModel
-            {
-                EthnicGroup = queryResult.EqualityQuestions.EthnicGroup.GetValueOrDefault(),
-                EthnicSubGroup = queryResult.EqualityQuestions.EthnicSubGroup.GetValueOrDefault(),
-                IsGenderIdentifySameSexAtBirth = queryResult.EqualityQuestions.IsGenderIdentifySameSexAtBirth,
-                OtherEthnicSubGroupAnswer = queryResult.EqualityQuestions.OtherEthnicSubGroupAnswer,
-                Sex = queryResult.EqualityQuestions.Sex.GetValueOrDefault()
-            };
+            var equalityQuestions = EqualityQuestionsModel.MapFromQueryResult(queryResult);
 
             var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             await cacheStorageService.Set(cacheKey, equalityQuestions);
-
-            //todo: I think this little bit of magic is needed to "make it actually work"
-            //await UpdateEqualityQuestionModel(null, equalityQuestions.EthnicSubGroup.ToString(),
-                //equalityQuestions.OtherEthnicSubGroupAnswer);
 
             return RedirectToRoute(EqualityQuestions.EqualityFlowSummary);
         }
@@ -254,7 +234,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 OtherEthnicSubGroupAnswer = equalityQuestions.OtherEthnicSubGroupAnswer,
             });
 
-            //todo: this is temporary until UX confirm if this CTA even exists in this context
             if (applicationId == null)
             {
                 return RedirectToRoute(RouteNames.Settings);
