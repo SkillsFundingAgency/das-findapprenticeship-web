@@ -22,7 +22,7 @@ public class PhoneNumberViewModel : ViewModelBase
             UserJourneyPath.Settings => RouteNames.Settings,
             UserJourneyPath.SelectAddress => RouteNames.SelectAddress,
             UserJourneyPath.EnterAddressManually => RouteNames.EnterAddressManually,
-            _ => RouteNames.ConfirmAccountDetails
+            _ => RouteNames.SelectAddress
         };
     }
 

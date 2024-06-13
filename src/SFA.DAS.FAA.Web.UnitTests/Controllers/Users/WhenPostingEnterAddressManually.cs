@@ -16,8 +16,14 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenPostingEnterAddressManually
 {
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.PhoneNumber)]
+    [MoqInlineAutoData(UserJourneyPath.PhoneNumber, RouteNames.PhoneNumber)]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Phone_Number_Page(
+        UserJourneyPath journeyPath,
+        string redirectRoute,
         string govIdentifier,
         string email,
         Guid candidateId,
@@ -25,7 +31,7 @@ public class WhenPostingEnterAddressManually
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        model.ReturnToConfirmationPage = false;
+        model.JourneyPath = journeyPath;
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -43,7 +49,7 @@ public class WhenPostingEnterAddressManually
         var result = await controller.EnterAddressManually(model) as RedirectToRouteResult;
 
         result.Should().NotBeNull();
-        result.RouteName.Should().Be(RouteNames.PhoneNumber);
+        result!.RouteName.Should().Be(redirectRoute);
         mediator.Verify(x => x.Send(It.IsAny<UpdateManuallyEnteredAddressCommand>(), CancellationToken.None
             ), Times.Once);
     }
