@@ -4,8 +4,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply.Base
 {
     public class EqualityQuestionEthnicSubGroupViewModelBase : ViewModelBase
     {
-        [FromRoute]
-        public Guid ApplicationId { get; init; }
+        public Guid? ApplicationId { get; init; }
         public string? EthnicSubGroup { get; set; }
         public string? OtherEthnicSubGroupAnswer { get; init; }
     }

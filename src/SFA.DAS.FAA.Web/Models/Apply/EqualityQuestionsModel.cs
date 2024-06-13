@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 {
     public class EqualityQuestionsModel
     {
-        public Guid ApplicationId { get; init; }
+        public Guid? ApplicationId { get; init; }
         public GenderIdentity Sex { get; init; }
         public string? IsGenderIdentifySameSexAtBirth { get; init; }
         public EthnicGroup EthnicGroup { get; set; }

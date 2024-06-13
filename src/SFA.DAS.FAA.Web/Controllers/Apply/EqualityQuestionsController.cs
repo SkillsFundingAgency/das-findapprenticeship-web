@@ -15,7 +15,7 @@ using System;
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("apply/{applicationId}/equality-questions")]
+    [Route("equality-questions")]
     public class EqualityQuestionsController(IMediator mediator, ICacheStorageService cacheStorageService) : Controller
     {
         private static readonly string Key = $"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}";
@@ -31,7 +31,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("gender", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender)]
-        public async Task<IActionResult> Gender([FromRoute] Guid applicationId)
+        public async Task<IActionResult> Gender([FromQuery] Guid? applicationId)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             return equalityQuestions is not null
@@ -41,7 +41,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("gender", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender)]
-        public async Task<IActionResult> Gender([FromRoute] Guid applicationId, EqualityQuestionsGenderViewModel viewModel)
+        public async Task<IActionResult> Gender([FromQuery] Guid? applicationId, EqualityQuestionsGenderViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup)]
-        public async Task<IActionResult> EthnicGroup([FromRoute] Guid applicationId)
+        public async Task<IActionResult> EthnicGroup([FromQuery] Guid? applicationId)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             return equalityQuestions is not null
@@ -66,7 +66,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("ethnic-group", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup)]
-        public async Task<IActionResult> EthnicGroup([FromRoute] Guid applicationId, EqualityQuestionsEthnicGroupViewModel viewModel)
+        public async Task<IActionResult> EthnicGroup([FromQuery] Guid? applicationId, EqualityQuestionsEthnicGroupViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
-        public async Task<IActionResult> EthnicGroupWhite([FromRoute] Guid applicationId)
+        public async Task<IActionResult> EthnicGroupWhite([FromQuery] Guid? applicationId)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             return equalityQuestions is not null
@@ -100,7 +100,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
-        public async Task<IActionResult> EthnicGroupWhite([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupWhiteViewModel viewModel)
+        public async Task<IActionResult> EthnicGroupWhite([FromQuery] Guid? applicationId, EqualityQuestionsEthnicSubGroupWhiteViewModel viewModel)
         {
             return !ModelState.IsValid
                 ? View(EthnicSubGroupWhiteQuestionsViewPath, viewModel)
@@ -109,7 +109,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/mixed", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupMixed)]
-        public async Task<IActionResult> EthnicGroupMixed([FromRoute] Guid applicationId)
+        public async Task<IActionResult> EthnicGroupMixed([FromQuery] Guid? applicationId)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             return equalityQuestions is not null
@@ -119,7 +119,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("ethnic-group/mixed", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupMixed)]
-        public async Task<IActionResult> EthnicGroupMixed([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupMixedViewModel viewModel)
+        public async Task<IActionResult> EthnicGroupMixed([FromQuery] Guid? applicationId, EqualityQuestionsEthnicSubGroupMixedViewModel viewModel)
         {
             return !ModelState.IsValid
                 ? View(EthnicSubGroupMixedQuestionsViewPath, viewModel)
@@ -128,7 +128,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/asian", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupAsian)]
-        public async Task<IActionResult> EthnicGroupAsian([FromRoute] Guid applicationId)
+        public async Task<IActionResult> EthnicGroupAsian([FromQuery] Guid? applicationId)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             return equalityQuestions is not null
@@ -138,7 +138,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("ethnic-group/asian", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupAsian)]
-        public async Task<IActionResult> EthnicGroupAsian([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupAsianViewModel viewModel)
+        public async Task<IActionResult> EthnicGroupAsian([FromQuery] Guid? applicationId, EqualityQuestionsEthnicSubGroupAsianViewModel viewModel)
         {
             return !ModelState.IsValid
                 ? View(EthnicSubGroupAsianQuestionsViewPath, viewModel)
@@ -147,7 +147,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/black", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupBlack)]
-        public async Task<IActionResult> EthnicGroupBlack([FromRoute] Guid applicationId)
+        public async Task<IActionResult> EthnicGroupBlack([FromQuery] Guid? applicationId)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             return equalityQuestions is not null
@@ -157,7 +157,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("ethnic-group/black", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupBlack)]
-        public async Task<IActionResult> EthnicGroupBlack([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupBlackViewModel viewModel)
+        public async Task<IActionResult> EthnicGroupBlack([FromQuery] Guid? applicationId, EqualityQuestionsEthnicSubGroupBlackViewModel viewModel)
         {
             return !ModelState.IsValid
                 ? View(EthnicSubGroupBlackQuestionsViewPath, viewModel)
@@ -166,7 +166,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/other", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupOther)]
-        public async Task<IActionResult> EthnicGroupOther([FromRoute] Guid applicationId)
+        public async Task<IActionResult> EthnicGroupOther([FromQuery] Guid? applicationId)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             return equalityQuestions is not null
@@ -176,7 +176,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("ethnic-group/other", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupOther)]
-        public async Task<IActionResult> EthnicGroupOther([FromRoute] Guid applicationId, EqualityQuestionsEthnicSubGroupOtherViewModel viewModel)
+        public async Task<IActionResult> EthnicGroupOther([FromQuery] Guid? applicationId, EqualityQuestionsEthnicSubGroupOtherViewModel viewModel)
         {
             return !ModelState.IsValid
                 ? View(EthnicSubGroupOtherQuestionsViewPath, viewModel)
@@ -185,7 +185,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("edit", Name = EqualityQuestions.EditEqualityQuestions)]
-        public async Task<IActionResult> Edit([FromRoute] Guid applicationId)
+        public async Task<IActionResult> Edit()
         {
             var candidateId = User.Claims.CandidateId();
             var queryResult = await mediator.Send(new GetEqualityQuestionsQuery
@@ -200,7 +200,6 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             var equalityQuestions = new EqualityQuestionsModel
             {
-                ApplicationId = Guid.Empty,
                 EthnicGroup = queryResult.EqualityQuestions.EthnicGroup.GetValueOrDefault(),
                 EthnicSubGroup = queryResult.EqualityQuestions.EthnicSubGroup.GetValueOrDefault(),
                 IsGenderIdentifySameSexAtBirth = queryResult.EqualityQuestions.IsGenderIdentifySameSexAtBirth,
@@ -211,12 +210,16 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             await cacheStorageService.Set(cacheKey, equalityQuestions);
 
-            return RedirectToRoute(EqualityQuestions.EqualityFlowSummary, new { applicationId});
+            //todo: I think this little bit of magic is needed to "make it actually work"
+            //await UpdateEqualityQuestionModel(null, equalityQuestions.EthnicSubGroup.ToString(),
+                //equalityQuestions.OtherEthnicSubGroupAnswer);
+
+            return RedirectToRoute(EqualityQuestions.EqualityFlowSummary);
         }
 
         [HttpGet]
         [Route("summary", Name = EqualityQuestions.EqualityFlowSummary)]
-        public async Task<IActionResult> Summary([FromRoute] Guid applicationId)
+        public async Task<IActionResult> Summary([FromQuery] Guid? applicationId)
         {
             var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
@@ -232,7 +235,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("summary", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary)]
-        public async Task<IActionResult> Summary([FromRoute] Guid applicationId, EqualityQuestionsSummaryViewModel viewModel)
+        public async Task<IActionResult> Summary([FromQuery] Guid? applicationId, EqualityQuestionsSummaryViewModel viewModel)
         {
             var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
             var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
@@ -251,6 +254,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 OtherEthnicSubGroupAnswer = equalityQuestions.OtherEthnicSubGroupAnswer,
             });
 
+            //todo: this is temporary until UX confirm if this CTA even exists in this context
+            if (applicationId == null)
+            {
+                return RedirectToRoute(RouteNames.Settings);
+            }
+
             return RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation,
                 new { applicationId });
         }
@@ -262,7 +271,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             return equalityQuestions ?? null;
         }
 
-        private async Task<RedirectToRouteResult> UpdateEqualityQuestionModel(Guid applicationId, string? subGroup, string? subGroupAnswer)
+        private async Task<RedirectToRouteResult> UpdateEqualityQuestionModel(Guid? applicationId, string? subGroup, string? subGroupAnswer)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
 

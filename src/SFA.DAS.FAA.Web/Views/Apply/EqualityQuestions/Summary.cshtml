@@ -5,7 +5,14 @@
     ViewData["Title"] = "Check your answers to the equality questions – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">Back</a>
+    @if (Model.ApplicationId.HasValue)
+    {
+        <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Settings)">Back</a>
+    }
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
