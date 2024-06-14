@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Application.Queries.EqualityQuestions;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.Models.Apply.Base;
 using static SFA.DAS.FAA.Web.Infrastructure.RouteNames.ApplyApprenticeship;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
@@ -39,6 +40,20 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public void Apply(EqualityQuestionsEthnicGroupViewModel source)
         {
             EthnicGroup = (EthnicGroup)Enum.Parse(typeof(EthnicGroup), source.EthnicGroup!, true);
+        }
+
+        public void Apply(EqualityQuestionEthnicSubGroupViewModelBase source)
+        {
+            var ethnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), source.EthnicSubGroup!, true);
+
+            EthnicSubGroup = ethnicSubGroup;
+            OtherEthnicSubGroupAnswer = ethnicSubGroup is EthnicSubGroup.AnyOtherWhiteBackground
+                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherAsianBackground
+                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherBlackAfricanOrCaribbeanBackground
+                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherMixedBackground
+                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherEthnicGroup
+                ? source.OtherEthnicSubGroupAnswer
+                : string.Empty;
         }
     }
 }

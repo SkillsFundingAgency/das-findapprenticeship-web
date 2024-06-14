@@ -6,6 +6,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
     public class EqualityQuestionsGenderViewModel : ViewModelBase
     {
         public Guid? ApplicationId { get; init; }
+        public bool IsEdit { get; set; }
         public string? Sex { get; set; }
         public string? IsGenderIdentifySameSexAtBirth { get; set; }
 

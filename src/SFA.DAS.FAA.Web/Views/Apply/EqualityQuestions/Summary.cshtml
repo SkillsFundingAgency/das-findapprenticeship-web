@@ -30,7 +30,7 @@
                     @Model.Sex
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">
+                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId, isEdit = true })">
                         Change
                     </a>
                 </dd>
@@ -43,7 +43,7 @@
                     @Model.IsGenderIdentifySameSexAtBirth
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId })">
+                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { Model.ApplicationId, isEdit = true })">
                         Change
                     </a>
                 </dd>
@@ -56,7 +56,7 @@
                     @Model.EthnicGroup
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">
+                    <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId, isEdit = true })">
                         Change
                     </a>
                 </dd>

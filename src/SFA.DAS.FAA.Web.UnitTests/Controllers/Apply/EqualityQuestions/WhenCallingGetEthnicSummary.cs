@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -13,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -49,7 +45,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
                     }
                 }
             };
@@ -89,7 +85,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
                     }
                 }
             };

@@ -14,6 +14,7 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Extensions;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
@@ -27,11 +28,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         [Test, MoqAutoData]
         public async Task Then_View_Is_Returned(
             Guid applicationId,
-            Guid govIdentifier,
+            Guid candidateId,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-            var cacheKey = string.Format($"{Key}", govIdentifier);
+            var cacheKey = string.Format($"{Key}", candidateId);
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -49,7 +50,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, candidateId.ToString()) }))
                     }
                 }
             };
@@ -68,12 +69,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         [Test, MoqAutoData]
         public async Task Then_Cached_Value_View_Is_Returned(
             Guid applicationId,
-            Guid govIdentifier,
+            Guid candidateId,
             EqualityQuestionsModel model,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-            var cacheKey = string.Format($"{Key}", govIdentifier);
+            var cacheKey = string.Format($"{Key}", candidateId);
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -91,7 +92,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, candidateId.ToString()) }))
                     }
                 }
             };
