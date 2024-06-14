@@ -15,12 +15,18 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService, IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, ICacheStorageService cacheStorageService, SearchModelValidator validator) : Controller
+public class SearchApprenticeshipsController(
+    IMediator mediator, 
+    IDateTimeService dateTimeService, 
+    IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, 
+    ICacheStorageService cacheStorageService, 
+    SearchModelValidator searchModelValidator,
+    GetSearchResultsRequestValidator searchRequestValidator) : Controller
 {
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
     {
-        var validationResult = await validator.ValidateAsync(model);
+        var validationResult = await searchModelValidator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {
             foreach (var validationFailure in validationResult.Errors)
@@ -128,6 +134,16 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
     [Route("search-results", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
+        var validationResult = await searchRequestValidator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            foreach (var validationFailure in validationResult.Errors)
+            {
+                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
+            }
+            return View(new SearchResultsViewModel());
+        }
+        
         var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
         if (request.Distance <= 0)
         {
@@ -141,7 +157,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         {
             request.PageNumber = 1;
         }
-
+        
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,

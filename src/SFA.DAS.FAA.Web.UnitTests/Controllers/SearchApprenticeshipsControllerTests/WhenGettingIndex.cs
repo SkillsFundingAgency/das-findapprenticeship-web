@@ -48,7 +48,7 @@ public class WhenGettingIndex
         .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
         .ReturnsAsync(showBanner);
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object,Mock.Of<GetSearchResultsRequestValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -94,7 +94,7 @@ public class WhenGettingIndex
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<SearchModel>>(), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object,Mock.Of<GetSearchResultsRequestValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -140,7 +140,7 @@ public class WhenGettingIndex
                 new ValidationResult(new List<ValidationFailure>{new ValidationFailure("WhatSearchTerm","Error")})
                 );
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object,Mock.Of<GetSearchResultsRequestValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -187,7 +187,7 @@ public class WhenGettingIndex
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<SearchModel>>(), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object,Mock.Of<GetSearchResultsRequestValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
