@@ -443,5 +443,11 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
+
+        [HttpGet("email", Name = RouteNames.Email)]
+        public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
+        {
+            return View(new EmailViewModel { JourneyPath = journeyPath });
+        }
     }
 }
