@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers;
 @model SFA.DAS.FAA.Web.Models.Apply.EqualityQuestionsSummaryViewModel
 @{
-    ViewData["Title"] = "Check your answers to the equality questions – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = $"{Model.PageTitle} – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
     @if (Model.ApplicationId.HasValue)
@@ -16,11 +16,14 @@
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Check your answers to the equality questions</h1>
-        <p class="govuk-body">
-            These answers will not be shared outside of DfE. Your answers will not affect your
-            apprenticeship applications.
-        </p>
+        <h1 class="govuk-heading-l">@Model.PageTitle</h1>
+        @if (Model.ApplicationId.HasValue)
+        {
+            <p class="govuk-body">
+                These answers will not be shared outside of DfE. Your answers will not affect your
+                apprenticeship applications.
+            </p>
+        }
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
@@ -62,11 +65,14 @@
                 </dd>
             </div>
         </dl>
-        <p class="govuk-body">After continuing, you can still change these answers in your settings.</p>
+        @if (Model.ApplicationId.HasValue)
+        {
+            <p class="govuk-body">After continuing, you can still change these answers in your settings.</p>
+        }
         <div class="govuk-button-group">
             <form class="form" method="post">
                 <button class="govuk-button" data-module="govuk-button">
-                    Save and continue
+                    @Model.SaveButtonLabel
                 </button>
             </form>
         </div>
