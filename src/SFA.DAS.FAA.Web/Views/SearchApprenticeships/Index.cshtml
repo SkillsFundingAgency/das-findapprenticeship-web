@@ -24,12 +24,12 @@
             <div class="govuk-grid-row">
 
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                    <div class="govuk-form-group">
+                    <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhatSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
 
                         <label class="govuk-label govuk-label--m" for="WhatSearchTerm">
                             What
                         </label>
-
+                        <span asp-validation-for="WhatSearchTerm" class="govuk-error-message"></span>
                         <div id="what-hint" class="govuk-hint">
                             Enter a job or company
                         </div>

@@ -17,6 +17,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -66,7 +67,7 @@ public class WhenGettingSearchResults
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -192,7 +193,7 @@ public class WhenGettingSearchResults
             .ReturnsAsync(queryResult);
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -245,7 +246,7 @@ public class WhenGettingSearchResults
             .Returns("https://baseUrl");
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -297,7 +298,7 @@ public class WhenGettingSearchResults
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -345,7 +346,7 @@ public class WhenGettingSearchResults
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -395,7 +396,7 @@ public class WhenGettingSearchResults
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -457,7 +458,7 @@ public class WhenGettingSearchResults
             .ReturnsAsync(showBanner);
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -559,7 +560,7 @@ public class WhenGettingSearchResults
             .ReturnsAsync(showBanner);
         var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext

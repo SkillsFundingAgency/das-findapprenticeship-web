@@ -10,18 +10,29 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService, IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, ICacheStorageService cacheStorageService) : Controller
+public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService, IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, ICacheStorageService cacheStorageService, SearchModelValidator validator) : Controller
 {
     [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index([FromQuery] string? whereSearchTerm = null, [FromQuery] string? whatSearchTerm = null, [FromQuery] int? search = null)
+    public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
     {
+        var validationResult = await validator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+        {
+            foreach (var validationFailure in validationResult.Errors)
+            {
+                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
+            }
+            return View(new SearchApprenticeshipsViewModel());
+        }
+        
         var result = await mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
-            LocationSearchTerm = whereSearchTerm
+            LocationSearchTerm = model.WhereSearchTerm
         });
 
         if (result is { LocationSearched: true, Location: null })
@@ -30,11 +41,11 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
         else if (result.LocationSearched && result.Location != null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = whatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm });
         }
         else if (search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = whatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm });
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
