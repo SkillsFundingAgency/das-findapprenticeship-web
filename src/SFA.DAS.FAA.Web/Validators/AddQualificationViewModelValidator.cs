@@ -1,5 +1,6 @@
 using FluentValidation;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators;
 
@@ -17,6 +18,11 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
     }
     public SubjectViewModelValidator(QualificationDisplayTypeViewModel model)
     {
+        RuleFor(c => c.Name).ValidFreeTextCharacters();
+        RuleFor(c => c.AdditionalInformation).ValidFreeTextCharacters();
+        RuleFor(c => c.Level).ValidFreeTextCharacters();
+        RuleFor(c => c.Grade).ValidFreeTextCharacters();
+        
         When(x => x.IsDeleted is false, () =>
         {
             var isApprenticeship = model.GroupTitle.Equals("apprenticeships", StringComparison.CurrentCultureIgnoreCase);

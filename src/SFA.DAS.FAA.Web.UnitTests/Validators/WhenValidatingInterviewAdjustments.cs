@@ -58,4 +58,16 @@ public class WhenValidatingInterviewAdjustments
             result.Errors[0].ErrorMessage.Should().BeEquivalentTo(InterviewAdjustmentsDescriptionErrorMessage);
         }
     }
+    
+    [Test, MoqAutoData]
+    public async Task And_Input_Has_Invalid_Characters_Then_Invalid(InterviewAdjustmentsViewModel viewModel)
+    {
+        viewModel.DoYouWantInterviewAdjustments = true;
+        viewModel.InterviewAdjustmentsDescription = "<script>alert()</script>";
+
+        var sut = new InterviewAdjustmentsViewModelValidator();
+        var result = await sut.TestValidateAsync(viewModel);
+
+        result.ShouldHaveValidationErrorFor(c=>c.InterviewAdjustmentsDescription);
+    }
 }

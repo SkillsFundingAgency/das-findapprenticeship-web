@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators;
 
@@ -22,5 +23,8 @@ public class SkillsAndStrengthsViewModelValidator : AbstractValidator<SkillsAndS
         RuleFor(x => x.SkillsAndStrengths)
             .Must(x => x.GetWordCount() <= 300)
             .WithMessage(SkillsAndStrengthsOverMaxLengthErrorMessage);
+
+        RuleFor(x => x.SkillsAndStrengths)
+            .ValidFreeTextCharacters();
     }
 }
