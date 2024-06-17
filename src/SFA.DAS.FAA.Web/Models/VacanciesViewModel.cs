@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Domain.Enums;
+﻿using System.Globalization;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -80,11 +81,11 @@ public class VacanciesViewModel
 
     private static string? FormatCloseDate(DateTime? date)
     {
-        return date?.ToString("dddd dd MMMM");
+        return date?.ToString("dddd d MMMM", CultureInfo.InvariantCulture);
     }
 
     private static string? FormatPostDate(DateTime? date)
     {
-        return date?.ToString("dd MMMM");
+        return date?.ToString("d MMMM", CultureInfo.InvariantCulture);
     }
 }

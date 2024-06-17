@@ -54,12 +54,12 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string GetPostedDate(this DateTime postedDate)
         {
-            return $"Posted on {postedDate:dd MMMM yyyy}";
+            return $"Posted on {postedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}";
         }
 
         public static string GetStartDate(this DateTime startDate)
         {
-            return $"{startDate:dddd dd MMMM}";
+            return startDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture);
         }
     }
 }

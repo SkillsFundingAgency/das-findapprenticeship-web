@@ -57,6 +57,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Applications
                 actual!.Model.Should().NotBeNull();
                 var actualModel = actual.Model as ApplicationViewModel;
                 actualModel!.ApplicationId.Should().Be(applicationId);
+                actualModel.WithdrawnDate.Should().Be(queryResult.WithdrawnDate);
+                actualModel.MigrationDate.Should().Be(queryResult.MigrationDate);
             }
         }
     }

@@ -543,5 +543,11 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return RedirectToRoute(RouteNames.FinishAccountSetup);
         }
+
+        [HttpGet("finish-account-setup", Name = RouteNames.FinishAccountSetup)]
+        public IActionResult FinishAccountSetup()
+        {
+            return View();
+        }
     }
 }
