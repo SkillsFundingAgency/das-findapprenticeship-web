@@ -1,10 +1,13 @@
-﻿using SFA.DAS.FAA.Web.Extensions;
+﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply.Base;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
     public class EqualityQuestionsEthnicSubGroupWhiteViewModel : EqualityQuestionEthnicSubGroupViewModelBase
     {
+        public override EthnicGroup EthnicGroup => EthnicGroup.White;
+
         public static implicit operator EqualityQuestionsEthnicSubGroupWhiteViewModel(EqualityQuestionsModel source)
         {
             return new EqualityQuestionsEthnicSubGroupWhiteViewModel

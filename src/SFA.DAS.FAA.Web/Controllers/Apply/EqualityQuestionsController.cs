@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.EqualityQuestions;
 using SFA.DAS.FAA.Application.Queries.EqualityQuestions;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -74,10 +75,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup)]
-        public async Task<IActionResult> EthnicGroup([FromQuery] Guid? applicationId, bool isEdit = false)
+        public async Task<IActionResult> EthnicGroup([FromQuery] Guid? applicationId, bool isEdit = false, bool clear = false)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             if (equalityQuestions is null) return RedirectToStart(applicationId);
+
+            if (clear) { equalityQuestions.SelectedEthnicGroup = null; }
 
             var viewModel = (EqualityQuestionsEthnicGroupViewModel)equalityQuestions;
             viewModel.IsEdit = isEdit;
@@ -100,7 +103,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             cacheItem.Apply(viewModel);
             await cacheStorageService.Set(cacheKey, cacheItem);
 
-            return RedirectToRoute(RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(cacheItem.EthnicGroup), new { applicationId, viewModel.IsEdit });
+            var selectedOption = (EthnicGroup)Enum.Parse(typeof(EthnicGroup), viewModel.EthnicGroup!, true);
+
+            return RedirectToRoute(RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(selectedOption), new { applicationId, viewModel.IsEdit });
         }
 
         [HttpGet]
