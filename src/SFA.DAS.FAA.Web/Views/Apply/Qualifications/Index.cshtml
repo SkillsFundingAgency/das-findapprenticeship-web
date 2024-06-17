@@ -68,7 +68,7 @@
                                         {
                                             <p class="govuk-body govuk-!-margin-top-1 govuk-hint">@qualification.AdditionalInformation</p>
                                         }
-                                        @if (group.ShowLevel is true)
+                                        @if (group.ShowLevel is true && !string.IsNullOrWhiteSpace(qualification.AdditionalInformation))
                                         {
                                             <p class="govuk-body govuk-!-margin-top-1 govuk-!-font-weight-bold">(Level @qualification.AdditionalInformation)</p>
                                         }
