@@ -5,7 +5,7 @@
     ViewData["Title"] = "Which of the following best describes your white background? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId })">Back</a>
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId, Model.IsEdit })">Back</a>
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

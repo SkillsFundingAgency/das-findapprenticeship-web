@@ -9,6 +9,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Models.Apply.Base;
 using SFA.DAS.FAA.Web.Services;
+using System.Reflection;
 using static SFA.DAS.FAA.Web.Infrastructure.RouteNames.ApplyApprenticeship;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
@@ -77,8 +78,11 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
             if (equalityQuestions is null) return RedirectToStart(applicationId);
-            
-            return View(EthnicGroupQuestionsViewPath, (EqualityQuestionsEthnicGroupViewModel)equalityQuestions);
+
+            var viewModel = (EqualityQuestionsEthnicGroupViewModel)equalityQuestions;
+            viewModel.IsEdit = isEdit;
+
+            return View(EthnicGroupQuestionsViewPath, viewModel);
         }
 
         [HttpPost]
@@ -96,17 +100,19 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             cacheItem.Apply(viewModel);
             await cacheStorageService.Set(cacheKey, cacheItem);
 
-            return RedirectToRoute(RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(cacheItem.EthnicGroup), new { applicationId });
+            return RedirectToRoute(RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(cacheItem.EthnicGroup), new { applicationId, viewModel.IsEdit });
         }
 
         [HttpGet]
         [Route("ethnic-group/white", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupWhite)]
-        public async Task<IActionResult> EthnicGroupWhite([FromQuery] Guid? applicationId)
+        public async Task<IActionResult> EthnicGroupWhite([FromQuery] Guid? applicationId, bool isEdit = false)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
-            return equalityQuestions is not null
-                ? View(EthnicSubGroupWhiteQuestionsViewPath, (EqualityQuestionsEthnicSubGroupWhiteViewModel)equalityQuestions)
-                : View(EthnicSubGroupWhiteQuestionsViewPath, new EqualityQuestionsEthnicSubGroupWhiteViewModel { ApplicationId = applicationId });
+            if (equalityQuestions is null) return RedirectToStart(applicationId);
+            
+            var viewModel = (EqualityQuestionsEthnicSubGroupWhiteViewModel)equalityQuestions;
+            viewModel.IsEdit = isEdit;
+            return View(EthnicSubGroupWhiteQuestionsViewPath, viewModel);
         }
 
         [HttpPost]
@@ -120,12 +126,15 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/mixed", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupMixed)]
-        public async Task<IActionResult> EthnicGroupMixed([FromQuery] Guid? applicationId)
+        public async Task<IActionResult> EthnicGroupMixed([FromQuery] Guid? applicationId, bool isEdit = false)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
-            return equalityQuestions is not null
-                ? View(EthnicSubGroupMixedQuestionsViewPath, (EqualityQuestionsEthnicSubGroupMixedViewModel)equalityQuestions)
-                : View(EthnicSubGroupMixedQuestionsViewPath, new EqualityQuestionsEthnicSubGroupMixedViewModel { ApplicationId = applicationId });
+            if (equalityQuestions is null) return RedirectToStart(applicationId);
+
+            var viewModel = (EqualityQuestionsEthnicSubGroupMixedViewModel)equalityQuestions;
+            viewModel.IsEdit = isEdit;
+
+            return View(EthnicSubGroupMixedQuestionsViewPath, viewModel);
         }
 
         [HttpPost]
@@ -139,12 +148,15 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/asian", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupAsian)]
-        public async Task<IActionResult> EthnicGroupAsian([FromQuery] Guid? applicationId)
+        public async Task<IActionResult> EthnicGroupAsian([FromQuery] Guid? applicationId, bool isEdit = false)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
-            return equalityQuestions is not null
-                ? View(EthnicSubGroupAsianQuestionsViewPath, (EqualityQuestionsEthnicSubGroupAsianViewModel)equalityQuestions)
-                : View(EthnicSubGroupAsianQuestionsViewPath, new EqualityQuestionsEthnicSubGroupAsianViewModel { ApplicationId = applicationId });
+            if (equalityQuestions is null) return RedirectToStart(applicationId);
+
+            var viewModel = (EqualityQuestionsEthnicSubGroupAsianViewModel) equalityQuestions;
+            viewModel.IsEdit = isEdit;
+
+            return View(EthnicSubGroupAsianQuestionsViewPath, viewModel);
         }
 
         [HttpPost]
@@ -158,12 +170,15 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/black", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupBlack)]
-        public async Task<IActionResult> EthnicGroupBlack([FromQuery] Guid? applicationId)
+        public async Task<IActionResult> EthnicGroupBlack([FromQuery] Guid? applicationId, bool isEdit = false)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
-            return equalityQuestions is not null
-                ? View(EthnicSubGroupBlackQuestionsViewPath, (EqualityQuestionsEthnicSubGroupBlackViewModel)equalityQuestions)
-                : View(EthnicSubGroupBlackQuestionsViewPath, new EqualityQuestionsEthnicSubGroupBlackViewModel { ApplicationId = applicationId });
+            if (equalityQuestions is null) return RedirectToStart(applicationId);
+
+            var viewModel = (EqualityQuestionsEthnicSubGroupBlackViewModel)equalityQuestions;
+            viewModel.IsEdit = isEdit;
+
+            return View(EthnicSubGroupBlackQuestionsViewPath, viewModel);
         }
 
         [HttpPost]
@@ -177,12 +192,15 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpGet]
         [Route("ethnic-group/other", Name = RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicSubGroupOther)]
-        public async Task<IActionResult> EthnicGroupOther([FromQuery] Guid? applicationId)
+        public async Task<IActionResult> EthnicGroupOther([FromQuery] Guid? applicationId, bool isEdit = false)
         {
             var equalityQuestions = await GetEqualityQuestionsFromCacheMemory();
-            return equalityQuestions is not null
-                ? View(EthnicSubGroupOtherQuestionsViewPath, (EqualityQuestionsEthnicSubGroupOtherViewModel)equalityQuestions)
-                : View(EthnicSubGroupOtherQuestionsViewPath, new EqualityQuestionsEthnicSubGroupOtherViewModel { ApplicationId = applicationId });
+            if (equalityQuestions is null) return RedirectToStart(applicationId);
+
+            var viewModel = (EqualityQuestionsEthnicSubGroupOtherViewModel)equalityQuestions;
+            viewModel.IsEdit = isEdit;
+
+            return View(EthnicSubGroupOtherQuestionsViewPath, viewModel);
         }
 
         [HttpPost]
