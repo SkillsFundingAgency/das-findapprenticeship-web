@@ -35,6 +35,8 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
             // Assert
             result.Should().BeEquivalentTo(apiResponse, options=> options.Excluding(c=>c.ApplicationStatus));
             result.ApplicationStatus.Should().Be(ApplicationStatus.Withdrawn);
+            result.WithdrawnDate.Should().Be(apiResponse.WithdrawnDate);
+            result.MigrationDate.Should().Be(apiResponse.MigrationDate);
         }
     }
 }
