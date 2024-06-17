@@ -17,7 +17,9 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             return new EqualityQuestionsEthnicGroupViewModel
             {
                 ApplicationId = source.ApplicationId,
-                EthnicGroup = ((int)source.EthnicGroup).ToString(),
+                EthnicGroup = source.SelectedEthnicGroup.HasValue
+                    ? ((int)source.SelectedEthnicGroup).ToString()
+                    : ((int)source.EthnicGroup).ToString()
             };
         }
     }
