@@ -1,4 +1,12 @@
-﻿using MediatR;
+﻿using CreateAccount.GetAddressesByPostcode;
+using CreateAccount.GetCandidateAccountDetails;
+using CreateAccount.GetCandidateDateOfBirth;
+using CreateAccount.GetCandidateName;
+using CreateAccount.GetCandidatePhoneNumber;
+using CreateAccount.GetCandidatePostcode;
+using CreateAccount.GetCandidatePostcodeAddress;
+using CreateAccount.GetCandidatePreferences;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidatePreferences;
@@ -99,7 +107,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("user-name", Name = RouteNames.UserName)]
-        public async Task<IActionResult> Name(bool? change = false)
+        public async Task<IActionResult> Name(UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
             var name = await mediator.Send(new GetCandidateNameQuery
             {
@@ -108,10 +116,9 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var model = new NameViewModel
             {
-                FirstName = name?.FirstName ?? null,
-                LastName = name?.LastName ?? null,
-                ReturnToConfirmationPage = change,
-                BackLink = change is true ? RouteNames.ConfirmAccountDetails : RouteNames.CreateAccount
+                FirstName = name.FirstName,
+                LastName = name.LastName,
+                JourneyPath = journeyPath,
             };
             return View(model);
         }
@@ -132,7 +139,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     CandidateId = (Guid)User.Claims.CandidateId()!,
-                    Email = User.Claims.Email(),
+                    Email = User.Claims.Email()!,
                 };
                 await mediator.Send(command);
             }
@@ -142,15 +149,12 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return model.ReturnToConfirmationPage is true ?
-                RedirectToRoute(RouteNames.ConfirmAccountDetails)
-                : RedirectToRoute(RouteNames.DateOfBirth);
-
+            return RedirectToRoute(model.RedirectRoute);
         }
 
         [HttpGet]
         [Route("date-of-birth", Name = RouteNames.DateOfBirth)]
-        public async Task<IActionResult> DateOfBirth(bool? change = false)
+        public async Task<IActionResult> DateOfBirth(UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
             var result = await mediator.Send(new GetCandidateDateOfBirthQuery
             {
@@ -160,8 +164,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var model = new DateOfBirthViewModel
             {
                 DateOfBirth = result.DateOfBirth != null ? new DayMonthYearDate(result.DateOfBirth) : null,
-                ReturnToConfirmationPage = change,
-                BackLink = change is true ? RouteNames.ConfirmAccountDetails : RouteNames.UserName
+                JourneyPath = journeyPath
             };
             return View(model);
         }
@@ -180,8 +183,8 @@ namespace SFA.DAS.FAA.Web.Controllers
                 var command = new UpdateDateOfBirthCommand
                 {
                     CandidateId = (Guid)User.Claims.CandidateId()!,
-                    Email = User.Claims.Email(),
-                    DateOfBirth = model.DateOfBirth.DateTimeValue.Value
+                    Email = User.Claims.Email()!,
+                    DateOfBirth = model.DateOfBirth!.DateTimeValue!.Value
                 };
                 await mediator.Send(command);
             }
@@ -191,20 +194,16 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return model.ReturnToConfirmationPage is true ?
-                RedirectToRoute(RouteNames.ConfirmAccountDetails)
-                : RedirectToRoute(RouteNames.PostcodeAddress);
-
+            return RedirectToRoute(model.RedirectRoute);
         }
 
         [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
-        public IActionResult PostcodeAddress(string? postcode, bool change = false)
+        public IActionResult PostcodeAddress(string? postcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
-            var model = new PostcodeAddressViewModel()
+            var model = new PostcodeAddressViewModel
             {
                 Postcode = postcode,
-                ReturnToConfirmationPage = change,
-                IsEdit = change
+                JourneyPath = journeyPath
             };
             return View(model);
         }
@@ -219,7 +218,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             try
             {
-                var postcodeExists = await mediator.Send(new GetCandidatePostcodeAddressQuery() { Postcode = model.Postcode! });
+                var postcodeExists = await mediator.Send(new GetCandidatePostcodeAddressQuery { Postcode = model.Postcode! });
 
                 if (!postcodeExists.PostcodeExists)
                 {
@@ -234,11 +233,11 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             return RedirectToRoute
-                (RouteNames.SelectAddress, new { postcode = model.Postcode, change = model.ReturnToConfirmationPage });
+                (RouteNames.SelectAddress, new { postcode = model.Postcode, journeyPath = model.JourneyPath });
         }
 
         [HttpGet("select-address", Name = RouteNames.SelectAddress)]
-        public async Task<IActionResult> SelectAddress(string? postcode, bool change = false)
+        public async Task<IActionResult> SelectAddress(string? postcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
             var result = await mediator.Send(new GetAddressesByPostcodeQuery
             {
@@ -247,9 +246,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
             var model = (SelectAddressViewModel)result;
-            model.ReturnToConfirmationPage = change;
-            model.IsEdit = change;
-
+            model.JourneyPath = journeyPath;
             return View(model);
         }
 
@@ -258,19 +255,19 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var result = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
+                var result = await mediator.Send(new GetAddressesByPostcodeQuery { Postcode = model.Postcode });
                 var addressesModel = (SelectAddressViewModel) result;
                 return View(addressesModel);
             }
 
-            var addresses = await mediator.Send(new GetAddressesByPostcodeQuery() { Postcode = model.Postcode });
+            var addresses = await mediator.Send(new GetAddressesByPostcodeQuery { Postcode = model.Postcode });
             model.Addresses = addresses.Addresses?.Select(x => (AddressViewModel)x).ToList();
 
             var selectedAddress = addresses.Addresses?.Where(x => x.Uprn == model.SelectedAddress).SingleOrDefault();
-            await mediator.Send(new UpdateAddressCommand()
+            await mediator.Send(new UpdateAddressCommand
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                Email = User.Claims.Email(),
+                Email = User.Claims.Email()!,
                 Uprn = selectedAddress.Uprn,
                 Thoroughfare = selectedAddress.Thoroughfare,
                 Organisation = selectedAddress.Organisation,
@@ -280,15 +277,16 @@ namespace SFA.DAS.FAA.Web.Controllers
                 AddressLine4 = selectedAddress.County,
                 Postcode = selectedAddress.Postcode
             });
-            return model.ReturnToConfirmationPage is true ?
-                RedirectToRoute(RouteNames.ConfirmAccountDetails)
-                : RedirectToRoute(RouteNames.PhoneNumber, new { backLink = RouteNames.SelectAddress });
+
+            return model.RedirectRoute == RouteNames.PhoneNumber
+                ? RedirectToRoute(RouteNames.PhoneNumber, new { journeyPath = model.JourneyPath })
+                : RedirectToRoute(model.RedirectRoute);
         }
 
         [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
-        public async Task<IActionResult> EnterAddressManually(string? backLink, string? selectAddressPostcode, bool change = false)
+        public async Task<IActionResult> EnterAddressManually(string? selectAddressPostcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
-            var result = await mediator.Send(new GetCandidateAddressQuery()
+            var result = await mediator.Send(new GetCandidateAddressQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
@@ -296,26 +294,23 @@ namespace SFA.DAS.FAA.Web.Controllers
             var model = new EnterAddressManuallyViewModel
             {
                 SelectAddressPostcode = selectAddressPostcode,
-                IsEdit = change
+                JourneyPath = journeyPath,
             };
 
-            if (change)
+            if (journeyPath != UserJourneyPath.CreateAccount)
             {
-                model.BackLink = !result.IsAddressFromLookup ? RouteNames.ConfirmAccountDetails : backLink ?? RouteNames.PostcodeAddress;
+                model.BackLink = model.CustomBackLink;
             }
             else
             {
                 model.BackLink = result.IsAddressFromLookup ? RouteNames.SelectAddress : RouteNames.PostcodeAddress;
             }
 
-            if (result.AddressLine1 != null)
-            {
-                model.AddressLine1 = result.AddressLine1;
-                model.AddressLine2 = result.AddressLine2 ?? null;
-                model.TownOrCity = result.Town;
-                model.County = result.County ?? null;
-                model.Postcode = result.Postcode ?? null;
-            }
+            model.AddressLine1 = result.AddressLine1;
+            model.AddressLine2 = result.AddressLine2 ?? null;
+            model.TownOrCity = result.Town;
+            model.County = result.County ?? null;
+            model.Postcode = result.Postcode ?? null;
 
             return View(model);
         }
@@ -331,7 +326,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             await mediator.Send(new UpdateManuallyEnteredAddressCommand()
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                Email = User.Claims.Email(),
+                Email = User.Claims.Email()!,
                 AddressLine1 = model.AddressLine1,
                 AddressLine2 = model.AddressLine2,
                 TownOrCity = model.TownOrCity,
@@ -339,13 +334,13 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = model.Postcode
             });
 
-            return model.ReturnToConfirmationPage is true ?
-                RedirectToRoute(RouteNames.ConfirmAccountDetails)
-                : RedirectToRoute(RouteNames.PhoneNumber, new { backLink = RouteNames.EnterAddressManually });
+            return model.RedirectRoute == RouteNames.PhoneNumber
+                ? RedirectToRoute(RouteNames.PhoneNumber, new { journeyPath = UserJourneyPath.EnterAddressManually })
+                : RedirectToRoute(model.RedirectRoute);
         }
 
         [HttpGet("phone-number", Name = RouteNames.PhoneNumber)]
-        public async Task<IActionResult> PhoneNumber(string? backLink, bool change=false)
+        public async Task<IActionResult> PhoneNumber(UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
             var queryResult = await mediator.Send(new GetCandidatePhoneNumberQuery
             {
@@ -355,9 +350,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             var model = new PhoneNumberViewModel
             {
                 PhoneNumber = queryResult.PhoneNumber,
-                ReturnToConfirmationPage = change,
-                BackLink = change ? RouteNames.ConfirmAccountDetails 
-                    : queryResult.IsAddressFromLookup ? RouteNames.SelectAddress : RouteNames.EnterAddressManually,
+                JourneyPath = journeyPath,
                 Postcode = queryResult.Postcode
             };
             return View(model);
@@ -371,28 +364,27 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            await mediator.Send(new UpdatePhoneNumberCommand()
+            await mediator.Send(new UpdatePhoneNumberCommand
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                Email = User.Claims.Email(),
-                PhoneNumber = model.PhoneNumber
+                Email = User.Claims.Email()!,
+                PhoneNumber = model.PhoneNumber!
             });
 
-
-            return model.ReturnToConfirmationPage is true ?
-               RedirectToRoute(RouteNames.ConfirmAccountDetails)
-               : RedirectToRoute(RouteNames.NotificationPreferences, new { phoneNumberBackLink = model.BackLink });
+            return model.RedirectRoute == RouteNames.NotificationPreferences 
+                ? RedirectToRoute(RouteNames.NotificationPreferences, new { journeyPath = model.JourneyPath }) 
+                : RedirectToRoute(model.RedirectRoute);
         }
 
         [HttpGet("notification-preferences", Name = RouteNames.NotificationPreferences)]
-        public async Task<IActionResult> NotificationPreferences(string? phoneNumberBackLink, bool? change = false)
+        public async Task<IActionResult> NotificationPreferences(UserJourneyPath journeyPath = UserJourneyPath.CreateAccount, bool? change = false)
         {
             var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            var model = new NotificationPreferencesViewModel()
+            var model = new NotificationPreferencesViewModel
             {
                 NotificationPreferences = candidatePreferences.CandidatePreferences.Select(cp => new NotificationPreferenceItemViewModel
                 {
@@ -402,7 +394,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                     EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
                     TextPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodText).FirstOrDefault()?.Status ?? false
                 }).OrderByDescending(c=>c.Meaning).ToList(),
-                PhoneNumberBacklink = phoneNumberBackLink,
+                JourneyPath = journeyPath,
                 ReturnToConfirmationPage = change
             };
 
@@ -508,6 +500,12 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             return RedirectToRoute(RouteNames.ServiceStartDefault);
+        }
+
+        [HttpGet("email", Name = RouteNames.Email)]
+        public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
+        {
+            return View(new EmailViewModel { JourneyPath = journeyPath });
         }
 
         [HttpGet]

@@ -29,6 +29,7 @@ public static class RouteNames
     public const string StubSignedIn = "stub-signedin-get";
     public const string Settings = "settings";
     public const string ChangeNotificationPreferences = "change-notification-preferences";
+    public const string Email = "email";
 
     public static class Applications
     {

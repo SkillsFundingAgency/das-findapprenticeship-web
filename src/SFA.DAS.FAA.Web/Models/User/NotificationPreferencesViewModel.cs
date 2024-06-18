@@ -3,7 +3,7 @@
 public class NotificationPreferencesViewModel : ViewModelBase
 {
     public List<NotificationPreferenceItemViewModel> NotificationPreferences { get; set; }
-    public string? PhoneNumberBacklink { get; set; }
+    public UserJourneyPath JourneyPath { get; set; }
     public bool? ReturnToConfirmationPage { get; set; }
 }
 

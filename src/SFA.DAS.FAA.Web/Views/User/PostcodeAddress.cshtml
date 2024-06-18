@@ -5,14 +5,7 @@
     ViewData["Title"] = "What is your address? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    @if (Model.IsEdit)
-    {
-        <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
-    }
-    else
-    {
-        <a class="govuk-back-link" asp-route="@RouteNames.DateOfBirth">Back</a>
-    }
+        <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -22,9 +15,9 @@
         <h1 class="govuk-heading-l">What is your address?</h1>
         <p class="govuk-body">Use the address you want to appear on your applications</p>
         <form class="form" method="post">
-            <input type="hidden" asp-for="ReturnToConfirmationPage" />
+            <input type="hidden" asp-for="JourneyPath" />
             <input type="hidden" asp-for="BackLink" />
-            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.Postcode)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" asp-for="Postcode">
                     UK postcode
                 </label>
@@ -40,7 +33,7 @@
                     Find my address
                 </button>
                 <a class="govuk-link" id="enter-address-manually-link" asp-route="@RouteNames.EnterAddressManually" 
-                asp-route-backLink="@RouteNames.PostcodeAddress" asp-route-change="@Model.ReturnToConfirmationPage">
+                asp-route-backLink="@RouteNames.PostcodeAddress" asp-route-journeyPath="@Model.JourneyPath">
                 Enter my address manually
                 </a>
             </div>

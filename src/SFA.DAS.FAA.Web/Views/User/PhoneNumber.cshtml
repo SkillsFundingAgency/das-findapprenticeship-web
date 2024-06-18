@@ -1,31 +1,42 @@
-﻿@model SFA.DAS.FAA.Web.Models.User.PhoneNumberViewModel
+﻿@using SFA.DAS.FAA.Web.Models.User
+@model SFA.DAS.FAA.Web.Models.User.PhoneNumberViewModel
 @{
-    ViewData["Title"] = "What is your telephone number? – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = Model.PageTitle;
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@(!Model.ReturnToConfirmationPage ? Model.Postcode : "")">Back</a>
+    @if(Model.JourneyPath is UserJourneyPath.Settings or UserJourneyPath.ConfirmAccountDetails)
+    {
+        <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.Postcode">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
-        <span class="govuk-caption-l">Create an account</span>
-        <h1 class="govuk-heading-l">What is your telephone number?</h1>
+        <span class="govuk-caption-l">
+            @Model.PageCaption
+        </span>
+        <h1 class="govuk-heading-l">
+            @Model.PageHeading
+        </h1>
         <p class="govuk-body">Use a number that companies can phone you on. For example, to invite you to an interview</p>
         <form class="form" method="post">
             <input type="hidden" asp-for="BackLink" />
-            <input type="hidden" asp-for="ReturnToConfirmationPage" />
-            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.PhoneNumber)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)  ? "govuk-form-group--error" : "")">
+            <input type="hidden" asp-for="JourneyPath" />
+            <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.PhoneNumber)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" asp-for="PhoneNumber">
                     Telephone number
                 </label>
                 <span asp-validation-for="PhoneNumber" class="govuk-error-message"></span>
                 <input asp-for="PhoneNumber" class="govuk-input govuk-input--width-20" autocomplete="tel"/>
             </div>
-
             <div class="govuk-button-group">
                 <button class="govuk-button" data-module="govuk-button">
-                    Continue
+                    @Model.PageCtaButtonLabel
                 </button>
             </div>
         </form>
