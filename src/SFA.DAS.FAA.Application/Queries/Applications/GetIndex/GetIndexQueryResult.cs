@@ -1,10 +1,10 @@
-﻿using SFA.DAS.FAA.Domain.Applications.GetApplications;
-using SFA.DAS.FAA.Domain.Enums;
+﻿using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 
 public class GetIndexQueryResult
 {
+    public bool ShowAccountRecoveryBanner { get; set; }
     public List<Application> Applications { get; set; } = [];
 
     public class Application
@@ -20,26 +20,6 @@ public class GetIndexQueryResult
         public DateTime? ResponseDate { get; set; }
         public ApplicationStatus Status { get; set; }
         public string ResponseNotes { get; set; }
-    }
-
-    public static implicit operator GetIndexQueryResult(GetApplicationsApiResponse source)
-    {
-        return new GetIndexQueryResult
-        {
-            Applications = source.Applications.Select(x => new Application
-            {
-                Id = x.Id,
-                Title = x.Title,
-                VacancyReference = x.VacancyReference,
-                EmployerName = x.EmployerName,
-                CreatedDate = x.CreatedDate,
-                ClosingDate = x.ClosingDate,
-                SubmittedDate = x.SubmittedDate,
-                WithdrawnDate = x.WithdrawnDate,
-                ResponseDate = x.ResponseDate,
-                Status = x.Status,
-                ResponseNotes = x.ResponseNotes
-            }).ToList()
-        };
+        public bool ShowBannerMessage { get; set; }
     }
 }

@@ -17,6 +17,8 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
+using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
+using SFA.DAS.FAA.Application.Commands.MigrateData;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
@@ -95,9 +97,8 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             await cacheStorageService.Set($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}", viewModel.Email);
-
-            //todo: replace with redirect to preview page
-            return Ok("Login successful");
+            
+            return RedirectToRoute(RouteNames.ConfirmDataTransfer);
         }
 
         [HttpGet]
@@ -533,6 +534,39 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
+		[HttpGet("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
+        public async Task<IActionResult> ConfirmDataTransfer()
+        {
+            var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
+            if(string.IsNullOrEmpty(legacyEmailAddress)) return RedirectToRoute(RouteNames.ServiceStartDefault);
+
+            var response = await mediator.Send(new GetTransferUserDataQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                EmailAddress = legacyEmailAddress!
+            });
+
+            var model = (ConfirmTransferViewModel) response;
+            model.EmailAddress = User.Claims.Email()!;
+            
+            return View(model);
+        }
+		
+
+        [HttpPost("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
+        public async Task<IActionResult> ConfirmDataTransfer(ConfirmTransferViewModel viewModel)
+        {
+            var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
+            if (string.IsNullOrEmpty(legacyEmailAddress)) return RedirectToRoute(RouteNames.ServiceStartDefault);
+
+            await mediator.Send(new MigrateDataTransferCommand
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                EmailAddress = legacyEmailAddress!
+            });
+
+            return RedirectToRoute(RouteNames.FinishAccountSetup);
+        }
 
         public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
         {

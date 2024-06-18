@@ -33,7 +33,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
             var viewModel = IndexViewModel.Map(tab, result, dateTimeService);
-            viewModel.BannerMessage = bannerMessage;
+            viewModel.WithdrawnBannerMessage = bannerMessage;
             return View(viewModel);
         }
 
