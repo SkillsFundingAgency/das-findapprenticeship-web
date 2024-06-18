@@ -573,8 +573,9 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             return View();
         }
-		
-		 public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
+
+        [HttpGet("email", Name = RouteNames.Email)]
+        public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
         {
             return View(new EmailViewModel { JourneyPath = journeyPath });
         }
