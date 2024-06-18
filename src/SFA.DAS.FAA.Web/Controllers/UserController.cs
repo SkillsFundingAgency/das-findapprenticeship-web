@@ -568,11 +568,15 @@ namespace SFA.DAS.FAA.Web.Controllers
             return RedirectToRoute(RouteNames.FinishAccountSetup);
         }
 
-        public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
+        [HttpGet("finish-account-setup", Name = RouteNames.FinishAccountSetup)]
+        public IActionResult FinishAccountSetup()
+        {
+            return View();
+        }
+		
+		 public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
         {
             return View(new EmailViewModel { JourneyPath = journeyPath });
         }
-
-
     }
 }
