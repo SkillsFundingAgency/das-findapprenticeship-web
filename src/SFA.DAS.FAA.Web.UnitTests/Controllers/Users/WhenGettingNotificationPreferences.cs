@@ -10,13 +10,14 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingNotificationPreferences
 {
     [Test, MoqAutoData]
     public async Task Then_View_Is_Returned(
-        string backLink,
+        UserJourneyPath journeyPath,
         Guid candidateId,
         GetCandidatePreferencesQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator,
@@ -37,8 +38,12 @@ public class WhenGettingNotificationPreferences
             , It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var result = await controller.NotificationPreferences(backLink) as ViewResult;
+        var result = await controller.NotificationPreferences(journeyPath) as ViewResult;
 
         result.Should().NotBeNull();
+        var actualModel = result!.Model as NotificationPreferencesViewModel;
+
+        actualModel.Should().NotBeNull();
+        actualModel!.JourneyPath.Should().Be(journeyPath);
     }
 }
