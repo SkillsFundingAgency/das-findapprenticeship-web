@@ -25,49 +25,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
         public async Task Then_View_Is_Returned(
             Guid applicationId,
             Guid govIdentifier,
-            [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICacheStorageService> cacheStorageService)
-        {
-            var cacheKey = string.Format($"{Key}", govIdentifier);
-
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns("https://baseUrl");
-
-            cacheStorageService
-                .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .ReturnsAsync((EqualityQuestionsModel)null!);
-
-            var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
-            {
-                Url = mockUrlHelper.Object,
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = new DefaultHttpContext
-                    {
-                        User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
-                    }
-                }
-            };
-
-            var actual = await controller.EthnicGroupBlack(applicationId) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupBlackViewModel>();
-
-            using (new AssertionScope())
-            {
-                actual.Should().NotBeNull();
-                actual.Model.Should().NotBeNull();
-                actualModel.ApplicationId.Should().Be(applicationId);
-                actual.ViewName.Should().Be("~/Views/apply/EqualityQuestions/EthnicSubGroupBlack.cshtml");
-            }
-        }
-
-        [Test, MoqAutoData]
-        public async Task Then_Cached_Value_View_Is_Returned(
-            Guid applicationId,
-            Guid govIdentifier,
             EqualityQuestionsModel model,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)

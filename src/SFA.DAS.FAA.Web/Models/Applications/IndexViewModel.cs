@@ -106,7 +106,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             result.ExpiredApplications = [.. expiredApplications
                 .OrderByDescending(fil => fil.CloseDateTime)
                 .ThenBy(fil => fil.Title)];
-            result.ShowTransferDataBannerMessage = source.Applications.Count == 0 && source.ShowAccountRecoveryBanner;
+            result.ShowTransferDataBannerMessage = source.ShowAccountRecoveryBanner;
             return result;
         }
     }
