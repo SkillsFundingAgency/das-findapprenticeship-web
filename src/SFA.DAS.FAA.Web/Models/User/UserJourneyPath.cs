@@ -6,6 +6,7 @@
         ConfirmAccountDetails,
         SelectAddress,
         EnterAddressManually,
+        PhoneNumber,
         Settings,
     }
 }
