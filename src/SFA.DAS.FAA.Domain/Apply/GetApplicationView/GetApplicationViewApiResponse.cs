@@ -1,11 +1,4 @@
-﻿using SFA.DAS.FAA.Domain.Applications.GetApplications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
+﻿namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
 {
     public class GetApplicationViewApiResponse
     {
@@ -20,6 +13,8 @@ namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
         public DisabilityConfidenceSection DisabilityConfidence { get; set; }
         public WhatIsYourInterestSection WhatIsYourInterest { get; set; }
         public string ApplicationStatus { get; set; }
+        public DateTime? WithdrawnDate { get; set; }
+        public DateTime? MigrationDate { get; set; }
 
         public record VacancyDetailsSection
         {

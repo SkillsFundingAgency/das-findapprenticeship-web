@@ -55,7 +55,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         }
 
         [TestCase("30 Jan 2000", "Posted on 30 January 2000")]
-        [TestCase("01 Jan 2000", "Posted on 01 January 2000")]
+        [TestCase("01 Jan 2000", "Posted on 1 January 2000")]
+        [TestCase("04 Jun 2024", "Posted on 4 June 2024")]
         public void GetPostedDate(string postedDate, string? expectedResult)
         {
             //sut
@@ -66,7 +67,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         }
 
         [TestCase("30 Jan 2000", "Sunday 30 January")]
-        [TestCase("01 Jan 2000", "Saturday 01 January")]
+        [TestCase("01 Jan 2000", "Saturday 1 January")]
+        [TestCase("04 Jun 2024", "Tuesday 4 June")]
         public void GetStartDate(string startDate, string? expectedResult)
         {
             //sut
