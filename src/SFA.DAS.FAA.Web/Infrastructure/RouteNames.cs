@@ -28,6 +28,7 @@ public static class RouteNames
     public const string StubAccountDetailsPost = "account-details-post";
     public const string StubSignedIn = "stub-signedin-get";
     public const string Settings = "settings";
+    public const string ChangeNotificationPreferences = "change-notification-preferences";
 
     public static class Applications
     {

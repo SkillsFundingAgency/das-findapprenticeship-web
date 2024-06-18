@@ -548,5 +548,24 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
+        [HttpGet("change-notification-preferences", Name = RouteNames.ChangeNotificationPreferences)]
+        public async Task<IActionResult> ChangeNotificationPreferences()
+        {
+            var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            });
+
+            var model = new ChangeNotificationPreferencesViewModel
+            {
+                CandidatePreferences = candidatePreferences.CandidatePreferences.Select(cp => new ChangeNotificationPreferencesViewModel.CandidatePreference
+                {
+                    Meaning = cp.PreferenceMeaning,
+                    EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
+                }).ToList(),
+            };
+
+            return View(model);
+        }
     }
 }
