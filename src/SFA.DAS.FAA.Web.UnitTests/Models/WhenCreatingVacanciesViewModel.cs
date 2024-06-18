@@ -23,6 +23,7 @@ public class WhenCreatingVacanciesViewModel
             .Excluding(c=>c.CourseTitle)
             .Excluding(c=>c.Postcode)
             .Excluding(c => c.CandidateApplicationDetails)
+            .Excluding(c => c.ApplicationStatus)
             .Excluding(c => c.Lat)
             .Excluding(c => c.Lon)
         );

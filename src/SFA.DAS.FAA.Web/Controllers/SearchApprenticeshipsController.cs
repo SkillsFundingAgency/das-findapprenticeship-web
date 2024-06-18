@@ -192,6 +192,42 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         return View(viewmodel);
     }
 
+    [HttpGet]
+    [Route("map-search-results", Name = RouteNames.MapSearchResults)]
+    public async Task<IActionResult> MapSearchResults([FromQuery] GetSearchResultsRequest request)
+    {
+        var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
+        if (request.Distance <= 0)
+        {
+            request.Distance = null;
+        }
+        else if (request.Distance.HasValue && !validDistanceValues.Contains((int)request.Distance))
+        {
+            request.Distance = 10;
+        }
+
+        var result = await mediator.Send(new GetSearchResultsQuery
+        {
+            Location = request.Location,
+            SelectedRouteIds = request.RouteIds,
+            SelectedLevelIds = request.LevelIds,
+            Distance = request.Distance,
+            SearchTerm = request.SearchTerm,
+            PageNumber = 1,
+            PageSize = 300,
+            Sort = request.Sort,
+            DisabilityConfident = request.DisabilityConfident,
+            CandidateId = User.Claims.CandidateId().Equals(null) ? null
+                : User.Claims.CandidateId()!.ToString()
+        });
+        
+        var mapData = result.Vacancies.Count != 0
+            ? result.Vacancies.Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService, c)).ToList()
+            : [];
+        
+        return Json(mapData);
+    }
+
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
         => new()
         {
