@@ -1,15 +1,40 @@
 ﻿using CreateAccount.GetAddressesByPostcode;
 using SFA.DAS.FAA.Domain.User;
+using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.Models.User;
 
 public class SelectAddressViewModel : ViewModelBase
 {
-    public bool IsEdit { get; set; }
     public List<AddressViewModel>? Addresses {  get; set; }
     public string? SelectedAddress { get; set; }
-    public string Postcode { get; set; }
-    public bool? ReturnToConfirmationPage { get; set; }
+    public string Postcode { get; init; }
+    public UserJourneyPath JourneyPath { get; set; } = UserJourneyPath.CreateAccount;
+    public string BackLink => GetBackLink();
+    public string RedirectRoute => GetRedirectRoute();
+    public string PageCaption => JourneyPath == UserJourneyPath.Settings ? "" : "Create an account";
+    public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
+    private string GetBackLink()
+    {
+        return JourneyPath switch
+        {
+            UserJourneyPath.CreateAccount => RouteNames.PostcodeAddress,
+            UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.Settings => RouteNames.Settings,
+            _ => RouteNames.PostcodeAddress
+        };
+    }
+
+    private string GetRedirectRoute()
+    {
+        return JourneyPath switch
+        {
+            UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.Settings => RouteNames.Settings,
+            UserJourneyPath.PhoneNumber => RouteNames.PhoneNumber,
+            _ => RouteNames.PhoneNumber
+        };
+    }
 
     public static implicit operator SelectAddressViewModel(GetAddressesByPostcodeQueryResult source)
     {

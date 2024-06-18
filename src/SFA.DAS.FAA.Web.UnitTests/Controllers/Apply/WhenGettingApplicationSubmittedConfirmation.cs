@@ -36,7 +36,7 @@ public class WhenGettingApplicationSubmittedConfirmation
             }))}
         };
 
-        var actual = await controller.ApplicationSubmittedConfirmation(applicationId) as ViewResult;
+        var actual = await controller.ApplicationSubmittedConfirmation(applicationId, true) as ViewResult;
 
         actual?.Should().NotBeNull();
         var actualModel = actual!.Model as ApplicationSubmittedConfirmationViewModel;

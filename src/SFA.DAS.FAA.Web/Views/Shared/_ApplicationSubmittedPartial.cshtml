@@ -1,4 +1,5 @@
 ﻿@using SFA.DAS.FAA.Web.Models.Apply
+@using SFA.DAS.FAA.Web.Infrastructure
 @model ApplicationSubmittedVacancyInfo
 
 <div class="govuk-panel govuk-panel--confirmation">
@@ -15,12 +16,16 @@
 <h2 class="govuk-heading-m">What happens next</h2>
 <p class="govuk-body">The company will contact you if you're invited to an interview. They'll contact you using the telephone number or 
     email address on your application.</p>
-<p class="govuk-body">Check your application status in <a class="govuk-link" href="#">your applications.</a></p>
+<p class="govuk-body">Check your application status in <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">your applications.</a></p>
 
-<h2 class="govuk-heading-m">Tell us more about yourself (optional)</h2>
-<p class="govuk-body">
-    Answer 4 equality questions. Your answers will help us check that apprenticeship recruitment is inclusive and fair.
-</p>
-<p class="govuk-body">
-    We'll never share your answers when you apply for an apprenticeship.
-</p>
+@if (!Model.HasAnsweredEqualityQuestions)
+{
+    <h2 class="govuk-heading-m">Tell us more about yourself (optional)</h2>
+    <p class="govuk-body">
+        Answer 4 equality questions. Your answers will help us check that apprenticeship recruitment is inclusive and fair.
+    </p>
+    <p class="govuk-body">
+        We'll never share your answers when you apply for an apprenticeship.
+    </p>
+}
+

@@ -18,6 +18,8 @@ public static class RouteNames
     public const string NotificationPreferencesSkip = "notification-preferences-skip";
     public const string ConfirmAccountDetails = "check-your-account-details";
     public const string CreateAccount = "create-account";
+    public const string TransferYourData = "transfer-your-data";
+    public const string SignInToYourOldAccount = "sign-in-to-your-old-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
     public const string SignedOut = "signed-out";
@@ -80,6 +82,7 @@ public static class RouteNames
             public const string EqualityFlowEthnicSubGroupBlack = nameof(EqualityFlowEthnicSubGroupBlack);
             public const string EqualityFlowEthnicSubGroupOther = nameof(EqualityFlowEthnicSubGroupOther);
             public const string EqualityFlowSummary = nameof(EqualityFlowSummary);
+            public const string EditEqualityQuestions = nameof(EditEqualityQuestions);
         }
     }
 

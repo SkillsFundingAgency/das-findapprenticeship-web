@@ -2,9 +2,7 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
 using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
@@ -15,6 +13,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Web.AppStart;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
@@ -44,7 +43,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
                     }
                 }
             };
@@ -92,7 +91,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
                     }
                 }
             };
@@ -135,7 +134,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
                     }
                 }
             };

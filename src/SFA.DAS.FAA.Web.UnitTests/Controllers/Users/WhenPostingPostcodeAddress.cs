@@ -15,8 +15,13 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenPostingPostcodeAddress
 {
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount)]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.Settings)]
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Enter_Your_Address(
+        UserJourneyPath journeyPath,
+        string redirectRoute,
         string govIdentifier,
         string email,
         GetCandidatePostcodeAddressQueryResult queryResult,
@@ -25,7 +30,7 @@ public class WhenPostingPostcodeAddress
         [Greedy] UserController controller)
     {
         queryResult.PostcodeExists = true;
-        model.ReturnToConfirmationPage = false;
+        model.JourneyPath = journeyPath;
 
         controller.ControllerContext = new ControllerContext
         {
@@ -45,7 +50,7 @@ public class WhenPostingPostcodeAddress
         var result = await controller.PostcodeAddress(model) as RedirectToRouteResult;
 
         result.Should().NotBeNull();
-        result.RouteName.Should().Be(RouteNames.SelectAddress);
+        result!.RouteName.Should().Be(RouteNames.SelectAddress);
         mediator.Verify(x => x.Send(It.Is<GetCandidatePostcodeAddressQuery>(c =>
             c.Postcode.Equals(model.Postcode)
             ), It.IsAny<CancellationToken>()), Times.Once);
@@ -62,7 +67,7 @@ public class WhenPostingPostcodeAddress
         var result = await controller.PostcodeAddress(model) as ViewResult;
 
         result.Should().NotBeNull();
-        result.Model.Should().Be(model);
+        result!.Model.Should().Be(model);
     }
 
     [Test, MoqAutoData]
@@ -91,7 +96,7 @@ public class WhenPostingPostcodeAddress
         var result = await controller.PostcodeAddress(model) as ViewResult;
 
         result.Should().NotBeNull();
-        result.Model.Should().Be(model);
+        result!.Model.Should().Be(model);
         controller.ModelState.Count.Should().BeGreaterThan(0);
     }
 

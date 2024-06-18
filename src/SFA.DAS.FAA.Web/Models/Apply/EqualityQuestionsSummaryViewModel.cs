@@ -5,10 +5,19 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 {
     public class EqualityQuestionsSummaryViewModel
     {
-        public Guid ApplicationId { get; init; }
+        public Guid? ApplicationId { get; init; }
         public string? Sex { get; init; }
         public string? IsGenderIdentifySameSexAtBirth { get; init; }
         public string? EthnicGroup { get; init; }
+
+        public string SaveButtonLabel => ApplicationId.HasValue 
+            ? "Save and continue" 
+            : "Save";
+
+        public string PageTitle => ApplicationId.HasValue
+            ? "Check your answers to the equality questions"
+            : "change your answers to the equality questions";
+
 
         public static implicit operator EqualityQuestionsSummaryViewModel(EqualityQuestionsModel source)
         {

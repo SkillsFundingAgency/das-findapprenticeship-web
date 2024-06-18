@@ -59,13 +59,13 @@
                     
                     @if (Model.IsAddressFromLookup)
                     {
-                        <a class="govuk-link" asp-route="@RouteNames.SelectAddress" asp-route-change="@true" asp-route-postcode="@Model.Postcode" id="address-change-link">
+                        <a class="govuk-link" asp-route="@RouteNames.SelectAddress" asp-route-journeyPath="@UserJourneyPath.ConfirmAccountDetails" asp-route-postcode="@Model.Postcode" id="address-change-link">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     }
                     else
                     {
-                        <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-change="@true" id="address-change-manual-link">
+                        <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-journeyPath="@UserJourneyPath.ConfirmAccountDetails" id="address-change-manual-link">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     }

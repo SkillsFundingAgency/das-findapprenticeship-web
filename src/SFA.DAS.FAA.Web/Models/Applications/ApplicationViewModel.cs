@@ -1,6 +1,7 @@
 ﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Models.Apply;
+using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Models.Applications;
 
@@ -22,11 +23,16 @@ public class ApplicationViewModel
             WhatIsYourInterest = source.WhatIsYourInterest,
             AboutYou = source.AboutYou,
             VacancyDetails = source.VacancyDetails,
-            ApplicationStatus = source.ApplicationStatus
+            ApplicationStatus = source.ApplicationStatus,
+            WithdrawnDate = source.WithdrawnDate,
+            MigrationDate = source.MigrationDate,
         };
     }
 
+    public string? BannerMessage => GetBannerMessage();
     public ApplicationStatus ApplicationStatus { get; set; }
+    public DateTime? WithdrawnDate { get; set; }
+    public DateTime? MigrationDate { get; set; }
 
     public bool IsDisabilityConfident { get; init; }
     public CandidateDetailsSection Candidate { get; init; } = new();
@@ -357,5 +363,15 @@ public class ApplicationViewModel
                 SkillsAndStrengths = source.SkillsAndStrengths
             };
         }
+    }
+
+    private string GetBannerMessage()
+    {
+        return ApplicationStatus switch
+        {
+            ApplicationStatus.Withdrawn =>
+                $"You withdrew your application for this apprenticeship on {WithdrawnDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}.",
+            _ => string.Empty
+        };
     }
 }

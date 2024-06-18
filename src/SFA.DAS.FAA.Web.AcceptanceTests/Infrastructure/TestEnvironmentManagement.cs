@@ -83,8 +83,24 @@ public sealed class TestEnvironmentManagement
 
         var formData = new Dictionary<string, string>
         {
-            //{ "Id", "B2A7987A-2734-4617-AA9F-6DD8BCCC7B96" },
-            { "Id", "7d9ce612-65b3-4eaf-95fb-78982c8cc20b" },
+            { "Id", MockServer.Constants.CandidateIdWithApplications },
+            { "Email", "test@test.com" },
+            { "MobilePhone", "12345 67890" }
+        };
+
+        var content = new FormUrlEncodedContent(formData);
+
+        await client.PostAsync("/Service/account-details", content);
+    }
+
+    [BeforeScenario("AuthenticatedUserWithIncompleteSetup")]
+    public async Task AuthenticatedUserWithIncompleteSetup()
+    {
+        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+
+        var formData = new Dictionary<string, string>
+        {
+            { "Id", MockServer.Constants.CandidateIdIncomplete },
             { "Email", "test@test.com" },
             { "MobilePhone", "12345 67890" }
         };

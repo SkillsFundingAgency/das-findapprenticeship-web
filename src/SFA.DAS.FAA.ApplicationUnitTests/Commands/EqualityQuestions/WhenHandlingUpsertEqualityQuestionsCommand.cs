@@ -19,10 +19,9 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.EqualityQuestions
             [Greedy] CreateEqualityQuestionsCommandHandler handler)
         {
             var postUpdateApplicationRequest = new PostEqualityQuestionsApiRequest(
-                request.ApplicationId,
+                request.CandidateId,
                 new UpdateEqualityQuestionsModel
                 {
-                    CandidateId = request.CandidateId,
                     Sex = request.Sex,
                     EthnicGroup = request.EthnicGroup,
                     EthnicSubGroup = request.EthnicSubGroup,

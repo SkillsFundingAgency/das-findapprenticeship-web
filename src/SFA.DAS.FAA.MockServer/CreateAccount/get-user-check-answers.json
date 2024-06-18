@@ -1,0 +1,28 @@
+{
+  "firstName": "John",
+  "middleNames": "Arnold",
+  "lastName": "Smith",
+  "dateOfBirth": "2000-10-08",
+  "uprn": "100023336956", 
+  "postcode": "B61 0UA",
+  "addressLine1": "62 Hawthorne Close",
+  "addressLine2": "Bromsgrove",
+  "town": "Bromsgrove",
+  "county": "Worcestershire",
+
+  "phoneNumber": "07806614382",
+  "email": "test@test.com",
+  "candidatePreferences": [
+    {
+      "preferenceId": "410e0758-4a08-4b47-ab88-31e4769eefc2",
+      "preferenceMeaning": "Preference",
+      "preferenceHint": "",
+      "contactMethodsAndStatus": [
+        {
+          "contactMethod": "Email",
+          "status": true
+        }
+      ]
+    }
+  ]
+}

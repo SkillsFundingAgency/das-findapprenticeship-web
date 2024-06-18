@@ -1,0 +1,31 @@
+﻿{
+  "Postcode":  "B61 0UA",
+  "Addresses": [
+    {
+      "Uprn": "100023336956",
+      "Postcode": "B61 0UA",
+      "AddressLine1": "62 Hawthorne Close",
+      "AddressLine2": "Bromsgrove",
+      "AddressLine3": "Worcestershire",
+      "AddressLine4": "England",
+      "PostTown": "Bromsgrove",
+      "coordinates": [
+        51.338887,
+        -2.248805
+      ]
+    },
+    {
+      "Uprn": "123423336956",
+      "Postcode": "B61 0UA",
+      "AddressLine1": "68 Hawthorne Close",
+      "AddressLine2": "Bromsgrove",
+      "AddressLine3": "Worcestershire",
+      "AddressLine4": "England",
+      "PostTown": "Bromsgrove",
+      "coordinates": [
+        51.332887,
+        -2.248805
+      ]
+    }
+  ]
+}

@@ -62,7 +62,7 @@ public class WhenCallingGet
             actualViewResult.Model.Should().BeOfType<SkillsAndStrengthsViewModel>();
             actualViewResult.Model.As<SkillsAndStrengthsViewModel>().Employer.Should().BeEquivalentTo(queryResult.Employer);
             actualViewResult.Model.As<SkillsAndStrengthsViewModel>().ExpectedSkillsAndStrengths.Should().BeEquivalentTo(queryResult.ExpectedSkillsAndStrengths.ToList());
-            actualViewResult.Model.As<SkillsAndStrengthsViewModel>().SkillsAndStrengths.Should().BeEquivalentTo(candidatesQueryResult.SkillsAndStrengths);
+            actualViewResult.Model.As<SkillsAndStrengthsViewModel>().SkillsAndStrengths.Should().BeEquivalentTo(candidatesQueryResult.Strengths);
         }
     }
 }

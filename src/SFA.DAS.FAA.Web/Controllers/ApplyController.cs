@@ -2,11 +2,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.SubmitApplication;
-using SFA.DAS.FAA.Application.Commands.UpdateApplication.ApplicationStatus;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
 using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
-using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -132,12 +130,12 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return model.AnswerEqualityQuestions is true 
                 ? RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { model.ApplicationId })
-                : RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation, new { model.ApplicationId });
+                : RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation, new { model.ApplicationId, skippedEqualityQuestions = true });
         }
 
         [HttpGet]
         [Route("application-submitted-confirmation", Name = RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation)]
-        public async Task<IActionResult> ApplicationSubmittedConfirmation([FromRoute] Guid applicationId)
+        public async Task<IActionResult> ApplicationSubmittedConfirmation([FromRoute] Guid applicationId, bool? skippedEqualityQuestions)
         {
             var query = new GetApplicationSubmittedQuery
             {
@@ -151,6 +149,11 @@ namespace SFA.DAS.FAA.Web.Controllers
             {
                 VacancyInfo = result,
             };
+
+            if (skippedEqualityQuestions is true)
+            {
+                model.VacancyInfo.HasAnsweredEqualityQuestions = true;
+            }
 
             return View(model);
         }

@@ -9,10 +9,9 @@ namespace SFA.DAS.FAA.Application.Commands.EqualityQuestions
         public async Task<CreateEqualityQuestionsCommandResult> Handle(CreateEqualityQuestionsCommand request, CancellationToken cancellationToken)
         {
             var postUpdateApplicationRequest = new PostEqualityQuestionsApiRequest(
-                request.ApplicationId,
+                request.CandidateId,
                 new UpdateEqualityQuestionsModel
                 {
-                    CandidateId = request.CandidateId,
                     Sex = request.Sex,
                     EthnicGroup = request.EthnicGroup,
                     EthnicSubGroup = request.EthnicSubGroup,

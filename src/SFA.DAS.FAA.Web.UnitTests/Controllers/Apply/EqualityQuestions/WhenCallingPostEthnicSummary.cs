@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -51,7 +46,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
                     }
                 }
             };
@@ -86,8 +81,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                 .ReturnsAsync(model);
 
             mediator.Setup(x => x.Send(It.Is<CreateEqualityQuestionsCommand>(c =>
-                    c.ApplicationId.Equals(applicationId)
-                    && c.CandidateId.Equals(candidateId)
+                    c.CandidateId.Equals(candidateId)
                     && c.EthnicGroup.Equals(model.EthnicGroup)
                     && c.Sex.Equals(model.Sex)
                     && c.EthnicSubGroup.Equals(model.EthnicSubGroup)
