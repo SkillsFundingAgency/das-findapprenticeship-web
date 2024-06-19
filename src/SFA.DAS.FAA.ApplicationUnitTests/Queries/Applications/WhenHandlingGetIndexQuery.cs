@@ -17,13 +17,11 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
         public async Task Then_Result_Is_Returned(
             GetIndexQuery query,
             GetApplicationsApiResponse apiResponse,
-            GetInformApiResponse candidateApiResponse,
             [Frozen] Mock<IApiClient> apiClientMock,
             GetIndexQueryHandler handler)
         {
             // Arrange
             var apiRequestUri = new GetApplicationsApiRequest(query.CandidateId, ApplicationStatus.Draft);
-            var candidateApiRequest = new GetInformApiRequest(query.CandidateId);
 
             apiClientMock.Setup(client =>
                     client.Get<GetApplicationsApiResponse>(
@@ -31,18 +29,12 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
                             c.GetUrl == apiRequestUri.GetUrl)))
                 .ReturnsAsync(apiResponse);
 
-            apiClientMock.Setup(client =>
-                    client.Get<GetInformApiResponse>(
-                        It.Is<GetInformApiRequest>(c =>
-                            c.GetUrl == candidateApiRequest.GetUrl)))
-                .ReturnsAsync(candidateApiResponse);
-
             // Act
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
             result.Applications.Should().BeEquivalentTo(apiResponse.Applications);
-            result.ShowAccountRecoveryBanner.Should().Be(candidateApiResponse.ShowAccountRecoveryBanner);
+            result.ShowAccountRecoveryBanner.Should().Be(apiResponse.ShowAccountRecoveryBanner);
         }
     }
 }
