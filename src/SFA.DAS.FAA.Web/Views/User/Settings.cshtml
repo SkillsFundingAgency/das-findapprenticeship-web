@@ -88,8 +88,9 @@
                     @Model.EmailAddress
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    @* where is this going?  *@
-                    <a class="govuk-link" asp-route="#">Change<span class="govuk-visually-hidden"> email address</span></a>
+                    <a class="govuk-link" asp-route="@RouteNames.Email" asp-route-journeyPath="@UserJourneyPath.Settings" id="email-change-link">
+                        Change<span class="govuk-visually-hidden">Email address</span>
+                    </a>
                 </dd>
             </div>
         </dl>
