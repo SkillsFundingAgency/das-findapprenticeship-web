@@ -467,6 +467,7 @@ FaaMap.prototype.loadMap = async function () {
   mapRoleDetailsWrap.classList.add("faa-map__panel--hidden");
 
   this.map.markers = [];
+  const bounds = new google.maps.LatLngBounds();
 
   for (const role of this.mapData) {
     const Marker = new google.maps.marker.AdvancedMarkerElement({
@@ -476,9 +477,14 @@ FaaMap.prototype.loadMap = async function () {
     });
     Marker.addListener("click", () => {
       this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+      this.map.panTo(role.position);
     });
     this.map.markers.push(Marker);
+    bounds.extend(role.position);
   }
+
+  this.map.fitBounds(bounds);
+
   this.map.controls[google.maps.ControlPosition.BLOCK_START_INLINE_END].push(
     mapCloseButtonWrap
   );
