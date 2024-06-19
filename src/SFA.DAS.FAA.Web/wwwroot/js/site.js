@@ -334,22 +334,43 @@ if (autocompleteSelects) {
 
 // Maps
 
-function FaaMap(mapId, link, container, data, centerLat, centerLng) {
+function FaaMap(
+  mapId,
+  link,
+  linkLoading,
+  container,
+  radius,
+  centerLat,
+  centerLng
+) {
   this.container = container;
+  this.radius = radius;
   this.link = link;
-  this.data = data;
+  this.linkLoading = linkLoading;
   this.mapId = mapId;
   this.centerLat = centerLat;
   this.centerLng = centerLng;
+  this.mapData = [];
 }
 
 FaaMap.prototype.init = function () {
   this.setUpEvents();
 };
 
-FaaMap.prototype.setUpEvents = function () {
+FaaMap.prototype.setUpEvents = async function () {
   var that = this;
-  this.link.addEventListener("click", this.showMap.bind(this));
+  this.link.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (this.mapData.length > 0) {
+      this.showMap();
+    } else {
+      this.link.classList.add("govuk-visually-hidden");
+      this.linkLoading.classList.remove("govuk-visually-hidden");
+      await this.getMapData();
+      this.link.classList.remove("govuk-visually-hidden");
+      this.linkLoading.classList.add("govuk-visually-hidden");
+    }
+  });
   document.body.addEventListener("keydown", (e) => {
     if (e.code === "Escape") {
       that.hideMap();
@@ -357,8 +378,29 @@ FaaMap.prototype.setUpEvents = function () {
   });
 };
 
-FaaMap.prototype.showMap = function (e) {
-  e.preventDefault();
+FaaMap.prototype.getMapData = async function () {
+  let params = "";
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.size > 0) {
+    params = "?" + urlParams.toString();
+  }
+  const url = `/map-search-results${params}`;
+  await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      this.mapData = data;
+      this.showMap();
+    });
+};
+
+FaaMap.prototype.showMap = function () {
   document.documentElement.classList.add("faa-map__body--open");
   document.body.classList.add("faa-map__body--open");
   if (!this.map) {
@@ -378,7 +420,7 @@ FaaMap.prototype.loadMap = async function () {
   );
   this.map = new google.maps.Map(this.container, {
     center: new google.maps.LatLng(this.centerLat, this.centerLng),
-    zoom: 7,
+    zoom: 10,
     mapId: this.mapId,
     mapTypeControl: false,
     fullscreenControl: false,
@@ -388,16 +430,19 @@ FaaMap.prototype.loadMap = async function () {
       position: google.maps.ControlPosition.LEFT_BOTTOM,
     },
   });
-  const searchRadius = new google.maps.Circle({
-    strokeColor: "#1D70B8",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: "#1D70B8",
-    fillOpacity: 0.1,
-    map: this.map,
-    center: new google.maps.LatLng(52.400575, -1.507825),
-    radius: 750,
-  });
+
+  if (this.radius > 0) {
+    const searchRadius = new google.maps.Circle({
+      strokeColor: "#1D70B8",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#1D70B8",
+      fillOpacity: 0.1,
+      map: this.map,
+      center: new google.maps.LatLng(this.centerLat, this.centerLng),
+      radius: this.radius * 1609.34,
+    });
+  }
 
   const mapCloseButtonWrap = document.createElement("div");
   mapCloseButtonWrap.classList.add("faa-map__close");
@@ -422,8 +467,9 @@ FaaMap.prototype.loadMap = async function () {
   mapRoleDetailsWrap.classList.add("faa-map__panel--hidden");
 
   this.map.markers = [];
+  const bounds = new google.maps.LatLngBounds();
 
-  for (const role of this.data) {
+  for (const role of this.mapData) {
     const Marker = new google.maps.marker.AdvancedMarkerElement({
       map: this.map,
       position: role.position,
@@ -431,9 +477,14 @@ FaaMap.prototype.loadMap = async function () {
     });
     Marker.addListener("click", () => {
       this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+      this.map.panTo(role.position);
     });
     this.map.markers.push(Marker);
+    bounds.extend(role.position);
   }
+
+  this.map.fitBounds(bounds);
+
   this.map.controls[google.maps.ControlPosition.BLOCK_START_INLINE_END].push(
     mapCloseButtonWrap
   );
@@ -474,6 +525,13 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     return closeButton;
   }
 
+  function showDistance(distance) {
+    if (distance > 0) {
+      return `<li><strong>Distance</strong> ${distance} miles</li>`;
+    }
+    return "";
+  }
+
   panel.innerHTML = `
       ${statusTag(role.job)}
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/vacancies/VAC${
@@ -488,7 +546,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     role.job.postcode
   }</p>
       <ul class="govuk-list govuk-!-font-size-16">
-      <li><strong>Distance</strong> ${role.job.distance} miles</li>
+      ${showDistance(role.job.distance)}
       <li><strong>Training course</strong> ${role.job.apprenticeship}</li>
       <li><strong>Annual wage</strong>  ${role.job.wage}</li>
       </ul>
