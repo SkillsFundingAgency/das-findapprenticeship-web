@@ -334,8 +334,17 @@ if (autocompleteSelects) {
 
 // Maps
 
-function FaaMap(mapId, link, linkLoading, container, centerLat, centerLng) {
+function FaaMap(
+  mapId,
+  link,
+  linkLoading,
+  container,
+  radius,
+  centerLat,
+  centerLng
+) {
   this.container = container;
+  this.radius = radius;
   this.link = link;
   this.linkLoading = linkLoading;
   this.mapId = mapId;
@@ -370,7 +379,12 @@ FaaMap.prototype.setUpEvents = async function () {
 };
 
 FaaMap.prototype.getMapData = async function () {
-  const url = "/map-search-results";
+  let params = "";
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.size > 0) {
+    params = "?" + urlParams.toString();
+  }
+  const url = `/map-search-results${params}`;
   await fetch(url, {
     method: "GET",
     headers: {
@@ -406,7 +420,7 @@ FaaMap.prototype.loadMap = async function () {
   );
   this.map = new google.maps.Map(this.container, {
     center: new google.maps.LatLng(this.centerLat, this.centerLng),
-    zoom: 7,
+    zoom: 10,
     mapId: this.mapId,
     mapTypeControl: false,
     fullscreenControl: false,
@@ -416,16 +430,19 @@ FaaMap.prototype.loadMap = async function () {
       position: google.maps.ControlPosition.LEFT_BOTTOM,
     },
   });
-  const searchRadius = new google.maps.Circle({
-    strokeColor: "#1D70B8",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: "#1D70B8",
-    fillOpacity: 0.1,
-    map: this.map,
-    center: new google.maps.LatLng(52.400575, -1.507825),
-    radius: 750,
-  });
+
+  if (this.radius > 0) {
+    const searchRadius = new google.maps.Circle({
+      strokeColor: "#1D70B8",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#1D70B8",
+      fillOpacity: 0.1,
+      map: this.map,
+      center: new google.maps.LatLng(this.centerLat, this.centerLng),
+      radius: this.radius * 1609.34,
+    });
+  }
 
   const mapCloseButtonWrap = document.createElement("div");
   mapCloseButtonWrap.classList.add("faa-map__close");

@@ -24,7 +24,8 @@
 
 .faa-map__close a {
   display: flex;
-  align-items: end;
+  align-items: center;
+  color: $govuk-text-colour !important;
 }
 
 .faa-map__close-label {
