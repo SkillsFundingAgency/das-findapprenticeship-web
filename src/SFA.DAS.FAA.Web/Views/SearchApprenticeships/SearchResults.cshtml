@@ -239,7 +239,7 @@
         const mapLinkLoading = document.getElementById('map-link__loading')
         const mapContainer = document.getElementById('map')
         if (mapLink && mapContainer) {
-            new FaaMap("@Model.MapId", mapLink, mapLinkLoading, mapContainer, @(Model.Distance == null ? 0 : Model.Distance), 52.400575, -1.507825).init()
+            new FaaMap("@Model.MapId", mapLink, mapLinkLoading, mapContainer, @(Model.Distance == null ? 0 : Model.Distance)).init()
         }
     </script>
 }

@@ -334,22 +334,14 @@ if (autocompleteSelects) {
 
 // Maps
 
-function FaaMap(
-  mapId,
-  link,
-  linkLoading,
-  container,
-  radius,
-  centerLat,
-  centerLng
-) {
+function FaaMap(mapId, link, linkLoading, container, radius) {
   this.container = container;
   this.radius = radius;
   this.link = link;
   this.linkLoading = linkLoading;
   this.mapId = mapId;
-  this.centerLat = centerLat;
-  this.centerLng = centerLng;
+  this.centerLat;
+  this.centerLng;
   this.mapData = [];
 }
 
@@ -395,8 +387,16 @@ FaaMap.prototype.getMapData = async function () {
       return response.json();
     })
     .then((data) => {
-      this.mapData = data;
+      this.mapData = data.apprenticeshipMapData;
       this.showMap();
+
+      this.centerLat = data.searchedLocation.lat;
+      this.centerLng = data.searchedLocation.lon;
+
+      if (this.centerLat === 0 && this.centerLng === 0) {
+        this.centerLat = 55.3781;
+        this.centerLng = 3.436;
+      }
     });
 };
 
