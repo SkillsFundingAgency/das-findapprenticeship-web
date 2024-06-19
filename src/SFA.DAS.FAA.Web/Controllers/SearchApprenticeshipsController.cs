@@ -11,6 +11,7 @@ using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
+using LocationViewModel = SFA.DAS.FAA.Web.Models.LocationViewModel;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -220,12 +221,16 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
             CandidateId = User.Claims.CandidateId().Equals(null) ? null
                 : User.Claims.CandidateId()!.ToString()
         });
+
+        var model = new MapSearchResultsViewModel
+        {
+            ApprenticeshipMapData = result.Vacancies.Count != 0
+                ? result.Vacancies.Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService, c)).ToList()
+                : [],
+            SearchedLocation = result.Location
+        };
         
-        var mapData = result.Vacancies.Count != 0
-            ? result.Vacancies.Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService, c)).ToList()
-            : [];
-        
-        return Json(mapData);
+        return Json(model);
     }
 
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)

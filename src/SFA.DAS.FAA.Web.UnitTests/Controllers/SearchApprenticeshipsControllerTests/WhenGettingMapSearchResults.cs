@@ -75,9 +75,10 @@ public class WhenGettingMapSearchResults
         }) as JsonResult;
 
         actual.Should().NotBeNull();
-        var actualValue = actual!.Value as List<ApprenticeshipMapData>;
-        actualValue.Should().NotBeNullOrEmpty();
-        actualValue.Should().BeEquivalentTo(result.Vacancies
+        var actualValue = actual!.Value as MapSearchResultsViewModel;
+        actualValue.Should().NotBeNull();
+        actualValue.ApprenticeshipMapData.Should().BeEquivalentTo(result.Vacancies
             .Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService.Object, c)).ToList());
+        actualValue.SearchedLocation.Should().BeEquivalentTo(result.Location);
     }
 }
