@@ -43,7 +43,7 @@ stages:
     parameters:
       SolutionBaseName: $(SolutionBaseName)
       BuildConfiguration: $(BuildConfiguration)
-    
+
 - stage: Deploy_AT
   dependsOn: Build
   displayName: Deploy to AT
@@ -64,7 +64,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: TEST DevTest Shared Resources
-  - group: TEST das-findanapprenticeship-web 
+  - group: TEST das-findapprenticeship-web
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -91,6 +91,7 @@ stages:
   variables:
   - group: PreProd Management Resources
   - group: PreProd Shared Resources
+  - group: PreProd das-findapprenticeship-web
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -104,7 +105,7 @@ stages:
 #   variables:
 #   - group: PROD Management Resources
 #   - group: PROD Shared Resources
-#   - group: __PRODSpecificReleaseVariables__ #PLACEHOLDER
+#   - group: PROD das-findapprenticeship-web
 #   jobs:
 #   - template: pipeline-templates/job/deploy.yml
 #     parameters:
