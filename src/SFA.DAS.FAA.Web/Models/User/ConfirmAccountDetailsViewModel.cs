@@ -15,6 +15,13 @@ public class ConfirmAccountDetailsViewModel
     public string? Uprn { get; set; }
     public string PhoneNumber { get; set; }
     public string EmailAddress { get; set; }
+    public bool UnfinishedApplicationReminders
+    {
+        get
+        {
+            return CandidatePreferences.Any(x => x is { Meaning: Application.Constants.Constants.CandidatePreferences.ContactVacancyClosingMeaning, EmailPreference: true });
+        }
+    }
     public List<CandidatePreference> CandidatePreferences { get; set; }
 
     public class CandidatePreference 

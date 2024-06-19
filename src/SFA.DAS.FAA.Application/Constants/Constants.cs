@@ -5,5 +5,6 @@ public class Constants
     {
         public const string ContactMethodEmail = "Email";
         public const string ContactMethodText = "Text";
+        public const string ContactVacancyClosingMeaning = "A vacancy is closing soon";
     }
 }

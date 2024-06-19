@@ -12,7 +12,9 @@
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Create an account</span>
         <h1 class="govuk-heading-l">Check your account details</h1>
-        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+        <div class="govuk-!-padding-bottom-5"></div>
+        <h2 class="govuk-heading-m">Personal details</h2>
+        <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                     Name
@@ -96,35 +98,26 @@
                         Change<span class="govuk-visually-hidden">Email address</span></a>
                 </dd>
             </div>
+            <div class="govuk-!-padding-bottom-5"></div>
+            </dl>
+        <h2 class="govuk-heading-m">Email notifications</h2>
+        <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    Notification preferences
+                    Do you want to get reminders about unfinished applications?
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @foreach (var preference in Model.CandidatePreferences.OrderByDescending(c=>c.Meaning))
+                    @if (Model.UnfinishedApplicationReminders)
                     {
-                        <strong>@preference.Meaning</strong>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @if(preference.TextPreference == false && preference.EmailPreference == false)
-                            {
-                                <li>Don't notify me</li>
-                            }
-                            else
-                            {
-                                @if (preference.TextPreference == true)
-                                {
-                                    <li>Text</li>
-                                }
-                                @if (preference.EmailPreference == true)
-                                {
-                                    <li>Email</li>
-                                }
-                            }
-                        </ul>
+                        <text>Yes</text>
+                    }
+                    else
+                    {
+                        <text>No</text>                        
                     }
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences" asp-route-change="@true" id="notification-preferences-change-link">
+                    <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences" asp-route-journeyPath="@UserJourneyPath.ConfirmAccountDetails" id="notification-preferences-change-link">
                         Change<span class="govuk-visually-hidden"> notification preferences</span>
                     </a>
                 </dd>

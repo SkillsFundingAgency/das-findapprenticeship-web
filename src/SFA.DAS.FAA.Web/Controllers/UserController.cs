@@ -5,7 +5,6 @@ using CreateAccount.GetCandidateName;
 using CreateAccount.GetCandidatePhoneNumber;
 using CreateAccount.GetCandidatePostcode;
 using CreateAccount.GetCandidatePostcodeAddress;
-using CreateAccount.GetCandidatePreferences;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,7 @@ using CreateAccount.GetCandidateName;
 using CreateAccount.GetCandidatePhoneNumber;
 using CreateAccount.GetCandidatePostcode;
 using CreateAccount.GetCandidatePostcodeAddress;
-using CreateAccount.GetCandidatePreferences;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
@@ -377,7 +376,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("notification-preferences", Name = RouteNames.NotificationPreferences)]
-        public async Task<IActionResult> NotificationPreferences(UserJourneyPath journeyPath = UserJourneyPath.CreateAccount, bool? change = false)
+        public async Task<IActionResult> NotificationPreferences(UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
             var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
             {
@@ -386,64 +385,28 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var model = new NotificationPreferencesViewModel
             {
-                NotificationPreferences = candidatePreferences.CandidatePreferences.Select(cp => new NotificationPreferenceItemViewModel
-                {
-                    PreferenceId = cp.PreferenceId,
-                    Meaning = cp.PreferenceMeaning,
-                    Hint = cp.PreferenceHint,
-                    EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
-                    TextPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodText).FirstOrDefault()?.Status ?? false
-                }).OrderByDescending(c=>c.Meaning).ToList(),
                 JourneyPath = journeyPath,
-                ReturnToConfirmationPage = change
+                UnfinishedApplicationReminders = candidatePreferences.UnfinishedApplicationReminders
             };
-
             return View(model);
         }
 
         [HttpPost("notification-preferences", Name = RouteNames.NotificationPreferences)]
         public async Task<IActionResult> NotificationPreferences(NotificationPreferencesViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             await mediator.Send(new UpsertCandidatePreferencesCommand
             {
-                CandidateEmail = User.Claims.Email(),
+                CandidateEmail = User.Claims.Email()!,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                NotificationPreferences = model.NotificationPreferences.Select(x => new NotificationPreferenceItem
-                {
-                    PreferenceId = x.PreferenceId,
-                    Meaning = x.Meaning,
-                    Hint = x.Hint,
-                    EmailPreference = x.EmailPreference,
-                    TextPreference = x.TextPreference
-                }).ToList()
+                UnfinishedApplicationReminders = (bool)model.UnfinishedApplicationReminders
             });
 
-            return model.ReturnToConfirmationPage is true ?
-               RedirectToRoute(RouteNames.ConfirmAccountDetails)
-               : RedirectToRoute(RouteNames.ConfirmAccountDetails);
-        }
-
-        [HttpGet("notification-preferences-skip", Name = RouteNames.NotificationPreferencesSkip)]
-        public async Task<IActionResult> SkipNotificationPreferences()
-        {
-            var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
-            {
-                CandidateId = (Guid)User.Claims.CandidateId()!
-            });
-
-            var model = new NotificationPreferencesViewModel()
-            {
-                NotificationPreferences = candidatePreferences.CandidatePreferences.Select(cp => new NotificationPreferenceItemViewModel
-                {
-                    PreferenceId = cp.PreferenceId,
-                    Meaning = cp.PreferenceMeaning,
-                    Hint = cp.PreferenceHint,
-                    EmailPreference = false,
-                    TextPreference = false
-                }).ToList()
-            };
-
-            return await NotificationPreferences(model);
+            return RedirectToRoute(model.RedirectRoute);
         }
 
         [HttpGet("create-account/check-answers", Name = RouteNames.ConfirmAccountDetails)]
@@ -541,26 +504,6 @@ namespace SFA.DAS.FAA.Web.Controllers
                     EmailPreference = cp.EmailPreference,
                     TextPreference = cp.TextPreference
                 }).ToList()
-            };
-
-            return View(model);
-        }
-
-        [HttpGet("change-notification-preferences", Name = RouteNames.ChangeNotificationPreferences)]
-        public async Task<IActionResult> ChangeNotificationPreferences()
-        {
-            var candidatePreferences = await mediator.Send(new GetCandidatePreferencesQuery
-            {
-                CandidateId = (Guid)User.Claims.CandidateId()!
-            });
-
-            var model = new ChangeNotificationPreferencesViewModel
-            {
-                CandidatePreferences = candidatePreferences.CandidatePreferences.Select(cp => new ChangeNotificationPreferencesViewModel.CandidatePreference
-                {
-                    Meaning = cp.PreferenceMeaning,
-                    EmailPreference = cp.ContactMethodsAndStatus?.Where(x => x.ContactMethod == CandidatePreferencesConstants.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
-                }).ToList(),
             };
 
             return View(model);

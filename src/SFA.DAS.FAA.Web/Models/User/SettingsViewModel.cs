@@ -22,7 +22,7 @@ public class SettingsViewModel
     {
         get
         {
-            return CandidatePreferences.Any(x => x is { Meaning: "A vacancy is closing soon", EmailPreference: true });
+            return CandidatePreferences.Any(x => x is { Meaning: Application.Constants.Constants.CandidatePreferences.ContactVacancyClosingMeaning, EmailPreference: true });
         }
     }
 

@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using CreateAccount.GetCandidatePreferences;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
