@@ -39,7 +39,8 @@ public class GetIndexQueryResult
                 SubmittedDate = x.SubmittedDate,
                 ResponseDate = x.ResponseDate,
                 Status = x.Status,
-                ResponseNotes = x.ResponseNotes
+                ResponseNotes = x.ResponseNotes,
+                WithdrawnDate = x.WithdrawnDate
             }).ToList()
         };
     }
