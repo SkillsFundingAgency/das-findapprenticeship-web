@@ -24,7 +24,7 @@ public class WhenHandlingGetCandidatePreferencesQuery
                 PreferenceMeaning = Constants.Constants.CandidatePreferences.ContactVacancyClosingMeaning,
                 ContactMethodsAndStatus = new List<GetCandidatePreferencesApiResponse.ContactMethodStatus>
                 {
-                    new GetCandidatePreferencesApiResponse.ContactMethodStatus
+                    new()
                     {
                         Status = true,
                         ContactMethod = Constants.Constants.CandidatePreferences.ContactMethodEmail
@@ -61,7 +61,7 @@ public class WhenHandlingGetCandidatePreferencesQuery
                 PreferenceMeaning = Constants.Constants.CandidatePreferences.ContactVacancyClosingMeaning,
                 ContactMethodsAndStatus = new List<GetCandidatePreferencesApiResponse.ContactMethodStatus>
                 {
-                    new GetCandidatePreferencesApiResponse.ContactMethodStatus
+                    new()
                     {
                         Status = false,
                         ContactMethod = Constants.Constants.CandidatePreferences.ContactMethodEmail
