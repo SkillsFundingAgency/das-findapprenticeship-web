@@ -374,7 +374,7 @@ FaaMap.prototype.getMapData = async function () {
   let params = "";
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.size > 0) {
-    params = "?" + urlParams.toString();
+    params = `?${urlParams.toString()}`;
   }
   const url = `/map-search-results${params}`;
   await fetch(url, {
@@ -418,6 +418,11 @@ FaaMap.prototype.loadMap = async function () {
   const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
     "marker"
   );
+  const mapCloseButtonWrap = document.createElement("div");
+  const mapCloseButton = document.createElement("a");
+  const mapRoleDetailsWrap = document.createElement("div");
+  const bounds = new google.maps.LatLngBounds();
+
   this.map = new google.maps.Map(this.container, {
     center: new google.maps.LatLng(this.centerLat, this.centerLng),
     zoom: 10,
@@ -444,10 +449,8 @@ FaaMap.prototype.loadMap = async function () {
     });
   }
 
-  const mapCloseButtonWrap = document.createElement("div");
   mapCloseButtonWrap.classList.add("faa-map__close");
 
-  const mapCloseButton = document.createElement("a");
   mapCloseButton.classList.add("govuk-link");
   mapCloseButton.classList.add("govuk-link--no-visited-state");
   mapCloseButton.innerHTML =
@@ -461,13 +464,11 @@ FaaMap.prototype.loadMap = async function () {
 
   mapCloseButtonWrap.append(mapCloseButton);
 
-  const mapRoleDetailsWrap = document.createElement("div");
   mapRoleDetailsWrap.classList.add("faa-map__panel");
   mapRoleDetailsWrap.classList.add("faa-map__panel--role");
   mapRoleDetailsWrap.classList.add("faa-map__panel--hidden");
 
   this.map.markers = [];
-  const bounds = new google.maps.LatLngBounds();
 
   for (const role of this.mapData) {
     const Marker = new google.maps.marker.AdvancedMarkerElement({
