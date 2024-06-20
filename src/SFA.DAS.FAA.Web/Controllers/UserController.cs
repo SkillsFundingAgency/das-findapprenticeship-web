@@ -403,7 +403,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             {
                 CandidateEmail = User.Claims.Email()!,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                UnfinishedApplicationReminders = (bool)model.UnfinishedApplicationReminders
+                UnfinishedApplicationReminders = model.UnfinishedApplicationReminders ?? false
             });
 
             return RedirectToRoute(model.RedirectRoute);
@@ -502,7 +502,6 @@ namespace SFA.DAS.FAA.Web.Controllers
                     Meaning = cp.Meaning,
                     Hint = cp.Hint,
                     EmailPreference = cp.EmailPreference,
-                    TextPreference = cp.TextPreference
                 }).ToList()
             };
 

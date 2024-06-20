@@ -49,4 +49,34 @@ public class WhenPostingNotificationPreferences
             c.UnfinishedApplicationReminders == model.UnfinishedApplicationReminders), It.IsAny<CancellationToken>()), Times.Once);
         result!.RouteName.Should().BeEquivalentTo(redirectRoute);
     }
+
+    [Test, MoqAutoData]
+    public async Task And_Model_State_Is_Invalid_Should_Return_View_With_Model(
+        UserJourneyPath journeyPath,
+        Guid candidateId,
+        string email,
+        NotificationPreferencesViewModel model,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        model.JourneyPath = journeyPath;
+        model.UnfinishedApplicationReminders = null;
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                {
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                }))
+            }
+        };
+        controller.ModelState.AddModelError("SomeProperty", "SomeError");
+
+        var result = await controller.NotificationPreferences(model) as ViewResult;
+
+        result.Should().NotBeNull();
+        result!.Model.Should().Be(model);
+    }
 }

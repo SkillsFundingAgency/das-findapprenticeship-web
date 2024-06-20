@@ -31,7 +31,6 @@ public class SettingsViewModel
         public Guid PreferenceId { get; set; }
         public string Meaning { get; set; }
         public string Hint { get; set; }
-        public bool TextPreference { get; set; }
         public bool EmailPreference { get; set; }
     }
 }
