@@ -29,6 +29,7 @@ public static class RouteNames
     public const string StubSignedIn = "stub-signedin-get";
     public const string Settings = "settings";
     public const string Email = "email";
+    public const string SavedVacancies = "saved-vacancies";
     public const string ConfirmDataTransfer = "confirm-data-transfer";
     public const string FinishAccountSetup = "finish-account-setup";
 
