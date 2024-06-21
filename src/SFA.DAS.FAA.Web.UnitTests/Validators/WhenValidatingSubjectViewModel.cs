@@ -424,7 +424,7 @@ public class WhenValidatingSubjectViewModel
             Grade = "<script>alert()</script>",
             IsDeleted = false
         };
-        var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("Other", Guid.NewGuid());
+        var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("Degree", Guid.NewGuid());
         
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
 

@@ -37,6 +37,7 @@ public class QualificationDisplayTypeViewModel
                 ShouldDisplayAdditionalInformationField = false;
                 ErrorSummary = "Enter your BTEC";
                 SubjectErrorMessage = "Enter your BTEC subject";
+                AdditionalInformationLabel = "Level";
                 AdditionalInformationErrorMessage = "Select the level of your BTEC";
                 GradeErrorMessage = "Enter the grade for your BTEC";
                 Title = "Add a BTEC";
