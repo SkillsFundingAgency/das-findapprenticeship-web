@@ -467,7 +467,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet]
-[Route("settings", Name = RouteNames.Settings)]
+        [Route("settings", Name = RouteNames.Settings)]
         public async Task<IActionResult> Settings()
         {
             var accountDetails = await mediator.Send(new GetSettingsQuery

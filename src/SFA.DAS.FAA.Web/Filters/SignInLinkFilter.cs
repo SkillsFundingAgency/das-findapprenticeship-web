@@ -23,8 +23,8 @@ public class SignInLinkFilter : ActionFilterAttribute
         
         var service = context.HttpContext.RequestServices.GetService<IDataProtectorService>();
 
-        var dataToEncode =
-            $"{controller.RouteData.Values["controller"]}|{controller.RouteData.Values["action"]}|{Guid.NewGuid()}";
+        var dataToEncode = 
+            $"{controller.RouteData.Values["controller"]}|{controller.RouteData.Values["action"]}|{controller.RouteData.Values["vacancyReference"]}|{Guid.NewGuid()}";
         
         
         controller.ViewBag.SignInValue = service.EncodedData(dataToEncode);

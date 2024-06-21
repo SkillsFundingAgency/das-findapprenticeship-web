@@ -19,10 +19,10 @@ public class ConfirmAccountDetailsViewModel
     {
         get
         {
-            return CandidatePreferences.Any(x => x is { Meaning: Application.Constants.Constants.CandidatePreferences.ContactVacancyClosingMeaning, EmailPreference: true });
+            return CandidatePreferences !=null && CandidatePreferences.Any(x => x is { Meaning: Application.Constants.Constants.CandidatePreferences.ContactVacancyClosingMeaning, EmailPreference: true });
         }
     }
-    public List<CandidatePreference> CandidatePreferences { get; set; }
+    public List<CandidatePreference>? CandidatePreferences { get; set; }
 
     public class CandidatePreference 
     {
