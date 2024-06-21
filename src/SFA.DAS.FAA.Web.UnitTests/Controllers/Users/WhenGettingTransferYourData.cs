@@ -13,7 +13,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
     {
         [Test, MoqAutoData]
         public void Then_View_Is_Returned(
-        [Greedy] UserController controller)
+            [Greedy] UserController controller)
         {
             var result = controller.TransferYourData();
 

@@ -1,4 +1,4 @@
-﻿using CreateAccount.GetAddressesByPostcode;
+using CreateAccount.GetAddressesByPostcode;
 using CreateAccount.GetCandidateAccountDetails;
 using CreateAccount.GetCandidateDateOfBirth;
 using CreateAccount.GetCandidateName;
@@ -24,6 +24,8 @@ using CreateAccount.GetCandidatePostcode;
 using CreateAccount.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
+using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
+using SFA.DAS.FAA.Application.Commands.MigrateData;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Web.Authentication;
@@ -99,9 +101,8 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             await cacheStorageService.Set($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}", viewModel.Email);
-
-            //todo: replace with redirect to preview page
-            return Ok("Login successful");
+            
+            return RedirectToRoute(RouteNames.ConfirmDataTransfer);
         }
 
         [HttpGet]
@@ -465,14 +466,8 @@ namespace SFA.DAS.FAA.Web.Controllers
             return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
 
-        [HttpGet("email", Name = RouteNames.Email)]
-        public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
-        {
-            return View(new EmailViewModel { JourneyPath = journeyPath });
-        }
-
         [HttpGet]
-        [Route("settings", Name = RouteNames.Settings)]
+[Route("settings", Name = RouteNames.Settings)]
         public async Task<IActionResult> Settings()
         {
             var accountDetails = await mediator.Send(new GetSettingsQuery
@@ -495,10 +490,8 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Town = accountDetails.Town,
                 Postcode = accountDetails.Postcode,
                 Uprn = accountDetails.Uprn,
-                HasAnsweredEqualityQuestions = accountDetails.HasAnsweredEqualityQuestions,
                 CandidatePreferences = accountDetails.CandidatePreferences.Select(cp => new SettingsViewModel.CandidatePreference
                 {
-                    PreferenceId = cp.PreferenceId,
                     Meaning = cp.Meaning,
                     Hint = cp.Hint,
                     EmailPreference = cp.EmailPreference,
@@ -506,6 +499,52 @@ namespace SFA.DAS.FAA.Web.Controllers
             };
 
             return View(model);
+        }
+
+		[HttpGet("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
+        public async Task<IActionResult> ConfirmDataTransfer()
+        {
+            var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
+            if(string.IsNullOrEmpty(legacyEmailAddress)) return RedirectToRoute(RouteNames.ServiceStartDefault);
+
+            var response = await mediator.Send(new GetTransferUserDataQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                EmailAddress = legacyEmailAddress!
+            });
+
+            var model = (ConfirmTransferViewModel) response;
+            model.EmailAddress = User.Claims.Email()!;
+            
+            return View(model);
+        }
+		
+
+        [HttpPost("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
+        public async Task<IActionResult> ConfirmDataTransfer(ConfirmTransferViewModel viewModel)
+        {
+            var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
+            if (string.IsNullOrEmpty(legacyEmailAddress)) return RedirectToRoute(RouteNames.ServiceStartDefault);
+
+            await mediator.Send(new MigrateDataTransferCommand
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                EmailAddress = legacyEmailAddress!
+            });
+
+            return RedirectToRoute(RouteNames.FinishAccountSetup);
+        }
+
+        [HttpGet("finish-account-setup", Name = RouteNames.FinishAccountSetup)]
+        public IActionResult FinishAccountSetup()
+        {
+            return View();
+        }
+
+        [HttpGet("email", Name = RouteNames.Email)]
+        public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
+        {
+            return View(new EmailViewModel { JourneyPath = journeyPath });
         }
     }
 }

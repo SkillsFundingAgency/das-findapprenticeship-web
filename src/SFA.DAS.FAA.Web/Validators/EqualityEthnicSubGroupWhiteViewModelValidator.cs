@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators;
 
@@ -12,5 +13,7 @@ public class EqualityEthnicSubGroupWhiteViewModelValidator : AbstractValidator<E
         RuleFor(x => x.EthnicSubGroup).Cascade(CascadeMode.Stop)
             .NotNull().WithMessage(NoEthnicSubGroupSelectionErrorMessage)
             .NotEmpty().WithMessage(NoEthnicSubGroupSelectionErrorMessage);
+        
+        RuleFor(c => c.OtherEthnicSubGroupAnswer).ValidFreeTextCharacters();
     }
 }

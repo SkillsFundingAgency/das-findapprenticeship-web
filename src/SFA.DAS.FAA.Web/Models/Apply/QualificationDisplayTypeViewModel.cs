@@ -37,6 +37,7 @@ public class QualificationDisplayTypeViewModel
                 ShouldDisplayAdditionalInformationField = false;
                 ErrorSummary = "Enter your BTEC";
                 SubjectErrorMessage = "Enter your BTEC subject";
+                AdditionalInformationLabel = "Level";
                 AdditionalInformationErrorMessage = "Select the level of your BTEC";
                 GradeErrorMessage = "Enter the grade for your BTEC";
                 Title = "Add a BTEC";
@@ -143,8 +144,8 @@ public class QualificationDisplayTypeViewModel
     public short AddOrder { get; set; }
     public string? SelectHintText { get; set; }
     public string? SubjectHintText { get; set; }
-    public string? AdditionalInformationLabel { get; set; }
-    public string? SubjectLabel { get; set; }
+    public string? AdditionalInformationLabel { get; set; } = "Additional Information";
+    public string? SubjectLabel { get; set; } = "Subject";
     public string GradeLabel { get; set; } = "Grade";
     public bool CanShowLevel { get; }
     public bool CanShowPredicted { get; }

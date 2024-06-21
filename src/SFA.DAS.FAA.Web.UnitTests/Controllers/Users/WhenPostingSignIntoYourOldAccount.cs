@@ -87,7 +87,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 
             using var scope = new AssertionScope();
             result.Should().NotBeNull();
-            result.Should().BeOfType<OkObjectResult>(); //todo: this will need to change to be a redirect in next ticket
+            result.Should().BeOfType<RedirectToRouteResult>();
 
             cacheStorageService.Verify(x => x.Set(It.Is<string>(key => key == $"{candidateId}-{CacheKeys.LegacyEmail}"), It.Is<string>(v => v == viewModel.Email), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
         }

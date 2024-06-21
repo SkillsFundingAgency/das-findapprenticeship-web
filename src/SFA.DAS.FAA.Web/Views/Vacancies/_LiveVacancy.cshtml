@@ -157,9 +157,6 @@
                         </dt>
                         <dd class="govuk-summary-list__value">
                             @Model.AnnualWage
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0  govuk-!-padding-top-1">
-                                TBC
-                            </p>
                             <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">
                                 <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
                                    rel="noreferrer noopener" target="_blank">
@@ -270,9 +267,22 @@
                     </div>
                 </details>
                 <h3 class="govuk-heading-s">Your training plan</h3>
-                <p>TBC</p>
-                <h3 class="govuk-heading-s">Additional training information</h3>
-                <p>TBC</p>
+                @if(string.IsNullOrEmpty(Model.TrainingPlan))
+                {
+                    <div class="govuk-inset-text">
+                        This training plan has not been finalised. Check with this employer if you’ll need to travel to a college or
+                        training
+                        location for this apprenticeship. </div>
+                }
+                else
+                {
+                    <p>Model.TrainingPlan</p>
+                }
+                @if(!string.IsNullOrEmpty(Model.AdditionalTrainingInformation))
+                {
+                    <h3 class="govuk-heading-s">Additional training information</h3>
+                    <p>Model.AdditionalTrainingInformation</p>
+                }
             </section>
             <section class="faa-vacancy__section" id="requirements">
                 <h2 class="govuk-heading-m">Requirements</h2>
@@ -329,12 +339,14 @@
                            target="_blank">@Model.EmployerWebsite (opens in new tab)</a>
                     </p>
                 }
-                <h3 class="govuk-heading-s">Company benefits</h3>
-                <p>
-                    <ul class="govuk-list govuk-list--bullet">
-                        <li>TBC</li>
-                    </ul>
-                </p>
+                @if(!string.IsNullOrEmpty(Model.CompanyBenefits))
+                {
+                    <h3 class="govuk-heading-s">Company benefits</h3>
+                    <p>
+                        @Html.Raw(Model.CompanyBenefits)
+                    </p>                
+                }
+
                 @if (Model.IsDisabilityConfident)
                 {
                     <h3 class="govuk-heading-s">Disability Confident</h3>
