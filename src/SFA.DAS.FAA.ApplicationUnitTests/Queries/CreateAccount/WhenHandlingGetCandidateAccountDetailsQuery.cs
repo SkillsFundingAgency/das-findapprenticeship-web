@@ -41,7 +41,6 @@ public class WhenHandlingGetCandidateAccountDetailsQuery
                 Meaning = x.PreferenceMeaning,
                 Hint = x.PreferenceHint,
                 EmailPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
-                TextPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodText).FirstOrDefault()?.Status ?? false
             }).ToList()
         };
 

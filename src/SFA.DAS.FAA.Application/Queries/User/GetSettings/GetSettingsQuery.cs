@@ -31,7 +31,6 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetSettings
             public Guid PreferenceId { get; set; }
             public string Meaning { get; set; }
             public string Hint { get; set; }
-            public bool TextPreference { get; set; }
             public bool EmailPreference { get; set; }
         }
     }
@@ -65,7 +64,6 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetSettings
                     Meaning = x.PreferenceMeaning,
                     Hint = x.PreferenceHint,
                     EmailPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
-                    TextPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodText).FirstOrDefault()?.Status ?? false
                 }).ToList()
             };
         }

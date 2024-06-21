@@ -8,24 +8,21 @@ public class UpsertCandidatePreferencesCommandHandler(IApiClient apiClient) : IR
 {
     public async Task<Unit> Handle(UpsertCandidatePreferencesCommand request, CancellationToken cancellationToken)
     {
-        var requestData = request.NotificationPreferences.Select(np => new UpsertCandidatePreferencesData.CandidatePreference
+        var candidatePreferencesApiResponse = await apiClient.Get<GetCandidatePreferencesApiResponse>(new GetCandidatePreferencesApiRequest(request.CandidateId));
+
+        var requestData = candidatePreferencesApiResponse.CandidatePreferences.Select(np => new UpsertCandidatePreferencesData.CandidatePreference
         {
             PreferenceId = np.PreferenceId,
-            PreferenceMeaning = np.Meaning,
-            PreferenceHint = np.Hint,
-            ContactMethodsAndStatus = new List<UpsertCandidatePreferencesData.ContactMethodStatus>()
-            {
-                new UpsertCandidatePreferencesData.ContactMethodStatus()
-                {
-                    ContactMethod = Constants.Constants.CandidatePreferences.ContactMethodText,
-                    Status = np.TextPreference
-                },
-                new UpsertCandidatePreferencesData.ContactMethodStatus()
+            PreferenceMeaning = np.PreferenceMeaning,
+            PreferenceHint = np.PreferenceHint,
+            ContactMethodsAndStatus =
+            [
+                new UpsertCandidatePreferencesData.ContactMethodStatus
                 {
                     ContactMethod = Constants.Constants.CandidatePreferences.ContactMethodEmail,
-                    Status = np.EmailPreference
+                    Status = request.UnfinishedApplicationReminders
                 }
-            }
+            ]
         }).ToList();
 
         await apiClient.PostWithResponseCode<NullResponse>
