@@ -54,13 +54,13 @@ public static class AddServiceRegistrationExtension
     public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
     {
         var cookieDomain = DomainExtensions.GetDomain(configuration["ResourceEnvironmentName"]);
-        var loginRedirect = string.IsNullOrEmpty(cookieDomain)? "" : $"https://{cookieDomain}/service/account-details";
+        var loginRedirect = string.IsNullOrEmpty(cookieDomain)? "" : $"https://{cookieDomain}/account-details";
         
         services.AddAndConfigureGovUkAuthentication(
             configuration,
             typeof(CandidateAccountPostAuthenticationClaimsHandler),
             "/",
-            "/service/account-details", cookieDomain, loginRedirect);
+            "/account-details", cookieDomain, loginRedirect);
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, CandidateAccountPostAuthenticationClaimsHandler>();
         services.AddAuthorization(options =>

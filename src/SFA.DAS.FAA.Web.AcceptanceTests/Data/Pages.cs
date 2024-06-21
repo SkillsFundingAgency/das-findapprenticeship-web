@@ -15,7 +15,7 @@ public static class Pages
             new Page { Name = "User Address - Postcode", Url = "/user/postcode-address"},
             new Page { Name = "User Address - Select", Url = "/user/select-address" },
             //Vacancies
-            new Page { Name = "Vacancy Details", Url= "/vacancies/{vacancyReference}" },
+            new Page { Name = "Vacancy Details", Url= "/apprenticeship/{vacancyReference}" },
             //Applications
             new Page { Name = "Applications", Url = "/applications" },
             //TaskList
