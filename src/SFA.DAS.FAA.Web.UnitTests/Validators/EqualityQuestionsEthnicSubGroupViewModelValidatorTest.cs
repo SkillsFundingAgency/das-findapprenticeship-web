@@ -1,4 +1,5 @@
-﻿using FluentValidation.TestHelper;
+﻿using FluentAssertions;
+using FluentValidation.TestHelper;
 using NUnit.Framework;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Validators;
@@ -38,6 +39,22 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
         }
     }
 
+    [Test]
+    public async Task Then_Invalid_Text_Characters_Are_Validated_For_EthnicSubGroupWhiteViewModel()
+    {
+        var model = new EqualityQuestionsEthnicSubGroupWhiteViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            EthnicSubGroup = "British",
+            OtherEthnicSubGroupAnswer = "<script>alert();</script>"
+        };
+        var sut = new EqualityEthnicSubGroupWhiteViewModelValidator();
+        
+        var result = await sut.TestValidateAsync(model);
+
+        result.IsValid.Should().BeFalse();
+    }
+
     [TestCase(NoEthnicMixedSubGroupSelectionErrorMessage, false, null)]
     [TestCase(NoEthnicMixedSubGroupSelectionErrorMessage, false, "")]
     [TestCase(null, true, "White")]
@@ -62,6 +79,23 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
         {
             result.ShouldNotHaveValidationErrorFor(c => c.EthnicSubGroup);
         }
+    }
+    
+    
+    [Test]
+    public async Task Then_Invalid_Text_Characters_Are_Validated_For_EthnicSubGroupMixedViewModel()
+    {
+        var model = new EqualityQuestionsEthnicSubGroupMixedViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            EthnicSubGroup = "White",
+            OtherEthnicSubGroupAnswer = "<script>alert();</script>"
+        };
+        var sut = new EqualityEthnicSubGroupMixedViewModelValidator();
+        
+        var result = await sut.TestValidateAsync(model);
+
+        result.IsValid.Should().BeFalse();
     }
 
     [TestCase(NoEthnicAsianSubGroupSelectionErrorMessage, false, null)]
@@ -92,6 +126,23 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
             result.ShouldNotHaveValidationErrorFor(c => c.EthnicSubGroup);
         }
     }
+    
+    
+    [Test]
+    public async Task Then_Invalid_Text_Characters_Are_Validated_For_EthnicSubGroupAsianViewModel()
+    {
+        var model = new EqualityQuestionsEthnicSubGroupAsianViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            EthnicSubGroup = "Bangladeshi",
+            OtherEthnicSubGroupAnswer = "<script>alert();</script>"
+        };
+        var sut = new EqualityEthnicSubGroupAsianViewModelValidator();
+        
+        var result = await sut.TestValidateAsync(model);
+
+        result.IsValid.Should().BeFalse();
+    }
 
     [TestCase(NoEthnicBlackSubGroupSelectionErrorMessage, false, null)]
     [TestCase(NoEthnicBlackSubGroupSelectionErrorMessage, false, "")]
@@ -119,6 +170,23 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
             result.ShouldNotHaveValidationErrorFor(c => c.EthnicSubGroup);
         }
     }
+    
+    
+    [Test]
+    public async Task Then_Invalid_Text_Characters_Are_Validated_For_EthnicSubGroupBlackViewModel()
+    {
+        var model = new EqualityQuestionsEthnicSubGroupBlackViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            EthnicSubGroup = "Caribbean",
+            OtherEthnicSubGroupAnswer = "<script>alert();</script>"
+        };
+        var sut = new EqualityEthnicSubGroupBlackViewModelValidator();
+        
+        var result = await sut.TestValidateAsync(model);
+
+        result.IsValid.Should().BeFalse();
+    }
 
     [TestCase(NoEthnicOtherSubGroupSelectionErrorMessage, false, null)]
     [TestCase(NoEthnicOtherSubGroupSelectionErrorMessage, false, "")]
@@ -144,5 +212,21 @@ public class EqualityQuestionsEthnicSubGroupViewModelValidatorTest
         {
             result.ShouldNotHaveValidationErrorFor(c => c.EthnicSubGroup);
         }
+    }
+    
+    [Test]
+    public async Task Then_Invalid_Text_Characters_Are_Validated_For_EthnicSubGroupOtherViewModel()
+    {
+        var model = new EqualityQuestionsEthnicSubGroupOtherViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            EthnicSubGroup = "Arab",
+            OtherEthnicSubGroupAnswer = "<script>alert();</script>"
+        };
+        var sut = new EqualityEthnicSubGroupOtherViewModelValidator();
+        
+        var result = await sut.TestValidateAsync(model);
+
+        result.IsValid.Should().BeFalse();
     }
 }
