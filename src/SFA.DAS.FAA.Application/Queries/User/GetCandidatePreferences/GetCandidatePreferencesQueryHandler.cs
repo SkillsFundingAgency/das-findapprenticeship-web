@@ -2,7 +2,7 @@
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
-namespace CreateAccount.GetCandidatePreferences;
+namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 public class GetCandidatePreferencesQueryHandler(IApiClient apiClient) : IRequestHandler<GetCandidatePreferencesQuery, GetCandidatePreferencesQueryResult>
 {
     public async Task<GetCandidatePreferencesQueryResult> Handle(GetCandidatePreferencesQuery request, CancellationToken cancellationToken)
@@ -14,13 +14,9 @@ public class GetCandidatePreferencesQueryHandler(IApiClient apiClient) : IReques
             CandidatePreferences = result.CandidatePreferences.Select(x => new GetCandidatePreferencesQueryResult.CandidatePreference
             {
                 PreferenceId = x.PreferenceId,
-                PreferenceMeaning = x.PreferenceMeaning,
-                PreferenceHint = x.PreferenceHint,
-                ContactMethodsAndStatus = x.ContactMethodsAndStatus?.Select(x => new GetCandidatePreferencesQueryResult.ContactMethodStatus
-                {
-                    ContactMethod = x.ContactMethod,
-                    Status = x.Status
-                }).ToList()
+                Meaning = x.PreferenceMeaning,
+                Hint = x.PreferenceHint,
+                Preference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.Constants.CandidatePreferences.ContactMethodEmail).FirstOrDefault()?.Status ?? null,
             }).ToList()
         };
     }

@@ -180,18 +180,22 @@
                             <nav aria-label="Your account menu">
                                 <ul class="service-header__nav-list service-header__nav" id="service-header__nav"
                                     data-open-class="service-header__nav--open">
-                                    <li class="service-header__nav-list-item ">
+                                    <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships" 
+                                                 || Context.Request.RouteValues["controller"]?.ToString() == "Vacancies" ? "service-header__nav-list-item--active":"") service-header__nav-list-item">
                                         <a class="service-header__nav-list-item-link" asp-route="@RouteNames.SearchResults">
                                             Search
-                                        </a>
+                                        </a> 
                                     </li>
-                                    <li class="service-header__nav-list-item ">
+                                    <li class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/")) 
+                                                 || Context.Request.RouteValues["controller"]?.ToString() == "Applications" 
+                                                 || Context.Request.RouteValues["controller"]?.ToString() == "Apply" 
+                                                   ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
                                         <a class="service-header__nav-list-item-link"
                                             asp-route="@RouteNames.Applications.ViewApplications">
                                             Applications
                                         </a>
                                     </li>
-                                    <li class="service-header__nav-list-item ">
+                                    <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
                                         <a class="service-header__nav-list-item-link"
                                             asp-route="@RouteNames.Settings">
                                             Settings

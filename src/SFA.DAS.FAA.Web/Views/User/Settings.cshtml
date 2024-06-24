@@ -14,7 +14,7 @@
                     Name
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @if (String.IsNullOrEmpty(Model.MiddleNames))
+                    @if (string.IsNullOrEmpty(Model.MiddleNames))
                     {
                         <p class="govuk-body">@Model.FirstName @Model.LastName</p>
                     }
@@ -123,8 +123,8 @@
                     }
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="">
-                        Change<span class="govuk-visually-hidden"> notification settings</span>
+                    <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences" asp-route-journeyPath="@UserJourneyPath.Settings" id="notification-preferences-change-link">
+                        Change<span class="govuk-visually-hidden"> notification preferences</span>
                     </a>
                 </dd>
             </div>
@@ -132,8 +132,5 @@
         
         <div class="govuk-!-padding-bottom-9"></div>
         
-        <h3 class="govuk-heading-m">Delete your account</h3>
-        <a href="delete-your-account.html" class="govuk-link">Delete my account</a>
-
     </div>
 </div>

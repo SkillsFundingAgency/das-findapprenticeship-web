@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
