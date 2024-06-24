@@ -178,8 +178,8 @@
                                             Applications
                                         </a>
                                     </li>
-                                    <li class="service-header__nav-list-item ">
-                                        <a class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "service-header__nav-list-item--active":"") service-header__nav-list-item-link"
+                                    <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
+                                        <a class="service-header__nav-list-item-link"
                                             asp-route="@RouteNames.Settings">
                                             Settings
                                         </a>
