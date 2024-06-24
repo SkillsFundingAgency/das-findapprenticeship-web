@@ -14,9 +14,8 @@ public static class AddRedirectRulesExtension
         options.AddRedirect("(?i)apprenticeship/apply/(.*)", "applications", (int)HttpStatusCode.PermanentRedirect);
             
         //User settings
-        options.AddRedirect("(?i)deleteaccount", "user/settings", (int)HttpStatusCode.PermanentRedirect);
-        options.AddRedirect("(?i)savedsearches", "user/settings", (int)HttpStatusCode.PermanentRedirect);
-        options.AddRedirect("(?i)settings", "user/settings", (int)HttpStatusCode.PermanentRedirect);
+        options.AddRedirect("(?i)deleteaccount", "settings", (int)HttpStatusCode.PermanentRedirect);
+        options.AddRedirect("(?i)savedsearches", "settings", (int)HttpStatusCode.PermanentRedirect);
         
         //Feedback/contact us
         options.AddRedirect("(?i)feedback", "apprenticeshipsearch", (int)HttpStatusCode.PermanentRedirect);
