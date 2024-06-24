@@ -490,6 +490,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Town = accountDetails.Town,
                 Postcode = accountDetails.Postcode,
                 Uprn = accountDetails.Uprn,
+                HasAnsweredEqualityQuestions = accountDetails.HasAnsweredEqualityQuestions,
                 CandidatePreferences = accountDetails.CandidatePreferences.Select(cp => new SettingsViewModel.CandidatePreference
                 {
                     Meaning = cp.Meaning,
