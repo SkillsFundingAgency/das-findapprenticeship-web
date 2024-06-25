@@ -1,18 +1,29 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Queries.GetSavedVacancies;
 using SFA.DAS.FAA.Web.Authentication;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.SavedVacancies;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("saved-vacancies")]
-    public class SavedVacanciesController : Controller
+    public class SavedVacanciesController(IMediator mediator, IDateTimeService dateTimeService) : Controller
     {
         [Route("", Name = RouteNames.SavedVacancies)]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await mediator.Send(new GetSavedVacanciesQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            });
+
+            var viewModel = IndexViewModel.Map(result, dateTimeService);
+            return View(viewModel);
         }
     }
 }
