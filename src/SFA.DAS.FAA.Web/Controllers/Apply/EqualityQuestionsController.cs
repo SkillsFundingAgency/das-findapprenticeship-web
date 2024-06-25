@@ -105,6 +105,11 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             var selectedOption = (EthnicGroup)Enum.Parse(typeof(EthnicGroup), viewModel.EthnicGroup!, true);
 
+            if (selectedOption == Domain.Enums.EthnicGroup.PreferNotToSay)
+            {
+                await UpdateEqualityQuestionModel(applicationId, (EqualityQuestionsEthnicSubGroupPreferNotToSaveViewModel)viewModel );
+            }
+            
             return RedirectToRoute(RouteNamesHelperService.GetEqualityFlowEthnicSubGroupRoute(selectedOption), new { applicationId, viewModel.IsEdit });
         }
 

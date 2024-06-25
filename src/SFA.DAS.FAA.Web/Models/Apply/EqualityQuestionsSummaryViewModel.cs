@@ -30,7 +30,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             };
         }
 
-        private static string GetEthnicGroupDescription(EthnicGroup group, EthnicSubGroup subGroup, string? otherEthnicSubGroupAnswer)
+        private static string GetEthnicGroupDescription(EthnicGroup group, EthnicSubGroup? subGroup, string? otherEthnicSubGroupAnswer)
         {
             switch (group)
             {
