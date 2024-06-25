@@ -6,6 +6,7 @@ public static class RouteNames
     public const string BrowseByInterests = "browse-by-interests";
     public const string Location = "location";
     public const string SearchResults = "search-results";
+    public const string MapSearchResults = "map-search-results";
     public const string Vacancies = "vacancies";
     public const string Apply = "apply";
     public const string UserName = "user-name";

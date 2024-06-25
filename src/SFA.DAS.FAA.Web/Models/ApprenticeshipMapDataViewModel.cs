@@ -1,6 +1,7 @@
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Models;
 public class ApprenticeshipMapData
@@ -22,11 +23,14 @@ public class ApprenticeshipMapData
                 AddressLine3 = source.AddressLine3,
                 AddressLine4 = source.AddressLine4,
                 Postcode = source.Postcode,
-                Distance = source.Distance,
+                Distance = source.Distance.HasValue ? Math.Round(source.Distance.Value, 1) : null,
                 Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
                 Wage = source.WageText,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
-                PostedDate = source.PostedDate.GetPostedDate()
+                PostedDate = source.PostedDate.GetPostedDate(),
+                ApplicationStatus = source.CandidateApplicationDetails?.Status,
+                IsClosingSoon = source.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
+                IsNew = source.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             },
             Position = new MapPosition
             {
@@ -58,4 +62,7 @@ public class ApprenticeshipMapJob
     public string? Wage { get; set; }
     public string? ClosingDate { get; set; }
     public string? PostedDate { get; set; }
+    public ApplicationStatus? ApplicationStatus { get; set; }
+    public bool IsClosingSoon { get; set; }
+    public bool IsNew { get; set; }
 }

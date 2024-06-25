@@ -60,8 +60,19 @@ public class Vacancies
     [JsonPropertyName("wageText")]
     public string WageText { get; set; }
 
+    [JsonPropertyName("applicationStatus")]
+    public string ApplicationStatus { get; set; }
+
     [JsonProperty("isDisabilityConfident")]
     public bool IsDisabilityConfident { get; set; }
+
+    [JsonProperty("isNew")]
+    public bool IsNew { get; set; }
+
+    [JsonProperty("isClosingSoon")]
+    public bool IsClosingSoon { get; set; }
+
+
     [JsonProperty("lat")]
     public double? Lat { get; set; }
     [JsonProperty("lon")]

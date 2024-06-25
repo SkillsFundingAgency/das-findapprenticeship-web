@@ -1,12 +1,54 @@
-.faa-search-results-sort {
+.faa-search-results-header {
   display: flex;
+  flex-direction: row-reverse;
+  margin-top: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid $govuk-border-colour;
+  @include govuk-media-query(tablet) {
+    flex-direction: row;
+    border-top: 1px solid $govuk-border-colour;
+    margin-top: 0;
+    padding: 1.5em 0;
+    margin-bottom: 0.5em;
+  }
+}
+
+.faa-search-results-header__map {
+  flex: 1;
+  align-content: center;
+}
+
+.faa-search-results-header__map-link {
+  display: flex;
+  gap: 5px;
   align-items: center;
   justify-content: end;
-  margin-bottom: 25px;
+  @include govuk-media-query(tablet) {
+    justify-content: start;
+    font-size: 19px;
+  }
+}
+
+.faa-search-results-header__map-link-icon {
+  max-height: 2em;
+}
+
+.faa-search-results-header__sort {
+  flex: 1;
+}
+
+.faa-search-results-sort {
+  @include govuk-media-query(desktop) {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
 }
 
 .faa-search-results-sort__label {
-  padding-right: 10px;
+  @include govuk-media-query(desktop) {
+    padding-right: 10px;
+  }
 }
 
 .faa-search-results-sort__select {
