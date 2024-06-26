@@ -3,19 +3,19 @@
     {
       "id": "676476cc-525a-4a13-8da7-cf36345e6f61",
       "title": "Engineering and Manufacturing",
-      "vacancyReference": "1000012013",
+      "vacancyReference": "VAC1000012013",
       "employerName": "Mega Corp Limited",
       "createdDate": "2025-03-23T00:00:00Z",
       "closingDate": "2026-09-23T00:00:00Z",
       "city": "Bromsgrove",
       "postcode": "B61 0GE",
       "isExternalVacancy": false,
-      "externalVacancyUrl" :  ""
+      "externalVacancyUrl": ""
     },
     {
       "id": "be9f4631-0c39-429c-bdaa-56b524dfeeb3",
       "title": "Advanced upholsterer",
-      "vacancyReference": "1000012013",
+      "vacancyReference": "VAC1000012013",
       "employerName": "Sofa City",
       "createdDate": "2024-02-23T00:00:00Z",
       "closingDate": "2025-04-23T00:00:00Z",
@@ -27,7 +27,7 @@
     {
       "id": "be9f4631-0c39-429c-bdaa-56b524dfeeb3",
       "title": "Air traffic controller",
-      "vacancyReference": "1000012013",
+      "vacancyReference": "VAC1000012013",
       "employerName": "NATS",
       "createdDate": "2024-09-10T00:00:00Z",
       "closingDate": "2024-07-01T00:00:00Z",

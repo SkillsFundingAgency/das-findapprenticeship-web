@@ -54,7 +54,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                 var savedVacancy = new SavedVacancy
                 {
                     Id = vacancy.Id,
-                    VacancyReference = $"VAC{vacancy.VacancyReference}",
+                    VacancyReference = vacancy.VacancyReference,
                     Title = vacancy.Title,
                     EmployerName = vacancy.EmployerName,
                     Location = $"{vacancy.City}, {vacancy.Postcode}",

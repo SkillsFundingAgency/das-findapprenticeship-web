@@ -32,10 +32,14 @@
             </div>
         }
 
-        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 govuk-!-margin-bottom-1">
-
-        @if (Model.HasSavedVacancies)
+        @if (!Model.HasSavedVacancies)
         {
+            <p class="govuk-body">You don’t have any saved vacancies that are open to applications.</p>
+        }
+        else
+        {
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 govuk-!-margin-bottom-1">
+
             <ol class="das-search-results__list">
 
                 @foreach (var vacancy in Model.SavedVacancies)
@@ -71,13 +75,13 @@
                         }
                         else
                         {
-                            <form method="post" action="@Url.ActionLink("Apply", "Vacancies", new { vacancy.VacancyReference })">
-                                <p class="govuk-body govuk-!-margin-bottom-2"><button type="submit"
-                                        class="das-button--inline-link">Apply now <span class="govuk-visually-hidden">for
-                                            @vacancy.Title</span></button></p>
+                            <form method="post" asp-route="@RouteNames.Vacancies" asp-route-vacancyreference="@vacancy.VacancyReference">
+                                <p class="govuk-body govuk-!-margin-bottom-2">
+                                    <button type="submit" class="das-button--inline-link">Apply now
+                                        <span class="govuk-visually-hidden">for @vacancy.Title</span></button>
+                                </p>
                             </form>
                         }
-
 
                     </li>
                 }
