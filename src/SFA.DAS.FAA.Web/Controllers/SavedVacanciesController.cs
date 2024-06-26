@@ -15,6 +15,7 @@ namespace SFA.DAS.FAA.Web.Controllers
     public class SavedVacanciesController(IMediator mediator, IDateTimeService dateTimeService) : Controller
     {
         [Route("", Name = RouteNames.SavedVacancies)]
+        [HttpGet]
         public async Task<IActionResult> Index(SortOrder sortOrder = SortOrder.RecentlySaved)
         {
             var result = await mediator.Send(new GetSavedVacanciesQuery
@@ -24,6 +25,13 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var viewModel = IndexViewModel.Map(result, dateTimeService, sortOrder);
             return View(viewModel);
+        }
+
+        [Route("", Name = RouteNames.SavedVacancies)]
+        [HttpPost]
+        public async Task<IActionResult> Index(string vacancyReference)
+        {
+            return View($"vacancyReference: {vacancyReference}");
         }
     }
 }

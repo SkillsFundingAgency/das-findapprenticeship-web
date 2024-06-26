@@ -57,11 +57,10 @@
                                 }
                                 else
                                 {
-                                    <a class="govuk-link govuk-link--no-visited-state"
-                                       href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = vacancy.Id })">
-                                        Apply
-                                    </a>
-                                    
+                                    <form method="post">
+                                        @Html.Hidden("vacancyreference", vacancy.VacancyReference)
+                                        <button type="submit" class="govuk-link govuk-link--no-visited-state">Apply</button>
+                                    </form>
                                 }
                             </li>
                         </ul>
