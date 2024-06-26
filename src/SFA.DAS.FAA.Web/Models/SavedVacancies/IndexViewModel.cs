@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                     CreatedOn = 
                         $"Saved on {vacancy.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = vacancy.ClosingDate,
-                    ClosingDateLabel = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancy.ClosingDate),
+                    ClosingDateLabel = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancy.ClosingDate, vacancy.IsExternalVacancy),
                     IsClosingSoon = daysToExpiry is >= 0 and <= 7
                 };
 

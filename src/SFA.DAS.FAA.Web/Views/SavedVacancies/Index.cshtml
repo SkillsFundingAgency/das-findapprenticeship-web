@@ -1,5 +1,4 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using SFA.DAS.FAA.Web.Models.SavedVacancies
 @model SFA.DAS.FAA.Web.Models.SavedVacancies.IndexViewModel;
 @{
     ViewData["Title"] = "Saved vacancies - Find an apprenticeship - GOV.UK";
@@ -73,7 +72,7 @@
         
         @if (Model.HasExpiredVacancies)
         {
-            <h2 class="govuk-heading-m govuk-!-margin-top-9">Expired</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-top-6">Expired</h2>
             <p class="govuk-body">Vacancies you saved that have now closed.</p>
 
             <details class="govuk-details" open="">
