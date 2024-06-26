@@ -59,7 +59,7 @@
 
                     @if (Model.IsAddressFromLookup)
                     {
-                        <a class="govuk-link" asp-route="@RouteNames.SelectAddress" asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode" id="address-change-link">
+                        <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode" id="address-change-link">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     }
@@ -106,10 +106,6 @@
         }
         
         <h3 class="govuk-heading-m">Email notifications</h3>
-        
-        <p class="govuk-body">We’ll automatically email you when a company tell us if your application is successful or
-            unsuccessful.
-        </p>
         
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">

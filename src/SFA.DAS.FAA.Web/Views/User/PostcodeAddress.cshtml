@@ -11,8 +11,17 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
-        <span class="govuk-caption-l">Create an account</span>
-        <h1 class="govuk-heading-l">What is your address?</h1>
+        @if (Model.JourneyPath != UserJourneyPath.Settings)
+        {
+            <span class="govuk-caption-l">Create an account</span>
+            <h1 class="govuk-heading-l">What is your address?</h1>
+        }
+        else
+        {
+            <h1 class="govuk-heading-l">Change your address?</h1>
+        }
+        
+        
         <p class="govuk-body">Use the address you want to appear on your applications</p>
         <form class="form" method="post">
             <input type="hidden" asp-for="JourneyPath" />
