@@ -1,4 +1,6 @@
-﻿@model SFA.DAS.FAA.Web.Models.SavedVacancies.IndexViewModel;
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.SavedVacancies
+@model SFA.DAS.FAA.Web.Models.SavedVacancies.IndexViewModel;
 @{
     ViewData["Title"] = "Saved vacancies - Find an apprenticeship - GOV.UK";
 }
@@ -6,6 +8,86 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Saved vacancies</h1>
+        
+        <div class="govuk-inset-text">
+            You’ll be able to save vacancies soon. Until then, we’ve transferred your saved vacancies from the old Find an apprenticeship.
+        </div>
+        
+        @if (Model.ShowSortComponent)
+        {
+            <label class="govuk-body" for="sortOrder">Sort by</label>
+            <select class="govuk-select" id="sortOrder" name="sortOrder">
+                <option value="@SortOrder.RecentlySaved.ToString()" selected="">Recently saved</option>
+                <option value="@SortOrder.ClosingSoonest.ToString()">Closing soonest</option>
+            </select>
+        }
+        
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 govuk-!-margin-bottom-6 ">
+
+        @if (Model.HasSavedVacancies)
+        {
+            <ol class="das-search-results__list">
+
+                @foreach (var vacancy in Model.SavedVacancies)
+                {
+                    <li class="das-search-results__list-item govuk-!-margin-bottom-4">
+                        @if (vacancy.IsClosingSoon)
+                        {
+                            <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
+                        }
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Vacancies, new { vacancy.VacancyReference })">
+                                @vacancy.Title
+                            </a>
+                        </h2>
+                        <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
+                        <p class="govuk-hint">@vacancy.Location</p>
+                        <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.CreatedOn</p>
+                        <p class="govuk-body">@vacancy.ClosingDateLabel</p>
+                        <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
+                            <li>
+                                <a class="govuk-link govuk-link--no-visited-state"
+                                   href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = vacancy.Id })">
+                                    Apply
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ol>
+        }
+        
+        @if (Model.HasExpiredVacancies)
+        {
+            <h2 class="govuk-heading-m govuk-!-margin-top-9">Expired</h2>
+            <p class="govuk-body">Vacancies you saved that have now closed.</p>
+
+            <details class="govuk-details" open="">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Show expired vacancies (@Model.ExpiredSavedVacancies.Count)
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+
+                    <div class="das-search-results">
+                        <ol class="das-search-results__list">
+                            @foreach (var expiredVacancy in Model.ExpiredSavedVacancies)
+                            {
+                                <hr class="govuk-section-break govuk-section-break-non-visible govuk-!-margin-bottom-6 ">
+                                <h3 class="govuk-heading-m govuk-!-margin-bottom-1">@expiredVacancy.Title</h3>
+                                <p class="govuk-body govuk-!-margin-bottom-0">@expiredVacancy.EmployerName</p>
+                                <p class="govuk-hint">@expiredVacancy.Location</p>
+                                <p class="govuk-body govuk-!-margin-bottom-1">@expiredVacancy.CreatedOn</p>
+                                <p class="govuk-body">@expiredVacancy.ClosingDateLabel</p>
+                                <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 ">
+                            }
+                        </ol>
+                    </div>
+                    
+                </div>
+            </details>
+        }
 
     </div>
 </div>

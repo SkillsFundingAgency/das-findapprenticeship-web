@@ -19,6 +19,8 @@ namespace SFA.DAS.FAA.Domain.SavedVacancies
             public string EmployerName { get; set; } = string.Empty;
             public DateTime CreatedDate { get; set; }
             public DateTime ClosingDate { get; set; }
+            public string City { get; set; }
+            public string Postcode { get; set; }
         }
     }
 }

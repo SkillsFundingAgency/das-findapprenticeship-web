@@ -21,6 +21,8 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
             public string EmployerName { get; set; } = string.Empty;
             public DateTime CreatedDate { get; set; }
             public DateTime ClosingDate { get; set; }
+            public string City { get; set; }
+            public string Postcode { get; set; }
         }
 
         public static implicit operator GetSavedVacanciesQueryResult(GetSavedVacanciesApiResponse source)
@@ -34,7 +36,9 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
                     EmployerName = x.EmployerName,
                     VacancyReference = x.VacancyReference,
                     ClosingDate = x.ClosingDate,
-                    CreatedDate = x.CreatedDate
+                    CreatedDate = x.CreatedDate,
+                    City = x.City,
+                    Postcode = x.Postcode,
                 }).ToList()
             };
         }

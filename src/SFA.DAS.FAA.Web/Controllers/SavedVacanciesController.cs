@@ -15,14 +15,14 @@ namespace SFA.DAS.FAA.Web.Controllers
     public class SavedVacanciesController(IMediator mediator, IDateTimeService dateTimeService) : Controller
     {
         [Route("", Name = RouteNames.SavedVacancies)]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(SortOrder sortOrder = SortOrder.RecentlySaved)
         {
             var result = await mediator.Send(new GetSavedVacanciesQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            var viewModel = IndexViewModel.Map(result, dateTimeService);
+            var viewModel = IndexViewModel.Map(result, dateTimeService, sortOrder);
             return View(viewModel);
         }
     }
