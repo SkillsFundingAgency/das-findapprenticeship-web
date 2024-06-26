@@ -71,8 +71,7 @@
                         }
                         else
                         {
-                            <form method="post">
-                                @Html.Hidden("vacancyreference", vacancy.VacancyReference)
+                            <form method="post" action="@Url.ActionLink("Apply", "Vacancies", new { vacancy.VacancyReference })">
                                 <p class="govuk-body govuk-!-margin-bottom-2"><button type="submit"
                                         class="das-button--inline-link">Apply now <span class="govuk-visually-hidden">for
                                             @vacancy.Title</span></button></p>
