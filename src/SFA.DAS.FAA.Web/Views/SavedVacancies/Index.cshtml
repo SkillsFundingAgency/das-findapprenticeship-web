@@ -7,23 +7,32 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Saved vacancies</h1>
-        
+
         <div class="govuk-inset-text">
-            You’ll be able to save vacancies soon. Until then, we’ve transferred your saved vacancies from the old Find an apprenticeship.
+            You’ll be able to save vacancies soon. Until then, we’ve transferred your saved vacancies from the old Find
+            an apprenticeship.
         </div>
-        
+
         @if (Model.ShowSortComponent)
         {
-            <label class="govuk-body" for="sortOrder">Sort by</label>
-            <select class="govuk-select" id="sortOrder" name="sortOrder" asp-for="SortOrder">
-                @foreach (var option in Model.SortOrderOptions)
-                {
-                    <option value="@option.Value" selected="@option.Selected">@option.Text</option>
-                }
-            </select>
+            <div>
+                <form method="get">
+                    <div class="faa-search-results-sort faa-search-results-sort--saved">
+                        <label class="govuk-label faa-search-results-sort__label" for="sortOrder">Sort by</label>
+                        <select class="govuk-select faa-search-results-sort__select faa-js-select-change-submit-form"
+                            id="sortOrder" name="sortOrder" asp-for="SortOrder">
+                            @foreach (var option in Model.SortOrderOptions)
+                            {
+                                <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                            }
+                        </select>
+                        <button type="submit" class="govuk-button das-js-hide">Sort</button>
+                    </div>
+                </form>
+            </div>
         }
-        
-        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 govuk-!-margin-bottom-6 ">
+
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 govuk-!-margin-bottom-1">
 
         @if (Model.HasSavedVacancies)
         {
@@ -31,13 +40,15 @@
 
                 @foreach (var vacancy in Model.SavedVacancies)
                 {
-                    <li class="das-search-results__list-item govuk-!-margin-bottom-4">
+                    <li class="das-search-results__list-item">
                         @if (vacancy.IsClosingSoon)
                         {
-                            <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
+                            <strong class="govuk-tag govuk-tag--orange govuk-!-margin-top-1 govuk-!-margin-bottom-2">Closing
+                                soon</strong>
                         }
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
-                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Vacancies, new { vacancy.VacancyReference })">
+                            <a class="govuk-link govuk-link--no-visited-state"
+                                href="@Url.RouteUrl(RouteNames.Vacancies, new { vacancy.VacancyReference })">
                                 @vacancy.Title
                             </a>
                         </h2>
@@ -45,32 +56,38 @@
                         <p class="govuk-hint">@vacancy.Location</p>
                         <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.CreatedOn</p>
                         <p class="govuk-body">@vacancy.ClosingDateLabel</p>
-                        <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
-                            <li>
-                                @if (vacancy.IsExternalVacancy)
-                                {
-                                    <a class="govuk-link govuk-link--no-visited-state" target="_blank"
-                                       href="@vacancy.ExternalVacancyUrl">
-                                        Apply on company’s website (opens in new tab)
-                                    </a>
 
-                                }
-                                else
-                                {
-                                    <form method="post">
-                                        @Html.Hidden("vacancyreference", vacancy.VacancyReference)
-                                        <button type="submit" class="govuk-link govuk-link--no-visited-state">Apply</button>
-                                    </form>
-                                }
-                            </li>
-                        </ul>
+                        @if (vacancy.IsExternalVacancy)
+                        {
+                            <p class="govuk-body  govuk-!-margin-bottom-2">
+                                <a class="govuk-link govuk-link--no-visited-state" target="_blank"
+                                    href="@vacancy.ExternalVacancyUrl">
+                                    Apply <span class="govuk-visually-hidden">for
+                                        @vacancy.Title</span>
+                                    on company's website (opens in new tab)
+                                </a>
+                            </p>
+
+                        }
+                        else
+                        {
+                            <form method="post">
+                                @Html.Hidden("vacancyreference", vacancy.VacancyReference)
+                                <p class="govuk-body govuk-!-margin-bottom-2"><button type="submit"
+                                        class="das-button--inline-link">Apply now <span class="govuk-visually-hidden">for
+                                            @vacancy.Title</span></button></p>
+                            </form>
+                        }
+
+
                     </li>
                 }
             </ol>
         }
-        
+
         @if (Model.HasExpiredVacancies)
         {
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-1">
             <h2 class="govuk-heading-m govuk-!-margin-top-6">Expired</h2>
             <p class="govuk-body">Vacancies you saved that have now closed.</p>
 
@@ -96,7 +113,7 @@
                             }
                         </ol>
                     </div>
-                    
+
                 </div>
             </details>
         }

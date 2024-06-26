@@ -118,6 +118,16 @@ if (jsBackLink) {
   jsBackLink.parentNode.replaceChild(backLink, jsBackLink);
 }
 
+const jsSelectChangeSubmitForm = document.querySelector(
+  ".faa-js-select-change-submit-form"
+);
+
+if (jsSelectChangeSubmitForm) {
+  jsSelectChangeSubmitForm.addEventListener("change", () => {
+    jsSelectChangeSubmitForm.closest("form").submit();
+  });
+}
+
 // Show/Hide Extra Form Fields
 
 function ExtraFieldRows(container) {
