@@ -8,7 +8,9 @@
       "createdDate": "2025-03-23T00:00:00Z",
       "closingDate": "2026-09-23T00:00:00Z",
       "city": "Bromsgrove",
-      "postcode": "B61 0GE"
+      "postcode": "B61 0GE",
+      "isExternalVacancy": false,
+      "externalVacancyUrl" :  ""
     },
     {
       "id": "be9f4631-0c39-429c-bdaa-56b524dfeeb3",
@@ -18,7 +20,9 @@
       "createdDate": "2024-02-23T00:00:00Z",
       "closingDate": "2025-04-23T00:00:00Z",
       "city": "Bromsgrove",
-      "postcode": "B61 0GE"
+      "postcode": "B61 0GE",
+      "isExternalVacancy": true,
+      "externalVacancyUrl": "https://www.sofacity.com/apply"
     },
     {
       "id": "be9f4631-0c39-429c-bdaa-56b524dfeeb3",
@@ -28,7 +32,9 @@
       "createdDate": "2024-09-10T00:00:00Z",
       "closingDate": "2024-07-01T00:00:00Z",
       "city": "Bromsgrove",
-      "postcode": "B61 0GE"
+      "postcode": "B61 0GE",
+      "isExternalVacancy": false,
+      "externalVacancyUrl": ""
     },
     {
       "id": "cabbb97c-b82c-48e1-902c-e11314038cd5",
@@ -38,7 +44,9 @@
       "createdDate": "2023-02-01T07:59:48.897",
       "closingDate": "2023-03-23T00:00:00Z",
       "city": "London",
-      "postcode": "SW1 1XE"
+      "postcode": "SW1 1XE",
+      "isExternalVacancy": false,
+      "externalVacancyUrl": ""
     }
   ]
 }

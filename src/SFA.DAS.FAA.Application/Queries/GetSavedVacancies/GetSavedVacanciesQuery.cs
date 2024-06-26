@@ -23,6 +23,9 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
             public DateTime ClosingDate { get; set; }
             public string City { get; set; }
             public string Postcode { get; set; }
+            public bool IsExternalVacancy { get; set; }
+            public string ExternalVacancyUrl { get; set; }
+
         }
 
         public static implicit operator GetSavedVacanciesQueryResult(GetSavedVacanciesApiResponse source)
@@ -39,6 +42,8 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
                     CreatedDate = x.CreatedDate,
                     City = x.City,
                     Postcode = x.Postcode,
+                    IsExternalVacancy = x.IsExternalVacancy,
+                    ExternalVacancyUrl = x.ExternalVacancyUrl
                 }).ToList()
             };
         }

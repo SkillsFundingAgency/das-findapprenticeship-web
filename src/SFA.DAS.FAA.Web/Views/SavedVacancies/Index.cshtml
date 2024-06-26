@@ -16,9 +16,11 @@
         @if (Model.ShowSortComponent)
         {
             <label class="govuk-body" for="sortOrder">Sort by</label>
-            <select class="govuk-select" id="sortOrder" name="sortOrder">
-                <option value="@SortOrder.RecentlySaved.ToString()" selected="">Recently saved</option>
-                <option value="@SortOrder.ClosingSoonest.ToString()">Closing soonest</option>
+            <select class="govuk-select" id="sortOrder" name="sortOrder" asp-for="SortOrder">
+                @foreach (var option in Model.SortOrderOptions)
+                {
+                    <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                }
             </select>
         }
         
@@ -46,10 +48,22 @@
                         <p class="govuk-body">@vacancy.ClosingDateLabel</p>
                         <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
                             <li>
-                                <a class="govuk-link govuk-link--no-visited-state"
-                                   href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = vacancy.Id })">
-                                    Apply
-                                </a>
+                                @if (vacancy.IsExternalVacancy)
+                                {
+                                    <a class="govuk-link govuk-link--no-visited-state" target="_blank"
+                                       href="@vacancy.ExternalVacancyUrl">
+                                        Apply on company’s website (opens in new tab)
+                                    </a>
+
+                                }
+                                else
+                                {
+                                    <a class="govuk-link govuk-link--no-visited-state"
+                                       href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = vacancy.Id })">
+                                        Apply
+                                    </a>
+                                    
+                                }
                             </li>
                         </ul>
                     </li>

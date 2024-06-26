@@ -21,6 +21,9 @@ namespace SFA.DAS.FAA.Domain.SavedVacancies
             public DateTime ClosingDate { get; set; }
             public string City { get; set; }
             public string Postcode { get; set; }
+            public bool IsExternalVacancy { get; set; }
+            public string ExternalVacancyUrl { get; set; }
+
         }
     }
 }

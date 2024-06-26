@@ -2,6 +2,7 @@
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SFA.DAS.FAA.Web.Models.SavedVacancies
 {
@@ -12,6 +13,13 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
         public bool HasExpiredVacancies => ExpiredSavedVacancies.Any();
         public bool HasSavedVacancies => SavedVacancies.Any();
         public bool ShowSortComponent => SavedVacancies.Count > 1;
+        public SortOrder SortOrder { get; set; }
+
+        public List<SelectListItem> SortOrderOptions => new List<SelectListItem>
+        {
+            new SelectListItem { Value = SortOrder.RecentlySaved.ToString(), Text = "Recently saved", Selected = SortOrder == SortOrder.RecentlySaved },
+            new SelectListItem { Value = SortOrder.ClosingSoonest.ToString(), Text = "Closing soonest", Selected = SortOrder == SortOrder.ClosingSoonest }
+        };
 
         public class SavedVacancy
         {
@@ -24,11 +32,16 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
             public DateTime ClosingDate { get; set; }
             public bool IsClosingSoon { get; set; }
             public string Location { get; set; }
+            public bool IsExternalVacancy { get; set; }
+            public string ExternalVacancyUrl { get; set; }
         }
 
         public static IndexViewModel Map(GetSavedVacanciesQueryResult source, IDateTimeService dateTimeService, SortOrder sortOrder)
         {
-            var result = new IndexViewModel();
+            var result = new IndexViewModel
+            {
+                SortOrder = sortOrder,
+            };
 
             var expired = new List<SavedVacancy>();
             var savedVacancies = new List<SavedVacancy>();
@@ -45,6 +58,8 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                     Title = vacancy.Title,
                     EmployerName = vacancy.EmployerName,
                     Location = $"{vacancy.City}, {vacancy.Postcode}",
+                    IsExternalVacancy = vacancy.IsExternalVacancy,
+                    ExternalVacancyUrl = vacancy.ExternalVacancyUrl,
                     CreatedOn = 
                         $"Saved on {vacancy.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = vacancy.ClosingDate,
