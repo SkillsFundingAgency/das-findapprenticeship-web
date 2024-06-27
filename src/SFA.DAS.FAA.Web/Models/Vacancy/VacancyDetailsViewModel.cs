@@ -124,6 +124,13 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Postcode = source.Postcode,
             };
         }
+
+        public string City =>
+            !string.IsNullOrEmpty(AddressLine4) ? AddressLine4 :
+            !string.IsNullOrEmpty(AddressLine3) ? AddressLine3 :
+            !string.IsNullOrEmpty(AddressLine2) ? AddressLine2 :
+            !string.IsNullOrEmpty(AddressLine1) ? AddressLine1 :
+            string.Empty;
     }
 
     public class Qualification
