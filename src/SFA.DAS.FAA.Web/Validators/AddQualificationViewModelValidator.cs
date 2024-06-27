@@ -18,10 +18,11 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
     }
     public SubjectViewModelValidator(QualificationDisplayTypeViewModel model)
     {
-        RuleFor(c => c.Name).ValidFreeTextCharacters();
-        RuleFor(c => c.AdditionalInformation).ValidFreeTextCharacters();
-        RuleFor(c => c.Level).ValidFreeTextCharacters();
-        RuleFor(c => c.Grade).ValidFreeTextCharacters();
+        
+        RuleFor(c => c.Name).ValidFreeTextCharacters().WithName(model.SubjectLabel);
+        RuleFor(c => c.AdditionalInformation).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
+        RuleFor(c => c.Level).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
+        RuleFor(c => c.Grade).ValidFreeTextCharacters().WithName(model.GradeLabel);
         
         When(x => x.IsDeleted is false, () =>
         {
@@ -35,6 +36,7 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
                     .Cascade(CascadeMode.Continue)
                     .NotEmpty()
                     .WithMessage(model.SubjectErrorMessage);
+                
                 return;
             }
             
@@ -55,6 +57,8 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
                                 || !string.IsNullOrEmpty(c.AdditionalInformation)
                                 || (isDegree && !string.IsNullOrEmpty(c.AdditionalInformation))
                                                               ) && model.GradeErrorMessage != null);
+                
+                
             });
 
             When(c => model.ShouldDisplayAdditionalInformationField, () =>
@@ -63,6 +67,7 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
                     .Cascade(CascadeMode.Continue)
                     .NotEmpty()
                     .WithMessage(model.AdditionalInformationErrorMessage);
+                
             });
             When(c => model.CanShowLevel, () =>
             {
@@ -71,6 +76,7 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
                     .NotEmpty()
                     .NotEqual("select", StringComparer.CurrentCultureIgnoreCase)
                     .WithMessage(model.AdditionalInformationErrorMessage);
+                
             });
         });
         

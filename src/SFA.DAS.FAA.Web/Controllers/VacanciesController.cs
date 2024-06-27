@@ -14,13 +14,14 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
+[Route("[controller]")]
 public class VacanciesController(
     IMediator mediator,
     IDateTimeService dateTimeService,
     ICacheStorageService cacheStorageService,
     IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
-    [Route("vacancies/{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("{vacancyReference}", Name = RouteNames.Vacancies)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
     {
         var validation = await validator.ValidateAsync(request);
@@ -45,7 +46,7 @@ public class VacanciesController(
     }
 
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("vacancies/{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("{vacancyReference}", Name = RouteNames.Vacancies)]
     [HttpPost]
     public async Task<IActionResult> Apply([FromRoute] PostApplyRequest request)
     {

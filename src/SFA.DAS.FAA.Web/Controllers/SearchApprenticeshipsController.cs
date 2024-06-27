@@ -33,7 +33,11 @@ public class SearchApprenticeshipsController(
             {
                 ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
             }
-            return View(new SearchApprenticeshipsViewModel());
+            return View(new SearchApprenticeshipsViewModel
+            {
+                WhatSearchTerm = model.WhatSearchTerm,
+                WhereSearchTerm = model.WhereSearchTerm
+            });
         }
         
         var result = await mediator.Send(new GetSearchApprenticeshipsIndexQuery
@@ -141,7 +145,11 @@ public class SearchApprenticeshipsController(
             {
                 ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
             }
-            return View(new SearchResultsViewModel());
+            return View(new SearchResultsViewModel
+            {
+                SearchTerm = request.SearchTerm,
+                Location = request.Location
+            });
         }
         
         var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };

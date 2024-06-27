@@ -6,6 +6,7 @@
         Submitted = 1,
         Withdrawn = 2,
         Successful,
-        Unsuccessful
+        Unsuccessful,
+        Expired
     }
 }

@@ -52,8 +52,10 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
         var values = protectedValue.Split('|');
         var controllerName = values[0];
         var actionName = values[1];
-
-        return RedirectToAction(actionName, controllerName);
+        var vacancyReference = values[2];
+        return string.IsNullOrEmpty(vacancyReference) 
+            ? RedirectToAction(actionName, controllerName) 
+            : RedirectToAction(actionName, controllerName, new {vacancyReference});
     }
 
     [AllowAnonymous]

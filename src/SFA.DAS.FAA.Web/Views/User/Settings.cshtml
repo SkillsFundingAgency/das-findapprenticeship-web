@@ -7,14 +7,18 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Settings</h1>
-        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+        <h1 class="govuk-heading-xl">Settings</h1>
+        @* <h2 class="govuk-heading-l">Your account</h2> *@
+        
+        <div class="govuk-!-padding-bottom-5"></div>
+        <h3 class="govuk-heading-m">Personal details</h3>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-6">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                     Name
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @if (String.IsNullOrEmpty(Model.MiddleNames))
+                    @if (string.IsNullOrEmpty(Model.MiddleNames))
                     {
                         <p class="govuk-body">@Model.FirstName @Model.LastName</p>
                     }
@@ -55,7 +59,7 @@
 
                     @if (Model.IsAddressFromLookup)
                     {
-                        <a class="govuk-link" asp-route="@RouteNames.SelectAddress" asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode" id="address-change-link">
+                        <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode" id="address-change-link">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     }
@@ -69,14 +73,14 @@
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    Phone number
+                    Telephone number
                 </dt>
                 <dd class="govuk-summary-list__value">
                     @Model.PhoneNumber
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-route="@RouteNames.PhoneNumber" asp-route-journeyPath="@UserJourneyPath.Settings" id="phone-number-change-link">
-                        Change<span class="govuk-visually-hidden"> phone number</span>
+                        Change<span class="govuk-visually-hidden"> telephone number</span>
                     </a>
                 </dd>
             </div>
@@ -103,10 +107,6 @@
         
         <h3 class="govuk-heading-m">Email notifications</h3>
         
-        <p class="govuk-body">We’ll automatically email you when a company tell us if your application is successful or
-            unsuccessful.
-        </p>
-        
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
@@ -123,8 +123,8 @@
                     }
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="">
-                        Change<span class="govuk-visually-hidden"> notification settings</span>
+                    <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences" asp-route-journeyPath="@UserJourneyPath.Settings" id="notification-preferences-change-link">
+                        Change<span class="govuk-visually-hidden"> notification preferences</span>
                     </a>
                 </dd>
             </div>
@@ -132,8 +132,5 @@
         
         <div class="govuk-!-padding-bottom-9"></div>
         
-        <h3 class="govuk-heading-m">Delete your account</h3>
-        <a href="delete-your-account.html" class="govuk-link">Delete my account</a>
-
     </div>
 </div>
