@@ -12,6 +12,7 @@ public static class AddRedirectRulesExtension
         options.AddRedirect("(?i)myapplications/(.*)", "applications", (int)HttpStatusCode.PermanentRedirect);
         options.AddRedirect("(?i)myapplications", "applications", (int)HttpStatusCode.PermanentRedirect);
         options.AddRedirect("(?i)apprenticeship/apply/(.*)", "applications", (int)HttpStatusCode.PermanentRedirect);
+        options.AddRedirect("(?i)apprenticeship/whatnext/(.*)", "applications", (int)HttpStatusCode.PermanentRedirect);
             
         //User settings
         options.AddRedirect("(?i)deleteaccount", "settings", (int)HttpStatusCode.PermanentRedirect);

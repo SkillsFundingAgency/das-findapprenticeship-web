@@ -59,7 +59,7 @@ public static class AddServiceRegistrationExtension
         services.AddAndConfigureGovUkAuthentication(
             configuration,
             typeof(CandidateAccountPostAuthenticationClaimsHandler),
-            "/",
+            "/apprenticeshipsearch",
             "/account-details", cookieDomain, loginRedirect);
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, CandidateAccountPostAuthenticationClaimsHandler>();
