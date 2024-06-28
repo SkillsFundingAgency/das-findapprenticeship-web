@@ -16,7 +16,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public string PageTitle => ApplicationId.HasValue
             ? "Check your answers to the equality questions"
-            : "change your answers to the equality questions";
+            : "Change your answers to the equality questions";
 
 
         public static implicit operator EqualityQuestionsSummaryViewModel(EqualityQuestionsModel source)
@@ -30,7 +30,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             };
         }
 
-        private static string GetEthnicGroupDescription(EthnicGroup group, EthnicSubGroup subGroup, string? otherEthnicSubGroupAnswer)
+        private static string GetEthnicGroupDescription(EthnicGroup group, EthnicSubGroup? subGroup, string? otherEthnicSubGroupAnswer)
         {
             switch (group)
             {

@@ -11,7 +11,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public string? IsGenderIdentifySameSexAtBirth { get; set; }
         public EthnicGroup? SelectedEthnicGroup { get; set; }
         public EthnicGroup EthnicGroup { get; set; }
-        public EthnicSubGroup EthnicSubGroup { get; set; }
+        public EthnicSubGroup? EthnicSubGroup { get; set; }
         public string? OtherEthnicSubGroupAnswer { get; set; }
 
         public static EqualityQuestionsModel MapFromQueryResult(GetEqualityQuestionsQueryResult queryResult)
@@ -44,15 +44,23 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public void Apply(EqualityQuestionEthnicSubGroupViewModelBase source)
         {
-            var ethnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), source.EthnicSubGroup!, true);
-
             EthnicGroup = source.EthnicGroup;
+
+            if (source.EthnicSubGroup == null)
+            {
+                EthnicSubGroup = null ;
+                OtherEthnicSubGroupAnswer = string.Empty;
+                return;
+            }
+            
+            var ethnicSubGroup = (EthnicSubGroup)Enum.Parse(typeof(EthnicSubGroup), source.EthnicSubGroup!, true);
+            
             EthnicSubGroup = ethnicSubGroup;
-            OtherEthnicSubGroupAnswer = ethnicSubGroup is EthnicSubGroup.AnyOtherWhiteBackground
-                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherAsianBackground
-                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherBlackAfricanOrCaribbeanBackground
-                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherMixedBackground
-                                                          | ethnicSubGroup is EthnicSubGroup.AnyOtherEthnicGroup
+            OtherEthnicSubGroupAnswer = ethnicSubGroup is SFA.DAS.FAA.Domain.Enums.EthnicSubGroup.AnyOtherWhiteBackground
+                                                          | ethnicSubGroup is SFA.DAS.FAA.Domain.Enums.EthnicSubGroup.AnyOtherAsianBackground
+                                                          | ethnicSubGroup is SFA.DAS.FAA.Domain.Enums.EthnicSubGroup.AnyOtherBlackAfricanOrCaribbeanBackground
+                                                          | ethnicSubGroup is SFA.DAS.FAA.Domain.Enums.EthnicSubGroup.AnyOtherMixedBackground
+                                                          | ethnicSubGroup is SFA.DAS.FAA.Domain.Enums.EthnicSubGroup.AnyOtherEthnicGroup
                 ? source.OtherEthnicSubGroupAnswer
                 : string.Empty;
         }
