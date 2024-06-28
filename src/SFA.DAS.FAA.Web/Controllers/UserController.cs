@@ -38,7 +38,7 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("user")]
+    [Route("")]
     public class UserController(IMediator mediator, ICacheStorageService cacheStorageService) : Controller
     {
         [HttpGet]

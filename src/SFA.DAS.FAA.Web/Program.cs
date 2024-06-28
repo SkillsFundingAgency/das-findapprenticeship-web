@@ -71,6 +71,7 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 
+app.AddRedirectRules();
 app.UseStaticFiles();
 
 app.UseEndpoints(endpointBuilder =>
