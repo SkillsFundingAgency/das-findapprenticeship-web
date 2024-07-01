@@ -80,13 +80,13 @@ Scenario: Enter my date of birth
 		| DateOfBirthYear  | 2001  |
 	Then I am redirected to the User Address - Postcode page
 
-	#TODO - fix
-#@WireMockServer
-#@AuthenticatedUserWithIncompleteSetup
-#Scenario: Opt to add my address
-#	When I navigate to the User Address - Postcode page
-#	Then a http status code of 200 is returned
-#	And the page content includes the following: What is your address?
+
+@WireMockServer
+@AuthenticatedUserWithIncompleteSetup
+Scenario: Opt to add my address
+	When I navigate to the User Address - Postcode page
+	Then a http status code of 200 is returned
+	And the page content includes the following: What is your address?
 
 @WireMockServer
 @AuthenticatedUserWithIncompleteSetup

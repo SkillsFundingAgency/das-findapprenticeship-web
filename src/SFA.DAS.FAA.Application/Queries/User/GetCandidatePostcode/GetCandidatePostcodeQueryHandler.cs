@@ -9,12 +9,12 @@ public class GetCandidatePostcodeQueryHandler(IApiClient apiClient) : IRequestHa
     public async Task<GetCandidatePostcodeQueryResult> Handle(GetCandidatePostcodeQuery request, CancellationToken cancellationToken)
     {
         var result =
-            await apiClient.Get<GetCandidatePostcodeApiResponse>(
+            await apiClient.Get<GetCandidatePostcodeApiResponse?>(
                 new GetCandidatePostcodeApiRequest(request.CandidateId));
         
         return new GetCandidatePostcodeQueryResult
         {
-            Postcode = result.Postcode
+            Postcode = result?.Postcode
         };
     }
 }
