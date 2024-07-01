@@ -191,11 +191,15 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
-        public IActionResult PostcodeAddress(string? postcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
+        public async Task<IActionResult> PostcodeAddress(string? postcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
+            var result = await mediator.Send(new GetCandidatePostcodeQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            });
             var model = new PostcodeAddressViewModel
             {
-                Postcode = postcode,
+                Postcode = postcode ?? result.Postcode,
                 JourneyPath = journeyPath
             };
             return View(model);

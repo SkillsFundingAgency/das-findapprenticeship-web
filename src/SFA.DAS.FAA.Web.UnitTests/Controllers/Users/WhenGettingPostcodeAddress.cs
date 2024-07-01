@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
@@ -33,16 +33,51 @@ public class WhenGettingPostcodeAddress
                     {
                         new Claim(ClaimTypes.NameIdentifier, govIdentifier),
                         new Claim(ClaimTypes.Email, email),
-                        new Claim(CustomClaims.CandidateId, candidateId)
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
                     }))
             }
         };
 
-        mediator.Setup(x => x.Send(It.Is<GetCandidateAddressQuery>(x => x.CandidateId.ToString() == candidateId), It.IsAny<CancellationToken>()))
+        mediator.Setup(x => x.Send(It.Is<GetCandidatePostcodeQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var result = controller.PostcodeAddress(postcode) as ViewResult;
+        var result = await controller.PostcodeAddress((string)null!) as ViewResult;
 
         result.Should().NotBeNull();
+        var actualModel = result.Model as PostcodeAddressViewModel;
+        actualModel.Postcode.Should().Be(queryResult.Postcode);
+    }
+    
+    [Test, MoqAutoData]
+    public async Task Then_View_Is_Returned_And_Postcode_Shown_If_Passed(
+        string email,
+        Guid candidateId,
+        string govIdentifier,
+        string? postcode,
+        GetCandidatePostcodeQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, govIdentifier),
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                }))
+            }
+        };
+
+        mediator.Setup(x => x.Send(It.Is<GetCandidatePostcodeQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
+
+        var result = await controller.PostcodeAddress(postcode) as ViewResult;
+
+        result.Should().NotBeNull();
+        var actualModel = result.Model as PostcodeAddressViewModel;
+        actualModel.Postcode.Should().Be(postcode);
     }
 }
