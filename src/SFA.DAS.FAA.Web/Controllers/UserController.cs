@@ -5,6 +5,7 @@ using CreateAccount.GetCandidateName;
 using CreateAccount.GetCandidatePhoneNumber;
 using CreateAccount.GetCandidatePostcodeAddress;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidatePreferences;
@@ -26,13 +27,15 @@ using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Custom;
 using SFA.DAS.FAA.Web.Models.User;
+using SFA.DAS.GovUK.Auth.Models;
+using SFA.DAS.GovUK.Auth.Services;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("")]
-    public class UserController(IMediator mediator, ICacheStorageService cacheStorageService, IConfiguration configuration) : Controller
+    public class UserController(IMediator mediator, ICacheStorageService cacheStorageService, IConfiguration configuration, IOidcService oidcService) : Controller
     {
         [HttpGet]
         [Route("create-account", Name = RouteNames.CreateAccount)]
@@ -467,9 +470,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("settings", Name = RouteNames.Settings)]
         public async Task<IActionResult> Settings()
         {
+            var email = await GetEmailFromUserInfoEndpoint();
             var accountDetails = await mediator.Send(new GetSettingsQuery
             {
-                CandidateId = (Guid)User.Claims.CandidateId()!
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                Email = email?.Email
             });
 
             var model = new SettingsViewModel
@@ -499,7 +504,19 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
-		[HttpGet("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
+        private async Task<GovUkUser?> GetEmailFromUserInfoEndpoint()
+        {
+            _ = bool.TryParse(configuration["StubAuth"], out var stubAuth);
+            if (stubAuth)
+            {
+                return null;
+            }
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var email = await oidcService.GetAccountDetails(token);
+            return email;
+        }
+
+        [HttpGet("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
         public async Task<IActionResult> ConfirmDataTransfer()
         {
             var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
