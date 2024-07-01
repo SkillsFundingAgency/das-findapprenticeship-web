@@ -32,7 +32,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("")]
-    public class UserController(IMediator mediator, ICacheStorageService cacheStorageService) : Controller
+    public class UserController(IMediator mediator, ICacheStorageService cacheStorageService, IConfiguration configuration) : Controller
     {
         [HttpGet]
         [Route("create-account", Name = RouteNames.CreateAccount)]
@@ -542,7 +542,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet("email", Name = RouteNames.Email)]
         public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
         {
-            return View(new EmailViewModel { JourneyPath = journeyPath });
+            return View(new EmailViewModel(configuration["ResourceEnvironmentName"]!.Equals("PRD", StringComparison.CurrentCultureIgnoreCase)) { JourneyPath = journeyPath });
         }
     }
 }
