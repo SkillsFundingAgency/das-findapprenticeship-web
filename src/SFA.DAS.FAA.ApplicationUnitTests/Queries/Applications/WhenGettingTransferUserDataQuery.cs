@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
             GetTransferUserDataQueryHandler handler)
         {
             // Arrange
-            var apiRequestUri = new GetMigrateDataTransferApiRequest(query.EmailAddress);
+            var apiRequestUri = new GetMigrateDataTransferApiRequest(query.EmailAddress, query.CandidateId);
             apiClientMock.Setup(client =>
                     client.Get<GetMigrateDataTransferApiResponse>(
                         It.Is<GetMigrateDataTransferApiRequest>(c =>

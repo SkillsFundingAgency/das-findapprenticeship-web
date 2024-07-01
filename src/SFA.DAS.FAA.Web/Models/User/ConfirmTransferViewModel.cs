@@ -45,7 +45,7 @@ namespace SFA.DAS.FAA.Web.Models.User
                 },
                 StartedApplicationsCount = source.StartedApplications,
                 SubmittedApplicationsCount = source.SubmittedApplications,
-                SavedApplicationsCount = source.StartedApplications,
+                SavedApplicationsCount = source.SavedApplications,
             };
         }
     }
