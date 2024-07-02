@@ -2,7 +2,7 @@
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
 
-namespace CreateAccount.GetCandidatePostcode;
+namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 public class GetCandidateAddressQueryHandler : IRequestHandler<GetCandidateAddressQuery, GetCandidateAddressQueryResult>
 {
     private readonly IApiClient _apiClient;

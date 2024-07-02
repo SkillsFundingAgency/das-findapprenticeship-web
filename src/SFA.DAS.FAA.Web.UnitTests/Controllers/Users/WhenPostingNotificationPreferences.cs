@@ -16,15 +16,20 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenPostingNotificationPreferences
 {
-    [Test, MoqAutoData]
-    public async Task When_Model_State_Is_Valid_Should_Redirect_To_Enter_Your_Address(
+    [Test]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
+    public async Task When_Model_State_Is_Valid_Should_Redirect(
+        UserJourneyPath journeyPath,
+        string redirectRoute,
         Guid candidateId,
         string email,
         NotificationPreferencesViewModel model,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        model.ReturnToConfirmationPage = false;
+        model.JourneyPath = journeyPath;
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -41,8 +46,37 @@ public class WhenPostingNotificationPreferences
 
         result.Should().NotBeNull();
         mediator.Verify(x => x.Send(It.Is<UpsertCandidatePreferencesCommand>(c =>
-            c.NotificationPreferences.Count == model.NotificationPreferences.Count
-            ), It.IsAny<CancellationToken>()), Times.Once);
-        result.RouteName.Should().BeEquivalentTo(RouteNames.ConfirmAccountDetails);
+            c.UnfinishedApplicationReminders == model.UnfinishedApplicationReminders), It.IsAny<CancellationToken>()), Times.Once);
+        result!.RouteName.Should().BeEquivalentTo(redirectRoute);
+    }
+
+    [Test, MoqAutoData]
+    public async Task And_Model_State_Is_Invalid_Should_Return_View_With_Model(
+        UserJourneyPath journeyPath,
+        Guid candidateId,
+        string email,
+        NotificationPreferencesViewModel model,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        model.JourneyPath = journeyPath;
+        model.UnfinishedApplicationReminders = null;
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                {
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                }))
+            }
+        };
+        controller.ModelState.AddModelError("SomeProperty", "SomeError");
+
+        var result = await controller.NotificationPreferences(model) as ViewResult;
+
+        result.Should().NotBeNull();
+        result!.Model.Should().Be(model);
     }
 }

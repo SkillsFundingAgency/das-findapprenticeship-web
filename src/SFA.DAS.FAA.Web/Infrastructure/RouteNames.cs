@@ -19,6 +19,8 @@ public static class RouteNames
     public const string NotificationPreferencesSkip = "notification-preferences-skip";
     public const string ConfirmAccountDetails = "check-your-account-details";
     public const string CreateAccount = "create-account";
+    public const string TransferYourData = "transfer-your-data";
+    public const string SignInToYourOldAccount = "sign-in-to-your-old-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
     public const string SignedOut = "signed-out";
@@ -26,6 +28,11 @@ public static class RouteNames
     public const string StubAccountDetailsGet = "account-details-get";
     public const string StubAccountDetailsPost = "account-details-post";
     public const string StubSignedIn = "stub-signedin-get";
+    public const string Settings = "settings";
+    public const string ChangeNotificationPreferences = "change-notification-preferences";
+    public const string Email = "email";
+    public const string ConfirmDataTransfer = "confirm-data-transfer";
+    public const string FinishAccountSetup = "finish-account-setup";
 
     public static class Applications
     {
@@ -79,6 +86,7 @@ public static class RouteNames
             public const string EqualityFlowEthnicSubGroupBlack = nameof(EqualityFlowEthnicSubGroupBlack);
             public const string EqualityFlowEthnicSubGroupOther = nameof(EqualityFlowEthnicSubGroupOther);
             public const string EqualityFlowSummary = nameof(EqualityFlowSummary);
+            public const string EditEqualityQuestions = nameof(EditEqualityQuestions);
         }
     }
 

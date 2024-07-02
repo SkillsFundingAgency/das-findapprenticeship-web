@@ -10,19 +10,40 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 using LocationViewModel = SFA.DAS.FAA.Web.Models.LocationViewModel;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-public class SearchApprenticeshipsController(IMediator mediator, IDateTimeService dateTimeService, IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, ICacheStorageService cacheStorageService) : Controller
+public class SearchApprenticeshipsController(
+    IMediator mediator, 
+    IDateTimeService dateTimeService, 
+    IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, 
+    ICacheStorageService cacheStorageService, 
+    SearchModelValidator searchModelValidator,
+    GetSearchResultsRequestValidator searchRequestValidator) : Controller
 {
-    [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index([FromQuery] string? whereSearchTerm = null, [FromQuery] string? whatSearchTerm = null, [FromQuery] int? search = null)
+    [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
+    public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
     {
+        var validationResult = await searchModelValidator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+        {
+            foreach (var validationFailure in validationResult.Errors)
+            {
+                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
+            }
+            return View(new SearchApprenticeshipsViewModel
+            {
+                WhatSearchTerm = model.WhatSearchTerm,
+                WhereSearchTerm = model.WhereSearchTerm
+            });
+        }
+        
         var result = await mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
-            LocationSearchTerm = whereSearchTerm
+            LocationSearchTerm = model.WhereSearchTerm
         });
 
         if (result is { LocationSearched: true, Location: null })
@@ -31,11 +52,11 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         }
         else if (result.LocationSearched && result.Location != null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = whatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm });
         }
         else if (search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = whatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm });
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
@@ -115,9 +136,23 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
 
     }
 
-    [Route("search-results", Name = RouteNames.SearchResults)]
+    [Route("apprenticeships", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
+        var validationResult = await searchRequestValidator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            foreach (var validationFailure in validationResult.Errors)
+            {
+                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
+            }
+            return View(new SearchResultsViewModel
+            {
+                SearchTerm = request.SearchTerm,
+                Location = request.Location
+            });
+        }
+        
         var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
         if (request.Distance <= 0)
         {
@@ -131,7 +166,7 @@ public class SearchApprenticeshipsController(IMediator mediator, IDateTimeServic
         {
             request.PageNumber = 1;
         }
-
+        
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,

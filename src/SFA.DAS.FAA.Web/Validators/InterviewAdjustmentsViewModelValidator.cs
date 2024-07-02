@@ -1,6 +1,8 @@
-﻿using FluentValidation;
+﻿using System.Data;
+using FluentValidation;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators;
 
@@ -18,5 +20,8 @@ public class InterviewAdjustmentsViewModelValidator : AbstractValidator<Intervie
         .WithMessage("Enter your interview support request")
         .Must(x => x.GetWordCount() <= 500)
         .WithMessage("Your answer must be 500 words or less");
+
+        RuleFor(x => x.InterviewAdjustmentsDescription)
+            .ValidFreeTextCharacters();
     }
 }

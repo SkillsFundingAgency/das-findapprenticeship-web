@@ -16,8 +16,13 @@ using System.Security.Claims;
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenPostingPhoneNumber
 {
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.NotificationPreferences)]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Enter_Your_Address(
+        UserJourneyPath journeyPath,
+        string redirectRoute,
         string govIdentifier,
         string email,
         string phone,
@@ -26,7 +31,7 @@ public class WhenPostingPhoneNumber
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        model.ReturnToConfirmationPage = false;
+        model.JourneyPath = journeyPath;
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -44,7 +49,7 @@ public class WhenPostingPhoneNumber
         var result = await controller.PhoneNumber(model) as RedirectToRouteResult;
 
         result.Should().NotBeNull();
-        result.RouteName.Should().Be(RouteNames.NotificationPreferences);
+        result.RouteName.Should().Be(redirectRoute);
         mediator.Verify(x => x.Send(It.Is<UpdatePhoneNumberCommand>(c =>
             c.Email.Equals(email)
             ), It.IsAny<CancellationToken>()), Times.Once);

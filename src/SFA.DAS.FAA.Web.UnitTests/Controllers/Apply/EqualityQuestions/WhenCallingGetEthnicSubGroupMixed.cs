@@ -12,6 +12,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Web.AppStart;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 {
@@ -22,49 +23,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
 
         [Test, MoqAutoData]
         public async Task Then_View_Is_Returned(
-            Guid applicationId,
-            Guid govIdentifier,
-            [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICacheStorageService> cacheStorageService)
-        {
-            var cacheKey = string.Format($"{Key}", govIdentifier);
-
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns("https://baseUrl");
-
-            cacheStorageService
-                .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
-                .ReturnsAsync((EqualityQuestionsModel)null!);
-
-            var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
-            {
-                Url = mockUrlHelper.Object,
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = new DefaultHttpContext
-                    {
-                        User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
-                    }
-                }
-            };
-
-            var actual = await controller.EthnicGroupMixed(applicationId) as ViewResult;
-            var actualModel = actual!.Model.As<EqualityQuestionsEthnicSubGroupMixedViewModel>();
-
-            using (new AssertionScope())
-            {
-                actual.Should().NotBeNull();
-                actual.Model.Should().NotBeNull();
-                actualModel.ApplicationId.Should().Be(applicationId);
-                actual.ViewName.Should().Be("~/Views/apply/EqualityQuestions/EthnicSubGroupMixed.cshtml");
-            }
-        }
-
-        [Test, MoqAutoData]
-        public async Task Then_Cached_Value_View_Is_Returned(
             Guid applicationId,
             Guid govIdentifier,
             EqualityQuestionsModel model,
@@ -89,7 +47,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
                     HttpContext = new DefaultHttpContext
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                            { new(ClaimTypes.NameIdentifier, govIdentifier.ToString()) }))
+                            { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
                     }
                 }
             };

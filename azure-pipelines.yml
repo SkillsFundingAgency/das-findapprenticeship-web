@@ -23,12 +23,12 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/tags/2.1.7
+    ref: refs/tags/2.1.20
     endpoint: SkillsFundingAgency
   - repository: das-platform-automation
     type: github
     name: SkillsFundingAgency/das-platform-automation
-    ref: refs/tags/5.1.6
+    ref: refs/tags/5.1.8
     endpoint: SkillsFundingAgency
   pipelines:
   - pipeline: das-employer-config
@@ -99,32 +99,32 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DIG-PreProd-ARM
 
-# - stage: Deploy_PROD
-#   dependsOn: Build
-#   displayName: Deploy to PROD
-#   variables:
-#   - group: PROD Management Resources
-#   - group: PROD Shared Resources
-#   - group: PROD das-findapprenticeship-web
-#   jobs:
-#   - template: pipeline-templates/job/deploy.yml
-#     parameters:
-#       Environment: PROD
-#       SolutionBaseName: $(SolutionBaseName)
-#       ServiceConnection: SFA-DIG-Prod-ARM
+- stage: Deploy_PROD
+  dependsOn: Build
+  displayName: Deploy to PROD
+  variables:
+  - group: PROD Management Resources
+  - group: PROD Shared Resources
+  - group: PROD das-findapprenticeship-web
+  jobs:
+  - template: pipeline-templates/job/deploy.yml
+    parameters:
+      Environment: PROD
+      SolutionBaseName: $(SolutionBaseName)
+      ServiceConnection: SFA-DIG-Prod-ARM
 
-# - stage: Deploy_MO
-#   dependsOn: Build
-#   displayName: Deploy to MO
-#   variables:
-#   - group: MO Management Resources
-#   - group: MO Shared Resources
-#   jobs:
-#   - template: pipeline-templates/job/deploy.yml
-#     parameters:
-#       Environment: MO
-#       SolutionBaseName: $(SolutionBaseName)
-#       ServiceConnection: SFA-ASM-ModelOffice-ARM
+- stage: Deploy_MO
+  dependsOn: Build
+  displayName: Deploy to MO
+  variables:
+  - group: MO Management Resources
+  - group: MO Shared Resources
+  jobs:
+  - template: pipeline-templates/job/deploy.yml
+    parameters:
+      Environment: MO
+      SolutionBaseName: $(SolutionBaseName)
+      ServiceConnection: SFA-ASM-ModelOffice-ARM
 
 - stage: Deploy_DEMO
   dependsOn: Build

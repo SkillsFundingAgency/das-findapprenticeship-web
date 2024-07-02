@@ -1,0 +1,136 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.User
+@model SFA.DAS.FAA.Web.Models.User.SettingsViewModel
+@{
+    ViewData["Title"] = "Settings – Find an apprenticeship – GOV.UK";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Settings</h1>
+        @* <h2 class="govuk-heading-l">Your account</h2> *@
+        
+        <div class="govuk-!-padding-bottom-5"></div>
+        <h3 class="govuk-heading-m">Personal details</h3>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-6">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @if (string.IsNullOrEmpty(Model.MiddleNames))
+                    {
+                        <p class="govuk-body">@Model.FirstName @Model.LastName</p>
+                    }
+                    else
+                    {
+                        <p class="govuk-body">@Model.FirstName @Model.MiddleNames @Model.LastName</p>
+                    }
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.UserName" asp-route-journeyPath="@UserJourneyPath.Settings" id="name-change-link">
+                        Change<span class="govuk-visually-hidden"> name</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Date of birth
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.DateOfBirth.ToString("dd MMMM yyyy")
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.DateOfBirth" asp-route-journeyPath="@UserJourneyPath.Settings" id="dob-change-link">
+                        Change<span class="govuk-visually-hidden"> date of birth</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.AddressLine1<br />
+                    @Model.Town<br />
+                    @Model.Postcode
+                </dd>
+                <dd class="govuk-summary-list__actions">
+
+                    @if (Model.IsAddressFromLookup)
+                    {
+                        <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode" id="address-change-link">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-journeyPath="@UserJourneyPath.Settings" id="address-change-manual-link">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    }
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Telephone number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.PhoneNumber
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.PhoneNumber" asp-route-journeyPath="@UserJourneyPath.Settings" id="phone-number-change-link">
+                        Change<span class="govuk-visually-hidden"> telephone number</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.EmailAddress
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.Email" asp-route-journeyPath="@UserJourneyPath.Settings" id="email-change-link">
+                        Change<span class="govuk-visually-hidden">Email address</span>
+                    </a>
+                </dd>
+            </div>
+        </dl>
+
+        @if (Model.HasAnsweredEqualityQuestions)
+        {
+            <a href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EditEqualityQuestions)" class="govuk-link">Change your answers to the equality questions</a>
+            <div class="govuk-!-padding-bottom-9"></div>
+        }
+        
+        <h3 class="govuk-heading-m">Email notifications</h3>
+        
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Do you want to get reminders about unfinished applications?
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @if (Model.UnfinishedApplicationReminders)
+                    {
+                        <text>Yes</text>
+                    }
+                    else
+                    {
+                        <text>No</text>                        
+                    }
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences" asp-route-journeyPath="@UserJourneyPath.Settings" id="notification-preferences-change-link">
+                        Change<span class="govuk-visually-hidden"> notification preferences</span>
+                    </a>
+                </dd>
+            </div>
+        </dl>
+        
+        <div class="govuk-!-padding-bottom-9"></div>
+        
+    </div>
+</div>

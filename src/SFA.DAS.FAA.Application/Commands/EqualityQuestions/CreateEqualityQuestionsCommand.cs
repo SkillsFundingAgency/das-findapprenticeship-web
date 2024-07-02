@@ -5,7 +5,6 @@ namespace SFA.DAS.FAA.Application.Commands.EqualityQuestions
 {
     public class CreateEqualityQuestionsCommand : IRequest<CreateEqualityQuestionsCommandResult>
     {
-        public Guid ApplicationId { get; set; }
         public Guid CandidateId { get; set; }
         public GenderIdentity? Sex { get; set; }
         public EthnicGroup? EthnicGroup { get; set; }

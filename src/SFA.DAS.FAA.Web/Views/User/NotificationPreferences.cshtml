@@ -1,68 +1,58 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
-@model SFA.DAS.FAA.Web.Models.User.NotificationPreferencesViewModel
+﻿@model SFA.DAS.FAA.Web.Models.User.NotificationPreferencesViewModel
 @{
-    ViewData["Title"] = "Tell us your notification preferences – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = Model.PageTitle;
 }
 @section BackLink {
-    @if (Model.ReturnToConfirmationPage is true)
-    {
-        <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
-    }
-    else
-    {
-        <a class="govuk-back-link" asp-route="@RouteNames.PhoneNumber" asp-route-backLink="@Model.PhoneNumberBacklink">
-            Back
-        </a>
-    }
+        <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
 }
-
+<partial name="_ValidationSummary" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial name="_ValidationSummary" />
-        <span class="govuk-caption-l">Create an account</span>
-        <h1 class="govuk-heading-l">Tell us your notification preferences</h1>
-
+        <span class="govuk-caption-l">
+            @Model.PageCaption
+        </span>
+        <h1 class="govuk-heading-l">
+            @Model.PageHeading
+        </h1>
+        <p class="govuk-body">We can email you about applications you have not finished yet and remind you to apply.</p>
+        <p class="govuk-body">We’ll remind you when there’s:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>a week to go</li>
+            <li>2 days to go</li>
+        </ul>
+        <p class="govuk-body">You can unsubscribe from these reminders at any time in your settings.</p>
+        <div class="govuk-inset-text">
+            No matter what you select, you’ll still get emails when companies tell us if your application has been successful or unsuccessful.
+        </div>
         <form class="form" method="post">
-            <input type="hidden" asp-for="@Model.ReturnToConfirmationPage" />
-            @for (var i = 0; i < Model.NotificationPreferences.Count; i++)
-            {
-                <input type="hidden" asp-for="@Model.NotificationPreferences[i].PreferenceId" />
-                <input type="hidden" asp-for="@Model.NotificationPreferences[i].Meaning" />
-                <input type="hidden" asp-for="@Model.NotificationPreferences[i].Hint" />
-
-                <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                            <h1 class="govuk-fieldset__heading">
-                                @Model.NotificationPreferences[i].Meaning
-                            </h1>
-                        </legend>
-                        <div id="notification-hint" class="govuk-hint">
-                            @Model.NotificationPreferences[i].Hint
+            <div class="govuk-form-group" das-highlight-error-for="UnfinishedApplicationReminders" error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            Do you want to get reminders about unfinished applications?
+                        </h1>
+                    </legend>
+                    <span das-validation-for="UnfinishedApplicationReminders" class="govuk-error-message"></span>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="UnfinishedApplicationReminders" asp-for="UnfinishedApplicationReminders" type="radio" value="true">
+                            <label class="govuk-label govuk-radios__label" for="UnfinishedApplicationReminders">
+                                Yes
+                            </label>
                         </div>
-                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                            <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" asp-for="@Model.NotificationPreferences[i].TextPreference" type="checkbox">
-                                <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.NotificationPreferences[i].TextPreference">
-                                    Text
-                                </label>
-                            </div>
-                            <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" asp-for="@Model.NotificationPreferences[i].EmailPreference" type="checkbox">
-                                <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.NotificationPreferences[i].EmailPreference">
-                                    Email
-                                </label>
-                            </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="UnfinishedApplicationReminders" id="IsRemindersOpt-2" type="radio" value="false">
+                            <label class="govuk-label govuk-radios__label" for="IsRemindersOpt-2">
+                                No
+                            </label>
                         </div>
-                    </fieldset>
-                </div>
-            }
-
+                    </div>
+                </fieldset>
+            </div>
             <div class="govuk-button-group">
                 <button class="govuk-button" data-module="govuk-button">
-                    Continue
+                    @Model.PageCtaButtonLabel
                 </button>
-                <a class="govuk-link" asp-route="@RouteNames.NotificationPreferencesSkip">Skip - don't get notifications</a>
             </div>
         </form>
     </div>

@@ -77,4 +77,19 @@ public class SkillsAndStrengthValidatorTests
             result.Errors[0].ErrorMessage.Should().BeEquivalentTo("Enter your skills and strengths - you must enter an answer before making this section complete");
         }
     }
+    
+    [Test, MoqAutoData]
+    public async Task And_SkillsAndStrengths_Has_Invalid_Characters_Then_Model_Error(SkillsAndStrengthsViewModel model)
+    {
+        model.SkillsAndStrengths = "<script>alert()</script>";
+
+        var sut = new SkillsAndStrengthsViewModelValidator();
+        var result = await sut.TestValidateAsync(model);
+
+        using (new AssertionScope())
+        {
+            result.IsValid.Should().BeFalse();
+            result.ShouldHaveValidationErrorFor("SkillsAndStrengths");
+        }
+    }
 }

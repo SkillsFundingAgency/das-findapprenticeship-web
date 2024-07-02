@@ -29,8 +29,7 @@ public class WhenHandlingGetCandidateSkillsAndStrengthsQuery
             apiClient.Invocations.Count.Should().Be(1);
             actual.Should().NotBeNull();
             actual.Should().BeOfType<GetCandidateSkillsAndStrengthsQueryResult>();
-            actual.Should().BeEquivalentTo(apiResponse.AboutYou);
-            actual.SkillsAndStrengths.Should().BeEquivalentTo(apiResponse.AboutYou.SkillsAndStrengths);
+            actual.Strengths.Should().BeEquivalentTo(apiResponse.Strengths);
         }
     }
 }

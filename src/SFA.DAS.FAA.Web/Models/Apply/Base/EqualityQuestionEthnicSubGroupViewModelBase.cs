@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Models.Apply.Base
 {
-    public class EqualityQuestionEthnicSubGroupViewModelBase : ViewModelBase
+    public abstract class EqualityQuestionEthnicSubGroupViewModelBase : ViewModelBase
     {
-        [FromRoute]
-        public Guid ApplicationId { get; init; }
+        public Guid? ApplicationId { get; init; }
+        public bool IsEdit { get; set; }
+        public abstract EthnicGroup EthnicGroup { get; }
         public string? EthnicSubGroup { get; set; }
         public string? OtherEthnicSubGroupAnswer { get; init; }
     }
