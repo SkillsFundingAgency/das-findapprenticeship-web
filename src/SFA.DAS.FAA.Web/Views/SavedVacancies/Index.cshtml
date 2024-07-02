@@ -1,0 +1,125 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.SavedVacancies.IndexViewModel;
+@{
+    ViewData["Title"] = "Saved vacancies - Find an apprenticeship - GOV.UK";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Saved vacancies</h1>
+
+        <div class="govuk-inset-text">
+            You’ll be able to save vacancies soon. Until then, we’ve transferred your saved vacancies from the old Find
+            an apprenticeship.
+        </div>
+
+        @if (Model.ShowSortComponent)
+        {
+            <div class="das-js-show">
+                <form method="get">
+                    <div class="faa-search-results-sort faa-search-results-sort--saved">
+                        <label class="govuk-label faa-search-results-sort__label" for="sortOrder">Sort by</label>
+                        <select class="govuk-select faa-search-results-sort__select faa-js-select-change-submit-form"
+                            id="sortOrder" name="sortOrder" asp-for="SortOrder">
+                            @foreach (var option in Model.SortOrderOptions)
+                            {
+                                <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                            }
+                        </select>
+                        <button type="submit" class="govuk-button das-js-hide">Sort</button>
+                    </div>
+                </form>
+            </div>
+        }
+
+        @if (!Model.HasSavedVacancies)
+        {
+            <p class="govuk-body">You don’t have any saved vacancies that are open to applications.</p>
+        }
+        else
+        {
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 govuk-!-margin-bottom-1">
+
+            <ol class="das-search-results__list">
+
+                @foreach (var vacancy in Model.SavedVacancies)
+                {
+                    <li class="das-search-results__list-item">
+                        @if (vacancy.IsClosingSoon)
+                        {
+                            <strong class="govuk-tag govuk-tag--orange govuk-!-margin-top-1 govuk-!-margin-bottom-2">Closing
+                                soon</strong>
+                        }
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+                            <a class="govuk-link govuk-link--no-visited-state"
+                                href="@Url.RouteUrl(RouteNames.Vacancies, new { vacancy.VacancyReference })">
+                                @vacancy.Title
+                            </a>
+                        </h2>
+                        <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
+                        <p class="govuk-hint">@vacancy.Location</p>
+                        <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.CreatedOn</p>
+                        <p class="govuk-body">@vacancy.ClosingDateLabel</p>
+
+                        @if (vacancy.IsExternalVacancy)
+                        {
+                            <p class="govuk-body  govuk-!-margin-bottom-2">
+                                <a class="govuk-link govuk-link--no-visited-state" target="_blank"
+                                    href="@vacancy.ExternalVacancyUrl">
+                                    Apply <span class="govuk-visually-hidden">for
+                                        @vacancy.Title</span>
+                                    on company's website (opens in new tab)
+                                </a>
+                            </p>
+
+                        }
+                        else
+                        {
+                            <form method="post" asp-route="@RouteNames.Vacancies" asp-route-vacancyreference="@vacancy.VacancyReference">
+                                <p class="govuk-body govuk-!-margin-bottom-2">
+                                    <button type="submit" class="das-button--inline-link">Apply now
+                                        <span class="govuk-visually-hidden">for @vacancy.Title</span></button>
+                                </p>
+                            </form>
+                        }
+
+                    </li>
+                }
+            </ol>
+        }
+
+        @if (Model.HasExpiredVacancies)
+        {
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-1">
+            <h2 class="govuk-heading-m govuk-!-margin-top-6">Expired</h2>
+            <p class="govuk-body">Vacancies you saved that have now closed.</p>
+
+            <details class="govuk-details" open="">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Show expired vacancies (@Model.ExpiredSavedVacancies.Count)
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+
+                    <div class="das-search-results">
+                        <ol class="das-search-results__list">
+                            @foreach (var expiredVacancy in Model.ExpiredSavedVacancies)
+                            {
+                                <hr class="govuk-section-break govuk-section-break-non-visible govuk-!-margin-bottom-6 ">
+                                <h3 class="govuk-heading-m govuk-!-margin-bottom-1">@expiredVacancy.Title</h3>
+                                <p class="govuk-body govuk-!-margin-bottom-0">@expiredVacancy.EmployerName</p>
+                                <p class="govuk-hint">@expiredVacancy.Location</p>
+                                <p class="govuk-body govuk-!-margin-bottom-1">@expiredVacancy.CreatedOn</p>
+                                <p class="govuk-body">@expiredVacancy.ClosingDateLabel</p>
+                                <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-6 ">
+                            }
+                        </ol>
+                    </div>
+
+                </div>
+            </details>
+        }
+
+    </div>
+</div>

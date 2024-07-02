@@ -17,7 +17,7 @@ public class WhenCreatingVacancyDetailsViewModel
     //     var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, vacancies);
     //
     //     actual.Should().BeEquivalentTo(vacancies.Vacancy, options=> options
-    //         .Excluding(c=>c.ClosingDate)
+    //         .Excluding(c=>c.ClosingDateLabel)
     //         .Excluding(c=>c.PostedDate)
     //         .Excluding(c=>c.Id)
     //         .Excluding(c=>c.CourseTitle)

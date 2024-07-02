@@ -19,8 +19,9 @@ namespace SFA.DAS.FAA.Web.Services
             return minutes > 0 ? $"{integerPart} hours {minutes} minutes a week" : $"{integerPart} hours a week";
         }
 
-        public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate)
+        public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate, bool isExternalVacancy = false)
         {
+            var timeSuffix = isExternalVacancy ? string.Empty : " at 11:59pm";
             var daysToExpiry = GetDaysUntilExpiry(dateTimeService, closingDate);
 
             switch (daysToExpiry)
@@ -28,15 +29,15 @@ namespace SFA.DAS.FAA.Web.Services
                 case < 0:
                     return $"Closed on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}";
                 case 0:
-                    return "Closes today at 11:59pm";
+                    return $"Closes today{timeSuffix}";
                 case 1:
                     return
-                        $"Closes tomorrow ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)";
+                        $"Closes tomorrow ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}{timeSuffix})";
                 case <= 31:
                     return
-                        $"Closes in {daysToExpiry} days ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm)";
+                        $"Closes in {daysToExpiry} days ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}{timeSuffix})";
                 default:
-                    return $"Closes on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)} at 11:59pm";
+                    return $"Closes on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}{timeSuffix}";
             }
         }
 

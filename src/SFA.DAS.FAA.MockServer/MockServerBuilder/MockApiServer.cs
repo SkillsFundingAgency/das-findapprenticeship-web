@@ -22,7 +22,8 @@ public static class MockApiServer
             .WithNewApplicationFiles()
             .WithExistingApplicationFiles()
             .WithApplicationsFiles()
-            .WithCreateAccountFiles();
+            .WithCreateAccountFiles()
+            .WithSavedVacanciesFiles();
 
         return server;
     }
