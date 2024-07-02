@@ -24,13 +24,15 @@ builder.Services.AddConfigurationOptions(rootConfiguration);
 
 builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
-
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
 builder.Services.AddServiceRegistration(isIntegrationTest);
 builder.Services.AddAuthenticationServices(rootConfiguration);
 builder.Services.AddCacheServices(rootConfiguration);
 builder.Services.AddHealthChecks();
-
-
 
 builder.Services.Configure<RouteOptions>(options =>
 {
@@ -73,6 +75,7 @@ app.UseAuthorization();
 
 app.AddRedirectRules();
 app.UseStaticFiles();
+app.UseCookiePolicy();
 
 app.UseEndpoints(endpointBuilder =>
 {

@@ -30,34 +30,17 @@
 
     <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
 
-    <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
-            ({ key: "@Configuration.Value.GoogleMapsApiKey", v: "weekly" });</script>
-
-    <script>
-            window.dataLayer = window.dataLayer || [];
-            
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || []; w[l].push({
-                    'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-                }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', 'GTM-WB9MZV5');
-        </script>
+    @await Html.PartialAsync("_GoogleMapsPartial")
+    @await Html.PartialAsync("_GoogleAnalyticsPartial")
 </head>
 
 <body class="govuk-template__body">
-<!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WB9MZV5"
-            height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
     <script>
         document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
     <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
-
+    
+    @await Html.PartialAsync("_CookieConsentPartial")
 
     @if (User.Identity is { IsAuthenticated: true })
     {
@@ -246,7 +229,7 @@
     }
 
     <div class="govuk-width-container">
-        @RenderSection("BackLink", required: false)
+        @await RenderSectionAsync("BackLink", required: false)
         <main class="govuk-main-wrapper" id="main-content" role="main">
             @RenderBody()
         </main>
@@ -261,6 +244,29 @@
                         <li class="govuk-footer__inline-list-item">
                             <a class="govuk-footer__link" href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_4SCNJixibnF1oCG" target="_blank" rel="noreferrer noopener">
                                 Give us feedback on this service
+                            </a>
+                        </li>
+                    </ul>
+                    <h2 class="govuk-visually-hidden">Lower footer links</h2>
+                    <ul class="govuk-footer__inline-list">
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link" href="#" target="_blank" rel="noreferrer noopener">
+                                Accessibility
+                            </a>
+                        </li>
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link" asp-route="@RouteNames.Cookies">
+                                Cookies
+                            </a>
+                        </li>
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link" href="https://www.gov.uk/government/publications/privacy-information-key-stage-4-and-5-and-adult-education/privacy-information-key-stage-4-and-5-and-adult-education?#using-your-data-to-support-your-learning-including-apprenticeships" target="_blank" rel="noreferrer noopener">
+                                Privacy
+                            </a>
+                        </li>
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link" href="" target="_blank" rel="noreferrer noopener">
+                                Terms and conditions
                             </a>
                         </li>
                     </ul>
