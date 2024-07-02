@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.Configuration;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
+using SFA.DAS.GovUK.Auth.Services;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
@@ -30,7 +31,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>())
+            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), Mock.Of<IOidcService>())
             {
                 ControllerContext = new ControllerContext
                 {
@@ -65,7 +66,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>())
+            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), Mock.Of<IOidcService>())
             {
                 ControllerContext = new ControllerContext
                 {
