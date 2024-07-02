@@ -15,7 +15,11 @@ using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Web.Models;
+using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 public class WhenGettingIndex
@@ -25,6 +29,7 @@ public class WhenGettingIndex
         GetSearchApprenticeshipsIndexResult result,
         Guid govIdentifier,
         bool showBanner,
+        [Frozen] Mock<SearchModelValidator> validator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<IMediator> mediator)
@@ -36,12 +41,14 @@ public class WhenGettingIndex
             .Returns("https://baseUrl");
         mediator.Setup(x => x.Send(It.IsAny<GetSearchApprenticeshipsIndexQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<SearchModel>>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
         cacheStorageService
         .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
         .ReturnsAsync(showBanner);
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object,Mock.Of<GetSearchResultsRequestValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -56,7 +63,7 @@ public class WhenGettingIndex
             }
         };
 
-        var actual = await controller.Index() as ViewResult;
+        var actual = await controller.Index(new SearchModel()) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options.Excluding(prop => prop.ShowAccountCreatedBanner));
@@ -69,6 +76,7 @@ public class WhenGettingIndex
     public async Task Then_The_Mediator_Query_Is_Called_And_Search_View_Returned_When_Searched(
         GetSearchApprenticeshipsIndexResult result,
         Guid govIdentifier,
+        [Frozen] Mock<SearchModelValidator> validator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<IDateTimeService> dateTimeService)
@@ -83,8 +91,10 @@ public class WhenGettingIndex
             .Returns("https://baseUrl");
         mediator.Setup(x => x.Send(It.IsAny<GetSearchApprenticeshipsIndexQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<SearchModel>>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object,Mock.Of<GetSearchResultsRequestValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -98,12 +108,61 @@ public class WhenGettingIndex
                 }
             }
         };
-        var actual = await controller.Index(search:1) as RedirectToRouteResult;
+        var actual = await controller.Index(new SearchModel(),search:1) as RedirectToRouteResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.RouteName.Should().Be(RouteNames.SearchResults);
     }
 
+    [Test, MoqAutoData]
+    public async Task Then_If_Validator_Fails_Error_And_View_Returned(
+        string whatSearchTerm,
+        string whereSearchTerm,
+        Guid govIdentifier,
+        GetSearchApprenticeshipsIndexResult queryResult,
+        SearchApprenticeshipsViewModel viewModel,
+        [Frozen] Mock<IMediator> mediator,
+        [Frozen] Mock<SearchModelValidator> validator,
+        [Frozen] Mock<IDateTimeService> dateTimeService,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService)
+    {
+        queryResult.LocationSearched = false;
+        queryResult.Location = null;
+        mediator.Setup(x => x.Send(It.Is<GetSearchApprenticeshipsIndexQuery>(c => c.LocationSearchTerm.Equals(whereSearchTerm)), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
+
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<SearchModel>>(), CancellationToken.None))
+            .ReturnsAsync(
+                new ValidationResult(new List<ValidationFailure>{new ValidationFailure("WhatSearchTerm","Error")})
+                );
+
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object,Mock.Of<GetSearchResultsRequestValidator>())
+        {
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
+                    }))
+                }
+            }
+        };
+        var model = new SearchModel
+        {
+            WhereSearchTerm = whereSearchTerm,
+            WhatSearchTerm = whatSearchTerm
+        };
+        var result = await controller.Index(model,1) as ViewResult;
+
+        result!.Model.Should().BeOfType<SearchApprenticeshipsViewModel>();
+    }
     [Test, MoqAutoData]
     public async Task ModelStateIsInvalid_ModelIsReturned(
         string whatSearchTerm,
@@ -112,6 +171,7 @@ public class WhenGettingIndex
         GetSearchApprenticeshipsIndexResult queryResult,
         SearchApprenticeshipsViewModel viewModel,
         [Frozen] Mock<IMediator> mediator,
+        [Frozen] Mock<SearchModelValidator> validator,
         [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<ICacheStorageService> cacheStorageService)
     {
@@ -124,8 +184,10 @@ public class WhenGettingIndex
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<SearchModel>>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(), cacheStorageService.Object, validator.Object,Mock.Of<GetSearchResultsRequestValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -140,15 +202,18 @@ public class WhenGettingIndex
             }
         };
         controller.ModelState.AddModelError("test", "message");
-
-        var result = await controller.Index(whereSearchTerm,whatSearchTerm) as ViewResult;
+        var model = new SearchModel
+        {
+            WhereSearchTerm = whereSearchTerm,
+            WhatSearchTerm = whatSearchTerm
+        };
+        var result = await controller.Index(model) as ViewResult;
 
         result!.Model.Should().BeOfType<SearchApprenticeshipsViewModel>();
     }
 
     [Test, MoqAutoData]
     public async Task And_ThereIsNoValidationError_SearchResultsReturned(
-        string whatSearchTerm,
         string whereSearchTerm,
         GetSearchApprenticeshipsIndexResult queryResult,
         [Frozen] Mock<IMediator> mediator,
@@ -158,8 +223,11 @@ public class WhenGettingIndex
         queryResult.LocationSearched = true;
         mediator.Setup(x => x.Send(It.Is<GetSearchApprenticeshipsIndexQuery>(c => c.LocationSearchTerm.Equals(whereSearchTerm)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
-
-        var result = await controller.Index(whereSearchTerm,whatSearchTerm) as RedirectToRouteResult;
+        var model = new SearchModel
+        {
+            WhereSearchTerm = whereSearchTerm
+        };
+        var result = await controller.Index(model) as RedirectToRouteResult;
 
         result!.RouteName.Should().Be(RouteNames.SearchResults);
         result.RouteValues!["location"].Should().Be(queryResult.Location.LocationName);

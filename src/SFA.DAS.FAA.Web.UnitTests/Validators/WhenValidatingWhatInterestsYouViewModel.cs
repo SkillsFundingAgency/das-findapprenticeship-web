@@ -70,5 +70,24 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators
                 result.ShouldHaveValidationErrorFor(x => x.AnswerText).WithErrorMessage("Your interest in this apprenticeship must be 300 words or less");
             }
         }
+
+        [Test]
+        public async Task Then_Invalid_Characters_Are_Not_Allowed()
+        {
+            var validator = new WhatInterestsYouViewModelValidator();
+
+            var model = new WhatInterestsYouViewModel
+            {
+                ApplicationId = Guid.NewGuid(),
+                IsSectionCompleted = true,
+                AnswerText = "<script>"
+            };
+
+            var result = await validator.TestValidateAsync(model);
+
+            result.IsValid.Should().BeFalse();
+            result.ShouldHaveValidationErrorFor(x => x.AnswerText)
+                .WithErrorMessage("Answer Text must only include letters a to z, numbers 0 to 9, and special characters such as hyphens, spaces and apostrophes");
+        }
     }
 }

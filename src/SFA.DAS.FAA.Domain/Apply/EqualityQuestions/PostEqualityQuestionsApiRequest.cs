@@ -2,17 +2,16 @@
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.Apply.EqualityQuestions;
-public record PostEqualityQuestionsApiRequest(Guid ApplicationId, UpdateEqualityQuestionsModel UpdateEqualityQuestionsModel)
+public record PostEqualityQuestionsApiRequest(Guid CandidateId, UpdateEqualityQuestionsModel UpdateEqualityQuestionsModel)
     : IPostApiRequest
 {
     public object Data { get; set; } = UpdateEqualityQuestionsModel;
 
-    public string PostUrl => $"applications/{ApplicationId}/equalityQuestions";
+    public string PostUrl => $"equalityQuestions?candidateId={CandidateId}";
 }
 
 public class UpdateEqualityQuestionsModel
 {
-    public Guid CandidateId { get; set; }
     public GenderIdentity? Sex { get; set; }
     public EthnicGroup? EthnicGroup { get; set; }
     public EthnicSubGroup? EthnicSubGroup { get; set; }

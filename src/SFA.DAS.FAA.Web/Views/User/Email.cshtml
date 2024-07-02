@@ -1,0 +1,22 @@
+﻿@model SFA.DAS.FAA.Web.Models.User.EmailViewModel
+@{
+    ViewData["Title"] = "Change your email address – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+        <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">
+            @Model.PageCaption
+        </span>
+        <h1 class="govuk-heading-l">
+            Change your email address
+        </h1>
+        <p class="govuk-body">We use the email address from your GOV.UK One Login.</p>
+        <p class="govuk-body">To use a different address, change the email you use to sign in with your GOV.UK One Login.</p>
+        <p class="govuk-body">
+            <a href="https://home.account.gov.uk/settings" class="govuk-link" rel="noreferrer noopener" target="_blank">Change your sign in details in your GOV.UK One Login (opens in new tab)</a>
+        </p>
+    </div>
+</div>

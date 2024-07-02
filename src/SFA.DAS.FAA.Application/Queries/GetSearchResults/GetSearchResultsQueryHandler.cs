@@ -14,11 +14,16 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
     }
     public async Task<GetSearchResultsResult> Handle(GetSearchResultsQuery query, CancellationToken cancellationToken)
     {
-        var sort = string.IsNullOrEmpty(query.Sort)
-            ? VacancySort.DistanceAsc
-            : (VacancySort)Enum.Parse(typeof(VacancySort), query.Sort, true);
-
-        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, sort, query.DisabilityConfident, query.CandidateId);
+        var vacancySort = VacancySort.DistanceAsc;
+        if (!string.IsNullOrEmpty(query.Sort))
+        {
+            if (Enum.TryParse<VacancySort>(query.Sort, true, out var vacancySortParsed))
+            {
+                vacancySort = vacancySortParsed;
+            }
+        }
+        
+        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, vacancySort, query.DisabilityConfident, query.CandidateId);
         var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
 
         return new GetSearchResultsResult
@@ -29,7 +34,7 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             Routes = response.Routes,
             PageNumber = response.PageNumber,
             TotalPages = response.TotalPages,
-            Sort = sort.ToString(),
+            Sort = vacancySort.ToString(),
             VacancyReference = response.VacancyReference,
             Levels = response.Levels,
             DisabilityConfident = response.DisabilityConfident,

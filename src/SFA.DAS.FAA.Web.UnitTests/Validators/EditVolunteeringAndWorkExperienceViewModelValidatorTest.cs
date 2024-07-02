@@ -47,4 +47,28 @@ public class EditVolunteeringAndWorkExperienceViewModelValidatorTest
         result.ShouldHaveValidationErrorFor(c => c.StartDate).WithErrorMessage(StartDateErrorMessage);
         result.ShouldHaveValidationErrorFor(c => c.IsCurrentRole).WithErrorMessage(IsCurrentJobErrorMessage);
     }
+    
+    
+    [Test, MoqAutoData]
+    public async Task Then_Returns_Error_For_Not_Allowed_Characters(
+        MonthYearDate? startDate,
+        bool? currentRole,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        var notValidString = "<script>alert()</script>";
+        var model = new EditVolunteeringAndWorkExperienceViewModel
+        {
+            ApplicationId = Guid.NewGuid(),
+            CompanyName = notValidString,
+            Description = notValidString,
+            StartDate = startDate,
+            IsCurrentRole = currentRole
+        };
+
+        var sut = new EditVolunteeringAndWorkExperienceViewModelValidator(dateTimeService.Object);
+        var result = await sut.TestValidateAsync(model);
+
+        result.ShouldHaveValidationErrorFor(x => x.CompanyName);
+        result.ShouldHaveValidationErrorFor(x => x.Description);
+    }
 }

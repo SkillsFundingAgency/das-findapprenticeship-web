@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators;
 
@@ -11,7 +12,8 @@ public class AddAdditionalQuestionViewModelValidator : AbstractValidator<AddAddi
         RuleFor(x => x.AdditionalQuestionAnswer).Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("Enter your answer – you must enter an answer before making this section complete")
             .Must(x => x.GetWordCount() <= 300)
-            .WithMessage("Your answer must be 300 words or less");
+            .WithMessage("Your answer must be 300 words or less")
+            .ValidFreeTextCharacters();
 
         RuleFor(x => x.IsSectionCompleted)
         .NotNull()

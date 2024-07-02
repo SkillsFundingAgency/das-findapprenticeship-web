@@ -1,0 +1,35 @@
+﻿@model SFA.DAS.FAA.Web.Models.User.InformViewModel;
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Transfer your data to the new Find an apprenticeship – Find an apprenticeship – GOV.UK";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.CreateAccount">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">Transfer your data to the new Find an apprenticeship</h1>
+        <p class="govuk-body">
+            If you had an account before 31 July 2024, we can transfer your:
+        </p>
+        <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
+            <li>personal details</li>
+            <li>applications you’re working on</li>
+            <li>past applications you’ve made</li>
+            <li>saved vacancies</li>
+        </ul>
+        <p class="govuk-body">
+            You'll need to sign in with your old account details for us to transfer your data.
+        </p>
+
+        <p class="govuk-body">
+            We'll transfer your data to your GOV.UK One Login.
+        </p>
+
+        <a asp-route="@RouteNames.SignInToYourOldAccount" class="govuk-button" role="button">Continue</a>
+    </div>
+</div>
