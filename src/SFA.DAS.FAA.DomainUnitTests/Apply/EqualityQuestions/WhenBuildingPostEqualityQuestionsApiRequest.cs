@@ -8,11 +8,11 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Apply.EqualityQuestions
     public class WhenBuildingPostEqualityQuestionsApiRequest
     {
         [Test, AutoData]
-        public void Then_The_Url_Is_Correctly_Constructed(Guid applicationId, UpdateEqualityQuestionsModel data)
+        public void Then_The_Url_Is_Correctly_Constructed(Guid candidateId, UpdateEqualityQuestionsModel data)
         {
-            var actual = new PostEqualityQuestionsApiRequest(applicationId, data);
+            var actual = new PostEqualityQuestionsApiRequest(candidateId, data);
 
-            actual.PostUrl.Should().Be($"applications/{applicationId}/equalityQuestions");
+            actual.PostUrl.Should().Be($"equalityQuestions?candidateId={candidateId}");
             ((UpdateEqualityQuestionsModel)actual.Data).Should().BeEquivalentTo(data);
         }
     }

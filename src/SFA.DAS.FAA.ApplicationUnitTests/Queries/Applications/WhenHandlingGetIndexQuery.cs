@@ -7,6 +7,7 @@ using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 using SFA.DAS.FAA.Domain.Applications.GetApplications;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.User;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
 {
@@ -32,7 +33,8 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            result.Should().BeEquivalentTo(apiResponse);
+            result.Applications.Should().BeEquivalentTo(apiResponse.Applications);
+            result.ShowAccountRecoveryBanner.Should().Be(apiResponse.ShowAccountRecoveryBanner);
         }
     }
 }

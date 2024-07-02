@@ -24,17 +24,16 @@
             <div class="govuk-grid-row">
 
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                    <div class="govuk-form-group">
+                    <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhatSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
 
                         <label class="govuk-label govuk-label--m" for="WhatSearchTerm">
                             What
                         </label>
-
+                        <span asp-validation-for="WhatSearchTerm" class="govuk-error-message"></span>
                         <div id="what-hint" class="govuk-hint">
                             Enter a job or company
                         </div>
-                        <input class="govuk-input" id="WhatSearchTerm" name="WhatSearchTerm" type="text"
-                            aria-describedby="what-hint">
+                        <input asp-for="WhatSearchTerm" type="text" aria-describedby="what-hint" class="govuk-input" id="WhatSearchTerm" />
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
@@ -48,8 +47,7 @@
                         <div id="where-hint" class="govuk-hint">
                             Enter a city or postcode
                         </div>
-                        <input class="govuk-input faa-location-autocomplete" name="WhereSearchTerm" id="WhereSearchTerm"
-                            type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint">
+                        <input asp-for="WhereSearchTerm" type="text" type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint" class="govuk-input faa-location-autocomplete" id="WhereSearchTerm" />
                     </div>
                 </div>
             </div>

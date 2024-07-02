@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators;
 
@@ -31,6 +32,9 @@ public class TrainingCourseViewModelBaseValidator : AbstractValidator<TrainingCo
     {
         RuleFor(x => x.CourseName)
             .NotEmpty().WithMessage(CourseNameErrorMessage);
+
+        RuleFor(x => x.CourseName)
+            .ValidFreeTextCharacters();
 
         RuleFor(x => x.YearAchieved)
             .NotEmpty().WithMessage(YearAchievedErrorMessage)

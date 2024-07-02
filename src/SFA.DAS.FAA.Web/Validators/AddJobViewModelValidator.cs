@@ -2,6 +2,7 @@
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators
 {
@@ -59,6 +60,10 @@ namespace SFA.DAS.FAA.Web.Validators
                 .When(x => x.IsCurrentRole.HasValue && x.IsCurrentRole.Value == false);
 
             RuleFor(x => x.IsCurrentRole).NotEmpty().WithMessage(IsCurrentJobErrorMessage);
+            
+            RuleFor(c => c.JobTitle).ValidFreeTextCharacters();
+            RuleFor(c => c.EmployerName).ValidFreeTextCharacters();
+            RuleFor(c => c.JobDescription).ValidFreeTextCharacters();
         }
     }
 }

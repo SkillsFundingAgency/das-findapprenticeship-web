@@ -5,31 +5,31 @@
     ViewData["Title"] = "Select your address – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    @if (Model.IsEdit)
+    @if (Model.JourneyPath is UserJourneyPath.Settings or UserJourneyPath.ConfirmAccountDetails)
     {
-        <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDetails">Back</a>
+        <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
     }
     else
     {
-        <a class="govuk-back-link" asp-route="@RouteNames.PostcodeAddress" asp-route-postcode="@Model.Postcode">
-            Back
-        </a>
+        <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.Postcode">Back</a>
     }
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
-        <span class="govuk-caption-l">Create an account</span>
+        <span class="govuk-caption-l">
+            @Model.PageCaption
+        </span>
         <h1 class="govuk-heading-l">Select your address</h1>
         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Postcode</h2>
         <p class="govuk-body govuk-!-font-weight-bold">
-            @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-change="@Model.IsEdit" asp-route-backlink="@RouteNames.SelectAddress">Change</a>
+            @Model.Postcode <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-journeyPath="@Model.JourneyPath">Change</a>
         </p>
         <form class="form" method="post">
             <input type="hidden" asp-for="Postcode" />
-            <input type="hidden" asp-for="ReturnToConfirmationPage" />
-            <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+            <input type="hidden" asp-for="JourneyPath" />
+            <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "govuk-form-group--error" : "")">
                 @if (Model.Addresses.Count == 1)
                 {
                     <div id="location-hint" class="govuk-hint">
@@ -65,11 +65,11 @@
 
             <div class="govuk-button-group">
                 <button class="govuk-button" data-module="govuk-button">
-                    Continue
+                    @Model.PageCtaButtonLabel
                 </button>
                 <a class="govuk-link" id="enter-address-manually-link" asp-route="@RouteNames.EnterAddressManually"
                    asp-route-selectAddressPostcode="@Model.Postcode" asp-route-backLink="@RouteNames.SelectAddress"
-                   asp-route-change="@Model.ReturnToConfirmationPage">
+                   asp-route-journeyPath="@Model.JourneyPath">
                     Enter my address manually
                 </a>
             </div>

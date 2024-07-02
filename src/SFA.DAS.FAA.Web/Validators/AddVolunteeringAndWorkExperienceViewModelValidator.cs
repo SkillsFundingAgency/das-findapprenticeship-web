@@ -3,6 +3,7 @@ using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Models.Apply.Base;
 using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators
 {
@@ -28,12 +29,20 @@ namespace SFA.DAS.FAA.Web.Validators
 
         public AddVolunteeringAndWorkExperienceViewModelBaseValidator(IDateTimeService dateTimeService)
         {
-            RuleFor(x => x.CompanyName).NotEmpty().WithMessage(CompanyNameErrorMessage);
+            RuleFor(x => x.CompanyName)
+                .NotEmpty()
+                .WithMessage(CompanyNameErrorMessage);
+
+            RuleFor(x => x.CompanyName)
+                .ValidFreeTextCharacters();
             
             RuleFor(x => x.Description).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(JobDescriptionErrorMessage)
                 .Must(x => x.GetWordCount() <= 100)
                 .WithMessage(JobDescriptionMaxLengthErrorMessage);
+            
+            RuleFor(x => x.Description)
+                .ValidFreeTextCharacters();
             
             RuleFor(x => x.StartDate).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(StartDateErrorMessage)

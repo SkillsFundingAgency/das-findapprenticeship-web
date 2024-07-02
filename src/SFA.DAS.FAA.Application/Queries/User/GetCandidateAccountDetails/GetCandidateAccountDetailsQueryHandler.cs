@@ -33,7 +33,6 @@ public class GetCandidateAccountDetailsQueryHandler(IApiClient apiClient)
                 Meaning = x.PreferenceMeaning,
                 Hint = x.PreferenceHint,
                 EmailPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.CandidatePreferences.ContactMethodEmail).FirstOrDefault()?.Status ?? false,
-                TextPreference = x.ContactMethodsAndStatus?.Where(x => x.ContactMethod == Constants.CandidatePreferences.ContactMethodText).FirstOrDefault()?.Status ?? false
             }).ToList()
         };
     }

@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-[Route("[controller]")]
+[Route("")]
 public class ServiceController(IStubAuthenticationService stubAuthenticationService, IConfiguration configuration, IDataProtectorService dataProtectorService) : Controller
 {
     [Route("signout", Name = RouteNames.SignOut)]
@@ -52,8 +52,10 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
         var values = protectedValue.Split('|');
         var controllerName = values[0];
         var actionName = values[1];
-
-        return RedirectToAction(actionName, controllerName);
+        var vacancyReference = values[2];
+        return string.IsNullOrEmpty(vacancyReference) 
+            ? RedirectToAction(actionName, controllerName) 
+            : RedirectToAction(actionName, controllerName, new {vacancyReference});
     }
 
     [AllowAnonymous]

@@ -82,4 +82,21 @@ public class WhenValidatingAddTrainingCourse
 
         result.ShouldNotHaveAnyValidationErrors();
     }
+    
+    [Test, MoqAutoData]
+    public async Task And_Input_Has_Invalid_Characters_Then_Invalid(
+        Mock<IDateTimeService> dateTimeService)
+    {
+        var model = new AddTrainingCourseViewModel()
+        {
+            ApplicationId = Guid.NewGuid(),
+            CourseName = "<script>alert()</script>",
+            YearAchieved = "2022"
+        };
+
+        var sut = new AddTrainingCourseViewModelValidator(dateTimeService.Object);
+        var result = await sut.TestValidateAsync(model);
+
+        result.ShouldHaveValidationErrorFor(c=>c.CourseName);
+    }
 }

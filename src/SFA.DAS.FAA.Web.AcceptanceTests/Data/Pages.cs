@@ -6,8 +6,16 @@ public static class Pages
     {
         return
         [
+            //Create Account
+            new Page { Name = "Create Account", Url= "/create-account"},
+            new Page { Name = "Transfer Your Data", Url = "/create-account/transfer-your-data" },
+            new Page { Name = "Sign into your Old Account", Url = "/create-account/sign-in-to-your-old-account" },
+            new Page { Name = "User Name", Url = "/user-name" },
+            new Page { Name = "User Date of Birth", Url = "/date-of-birth" },
+            new Page { Name = "User Address - Postcode", Url = "/postcode-address"},
+            new Page { Name = "User Address - Select", Url = "/select-address" },
             //Vacancies
-            new Page { Name = "Vacancy Details", Url= "/vacancies/{vacancyReference}" },
+            new Page { Name = "Vacancy Details", Url= "/apprenticeship/{vacancyReference}" },
             //Applications
             new Page { Name = "Applications", Url = "/applications" },
             //TaskList
@@ -34,7 +42,9 @@ public static class Pages
             new Page { Name = "Qualifications", Url="/apply/{applicationId}/qualifications"},
             new Page { Name = "Add Qualification Select Type", Url="/apply/{applicationId}/qualifications/add/select-type"},
             new Page { Name = "Delete Qualifications (single)", Url = "/apply/{applicationId}/qualifications/delete/2cb6af9b-77f9-4f47-af64-253a8bcc87bb" },
-            new Page { Name = "Delete Qualifications (multiple)", Url = "/apply/{applicationId}/qualifications/delete/20d1923f-25b4-4a37-8580-d04643cf1fba" }
+            new Page { Name = "Delete Qualifications (multiple)", Url = "/apply/{applicationId}/qualifications/delete/20d1923f-25b4-4a37-8580-d04643cf1fba" },
+            //Create Account
+            new Page { Name = "change email", Url="/create-account/email"},
         ];
     }
 

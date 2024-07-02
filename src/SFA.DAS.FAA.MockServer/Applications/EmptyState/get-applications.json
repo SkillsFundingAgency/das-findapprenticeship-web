@@ -1,3 +1,4 @@
 {
-    "applications": []
+  "ShowAccountRecoveryBanner": true,
+  "applications": []
 }
