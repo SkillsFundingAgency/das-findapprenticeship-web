@@ -78,6 +78,9 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public List<string> CourseCoreDuties { get; init; }
         public string? CourseOverviewOfRole { get; init; }
         public string? StandardPageUrl { get; init; }
+        public string? CompanyBenefitsInformation { get; init; }
+        public string? AdditionalTrainingDescription { get; init; }
+
         public List<LevelResponse>? Levels { get; init; }
 
         public CandidateApplicationDetails? Application { get; set; }
