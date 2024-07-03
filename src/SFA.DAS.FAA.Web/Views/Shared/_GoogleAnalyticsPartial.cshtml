@@ -1,8 +1,10 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using WebEssentials.AspNetCore.CdnTagHelpers
-@if (Context.Request.Cookies.ContainsKey(CookieKeys.AnalyticsCookieConsent) && Context.Request.Cookies.TryGetValue(CookieKeys.AnalyticsCookieConsent, out var isConsentGiven))
+@if (Context.Request.Cookies.ContainsKey(CookieKeys.AnalyticsConsent) 
+    && Context.Request.Cookies.TryGetValue(CookieKeys.AnalyticsConsent,
+    out var isConsentGiven))
 {
-    if(Convert.ToBoolean(isConsentGiven))
+    if (bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
     {
         <!-- Google Tag Manager (noscript) -->
         <noscript>

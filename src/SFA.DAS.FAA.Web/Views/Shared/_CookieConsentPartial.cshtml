@@ -2,8 +2,8 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using WebEssentials.AspNetCore.CdnTagHelpers
 @if (!Context.Request.Cookies.ContainsKey(CookieKeys.DASSeenCookieMessage) ||
-     !Context.Request.Cookies.ContainsKey(CookieKeys.AnalyticsCookieConsent) ||
-     !Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalCookieConsent))
+     !Context.Request.Cookies.ContainsKey(CookieKeys.AnalyticsConsent) ||
+     !Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent))
 {
     <div id="cookieConsent" class="govuk-cookie-banner" data-nosnippet="" role="region" aria-label="Cookies on Find an apprenticeship">
         <div class="govuk-cookie-banner__message govuk-width-container">
@@ -63,27 +63,4 @@
             </div>
         </div>
     </div>
-    <script>
-        function acceptCookies(args) {            
-            var date = new Date();
-            date.setFullYear(date.getFullYear() + 1);
-            document.cookie = "@CookieKeys.DASSeenCookieMessage=true; path=/; expires=" + date.toUTCString();            
-            document.getElementById('cookieConsent').style.display = 'none';
-            if (args === true) {
-                document.cookie = "@CookieKeys.AnalyticsCookieConsent=true; path=/; expires=" + date.toUTCString();
-                document.cookie = "@CookieKeys.FunctionalCookieConsent=true; path=/; expires=" + date.toUTCString();
-                document.getElementById("cookieAccept").removeAttribute("hidden");
-            }else{
-                document.cookie = "@CookieKeys.AnalyticsCookieConsent=false; path=/; expires=" + date.toUTCString();
-                document.cookie = "@CookieKeys.FunctionalCookieConsent=false; path=/; expires=" + date.toUTCString();
-                document.getElementById('cookieReject').removeAttribute('hidden');
-            }            
-        }        
-        function hideAcceptBanner() {
-            document.getElementById('cookieAccept').setAttribute('hidden', '');
-        }
-        function hideRejectBanner() {
-            document.getElementById('cookieReject').setAttribute('hidden', '');
-        }
-    </script>
 }
