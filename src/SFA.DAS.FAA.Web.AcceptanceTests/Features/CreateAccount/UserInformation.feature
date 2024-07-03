@@ -80,6 +80,7 @@ Scenario: Enter my date of birth
 		| DateOfBirthYear  | 2001  |
 	Then I am redirected to the User Address - Postcode page
 
+
 @WireMockServer
 @AuthenticatedUserWithIncompleteSetup
 Scenario: Opt to add my address

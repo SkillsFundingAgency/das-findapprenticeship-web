@@ -3,9 +3,9 @@ using CreateAccount.GetCandidateAccountDetails;
 using CreateAccount.GetCandidateDateOfBirth;
 using CreateAccount.GetCandidateName;
 using CreateAccount.GetCandidatePhoneNumber;
-using CreateAccount.GetCandidatePostcode;
 using CreateAccount.GetCandidatePostcodeAddress;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidatePreferences;
@@ -15,17 +15,11 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.PhoneNumber;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
-using CreateAccount.GetAddressesByPostcode;
-using CreateAccount.GetCandidateAccountDetails;
-using CreateAccount.GetCandidateDateOfBirth;
-using CreateAccount.GetCandidateName;
-using CreateAccount.GetCandidatePhoneNumber;
-using CreateAccount.GetCandidatePostcode;
-using CreateAccount.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
 using SFA.DAS.FAA.Application.Commands.MigrateData;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Web.Authentication;
@@ -33,13 +27,15 @@ using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Custom;
 using SFA.DAS.FAA.Web.Models.User;
+using SFA.DAS.GovUK.Auth.Models;
+using SFA.DAS.GovUK.Auth.Services;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("")]
-    public class UserController(IMediator mediator, ICacheStorageService cacheStorageService) : Controller
+    public class UserController(IMediator mediator, ICacheStorageService cacheStorageService, IConfiguration configuration, IOidcService oidcService) : Controller
     {
         [HttpGet]
         [Route("create-account", Name = RouteNames.CreateAccount)]
@@ -198,11 +194,15 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
-        public IActionResult PostcodeAddress(string? postcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
+        public async Task<IActionResult> PostcodeAddress(string? postcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
+            var result = await mediator.Send(new GetCandidatePostcodeQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            });
             var model = new PostcodeAddressViewModel
             {
-                Postcode = postcode,
+                Postcode = postcode ?? result.Postcode,
                 JourneyPath = journeyPath
             };
             return View(model);
@@ -470,9 +470,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("settings", Name = RouteNames.Settings)]
         public async Task<IActionResult> Settings()
         {
+            var email = await GetEmailFromUserInfoEndpoint();
             var accountDetails = await mediator.Send(new GetSettingsQuery
             {
-                CandidateId = (Guid)User.Claims.CandidateId()!
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                Email = email?.Email
             });
 
             var model = new SettingsViewModel
@@ -502,7 +504,19 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(model);
         }
 
-		[HttpGet("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
+        private async Task<GovUkUser?> GetEmailFromUserInfoEndpoint()
+        {
+            _ = bool.TryParse(configuration["StubAuth"], out var stubAuth);
+            if (stubAuth)
+            {
+                return null;
+            }
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var email = await oidcService.GetAccountDetails(token);
+            return email;
+        }
+
+        [HttpGet("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
         public async Task<IActionResult> ConfirmDataTransfer()
         {
             var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
@@ -545,7 +559,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet("email", Name = RouteNames.Email)]
         public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
         {
-            return View(new EmailViewModel { JourneyPath = journeyPath });
+            return View(new EmailViewModel(configuration["ResourceEnvironmentName"]!.Equals("PRD", StringComparison.CurrentCultureIgnoreCase)) { JourneyPath = journeyPath });
         }
     }
 }
