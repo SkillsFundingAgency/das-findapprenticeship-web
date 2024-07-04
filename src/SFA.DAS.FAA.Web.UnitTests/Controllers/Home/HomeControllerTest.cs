@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -31,8 +32,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
                 .Returns(expectedUrl);
 
             var cookiesMock = new Mock<IRequestCookieCollection>();
-            cookiesMock.SetupGet(c => c["AnalyticsConsent"]).Returns(cookieValue.ToString);
-            cookiesMock.SetupGet(c => c["FunctionalConsent"]).Returns(cookieValue.ToString);
+            cookiesMock.SetupGet(c => c[CookieKeys.AnalyticsConsent]).Returns(cookieValue.ToString);
+            cookiesMock.SetupGet(c => c[CookieKeys.FunctionalConsent]).Returns(cookieValue.ToString);
 
             var httpContextMock = new Mock<HttpContext>();
             httpContextMock.Setup(ctx => ctx.Request.Cookies).Returns(cookiesMock.Object);
