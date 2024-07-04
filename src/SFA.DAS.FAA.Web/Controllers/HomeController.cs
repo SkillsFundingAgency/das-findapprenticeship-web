@@ -5,6 +5,7 @@ using SFA.DAS.FAA.Web.Models;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
+    [Route("[controller]")]
     public class HomeController : Controller
     {
         [AllowAnonymous]
@@ -15,12 +16,14 @@ namespace SFA.DAS.FAA.Web.Controllers
             var analyticsCookieValue = Request.Cookies[CookieKeys.AnalyticsConsent];
             var functionalCookieValue = Request.Cookies[CookieKeys.FunctionalConsent];
 
-            bool.TryParse(analyticsCookieValue, out var isAnalyticsCookieConsentGiven);
-            bool.TryParse(functionalCookieValue, out var isFunctionalCookieConsentGiven);
+            _ = bool.TryParse(analyticsCookieValue, out var isAnalyticsCookieConsentGiven);
+            _ = bool.TryParse(functionalCookieValue, out var isFunctionalCookieConsentGiven);
+
+            var referer = Request.Headers.Referer.FirstOrDefault();
 
             var cookieViewModel = new CookiesViewModel
             {
-                PreviousPageUrl = Request.Headers["Referer"].ToString(),
+                PreviousPageUrl = referer ?? string.Empty,
                 ShowBannerMessage = false,
                 ConsentAnalyticsCookie = isAnalyticsCookieConsentGiven,
                 ConsentFunctionalCookie = isFunctionalCookieConsentGiven
