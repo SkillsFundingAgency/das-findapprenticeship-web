@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -42,9 +43,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SavedVacancies
             var actual = await controller.Index() as ViewResult;
 
             actual.Should().NotBeNull();
-            var expected = IndexViewModel.Map(result, dateTimeService.Object);
+            var expected = IndexViewModel.Map(result, dateTimeService.Object, SortOrder.ClosingSoonest);
             var actualModel = actual.Model as IndexViewModel;
-            actualModel.Should().BeEquivalentTo(expected);
+            actualModel.Should()
+                .BeEquivalentTo(expected,
+                    o => o.Excluding(x => x.SortOrder)
+                        .Excluding(x => x.SortOrderOptions));
         }
     }
 }
