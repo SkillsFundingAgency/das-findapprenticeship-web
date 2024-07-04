@@ -7,6 +7,7 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetSettings
     public class GetSettingsQuery : IRequest<GetSettingsQueryResult>
     {
         public Guid CandidateId { get; set; }
+        public string? Email { get; set; }
     }
 
     public class GetSettingsQueryResult
@@ -39,26 +40,26 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetSettings
     {
         public async Task<GetSettingsQueryResult> Handle(GetSettingsQuery request, CancellationToken cancellationToken)
         {
-            var checkAnswersResponse = await
+            var getSettingsApiResponse = await
                 apiClient.Get<GetSettingsApiResponse>(
-                    new GetSettingsApiRequest(request.CandidateId));
+                    new GetSettingsApiRequest(request.CandidateId, request.Email));
 
             return new GetSettingsQueryResult
             {
-                FirstName = checkAnswersResponse.FirstName,
-                MiddleNames = checkAnswersResponse.MiddleNames,
-                LastName = checkAnswersResponse.LastName,
-                DateOfBirth = checkAnswersResponse.DateOfBirth ?? DateTime.MinValue,
-                Uprn = checkAnswersResponse.Uprn,
-                AddressLine1 = checkAnswersResponse.AddressLine1,
-                AddressLine2 = checkAnswersResponse.AddressLine2,
-                Town = checkAnswersResponse.Town,
-                County = checkAnswersResponse.County,
-                Postcode = checkAnswersResponse.Postcode,
-                PhoneNumber = checkAnswersResponse.PhoneNumber,
-                Email = checkAnswersResponse.Email,
-                HasAnsweredEqualityQuestions = checkAnswersResponse.HasAnsweredEqualityQuestions,
-                CandidatePreferences = checkAnswersResponse.CandidatePreferences.Select(x => new GetSettingsQueryResult.CandidatePreference
+                FirstName = getSettingsApiResponse.FirstName,
+                MiddleNames = getSettingsApiResponse.MiddleNames,
+                LastName = getSettingsApiResponse.LastName,
+                DateOfBirth = getSettingsApiResponse.DateOfBirth ?? DateTime.MinValue,
+                Uprn = getSettingsApiResponse.Uprn,
+                AddressLine1 = getSettingsApiResponse.AddressLine1,
+                AddressLine2 = getSettingsApiResponse.AddressLine2,
+                Town = getSettingsApiResponse.Town,
+                County = getSettingsApiResponse.County,
+                Postcode = getSettingsApiResponse.Postcode,
+                PhoneNumber = getSettingsApiResponse.PhoneNumber,
+                Email = getSettingsApiResponse.Email,
+                HasAnsweredEqualityQuestions = getSettingsApiResponse.HasAnsweredEqualityQuestions,
+                CandidatePreferences = getSettingsApiResponse.CandidatePreferences.Select(x => new GetSettingsQueryResult.CandidatePreference
                 {
                     PreferenceId = x.PreferenceId,
                     Meaning = x.PreferenceMeaning,

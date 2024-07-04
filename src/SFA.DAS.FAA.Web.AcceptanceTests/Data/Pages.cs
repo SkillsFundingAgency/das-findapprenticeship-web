@@ -7,15 +7,15 @@ public static class Pages
         return
         [
             //Create Account
-            new Page { Name = "Create Account", Url= "/user/create-account"},
-            new Page { Name = "Transfer Your Data", Url = "/user/create-account/transfer-your-data" },
-            new Page { Name = "Sign into your Old Account", Url = "/user/create-account/sign-in-to-your-old-account" },
-            new Page { Name = "User Name", Url = "/user/user-name" },
-            new Page { Name = "User Date of Birth", Url = "/user/date-of-birth" },
-            new Page { Name = "User Address - Postcode", Url = "/user/postcode-address"},
-            new Page { Name = "User Address - Select", Url = "/user/select-address" },
+            new Page { Name = "Create Account", Url= "/create-account"},
+            new Page { Name = "Transfer Your Data", Url = "/create-account/transfer-your-data" },
+            new Page { Name = "Sign into your Old Account", Url = "/create-account/sign-in-to-your-old-account" },
+            new Page { Name = "User Name", Url = "/user-name" },
+            new Page { Name = "User Date of Birth", Url = "/date-of-birth" },
+            new Page { Name = "User Address - Postcode", Url = "/postcode-address"},
+            new Page { Name = "User Address - Select", Url = "/select-address" },
             //Vacancies
-            new Page { Name = "Vacancy Details", Url= "/vacancies/{vacancyReference}" },
+            new Page { Name = "Vacancy Details", Url= "/apprenticeship/{vacancyReference}" },
             //Applications
             new Page { Name = "Applications", Url = "/applications" },
             //TaskList

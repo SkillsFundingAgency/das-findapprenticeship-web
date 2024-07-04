@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -14,14 +14,13 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-[Route("[controller]")]
 public class VacanciesController(
     IMediator mediator,
     IDateTimeService dateTimeService,
     ICacheStorageService cacheStorageService,
     IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
-    [Route("{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
     {
         var validation = await validator.ValidateAsync(request);
@@ -46,7 +45,7 @@ public class VacanciesController(
     }
 
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies)]
     [HttpPost]
     public async Task<IActionResult> Apply([FromRoute] PostApplyRequest request)
     {
