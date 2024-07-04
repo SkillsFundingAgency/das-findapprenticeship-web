@@ -27,5 +27,13 @@ namespace SFA.DAS.FAA.Web.Controllers
             };
             return View(cookieViewModel);
         }
+
+        [AllowAnonymous]
+        [Route("accessibility-statement", Name = RouteNames.AccessibilityStatement)]
+        [HttpGet]
+        public IActionResult AccessibilityStatement()
+        {
+            return View();
+        }
     }
 }

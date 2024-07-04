@@ -5,10 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Web.Controllers;
-using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
-using DefaultHttpContext = Microsoft.AspNetCore.Http.DefaultHttpContext;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
 {
@@ -47,6 +45,14 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
             actualModel.ConsentAnalyticsCookie.Should().Be(cookieValue);
             actualModel.ConsentFunctionalCookie.Should().Be(cookieValue);
 
+        }
+
+        [Test, MoqAutoData]
+        public void Then_AccessibilityStatement_View_Is_Returned([Greedy] HomeController controller)
+        {
+            var result = controller.AccessibilityStatement() as ViewResult;
+
+            result.Should().NotBeNull();
         }
     }
 }

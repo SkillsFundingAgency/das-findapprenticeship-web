@@ -33,6 +33,7 @@ public static class RouteNames
     public const string ConfirmDataTransfer = "confirm-data-transfer";
     public const string FinishAccountSetup = "finish-account-setup";
     public const string Cookies = "cookies";
+    public const string AccessibilityStatement = "accessibility-statement";
 
     public static class Applications
     {
