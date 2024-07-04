@@ -2,8 +2,8 @@
 {
     public static class CookieKeys
     {
-        public static string DasSeenCookieMessage = "DASSeenCookieMessage";
-        public static string AnalyticsConsent = nameof(AnalyticsConsent);
-        public static string FunctionalConsent = nameof(FunctionalConsent);
+        public const string DasSeenCookieMessage = "DASSeenCookieMessage";
+        public const string AnalyticsConsent = nameof(AnalyticsConsent);
+        public const string FunctionalConsent = nameof(FunctionalConsent);
     }
 }

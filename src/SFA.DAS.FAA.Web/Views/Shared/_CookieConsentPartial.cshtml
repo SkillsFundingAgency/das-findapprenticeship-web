@@ -4,7 +4,7 @@
      !Context.Request.Cookies.ContainsKey(CookieKeys.AnalyticsConsent) ||
      !Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent))
 {
-    <section id="cookieConsent" class="govuk-cookie-banner" data-nosnippet="" role="region" aria-label="Cookies on Find an apprenticeship">
+    <section aria-label="Cookies on Find an apprenticeship" class="govuk-cookie-banner" data-nosnippet="" id="cookieConsent">
         <div class="govuk-cookie-banner__message govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
@@ -28,7 +28,7 @@
             </div>
         </div>
     </section>
-    <section id="cookieAccept" hidden class="govuk-cookie-banner" data-nosnippet="" role="region" aria-label="Cookies on Find an apprenticeship">
+    <section aria-label="Cookies on Find an apprenticeship" class="govuk-cookie-banner" data-nosnippet="" hidden id="cookieAccept">
         <div class="govuk-cookie-banner__message govuk-width-container" role="alert">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
@@ -46,7 +46,7 @@
             </div>
         </div>
     </section>
-    <section id="cookieReject" hidden class="govuk-cookie-banner" data-nosnippet="" role="region" aria-label="Cookies on Find an apprenticeship">
+    <section aria-label="Cookies on Find an apprenticeship" class="govuk-cookie-banner" data-nosnippet="" hidden id="cookieReject">
         <div class="govuk-cookie-banner__message govuk-width-container" role="alert">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
