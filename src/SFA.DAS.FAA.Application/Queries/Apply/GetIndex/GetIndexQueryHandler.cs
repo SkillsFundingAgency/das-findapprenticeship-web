@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿#nullable disable
+using MediatR;
 using SFA.DAS.FAA.Domain.Apply.GetIndex;
 using SFA.DAS.FAA.Domain.Interfaces;
 
@@ -16,6 +17,11 @@ public class GetIndexQueryHandler : IRequestHandler<GetIndexQuery, GetIndexQuery
     public async Task<GetIndexQueryResult> Handle(GetIndexQuery query, CancellationToken cancellationToken)
     {
         var response = await _apiClient.Get<GetIndexApiResponse>(new GetIndexApiRequest(query.ApplicationId, query.CandidateId));
+        if (response == null)
+        {
+            return null;
+        }
+        
         return response;
     }
 }

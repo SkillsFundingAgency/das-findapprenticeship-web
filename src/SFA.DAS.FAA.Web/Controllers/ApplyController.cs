@@ -29,6 +29,12 @@ namespace SFA.DAS.FAA.Web.Controllers
             };
 
             var result = await mediator.Send(query);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
             var viewModel = IndexViewModel.Map(dateTimeService, request, result);
             return View(viewModel);
         }
