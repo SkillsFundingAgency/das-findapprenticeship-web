@@ -1,10 +1,12 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -14,14 +16,20 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
     public class HomeControllerTest
     {
         [Test]
-        [MoqInlineAutoData(true, "")]
-        [MoqInlineAutoData(false, "")]
-        [MoqInlineAutoData(true, "some url")]
-        [MoqInlineAutoData(false, "some url")]
+        [MoqInlineAutoData(true, null, "https://baseUrl/apprenticeshipsearch")]
+        [MoqInlineAutoData(false, null, "https://baseUrl/apprenticeshipsearch")]
+        [MoqInlineAutoData(true, "some url", "some url")]
+        [MoqInlineAutoData(false, "some url", "some url")]
         public void Then_Cookies_View_Is_Returned(
             bool cookieValue,
-            string previousPageUrl)
+            string previousPageUrl,
+            string expectedUrl)
         {
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(expectedUrl);
+
             var cookiesMock = new Mock<IRequestCookieCollection>();
             cookiesMock.SetupGet(c => c["AnalyticsConsent"]).Returns(cookieValue.ToString);
             cookiesMock.SetupGet(c => c["FunctionalConsent"]).Returns(cookieValue.ToString);
@@ -36,6 +44,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
                 {
                     HttpContext = httpContextMock.Object
                 },
+                Url = mockUrlHelper.Object
             };
             var result = controller.Cookies() as ViewResult;
 
@@ -45,7 +54,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
             
             actualModel.Should().NotBeNull();
             actualModel!.ShowBannerMessage.Should().BeFalse();
-            actualModel.PreviousPageUrl.Should().Be(previousPageUrl);
+            actualModel.PreviousPageUrl.Should().Be(expectedUrl);
             actualModel.ConsentAnalyticsCookie.Should().Be(cookieValue);
             actualModel.ConsentFunctionalCookie.Should().Be(cookieValue);
 
