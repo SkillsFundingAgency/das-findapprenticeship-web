@@ -102,6 +102,6 @@ Scenario: Navigate to vacancy details page with invalid vacancy reference format
 
 @WireMockServer
 Scenario: Navigate to cookies page
-	When I navigate to the following url: /cookies
+	When I navigate to the following url: /Home/cookies
 	Then a http status code of 200 is returned
 	And the page content includes the following: Cookies

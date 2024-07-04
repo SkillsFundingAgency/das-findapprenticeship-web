@@ -497,8 +497,8 @@ FaaMap.prototype.markerHtml = function () {
 
 // cookies
 function saveCookieSettings() {
-    var consentAnalyticsCookieRadioValue = document.querySelector("input[name=ConsentAnalyticsCookie]:checked").value;
-    var consentFunctionalCookieRadioValue = document.querySelector("input[name=ConsentFunctionalCookie]:checked").value;
+    let consentAnalyticsCookieRadioValue = document.querySelector("input[name=ConsentAnalyticsCookie]:checked").value;
+    let consentFunctionalCookieRadioValue = document.querySelector("input[name=ConsentFunctionalCookie]:checked").value;
 
     createCookie('AnalyticsConsent', consentAnalyticsCookieRadioValue);
     createCookie('FunctionalConsent', consentFunctionalCookieRadioValue);
@@ -520,9 +520,9 @@ function acceptCookies(args) {
     }
 }
 function createCookie(cookiname, cookivalue) {
-    var date = new Date();
+    let date = new Date();
     date.setFullYear(date.getFullYear() + 1);
-    var expires = "expires=" + date.toGMTString();
+    let expires = "expires=" + date.toGMTString();
     document.cookie = cookiname + "=" + cookivalue + ";" + expires + ";path=/;Secure";
 }
 function hideAcceptBanner() {
