@@ -90,7 +90,7 @@ public sealed class TestEnvironmentManagement
 
         var content = new FormUrlEncodedContent(formData);
 
-        await client.PostAsync("/Service/account-details", content);
+        await client.PostAsync("/account-details", content);
     }
 
     [BeforeScenario("AuthenticatedUserWithIncompleteSetup")]
@@ -107,7 +107,7 @@ public sealed class TestEnvironmentManagement
 
         var content = new FormUrlEncodedContent(formData);
 
-        await client.PostAsync("/Service/account-details", content);
+        await client.PostAsync("/account-details", content);
     }
 
     [AfterScenario("WireMockServer")]

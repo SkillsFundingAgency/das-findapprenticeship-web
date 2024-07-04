@@ -23,7 +23,7 @@ public class SearchApprenticeshipsController(
     SearchModelValidator searchModelValidator,
     GetSearchResultsRequestValidator searchRequestValidator) : Controller
 {
-    [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
+    [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
     {
         var validationResult = await searchModelValidator.ValidateAsync(model);
@@ -135,7 +135,7 @@ public class SearchApprenticeshipsController(
 
     }
 
-    [Route("search-results", Name = RouteNames.SearchResults)]
+    [Route("apprenticeships", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
         var validationResult = await searchRequestValidator.ValidateAsync(request);

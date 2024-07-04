@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
-[Route("[controller]")]
+[Route("")]
 public class ServiceController(IStubAuthenticationService stubAuthenticationService, IConfiguration configuration, IDataProtectorService dataProtectorService) : Controller
 {
     [Route("signout", Name = RouteNames.SignOut)]

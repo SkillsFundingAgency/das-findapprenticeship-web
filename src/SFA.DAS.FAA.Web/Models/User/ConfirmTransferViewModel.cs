@@ -7,23 +7,45 @@ namespace SFA.DAS.FAA.Web.Models.User
         public string? Name { get; init; }
         public string EmailAddress { get; set; }
 
-        public bool ShowStartedApplicationsCount => StartedApplicationsCount > 0;
-        public long StartedApplicationsCount { get; init; } = 0;
-
-        public bool ShowSubmittedApplicationsCount => SubmittedApplicationsCount > 0;
-        public long SubmittedApplicationsCount { get; init; } = 0;
-
-        public bool ShowSavedApplicationsCount => SavedApplicationsCount > 0;
-        public long SavedApplicationsCount { get; init; } = 0;
+        public bool ShowStartedApplicationsCount => !string.IsNullOrEmpty(StartedApplicationsText);
+        
+        public bool ShowSubmittedApplicationsCount => !string.IsNullOrEmpty(SubmittedApplicationsText);
+        
+        public bool ShowSavedApplicationsCount => !string.IsNullOrEmpty(SavedApplicationsText);
+        public long SavedApplicationsCount { get; set; }
+        public long SubmittedApplicationsCount { get; set; }
+        public long StartedApplicationsCount { get; set; }
+        public string SavedApplicationsText { get; set; }
+        public string SubmittedApplicationsText { get; set; }
+        public string StartedApplicationsText { get; set; }
 
         public static implicit operator ConfirmTransferViewModel(GetTransferUserDataQueryResult source)
         {
             return new ConfirmTransferViewModel
             {
                 Name = source.CandidateFirstName,
-                SavedApplicationsCount = source.SavedApplications,
+                
+                SavedApplicationsText = source.SavedApplications switch
+                {
+                    0 => "",
+                    1 => " saved vacancy",
+                    _ => " saved vacancies"
+                },
+                SubmittedApplicationsText = source.SubmittedApplications switch
+                {
+                    0 => "",
+                    1 => " submitted application",
+                    _ => " submitted applications"
+                },
+                StartedApplicationsText = source.StartedApplications switch
+                {
+                    0 => "",
+                    1 => " started application",
+                    _ => " started applications"
+                },
                 StartedApplicationsCount = source.StartedApplications,
                 SubmittedApplicationsCount = source.SubmittedApplications,
+                SavedApplicationsCount = source.SavedApplications,
             };
         }
     }

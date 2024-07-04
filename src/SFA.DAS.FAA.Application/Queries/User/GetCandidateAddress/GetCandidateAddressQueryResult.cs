@@ -1,4 +1,4 @@
-﻿namespace CreateAccount.GetCandidatePostcode;
+﻿namespace SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 public class GetCandidateAddressQueryResult
 {
     public bool IsAddressFromLookup { get; set; }
