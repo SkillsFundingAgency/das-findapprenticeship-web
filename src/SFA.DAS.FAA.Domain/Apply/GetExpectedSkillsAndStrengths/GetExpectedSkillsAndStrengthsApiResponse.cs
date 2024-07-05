@@ -7,4 +7,5 @@ public class GetExpectedSkillsAndStrengthsApiResponse
     public string Employer { get; set; }
     public IEnumerable<string> ExpectedSkillsAndStrengths { get; set; }
     public bool? IsSectionCompleted { get; set; }
+    public string? Strengths { get; set; }
 }
