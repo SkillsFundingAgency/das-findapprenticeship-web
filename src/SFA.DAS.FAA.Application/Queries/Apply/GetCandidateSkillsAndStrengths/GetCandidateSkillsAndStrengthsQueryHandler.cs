@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Apply.GetCandidateSkillsAndStrengths;
+using SFA.DAS.FAA.Domain.Exceptions;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetCandidateSkillsAndStrengths;
@@ -10,6 +11,8 @@ public class GetCandidateSkillsAndStrengthsQueryHandler(IApiClient apiClient)
     {
         var response = await apiClient.Get<GetCandidateSkillsAndStrengthsApiResponse>
             (new GetCandidateSkillsAndStrengthsApiRequest(request.CandidateId, request.ApplicationId));
+
+        if (response == null) throw new ResourceNotFoundException();
 
         return new GetCandidateSkillsAndStrengthsQueryResult
         {

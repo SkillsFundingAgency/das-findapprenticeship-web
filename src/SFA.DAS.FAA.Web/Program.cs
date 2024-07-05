@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.ModelBinding;
 using SFA.DAS.FAA.Web.Filters;
+using SFA.DAS.FAA.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +55,8 @@ builder.Services.AddTransient<IStartupFilter,
 builder.Services.AddDataProtection(rootConfiguration);
 builder.Services.AddApplicationInsightsTelemetry();
 
+builder.Services.AddExceptionHandler<ResourceNotFoundExceptionHandler>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -64,6 +67,7 @@ else
 {
     app.UseExceptionHandler("/error/500");
 }
+
 
 app.UseHealthChecks("/ping");
 

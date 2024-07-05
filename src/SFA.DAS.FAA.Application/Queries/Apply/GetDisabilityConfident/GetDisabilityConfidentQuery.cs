@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Apply.DisabilityConfident;
+using SFA.DAS.FAA.Domain.Exceptions;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident
@@ -31,6 +32,8 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident
         {
             var response = await apiClient.Get<GetDisabilityConfidentApiResponse>(
                 new GetDisabilityConfidentApiRequest(request.ApplicationId, request.CandidateId));
+
+            if (response == null) throw new ResourceNotFoundException();
 
             return response;
         }
