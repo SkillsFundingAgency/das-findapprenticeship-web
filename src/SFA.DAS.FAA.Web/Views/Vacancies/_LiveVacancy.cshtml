@@ -328,9 +328,10 @@
                         }
                 </ul>
                 </p>
-                <h3 class="govuk-heading-s">Other requirements</h3>
+                
                 @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
                 {
+                    <h3 class="govuk-heading-s">Other requirements</h3>
                     <p>@Model.ThingsToConsider</p>
                 }
             </section>
