@@ -350,24 +350,42 @@ FaaMap.prototype.init = function () {
 };
 
 FaaMap.prototype.setUpEvents = async function () {
+  const hash = window.location.hash;
+  if (hash === "#showMap") {
+    await this.checkIfMapIsCachedOrGetData();
+  } else {
+    this.hideMap();
+  }
   var that = this;
-  this.link.addEventListener("click", async (e) => {
-    e.preventDefault();
-    if (this.mapData.length > 0) {
-      this.showMap();
-    } else {
-      this.link.classList.add("govuk-visually-hidden");
-      this.linkLoading.classList.remove("govuk-visually-hidden");
-      await this.getMapData();
-      this.link.classList.remove("govuk-visually-hidden");
-      this.linkLoading.classList.add("govuk-visually-hidden");
-    }
-  });
   document.body.addEventListener("keydown", (e) => {
     if (e.code === "Escape") {
       that.hideMap();
     }
   });
+  window.addEventListener(
+    "hashchange",
+    async () => {
+      const hash = window.location.hash;
+      if (hash === "#showMap") {
+        await this.checkIfMapIsCachedOrGetData();
+      } else {
+        this.hideMap();
+      }
+    },
+    false
+  );
+};
+
+FaaMap.prototype.checkIfMapIsCachedOrGetData = async function () {
+  if (this.mapData.length > 0) {
+    this.showMap();
+  } else {
+    this.link.classList.add("govuk-visually-hidden");
+    this.linkLoading.classList.remove("govuk-visually-hidden");
+    await this.getMapData();
+    this.link.classList.remove("govuk-visually-hidden");
+    this.linkLoading.classList.add("govuk-visually-hidden");
+  }
 };
 
 FaaMap.prototype.getMapData = async function () {
@@ -389,13 +407,12 @@ FaaMap.prototype.getMapData = async function () {
     .then((data) => {
       this.mapData = data.apprenticeshipMapData;
       this.showMap();
-
       this.centerLat = data.searchedLocation.lat;
       this.centerLng = data.searchedLocation.lon;
 
       if (this.centerLat === 0 && this.centerLng === 0) {
-        this.centerLat = 55.3781;
-        this.centerLng = 3.436;
+        this.centerLat = 52.4379;
+        this.centerLng = -1.6496;
       }
     });
 };
@@ -403,6 +420,7 @@ FaaMap.prototype.getMapData = async function () {
 FaaMap.prototype.showMap = function () {
   document.documentElement.classList.add("faa-map__body--open");
   document.body.classList.add("faa-map__body--open");
+  window.location.hash = "#showMap";
   if (!this.map) {
     this.loadMap();
   }
@@ -411,6 +429,7 @@ FaaMap.prototype.showMap = function () {
 FaaMap.prototype.hideMap = function () {
   document.documentElement.classList.remove("faa-map__body--open");
   document.body.classList.remove("faa-map__body--open");
+  window.location.hash = "";
 };
 
 FaaMap.prototype.loadMap = async function () {
@@ -535,7 +554,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
 
   panel.innerHTML = `
       ${statusTag(role.job)}
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/vacancies/VAC${
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/apprenticeship/VAC${
         role.job.id
       }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading" target="_blank">${
     role.job.title
