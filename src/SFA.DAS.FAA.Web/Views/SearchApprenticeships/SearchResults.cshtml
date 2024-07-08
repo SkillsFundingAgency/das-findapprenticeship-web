@@ -8,27 +8,28 @@
 @section BackLink {
     @if (Model.SelectedRouteIds != null && Model.SelectedRouteIds.Any())
     {
-        <a class="govuk-back-link" asp-route="@RouteNames.Location" asp-all-route-data="@Model.RouteData">Back</a>
+                                <a class="govuk-back-link" asp-route="@RouteNames.Location" asp-all-route-data="@Model.RouteData">Back</a>
     }
     else
     {
-        <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+                                <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
     }
 }
 @if (Model.ShowAccountCreatedBanner)
 {
-    <partial name="_AccountCreatedBanner" />
+                <partial name="_AccountCreatedBanner" />
 }
 <h1 class="govuk-heading-l govuk-!-margin-bottom-8"> @Model.TotalMessage </h1>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-        <div class="faa-filter">
-            <div class="faa-filter__header">
-                <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
-            </div>
-            <partial name="_SelectedCategoriesFilter" />
-            <div class="faa-filter__body">
-                <form asp-route="@RouteNames.SearchResults" method="GET">
+        <div class="das-show-hide" data-module="das-show-hide">
+            <div class="faa-filter das-!-show--from-tablet" id="faa-filter" tabindex="0">
+                <div class="faa-filter__header">
+                    <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
+                </div>
+                <partial name="_SelectedCategoriesFilter" />
+                <div class="faa-filter__body das-!-show--from-tablet" id="faa-filter-options">
+                    <form asp-route="@RouteNames.SearchResults" method="GET">
                     <div class="govuk-form-group">
                         <label for="SearchTerm" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
                         <p class="govuk-hint">Enter a job or company</p>
@@ -59,12 +60,12 @@
                                     <span class="govuk-accordion__section-button"
                                         id="apprenticeship-filters-heading-level">
                                         Apprenticeship level
-                                        @if (Model.SelectedLevelCount != 0)
-                                        {
-                                            <span class="govuk-hint faa-filter__selected-hint" aria-hidden="true">
-                                                @Model.SelectedLevelCount.ToString() selected
-                                            </span>
-                                        }
+                                            @if (Model.SelectedLevelCount != 0)
+                                            {
+                                                        <span class="govuk-hint faa-filter__selected-hint" aria-hidden="true">
+                                                    @Model.SelectedLevelCount.ToString() selected
+                                                        </span>
+                                            }
                                     </span>
                                 </h2>
                             </div>
@@ -92,11 +93,11 @@
                                     <span class="govuk-accordion__section-button"
                                         id="apprenticeship-filters-heading-categories">
                                         Job categories
-                                        @if (Model.SelectedRouteCount != 0)
-                                        {
-                                            <span class="govuk-hint faa-filter__selected-hint"
-                                                aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</span>
-                                        }
+                                            @if (Model.SelectedRouteCount != 0)
+                                            {
+                                                        <span class="govuk-hint faa-filter__selected-hint"
+                                                            aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</span>
+                                            }
                                     </span>
                                 </h2>
                             </div>
@@ -127,120 +128,127 @@
                     <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
                     <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
                 </form>
+                </div>
+
             </div>
+            <button class="govuk-button govuk-button--secondary das-filter__toggle das-show-hide__button"
+                data-aria-controls="faa-filter@(Model.ShowFilterOptions ? "-options" : "")"
+                data-button-string="filter @(Model.ShowFilterOptions ? " options" : "")"
+                data-focus-id="SearchTerm">Show/hide</button>
+
         </div>
     </div>
     <div class="govuk-grid-column-two-thirds">
         @if (Model.Total == 0 || Model.NoSearchResultsByUnknownLocation)
         {
-            <partial name="_NoSearchResult" model="Model" />
+                        <partial name="_NoSearchResult" model="Model" />
         }
         else
         {
-            <div class="faa-search-results-header">
-                <div class="faa-search-results-header__map">
+                        <div class="faa-search-results-header">
+                            <div class="faa-search-results-header__map">
                     @if (Model.Total <= 300)
                     {
-                        <div>
-                            <a href="#showMap"
-                                class="govuk-link govuk-link--no-visited-state faa-search-results-header__map-link"
-                                id="map-link">
-                                <svg viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="faa-search-results-header__map-link-icon">
-                                    <path fill="currentColor"
-                                        d="M19.25 9.75C19.25 10.7082 18.9155 11.923 18.3178 13.3034C17.7257 14.671 16.9022 16.1408 15.9852 17.591C14.152 20.4903 11.9832 23.2531 10.6551 24.8737C10.3145 25.2858 9.68536 25.2857 9.34482 24.8735C8.0167 23.2529 5.8479 20.4903 4.01478 17.591C3.09784 16.1408 2.27428 14.671 1.68215 13.3034C1.08446 11.923 0.75 10.7082 0.75 9.75C0.75 4.79919 4.87537 0.75 10 0.75C15.1246 0.75 19.25 4.79919 19.25 9.75ZM12.8806 6.9149C12.1135 6.16693 11.0769 5.75 10 5.75C8.92307 5.75 7.88655 6.16693 7.1194 6.9149C6.35161 7.6635 5.91667 8.68292 5.91667 9.75C5.91667 10.8171 6.35161 11.8365 7.1194 12.5851C7.88655 13.3331 8.92307 13.75 10 13.75C11.0769 13.75 12.1135 13.3331 12.8806 12.5851C13.6484 11.8365 14.0833 10.8171 14.0833 9.75C14.0833 8.68292 13.6484 7.6635 12.8806 6.9149Z" />
-                                </svg>
-                                Open map</a>
-                            <p class="faa-loading__wrap govuk-visually-hidden" aria-hidden="true" id="map-link__loading"><span
-                                    class="faa-loading"></span>Loading map</p>
-                        </div>
+                                                <div>
+                                                    <a href="#showMap"
+                                                        class="govuk-link govuk-link--no-visited-state faa-search-results-header__map-link"
+                                                        id="map-link">
+                                                        <svg viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                                            class="faa-search-results-header__map-link-icon">
+                                                            <path fill="currentColor"
+                                                                d="M19.25 9.75C19.25 10.7082 18.9155 11.923 18.3178 13.3034C17.7257 14.671 16.9022 16.1408 15.9852 17.591C14.152 20.4903 11.9832 23.2531 10.6551 24.8737C10.3145 25.2858 9.68536 25.2857 9.34482 24.8735C8.0167 23.2529 5.8479 20.4903 4.01478 17.591C3.09784 16.1408 2.27428 14.671 1.68215 13.3034C1.08446 11.923 0.75 10.7082 0.75 9.75C0.75 4.79919 4.87537 0.75 10 0.75C15.1246 0.75 19.25 4.79919 19.25 9.75ZM12.8806 6.9149C12.1135 6.16693 11.0769 5.75 10 5.75C8.92307 5.75 7.88655 6.16693 7.1194 6.9149C6.35161 7.6635 5.91667 8.68292 5.91667 9.75C5.91667 10.8171 6.35161 11.8365 7.1194 12.5851C7.88655 13.3331 8.92307 13.75 10 13.75C11.0769 13.75 12.1135 13.3331 12.8806 12.5851C13.6484 11.8365 14.0833 10.8171 14.0833 9.75C14.0833 8.68292 13.6484 7.6635 12.8806 6.9149Z" />
+                                                        </svg>
+                                                        Open map</a>
+                                                    <p class="faa-loading__wrap govuk-visually-hidden" aria-hidden="true" id="map-link__loading"><span
+                                                            class="faa-loading"></span>Loading map</p>
+                                                </div>
                     }
                     else
                     {
-                        <p class="govuk-!-margin-bottom-1">Map available when under 300 results</p>
+                                                <p class="govuk-!-margin-bottom-1">Map available when under 300 results</p>
                     }
-                </div>
-                <div class="faa-search-results-header__sort">
-                    <div class="faa-search-results-sort">
-                        <label class="govuk-label faa-search-results-sort__label" for="sort-results">Sort results</label>
-                        <select class="govuk-select faa-search-results-sort__select" id="sort-results" name="sort">
-                            <option value="AgeAsc" selected="@(Model.Sort == "AgeAsc")">Most recent</option>
-                            <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Distance</option>
-                            <option value="ClosingAsc" selected="@(Model.Sort == "ClosingAsc")">Closing soon</option>
-                            <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Salary high to low</option>
-                            <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")">Salary low to high</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="das-search-results">
-                <ol class="das-search-results__list">
+                            </div>
+                            <div class="faa-search-results-header__sort">
+                                <div class="faa-search-results-sort">
+                                    <label class="govuk-label faa-search-results-sort__label" for="sort-results">Sort results</label>
+                                    <select class="govuk-select faa-search-results-sort__select" id="sort-results" name="sort">
+                                        <option value="AgeAsc" selected="@(Model.Sort == "AgeAsc")">Most recent</option>
+                                        <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Distance</option>
+                                        <option value="ClosingAsc" selected="@(Model.Sort == "ClosingAsc")">Closing soon</option>
+                                        <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Salary high to low</option>
+                                        <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")">Salary low to high</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="das-search-results">
+                            <ol class="das-search-results__list">
                     @foreach (var vacancy in Model.Vacancies)
                     {
-                        <li class="das-search-results__list-item">
+                                                <li class="das-search-results__list-item">
                             @if (vacancy.IsClosingSoon)
                             {
-                                <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
-                                    Closing soon
-                                </strong>
+                                                                    <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
+                                                                        Closing soon
+                                                                    </strong>
                             }
                             @if (vacancy.IsNew)
                             {
-                                <strong class="govuk-tag govuk-!-margin-bottom-2">
-                                    New
-                                </strong>
+                                                                    <strong class="govuk-tag govuk-!-margin-bottom-2">
+                                                                        New
+                                                                    </strong>
                             }
                             @if (vacancy.ApplicationStatus != null)
                             {
-                                <application-status-badge status="@vacancy.ApplicationStatus"></application-status-badge>
+                                                                    <application-status-badge status="@vacancy.ApplicationStatus"></application-status-badge>
                             }
-                            <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
-                                <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference"
-                                    class="das-search-results__link" id="standard-274">
+                                                    <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+                                                        <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference"
+                                                            class="das-search-results__link" id="standard-274">
                                     @vacancy.Title
-                                </a>
-                            </h2>
-                            <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
-                            <p class="govuk-body govuk-hint">
+                                                        </a>
+                                                    </h2>
+                                                    <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
+                                                    <p class="govuk-body govuk-hint">
                                 @vacancy.VacancyLocation, @vacancy.VacancyPostCode
-                            </p>
+                                                    </p>
                             @if (Model.NationalSearch == false)
                             {
-                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.Distance miles</p>
+                                                                    <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.Distance miles</p>
                             }
-                            <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle</p>
-                            <p class="govuk-body"><b>Annual wage</b> @vacancy.WageText</p>
-                            <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">
-                                Closes in
+                                                    <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle</p>
+                                                    <p class="govuk-body"><b>Annual wage</b> @vacancy.WageText</p>
+                                                    <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">
+                                                        Closes in
                                 @vacancy.DaysUntilClosing days (@vacancy.AdvertClosing)
-                            </p>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-hint">
-                                Posted @vacancy.PostedDate
-                            </p>
+                                                    </p>
+                                                    <p class="govuk-body govuk-!-font-size-16 govuk-hint">
+                                                        Posted @vacancy.PostedDate
+                                                    </p>
                             @if (@vacancy.IsDisabilityConfident)
                             {
-                                <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
-                                    alt="Disability Confident" no-cdn />
+                                                                    <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
+                                                                        alt="Disability Confident" no-cdn />
                             }
-                        </li>
+                                                </li>
                     }
-                </ol>
-            </div>
+                            </ol>
+                        </div>
         }
     </div>
 </div>
 <div id="map" class="faa-map__container"></div>
 @if (Model.Total != 0 && !Model.NoSearchResultsByUnknownLocation)
 {
-    <partial name="_Pagination" Model="@Model.PaginationViewModel" />
+                <partial name="_Pagination" Model="@Model.PaginationViewModel" />
 }
 @section AfterJSScripts {
-    <script>
-        const mapLink = document.getElementById('map-link')
-        const mapLinkLoading = document.getElementById('map-link__loading')
-        const mapContainer = document.getElementById('map')
-        if (mapLink && mapContainer) {
-            new FaaMap("@Model.MapId", mapLink, mapLinkLoading, mapContainer, @(Model.Distance == null ? 0 : Model.Distance)).init()
-        }
-    </script>
+                <script>
+                    const mapLink = document.getElementById('map-link')
+                    const mapLinkLoading = document.getElementById('map-link__loading')
+                    const mapContainer = document.getElementById('map')
+                    if (mapLink && mapContainer) {
+                        new FaaMap("@Model.MapId", mapLink, mapLinkLoading, mapContainer, @(Model.Distance == null ? 0 : Model.Distance)).init()
+                    }
+                </script>
 }

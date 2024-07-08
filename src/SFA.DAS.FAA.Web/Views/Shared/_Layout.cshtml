@@ -280,6 +280,7 @@
 
     <script src="libs/govuk-frontend/all.js"></script>
     <script src="libs/accessible-autocomplete/accessible-autocomplete.min.js"></script>
+    <script src="js/das-all.js"></script>
     <script src="~/js/site.js" no-cdn></script>
     <script src="~/js/libs/service-header.js" no-cdn></script>
     <script>
@@ -288,6 +289,7 @@
         if (oneLoginHeader) {
             new window.CrossServiceHeader(oneLoginHeader).init();
         }
+        window.DASFrontend.initAll();
     </script>
     @RenderSection("AfterJSScripts", required: false)
 </body>
