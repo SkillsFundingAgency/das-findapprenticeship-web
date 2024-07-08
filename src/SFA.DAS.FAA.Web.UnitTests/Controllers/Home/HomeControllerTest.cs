@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -31,8 +32,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
                 .Returns(expectedUrl);
 
             var cookiesMock = new Mock<IRequestCookieCollection>();
-            cookiesMock.SetupGet(c => c["AnalyticsConsent"]).Returns(cookieValue.ToString);
-            cookiesMock.SetupGet(c => c["FunctionalConsent"]).Returns(cookieValue.ToString);
+            cookiesMock.SetupGet(c => c[CookieKeys.AnalyticsConsent]).Returns(cookieValue.ToString);
+            cookiesMock.SetupGet(c => c[CookieKeys.FunctionalConsent]).Returns(cookieValue.ToString);
 
             var httpContextMock = new Mock<HttpContext>();
             httpContextMock.Setup(ctx => ctx.Request.Cookies).Returns(cookiesMock.Object);
@@ -58,6 +59,22 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
             actualModel.ConsentAnalyticsCookie.Should().Be(cookieValue);
             actualModel.ConsentFunctionalCookie.Should().Be(cookieValue);
 
+        }
+
+        [Test, MoqAutoData]
+        public void Then_AccessibilityStatement_View_Is_Returned([Greedy] HomeController controller)
+        {
+            var result = controller.AccessibilityStatement() as ViewResult;
+
+            result.Should().NotBeNull();
+        }
+
+        [Test, MoqAutoData]
+        public void Then_Terms_AndConditions_View_Is_Returned([Greedy] HomeController controller)
+        {
+            var result = controller.TermsAndConditions() as ViewResult;
+
+            result.Should().NotBeNull();
         }
     }
 }

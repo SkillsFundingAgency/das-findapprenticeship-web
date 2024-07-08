@@ -105,3 +105,15 @@ Scenario: Navigate to cookies page
 	When I navigate to the following url: /Home/cookies
 	Then a http status code of 200 is returned
 	And the page content includes the following: Cookies
+
+@WireMockServer
+Scenario: Navigate to Accessibility Statement page
+	When I navigate to the following url: /Home/Accessibility-statement
+	Then a http status code of 200 is returned
+	And the page content includes the following: Accessibility
+
+@WireMockServer
+Scenario: Navigate to Terms and Conditions page
+	When I navigate to the following url: /Home/terms-and-conditions
+	Then a http status code of 200 is returned
+	And the page content includes the following: Terms and conditions

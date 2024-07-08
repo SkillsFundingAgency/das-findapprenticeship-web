@@ -30,5 +30,21 @@ namespace SFA.DAS.FAA.Web.Controllers
             };
             return View(cookieViewModel);
         }
+
+        [AllowAnonymous]
+        [Route("accessibility-statement", Name = RouteNames.AccessibilityStatement)]
+        [HttpGet]
+        public IActionResult AccessibilityStatement()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [Route("terms-and-conditions", Name = RouteNames.TermsAndConditions)]
+        [HttpGet]
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
     }
 }
