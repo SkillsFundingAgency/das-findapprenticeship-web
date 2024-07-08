@@ -13,6 +13,7 @@ using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -48,7 +49,7 @@ public class WhenGettingMapSearchResults
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object)
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), Mock.Of<GetSearchResultsRequestValidator>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
