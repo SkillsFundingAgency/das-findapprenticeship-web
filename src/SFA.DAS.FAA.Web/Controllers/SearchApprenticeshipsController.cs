@@ -248,11 +248,13 @@ public class SearchApprenticeshipsController(
     {
         if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
             return "No apprenticeships found";
+
         return model.Total switch
         {
-            <= 10 => "Apprenticeships found",
+            1 => $"{model.Total} Apprenticeship found",
+            <= 10 => $"{model.Total} Apprenticeships found",
             _ =>
-                $"Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
+                $"{model.Total} Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
         };
     }
 }
