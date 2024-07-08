@@ -1,94 +1,111 @@
 @model SFA.DAS.FAA.Web.Models.Apply.AddQualificationViewModel
 
-   <div  data-extra-field-rows="true" data-add-button-text="Add another subject">
-   <fieldset class="govuk-fieldset faa-extra-fields__fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">@(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subjects")</legend>
-      @for (var index = 0; index < 20; index++)
-      {
-         if(index < Model.Subjects.Count)
-         {
-            var subject = Model.Subjects[index];
-            
-            <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
-               <input type="hidden" id="subjects[@index][id]" value="@subject.Id" name="subjects[@index][id]">
-               <input type="hidden" id="subjects[@index][isDeleted]" name="subjects[@index][isDeleted]" data-type-remove="remove" value=""/>
-    
-                  <div class="govuk-grid-column-one-third">
-                     <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Name" error-class="govuk-form-group--error">
-                        <label class="govuk-label" for="Subjects[@index].Name">
-                           Subject
-                        </label>
-                        <span das-validation-for="Subjects[index].Name" class="govuk-error-message"></span>
-                        <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text" value="@subject.Name">
-                     </div>
-                  </div>
+<div data-extra-field-rows="true" data-add-button-text="Add another subject">
+    <fieldset class="govuk-fieldset faa-extra-fields__fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subjects")</legend>
+        @for (var index = 0; index < 20; index++)
+        {
+            if (index < Model.Subjects.Count)
+            {
+                var subject = Model.Subjects[index];
 
-  
-                  <div class="govuk-grid-column-one-quarter">
-                     <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Grade" error-class="govuk-form-group--error">
-                        <label class="govuk-label" for="Subjects[@index].Grade">
-                           Grade
-                        </label>
-                        <span das-validation-for="Subjects[index].Grade" class="govuk-error-message"></span>
-                        <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text" value="@subject.Grade">
-                     </div>
-                  </div>
-      
-               <div class="govuk-grid-column-one-third">
-                  <div class="govuk-form-group">
-                     @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
-                     {
-                        <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
-                           <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="subjects[@index][IsPredicted]" name="subjects[@index][IsPredicted]" @(subject.IsPredicted.HasValue && subject.IsPredicted.Value ?"checked='checked'":"") type="checkbox" value="true">
-                              <label class="govuk-label govuk-checkboxes__label" for="subjects[@index][IsPredicted]">
-                                 Predicted grade
-                              </label>
-                           </div>
+                <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
+                    <input type="hidden" id="subjects[@index][id]" value="@subject.Id" name="subjects[@index][id]">
+                    <input type="hidden" id="subjects[@index][isDeleted]" name="subjects[@index][isDeleted]"
+                        data-type-remove="remove" value="" />
+
+                    <div class="govuk-grid-column-one-third">
+                        <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Name"
+                            error-class="govuk-form-group--error">
+                            <label class="govuk-label" for="Subjects[@index].Name">
+                                Subject
+                            </label>
+                            <span das-validation-for="Subjects[index].Name" class="govuk-error-message"></span>
+                            <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text"
+                                value="@subject.Name">
                         </div>
-                     }
-                  </div>
-               </div>
-            </div>
-            
-         } else {
-            <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
-            
-               <input type="hidden" id="subjects[@index][isDeleted]" name="subjects[@index][isDeleted]" data-type-remove="remove" value=""/>
-               <div class="govuk-grid-column-one-third">
-                  <div class="govuk-form-group">
-                     <label class="govuk-label" for="Subjects[@index].Name">
-                        Subject
-                     </label>
-                     
-                     <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text">
-                  </div>
-               </div>
-               <div class="govuk-grid-column-one-quarter">
-                  <div class="govuk-form-group">
-                     <label class="govuk-label" for="Subjects[@index].Grade">
-                        Grade
-                     </label>
-                     <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text">
-                  </div>
-               </div>
-               <div class="govuk-grid-column-one-third">
-                  <div class="govuk-form-group">
-                     @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
-                     {
-                        <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
-                           <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="subjects[@index][IsPredicted]" name="subjects[@index][IsPredicted]" type="checkbox" value="true">
-                              <label class="govuk-label govuk-checkboxes__label" for="subjects[@index][IsPredicted]">
-                                 Predicted grade
-                              </label>
-                           </div>
+                    </div>
+
+
+                    <div class="govuk-grid-column-one-quarter">
+                        <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Grade"
+                            error-class="govuk-form-group--error">
+                            <label class="govuk-label" for="Subjects[@index].Grade">
+                                Grade
+                            </label>
+                            <span das-validation-for="Subjects[index].Grade" class="govuk-error-message"></span>
+                            <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text"
+                                value="@subject.Grade">
                         </div>
-                     }
-                  </div>
-               </div>
-            </div>
-         }
-      }
-   </fieldset>
+                    </div>
+
+                    <div class="govuk-grid-column-one-third">
+                        <div class="govuk-form-group">
+                            @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
+                            {
+                                <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="subjects[@index][IsPredicted]"
+                                            name="subjects[@index][IsPredicted]" @(subject.IsPredicted.HasValue &&
+                                subject.IsPredicted.Value ? "checked='checked'" : "") type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="subjects[@index][IsPredicted]">
+                                            Predicted grade
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
+
+                    <input type="hidden" id="subjects[@index][isDeleted]" name="subjects[@index][isDeleted]"
+                        data-type-remove="remove" value="" />
+                    <div class="govuk-grid-column-one-third">
+                        <div class="govuk-form-group">
+                            <label class="govuk-label" for="Subjects[@index].Name">
+                                Subject
+                            </label>
+
+                            <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text">
+                        </div>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <div class="govuk-form-group">
+                            <label class="govuk-label" for="Subjects[@index].Grade">
+                                Grade
+                            </label>
+                            <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text">
+                        </div>
+                    </div>
+                    <div class="govuk-grid-column-one-third">
+                        <div class="govuk-form-group">
+                            @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
+                            {
+                                <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="subjects[@index][IsPredicted]"
+                                            name="subjects[@index][IsPredicted]" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="subjects[@index][IsPredicted]">
+                                            Predicted grade
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+    </fieldset>
+    <p class="govuk-body faa-extra-field__form-group--hidden" aria-hidden="true" id="faa-extra-fildes-max-message">
+        You’ve added all
+        the @(Model.QualificationType) subjects you can. To add
+        other subjects, you’ll need to remove some first. </p>
 </div>

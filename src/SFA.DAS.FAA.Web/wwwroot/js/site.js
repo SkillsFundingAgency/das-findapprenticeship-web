@@ -130,6 +130,9 @@ function ExtraFieldRows(container) {
   this.hiddenClass = "faa-extra-field__form-group--hidden";
   this.addButtonText = this.container.dataset.addButtonText || "Add another";
   this.fieldset.classList.add("faa-extra-fields__form-group--loaded");
+  this.maxMessage = this.container.querySelector(
+    "#faa-extra-fildes-max-message"
+  );
 }
 
 ExtraFieldRows.prototype.init = function () {
@@ -204,6 +207,7 @@ ExtraFieldRows.prototype.appendRemoveLink = function (row, index) {
   removeLink.addEventListener("click", function (e) {
     e.preventDefault();
     that.addLink.classList.remove(that.hiddenClass);
+    that.maxMessage.classList.add(that.hiddenClass);
     that.hideRow(row);
     that.updateRowOrder();
   });
@@ -228,6 +232,7 @@ ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
   }
   if (hiddenRowCount === 1) {
     this.addLink.classList.add(this.hiddenClass);
+    this.maxMessage.classList.remove(this.hiddenClass);
   }
   this.showRow(rowToShow, true);
   e.preventDefault();
