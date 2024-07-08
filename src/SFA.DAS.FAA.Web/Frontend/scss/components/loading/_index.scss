@@ -1,0 +1,23 @@
+.faa-loading__wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+}
+
+.faa-loading {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background: radial-gradient(farthest-side, #1d70b8 94%, #0000) top/8px 8px
+      no-repeat,
+    conic-gradient(#0000 30%, #1d70b8);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  animation: loadingAnimation 1s infinite linear;
+  display: inline-block;
+}
+@keyframes loadingAnimation {
+  100% {
+    transform: rotate(1turn);
+  }
+}
