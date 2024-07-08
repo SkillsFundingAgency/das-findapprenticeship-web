@@ -25,7 +25,7 @@
 
     <!--[if !IE 8]><!-->
     <link href="css/main.css" rel="stylesheet" />
-    <link href="/css/faa.css" rel="stylesheet" no-cdn />
+    <link href="/css/faa.css" rel="stylesheet" no-cdn asp-append-version="true" />
     <!--<![endif]-->
 
     <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
@@ -34,25 +34,25 @@
             ({ key: "@Configuration.Value.GoogleMapsApiKey", v: "weekly" });</script>
 
     <script>
-            window.dataLayer = window.dataLayer || [];
-            
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || []; w[l].push({
-                    'gtm.start':
+        window.dataLayer = window.dataLayer || [];
+
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
                     new Date().getTime(), event: 'gtm.js'
-                }); var f = d.getElementsByTagName(s)[0],
+            }); var f = d.getElementsByTagName(s)[0],
                 j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', 'GTM-WB9MZV5');
-        </script>
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WB9MZV5');
+    </script>
 </head>
 
 <body class="govuk-template__body">
-<!-- Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager (noscript) -->
     <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WB9MZV5"
-            height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WB9MZV5" height="0" width="0"
+            style="display: none; visibility: hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <script>
         document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
@@ -180,13 +180,15 @@
                             <nav aria-label="Your account menu">
                                 <ul class="service-header__nav-list service-header__nav" id="service-header__nav"
                                     data-open-class="service-header__nav--open">
-                                    <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships" 
+                                    <li
+                                        class="@(Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships" 
                                                  || Context.Request.RouteValues["controller"]?.ToString() == "Vacancies" ? "service-header__nav-list-item--active":"") service-header__nav-list-item">
                                         <a class="service-header__nav-list-item-link" asp-route="@RouteNames.SearchResults">
                                             Search
-                                        </a> 
+                                        </a>
                                     </li>
-                                    <li class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/")) 
+                                    <li
+                                        class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/")) 
                                                  || Context.Request.RouteValues["controller"]?.ToString() == "Applications" 
                                                  || Context.Request.RouteValues["controller"]?.ToString() == "Apply" 
                                                    ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
@@ -195,9 +197,9 @@
                                             Applications
                                         </a>
                                     </li>
-                                    <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
-                                        <a class="service-header__nav-list-item-link"
-                                            asp-route="@RouteNames.Settings">
+                                    <li
+                                        class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
+                                        <a class="service-header__nav-list-item-link" asp-route="@RouteNames.Settings">
                                             Settings
                                         </a>
                                     </li>
@@ -281,7 +283,7 @@
     <script src="libs/govuk-frontend/all.js"></script>
     <script src="libs/accessible-autocomplete/accessible-autocomplete.min.js"></script>
     <script src="js/das-all.js"></script>
-    <script src="~/js/site.js" no-cdn></script>
+    <script src="~/js/site.js" no-cdn asp-append-version="true"></script>
     <script src="~/js/libs/service-header.js" no-cdn></script>
     <script>
         window.GOVUKFrontend.initAll();
