@@ -38,5 +38,13 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             return View();
         }
+
+        [AllowAnonymous]
+        [Route("terms-and-conditions", Name = RouteNames.TermsAndConditions)]
+        [HttpGet]
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
     }
 }
