@@ -5,6 +5,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply;
 
 public class TrainingCoursesViewModel
 {
+    public static readonly int MaximumItems = 50;
+
     [FromRoute]
     public required Guid ApplicationId { get; init; }
     public bool? DoYouWantToAddAnyTrainingCourses { get; set; }
@@ -12,6 +14,7 @@ public class TrainingCoursesViewModel
     public bool ShowTrainingCoursesAchieved { get; set; }
     public List<TrainingCourse>? TrainingCourses { get; set; }
     public bool? IsSectionComplete { get; set; }
+    public bool MaximumItemsReached => TrainingCourses?.Count >= MaximumItems;
 
     public class TrainingCourse
     {
