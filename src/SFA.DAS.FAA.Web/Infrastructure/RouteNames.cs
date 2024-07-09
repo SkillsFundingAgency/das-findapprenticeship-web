@@ -32,6 +32,9 @@ public static class RouteNames
     public const string Email = "email";
     public const string ConfirmDataTransfer = "confirm-data-transfer";
     public const string FinishAccountSetup = "finish-account-setup";
+    public const string Cookies = "cookies";
+    public const string AccessibilityStatement = "accessibility-statement";
+    public const string TermsAndConditions = "terms-and-conditions";
 
     public static class Applications
     {
