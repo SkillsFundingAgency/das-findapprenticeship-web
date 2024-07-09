@@ -203,12 +203,12 @@
                             }
                             <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
                                 <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference"
-                                    class="das-search-results__link" id="standard-274">
+                                    class="das-search-results__link">
                                     @vacancy.Title
                                 </a>
                             </h2>
                             <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
-                            <p class="govuk-body govuk-hint">
+                            <p class="govuk-body das-!-color-dark-grey">
                                 @vacancy.VacancyLocation, @vacancy.VacancyPostCode
                             </p>
                             @if (Model.NationalSearch == false)
@@ -221,7 +221,7 @@
                                 Closes in
                                 @vacancy.DaysUntilClosing days (@vacancy.AdvertClosing)
                             </p>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-hint">
+                            <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">
                                 Posted @vacancy.PostedDate
                             </p>
                             @if (@vacancy.IsDisabilityConfident)
@@ -233,6 +233,7 @@
                     }
                 </ol>
             </div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-6">
         }
     </div>
 </div>

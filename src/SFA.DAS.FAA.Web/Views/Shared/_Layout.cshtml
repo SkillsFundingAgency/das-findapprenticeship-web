@@ -1,9 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using SFA.DAS.FAA.Domain.Configuration
 @using WebEssentials.AspNetCore.CdnTagHelpers
-@using Microsoft.Extensions.Options
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@inject IOptions<FindAnApprenticeship> Configuration
 
 <!DOCTYPE html>
 <html lang="en" class="govuk-template faa-template">
@@ -15,49 +12,29 @@
         content="@(ViewData["Description"] ?? "We’ve introduced a new way to find and apply for an apprenticeship in England.")">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0b0c0c" />
-
     <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
     <link rel="mask-icon" href="assets/images/govuk-mask-icon.svg" color="#0b0c0c" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/govuk-apple-touch-icon-180x180.png" />
     <link rel="apple-touch-icon" sizes="167x167" href="assets/images/govuk-apple-touch-icon-167x167.png" />
     <link rel="apple-touch-icon" sizes="152x152" href="assets/images/govuk-apple-touch-icon-152x152.png" />
     <link rel="apple-touch-icon" href="assets/images/govuk-apple-touch-icon.png" />
-
     <!--[if !IE 8]><!-->
     <link href="css/main.css" rel="stylesheet" />
     <link href="/css/faa.css" rel="stylesheet" no-cdn asp-append-version="true" />
     <!--<![endif]-->
+    <meta property="og:image" content="assets/images/govuk-opengraph-image.png" />
 
-    <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
-
-    <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
-            ({ key: "@Configuration.Value.GoogleMapsApiKey", v: "weekly" });</script>
-
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-WB9MZV5');
-    </script>
+    @await Html.PartialAsync("_GoogleMapsPartial")
+    @await Html.PartialAsync("_GoogleAnalyticsPartial")
 </head>
 
 <body class="govuk-template__body">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WB9MZV5" height="0" width="0"
-            style="display: none; visibility: hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <script>
         document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
     <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
+    @await Html.PartialAsync("_CookieConsentPartial")
 
     @if (User.Identity is { IsAuthenticated: true })
     {
@@ -248,8 +225,8 @@
     }
 
     <div class="govuk-width-container">
-        @RenderSection("BackLink", required: false)
-        <main class="govuk-main-wrapper" id="main-content" role="main">
+        @await RenderSectionAsync("BackLink", required: false)
+        <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
             @RenderBody()
         </main>
     </div>
@@ -258,6 +235,42 @@
         <div class="govuk-width-container ">
             <div class="govuk-footer__meta">
                 <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+                    <h2 class="govuk-visually-hidden">Support links</h2>
+                    <ul class="govuk-footer__inline-list">
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link"
+                                href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_4SCNJixibnF1oCG"
+                                target="_blank" rel="noreferrer noopener">
+                                Give us feedback on this service
+                            </a>
+                        </li>
+                    </ul>
+                    <h2 class="govuk-visually-hidden">Lower footer links</h2>
+                    <ul class="govuk-footer__inline-list">
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link" asp-route="@RouteNames.AccessibilityStatement"
+                                target="_blank">
+                                Accessibility
+                            </a>
+                        </li>
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link" asp-route="@RouteNames.Cookies" target="_blank">
+                                Cookies
+                            </a>
+                        </li>
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link"
+                                href="https://www.gov.uk/government/publications/privacy-information-key-stage-4-and-5-and-adult-education/privacy-information-key-stage-4-and-5-and-adult-education?#using-your-data-to-support-your-learning-including-apprenticeships"
+                                target="_blank" rel="noreferrer noopener">
+                                Privacy
+                            </a>
+                        </li>
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link" asp-route="@RouteNames.TermsAndConditions" target="_blank">
+                                Terms and conditions
+                            </a>
+                        </li>
+                    </ul>
                     <svg aria-hidden="true" focusable="false" class="govuk-footer__licence-logo"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 483.2 195.7" height="17" width="41">
                         <path fill="currentColor"
