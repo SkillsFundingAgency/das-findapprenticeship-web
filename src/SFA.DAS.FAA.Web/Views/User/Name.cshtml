@@ -5,10 +5,9 @@
 @section BackLink {
     <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
 }
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+        <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">
             @Model.PageCaption
         </span>
@@ -19,22 +18,20 @@
         <form class="form" method="post">
             <input type="hidden" asp-for="JourneyPath" />
             <input type="hidden" asp-for="BackLink" />
-            <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.FirstName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group" das-highlight-error-for="FirstName" error-class="govuk-form-group--error">
                 <label class="govuk-label" asp-for="FirstName">
                     First name
                 </label>
-                <span asp-validation-for="FirstName" class="govuk-error-message"></span>
+                <span das-validation-for="FirstName" class="govuk-error-message"></span>
                 <input asp-for="FirstName" class="govuk-input govuk-!-width-two-thirds"/>
             </div>
-            <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.LastName)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group" das-highlight-error-for="LastName" error-class="govuk-form-group--error">
                 <label class="govuk-label" asp-for="LastName">
                     Last name
                 </label>
-                <span asp-validation-for="LastName" class="govuk-error-message"></span>
+                <span das-validation-for="LastName" class="govuk-error-message"></span>
                 <input asp-for="LastName" class="govuk-input govuk-!-width-two-thirds"/>
             </div>
-
-
             <div class="govuk-button-group">
                 <button class="govuk-button" data-module="govuk-button">
                     @Model.PageCtaButtonLabel
