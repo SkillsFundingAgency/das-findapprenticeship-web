@@ -38,8 +38,8 @@
                         <label for="location" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
                         <p class="govuk-hint">Enter a city or postcode</p>
                         <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location"
-                               id="location" type="search" spellcheck="false" autocomplete="postal-code"
-                               aria-describedby="where-hint">
+                            id="location" type="search" spellcheck="false" autocomplete="postal-code"
+                            aria-describedby="where-hint">
                         <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
                         <select class="govuk-select" id="within" name="distance">
                             <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
@@ -57,7 +57,7 @@
                             <div class="govuk-accordion__section-header">
                                 <h2 class="govuk-accordion__section-heading">
                                     <span class="govuk-accordion__section-button"
-                                          id="apprenticeship-filters-heading-level">
+                                        id="apprenticeship-filters-heading-level">
                                         Apprenticeship level
                                         @if (Model.SelectedLevelCount != 0)
                                         {
@@ -69,18 +69,18 @@
                                 </h2>
                             </div>
                             <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
-                                 aria-labelledby="apprenticeship-filters-level">
+                                aria-labelledby="apprenticeship-filters-level">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-visually-hidden">Apprenticeship level</legend>
                                     <p class="govuk-hint">Select the level you want to apply for</p>
 
                                     <partial name="_FilterDetails"
-                                             Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
+                                        Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
                                 </fieldset>
                                 <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3">
                                     <a class="govuk-link govuk-link--no-visited-state"
-                                       href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels"
-                                       target="_blank" rel="external">
+                                        href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels"
+                                        target="_blank" rel="external">
                                         What qualification levels mean (opens in new tab)
                                     </a>
                                 </p>
@@ -90,22 +90,22 @@
                             <div class="govuk-accordion__section-header">
                                 <h2 class="govuk-accordion__section-heading">
                                     <span class="govuk-accordion__section-button"
-                                          id="apprenticeship-filters-heading-categories">
+                                        id="apprenticeship-filters-heading-categories">
                                         Job categories
                                         @if (Model.SelectedRouteCount != 0)
                                         {
                                             <span class="govuk-hint faa-filter__selected-hint"
-                                                  aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</span>
+                                                aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</span>
                                         }
                                     </span>
                                 </h2>
                             </div>
                             <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
-                                 aria-labelledby="govuk-accordion__section-content">
+                                aria-labelledby="govuk-accordion__section-content">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-visually-hidden">Job categories</legend>
                                     <partial name="_FilterDetails"
-                                             Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
+                                        Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
                                 </fieldset>
                             </div>
                         </div>
@@ -116,8 +116,8 @@
                         <div class="govuk-checkboxes govuk-checkboxes--small">
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input" id="DisabilityConfident"
-                                       name="DisabilityConfident" type="checkbox" value="true"
-                                       checked="@Model.DisabilityConfident" />
+                                    name="DisabilityConfident" type="checkbox" value="true"
+                                    checked="@Model.DisabilityConfident" />
                                 <label class="govuk-label govuk-checkboxes__label" asp-for="DisabilityConfident">
                                     Only show Disability Confident employers
                                 </label>
@@ -160,7 +160,7 @@
                 <ol class="das-search-results__list">
                     @foreach (var vacancy in Model.Vacancies)
                     {
-                        <li class="das-search-results__list-item">
+                        <li class="das-search-results__list-item govuk-!-padding-top-5">
                             @if (vacancy.IsClosingSoon)
                             {
                                 <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
@@ -179,12 +179,12 @@
                             }
                             <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
                                 <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@vacancy.VacancyReference"
-                                   class="das-search-results__link" id="standard-274">
+                                    class="das-search-results__link">
                                     @vacancy.Title
                                 </a>
                             </h2>
                             <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
-                            <p class="govuk-body govuk-hint">
+                            <p class="govuk-body das-!-color-dark-grey">
                                 @vacancy.VacancyLocation, @vacancy.VacancyPostCode
                             </p>
                             @if (Model.NationalSearch == false)
@@ -196,18 +196,19 @@
                             <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">
                                 @vacancy.ClosingDateDescription
                             </p>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-hint">
+                            <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">
                                 Posted @vacancy.PostedDate
                             </p>
                             @if (@vacancy.IsDisabilityConfident)
                             {
                                 <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
-                                     alt="Disability Confident" no-cdn />
+                                    alt="Disability Confident" no-cdn />
                             }
                         </li>
                     }
                 </ol>
             </div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-6">
         }
     </div>
 </div>
