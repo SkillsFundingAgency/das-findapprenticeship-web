@@ -430,6 +430,7 @@ FaaMap.prototype.hideMap = function () {
   document.documentElement.classList.remove("faa-map__body--open");
   document.body.classList.remove("faa-map__body--open");
   window.location.hash = "";
+  localStorage.removeItem("faaMapActiveRole");
 };
 
 FaaMap.prototype.loadMap = async function () {
@@ -489,6 +490,8 @@ FaaMap.prototype.loadMap = async function () {
 
   this.map.markers = [];
 
+  const activeMapMarker = localStorage.getItem("faaMapActiveRole");
+
   for (const role of this.mapData) {
     const Marker = new google.maps.marker.AdvancedMarkerElement({
       map: this.map,
@@ -500,6 +503,12 @@ FaaMap.prototype.loadMap = async function () {
       this.map.panTo(role.position);
     });
     this.map.markers.push(Marker);
+
+    if (activeMapMarker === role.job.id.toString()) {
+      this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+      this.map.panTo(role.position);
+    }
+
     bounds.extend(role.position);
   }
 
@@ -556,7 +565,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
       ${statusTag(role.job)}
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/apprenticeship/VAC${
         role.job.id
-      }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading" target="_blank">${
+      }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading">${
     role.job.title
   }</a></h2>
       <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
@@ -595,6 +604,7 @@ FaaMap.prototype.toggleMarker = function (markerElement, role, panel) {
 
   markerElement.content.classList.add("highlight");
   markerElement.zIndex = 1;
+  localStorage.setItem("faaMapActiveRole", role.job.id);
   this.showRoleOverLay(role, panel);
 };
 
