@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SFA.DAS.FAA.Web.Models.User;
+using SFA.DAS.InputValidation.Fluent.Extensions;
 
 namespace SFA.DAS.FAA.Web.Validators
 {
@@ -17,6 +18,9 @@ namespace SFA.DAS.FAA.Web.Validators
             RuleFor(x => x.LastName)
                 .NotEmpty()
                 .WithMessage(NoLastName);
+
+            RuleFor(c => c.FirstName).ValidFreeTextCharacters();
+            RuleFor(c => c.LastName).ValidFreeTextCharacters();
         }
     }
 }

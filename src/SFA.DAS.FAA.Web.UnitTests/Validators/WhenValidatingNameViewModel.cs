@@ -1,5 +1,7 @@
-﻿using FluentValidation.TestHelper;
+﻿using FluentAssertions;
+using FluentValidation.TestHelper;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.Testing.AutoFixture;
@@ -59,6 +61,40 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators
             {
                 result.ShouldNotHaveValidationErrorFor(c => c.LastName);
             }
+        }
+
+        [TestCase("<script>test</script>", false)]
+        [TestCase("an apprenticeship @! 'Brilliant'", true)]
+        public async Task Then_The_FirstName_Field_Is_Validated(string? inputValue, bool isValid)
+        {
+            var model = new NameViewModel
+            {
+                FirstName = inputValue,
+                LastName = "Some name"
+            };
+
+            var validator = new NameViewModelValidator();
+
+            var actual = await validator.ValidateAsync(model);
+
+            actual.IsValid.Should().Be(isValid);
+        }
+
+        [TestCase("<script>test</script>", false)]
+        [TestCase("an apprenticeship @! 'Brilliant'", true)]
+        public async Task Then_The_LastName_Field_Is_Validated(string? inputValue, bool isValid)
+        {
+            var model = new NameViewModel
+            {
+                LastName = inputValue,
+                FirstName = "Some name"
+            };
+
+            var validator = new NameViewModelValidator();
+
+            var actual = await validator.ValidateAsync(model);
+
+            actual.IsValid.Should().Be(isValid);
         }
     }
 }
