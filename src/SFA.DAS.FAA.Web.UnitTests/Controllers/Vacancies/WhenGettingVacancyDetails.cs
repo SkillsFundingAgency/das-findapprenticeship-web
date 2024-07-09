@@ -73,6 +73,8 @@ public class WhenGettingVacancyDetails
             .Excluding(x => x.ShowAccountCreatedBanner));
         actualModel!.ShowAccountCreatedBanner.Should().Be(showBanner);
         actualModel.GoogleMapsId.Should().Be(mapId);
+        actualModel.Latitude.Should().Be(result.Vacancy!.Location.Latitude);
+        actualModel.Longitude.Should().Be(result.Vacancy!.Location.Longitude);
     }
 
     [Test]
