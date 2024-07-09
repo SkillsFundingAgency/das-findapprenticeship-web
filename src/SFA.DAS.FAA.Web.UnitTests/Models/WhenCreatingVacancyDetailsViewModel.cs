@@ -11,21 +11,21 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
 public class WhenCreatingVacancyDetailsViewModel
 {
-    // [Test, MoqAutoData]
-    // public void Then_The_Fields_Are_Mapped(GetApprenticeshipVacancyQueryResult vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
-    // {
-    //     var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, vacancies);
-    //
-    //     actual.Should().BeEquivalentTo(vacancies.Vacancy, options=> options
-    //         .Excluding(c=>c.ClosingDate)
-    //         .Excluding(c=>c.PostedDate)
-    //         .Excluding(c=>c.Id)
-    //         .Excluding(c=>c.CourseTitle)
-    //         .Excluding(c=>c.Address.Postcode)
-    //     );
-    //     actual.CourseTitle.Should().Be($"{vacancies.Vacancy.CourseTitle} (level {vacancies.Vacancy.CourseLevel})");
-    //     //actual.VacancyPostCode.Should().Be(vacancies.Postcode);
-    // }
+    [Test, MoqAutoData]
+    public void Then_The_Fields_Are_Mapped(string mapsId,GetApprenticeshipVacancyQueryResult vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
+    {
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, vacancies, mapsId);
+    
+        actual.Should().BeEquivalentTo(vacancies.Vacancy, options=> options.ExcludingMissingMembers()
+            .Excluding(c=>c.StartDate)
+            .Excluding(c=>c.ClosingDate)
+            .Excluding(c=>c.PostedDate)
+            .Excluding(c=>c.CourseTitle)
+            .Excluding(c=>c.HoursPerWeek)
+            .Excluding(c=>c.Levels)
+        );
+        actual.CourseTitle.Should().Be($"{vacancies.Vacancy.CourseTitle} (level {vacancies.Vacancy.CourseLevel})");
+    }
 
     [Test]
     [MoqInlineAutoData(null, "0 hours a week")]
@@ -35,18 +35,21 @@ public class WhenCreatingVacancyDetailsViewModel
     public void Then_The_HoursPerWeek_Is_Shown_Correctly(
         string duration,
         string workingHours,
+        string mapsId,
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         if (result.Vacancy != null) result.Vacancy.HoursPerWeek = Convert.ToDecimal(duration);
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
 
         actual.HoursPerWeek.Should().Be(workingHours);
+        actual.GoogleMapsId.Should().Be(mapsId);
     }
 
     [Test, MoqAutoData]
     public void Then_The_ClosingDate_Less_than_31Days_Is_Shown_Correctly(
+        string mapsId,
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
@@ -54,7 +57,7 @@ public class WhenCreatingVacancyDetailsViewModel
         var dateLessThan31Days = new DateTime(2000, 02, 01);
         if (result.Vacancy != null) result.Vacancy.ClosingDate = dateLessThan31Days;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
 
         Assert.That(actual.ClosingDate, Is.Not.Null);
         actual.ClosingDate.Should().Contain("Closes in");
@@ -62,6 +65,7 @@ public class WhenCreatingVacancyDetailsViewModel
 
     [Test, MoqAutoData]
     public void Then_The_ClosingDate_More_than_31Days_Is_Shown_Correctly(
+        string mapsId,
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
@@ -70,7 +74,7 @@ public class WhenCreatingVacancyDetailsViewModel
         var dateMoreThan31Days = new DateTime(2000, 04, 01);
         if (result.Vacancy != null) result.Vacancy.ClosingDate = dateMoreThan31Days;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
 
         Assert.That(actual.ClosingDate, Is.Not.Null);
         actual.ClosingDate.Should().Contain("Closes on");

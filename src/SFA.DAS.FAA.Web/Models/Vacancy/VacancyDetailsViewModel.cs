@@ -55,9 +55,11 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? CompanyBenefits { get; set; }//TODO
         public string? WageAdditionalInformation { get; set; }//TODO
         public string? AdditionalTrainingInformation { get; set; }//TODO
+        public string? GoogleMapsId { get; set; }
+        public string? CandidatePostcode { get; set; }
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
-            GetApprenticeshipVacancyQueryResult source) => new VacancyDetailsViewModel
+            GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
             {
                 Title = source.Vacancy?.Title,
                 VacancyReference = source.Vacancy?.VacancyReference,
@@ -101,7 +103,9 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                     : string.Empty,
                 ApplicationDetails = source.Vacancy?.Application,
                 IsClosed = source.Vacancy?.IsClosed ?? false,
-                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}."
+                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+                GoogleMapsId = googleMapsId,
+                CandidatePostcode = source.Vacancy?.CandidatePostcode
             };
     }
 
