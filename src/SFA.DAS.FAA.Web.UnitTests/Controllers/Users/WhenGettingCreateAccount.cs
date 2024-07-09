@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿
+using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentAssertions.Execution;
