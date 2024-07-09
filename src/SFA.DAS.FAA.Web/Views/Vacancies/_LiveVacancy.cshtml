@@ -234,7 +234,47 @@
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine2</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine3</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine4</p>
-                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.Postcode</p>
+                <p class="govuk-body">@Model.WorkLocation.Postcode</p>
+                <details class="govuk-details govuk-!-margin-bottom-0">
+                    <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text">
+                            Check your travel to work
+                        </span>
+                    </summary>
+                    <div class="govuk-details__text">
+                        <form id="faa-directions-form">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Check your travel to
+                                    work</legend>
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" for="directions-postcode">
+                                        Postcode
+                                    </label>
+                                    <div id="directions-postcode-hint" class="govuk-hint">
+                                        For example SW1A 2AA
+                                    </div>
+                                    <input class="govuk-input govuk-input--width-10" id="directions-postcode"
+                                        name="directions-postcode" type="text" autocomplete="postal-code"
+                                        aria-describedby="directions-postcode-hint">
+                                </div>
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" for="sort">
+                                        Select a method of travelling
+                                    </label>
+                                    <select class="govuk-select" id="sort" name="sort">
+                                        <option value="">Select a method</option>
+                                        <option value="DRIVE">Car</option>
+                                        <option value="BICYCLE">Cycling</option>
+                                        <option value="WALK">Walking</option>
+                                        <option value="TRANSIT">Public transport</option>
+                                    </select>
+                                </div>
+                            </fieldset>
+                            <button type="submit" class="govuk-button govuk-button--secondary">Show route</button>
+                        </form>
+                        <div id="faa-directions-map"></div>
+                    </div>
+                </details>
             </section>
             <section class="faa-vacancy__section" id="training">
                 <h2 class="govuk-heading-m">Training</h2>
