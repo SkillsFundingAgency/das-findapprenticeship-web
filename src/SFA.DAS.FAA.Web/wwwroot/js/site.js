@@ -1,5 +1,4 @@
-﻿
-const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
+﻿const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
 const apiUrl = "/locations";
 
 if (locationInputs.length > 0) {
@@ -335,6 +334,49 @@ if (autocompleteSelects) {
 
 // Maps
 
+function FaaMapDirections(mapId, destination, form, container) {
+  this.mapId = mapId;
+  this.container = container;
+  this.form = form;
+  this.centerLat = 52.4379;
+  this.centerLng = -1.6496;
+}
+
+FaaMapDirections.prototype.init = async function () {
+  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+  const directionsService = new google.maps.DirectionsService();
+  const directionsRenderer = new google.maps.DirectionsRenderer();
+
+  this.map = new google.maps.Map(this.container, {
+    zoom: 7,
+    center: { lat: 41.85, lng: -87.65 },
+    mapId: this.mapId,
+  });
+
+  directionsRenderer.setMap(this.map);
+  this.calculateAndDisplayRoute(directionsService, directionsRenderer);
+};
+
+FaaMapDirections.prototype.calculateAndDisplayRoute = function (
+  directionsService,
+  directionsRenderer
+) {
+  directionsService
+    .route({
+      origin: {
+        query: "cv56np",
+      },
+      destination: {
+        query: "cv56dz",
+      },
+      travelMode: google.maps.TravelMode.DRIVING,
+    })
+    .then((response) => {
+      directionsRenderer.setDirections(response);
+    })
+    .catch((e) => window.alert("Directions request failed due to " + status));
+};
+
 function FaaMap(mapId, link, linkLoading, container, radius) {
   this.container = container;
   this.radius = radius;
@@ -622,37 +664,42 @@ FaaMap.prototype.markerHtml = function () {
 
 // cookies
 function saveCookieSettings() {
-    let consentAnalyticsCookieRadioValue = document.querySelector("input[name=ConsentAnalyticsCookie]:checked").value;
-    let consentFunctionalCookieRadioValue = document.querySelector("input[name=ConsentFunctionalCookie]:checked").value;
+  let consentAnalyticsCookieRadioValue = document.querySelector(
+    "input[name=ConsentAnalyticsCookie]:checked"
+  ).value;
+  let consentFunctionalCookieRadioValue = document.querySelector(
+    "input[name=ConsentFunctionalCookie]:checked"
+  ).value;
 
-    createCookie('AnalyticsConsent', consentAnalyticsCookieRadioValue);
-    createCookie('FunctionalConsent', consentFunctionalCookieRadioValue);
+  createCookie("AnalyticsConsent", consentAnalyticsCookieRadioValue);
+  createCookie("FunctionalConsent", consentFunctionalCookieRadioValue);
 
-    document.getElementById("confirmation-banner").removeAttribute("hidden");
-    window.scrollTo({ top: 0, behavior: 'instant' });
-}  
+  document.getElementById("confirmation-banner").removeAttribute("hidden");
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
 function acceptCookies(args) {
-    createCookie('DASSeenCookieMessage', true);
-    document.getElementById('cookieConsent').style.display = 'none';
-    if (args === true) {
-        createCookie('AnalyticsConsent', true);
-        createCookie('FunctionalConsent', true);
-        document.getElementById("cookieAccept").removeAttribute("hidden");
-    } else {
-        createCookie('AnalyticsConsent', false);
-        createCookie('FunctionalConsent', false);
-        document.getElementById('cookieReject').removeAttribute('hidden');
-    }
+  createCookie("DASSeenCookieMessage", true);
+  document.getElementById("cookieConsent").style.display = "none";
+  if (args === true) {
+    createCookie("AnalyticsConsent", true);
+    createCookie("FunctionalConsent", true);
+    document.getElementById("cookieAccept").removeAttribute("hidden");
+  } else {
+    createCookie("AnalyticsConsent", false);
+    createCookie("FunctionalConsent", false);
+    document.getElementById("cookieReject").removeAttribute("hidden");
+  }
 }
 function createCookie(cookiname, cookivalue) {
-    let date = new Date();
-    date.setFullYear(date.getFullYear() + 1);
-    let expires = "expires=" + date.toGMTString();
-    document.cookie = cookiname + "=" + cookivalue + ";" + expires + ";path=/;Secure";
+  let date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
+  let expires = "expires=" + date.toGMTString();
+  document.cookie =
+    cookiname + "=" + cookivalue + ";" + expires + ";path=/;Secure";
 }
 function hideAcceptBanner() {
-    document.getElementById('cookieAccept').setAttribute('hidden', '');
+  document.getElementById("cookieAccept").setAttribute("hidden", "");
 }
 function hideRejectBanner() {
-    document.getElementById('cookieReject').setAttribute('hidden', '');
+  document.getElementById("cookieReject").setAttribute("hidden", "");
 }
