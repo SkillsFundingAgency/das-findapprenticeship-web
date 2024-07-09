@@ -1,3 +1,13 @@
+.faa-page-heading {
+  margin-top: 0;
+  @include govuk-media-query(tablet) {
+    margin-top: 20px;
+  }
+  @include govuk-media-query(desktop) {
+    margin-top: 40px;
+  }
+}
+
 .faa-inline-list {
   @include govuk-font($size: 19);
   list-style: none;

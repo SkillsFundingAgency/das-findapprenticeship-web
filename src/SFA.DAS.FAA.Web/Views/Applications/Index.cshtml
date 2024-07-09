@@ -6,11 +6,14 @@
     ViewData["Title"] = $"{Model.PageTitle} - Find an apprenticeship - GOV.UK";
 }
 
-@if (!string.IsNullOrEmpty(Model.WithdrawnBannerMessage))
-{
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        @if (!string.IsNullOrEmpty(Model.WithdrawnBannerMessage))
+        {
+
+            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+                aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
                     <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                         Success
@@ -22,14 +25,13 @@
                     </h3>
                 </div>
             </div>
-        </div>
-    </div>    
-}
-@if (Model.ShowTransferDataBannerMessage)
-{
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <div class="govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+
+        }
+        @if (Model.ShowTransferDataBannerMessage)
+        {
+
+            <div class="govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title"
+                data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
                     <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                         Important
@@ -39,41 +41,41 @@
                     <p class="govuk-notification-banner__heading">
                         If you’re missing applications
                     </p>
-                    <p class="govuk-body">We’ve introduced a new version of Find an apprenticeship. If you had an account before 31 July 2024, you can
-                        <a class="govuk-notification-banner__link" href="@Url.RouteUrl(RouteNames.TransferYourData)">transfer your data</a>.
+                    <p class="govuk-body">We’ve introduced a new version of Find an apprenticeship. If you had an account
+                        before 31 July 2024, you can
+                        <a class="govuk-notification-banner__link"
+                            href="@Url.RouteUrl(RouteNames.TransferYourData)">transfer your data</a>.
                     </p>
                 </div>
             </div>
-        </div>
-    </div>
 
-}
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Your applications</h1>
+
+        }
+
+        <h1 class="govuk-heading-xl faa-page-heading">Your applications</h1>
         <nav class="faa-tab-nav">
             <ul class="faa-tab-nav__list">
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started })"
-                       class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
+                        class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
                         Started
                     </a>
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted })"
-                       class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
+                        class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
                         Submitted
                     </a>
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Successful })"
-                       class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
+                        class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
                         Successful
                     </a>
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Unsuccessful })"
-                       class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
+                        class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
                         Unsuccessful
                     </a>
                 </li>
