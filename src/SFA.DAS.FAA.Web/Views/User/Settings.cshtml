@@ -7,9 +7,9 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">Settings</h1>
+        <h1 class="govuk-heading-xl faa-page-heading">Settings</h1>
         @* <h2 class="govuk-heading-l">Your account</h2> *@
-        
+
         <div class="govuk-!-padding-bottom-5"></div>
         <h3 class="govuk-heading-m">Personal details</h3>
         <dl class="govuk-summary-list govuk-!-margin-bottom-6">
@@ -28,7 +28,8 @@
                     }
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-route="@RouteNames.UserName" asp-route-journeyPath="@UserJourneyPath.Settings" id="name-change-link">
+                    <a class="govuk-link" asp-route="@RouteNames.UserName"
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="name-change-link">
                         Change<span class="govuk-visually-hidden"> name</span>
                     </a>
                 </dd>
@@ -41,7 +42,8 @@
                     @Model.DateOfBirth.ToString("dd MMMM yyyy")
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-route="@RouteNames.DateOfBirth" asp-route-journeyPath="@UserJourneyPath.Settings" id="dob-change-link">
+                    <a class="govuk-link" asp-route="@RouteNames.DateOfBirth"
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="dob-change-link">
                         Change<span class="govuk-visually-hidden"> date of birth</span>
                     </a>
                 </dd>
@@ -59,13 +61,16 @@
 
                     @if (Model.IsAddressFromLookup)
                     {
-                        <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress" asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode" id="address-change-link">
+                        <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress"
+                            asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode"
+                            id="address-change-link">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     }
                     else
                     {
-                        <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually" asp-route-journeyPath="@UserJourneyPath.Settings" id="address-change-manual-link">
+                        <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually"
+                            asp-route-journeyPath="@UserJourneyPath.Settings" id="address-change-manual-link">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     }
@@ -79,7 +84,8 @@
                     @Model.PhoneNumber
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-route="@RouteNames.PhoneNumber" asp-route-journeyPath="@UserJourneyPath.Settings" id="phone-number-change-link">
+                    <a class="govuk-link" asp-route="@RouteNames.PhoneNumber"
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="phone-number-change-link">
                         Change<span class="govuk-visually-hidden"> telephone number</span>
                     </a>
                 </dd>
@@ -92,7 +98,8 @@
                     @Model.EmailAddress
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-route="@RouteNames.Email" asp-route-journeyPath="@UserJourneyPath.Settings" id="email-change-link">
+                    <a class="govuk-link" asp-route="@RouteNames.Email"
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="email-change-link">
                         Change<span class="govuk-visually-hidden">Email address</span>
                     </a>
                 </dd>
@@ -101,12 +108,13 @@
 
         @if (Model.HasAnsweredEqualityQuestions)
         {
-            <a href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EditEqualityQuestions)" class="govuk-link">Change your answers to the equality questions</a>
+            <a href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EditEqualityQuestions)"
+                class="govuk-link">Change your answers to the equality questions</a>
             <div class="govuk-!-padding-bottom-9"></div>
         }
-        
+
         <h3 class="govuk-heading-m">Email notifications</h3>
-        
+
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
@@ -119,18 +127,19 @@
                     }
                     else
                     {
-                        <text>No</text>                        
+                        <text>No</text>
                     }
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences" asp-route-journeyPath="@UserJourneyPath.Settings" id="notification-preferences-change-link">
+                    <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences"
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="notification-preferences-change-link">
                         Change<span class="govuk-visually-hidden"> notification preferences</span>
                     </a>
                 </dd>
             </div>
         </dl>
-        
+
         <div class="govuk-!-padding-bottom-9"></div>
-        
+
     </div>
 </div>
