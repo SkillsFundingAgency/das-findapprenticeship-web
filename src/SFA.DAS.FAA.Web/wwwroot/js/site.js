@@ -340,12 +340,36 @@ function FaaMapDirections(mapId, destination, form, container) {
   this.form = form;
   this.centerLat = 52.4379;
   this.centerLng = -1.6496;
+  this.destination = destination;
 }
 
 FaaMapDirections.prototype.init = async function () {
   const { Map, InfoWindow } = await google.maps.importLibrary("maps");
   const directionsService = new google.maps.DirectionsService();
   const directionsRenderer = new google.maps.DirectionsRenderer();
+
+  if ("geolocation" in navigator) {
+    const useLocationLink = document.createElement("a");
+
+    useLocationLink.classList.add("govuk-link");
+    useLocationLink.classList.add("govuk-link--no-visited-state");
+    useLocationLink.innerHTML = "use current location";
+    useLocationLink.setAttribute("href", "#");
+    useLocationLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      navigator.geolocation.getCurrentPosition((pos) => {
+        console.log(pos);
+        const crd = pos.coords;
+
+        console.log("Your current position is:");
+        console.log(`Latitude : ${crd.latitude}`);
+        console.log(`Longitude: ${crd.longitude}`);
+        console.log(`More or less ${crd.accuracy} meters.`);
+      });
+    });
+
+    document.getElementById("faa-navigator-link").append(useLocationLink);
+  }
 
   this.map = new google.maps.Map(this.container, {
     zoom: 7,
@@ -354,27 +378,38 @@ FaaMapDirections.prototype.init = async function () {
   });
 
   directionsRenderer.setMap(this.map);
-  this.calculateAndDisplayRoute(directionsService, directionsRenderer);
+  this.calculateAndDisplayRoute(directionsRenderer, directionsService);
+
+  this.form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    this.origin = document.getElementById("directions-postcode").value;
+    this.travelMode = document.getElementById("directions-travelMode").value;
+    this.calculateAndDisplayRoute(directionsRenderer, directionsService);
+  });
 };
 
 FaaMapDirections.prototype.calculateAndDisplayRoute = function (
-  directionsService,
-  directionsRenderer
+  directionsRenderer,
+  directionsService
 ) {
+  if (this.origin === undefined || this.travelMode === undefined) {
+    return;
+  }
+  directionsRenderer.setMap(this.map);
   directionsService
     .route({
       origin: {
-        query: "cv56np",
+        query: this.origin,
       },
       destination: {
-        query: "cv56dz",
+        query: this.destination,
       },
-      travelMode: google.maps.TravelMode.DRIVING,
+      travelMode: google.maps.TravelMode[this.travelMode],
     })
     .then((response) => {
       directionsRenderer.setDirections(response);
     })
-    .catch((e) => window.alert("Directions request failed due to " + status));
+    .catch((e) => console.error(e));
 };
 
 function FaaMap(mapId, link, linkLoading, container, radius) {

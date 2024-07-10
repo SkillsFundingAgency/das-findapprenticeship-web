@@ -235,6 +235,10 @@
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine3</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine4</p>
                 <p class="govuk-body">@Model.WorkLocation.Postcode</p>
+                <span aria-hidden="false" class="govuk-visually-hidden" id="faa-directions-destination">
+                    @Model.WorkLocation.AddressLine1, @Model.WorkLocation.AddressLine2,
+                    @Model.WorkLocation.AddressLine3, @Model.WorkLocation.AddressLine4, @Model.WorkLocation.Postcode
+                </span>
                 <details class="govuk-details govuk-!-margin-bottom-0">
                     <summary class="govuk-details__summary">
                         <span class="govuk-details__summary-text">
@@ -242,7 +246,7 @@
                         </span>
                     </summary>
                     <div class="govuk-details__text">
-                        <form id="faa-directions-form">
+                        <form id="faa-directions-form" class="das-ajax-form">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Check your travel to
                                     work</legend>
@@ -251,21 +255,22 @@
                                         Postcode
                                     </label>
                                     <div id="directions-postcode-hint" class="govuk-hint">
-                                        For example SW1A 2AA
+                                        For example SW1A 2AA <span id="faa-navigator-link"></span>
                                     </div>
                                     <input class="govuk-input govuk-input--width-10" id="directions-postcode"
                                         name="directions-postcode" type="text" autocomplete="postal-code"
                                         aria-describedby="directions-postcode-hint">
                                 </div>
                                 <div class="govuk-form-group">
-                                    <label class="govuk-label" for="sort">
+                                    <label class="govuk-label" for="directions-travelMode">
                                         Select a method of travelling
                                     </label>
-                                    <select class="govuk-select" id="sort" name="sort">
+                                    <select class="govuk-select" id="directions-travelMode"
+                                        name="directions-travelMode">
                                         <option value="">Select a method</option>
-                                        <option value="DRIVE">Car</option>
-                                        <option value="BICYCLE">Cycling</option>
-                                        <option value="WALK">Walking</option>
+                                        <option value="DRIVING">Car</option>
+                                        <option value="BICYCLING">Cycling</option>
+                                        <option value="WALKING">Walking</option>
                                         <option value="TRANSIT">Public transport</option>
                                     </select>
                                 </div>

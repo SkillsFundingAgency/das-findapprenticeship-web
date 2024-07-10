@@ -18,9 +18,10 @@ else
     <script>
         const directionsForm = document.getElementById('faa-directions-form')
         const directionsMap = document.getElementById('faa-directions-map')
+        const destination = document.getElementById('faa-directions-destination').innerText
 
         if (directionsForm && directionsMap) {
-            new FaaMapDirections("@Model.MapId", directionsForm, directionsMap).init()
+            new FaaMapDirections("@Model.GoogleMapsId", destination, directionsForm, directionsMap).init()
         }
     </script>
 }
