@@ -463,9 +463,16 @@ FaaMapDirections.prototype.calculateAndDisplayRoute = function (
       },
       destination: this.destination,
       travelMode: google.maps.TravelMode[this.travelMode],
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
     })
     .then((response) => {
-      journeyInfo.innerHTML = `<b>Distance:</b> ${response.routes[0].legs[0].distance.text}<br /> <b>Duration:</b> ${response.routes[0].legs[0].duration.text}`;
+      journeyInfo.innerHTML = `<b>Distance</b> ${response.routes[0].legs[0].distance.text.replace(
+        "mi",
+        "miles"
+      )}<br /> <b>Duration</b> ${response.routes[0].legs[0].duration.text.replace(
+        "mins",
+        "minutes"
+      )}`;
       directionsRenderer.setDirections(response);
     })
     .catch((e) => {
