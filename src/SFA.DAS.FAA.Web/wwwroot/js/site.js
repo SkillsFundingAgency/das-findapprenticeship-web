@@ -454,7 +454,8 @@ FaaMapDirections.prototype.calculateAndDisplayRoute = function (
   if (this.origin === undefined || this.travelMode === undefined) {
     return;
   }
-  directionsRenderer.setMap(this.map);
+  const journeyInfo = document.getElementById("faa-journey-info");
+
   directionsService
     .route({
       origin: {
@@ -464,11 +465,13 @@ FaaMapDirections.prototype.calculateAndDisplayRoute = function (
       travelMode: google.maps.TravelMode[this.travelMode],
     })
     .then((response) => {
+      journeyInfo.innerHTML = `<b>Distance:</b> ${response.routes[0].legs[0].distance.text}<br /> <b>Duration:</b> ${response.routes[0].legs[0].duration.text}`;
       directionsRenderer.setDirections(response);
     })
     .catch((e) => {
       console.error(e);
       this.updatePostcodeRow("Location could not be found");
+      journeyInfo.innerHTML = "";
     });
 };
 
