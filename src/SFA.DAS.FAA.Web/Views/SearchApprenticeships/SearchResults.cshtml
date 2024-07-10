@@ -19,115 +19,122 @@
 {
     <partial name="_AccountCreatedBanner" />
 }
+
 <h1 class="govuk-heading-l govuk-!-margin-bottom-8"> @Model.TotalMessage </h1>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-        <div class="faa-filter">
-            <div class="faa-filter__header">
-                <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
-            </div>
-            <partial name="_SelectedCategoriesFilter" />
-            <div class="faa-filter__body">
-                <form asp-route="@RouteNames.SearchResults" method="GET">
-                    <div class="govuk-form-group">
-                        <label for="SearchTerm" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
-                        <p class="govuk-hint">Enter a job or company</p>
-                        <input asp-for="SearchTerm" type="text" class="govuk-input" id="SearchTerm" />
-                    </div>
-                    <div class="govuk-form-group">
-                        <label for="location" class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
-                        <p class="govuk-hint">Enter a city or postcode</p>
-                        <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location"
-                            id="location" type="search" spellcheck="false" autocomplete="postal-code"
-                            aria-describedby="where-hint">
-                        <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
-                        <select class="govuk-select" id="within" name="distance">
-                            <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
-                            <option value="5" selected="@(Model.Distance == 5)">5 miles</option>
-                            <option value="10" selected="@(Model.Distance == 10)">10 miles</option>
-                            <option value="15" selected="@(Model.Distance == 15)">15 miles</option>
-                            <option value="20" selected="@(Model.Distance == 20)">20 miles</option>
-                            <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
-                            <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
-                            <option value="all" selected="@(Model.Distance == null)">Across England</option>
-                        </select>
-                    </div>
-                    <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
-                        <div class="govuk-accordion__section">
-                            <div class="govuk-accordion__section-header">
-                                <h2 class="govuk-accordion__section-heading">
-                                    <span class="govuk-accordion__section-button"
-                                        id="apprenticeship-filters-heading-level">
-                                        Apprenticeship level
-                                        @if (Model.SelectedLevelCount != 0)
-                                        {
-                                            <span class="govuk-hint faa-filter__selected-hint" aria-hidden="true">
-                                                @Model.SelectedLevelCount.ToString() selected
-                                            </span>
-                                        }
-                                    </span>
-                                </h2>
+        <div class="das-show-hide" data-module="das-show-hide">
+            <div class="faa-filter das-!-show--from-tablet" id="faa-filter" tabindex="0">
+                <div class="faa-filter__header">
+                    <h2 class="govuk-heading-m faa-filter__heading">Filter</h2>
+                </div>
+                <partial name="_SelectedCategoriesFilter" />
+                <div class="faa-filter__body das-!-show--from-tablet" id="faa-filter-options">
+                    <form asp-route="@RouteNames.SearchResults" method="GET">
+                        <div class="govuk-form-group">
+                            <label for="SearchTerm"
+                                class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
+                            <p class="govuk-hint">Enter a job or company</p>
+                            <input asp-for="SearchTerm" type="text" class="govuk-input" id="SearchTerm" />
+                        </div>
+                        <div class="govuk-form-group">
+                            <label for="location"
+                                class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
+                            <p class="govuk-hint">Enter a city or postcode</p>
+                            <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location"
+                                id="location" type="search" spellcheck="false" autocomplete="postal-code"
+                                aria-describedby="where-hint">
+                            <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
+                            <select class="govuk-select" id="within" name="distance">
+                                <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
+                                <option value="5" selected="@(Model.Distance == 5)">5 miles</option>
+                                <option value="10" selected="@(Model.Distance == 10)">10 miles</option>
+                                <option value="15" selected="@(Model.Distance == 15)">15 miles</option>
+                                <option value="20" selected="@(Model.Distance == 20)">20 miles</option>
+                                <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
+                                <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
+                                <option value="all" selected="@(Model.Distance == null)">Across England</option>
+                            </select>
+                        </div>
+                        <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                                        <span class="govuk-accordion__section-button"
+                                            id="apprenticeship-filters-heading-level">
+                                            Apprenticeship level
+                                            @if (Model.SelectedLevelCount != 0)
+                                            {
+                                                <span class="govuk-hint faa-filter__selected-hint" aria-hidden="true">
+                                                    @Model.SelectedLevelCount.ToString() selected
+                                                </span>
+                                            }
+                                        </span>
+                                    </h2>
+                                </div>
+                                <div class="govuk-accordion__section-content">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-visually-hidden">Apprenticeship level</legend>
+                                        <p class="govuk-hint">Select the level you want to apply for</p>
+                                        <partial name="_FilterDetails"
+                                            Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
+                                    </fieldset>
+                                    <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3">
+                                        <a class="govuk-link govuk-link--no-visited-state"
+                                            href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels"
+                                            target="_blank" rel="external">
+                                            What qualification levels mean (opens in new tab)
+                                        </a>
+                                    </p>
+                                </div>
                             </div>
-                            <div id="aapprenticeship-filters-level" class="govuk-accordion__section-content"
-                                aria-labelledby="apprenticeship-filters-level">
-                                <fieldset class="govuk-fieldset">
-                                    <legend class="govuk-visually-hidden">Apprenticeship level</legend>
-                                    <p class="govuk-hint">Select the level you want to apply for</p>
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                                        <span class="govuk-accordion__section-button"
+                                            id="apprenticeship-filters-heading-categories">
+                                            Job categories
+                                            @if (Model.SelectedRouteCount != 0)
+                                            {
+                                                <span class="govuk-hint faa-filter__selected-hint"
+                                                    aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</span>
+                                            }
+                                        </span>
+                                    </h2>
+                                </div>
+                                <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-visually-hidden">Job categories</legend>
+                                        <partial name="_FilterDetails"
+                                            Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="govuk-form-group">
+                            <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident</h2>
+                            <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
+                            <div class="govuk-checkboxes govuk-checkboxes--small">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="DisabilityConfident"
+                                        name="DisabilityConfident" type="checkbox" value="true"
+                                        checked="@Model.DisabilityConfident" />
+                                    <label class="govuk-label govuk-checkboxes__label" asp-for="DisabilityConfident">
+                                        Only show Disability Confident employers
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5">
+                        <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
+                    </form>
+                </div>
+            </div>
+            <button class="govuk-button govuk-button--secondary das-filter__toggle das-show-hide__button"
+                data-aria-controls="faa-filter@(Model.ShowFilterOptions ? "-options" : "")"
+                data-button-string="filter @(Model.ShowFilterOptions ? " options" : "")"
+                data-focus-id="SearchTerm">Show/hide</button>
 
-                                    <partial name="_FilterDetails"
-                                        Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
-                                </fieldset>
-                                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3">
-                                    <a class="govuk-link govuk-link--no-visited-state"
-                                        href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels"
-                                        target="_blank" rel="external">
-                                        What qualification levels mean (opens in new tab)
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="govuk-accordion__section">
-                            <div class="govuk-accordion__section-header">
-                                <h2 class="govuk-accordion__section-heading">
-                                    <span class="govuk-accordion__section-button"
-                                        id="apprenticeship-filters-heading-categories">
-                                        Job categories
-                                        @if (Model.SelectedRouteCount != 0)
-                                        {
-                                            <span class="govuk-hint faa-filter__selected-hint"
-                                                aria-hidden="true">@Model.SelectedRouteCount.ToString() selected</span>
-                                        }
-                                    </span>
-                                </h2>
-                            </div>
-                            <div id="apprenticeship-filters-categories" class="govuk-accordion__section-content"
-                                aria-labelledby="govuk-accordion__section-content">
-                                <fieldset class="govuk-fieldset">
-                                    <legend class="govuk-visually-hidden">Job categories</legend>
-                                    <partial name="_FilterDetails"
-                                        Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
-                                </fieldset>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="govuk-form-group">
-                        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident</h2>
-                        <p class="govuk-hint">Employers who have committed to support disabled people at work</p>
-                        <div class="govuk-checkboxes govuk-checkboxes--small">
-                            <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="DisabilityConfident"
-                                    name="DisabilityConfident" type="checkbox" value="true"
-                                    checked="@Model.DisabilityConfident" />
-                                <label class="govuk-label govuk-checkboxes__label" asp-for="DisabilityConfident">
-                                    Only show Disability Confident employers
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
-                    <button type="submit" class="govuk-button govuk-!-margin-bottom-1">Apply filters</button>
-                </form>
-            </div>
         </div>
     </div>
     <div class="govuk-grid-column-two-thirds">
@@ -137,12 +144,30 @@
         }
         else
         {
-            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-5 ">
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-one-half">
-                    <p><a href="#maps" class="govuk-link govuk-link--no-visited-state" id="map-link">View map</a></p>
+            <div class="faa-search-results-header">
+                <div class="faa-search-results-header__map">
+                    @if (Model.Total <= 300)
+                    {
+                        <div>
+                            <a href="#showMap"
+                                class="govuk-link govuk-link--no-visited-state faa-search-results-header__map-link"
+                                id="map-link">
+                                <svg viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="faa-search-results-header__map-link-icon">
+                                    <path fill="currentColor"
+                                        d="M19.25 9.75C19.25 10.7082 18.9155 11.923 18.3178 13.3034C17.7257 14.671 16.9022 16.1408 15.9852 17.591C14.152 20.4903 11.9832 23.2531 10.6551 24.8737C10.3145 25.2858 9.68536 25.2857 9.34482 24.8735C8.0167 23.2529 5.8479 20.4903 4.01478 17.591C3.09784 16.1408 2.27428 14.671 1.68215 13.3034C1.08446 11.923 0.75 10.7082 0.75 9.75C0.75 4.79919 4.87537 0.75 10 0.75C15.1246 0.75 19.25 4.79919 19.25 9.75ZM12.8806 6.9149C12.1135 6.16693 11.0769 5.75 10 5.75C8.92307 5.75 7.88655 6.16693 7.1194 6.9149C6.35161 7.6635 5.91667 8.68292 5.91667 9.75C5.91667 10.8171 6.35161 11.8365 7.1194 12.5851C7.88655 13.3331 8.92307 13.75 10 13.75C11.0769 13.75 12.1135 13.3331 12.8806 12.5851C13.6484 11.8365 14.0833 10.8171 14.0833 9.75C14.0833 8.68292 13.6484 7.6635 12.8806 6.9149Z" />
+                                </svg>
+                                Open map</a>
+                            <p class="faa-loading__wrap govuk-visually-hidden" aria-hidden="true" id="map-link__loading"><span
+                                    class="faa-loading"></span>Loading map</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="govuk-!-margin-bottom-1">Map available when under 300 results</p>
+                    }
                 </div>
-                <div class="govuk-grid-column-one-half">
+                <div class="faa-search-results-header__sort">
                     <div class="faa-search-results-sort">
                         <label class="govuk-label faa-search-results-sort__label" for="sort-results">Sort results</label>
                         <select class="govuk-select faa-search-results-sort__select" id="sort-results" name="sort">
@@ -155,12 +180,11 @@
                     </div>
                 </div>
             </div>
-            <hr class="govuk-section-break govuk-section-break--visible">
             <div class="das-search-results">
                 <ol class="das-search-results__list">
                     @foreach (var vacancy in Model.Vacancies)
                     {
-                        <li class="das-search-results__list-item govuk-!-padding-top-5">
+                        <li class="das-search-results__list-item govuk-!-padding-top-6">
                             @if (vacancy.IsClosingSoon)
                             {
                                 <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
@@ -214,17 +238,19 @@
     </div>
 </div>
 <div id="map" class="faa-map__container"></div>
+
+
 @if (Model.Total != 0 && !Model.NoSearchResultsByUnknownLocation)
 {
     <partial name="_Pagination" Model="@Model.PaginationViewModel" />
 }
 @section AfterJSScripts {
     <script>
-        const roles = @Html.Raw(Json.Serialize(Model.MapData));
         const mapLink = document.getElementById('map-link')
+        const mapLinkLoading = document.getElementById('map-link__loading')
         const mapContainer = document.getElementById('map')
         if (mapLink && mapContainer) {
-            new FaaMap("@Model.MapId", mapLink, mapContainer, roles, 52.400575, -1.507825).init()
+            new FaaMap("@Model.MapId", mapLink, mapLinkLoading, mapContainer, @(Model.Distance == null ? 0 : Model.Distance)).init()
         }
     </script>
 }
