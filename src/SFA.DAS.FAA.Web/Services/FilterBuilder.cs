@@ -26,8 +26,8 @@ namespace SFA.DAS.FAA.Web.Services
                 string.IsNullOrEmpty(request.Location) ? "" : $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "Across England")})",
                 [$"location={request.Location}", $"distance={(request.Distance == null ? "all" : request.Distance)}"]);
             
-            filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job Category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
-            filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship Level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
             
             if(request.DisabilityConfident)
             {

@@ -33,9 +33,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         }
 
         [TestCase(null, "", 0)]
-        [TestCase("1", "Job Category", 1)]
-        [TestCase("2", "Job Category", 1)]
-        [TestCase("3", "Job Category", 1)]
+        [TestCase("1", "Job category", 1)]
+        [TestCase("2", "Job category", 1)]
+        [TestCase("3", "Job category", 1)]
         public void BuildJobCategorySearchFiltersForSingleRouteId(string? routeId, string fieldName, int expectedNumberOfFilters)
         {
             const string parameterName = "routeIds";
@@ -121,7 +121,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             var firstItem = actual.First();
             firstItem.Filters.Count.Should().Be(2);
-            firstItem.FieldName.Should().Be("Job Category");
+            firstItem.FieldName.Should().Be("Job category");
             firstItem.FieldOrder.Should().Be(1);
 
             var filter = firstItem.Filters.First();
@@ -182,7 +182,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             var firstItem = actual.First();
             firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-            firstItem.FieldName.Should().Be("Job Category");
+            firstItem.FieldName.Should().Be("Job category");
             firstItem.FieldOrder.Should().Be(1);
 
             var filter = firstItem.Filters.First();
@@ -203,9 +203,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         }
 
         [TestCase(null, "", 0)]
-        [TestCase("1", "Apprenticeship Level", 1)]
-        [TestCase("2", "Apprenticeship Level", 1)]
-        [TestCase("3", "Apprenticeship Level", 1)]
+        [TestCase("1", "Apprenticeship level", 1)]
+        [TestCase("2", "Apprenticeship level", 1)]
+        [TestCase("3", "Apprenticeship level", 1)]
         public void BuildJobLevelsSearchFiltersForSingleLevelId(string? levelId, string fieldName, int expectedNumberOfFilters)
         {
             const string parameterName = "levelIds";
@@ -274,7 +274,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             var firstItem = actual.First();
             firstItem.Filters.Count.Should().Be(2);
-            firstItem.FieldName.Should().Be("Apprenticeship Level");
+            firstItem.FieldName.Should().Be("Apprenticeship level");
             firstItem.FieldOrder.Should().Be(1);
 
             var filter = firstItem.Filters.First();
@@ -325,7 +325,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             var firstItem = actual.First();
             firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-            firstItem.FieldName.Should().Be("Apprenticeship Level");
+            firstItem.FieldName.Should().Be("Apprenticeship level");
             firstItem.FieldOrder.Should().Be(1);
 
             var filter = firstItem.Filters.First();
