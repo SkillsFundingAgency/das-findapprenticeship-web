@@ -438,7 +438,10 @@ FaaMapDirections.prototype.getCurrentPostcode = function () {
     }
   }
 
-  function error() {}
+  function error() {
+    this.updatePostcodeRow("Location could not be found");
+    postcodeField.placeholder = "";
+  }
   this.updatePostcodeRow();
   postcodeField.placeholder = "Locating...";
   navigator.geolocation.getCurrentPosition(success, error, options);
