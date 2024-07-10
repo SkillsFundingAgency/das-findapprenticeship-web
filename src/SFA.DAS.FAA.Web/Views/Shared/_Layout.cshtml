@@ -20,9 +20,10 @@
     <link rel="apple-touch-icon" href="assets/images/govuk-apple-touch-icon.png" />
     <!--[if !IE 8]><!-->
     <link href="css/main.css" rel="stylesheet" />
-    <link href="/css/faa.css" rel="stylesheet" no-cdn />
+    <link href="/css/faa.css" rel="stylesheet" no-cdn asp-append-version="true" />
     <!--<![endif]-->
-    <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
+    <meta property="og:image" content="assets/images/govuk-opengraph-image.png" />
+
     @await Html.PartialAsync("_GoogleMapsPartial")
     @await Html.PartialAsync("_GoogleAnalyticsPartial")
 </head>
@@ -294,7 +295,8 @@
 
     <script src="libs/govuk-frontend/all.js"></script>
     <script src="libs/accessible-autocomplete/accessible-autocomplete.min.js"></script>
-    <script src="~/js/site.js" no-cdn></script>
+    <script src="js/das-all.js"></script>
+    <script src="~/js/site.js" no-cdn asp-append-version="true"></script>
     <script src="~/js/libs/service-header.js" no-cdn></script>
     <script>
         window.GOVUKFrontend.initAll();
@@ -302,6 +304,7 @@
         if (oneLoginHeader) {
             new window.CrossServiceHeader(oneLoginHeader).init();
         }
+        window.DASFrontend.initAll();
     </script>
     @RenderSection("AfterJSScripts", required: false)
 </body>
