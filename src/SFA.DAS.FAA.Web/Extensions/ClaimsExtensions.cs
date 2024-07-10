@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Security.Principal;
 using SFA.DAS.FAA.Web.AppStart;
 
 namespace SFA.DAS.FAA.Web.Extensions;
@@ -25,5 +26,12 @@ public static class ClaimsExtensions
     public static string PhoneNumber(this IEnumerable<Claim> claims)
     {
         return claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.MobilePhone))?.Value;
+    }
+
+    public static bool IsAccountSetupCompleted(this IEnumerable<Claim> claims)
+    {
+        var claimsList = claims.ToList();
+        return claimsList.Any(p => p.Type == CustomClaims.CandidateId) &&
+               claimsList.Any(p => p.Type == CustomClaims.AccountSetupCompleted);
     }
 }

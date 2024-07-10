@@ -4,6 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Extensions;
+using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Extensions;
 
@@ -96,5 +97,45 @@ public class WhenGettingUserClaims
         var actual = user.Claims.GovIdentifier();
 
         actual.Should().BeNull();
+    }
+
+    [Test, MoqAutoData]
+    public void Then_If_No_CandidateId_Claim_Exists_Then_False_Returned(bool isAccountSetupCompleted)
+    {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new(CustomClaims.AccountSetupCompleted, isAccountSetupCompleted.ToString())
+        }));
+
+        var actual = user.Claims.IsAccountSetupCompleted();
+
+        actual.Should().BeFalse();
+    }
+
+    [Test, MoqAutoData]
+    public void Then_If_No_AccountSetupCompleted_Claim_Exists_Then_False_Returned(Guid candidateId)
+    {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new(CustomClaims.CandidateId, candidateId.ToString())
+        }));
+
+        var actual = user.Claims.IsAccountSetupCompleted();
+
+        actual.Should().BeFalse();
+    }
+
+    [Test, MoqAutoData]
+    public void Then_If_CandidateId_And_AccountSetupCompleted_Claim_Exists_Then_True_Returned(Guid candidateId, bool isAccountSetupCompleted)
+    {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new(CustomClaims.CandidateId, candidateId.ToString()),
+            new(CustomClaims.AccountSetupCompleted, isAccountSetupCompleted.ToString())
+        }));
+
+        var actual = user.Claims.IsAccountSetupCompleted();
+
+        actual.Should().BeTrue();
     }
 }
