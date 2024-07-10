@@ -107,8 +107,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
                 GoogleMapsId = googleMapsId,
                 CandidatePostcode = source.Vacancy?.CandidatePostcode,
-                Latitude = source.Vacancy?.Location.Latitude,
-                Longitude = source.Vacancy?.Location.Longitude,
+                Latitude = source.Vacancy?.Location.Lat,
+                Longitude = source.Vacancy?.Location.Lon,
             };
     }
 
