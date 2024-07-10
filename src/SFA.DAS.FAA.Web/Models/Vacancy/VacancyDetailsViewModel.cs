@@ -5,7 +5,6 @@ using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
@@ -57,6 +56,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? AdditionalTrainingInformation { get; set; }//TODO
         public string? GoogleMapsId { get; set; }
         public string? CandidatePostcode { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
@@ -105,7 +106,9 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 IsClosed = source.Vacancy?.IsClosed ?? false,
                 ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
                 GoogleMapsId = googleMapsId,
-                CandidatePostcode = source.Vacancy?.CandidatePostcode
+                CandidatePostcode = source.Vacancy?.CandidatePostcode,
+                Latitude = source.Vacancy?.Location.Latitude,
+                Longitude = source.Vacancy?.Location.Longitude,
             };
     }
 
