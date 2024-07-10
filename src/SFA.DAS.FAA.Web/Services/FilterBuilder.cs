@@ -31,7 +31,7 @@ namespace SFA.DAS.FAA.Web.Services
             
             if(request.DisabilityConfident)
             {
-                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "DisabilityConfident", request.DisabilityConfident.ToString(),[$"DisabilityConfident={request.DisabilityConfident}"]);
+                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Disability Confident", "Only show Disability Confident companies", [$"DisabilityConfident={request.DisabilityConfident}"]);
             }
 
             return filters;

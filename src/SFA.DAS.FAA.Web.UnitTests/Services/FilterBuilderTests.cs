@@ -402,12 +402,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
         }
 
-        [TestCase(true, "DisabilityConfident", "True")]
-        [TestCase(false, "DisabilityConfident", null)]
-        public void Then_DisabilityConfident_Filter_Is_Added_To_Filter_List(bool DisabilityConfident, string expectedFieldName, string expectedFilterValue)
+        [TestCase(true, "Disability Confident", "Only show Disability Confident companies")]
+        [TestCase(false, "Disability Confident", null)]
+        public void Then_DisabilityConfident_Filter_Is_Added_To_Filter_List(bool disabilityConfident, string expectedFieldName, string expectedFilterValue)
         {
             // Arrange
-            var request = new GetSearchResultsRequest { DisabilityConfident = DisabilityConfident };
+            var request = new GetSearchResultsRequest { DisabilityConfident = disabilityConfident };
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -421,7 +421,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 });
 
             // Assert
-            if (DisabilityConfident)
+            if (disabilityConfident)
             {
                 actual.Should().ContainSingle();
                 var disabilityConfidentFilter = actual.Single();
