@@ -108,6 +108,12 @@
   @include govuk-focused-text;
 }
 
+.js-enabled .das-show-hide__button {
+  @include govuk-media-query(tablet) {
+    display: none;
+  }
+}
+
 .faa-filter .govuk-accordion__controls {
     display: none;
 }
