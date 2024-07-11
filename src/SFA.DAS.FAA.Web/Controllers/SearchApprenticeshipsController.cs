@@ -24,6 +24,7 @@ public class SearchApprenticeshipsController(
     SearchModelValidator searchModelValidator,
     GetSearchResultsRequestValidator searchRequestValidator) : Controller
 {
+    [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
     {
