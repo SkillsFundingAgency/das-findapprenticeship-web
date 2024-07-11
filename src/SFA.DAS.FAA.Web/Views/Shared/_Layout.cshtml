@@ -27,6 +27,7 @@
 
     @await Html.PartialAsync("_GoogleMapsPartial")
     @await Html.PartialAsync("_GoogleAnalyticsPartial")
+    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 
 <body class="govuk-template__body">
