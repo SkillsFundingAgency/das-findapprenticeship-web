@@ -6,9 +6,7 @@
 @{
     ViewData["Title"] = Model.Title!;
 }
-@section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
-}
+
 @if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted } or { Status: ApplicationStatus.Successful } or
     { Status: ApplicationStatus.Unsuccessful })
 {
