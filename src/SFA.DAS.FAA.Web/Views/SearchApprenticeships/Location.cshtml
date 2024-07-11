@@ -1,6 +1,9 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Web.Models;
 @model LocationViewModel
+@{
+    ViewData["Title"] = "Location – Find an apprenticeship – GOV.UK";
+}
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.BrowseByInterests" asp-all-route-data="@Model.RouteData">Back</a>
 }
