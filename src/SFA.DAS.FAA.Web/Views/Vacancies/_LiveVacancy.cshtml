@@ -6,9 +6,7 @@
 @{
     ViewData["Title"] = Model.Title!;
 }
-@section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
-}
+
 @if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted } or { Status: ApplicationStatus.Successful } or
     { Status: ApplicationStatus.Unsuccessful })
 {
@@ -81,7 +79,7 @@
     <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
     <p class="govuk-body-l faa-vacancy__location">
         <span itemprop="jobLocation">
-            @Model.WorkLocation.AddressLine3, @Model.WorkLocation.Postcode
+            @Model.WorkLocation.City, @Model.WorkLocation.Postcode
         </span>
     </p>
     <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
@@ -404,6 +402,10 @@
                     <p>@Model.ClosingDate</p>
                     <p class="govuk-body"> When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can
                         create one at the same time as applying for this apprenticeship.</p>
+                    if (!string.IsNullOrEmpty(Model.ApplicationUrl))
+                    {
+                        <p class="govuk-body">After signing in, you’ll apply for this apprenticeship on the company's website.</p> 
+                    }
                     <form class="form" method="post">
 
                         <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
@@ -426,16 +428,22 @@
                     {
                         <h2 class="govuk-heading-m">Apply now</h2>
                         <p>@Model.ClosingDate</p>
-                        <p class="govuk-body"> When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can
-                            create one at the same time as applying for this apprenticeship.</p>
-                        <form class="form" method="post">
-                            <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
-                                <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                    @(Model.ApplicationDetails != null && Model.ApplicationDetails.Status ==
-                                        ApplicationStatus.Draft ? "Continue your application" : " Apply for apprenticeship")
-                                </button>
-                            </div>
-                        </form>
+                        
+                        if (!string.IsNullOrEmpty(Model.ApplicationUrl))
+                        {
+                            <a href="@Model.ApplicationUrl" class="govuk-button">Apply on company’s website</a>
+                        }
+                        else
+                        {
+                            <form class="form" method="post">
+                                <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                    <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                        @(Model.ApplicationDetails is { Status: ApplicationStatus.Draft } ? "Continue your application" : " Apply for apprenticeship")
+                                    </button>
+                                </div>
+                            </form>
+                        }
+                        
                     }
                 }
 
