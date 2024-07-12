@@ -42,6 +42,11 @@ public class VacanciesController(
                 : User.Claims.CandidateId()!.ToString()
         });
 
+        if (result.Vacancy == null)
+        {
+            return NotFound();
+        }
+
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
         viewModel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
