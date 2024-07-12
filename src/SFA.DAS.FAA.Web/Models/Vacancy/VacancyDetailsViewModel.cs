@@ -55,7 +55,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? CompanyBenefits { get; set; }//TODO
         public string? WageAdditionalInformation { get; set; }//TODO
         public string? AdditionalTrainingInformation { get; set; }//TODO
-
+        public string? ApplicationUrl { get; set; }
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source) => new VacancyDetailsViewModel
             {
@@ -101,8 +101,11 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                     : string.Empty,
                 ApplicationDetails = source.Vacancy?.Application,
                 IsClosed = source.Vacancy?.IsClosed ?? false,
-                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}."
+                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+                ApplicationUrl = source.Vacancy?.ApplicationUrl
             };
+
+        
     }
 
     public class Address

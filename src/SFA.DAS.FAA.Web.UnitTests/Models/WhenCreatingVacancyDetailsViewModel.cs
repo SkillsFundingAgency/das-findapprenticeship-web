@@ -58,7 +58,8 @@ public class WhenCreatingVacancyDetailsViewModel
                     ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
                     : string.Empty,
             IsClosed = source.Vacancy?.IsClosed ?? false,
-            ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}."
+            ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+            ApplicationUrl = source.Vacancy.ApplicationUrl
         };
 
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, source);
