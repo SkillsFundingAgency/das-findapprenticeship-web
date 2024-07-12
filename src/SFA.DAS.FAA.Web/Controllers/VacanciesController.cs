@@ -30,6 +30,11 @@ public class VacanciesController(
             return NotFound();
         }
 
+        if (!request.VacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
+        {
+            request.VacancyReference = $"VAC{request.VacancyReference}";
+        }
+
         var result = await mediator.Send(new GetApprenticeshipVacancyQuery
         {
             VacancyReference = request.VacancyReference,
@@ -51,6 +56,11 @@ public class VacanciesController(
     [HttpPost]
     public async Task<IActionResult> Apply([FromRoute] PostApplyRequest request)
     {
+        if (!request.VacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
+        {
+            request.VacancyReference = $"VAC{request.VacancyReference}";
+        }
+        
         var result = await mediator.Send(new ApplyCommand
         {
             VacancyReference = request.VacancyReference,

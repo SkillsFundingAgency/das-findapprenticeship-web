@@ -20,8 +20,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
 
 public class WhenGettingVacancyDetails
 {
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData("VAC1000012484","VAC1000012484")]
+    [MoqInlineAutoData("VAC1000012484","1000012484")]
     public async Task Then_The_Mediator_Query_Is_Called_And_VacancyDetails_View_Returned(
+        string queryVal,
+        string vacancyReference,
         Guid candidateId,
         Guid govIdentifier,
         bool showBanner,
@@ -33,8 +37,8 @@ public class WhenGettingVacancyDetails
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] Web.Controllers.VacanciesController controller)
     {
-        request.VacancyReference = "VAC1000012484";
-        mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
+        request.VacancyReference = vacancyReference;
+        mediator.Setup(x => x.Send(It.Is<GetApprenticeshipVacancyQuery>(c=>c.VacancyReference == queryVal), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         cacheStorageService
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
