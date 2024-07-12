@@ -2,6 +2,6 @@
 {
     public enum ApplicationsTab
     {
-        Started, Submitted, Successful, Unsuccessful
+        None, Started, Submitted, Successful, Unsuccessful
     }
 }

@@ -15,6 +15,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Net;
 using FluentValidation.Results;
+using SFA.DAS.FAA.Web.Models.Applications;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
 
@@ -33,6 +34,7 @@ public class WhenGettingVacancyDetails
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] Web.Controllers.VacanciesController controller)
     {
+        var mockUrlHelper = new Mock<IUrlHelper>();
         request.VacancyReference = "VAC1000012484";
         mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
@@ -40,6 +42,7 @@ public class WhenGettingVacancyDetails
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
 
+        controller.Url = mockUrlHelper.Object;
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -56,7 +59,7 @@ public class WhenGettingVacancyDetails
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult { });
 
-        var actual = await controller.Vacancy(request) as ViewResult;
+        var actual = await controller.Vacancy(request, NavigationSource.None, ApplicationsTab.Started) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as VacancyDetailsViewModel;
@@ -64,6 +67,7 @@ public class WhenGettingVacancyDetails
         var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
 
         actualModel.Should().BeEquivalentTo(expected, options => options
+            .Excluding(x => x.BackLinkUrl)
             .Excluding(x => x.ClosingDate)
             .Excluding(x => x.CourseLevelMapper)
             .Excluding(x => x.ShowAccountCreatedBanner));
