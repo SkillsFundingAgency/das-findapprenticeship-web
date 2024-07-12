@@ -59,7 +59,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                     EmployerName = vacancy.EmployerName,
                     Location = $"{vacancy.City}, {vacancy.Postcode}",
                     IsExternalVacancy = vacancy.IsExternalVacancy,
-                    ExternalVacancyUrl = vacancy.ExternalVacancyUrl,
+                    ExternalVacancyUrl = !string.IsNullOrEmpty(vacancy.ExternalVacancyUrl) && !vacancy.ExternalVacancyUrl.StartsWith("http") ? $"https://{vacancy.ExternalVacancyUrl}" : vacancy.ExternalVacancyUrl,
                     CreatedOn = 
                         $"Saved on {vacancy.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = vacancy.ClosingDate,
