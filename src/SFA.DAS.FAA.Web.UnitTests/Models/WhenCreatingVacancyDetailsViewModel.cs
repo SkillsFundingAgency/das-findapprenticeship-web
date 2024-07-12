@@ -59,7 +59,7 @@ public class WhenCreatingVacancyDetailsViewModel
                     : string.Empty,
             IsClosed = source.Vacancy?.IsClosed ?? false,
             ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
-            ApplicationUrl = source.Vacancy.ApplicationUrl
+            ApplicationUrl = $"https://{source.Vacancy.ApplicationUrl}"
         };
 
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, source);
@@ -115,5 +115,22 @@ public class WhenCreatingVacancyDetailsViewModel
 
         Assert.That(actual.ClosingDate, Is.Not.Null);
         actual.ClosingDate.Should().Contain("Closes on");
+    }
+    
+    [Test]
+    [MoqInlineAutoData("https://some.url","https://some.url")]
+    [MoqInlineAutoData("http://some.url","http://some.url")]
+    [MoqInlineAutoData("www.some.url","https://www.some.url")]
+    public void Then_The_Application_Url_Is_Correctly_Formatted(
+        string url,
+        string expectedUrl,
+        GetApprenticeshipVacancyQueryResult result,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        result.Vacancy.ApplicationUrl = url;
+
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
+
+        actual.ApplicationUrl.Should().Be(expectedUrl);
     }
 }
