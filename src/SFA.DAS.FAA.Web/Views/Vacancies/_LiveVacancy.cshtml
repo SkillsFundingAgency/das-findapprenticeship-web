@@ -4,7 +4,7 @@
 @using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 @{
-    ViewData["Title"] = Model.Title!;
+    ViewData["Title"] = $"{Model.Title!} – Find an apprenticeship – GOV.UK";
 }
 
 @if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted } or { Status: ApplicationStatus.Successful } or

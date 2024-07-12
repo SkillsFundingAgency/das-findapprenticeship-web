@@ -1,5 +1,4 @@
-﻿
-const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
+﻿const locationInputs = document.querySelectorAll(".faa-location-autocomplete");
 const apiUrl = "/locations";
 
 if (locationInputs.length > 0) {
@@ -297,8 +296,8 @@ Autocomplete.prototype.init = function () {
     displayMenu: "overlay",
     placeholder: "",
     onConfirm: (opt) => {
-      const txtInput = document.querySelector(this.convertId(this.selectId));
-      const searchString = opt || txtInput.value;
+      const txtInput = document.getElementById(this.selectId);
+      const searchString = opt || txtInput?.value || "";
       const requestedOption = [].filter.call(
         this.select.options,
         function (option) {
@@ -622,37 +621,42 @@ FaaMap.prototype.markerHtml = function () {
 
 // cookies
 function saveCookieSettings() {
-    let consentAnalyticsCookieRadioValue = document.querySelector("input[name=ConsentAnalyticsCookie]:checked").value;
-    let consentFunctionalCookieRadioValue = document.querySelector("input[name=ConsentFunctionalCookie]:checked").value;
+  let consentAnalyticsCookieRadioValue = document.querySelector(
+    "input[name=ConsentAnalyticsCookie]:checked"
+  ).value;
+  let consentFunctionalCookieRadioValue = document.querySelector(
+    "input[name=ConsentFunctionalCookie]:checked"
+  ).value;
 
-    createCookie('AnalyticsConsent', consentAnalyticsCookieRadioValue);
-    createCookie('FunctionalConsent', consentFunctionalCookieRadioValue);
+  createCookie("AnalyticsConsent", consentAnalyticsCookieRadioValue);
+  createCookie("FunctionalConsent", consentFunctionalCookieRadioValue);
 
-    document.getElementById("confirmation-banner").removeAttribute("hidden");
-    window.scrollTo({ top: 0, behavior: 'instant' });
-}  
+  document.getElementById("confirmation-banner").removeAttribute("hidden");
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
 function acceptCookies(args) {
-    createCookie('DASSeenCookieMessage', true);
-    document.getElementById('cookieConsent').style.display = 'none';
-    if (args === true) {
-        createCookie('AnalyticsConsent', true);
-        createCookie('FunctionalConsent', true);
-        document.getElementById("cookieAccept").removeAttribute("hidden");
-    } else {
-        createCookie('AnalyticsConsent', false);
-        createCookie('FunctionalConsent', false);
-        document.getElementById('cookieReject').removeAttribute('hidden');
-    }
+  createCookie("DASSeenCookieMessage", true);
+  document.getElementById("cookieConsent").style.display = "none";
+  if (args === true) {
+    createCookie("AnalyticsConsent", true);
+    createCookie("FunctionalConsent", true);
+    document.getElementById("cookieAccept").removeAttribute("hidden");
+  } else {
+    createCookie("AnalyticsConsent", false);
+    createCookie("FunctionalConsent", false);
+    document.getElementById("cookieReject").removeAttribute("hidden");
+  }
 }
 function createCookie(cookiname, cookivalue) {
-    let date = new Date();
-    date.setFullYear(date.getFullYear() + 1);
-    let expires = "expires=" + date.toGMTString();
-    document.cookie = cookiname + "=" + cookivalue + ";" + expires + ";path=/;Secure";
+  let date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
+  let expires = "expires=" + date.toGMTString();
+  document.cookie =
+    cookiname + "=" + cookivalue + ";" + expires + ";path=/;Secure";
 }
 function hideAcceptBanner() {
-    document.getElementById('cookieAccept').setAttribute('hidden', '');
+  document.getElementById("cookieAccept").setAttribute("hidden", "");
 }
 function hideRejectBanner() {
-    document.getElementById('cookieReject').setAttribute('hidden', '');
+  document.getElementById("cookieReject").setAttribute("hidden", "");
 }

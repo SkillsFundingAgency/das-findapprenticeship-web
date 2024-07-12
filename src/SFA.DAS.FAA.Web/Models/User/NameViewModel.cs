@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using SFA.DAS.FAA.Web.Infrastructure;
+﻿using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.Models.User
 {
     public class NameViewModel : ViewModelBase
     {
-        [Required(ErrorMessage = "Enter your first name")]
-        public string FirstName { get; init; }
-        [Required(ErrorMessage = "Enter your last name")]
-        public string LastName { get; init; }
+        public string? FirstName { get; init; }
+        public string? LastName { get; init; }
         public string BackLink => GetBackLink();
         public UserJourneyPath JourneyPath { get; set; } = UserJourneyPath.CreateAccount;
         public string RedirectRoute => GetRedirectRoute();
