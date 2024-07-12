@@ -20,7 +20,8 @@ public class VacanciesController(
     ICacheStorageService cacheStorageService,
     IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
-    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
+    [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
     {
         var validation = await validator.ValidateAsync(request);
@@ -46,6 +47,7 @@ public class VacanciesController(
 
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
     [HttpPost]
     public async Task<IActionResult> Apply([FromRoute] PostApplyRequest request)
     {

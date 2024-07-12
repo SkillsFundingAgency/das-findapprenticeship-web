@@ -8,6 +8,7 @@ public static class RouteNames
     public const string SearchResults = "search-results";
     public const string MapSearchResults = "map-search-results";
     public const string Vacancies = "vacancies";
+    public const string VacanciesReference = "vacancies-reference";
     public const string Apply = "apply";
     public const string UserName = "user-name";
     public const string DateOfBirth = "date-of-birth";

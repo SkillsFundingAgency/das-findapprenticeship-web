@@ -13,7 +13,9 @@
 else
 {
     @section BackLink {
-        <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
+        <div class="faa-js-back-link-history">
+            <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
+        </div>
     }
     <partial name="_LiveVacancy" model="Model"/>
 }
