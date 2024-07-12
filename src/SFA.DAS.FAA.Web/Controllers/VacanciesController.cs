@@ -37,6 +37,7 @@ public class VacanciesController(
         });
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
+        viewModel.BackLinkUrl = Url.RouteUrl(RouteNames.SearchResults);
         viewModel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");

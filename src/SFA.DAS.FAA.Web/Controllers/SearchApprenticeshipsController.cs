@@ -57,7 +57,7 @@ public class SearchApprenticeshipsController(
         }
         else if (search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm, sort = "AgeAsc" });
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;

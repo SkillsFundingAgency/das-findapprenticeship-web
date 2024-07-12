@@ -5,6 +5,7 @@ using SFA.DAS.Testing.AutoFixture;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.Services;
 using Assert = NUnit.Framework.Assert;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -34,12 +35,11 @@ public class WhenCreatingVacanciesViewModel
     }
     
     [Test]
-    [MoqInlineAutoData("30 Jan 2000", "Sunday 30 January")]
-    [MoqInlineAutoData("01 Jan 2000", "Saturday 1 January")]
-    [MoqInlineAutoData("04 Jun 2024", "Tuesday 4 June")]
+    [MoqInlineAutoData("30 Jan 2000")]
+    [MoqInlineAutoData("01 Jan 2000")]
+    [MoqInlineAutoData("04 Jun 2024")]
     public void Then_The_Closing_Date_Is_Shown_Correctly(
         string closeDate,
-        string expectedResult,
         Vacancies vacancies,
         [Frozen] Mock <IDateTimeService> dateTimeService)
     {
@@ -49,7 +49,7 @@ public class WhenCreatingVacanciesViewModel
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies); 
 
-        Assert.That(actual.AdvertClosing, Is.EqualTo(expectedResult));
+        actual.ClosingDateDescription.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, closingDate));
     }
 
     [Test]
