@@ -118,6 +118,35 @@ if (jsBackLink) {
   jsBackLink.parentNode.replaceChild(backLink, jsBackLink);
 }
 
+const jsBackLinkHistory = document.querySelector(".faa-js-back-link-history");
+
+if (jsBackLinkHistory) {
+  const referrer = document.referrer;
+  const backLink = document.createElement("a");
+  const backLinkText = document.createTextNode("Back");
+  backLink.appendChild(backLinkText);
+  backLink.className = "govuk-back-link";
+  backLink.href = "#";
+  backLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.history.back();
+  });
+
+  if (referrer && referrer !== document.location.href) {
+    jsBackLinkHistory.parentNode.replaceChild(backLink, jsBackLinkHistory);
+  }
+}
+
+const jsSelectChangeSubmitForm = document.querySelector(
+  ".faa-js-select-change-submit-form"
+);
+
+if (jsSelectChangeSubmitForm) {
+  jsSelectChangeSubmitForm.addEventListener("change", () => {
+    jsSelectChangeSubmitForm.closest("form").submit();
+  });
+}
+
 // Show/Hide Extra Form Fields
 
 function ExtraFieldRows(container) {

@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Services
@@ -19,8 +19,9 @@ namespace SFA.DAS.FAA.Web.Services
             return minutes > 0 ? $"{integerPart} hours {minutes} minutes a week" : $"{integerPart} hours a week";
         }
 
-        public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate)
+        public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate, bool isExternalVacancy = false)
         {
+            var timeSuffix = isExternalVacancy ? string.Empty : " at 11:59pm";
             var daysToExpiry = GetDaysUntilExpiry(dateTimeService, closingDate);
 
             return daysToExpiry switch

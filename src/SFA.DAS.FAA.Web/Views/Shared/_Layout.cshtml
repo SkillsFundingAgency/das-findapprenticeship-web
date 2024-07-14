@@ -1,4 +1,4 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Infrastructure
 @using WebEssentials.AspNetCore.CdnTagHelpers
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.FAA.Web.Extensions
@@ -183,8 +183,12 @@
                                             Search
                                         </a>
                                     </li>
-                                    <li
-                                        class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/")) 
+                                    <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "SavedVacancies" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
+                                        <a class="service-header__nav-list-item-link" asp-route="@RouteNames.SavedVacancies">
+                                            Saved vacancies
+                                        </a>
+                                    </li>
+                                    <li class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/")) 
                                                  || Context.Request.RouteValues["controller"]?.ToString() == "Applications" 
                                                  || Context.Request.RouteValues["controller"]?.ToString() == "Apply" 
                                                    ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">

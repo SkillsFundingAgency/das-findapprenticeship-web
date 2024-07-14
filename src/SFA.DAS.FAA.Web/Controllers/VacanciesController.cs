@@ -21,7 +21,8 @@ public class VacanciesController(
     ICacheStorageService cacheStorageService,
     IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
-    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
+    [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request, NavigationSource source = NavigationSource.None, ApplicationsTab tab = ApplicationsTab.None)
     {
         var validation = await validator.ValidateAsync(request);
@@ -30,12 +31,22 @@ public class VacanciesController(
             return NotFound();
         }
 
+        if (!request.VacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
+        {
+            request.VacancyReference = $"VAC{request.VacancyReference}";
+        }
+
         var result = await mediator.Send(new GetApprenticeshipVacancyQuery
         {
             VacancyReference = request.VacancyReference,
             CandidateId = User.Claims.CandidateId().Equals(null) ? null
                 : User.Claims.CandidateId()!.ToString()
         });
+
+        if (result.Vacancy == null)
+        {
+            return NotFound();
+        }
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
         viewModel.BackLinkUrl = (source == NavigationSource.Applications
@@ -50,9 +61,15 @@ public class VacanciesController(
 
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
     [HttpPost]
     public async Task<IActionResult> Apply([FromRoute] PostApplyRequest request)
     {
+        if (!request.VacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
+        {
+            request.VacancyReference = $"VAC{request.VacancyReference}";
+        }
+        
         var result = await mediator.Send(new ApplyCommand
         {
             VacancyReference = request.VacancyReference,
