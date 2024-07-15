@@ -73,7 +73,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
                 WorkDescription = source.Vacancy?.TrainingDescription,
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
-                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate),
+                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate,source.Vacancy?.ApplicationUrl != null),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
                 StartDate = source.Vacancy.StartDate.GetStartDate(),
                 WorkLocation = source.Vacancy.Address,
