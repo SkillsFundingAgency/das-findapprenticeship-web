@@ -8,7 +8,7 @@
 }
 @if (Model.IsClosed)
 {
-    <partial name="_ClosedVacancy" model="Model"/>
+    <partial name="_ClosedVacancy" model="Model" />
 }
 else
 {
@@ -18,4 +18,15 @@ else
         </div>
     }
     <partial name="_LiveVacancy" model="Model"/>
+}
+
+@section AfterJSScripts {
+    <script>
+        const directionsForm = document.getElementById('faa-directions-form')
+        const directionsMap = document.getElementById('faa-directions-map')
+
+        if (directionsForm && directionsMap) {
+            new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", directionsForm, directionsMap).init()
+        }
+    </script>
 }

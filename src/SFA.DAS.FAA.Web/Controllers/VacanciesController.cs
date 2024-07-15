@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Commands.Apply;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Authentication;
@@ -18,6 +19,7 @@ public class VacanciesController(
     IMediator mediator,
     IDateTimeService dateTimeService,
     ICacheStorageService cacheStorageService,
+    IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration,
     IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
     [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
@@ -47,7 +49,7 @@ public class VacanciesController(
             return NotFound();
         }
 
-        var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
+        var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result, faaConfiguration.Value.GoogleMapsId);
         viewModel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");

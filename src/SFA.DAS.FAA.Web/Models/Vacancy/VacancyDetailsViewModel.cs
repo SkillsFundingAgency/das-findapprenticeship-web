@@ -5,7 +5,6 @@ using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
@@ -55,9 +54,14 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? CompanyBenefits { get; set; }//TODO
         public string? WageAdditionalInformation { get; set; }//TODO
         public string? AdditionalTrainingInformation { get; set; }//TODO
+        public string? GoogleMapsId { get; set; }
+        public string? CandidatePostcode { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
+
         public string? ApplicationUrl { get; set; }
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
-            GetApprenticeshipVacancyQueryResult source) => new VacancyDetailsViewModel
+            GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
             {
                 Title = source.Vacancy?.Title,
                 VacancyReference = source.Vacancy?.VacancyReference,
@@ -102,7 +106,11 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 ApplicationDetails = source.Vacancy?.Application,
                 IsClosed = source.Vacancy?.IsClosed ?? false,
                 ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
-                ApplicationUrl = source.Vacancy?.ApplicationUrl != null && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl
+                ApplicationUrl = source.Vacancy?.ApplicationUrl != null && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
+                GoogleMapsId = googleMapsId,
+                CandidatePostcode = source.Vacancy?.CandidatePostcode,
+                Latitude = source.Vacancy?.Location.Lat,
+                Longitude = source.Vacancy?.Location.Lon,
             };
 
         
