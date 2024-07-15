@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
 
 @{
@@ -27,7 +28,7 @@
                         Account created. You can now start your application for this apprenticeship.
                     </h3>
                     <p class="govuk-body">You can change your account details at any point in
-                        <a class="govuk-notification-banner__link" href="#">Settings</a>.
+                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Settings">Settings</a>.
                     </p>
                 </div>
             </div>

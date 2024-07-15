@@ -82,14 +82,14 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests(BrowseByInterestRequestViewModel model)
+    public async Task<IActionResult> BrowseByInterests(BrowseByInterestViewModel model)
     {
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
             var viewModel = (BrowseByInterestViewModel)result;
-
+            
             viewModel.AllocateRouteGroup();
 
             return View(viewModel);
