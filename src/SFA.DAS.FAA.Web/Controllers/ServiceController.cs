@@ -58,14 +58,6 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
             : RedirectToAction(actionName, controllerName, new {vacancyReference});
     }
 
-    [AllowAnonymous]
-    [Route("user-signed-out", Name = RouteNames.SignedOut)]
-    [HttpGet]
-    public IActionResult SignedOut()
-    {
-        return View("SignedOut", new SignedOutViewModel(configuration["ResourceEnvironmentName"]));
-    }
-
     [Authorize(Policy = nameof(PolicyNames.IsAuthenticated))]
     [Route("account-unavailable", Name = RouteNames.AccountUnavailable)]
     public IActionResult AccountUnavailable()

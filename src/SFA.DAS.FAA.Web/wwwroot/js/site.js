@@ -325,8 +325,8 @@ Autocomplete.prototype.init = function () {
     displayMenu: "overlay",
     placeholder: "",
     onConfirm: (opt) => {
-      const txtInput = document.querySelector(this.convertId(this.selectId));
-      const searchString = opt || txtInput.value;
+      const txtInput = document.getElementById(this.selectId);
+      const searchString = opt || txtInput?.value || "";
       const requestedOption = [].filter.call(
         this.select.options,
         function (option) {

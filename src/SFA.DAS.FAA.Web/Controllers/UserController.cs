@@ -41,16 +41,21 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("create-account", Name = RouteNames.CreateAccount)]
         public async Task<IActionResult> CreateAccount([FromQuery] string returnUrl)
         {
-            if (!string.IsNullOrWhiteSpace(returnUrl))
-            {
-                cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
-            }
-
             var result = await mediator.Send(new GetInformQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
+            if (result.IsAccountCreated)
+            {
+                return RedirectToRoute(RouteNames.ServiceStartDefault);
+            }
+            
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
+            }
+            
             var model = new InformViewModel
             {
                 ShowAccountRecoveryBanner = result.ShowAccountRecoveryBanner
@@ -63,7 +68,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("create-account/transfer-your-data", Name = RouteNames.TransferYourData)]
         public IActionResult TransferYourData()
         {
-            return View();
+            var referer = Request.Headers.Referer.FirstOrDefault();
+            return View(new TransferYourDataViewModel
+            {
+                PreviousPageUrl = referer ?? Url.RouteUrl(RouteNames.CreateAccount) ?? "/",
+            });
         }
 
         [HttpGet]

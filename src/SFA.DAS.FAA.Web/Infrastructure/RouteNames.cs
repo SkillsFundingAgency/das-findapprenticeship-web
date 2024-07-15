@@ -24,7 +24,6 @@ public static class RouteNames
     public const string SignInToYourOldAccount = "sign-in-to-your-old-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
-    public const string SignedOut = "signed-out";
     public const string AccountUnavailable = "account-unavailable";
     public const string StubAccountDetailsGet = "account-details-get";
     public const string StubAccountDetailsPost = "account-details-post";

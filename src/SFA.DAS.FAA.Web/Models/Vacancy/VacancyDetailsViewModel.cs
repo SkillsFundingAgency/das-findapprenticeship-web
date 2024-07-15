@@ -10,6 +10,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
     public class VacancyDetailsViewModel
     {
+        public string BackLinkUrl { get; set; }
         public string? Title { get; init; }
         public string? EmployerName { get; init; }
         public string? ContactOrganisationName { get; init; }

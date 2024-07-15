@@ -62,14 +62,17 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
             return View(ViewPath, model);
         }
 
-        var command = new UpdateVolunteeringAndWorkExperienceApplicationCommand
+        if (model.DoYouWantToAddAnyVolunteeringOrWorkExperience is false)
         {
-            CandidateId = (Guid)User.Claims.CandidateId()!,
-            ApplicationId = model.ApplicationId,
-            VolunteeringAndWorkExperienceSectionStatus = model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value ? SectionStatus.Incomplete : SectionStatus.Completed
-        };
+            var command = new UpdateVolunteeringAndWorkExperienceApplicationCommand
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                ApplicationId = model.ApplicationId,
+                VolunteeringAndWorkExperienceSectionStatus = SectionStatus.Completed
+            };
 
-        await mediator.Send(command);
+            await mediator.Send(command);
+        }
 
         return model.DoYouWantToAddAnyVolunteeringOrWorkExperience.Value
             ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience, new { model.ApplicationId })

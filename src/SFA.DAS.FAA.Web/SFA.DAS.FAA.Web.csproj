@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.4" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
-    <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.104-prerelease-6" />
+    <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.104" />
     <PackageReference Include="SFA.DAS.InputValidation" Version="17.1.100" />
     <PackageReference Include="StackExchange.Redis" Version="2.7.27" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.4" />
