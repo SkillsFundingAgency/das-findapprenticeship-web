@@ -15,6 +15,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Net;
 using FluentValidation.Results;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Web.Models.Applications;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
@@ -30,9 +31,11 @@ public class WhenGettingVacancyDetails
         Guid candidateId,
         Guid govIdentifier,
         bool showBanner,
+        string mapId,
         GetApprenticeshipVacancyQueryResult result,
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
+        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
         [Frozen] Mock<IUrlHelper> mockUrlHelper,
         [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
@@ -45,6 +48,7 @@ public class WhenGettingVacancyDetails
         cacheStorageService
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
         controller.Url = mockUrlHelper.Object;
         controller.ControllerContext = new ControllerContext
@@ -68,7 +72,7 @@ public class WhenGettingVacancyDetails
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as VacancyDetailsViewModel;
 
-        var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
+        var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result, mapId);
 
         actualModel.Should().BeEquivalentTo(expected, options => options
             .Excluding(x => x.BackLinkUrl)
@@ -76,6 +80,9 @@ public class WhenGettingVacancyDetails
             .Excluding(x => x.CourseLevelMapper)
             .Excluding(x => x.ShowAccountCreatedBanner));
         actualModel!.ShowAccountCreatedBanner.Should().Be(showBanner);
+        actualModel.GoogleMapsId.Should().Be(mapId);
+        actualModel.Latitude.Should().Be(result.Vacancy!.Location.Lat);
+        actualModel.Longitude.Should().Be(result.Vacancy!.Location.Lon);
     }
 
     [Test]

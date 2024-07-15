@@ -85,7 +85,7 @@ if (printLinks.length > 0) {
   }
 }
 
-const forms = document.querySelectorAll("main form");
+const forms = document.querySelectorAll("main form:not(.faa-do-not-disable)");
 
 if (forms.length > 0) {
   for (let i = 0; i < forms.length; i++) {
@@ -362,6 +362,194 @@ if (autocompleteSelects) {
 }
 
 // Maps
+
+function FaaMapDirections(mapId, lng, lat, ptcd, form, container) {
+  this.mapId = mapId;
+  this.container = container;
+  this.form = form;
+  this.centerLat = lat;
+  this.centerLng = lng;
+  this.ptcd = ptcd;
+}
+
+FaaMapDirections.prototype.init = async function () {
+  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+    "marker"
+  );
+  const directionsService = new google.maps.DirectionsService();
+  const directionsRenderer = new google.maps.DirectionsRenderer();
+
+  if ("geolocation" in navigator) {
+    const useLocationLink = document.createElement("a");
+    useLocationLink.classList.add("govuk-link");
+    useLocationLink.classList.add("govuk-link--no-visited-state");
+    useLocationLink.innerHTML = "use current location";
+    useLocationLink.setAttribute("href", "#");
+    useLocationLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.getCurrentPostcode();
+    });
+    document.getElementById("faa-navigator-link").append(useLocationLink);
+  }
+
+  if (this.centerLat === 0 && this.centerLng === 0) {
+    await this.updateLonLatFromPostcode();
+  }
+
+  this.destination = new google.maps.LatLng(this.centerLat, this.centerLng);
+
+  this.map = new google.maps.Map(this.container, {
+    zoom: 10,
+    center: { lat: this.centerLat, lng: this.centerLng },
+    mapId: this.mapId,
+  });
+
+  this.map.markers = [];
+
+  const vacancyLocationPin = new google.maps.marker.AdvancedMarkerElement({
+    map: this.map,
+    position: { lat: this.centerLat, lng: this.centerLng },
+    content: this.markerHtml(),
+  });
+
+  this.map.markers.push(vacancyLocationPin);
+
+  directionsRenderer.setMap(this.map);
+  this.calculateAndDisplayRoute(directionsRenderer, directionsService);
+
+  this.form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    this.map.markers[0].setMap(null);
+    this.origin = document.getElementById("directions-postcode").value;
+    this.travelMode = document.getElementById("directions-travelMode").value;
+    if (this.isPostcodeValid()) {
+      this.calculateAndDisplayRoute(directionsRenderer, directionsService);
+    }
+  });
+};
+
+FaaMapDirections.prototype.markerHtml = function () {
+  const pinSvgString =
+    '<svg viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path fill="#000" stroke="black" stroke-width="1.5" d="M19.25 9.75C19.25 10.7082 18.9155 11.923 18.3178 13.3034C17.7257 14.671 16.9022 16.1408 15.9852 17.591C14.152 20.4903 11.9832 23.2531 10.6551 24.8737C10.3145 25.2858 9.68536 25.2857 9.34482 24.8735C8.0167 23.2529 5.8479 20.4903 4.01478 17.591C3.09784 16.1408 2.27428 14.671 1.68215 13.3034C1.08446 11.923 0.75 10.7082 0.75 9.75C0.75 4.79919 4.87537 0.75 10 0.75C15.1246 0.75 19.25 4.79919 19.25 9.75ZM12.8806 6.9149C12.1135 6.16693 11.0769 5.75 10 5.75C8.92307 5.75 7.88655 6.16693 7.1194 6.9149C6.35161 7.6635 5.91667 8.68292 5.91667 9.75C5.91667 10.8171 6.35161 11.8365 7.1194 12.5851C7.88655 13.3331 8.92307 13.75 10 13.75C11.0769 13.75 12.1135 13.3331 12.8806 12.5851C13.6484 11.8365 14.0833 10.8171 14.0833 9.75C14.0833 8.68292 13.6484 7.6635 12.8806 6.9149Z" />' +
+    "</svg>";
+  const content = document.createElement("div");
+  content.classList.add("faa-map__marker");
+  content.innerHTML = pinSvgString;
+  return content;
+};
+
+FaaMapDirections.prototype.updateLonLatFromPostcode = async function () {
+  const url = `https://api.postcodes.io/postcodes/${this.ptcd}`;
+  try {
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.centerLng = data.result.longitude;
+        this.centerLat = data.result.latitude;
+      });
+  } catch (error) {
+    console.error(error);
+  }
+  return;
+};
+
+FaaMapDirections.prototype.isPostcodeValid = function () {
+  const regex = new RegExp(
+    "^[A-Za-z]{1,2}\\d{1,2}[A-Za-z]?\\s?\\d[A-Za-z]{2}$"
+  );
+  const result = !regex.test(this.origin);
+  if (result) {
+    this.updatePostcodeRow("Enter a valid postcode");
+  } else {
+    this.updatePostcodeRow();
+  }
+  return !result;
+};
+
+FaaMapDirections.prototype.updatePostcodeRow = function (message) {
+  const postcodeRow = document.getElementById(
+    "directions-postcode"
+  ).parentElement;
+  const errorMessage = postcodeRow.querySelector(".govuk-error-message");
+  if (message !== undefined) {
+    postcodeRow.classList.add("govuk-form-group--error");
+    errorMessage.innerHTML = message;
+  } else {
+    postcodeRow.classList.remove("govuk-form-group--error");
+    errorMessage.innerHTML = "";
+  }
+};
+
+FaaMapDirections.prototype.getCurrentPostcode = function () {
+  const postcodeField = document.getElementById("directions-postcode");
+  const options = {
+    maximumAge: 600000,
+  };
+
+  function success(position) {
+    const url = `https://api.postcodes.io/postcodes?lon=${position.coords.longitude}&lat=${position.coords.latitude}&wideSearch=true`;
+    try {
+      fetch(url)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          postcodeField.value = data.result[0].postcode;
+          postcodeField.placeholder = "";
+        });
+    } catch (error) {
+      this.updatePostcodeRow("Location could not be found");
+      postcodeField.placeholder = "";
+    }
+  }
+
+  function error() {
+    this.updatePostcodeRow("Location could not be found");
+    postcodeField.placeholder = "";
+  }
+  this.updatePostcodeRow();
+  postcodeField.placeholder = "Locating...";
+  navigator.geolocation.getCurrentPosition(success, error, options);
+};
+
+FaaMapDirections.prototype.calculateAndDisplayRoute = function (
+  directionsRenderer,
+  directionsService
+) {
+  if (this.origin === undefined || this.travelMode === undefined) {
+    return;
+  }
+  const journeyInfo = document.getElementById("faa-journey-info");
+
+  directionsService
+    .route({
+      origin: {
+        query: this.origin,
+      },
+      destination: this.destination,
+      travelMode: google.maps.TravelMode[this.travelMode],
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
+    })
+    .then((response) => {
+      journeyInfo.innerHTML = `<b>Distance</b> ${response.routes[0].legs[0].distance.text.replace(
+        "mi",
+        "miles"
+      )}<br /> <b>Duration</b> ${response.routes[0].legs[0].duration.text.replace(
+        "mins",
+        "minutes"
+      )}`;
+      directionsRenderer.setDirections(response);
+    })
+    .catch((e) => {
+      console.error(e);
+      this.updatePostcodeRow("Location could not be found");
+      journeyInfo.innerHTML = "";
+    });
+};
 
 function FaaMap(mapId, link, linkLoading, container, radius) {
   this.container = container;

@@ -46,7 +46,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public bool IsDisabilityConfident { get; init; }
         public bool IsPositiveAboutDisability { get; init; }
         public bool IsRecruitVacancy { get; init; }
-        public GeoPoint Location { get; init; }
+        public Location Location { get; init; }
         public int NumberOfPositions { get; init; }
         public string? ProviderName { get; init; }
         public int? StandardLarsCode { get; init; }
@@ -82,6 +82,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
 
         public CandidateApplicationDetails? Application { get; set; }
         public string? ApplicationUrl { get; set; }
+        public string? CandidatePostcode { get; set; }
     }
 
     public class VacancyQualificationApiResponse
@@ -101,11 +102,10 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public string? Postcode { get; init; }
     }
 
-    public class GeoPoint
+    public class Location
     {
-        public string? Postcode { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public double Lat { get; set; }
+        public double Lon { get; set; }
     }
 
     public class CandidateApplicationDetails

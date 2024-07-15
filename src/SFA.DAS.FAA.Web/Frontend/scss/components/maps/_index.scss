@@ -138,3 +138,8 @@ a[href^="https://www.google.com/maps"]
 .gmnoprint:not(.gm-bundled-control) {
   display: none;
 }
+
+.faa-directions-map {
+  width: 100%;
+  height: 400px;
+}

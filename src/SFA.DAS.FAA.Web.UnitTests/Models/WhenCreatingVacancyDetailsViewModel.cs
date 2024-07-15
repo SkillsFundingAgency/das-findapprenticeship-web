@@ -15,7 +15,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models;
 public class WhenCreatingVacancyDetailsViewModel
 {
     [Test, MoqAutoData]
-    public void Then_The_Fields_Are_Mapped(GetApprenticeshipVacancyQueryResult source, [Frozen] Mock<IDateTimeService> dateTimeService)
+    public void Then_The_Fields_Are_Mapped(GetApprenticeshipVacancyQueryResult source, string mapsId, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         var expected = new {
             Title = source.Vacancy!.Title,
@@ -59,10 +59,11 @@ public class WhenCreatingVacancyDetailsViewModel
                     : string.Empty,
             IsClosed = source.Vacancy?.IsClosed ?? false,
             ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
-            ApplicationUrl = $"https://{source.Vacancy.ApplicationUrl}"
+            ApplicationUrl = $"https://{source.Vacancy.ApplicationUrl}",
+            GoogleMapsId = mapsId
         };
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, source);
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, source, mapsId);
 
         actual.Should().BeEquivalentTo(expected);
         
@@ -76,18 +77,21 @@ public class WhenCreatingVacancyDetailsViewModel
     public void Then_The_HoursPerWeek_Is_Shown_Correctly(
         string duration,
         string workingHours,
+        string mapsId,
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         if (result.Vacancy != null) result.Vacancy.HoursPerWeek = Convert.ToDecimal(duration);
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
 
         actual.HoursPerWeek.Should().Be(workingHours);
+        actual.GoogleMapsId.Should().Be(mapsId);
     }
 
     [Test, MoqAutoData]
     public void Then_The_ClosingDate_Less_than_31Days_Is_Shown_Correctly(
+        string mapsId,
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
@@ -95,7 +99,7 @@ public class WhenCreatingVacancyDetailsViewModel
         var dateLessThan31Days = new DateTime(2000, 02, 01);
         if (result.Vacancy != null) result.Vacancy.ClosingDate = dateLessThan31Days;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
 
         Assert.That(actual.ClosingDate, Is.Not.Null);
         actual.ClosingDate.Should().Contain("Closes in");
@@ -103,6 +107,7 @@ public class WhenCreatingVacancyDetailsViewModel
 
     [Test, MoqAutoData]
     public void Then_The_ClosingDate_More_than_31Days_Is_Shown_Correctly(
+        string mapsId,
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
@@ -111,7 +116,7 @@ public class WhenCreatingVacancyDetailsViewModel
         var dateMoreThan31Days = new DateTime(2000, 04, 01);
         if (result.Vacancy != null) result.Vacancy.ClosingDate = dateMoreThan31Days;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
 
         Assert.That(actual.ClosingDate, Is.Not.Null);
         actual.ClosingDate.Should().Contain("Closes on");
@@ -129,7 +134,7 @@ public class WhenCreatingVacancyDetailsViewModel
     {
         result.Vacancy.ApplicationUrl = url;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result);
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
 
         actual.ApplicationUrl.Should().Be(expectedUrl);
     }

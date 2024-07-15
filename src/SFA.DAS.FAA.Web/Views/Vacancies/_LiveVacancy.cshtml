@@ -232,7 +232,54 @@
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine2</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine3</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine4</p>
-                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.Postcode</p>
+                <p class="govuk-body">@Model.WorkLocation.Postcode</p>
+                @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&
+                Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven) &&
+                bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
+                {
+                    <details class="govuk-details govuk-!-margin-bottom-0">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Check your travel to work
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <form id="faa-directions-form" class="faa-do-not-disable">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Check your travel to
+                                        work</legend>
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="directions-postcode">
+                                            Postcode
+                                        </label>
+                                        <div id="directions-postcode-hint" class="govuk-hint">
+                                            For example SW1A 2AA <span id="faa-navigator-link"></span>
+                                        </div>
+                                        <p class="govuk-error-message"></p>
+                                        <input class="govuk-input govuk-input--width-10" id="directions-postcode"
+                                            name="directions-postcode" type="text" autocomplete="postal-code"
+                                            aria-describedby="directions-postcode-hint" value="@Model.CandidatePostcode">
+                                    </div>
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="directions-travelMode">
+                                            Select a method of travelling
+                                        </label>
+                                        <select class="govuk-select" id="directions-travelMode"
+                                            name="directions-travelMode">
+                                            <option value="DRIVING" selected>Car</option>
+                                            <option value="BICYCLING">Cycling</option>
+                                            <option value="WALKING">Walking</option>
+                                            <option value="TRANSIT">Public transport</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                <button type="submit" class="govuk-button govuk-button--secondary">Show route</button>
+                            </form>
+                            <div id="faa-directions-map" class="faa-directions-map"></div>
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-padding-top-2" id="faa-journey-info"></p>
+                        </div>
+                    </details>
+                }
             </section>
             <section class="faa-vacancy__section" id="training">
                 <h2 class="govuk-heading-m">Training</h2>
