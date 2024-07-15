@@ -411,4 +411,26 @@ public class WhenValidatingSubjectViewModel
             actual.Errors.Count.Should().Be(1);
         }
     }
+
+    [Test]
+    public async Task Then_Invalid_Characters_Are_Not_Allowed()
+    {
+        var model = new SubjectViewModel
+        {
+            Id = null,
+            Name = "<script>alert()</script>",
+            AdditionalInformation = "<script>alert()</script>",
+            Level = "<script>alert()</script>",
+            Grade = "<script>alert()</script>",
+            IsDeleted = false
+        };
+        var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("Degree", Guid.NewGuid());
+
+        var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
+
+        var actual = await validator.ValidateAsync(model);
+
+        actual.IsValid.Should().BeFalse();
+        actual.Errors.Count.Should().Be(4);
+    }
 }

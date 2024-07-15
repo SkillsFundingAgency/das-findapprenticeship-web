@@ -18,6 +18,7 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
     }
     public SubjectViewModelValidator(QualificationDisplayTypeViewModel model)
     {
+        RuleFor(c => c.Name).ValidFreeTextCharacters().WithName(model.SubjectLabel);
         RuleFor(c => c.AdditionalInformation).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
         RuleFor(c => c.Level).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
         RuleFor(c => c.Grade).ValidFreeTextCharacters().WithName(model.GradeLabel);
