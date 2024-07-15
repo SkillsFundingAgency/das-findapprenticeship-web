@@ -29,6 +29,7 @@ public class WhenCreatingVacanciesViewModel
             .Excluding(c => c.Lon)
             .Excluding(c => c.IsNew)
             .Excluding(c => c.IsClosingSoon)
+            .Excluding(c => c.ApplicationUrl)
         );
         actual.CourseTitle.Should().Be($"{vacancies.CourseTitle} (level {vacancies.CourseLevel})");
         actual.VacancyPostCode.Should().Be(vacancies.Postcode);
@@ -73,13 +74,30 @@ public class WhenCreatingVacanciesViewModel
     public void Then_Closing_Soon_Flag_Shown_If_Vacancy_Closes_In_Less_Than_Eight_Days(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         var closingDate = new DateTime(2023, 11, 16);
+        vacancies.ApplicationUrl = "";
         dateTimeService.Setup(x => x.GetDateTime()).Returns(closingDate.AddDays(-7));
         
         vacancies.ClosingDate = closingDate;
         
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
         actual.IsClosingSoon.Should().BeTrue();
+        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM} at 11:59pm)");
     }
+    
+    [Test, MoqAutoData]
+    public void Then_Closing_Soon_Flag_Shown_If_Vacancy_Closes_In_Less_Than_Eight_Days_For_External_Application(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        var closingDate = new DateTime(2023, 11, 16);
+        vacancies.ApplicationUrl = "someurl";
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(closingDate.AddDays(-7));
+        
+        vacancies.ClosingDate = closingDate;
+        
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+        actual.IsClosingSoon.Should().BeTrue();
+        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM})");
+    }
+    
     [Test, MoqAutoData]
     public void Then_Closing_Soon_Flag_Not_Shown_If_Vacancy_Closes_In_More_Than_Or_Equal_To_Eight_Days(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
