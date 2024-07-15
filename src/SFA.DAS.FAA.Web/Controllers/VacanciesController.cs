@@ -8,6 +8,7 @@ using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Applications;
 using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -20,13 +21,19 @@ public class VacanciesController(
     ICacheStorageService cacheStorageService,
     IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
-    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies)]
-    public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
+    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
+    [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
+    public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request, NavigationSource source = NavigationSource.None, ApplicationsTab tab = ApplicationsTab.None)
     {
         var validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)
         {
             return NotFound();
+        }
+
+        if (!request.VacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
+        {
+            request.VacancyReference = $"VAC{request.VacancyReference}";
         }
 
         var result = await mediator.Send(new GetApprenticeshipVacancyQuery
@@ -36,7 +43,15 @@ public class VacanciesController(
                 : User.Claims.CandidateId()!.ToString()
         });
 
+        if (result.Vacancy == null)
+        {
+            return NotFound();
+        }
+
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
+        viewModel.BackLinkUrl = (source == NavigationSource.Applications
+            ? Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab})
+            : Url.RouteUrl(RouteNames.SearchResults)) ?? "";
         viewModel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
@@ -46,9 +61,15 @@ public class VacanciesController(
 
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies)]
+    [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
     [HttpPost]
     public async Task<IActionResult> Apply([FromRoute] PostApplyRequest request)
     {
+        if (!request.VacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
+        {
+            request.VacancyReference = $"VAC{request.VacancyReference}";
+        }
+        
         var result = await mediator.Send(new ApplyCommand
         {
             VacancyReference = request.VacancyReference,

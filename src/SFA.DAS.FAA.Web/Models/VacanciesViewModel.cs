@@ -17,12 +17,11 @@ public class VacanciesViewModel
     public string VacancyPostCode { get; private set;}
     public string CourseTitle { get;  private set; }
     public string WageAmount { get; private set;  }
-    public string? AdvertClosing { get; private set; }
     public string? PostedDate { get; private set; }
     public int WageType { get; private set; }
     public string VacancyLocation { get; private set; }
     public decimal? Distance { get; private set; }
-    public int? DaysUntilClosing { get; private set; }
+    public string ClosingDateDescription { get; private set; }
     public string ApprenticeshipLevel { get; private set; }
     public int CourseId { get; set; }
     public string CourseLevel { get; set; }
@@ -46,7 +45,7 @@ public class VacanciesViewModel
             VacancyPostCode = vacancies.Postcode,
             CourseTitle = $"{vacancies.CourseTitle} (level {vacancies.CourseLevel})",
             WageAmount = vacancies.WageAmount,
-            AdvertClosing = FormatCloseDate(vacancies.ClosingDate),
+            ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancies.ClosingDate),
             PostedDate = FormatPostDate(vacancies.PostedDate),
             WageType = vacancies.WageType,
             VacancyLocation = !string.IsNullOrEmpty(vacancies.AddressLine4) ? vacancies.AddressLine4 :
@@ -55,7 +54,6 @@ public class VacanciesViewModel
                 !string.IsNullOrEmpty(vacancies.AddressLine1) ? vacancies.AddressLine1 :
                 string.Empty,
             Distance = vacancies.Distance.HasValue ? Math.Round(vacancies.Distance.Value, 1) : null,
-            DaysUntilClosing = CalculateDaysUntilClosing(dateTimeService, vacancies.ClosingDate),
             ApprenticeshipLevel = vacancies.ApprenticeshipLevel,
             CourseId = vacancies.CourseId,
             CourseLevel = vacancies.CourseLevel,

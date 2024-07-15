@@ -8,6 +8,7 @@ public static class RouteNames
     public const string SearchResults = "search-results";
     public const string MapSearchResults = "map-search-results";
     public const string Vacancies = "vacancies";
+    public const string VacanciesReference = "vacancies-reference";
     public const string Apply = "apply";
     public const string UserName = "user-name";
     public const string DateOfBirth = "date-of-birth";
@@ -31,6 +32,7 @@ public static class RouteNames
     public const string Settings = "settings";
     public const string ChangeNotificationPreferences = "change-notification-preferences";
     public const string Email = "email";
+    public const string SavedVacancies = "saved-vacancies";
     public const string ConfirmDataTransfer = "confirm-data-transfer";
     public const string FinishAccountSetup = "finish-account-setup";
     public const string Cookies = "cookies";

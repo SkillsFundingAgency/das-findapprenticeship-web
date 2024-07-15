@@ -24,6 +24,7 @@ public class SearchApprenticeshipsController(
     SearchModelValidator searchModelValidator,
     GetSearchResultsRequestValidator searchRequestValidator) : Controller
 {
+    [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
     {
@@ -56,7 +57,7 @@ public class SearchApprenticeshipsController(
         }
         else if (search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm, sort = "AgeAsc" });
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
@@ -289,11 +290,13 @@ public class SearchApprenticeshipsController(
     {
         if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
             return "No apprenticeships found";
+
         return model.Total switch
         {
-            <= 10 => "Apprenticeships found",
+            1 => $"{model.Total} Apprenticeship found",
+            <= 10 => $"{model.Total} Apprenticeships found",
             _ =>
-                $"Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
+                $"{model.Total} Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
         };
     }
 }

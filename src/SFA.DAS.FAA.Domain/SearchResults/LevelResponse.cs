@@ -6,7 +6,7 @@ namespace SFA.DAS.FAA.Domain.SearchResults
     {
         [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("id")]
+        [JsonProperty("code")]
         public int Code { get; set; }
     }
 }
