@@ -5,6 +5,11 @@
 @{
     ViewData["Title"] = $"Apply for {Model.VacancyTitle} – Find an apprenticeship – GOV.UK";
 }
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">Back</a>
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
