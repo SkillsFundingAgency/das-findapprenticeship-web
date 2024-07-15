@@ -7,21 +7,15 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+        <partial name="_ValidationSummary" />
         <form class="form" method="post">
-            <div class="govuk-form-group @(ViewData.ModelState.ErrorCount > 0 ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.SelectedRouteIds)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
                 <span class="govuk-caption-l">Question 1 of 2</span>
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-heading-l govuk-!-margin-bottom-2" id="SelectedRouteIds">Browse by your interests</h1>
                     </legend>
-                    @if (ViewData.ModelState.ErrorCount > 0)
-                    {
-                        <span class="govuk-error-message">
-                            <span class="govuk-visually-hidden">Error:</span>
-                            @ViewData.ModelState.Values.First().Errors.First().ErrorMessage
-                        </span>
-                    }
+                    <span asp-validation-for="SelectedRouteIds" class="govuk-error-message"></span>
                     <p class="govuk-hint">Select all the job categories that interest you.</p>
                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                         <fieldset class="govuk-fieldset">

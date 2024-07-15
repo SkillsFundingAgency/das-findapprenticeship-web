@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
 
 @{
@@ -227,7 +228,10 @@
                     Continue
                 </a>
             }
-            <a class="govuk-link" href="#">Save and finish later</a>
+            <a class="govuk-link"
+               href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started })">
+               Save and finish later
+           </a>
         </div>
     </div>
 </div>
