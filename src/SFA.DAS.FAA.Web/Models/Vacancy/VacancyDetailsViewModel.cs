@@ -59,6 +59,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
 
+        public string? ApplicationUrl { get; set; }
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
             {
@@ -105,11 +106,14 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 ApplicationDetails = source.Vacancy?.Application,
                 IsClosed = source.Vacancy?.IsClosed ?? false,
                 ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+                ApplicationUrl = source.Vacancy?.ApplicationUrl != null && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
                 GoogleMapsId = googleMapsId,
                 CandidatePostcode = source.Vacancy?.CandidatePostcode,
                 Latitude = source.Vacancy?.Location.Lat,
                 Longitude = source.Vacancy?.Location.Lon,
             };
+
+        
     }
 
     public class Address
@@ -131,6 +135,13 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Postcode = source.Postcode,
             };
         }
+
+        public string City =>
+            !string.IsNullOrEmpty(AddressLine4) ? AddressLine4 :
+            !string.IsNullOrEmpty(AddressLine3) ? AddressLine3 :
+            !string.IsNullOrEmpty(AddressLine2) ? AddressLine2 :
+            !string.IsNullOrEmpty(AddressLine1) ? AddressLine1 :
+            string.Empty;
     }
 
     public class Qualification

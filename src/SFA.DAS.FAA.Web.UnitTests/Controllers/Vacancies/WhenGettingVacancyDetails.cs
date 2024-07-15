@@ -21,8 +21,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
 
 public class WhenGettingVacancyDetails
 {
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData("VAC1000012484","VAC1000012484")]
+    [MoqInlineAutoData("VAC1000012484","1000012484")]
     public async Task Then_The_Mediator_Query_Is_Called_And_VacancyDetails_View_Returned(
+        string queryVal,
+        string vacancyReference,
         Guid candidateId,
         Guid govIdentifier,
         bool showBanner,
@@ -36,8 +40,8 @@ public class WhenGettingVacancyDetails
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] Web.Controllers.VacanciesController controller)
     {
-        request.VacancyReference = "VAC1000012484";
-        mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
+        request.VacancyReference = vacancyReference;
+        mediator.Setup(x => x.Send(It.Is<GetApprenticeshipVacancyQuery>(c=>c.VacancyReference == queryVal), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         cacheStorageService
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
@@ -102,4 +106,42 @@ public class WhenGettingVacancyDetails
 
         actual!.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
     }
+
+
+    [Test, MoqAutoData]
+    public async Task Then_If_Query_Returns_Null_Then_Not_Found_Returned(
+        Guid candidateId,
+        Guid govIdentifier,
+        GetApprenticeshipVacancyQueryResult result,
+        GetVacancyDetailsRequest request,
+        IDateTimeService dateTimeService,
+        [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
+        [Frozen] Mock<IMediator> mediator,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Greedy] Web.Controllers.VacanciesController controller)
+    {
+        result.Vacancy = null;
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                {
+                    new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
+                }))
+
+            }
+        };
+        mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult { });
+
+        var actual = await controller.Vacancy(request) as NotFoundResult;
+
+        actual!.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+    }
+    
 }

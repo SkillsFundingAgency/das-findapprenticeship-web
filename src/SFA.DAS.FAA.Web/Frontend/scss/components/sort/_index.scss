@@ -47,6 +47,10 @@
   }
 }
 
+.faa-search-results-sort--saved {
+  justify-content: start;
+}
+
 .faa-search-results-sort__label {
   @include govuk-media-query(desktop) {
     padding-right: 10px;
