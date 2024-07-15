@@ -68,7 +68,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("create-account/transfer-your-data", Name = RouteNames.TransferYourData)]
         public IActionResult TransferYourData()
         {
-            return View();
+            var referer = Request.Headers.Referer.FirstOrDefault();
+            return View(new TransferYourDataViewModel
+            {
+                PreviousPageUrl = referer ?? Url.RouteUrl(RouteNames.CreateAccount) ?? "/",
+            });
         }
 
         [HttpGet]

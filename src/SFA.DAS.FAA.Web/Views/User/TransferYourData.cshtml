@@ -1,4 +1,4 @@
-﻿@model SFA.DAS.FAA.Web.Models.User.InformViewModel;
+﻿@model SFA.DAS.FAA.Web.Models.User.TransferYourDataViewModel;
 @using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
@@ -6,7 +6,7 @@
 }
 
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@RouteNames.CreateAccount">Back</a>
+    <a class="govuk-back-link" href="@Model.PreviousPageUrl">Back</a>
 }
 
 <div class="govuk-grid-row">
