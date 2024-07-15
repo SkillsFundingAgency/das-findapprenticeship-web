@@ -95,7 +95,7 @@ public class SearchApprenticeshipsController(
             return View(viewModel);
         }
 
-        return RedirectToRoute(RouteNames.Location, new { RouteIds = model.SelectedRouteIds });
+        return RedirectToRoute(RouteNames.Location, new { routeIds = model.SelectedRouteIds });
     }
 
     [Route("location", Name = RouteNames.Location)]
