@@ -27,7 +27,7 @@ public class WhenCreatingVacancyDetailsViewModel
             PositionsAvailable = source.Vacancy?.NumberOfPositions,
             WorkDescription = source.Vacancy?.TrainingDescription,
             ThingsToConsider = source.Vacancy?.ThingsToConsider,
-            ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.Vacancy.ClosingDate),
+            ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.Vacancy.ClosingDate, !string.IsNullOrEmpty(source.Vacancy.ApplicationUrl)),
             PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
             StartDate = source.Vacancy.StartDate.GetStartDate(),
             WorkLocation = source.Vacancy.Address,
