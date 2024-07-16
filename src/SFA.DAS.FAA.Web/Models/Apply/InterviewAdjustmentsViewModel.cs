@@ -8,5 +8,5 @@ public class InterviewAdjustmentsViewModel
     public required Guid ApplicationId { get; init; }
     public bool? DoYouWantInterviewAdjustments { get; set; }
     public string? InterviewAdjustmentsDescription { get; set; }
-    public string BackLinkUrl { get; set; }
+    public string? BackLinkUrl { get; set; }
 }

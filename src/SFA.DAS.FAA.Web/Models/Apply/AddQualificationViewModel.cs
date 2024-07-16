@@ -15,7 +15,7 @@ public class AddQualificationViewModel
     public bool IsApprenticeship { get; set; }
     public Guid? SingleQualificationId { get; set; }
     public string QualificationType { get; set; }
-    public string BackLinkUrl { get; set; }
+    public string? BackLinkUrl { get; set; }
     public static Dictionary<string, int> BuildPropertyOrderDictionary()
     {   
         var itemCount = 0;
