@@ -14,10 +14,14 @@
 }
 @if (Model.IsClosed)
 {
+    ViewData["Title"] = "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
+    
     <partial name="_ClosedVacancy" model="Model" />
 }
 else
 {
+    ViewData["Title"] = $"{Model.Title!} – Find an apprenticeship – GOV.UK";
+    
     <partial name="_LiveVacancy" model="Model"/>
 }
 
