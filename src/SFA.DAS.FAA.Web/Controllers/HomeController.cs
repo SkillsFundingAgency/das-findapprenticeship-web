@@ -6,7 +6,7 @@ using SFA.DAS.FAA.Web.Models;
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Route("[controller]")]
-    public class HomeController() : Controller
+    public class HomeController : Controller
     {
         [AllowAnonymous]
         [Route("Cookies", Name = RouteNames.Cookies)]

@@ -11,6 +11,7 @@ using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -35,7 +36,7 @@ public class WhenGettingCreateAccount
 
             }
         };
-
+        queryResult.IsAccountCreated = false;
         mediator.Setup(x => x.Send(It.Is<GetInformQuery>(r => r.CandidateId == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
@@ -49,5 +50,33 @@ public class WhenGettingCreateAccount
         var model = viewResult.Model as InformViewModel;
         model.Should().NotBeNull();
         model.ShowAccountRecoveryBanner.Should().Be(queryResult.ShowAccountRecoveryBanner);
+    }
+
+    [Test, MoqAutoData]
+    public async Task Then_If_Account_Is_Already_Created_Redirect_To_Search(
+        Guid candidateId,
+        GetInformQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                {
+                    new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                }))
+
+            }
+        };
+        queryResult.IsAccountCreated = true;
+        mediator.Setup(x => x.Send(It.Is<GetInformQuery>(r => r.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(queryResult);
+        
+        var result = await controller.CreateAccount(string.Empty) as RedirectToRouteResult;
+
+        result.Should().NotBeNull();
+        result!.RouteName.Should().Be(RouteNames.ServiceStartDefault);
     }
 }

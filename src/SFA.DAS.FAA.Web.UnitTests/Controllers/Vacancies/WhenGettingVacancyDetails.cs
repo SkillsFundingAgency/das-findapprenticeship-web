@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentValidation;
@@ -16,6 +16,7 @@ using SFA.DAS.Testing.AutoFixture;
 using System.Net;
 using FluentValidation.Results;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Web.Models.Applications;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
 
@@ -35,6 +36,7 @@ public class WhenGettingVacancyDetails
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
         [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<IUrlHelper> mockUrlHelper,
         [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
@@ -48,6 +50,7 @@ public class WhenGettingVacancyDetails
             .ReturnsAsync(showBanner);
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
+        controller.Url = mockUrlHelper.Object;
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -64,7 +67,7 @@ public class WhenGettingVacancyDetails
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult { });
 
-        var actual = await controller.Vacancy(request) as ViewResult;
+        var actual = await controller.Vacancy(request, NavigationSource.None, ApplicationsTab.Started) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as VacancyDetailsViewModel;
@@ -72,6 +75,7 @@ public class WhenGettingVacancyDetails
         var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result, mapId);
 
         actualModel.Should().BeEquivalentTo(expected, options => options
+            .Excluding(x => x.BackLinkUrl)
             .Excluding(x => x.ClosingDate)
             .Excluding(x => x.CourseLevelMapper)
             .Excluding(x => x.ShowAccountCreatedBanner));

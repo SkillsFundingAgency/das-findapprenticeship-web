@@ -6,11 +6,12 @@
     ViewData["Title"] = $"{Model.QualificationDisplayTypeViewModel.Title} – Find an apprenticeship – GOV.UK";
     ViewData["CustomOrder"] = AddQualificationViewModel.BuildPropertyOrderDictionary();
 }
-
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.Qualifications, new { Model.ApplicationId })">Back</a>
+    <a class="govuk-back-link"
+       href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualificationSelectType, new { Model.ApplicationId })">
+       Back
+   </a>
 }
-
 <div class="govuk-grid-row">
    <div class="govuk-grid-column-two-thirds">
       <partial name="_ValidationSummary" />
@@ -35,4 +36,3 @@
       </button>
    </div>
 </form>
-

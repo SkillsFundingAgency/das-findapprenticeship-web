@@ -9,6 +9,7 @@ using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Applications;
 using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -24,7 +25,7 @@ public class VacanciesController(
 {
     [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
     [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
-    public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request)
+    public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request, NavigationSource source = NavigationSource.None, ApplicationsTab tab = ApplicationsTab.None)
     {
         var validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)
@@ -50,6 +51,9 @@ public class VacanciesController(
         }
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result, faaConfiguration.Value.GoogleMapsId);
+        viewModel.BackLinkUrl = (source == NavigationSource.Applications
+            ? Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab})
+            : Url.RouteUrl(RouteNames.SearchResults)) ?? "";
         viewModel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");

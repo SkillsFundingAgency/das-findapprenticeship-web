@@ -1,19 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 
 namespace SFA.DAS.FAA.Web.Models;
 
-public class BrowseByInterestRequestViewModel : BrowseByInterestViewModel
+public class BrowseByInterestViewModel
 {
     [FromForm]
-    [Required(ErrorMessage = "Select at least one job category you're interested in")]
     public List<int>? SelectedRouteIds { get; set; }
-}
-
-public class BrowseByInterestViewModel : ViewModelBase
-{
     public List<RouteViewModel> Routes { get; set; } = new();
     public Dictionary<string, RouteObject> AgricultureEnvironmentalAndAnimalCareDictionary { get; set; } = new();
     public Dictionary<string, RouteObject> BusinessSalesAndLegalDictionary { get; set; } = new();
@@ -28,7 +22,7 @@ public class BrowseByInterestViewModel : ViewModelBase
 
     public static implicit operator BrowseByInterestViewModel(GetBrowseByInterestsResult source)
     {
-        return new BrowseByInterestViewModel()
+        return new BrowseByInterestViewModel
         {
             Routes = source.Routes.Select(r => (RouteViewModel)r).ToList()
         };
@@ -75,7 +69,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                     break;
 
                 case "14":
-                    var salesMarkerting = new RouteObject
+                    var salesMarketing = new RouteObject
                     {
                         RouteId = route.Id.ToString(),
                         RouteName = route.Name,
@@ -83,7 +77,7 @@ public class BrowseByInterestViewModel : ViewModelBase
                         HintText = "Sales manager, digital marketer and similar",
                         PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
                     };
-                    BusinessSalesAndLegalDictionary.Add(route.Id.ToString(), salesMarkerting);
+                    BusinessSalesAndLegalDictionary.Add(route.Id.ToString(), salesMarketing);
                     break;
 
                 case "12":

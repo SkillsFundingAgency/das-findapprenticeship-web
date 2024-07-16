@@ -425,7 +425,7 @@ public class WhenValidatingSubjectViewModel
             IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("Degree", Guid.NewGuid());
-        
+
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
 
         var actual = await validator.ValidateAsync(model);

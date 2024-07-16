@@ -23,7 +23,7 @@
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <h2 class="govuk-heading-m">Personal details</h2>
         <p class="govuk-body">
-            You can change your personal details in <a href="#" class="govuk-link">settings</a>.
+            You can change your personal details in <a asp-route="@RouteNames.Settings" class="govuk-link">settings</a>.
         </p>
         <div class="faa-flex-row">
             <dl class="govuk-summary-list govuk-summary-list--no-border">
@@ -312,7 +312,7 @@
         <div class="faa-flex-row">
             <h2 class="govuk-heading-m">Get support at an interview</h2>
             <p class="govuk-body">
-                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new {Model.ApplicationId, isEdit = true})">
+                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustments, new { Model.ApplicationId })">
                     Change<span class="govuk-visually-hidden"> interview adjustments</span>
                 </a>
             </p>

@@ -10,6 +10,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
     public class VacancyDetailsViewModel
     {
+        public string BackLinkUrl { get; set; }
         public string? Title { get; init; }
         public string? EmployerName { get; init; }
         public string? ContactOrganisationName { get; init; }
@@ -72,7 +73,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
                 WorkDescription = source.Vacancy?.TrainingDescription,
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
-                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate),
+                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate,!string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
                 StartDate = source.Vacancy.StartDate.GetStartDate(),
                 WorkLocation = source.Vacancy.Address,

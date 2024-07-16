@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAT.Domain.Interfaces;
+using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Services
@@ -24,21 +24,14 @@ namespace SFA.DAS.FAA.Web.Services
             var timeSuffix = isExternalVacancy ? string.Empty : " at 11:59pm";
             var daysToExpiry = GetDaysUntilExpiry(dateTimeService, closingDate);
 
-            switch (daysToExpiry)
+            return daysToExpiry switch
             {
-                case < 0:
-                    return $"Closed on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}";
-                case 0:
-                    return $"Closes today{timeSuffix}";
-                case 1:
-                    return
-                        $"Closes tomorrow ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}{timeSuffix})";
-                case <= 31:
-                    return
-                        $"Closes in {daysToExpiry} days ({closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}{timeSuffix})";
-                default:
-                    return $"Closes on {closingDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture)}{timeSuffix}";
-            }
+                < 0 => $"Closed on {closingDate:dddd d MMMM}",
+                0 => $"Closes today{timeSuffix}",
+                1 => $"Closes tomorrow ({closingDate:dddd d MMMM}{timeSuffix})",
+                <= 31 => $"Closes in {daysToExpiry} days ({closingDate:dddd d MMMM}{timeSuffix})",
+                _ => $"Closes on {closingDate:dddd d MMMM}"
+            };
         }
 
         public static int GetDaysUntilExpiry(IDateTimeService dateTimeService, DateTime closingDate)

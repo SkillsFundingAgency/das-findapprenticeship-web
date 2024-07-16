@@ -24,6 +24,7 @@ public class SearchApprenticeshipsController(
     SearchModelValidator searchModelValidator,
     GetSearchResultsRequestValidator searchRequestValidator) : Controller
 {
+    [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
     {
@@ -56,7 +57,7 @@ public class SearchApprenticeshipsController(
         }
         else if (search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm, sort = "AgeAsc" });
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
@@ -81,20 +82,20 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests(BrowseByInterestRequestViewModel model)
+    public async Task<IActionResult> BrowseByInterests(BrowseByInterestViewModel model)
     {
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
             var viewModel = (BrowseByInterestViewModel)result;
-
+            
             viewModel.AllocateRouteGroup();
 
             return View(viewModel);
         }
 
-        return RedirectToRoute(RouteNames.Location, new { RouteIds = model.SelectedRouteIds });
+        return RedirectToRoute(RouteNames.Location, new { routeIds = model.SelectedRouteIds });
     }
 
     [Route("location", Name = RouteNames.Location)]
@@ -289,11 +290,13 @@ public class SearchApprenticeshipsController(
     {
         if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
             return "No apprenticeships found";
+
         return model.Total switch
         {
-            <= 10 => "Apprenticeships found",
+            1 => $"{model.Total} Apprenticeship found",
+            <= 10 => $"{model.Total} Apprenticeships found",
             _ =>
-                $"Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
+                $"{model.Total} Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
         };
     }
 }
