@@ -66,12 +66,12 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("create-account/transfer-your-data", Name = RouteNames.TransferYourData)]
-        public IActionResult TransferYourData()
+        public async Task<IActionResult> TransferYourData()
         {
-            var referer = Request.Headers.Referer.FirstOrDefault();
+            var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
             return View(new TransferYourDataViewModel
             {
-                PreviousPageUrl = referer ?? Url.RouteUrl(RouteNames.CreateAccount) ?? "/",
+                PreviousPageUrl = returnUrl ?? Url.RouteUrl(RouteNames.Applications.ViewApplications),
             });
         }
 
@@ -464,7 +464,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
             var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
-
+            await cacheStorageService.Remove($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
             await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
 
             if (returnUrl != null)
