@@ -140,6 +140,14 @@
                                 </a>
                             </li>
                         }
+                        else if ((User.Identity is { IsAuthenticated: true }))
+                        {
+                            <li class="one-login-header__nav__list-item">
+                                <a class="one-login-header__nav__link" asp-route="@RouteNames.SignOut">
+                                    Sign out
+                                </a>
+                            </li>
+                        }
                         else
                         {
 
