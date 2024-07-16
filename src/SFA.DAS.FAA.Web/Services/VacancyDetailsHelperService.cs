@@ -27,9 +27,9 @@ namespace SFA.DAS.FAA.Web.Services
             return daysToExpiry switch
             {
                 < 0 => $"Closed on {closingDate:dddd d MMMM}",
-                0 => "Closes today at 11:59pm",
-                1 => $"Closes tomorrow ({closingDate:dddd d MMMM} at 11:59pm)",
-                <= 31 => $"Closes in {daysToExpiry} days ({closingDate:dddd d MMMM} at 11:59pm)",
+                0 => $"Closes today{timeSuffix}",
+                1 => $"Closes tomorrow ({closingDate:dddd d MMMM}{timeSuffix})",
+                <= 31 => $"Closes in {daysToExpiry} days ({closingDate:dddd d MMMM}{timeSuffix})",
                 _ => $"Closes on {closingDate:dddd d MMMM}"
             };
         }

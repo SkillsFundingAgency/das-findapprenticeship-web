@@ -80,6 +80,9 @@ public class Vacancies
 
     [JsonProperty("application")]
     public CandidateApplicationDetails? CandidateApplicationDetails { get; set; }
+
+    [JsonProperty("applicationUrl")]
+    public string? ApplicationUrl { get; set; }
 }
 
 public class CandidateApplicationDetails

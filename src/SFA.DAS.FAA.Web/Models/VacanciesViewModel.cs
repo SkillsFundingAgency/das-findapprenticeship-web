@@ -45,7 +45,7 @@ public class VacanciesViewModel
             VacancyPostCode = vacancies.Postcode,
             CourseTitle = $"{vacancies.CourseTitle} (level {vacancies.CourseLevel})",
             WageAmount = vacancies.WageAmount,
-            ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancies.ClosingDate),
+            ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancies.ClosingDate,!string.IsNullOrEmpty(vacancies.ApplicationUrl)),
             PostedDate = FormatPostDate(vacancies.PostedDate),
             WageType = vacancies.WageType,
             VacancyLocation = !string.IsNullOrEmpty(vacancies.AddressLine4) ? vacancies.AddressLine4 :
