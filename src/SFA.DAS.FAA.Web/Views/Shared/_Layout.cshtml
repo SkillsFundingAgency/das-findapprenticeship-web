@@ -94,7 +94,7 @@
                 <nav aria-label="GOV.UK One Login menu" class="one-login-header__nav"
                     data-open-class="one-login-header__nav--open" id="one-login-header__nav">
                     <ul class="one-login-header__nav__list">
-                        @if (User.Identity is { IsAuthenticated: true } && User.Claims.IsAccountSetupCompleted())
+                        @if (User.Identity is { IsAuthenticated: true })
                         {
                             <li class="one-login-header__nav__list-item">
                                 <a class="one-login-header__nav__link one-login-header__nav__link--one-login"
@@ -140,14 +140,14 @@
                                 </a>
                             </li>
                         }
-                        else if ((User.Identity is { IsAuthenticated: true }))
-                        {
-                            <li class="one-login-header__nav__list-item">
-                                <a class="one-login-header__nav__link" asp-route="@RouteNames.SignOut">
-                                    Sign out
-                                </a>
-                            </li>
-                        }
+                        @* else if ((User.Identity is { IsAuthenticated: true })) *@
+                        @* { *@
+                        @*     <li class="one-login-header__nav__list-item"> *@
+                        @*         <a class="one-login-header__nav__link" asp-route="@RouteNames.SignOut"> *@
+                        @*             Sign out *@
+                        @*         </a> *@
+                        @*     </li> *@
+                        @* } *@
                         else
                         {
 
