@@ -146,11 +146,15 @@ public class WhenGettingSearchResults
                 case > 10:
                     actualModel.PageTitle.Should()
                         .Be(
-                            $"Apprenticeships found (page {actualModel.PaginationViewModel.CurrentPage} of {actualModel.PaginationViewModel.TotalPages})");
+                            $"{actualModel.Total} Apprenticeships found (page {actualModel.PaginationViewModel.CurrentPage} of {actualModel.PaginationViewModel.TotalPages})");
+                    break;
+                case 1:
+                    actualModel.PageTitle.Should()
+                        .Be($"{actualModel.Total} Apprenticeship found");
                     break;
                 default:
                     actualModel.PageTitle.Should()
-                        .Be("Apprenticeships found");
+                        .Be($"{actualModel.Total} Apprenticeships found");
                     break;
             }
 

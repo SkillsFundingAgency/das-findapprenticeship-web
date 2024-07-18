@@ -2,7 +2,7 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @model WithdrawApplicationViewModel
 @{
-    ViewBag.Title = "Withdraw your application - Find an apprenticeship - GOV.UK";
+    ViewData["Title"] = "Withdraw your application - Find an apprenticeship - GOV.UK";
 }
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.Applications.ViewApplications" asp-route-tab="@ApplicationsTab.Submitted.ToString()">Back</a>

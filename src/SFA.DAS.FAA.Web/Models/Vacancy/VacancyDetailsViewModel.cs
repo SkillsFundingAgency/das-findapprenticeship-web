@@ -5,12 +5,12 @@ using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
     public class VacancyDetailsViewModel
     {
+        public string BackLinkUrl { get; set; }
         public string? Title { get; init; }
         public string? EmployerName { get; init; }
         public string? ContactOrganisationName { get; init; }
@@ -54,10 +54,15 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? TrainingPlan { get; set; } //TODO
         public string? CompanyBenefits { get; set; }
         public string? WageAdditionalInformation { get; set; }//TODO
-        public string? AdditionalTrainingInformation { get; set; }
+        public string? AdditionalTrainingInformation { get; set; }//TODO
+        public string? GoogleMapsId { get; set; }
+        public string? CandidatePostcode { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
 
+        public string? ApplicationUrl { get; set; }
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
-            GetApprenticeshipVacancyQueryResult source) => new VacancyDetailsViewModel
+            GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
             {
                 Title = source.Vacancy?.Title,
                 VacancyReference = source.Vacancy?.VacancyReference,
@@ -68,7 +73,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
                 WorkDescription = source.Vacancy?.TrainingDescription,
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
-                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate),
+                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate,!string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
                 StartDate = source.Vacancy.StartDate.GetStartDate(),
                 WorkLocation = source.Vacancy.Address,
@@ -102,9 +107,16 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 ApplicationDetails = source.Vacancy?.Application,
                 IsClosed = source.Vacancy?.IsClosed ?? false,
                 ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+                ApplicationUrl = source.Vacancy?.ApplicationUrl != null && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
+                GoogleMapsId = googleMapsId,
+                CandidatePostcode = source.Vacancy?.CandidatePostcode,
+                Latitude = source.Vacancy?.Location?.Lat,
+                Longitude = source.Vacancy?.Location?.Lon,
                 CompanyBenefits = source.Vacancy?.CompanyBenefitsInformation,
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription
             };
+
+        
     }
 
     public class Address
@@ -126,6 +138,13 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Postcode = source.Postcode,
             };
         }
+
+        public string City =>
+            !string.IsNullOrEmpty(AddressLine4) ? AddressLine4 :
+            !string.IsNullOrEmpty(AddressLine3) ? AddressLine3 :
+            !string.IsNullOrEmpty(AddressLine2) ? AddressLine2 :
+            !string.IsNullOrEmpty(AddressLine1) ? AddressLine1 :
+            string.Empty;
     }
 
     public class Qualification

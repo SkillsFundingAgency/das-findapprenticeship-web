@@ -14,7 +14,7 @@ public class GetVacancyDetailsRequestValidatorTest
     [TestCase("0", VacancyReferenceTooShort, false)]
     [TestCase("123456789", VacancyReferenceTooShort, false)]
     [TestCase(null, VacancyReferenceEmpty, false)]
-    [TestCase("01234567890", VacancyReferenceNotValid, false)]
+    [TestCase("01234567890", VacancyReferenceNotValid, true)]
     [TestCase("VAC0123456789", "", true)]
     public async Task Validate_VacancyReference(string vacancyReference, string? errorMessage, bool isValid)
     {

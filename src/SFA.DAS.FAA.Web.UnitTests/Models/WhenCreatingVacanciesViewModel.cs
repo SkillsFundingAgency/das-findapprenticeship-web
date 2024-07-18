@@ -5,6 +5,7 @@ using SFA.DAS.Testing.AutoFixture;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.FAA.Web.Services;
 using Assert = NUnit.Framework.Assert;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -23,20 +24,23 @@ public class WhenCreatingVacanciesViewModel
             .Excluding(c=>c.CourseTitle)
             .Excluding(c=>c.Postcode)
             .Excluding(c => c.CandidateApplicationDetails)
+            .Excluding(c => c.ApplicationStatus)
             .Excluding(c => c.Lat)
             .Excluding(c => c.Lon)
+            .Excluding(c => c.IsNew)
+            .Excluding(c => c.IsClosingSoon)
+            .Excluding(c => c.ApplicationUrl)
         );
         actual.CourseTitle.Should().Be($"{vacancies.CourseTitle} (level {vacancies.CourseLevel})");
         actual.VacancyPostCode.Should().Be(vacancies.Postcode);
     }
     
     [Test]
-    [MoqInlineAutoData("30 Jan 2000", "Sunday 30 January")]
-    [MoqInlineAutoData("01 Jan 2000", "Saturday 1 January")]
-    [MoqInlineAutoData("04 Jun 2024", "Tuesday 4 June")]
+    [MoqInlineAutoData("30 Jan 2000")]
+    [MoqInlineAutoData("01 Jan 2000")]
+    [MoqInlineAutoData("04 Jun 2024")]
     public void Then_The_Closing_Date_Is_Shown_Correctly(
         string closeDate,
-        string expectedResult,
         Vacancies vacancies,
         [Frozen] Mock <IDateTimeService> dateTimeService)
     {
@@ -46,7 +50,7 @@ public class WhenCreatingVacanciesViewModel
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies); 
 
-        Assert.That(actual.AdvertClosing, Is.EqualTo(expectedResult));
+        actual.ClosingDateDescription.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, closingDate));
     }
 
     [Test]
@@ -70,13 +74,30 @@ public class WhenCreatingVacanciesViewModel
     public void Then_Closing_Soon_Flag_Shown_If_Vacancy_Closes_In_Less_Than_Eight_Days(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         var closingDate = new DateTime(2023, 11, 16);
+        vacancies.ApplicationUrl = "";
         dateTimeService.Setup(x => x.GetDateTime()).Returns(closingDate.AddDays(-7));
         
         vacancies.ClosingDate = closingDate;
         
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
         actual.IsClosingSoon.Should().BeTrue();
+        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM} at 11:59pm)");
     }
+    
+    [Test, MoqAutoData]
+    public void Then_Closing_Soon_Flag_Shown_If_Vacancy_Closes_In_Less_Than_Eight_Days_For_External_Application(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        var closingDate = new DateTime(2023, 11, 16);
+        vacancies.ApplicationUrl = "someurl";
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(closingDate.AddDays(-7));
+        
+        vacancies.ClosingDate = closingDate;
+        
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+        actual.IsClosingSoon.Should().BeTrue();
+        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM})");
+    }
+    
     [Test, MoqAutoData]
     public void Then_Closing_Soon_Flag_Not_Shown_If_Vacancy_Closes_In_More_Than_Or_Equal_To_Eight_Days(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
     {

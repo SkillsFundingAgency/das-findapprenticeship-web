@@ -425,12 +425,31 @@ public class WhenValidatingSubjectViewModel
             IsDeleted = false
         };
         var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("Degree", Guid.NewGuid());
-        
+
         var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
 
         var actual = await validator.ValidateAsync(model);
 
         actual.IsValid.Should().BeFalse();
         actual.Errors.Count.Should().Be(4);
+    }
+    
+    [Test]
+    public async Task Then_Invalid_Characters_Are_Allowed_For_ApprenticeshipTitle()
+    {
+        var model = new SubjectViewModel
+        {
+            Id = null,
+            Name = "ST123|Some Course (Level 1)",
+            AdditionalInformation = "something",
+            IsDeleted = false
+        };
+        var qualificationDisplayTypeViewModel = new QualificationDisplayTypeViewModel("Apprenticeship", Guid.NewGuid());
+        
+        var validator = new SubjectViewModelValidator(qualificationDisplayTypeViewModel);
+
+        var actual = await validator.ValidateAsync(model);
+
+        actual.IsValid.Should().BeTrue();
     }
 }

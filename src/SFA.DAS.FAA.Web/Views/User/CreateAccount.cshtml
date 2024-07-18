@@ -32,10 +32,16 @@
             By continuing, you confirm that you agree with our: 
         </p>
         <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
-            <li><a href="#" class="govuk-link govuk-link--no-visited-state">terms and conditions (opens in new tab)</a>
-                - how we run this service</li>
-            <li><a href="#" class="govuk-link govuk-link--no-visited-state">privacy policy (opens in new tab)</a> - how
-                we use your data</li>
+            <li>
+                <a asp-route="@RouteNames.TermsAndConditions" target="_blank" class="govuk-link govuk-link--no-visited-state">terms and conditions (opens in new tab)</a>
+                - how we run this service
+            </li>
+            <li><a href="https://www.gov.uk/government/publications/privacy-information-key-stage-4-and-5-and-adult-education/privacy-information-key-stage-4-and-5-and-adult-education?#using-your-data-to-support-your-learning-including-apprenticeships"
+                   target="_blank"
+                   rel="noreferrer noopener"
+                   class="govuk-link govuk-link--no-visited-state">privacy policy (opens in new tab)</a> - how
+                we use your data
+            </li>
         </ul>
         <a asp-route="@RouteNames.UserName" class="govuk-button" role="button">Continue</a>
     </div>

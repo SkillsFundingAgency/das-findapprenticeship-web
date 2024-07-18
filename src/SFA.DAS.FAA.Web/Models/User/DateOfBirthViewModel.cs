@@ -9,9 +9,9 @@ public class DateOfBirthViewModel
     public string BackLink => GetBackLink();
     public UserJourneyPath JourneyPath { get; set; } = UserJourneyPath.CreateAccount;
     public string RedirectRoute => GetRedirectRoute();
-    public string PageTitle => JourneyPath == UserJourneyPath.Settings ? "Change your date of birth – Find an apprenticeship – GOV.UK" : "What is your date of birth? – Find an apprenticeship – GOV.UK";
+    public string PageTitle => JourneyPath == UserJourneyPath.Settings ? "Change your date of birth – Find an apprenticeship – GOV.UK" : "Date of birth – Find an apprenticeship – GOV.UK";
     public string PageCaption => JourneyPath == UserJourneyPath.Settings ? string.Empty : "Create an account";
-    public string PageHeading => JourneyPath == UserJourneyPath.Settings ? "Change your date of birth" : "What is your date of birth?";
+    public string PageHeading => JourneyPath == UserJourneyPath.Settings ? "Change your date of birth" : "Date of birth";
     public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
 
     private string GetBackLink()

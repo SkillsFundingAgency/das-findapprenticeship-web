@@ -9,7 +9,7 @@ public class WhenGettingDomain
     
     [TestCase("LocAL","")]
     [TestCase("TEST","test-findapprenticeship.apprenticeships.education.gov.uk")]
-    [TestCase("PRD","findapprenticeship.apprenticeships.education.gov.uk")]
+    [TestCase("PRD","findapprenticeship.service.gov.uk")]
     [TestCase("prePROD","preprod-findapprenticeship.apprenticeships.education.gov.uk")]
     public void Then_The_Domain_Is_Correct_For_Each_Environment(string environment, string expectedDomain)
     {

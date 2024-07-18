@@ -41,16 +41,21 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("create-account", Name = RouteNames.CreateAccount)]
         public async Task<IActionResult> CreateAccount([FromQuery] string returnUrl)
         {
-            if (!string.IsNullOrWhiteSpace(returnUrl))
-            {
-                cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
-            }
-
             var result = await mediator.Send(new GetInformQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
+            if (result.IsAccountCreated)
+            {
+                return RedirectToRoute(RouteNames.ServiceStartDefault);
+            }
+            
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
+            }
+            
             var model = new InformViewModel
             {
                 ShowAccountRecoveryBanner = result.ShowAccountRecoveryBanner
@@ -61,9 +66,13 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("create-account/transfer-your-data", Name = RouteNames.TransferYourData)]
-        public IActionResult TransferYourData()
+        public async Task<IActionResult> TransferYourData()
         {
-            return View();
+            var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
+            return View(new TransferYourDataViewModel
+            {
+                PreviousPageUrl = returnUrl ?? Url.RouteUrl(RouteNames.Applications.ViewApplications),
+            });
         }
 
         [HttpGet]
@@ -455,7 +464,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
             var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
-
+            await cacheStorageService.Remove($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
             await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
 
             if (returnUrl != null)
