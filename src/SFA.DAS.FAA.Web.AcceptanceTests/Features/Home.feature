@@ -80,7 +80,7 @@ Scenario: Location search option selected no postcode
 Scenario: Navigate to search results page with no filters
 	When I navigate to the following url: /apprenticeships
 	Then a http status code of 200 is returned
-	And the page content includes the following: 339 apprenticeships found
+	And the page content includes the following: 339 vacancies found
 
 @WireMockServer
 Scenario: Navigate to search results page with no results found
