@@ -22,6 +22,9 @@ public static class AddRedirectRulesExtension
         options.AddRedirect("(?i)feedback", "apprenticeshipsearch", (int)HttpStatusCode.PermanentRedirect);
         options.AddRedirect("(?i)apprenticeship/reportthisvacancy/(.*)", "apprenticeshipsearch", (int)HttpStatusCode.PermanentRedirect);
         
+        //Account
+        options.AddRedirect("(?i)register", "create-account", (int)HttpStatusCode.PermanentRedirect);
+        
         app.UseRewriter(options);
     }
 }

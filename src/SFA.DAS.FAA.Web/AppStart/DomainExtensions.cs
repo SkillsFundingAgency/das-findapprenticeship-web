@@ -9,6 +9,11 @@ public static class DomainExtensions
             return "";
         }
 
+        if (environment.ToLower() == "prd")
+        {
+            return "findapprenticeship.service.gov.uk";
+        }
+
         var environmentPart = environment.ToLower() == "prd" ? "" : $"{environment.ToLower()}-";
         return $"{environmentPart}findapprenticeship.apprenticeships.education.gov.uk";
     }

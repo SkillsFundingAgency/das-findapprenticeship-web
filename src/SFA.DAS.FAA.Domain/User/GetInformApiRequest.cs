@@ -10,5 +10,6 @@ namespace SFA.DAS.FAA.Domain.User
     public class GetInformApiResponse
     {
         public bool ShowAccountRecoveryBanner { get; set; }
+        public bool IsAccountCreated { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.FAA.Domain.Candidates;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.Filters;
@@ -18,8 +19,9 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
 
         if (identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
         {
-            if (!context.ActionDescriptor.DisplayName.Contains("UserController", StringComparison.CurrentCultureIgnoreCase) &&
-                !context.ActionDescriptor.DisplayName.Contains("ServiceController", StringComparison.CurrentCultureIgnoreCase))
+            if (!context.ActionDescriptor.DisplayName.Contains(nameof(UserController), StringComparison.CurrentCultureIgnoreCase) &&
+                !context.ActionDescriptor.DisplayName.Contains(nameof(ServiceController), StringComparison.CurrentCultureIgnoreCase) &&
+                !context.ActionDescriptor.DisplayName.Contains(nameof(HomeController), StringComparison.CurrentCultureIgnoreCase))
             {
                 var service = context.HttpContext.RequestServices.GetService<IApiClient>();
                 var email = identity.Claims.FirstOrDefault(c=>c.Type.Equals(ClaimTypes.Email))?.Value;
@@ -29,7 +31,7 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
                     Email = email
                 };
 
-                var response = await service.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
+                var response = await service?.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
 
                 if (response.Status != UserStatus.Completed)
                 {

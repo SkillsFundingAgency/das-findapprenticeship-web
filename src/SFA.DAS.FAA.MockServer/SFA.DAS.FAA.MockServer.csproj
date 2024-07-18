@@ -17,6 +17,8 @@
     <None Remove="closed-vacancy-details.json" />
     <None Remove="jobs.json" />
     <None Remove="put-candidate-incomplete.json" />
+    <None Remove="SavedVacancies\EmptyState\get-saved-vacancies.json" />
+    <None Remove="SavedVacancies\PopulatedState\get-saved-vacancies.json" />
     <None Update="Applications\EmptyState\get-applications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -91,6 +93,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="put-candidate-incomplete.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SavedVacancies\EmptyState\get-saved-vacancies.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SavedVacancies\PopulatedState\get-saved-vacancies.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="search-apprentices-index.json">

@@ -17,9 +17,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingDateOfBirth
 {
     [Test]
-    [MoqInlineAutoData(null, RouteNames.UserName, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
-    [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.UserName, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
-    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "What is your date of birth? – Find an apprenticeship – GOV.UK", "Create an account", "What is your date of birth?", "Continue")]
+    [MoqInlineAutoData(null, RouteNames.UserName, "Date of birth – Find an apprenticeship – GOV.UK", "Create an account", "Date of birth", "Continue")]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.UserName, "Date of birth – Find an apprenticeship – GOV.UK", "Create an account", "Date of birth", "Continue")]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "Date of birth – Find an apprenticeship – GOV.UK", "Create an account", "Date of birth", "Continue")]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings, "Change your date of birth – Find an apprenticeship – GOV.UK", "", "Change your date of birth", "Save")]
 
     public async Task Then_View_Is_Returned(

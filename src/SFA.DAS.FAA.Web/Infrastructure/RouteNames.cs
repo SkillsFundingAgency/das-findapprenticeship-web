@@ -6,7 +6,9 @@ public static class RouteNames
     public const string BrowseByInterests = "browse-by-interests";
     public const string Location = "location";
     public const string SearchResults = "search-results";
+    public const string MapSearchResults = "map-search-results";
     public const string Vacancies = "vacancies";
+    public const string VacanciesReference = "vacancies-reference";
     public const string Apply = "apply";
     public const string UserName = "user-name";
     public const string DateOfBirth = "date-of-birth";
@@ -22,7 +24,6 @@ public static class RouteNames
     public const string SignInToYourOldAccount = "sign-in-to-your-old-account";
     public const string SignOut = "sign-out";
     public const string SignIn = "sign-in";
-    public const string SignedOut = "signed-out";
     public const string AccountUnavailable = "account-unavailable";
     public const string StubAccountDetailsGet = "account-details-get";
     public const string StubAccountDetailsPost = "account-details-post";
@@ -30,8 +31,12 @@ public static class RouteNames
     public const string Settings = "settings";
     public const string ChangeNotificationPreferences = "change-notification-preferences";
     public const string Email = "email";
+    public const string SavedVacancies = "saved-vacancies";
     public const string ConfirmDataTransfer = "confirm-data-transfer";
     public const string FinishAccountSetup = "finish-account-setup";
+    public const string Cookies = "cookies";
+    public const string AccessibilityStatement = "accessibility-statement";
+    public const string TermsAndConditions = "terms-and-conditions";
 
     public static class Applications
     {

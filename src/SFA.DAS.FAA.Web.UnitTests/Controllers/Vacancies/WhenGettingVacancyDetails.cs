@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentValidation;
@@ -15,31 +15,42 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Net;
 using FluentValidation.Results;
+using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Web.Models.Applications;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
 
 public class WhenGettingVacancyDetails
 {
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData("VAC1000012484","VAC1000012484")]
+    [MoqInlineAutoData("VAC1000012484","1000012484")]
     public async Task Then_The_Mediator_Query_Is_Called_And_VacancyDetails_View_Returned(
+        string queryVal,
+        string vacancyReference,
         Guid candidateId,
         Guid govIdentifier,
         bool showBanner,
+        string mapId,
         GetApprenticeshipVacancyQueryResult result,
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
+        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<IUrlHelper> mockUrlHelper,
         [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] Web.Controllers.VacanciesController controller)
     {
-        request.VacancyReference = "VAC1000012484";
-        mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
+        request.VacancyReference = vacancyReference;
+        mediator.Setup(x => x.Send(It.Is<GetApprenticeshipVacancyQuery>(c=>c.VacancyReference == queryVal), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         cacheStorageService
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
 
+        controller.Url = mockUrlHelper.Object;
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -56,18 +67,22 @@ public class WhenGettingVacancyDetails
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult { });
 
-        var actual = await controller.Vacancy(request) as ViewResult;
+        var actual = await controller.Vacancy(request, NavigationSource.None, ApplicationsTab.Started) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as VacancyDetailsViewModel;
 
-        var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result);
+        var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result, mapId);
 
         actualModel.Should().BeEquivalentTo(expected, options => options
+            .Excluding(x => x.BackLinkUrl)
             .Excluding(x => x.ClosingDate)
             .Excluding(x => x.CourseLevelMapper)
             .Excluding(x => x.ShowAccountCreatedBanner));
         actualModel!.ShowAccountCreatedBanner.Should().Be(showBanner);
+        actualModel.GoogleMapsId.Should().Be(mapId);
+        actualModel.Latitude.Should().Be(result.Vacancy!.Location.Lat);
+        actualModel.Longitude.Should().Be(result.Vacancy!.Location.Lon);
     }
 
     [Test]
@@ -95,4 +110,42 @@ public class WhenGettingVacancyDetails
 
         actual!.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
     }
+
+
+    [Test, MoqAutoData]
+    public async Task Then_If_Query_Returns_Null_Then_Not_Found_Returned(
+        Guid candidateId,
+        Guid govIdentifier,
+        GetApprenticeshipVacancyQueryResult result,
+        GetVacancyDetailsRequest request,
+        IDateTimeService dateTimeService,
+        [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
+        [Frozen] Mock<IMediator> mediator,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Greedy] Web.Controllers.VacanciesController controller)
+    {
+        result.Vacancy = null;
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                {
+                    new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
+                }))
+
+            }
+        };
+        mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult { });
+
+        var actual = await controller.Vacancy(request) as NotFoundResult;
+
+        actual!.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+    }
+    
 }

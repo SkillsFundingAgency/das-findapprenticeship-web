@@ -1,5 +1,12 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
+
+@section BackLink {
+    <div class="faa-js-back-link-history">
+        <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
+    </div>
+}
 
 @if (Model.ShowAccountCreatedBanner)
 {
@@ -7,9 +14,24 @@
 }
 @if (Model.IsClosed)
 {
-    <partial name="_ClosedVacancy" model="Model"/>
+    ViewData["Title"] = "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
+    
+    <partial name="_ClosedVacancy" model="Model" />
 }
 else
 {
+    ViewData["Title"] = $"{Model.Title!} – Find an apprenticeship – GOV.UK";
+    
     <partial name="_LiveVacancy" model="Model"/>
+}
+
+@section AfterJSScripts {
+    <script>
+        const directionsForm = document.getElementById('faa-directions-form')
+        const directionsMap = document.getElementById('faa-directions-map')
+
+        if (directionsForm && directionsMap) {
+            new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", directionsForm, directionsMap).init()
+        }
+    </script>
 }

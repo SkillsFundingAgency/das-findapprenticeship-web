@@ -8,7 +8,6 @@ using SFA.DAS.FAA.Web.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 var isIntegrationTest = builder.Environment.EnvironmentName.Equals("IntegrationTest", StringComparison.CurrentCultureIgnoreCase);
-var isLocal = builder.Environment.EnvironmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase);
 var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTest);
 
 builder.Services
@@ -25,20 +24,21 @@ builder.Services.AddConfigurationOptions(rootConfiguration);
 
 builder.Services.AddLogging();
 builder.Services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
-
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
 builder.Services.AddServiceRegistration(isIntegrationTest);
 builder.Services.AddAuthenticationServices(rootConfiguration);
 builder.Services.AddCacheServices(rootConfiguration);
 builder.Services.AddHealthChecks();
 
-
-
-builder.Services.Configure<RouteOptions>(options =>
+builder.Services.Configure<RouteOptions>(_ =>
 {
 
 }).AddMvc(options =>
 {
-    //options.Filters.Add(new GoogleAnalyticsFilter());
     if (!isIntegrationTest)
     {
         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -77,6 +77,7 @@ app.UseAuthorization();
 
 app.AddRedirectRules();
 app.UseStaticFiles();
+app.UseCookiePolicy();
 
 app.UseEndpoints(endpointBuilder =>
 {

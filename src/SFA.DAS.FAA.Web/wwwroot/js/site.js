@@ -85,7 +85,7 @@ if (printLinks.length > 0) {
   }
 }
 
-const forms = document.querySelectorAll("main form");
+const forms = document.querySelectorAll("main form:not(.faa-do-not-disable)");
 
 if (forms.length > 0) {
   for (let i = 0; i < forms.length; i++) {
@@ -116,6 +116,35 @@ if (jsBackLink) {
     window.history.back();
   });
   jsBackLink.parentNode.replaceChild(backLink, jsBackLink);
+}
+
+const jsBackLinkHistory = document.querySelector(".faa-js-back-link-history");
+
+if (jsBackLinkHistory) {
+  const referrer = document.referrer;
+  const backLink = document.createElement("a");
+  const backLinkText = document.createTextNode("Back");
+  backLink.appendChild(backLinkText);
+  backLink.className = "govuk-back-link";
+  backLink.href = "#";
+  backLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.history.back();
+  });
+
+  if (referrer && referrer !== document.location.href) {
+    jsBackLinkHistory.parentNode.replaceChild(backLink, jsBackLinkHistory);
+  }
+}
+
+const jsSelectChangeSubmitForm = document.querySelector(
+  ".faa-js-select-change-submit-form"
+);
+
+if (jsSelectChangeSubmitForm) {
+  jsSelectChangeSubmitForm.addEventListener("change", () => {
+    jsSelectChangeSubmitForm.closest("form").submit();
+  });
 }
 
 // Show/Hide Extra Form Fields
@@ -296,8 +325,8 @@ Autocomplete.prototype.init = function () {
     displayMenu: "overlay",
     placeholder: "",
     onConfirm: (opt) => {
-      const txtInput = document.querySelector(this.convertId(this.selectId));
-      const searchString = opt || txtInput.value;
+      const txtInput = document.getElementById(this.selectId);
+      const searchString = opt || txtInput?.value || "";
       const requestedOption = [].filter.call(
         this.select.options,
         function (option) {
@@ -334,33 +363,281 @@ if (autocompleteSelects) {
 
 // Maps
 
-function FaaMap(mapId, link, container, data, centerLat, centerLng) {
-  this.container = container;
-  this.link = link;
-  this.data = data;
+function FaaMapDirections(mapId, lng, lat, ptcd, form, container) {
   this.mapId = mapId;
-  this.centerLat = centerLat;
-  this.centerLng = centerLng;
+  this.container = container;
+  this.form = form;
+  this.centerLat = lat;
+  this.centerLng = lng;
+  this.ptcd = ptcd;
+}
+
+FaaMapDirections.prototype.init = async function () {
+  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+    "marker"
+  );
+  const directionsService = new google.maps.DirectionsService();
+  const directionsRenderer = new google.maps.DirectionsRenderer();
+
+  if ("geolocation" in navigator) {
+    const useLocationLink = document.createElement("a");
+    useLocationLink.classList.add("govuk-link");
+    useLocationLink.classList.add("govuk-link--no-visited-state");
+    useLocationLink.innerHTML = "use current location";
+    useLocationLink.setAttribute("href", "#");
+    useLocationLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.getCurrentPostcode();
+    });
+    document.getElementById("faa-navigator-link").append(useLocationLink);
+  }
+
+  if (this.centerLat === 0 && this.centerLng === 0) {
+    await this.updateLonLatFromPostcode();
+  }
+
+  this.destination = new google.maps.LatLng(this.centerLat, this.centerLng);
+
+  this.map = new google.maps.Map(this.container, {
+    zoom: 10,
+    center: { lat: this.centerLat, lng: this.centerLng },
+    mapId: this.mapId,
+  });
+
+  this.map.markers = [];
+
+  const vacancyLocationPin = new google.maps.marker.AdvancedMarkerElement({
+    map: this.map,
+    position: { lat: this.centerLat, lng: this.centerLng },
+    content: this.markerHtml(),
+  });
+
+  this.map.markers.push(vacancyLocationPin);
+
+  directionsRenderer.setMap(this.map);
+  this.calculateAndDisplayRoute(directionsRenderer, directionsService);
+
+  this.form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    this.map.markers[0].setMap(null);
+    this.origin = document.getElementById("directions-postcode").value;
+    this.travelMode = document.getElementById("directions-travelMode").value;
+    if (this.isPostcodeValid()) {
+      this.calculateAndDisplayRoute(directionsRenderer, directionsService);
+    }
+  });
+};
+
+FaaMapDirections.prototype.markerHtml = function () {
+  const pinSvgString =
+    '<svg viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path fill="#000" stroke="black" stroke-width="1.5" d="M19.25 9.75C19.25 10.7082 18.9155 11.923 18.3178 13.3034C17.7257 14.671 16.9022 16.1408 15.9852 17.591C14.152 20.4903 11.9832 23.2531 10.6551 24.8737C10.3145 25.2858 9.68536 25.2857 9.34482 24.8735C8.0167 23.2529 5.8479 20.4903 4.01478 17.591C3.09784 16.1408 2.27428 14.671 1.68215 13.3034C1.08446 11.923 0.75 10.7082 0.75 9.75C0.75 4.79919 4.87537 0.75 10 0.75C15.1246 0.75 19.25 4.79919 19.25 9.75ZM12.8806 6.9149C12.1135 6.16693 11.0769 5.75 10 5.75C8.92307 5.75 7.88655 6.16693 7.1194 6.9149C6.35161 7.6635 5.91667 8.68292 5.91667 9.75C5.91667 10.8171 6.35161 11.8365 7.1194 12.5851C7.88655 13.3331 8.92307 13.75 10 13.75C11.0769 13.75 12.1135 13.3331 12.8806 12.5851C13.6484 11.8365 14.0833 10.8171 14.0833 9.75C14.0833 8.68292 13.6484 7.6635 12.8806 6.9149Z" />' +
+    "</svg>";
+  const content = document.createElement("div");
+  content.classList.add("faa-map__marker");
+  content.innerHTML = pinSvgString;
+  return content;
+};
+
+FaaMapDirections.prototype.updateLonLatFromPostcode = async function () {
+  const url = `https://api.postcodes.io/postcodes/${this.ptcd}`;
+  try {
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.centerLng = data.result.longitude;
+        this.centerLat = data.result.latitude;
+      });
+  } catch (error) {
+    console.error(error);
+  }
+  return;
+};
+
+FaaMapDirections.prototype.isPostcodeValid = function () {
+  const regex = new RegExp(
+    "^[A-Za-z]{1,2}\\d{1,2}[A-Za-z]?\\s?\\d[A-Za-z]{2}$"
+  );
+  const result = !regex.test(this.origin);
+  if (result) {
+    this.updatePostcodeRow("Enter a valid postcode");
+  } else {
+    this.updatePostcodeRow();
+  }
+  return !result;
+};
+
+FaaMapDirections.prototype.updatePostcodeRow = function (message) {
+  const postcodeRow = document.getElementById(
+    "directions-postcode"
+  ).parentElement;
+  const errorMessage = postcodeRow.querySelector(".govuk-error-message");
+  if (message !== undefined) {
+    postcodeRow.classList.add("govuk-form-group--error");
+    errorMessage.innerHTML = message;
+  } else {
+    postcodeRow.classList.remove("govuk-form-group--error");
+    errorMessage.innerHTML = "";
+  }
+};
+
+FaaMapDirections.prototype.getCurrentPostcode = function () {
+  const postcodeField = document.getElementById("directions-postcode");
+  const options = {
+    maximumAge: 600000,
+  };
+
+  function success(position) {
+    const url = `https://api.postcodes.io/postcodes?lon=${position.coords.longitude}&lat=${position.coords.latitude}&wideSearch=true`;
+    try {
+      fetch(url)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          postcodeField.value = data.result[0].postcode;
+          postcodeField.placeholder = "";
+        });
+    } catch (error) {
+      this.updatePostcodeRow("Location could not be found");
+      postcodeField.placeholder = "";
+    }
+  }
+
+  function error() {
+    this.updatePostcodeRow("Location could not be found");
+    postcodeField.placeholder = "";
+  }
+  this.updatePostcodeRow();
+  postcodeField.placeholder = "Locating...";
+  navigator.geolocation.getCurrentPosition(success, error, options);
+};
+
+FaaMapDirections.prototype.calculateAndDisplayRoute = function (
+  directionsRenderer,
+  directionsService
+) {
+  if (this.origin === undefined || this.travelMode === undefined) {
+    return;
+  }
+  const journeyInfo = document.getElementById("faa-journey-info");
+
+  directionsService
+    .route({
+      origin: {
+        query: this.origin,
+      },
+      destination: this.destination,
+      travelMode: google.maps.TravelMode[this.travelMode],
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
+    })
+    .then((response) => {
+      journeyInfo.innerHTML = `<b>Distance</b> ${response.routes[0].legs[0].distance.text.replace(
+        "mi",
+        "miles"
+      )}<br /> <b>Duration</b> ${response.routes[0].legs[0].duration.text.replace(
+        "mins",
+        "minutes"
+      )}`;
+      directionsRenderer.setDirections(response);
+    })
+    .catch((e) => {
+      console.error(e);
+      this.updatePostcodeRow("Location could not be found");
+      journeyInfo.innerHTML = "";
+    });
+};
+
+function FaaMap(mapId, link, linkLoading, container, radius) {
+  this.container = container;
+  this.radius = radius;
+  this.link = link;
+  this.linkLoading = linkLoading;
+  this.mapId = mapId;
+  this.centerLat;
+  this.centerLng;
+  this.mapData = [];
 }
 
 FaaMap.prototype.init = function () {
   this.setUpEvents();
 };
 
-FaaMap.prototype.setUpEvents = function () {
+FaaMap.prototype.setUpEvents = async function () {
+  const hash = window.location.hash;
+  if (hash === "#showMap") {
+    await this.checkIfMapIsCachedOrGetData();
+  } else {
+    this.hideMap();
+  }
   var that = this;
-  this.link.addEventListener("click", this.showMap.bind(this));
   document.body.addEventListener("keydown", (e) => {
     if (e.code === "Escape") {
       that.hideMap();
     }
   });
+  window.addEventListener(
+    "hashchange",
+    async () => {
+      const hash = window.location.hash;
+      if (hash === "#showMap") {
+        await this.checkIfMapIsCachedOrGetData();
+      } else {
+        this.hideMap();
+      }
+    },
+    false
+  );
 };
 
-FaaMap.prototype.showMap = function (e) {
-  e.preventDefault();
+FaaMap.prototype.checkIfMapIsCachedOrGetData = async function () {
+  if (this.mapData.length > 0) {
+    this.showMap();
+  } else {
+    this.link.classList.add("govuk-visually-hidden");
+    this.linkLoading.classList.remove("govuk-visually-hidden");
+    await this.getMapData();
+    this.link.classList.remove("govuk-visually-hidden");
+    this.linkLoading.classList.add("govuk-visually-hidden");
+  }
+};
+
+FaaMap.prototype.getMapData = async function () {
+  let params = "";
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.size > 0) {
+    params = `?${urlParams.toString()}`;
+  }
+  const url = `/map-search-results${params}`;
+  await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      this.mapData = data.apprenticeshipMapData;
+      this.showMap();
+      this.centerLat = data.searchedLocation.lat;
+      this.centerLng = data.searchedLocation.lon;
+
+      if (this.centerLat === 0 && this.centerLng === 0) {
+        this.centerLat = 52.4379;
+        this.centerLng = -1.6496;
+      }
+    });
+};
+
+FaaMap.prototype.showMap = function () {
   document.documentElement.classList.add("faa-map__body--open");
   document.body.classList.add("faa-map__body--open");
+  window.location.hash = "#showMap";
   if (!this.map) {
     this.loadMap();
   }
@@ -369,6 +646,8 @@ FaaMap.prototype.showMap = function (e) {
 FaaMap.prototype.hideMap = function () {
   document.documentElement.classList.remove("faa-map__body--open");
   document.body.classList.remove("faa-map__body--open");
+  window.location.hash = "";
+  localStorage.removeItem("faaMapActiveRole");
 };
 
 FaaMap.prototype.loadMap = async function () {
@@ -376,9 +655,14 @@ FaaMap.prototype.loadMap = async function () {
   const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
     "marker"
   );
+  const mapCloseButtonWrap = document.createElement("div");
+  const mapCloseButton = document.createElement("a");
+  const mapRoleDetailsWrap = document.createElement("div");
+  const bounds = new google.maps.LatLngBounds();
+
   this.map = new google.maps.Map(this.container, {
     center: new google.maps.LatLng(this.centerLat, this.centerLng),
-    zoom: 7,
+    zoom: 10,
     mapId: this.mapId,
     mapTypeControl: false,
     fullscreenControl: false,
@@ -388,21 +672,22 @@ FaaMap.prototype.loadMap = async function () {
       position: google.maps.ControlPosition.LEFT_BOTTOM,
     },
   });
-  const searchRadius = new google.maps.Circle({
-    strokeColor: "#1D70B8",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: "#1D70B8",
-    fillOpacity: 0.1,
-    map: this.map,
-    center: new google.maps.LatLng(52.400575, -1.507825),
-    radius: 750,
-  });
 
-  const mapCloseButtonWrap = document.createElement("div");
+  if (this.radius > 0) {
+    const searchRadius = new google.maps.Circle({
+      strokeColor: "#1D70B8",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#1D70B8",
+      fillOpacity: 0.1,
+      map: this.map,
+      center: new google.maps.LatLng(this.centerLat, this.centerLng),
+      radius: this.radius * 1609.34,
+    });
+  }
+
   mapCloseButtonWrap.classList.add("faa-map__close");
 
-  const mapCloseButton = document.createElement("a");
   mapCloseButton.classList.add("govuk-link");
   mapCloseButton.classList.add("govuk-link--no-visited-state");
   mapCloseButton.innerHTML =
@@ -416,14 +701,15 @@ FaaMap.prototype.loadMap = async function () {
 
   mapCloseButtonWrap.append(mapCloseButton);
 
-  const mapRoleDetailsWrap = document.createElement("div");
   mapRoleDetailsWrap.classList.add("faa-map__panel");
   mapRoleDetailsWrap.classList.add("faa-map__panel--role");
   mapRoleDetailsWrap.classList.add("faa-map__panel--hidden");
 
   this.map.markers = [];
 
-  for (const role of this.data) {
+  const activeMapMarker = localStorage.getItem("faaMapActiveRole");
+
+  for (const role of this.mapData) {
     const Marker = new google.maps.marker.AdvancedMarkerElement({
       map: this.map,
       position: role.position,
@@ -431,9 +717,20 @@ FaaMap.prototype.loadMap = async function () {
     });
     Marker.addListener("click", () => {
       this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+      this.map.panTo(role.position);
     });
     this.map.markers.push(Marker);
+
+    if (activeMapMarker === role.job.id.toString()) {
+      this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+      this.map.panTo(role.position);
+    }
+
+    bounds.extend(role.position);
   }
+
+  this.map.fitBounds(bounds);
+
   this.map.controls[google.maps.ControlPosition.BLOCK_START_INLINE_END].push(
     mapCloseButtonWrap
   );
@@ -443,15 +740,51 @@ FaaMap.prototype.loadMap = async function () {
 };
 
 FaaMap.prototype.showRoleOverLay = function (role, panel) {
+  function statusTag(vacancy) {
+    if (vacancy.isClosingSoon) {
+      return `<strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
+                Closing soon
+            </strong>`;
+    }
+    if (vacancy.isNew) {
+      return `<strong class="govuk-tag govuk-!-margin-bottom-2">
+                New
+            </strong>`;
+    }
+    if (vacancy.applicationStatus != null) {
+      return `<strong class="govuk-tag govuk-!-margin-bottom-2">
+                ${vacancy.applicationStatus}
+            </strong>`;
+    }
+    return "";
+  }
+
+  function closePanelButton(t) {
+    const that = t;
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("faa-map__panel-close");
+    closeButton.innerHTML = `<span class="faa-map__close-icon"></span>`;
+    closeButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      that.hideRoleOverLay(panel);
+    });
+    return closeButton;
+  }
+
+  function showDistance(distance) {
+    if (distance > 0) {
+      return `<li><strong>Distance</strong> ${distance} miles</li>`;
+    }
+    return "";
+  }
+
   panel.innerHTML = `
-      <strong class="govuk-tag govuk-!-margin-bottom-2 ${
-        role.job.status ? "" : "govuk-visually-hidden"
-      } ${role.job.status === "New" ? "" : "govuk-tag--orange"}">${
-    role.job.status
-  }</strong>
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="#" class="govuk-link govuk-link--no-visited-state">${
-        role.job.title
-      }</a></h2>
+      ${statusTag(role.job)}
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/apprenticeship/VAC${
+        role.job.id
+      }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading">${
+    role.job.title
+  }</a></h2>
       <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
         role.job.company
       }</p>
@@ -459,7 +792,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     role.job.postcode
   }</p>
       <ul class="govuk-list govuk-!-font-size-16">
-      <li><strong>Distance</strong> ${role.job.distance}</li>
+      ${showDistance(role.job.distance)}
       <li><strong>Training course</strong> ${role.job.apprenticeship}</li>
       <li><strong>Annual wage</strong>  ${role.job.wage}</li>
       </ul>
@@ -470,7 +803,15 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
         role.job.postedDate
       }</p>
   `;
+  panel.append(closePanelButton(this));
   panel.classList.remove("faa-map__panel--hidden");
+};
+
+FaaMap.prototype.hideRoleOverLay = function (panel) {
+  panel.classList.add("faa-map__panel--hidden");
+  this.map.markers.forEach((mrk) => {
+    mrk.content.classList.remove("highlight");
+  });
 };
 
 FaaMap.prototype.toggleMarker = function (markerElement, role, panel) {
@@ -480,6 +821,7 @@ FaaMap.prototype.toggleMarker = function (markerElement, role, panel) {
 
   markerElement.content.classList.add("highlight");
   markerElement.zIndex = 1;
+  localStorage.setItem("faaMapActiveRole", role.job.id);
   this.showRoleOverLay(role, panel);
 };
 
@@ -493,3 +835,45 @@ FaaMap.prototype.markerHtml = function () {
   content.innerHTML = pinSvgString;
   return content;
 };
+
+// cookies
+function saveCookieSettings() {
+  let consentAnalyticsCookieRadioValue = document.querySelector(
+    "input[name=ConsentAnalyticsCookie]:checked"
+  ).value;
+  let consentFunctionalCookieRadioValue = document.querySelector(
+    "input[name=ConsentFunctionalCookie]:checked"
+  ).value;
+
+  createCookie("AnalyticsConsent", consentAnalyticsCookieRadioValue);
+  createCookie("FunctionalConsent", consentFunctionalCookieRadioValue);
+
+  document.getElementById("confirmation-banner").removeAttribute("hidden");
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+function acceptCookies(args) {
+  createCookie("DASSeenCookieMessage", true);
+  document.getElementById("cookieConsent").style.display = "none";
+  if (args === true) {
+    createCookie("AnalyticsConsent", true);
+    createCookie("FunctionalConsent", true);
+    document.getElementById("cookieAccept").removeAttribute("hidden");
+  } else {
+    createCookie("AnalyticsConsent", false);
+    createCookie("FunctionalConsent", false);
+    document.getElementById("cookieReject").removeAttribute("hidden");
+  }
+}
+function createCookie(cookiname, cookivalue) {
+  let date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
+  let expires = "expires=" + date.toGMTString();
+  document.cookie =
+    cookiname + "=" + cookivalue + ";" + expires + ";path=/;Secure";
+}
+function hideAcceptBanner() {
+  document.getElementById("cookieAccept").setAttribute("hidden", "");
+}
+function hideRejectBanner() {
+  document.getElementById("cookieReject").setAttribute("hidden", "");
+}

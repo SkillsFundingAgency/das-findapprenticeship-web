@@ -3,7 +3,7 @@
 @using SFA.DAS.FAA.Domain.Enums
 @model SFA.DAS.FAA.Web.Models.Applications.ApplicationViewModel;
 @{
-    ViewBag.Title = $"Your application to {@Model.VacancyDetails.EmployerName} – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = $"Your application to {@Model.VacancyDetails.EmployerName} – Find an apprenticeship – GOV.UK";
     var tagName = Model.ApplicationStatus switch
     {
         ApplicationStatus.Successful => ApplicationsTab.Successful.ToString(),
