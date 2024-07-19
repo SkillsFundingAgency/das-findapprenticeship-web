@@ -159,7 +159,7 @@
             <div class="govuk-width-container">
                 <div class="service-header__container">
                     <h2 class="service-header__heading">Find an apprenticeship</h2>
-                    @if (User.Identity is { IsAuthenticated: true } && ViewData["IsAccountStatusCompleted"] != null && ViewData["IsAccountStatusCompleted"].Equals(true))
+                    @if (User.Identity is { IsAuthenticated: true } && ViewData["IsAccountStatusCompleted"] != null && ViewData["IsAccountStatusCompleted"]!.Equals(true))
                     {
                         <div>
                             <button type="button" aria-controls="service-header__nav"

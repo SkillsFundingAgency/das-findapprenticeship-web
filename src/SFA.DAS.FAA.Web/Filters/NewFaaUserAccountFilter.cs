@@ -15,33 +15,37 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
         ActionExecutingContext context,
         ActionExecutionDelegate next)
     {
-        var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
-
-        if (identity != null && identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
+        if (context.HttpContext.User.Identity is {IsAuthenticated: true})
         {
-            if (!context.ActionDescriptor.DisplayName!.Contains(nameof(UserController), StringComparison.CurrentCultureIgnoreCase) &&
-                !context.ActionDescriptor.DisplayName.Contains(nameof(ServiceController), StringComparison.CurrentCultureIgnoreCase) &&
-                !context.ActionDescriptor.DisplayName.Contains(nameof(HomeController), StringComparison.CurrentCultureIgnoreCase))
+            var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
+
+            if (identity != null && identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
+            {
+                if (!context.ActionDescriptor.DisplayName!.Contains(nameof(UserController), StringComparison.CurrentCultureIgnoreCase) &&
+                    !context.ActionDescriptor.DisplayName.Contains(nameof(ServiceController), StringComparison.CurrentCultureIgnoreCase) &&
+                    !context.ActionDescriptor.DisplayName.Contains(nameof(HomeController), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    var response = await GetCandidateDetails(context, identity);
+                    if (response.Status != UserStatus.Completed)
+                    {
+                        var requestPath = context.HttpContext.Request.Path;
+                        context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new { returnUrl = requestPath });
+                        return;
+                    }
+                }
+            }
+
+            if (identity != null && identity.HasClaim(c => c.Type == ClaimTypes.Email) && identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
             {
                 var response = await GetCandidateDetails(context, identity);
-                if (response.Status != UserStatus.Completed)
+                ((Controller) context.Controller).ViewData["IsAccountStatusCompleted"] = response.Status switch
                 {
-                    var requestPath = context.HttpContext.Request.Path;
-                    context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new { returnUrl = requestPath });
-                    return;
-                }
+                    UserStatus.Completed => true,
+                    _ => false
+                };
             }
         }
 
-        if (identity != null && identity.HasClaim(c => c.Type == ClaimTypes.Email) && identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
-        {
-            var response = await GetCandidateDetails(context, identity);
-            ((Controller) context.Controller).ViewData["IsAccountStatusCompleted"] = response.Status switch
-            {
-                UserStatus.Completed => true,
-                _ => false
-            };
-        }
         await next();
     }
 
@@ -50,6 +54,7 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
         var service = context.HttpContext.RequestServices.GetService<IApiClient>();
         var email = identity.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value;
         var userId = identity.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
-        return await service?.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, new PutCandidateApiRequestData { Email = email }));
+        var result =  await service!.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId!, new PutCandidateApiRequestData { Email = email! }));
+        return result;
     }
 }
