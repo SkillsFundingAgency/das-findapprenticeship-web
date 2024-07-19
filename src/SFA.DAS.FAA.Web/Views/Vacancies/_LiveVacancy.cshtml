@@ -331,7 +331,7 @@
                 @if (!string.IsNullOrEmpty(Model.AdditionalTrainingInformation))
                 {
                     <h3 class="govuk-heading-s">More training information</h3>
-                    <p>@Model.AdditionalTrainingInformation</p>
+                    <p>@Html.Raw(@Model.AdditionalTrainingInformation)</p>
                 }
             </section>
             <section class="faa-vacancy__section" id="requirements">
