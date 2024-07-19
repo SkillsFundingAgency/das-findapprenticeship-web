@@ -14,6 +14,7 @@ using SFA.DAS.FAA.Web.Filters;
 using SFA.DAS.FAA.Web.UnitTests.Customisations;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Filters;
 
@@ -132,8 +133,10 @@ public class WhenFilteringNewAccountUsers
         //Arrange
         response.Status = status;
         var httpContext = new Mock<HttpContext>();
+
         httpContext.Setup(x => x.RequestServices.GetService(typeof(IApiClient)))
             .Returns(apiClient.Object);
+
         httpContext.Setup(x => x.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
         {
             new Claim(ClaimTypes.Email, email),
