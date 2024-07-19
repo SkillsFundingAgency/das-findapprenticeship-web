@@ -141,20 +141,20 @@ public class WhenGettingSearchResults
             {
                 case 0:
                     actualModel.PageTitle.Should()
-                        .Be("No apprenticeships found");
+                        .Be("No vacancies found");
                     break;
                 case > 10:
                     actualModel.PageTitle.Should()
                         .Be(
-                            $"{actualModel.Total} Apprenticeships found (page {actualModel.PaginationViewModel.CurrentPage} of {actualModel.PaginationViewModel.TotalPages})");
+                            $"{actualModel.Total} Vacancies found (page {actualModel.PaginationViewModel.CurrentPage} of {actualModel.PaginationViewModel.TotalPages})");
                     break;
                 case 1:
                     actualModel.PageTitle.Should()
-                        .Be($"{actualModel.Total} Apprenticeship found");
+                        .Be($"{actualModel.Total} Vacancy found");
                     break;
                 default:
                     actualModel.PageTitle.Should()
-                        .Be($"{actualModel.Total} Apprenticeships found");
+                        .Be($"{actualModel.Total} Vacancies found");
                     break;
             }
 
@@ -618,7 +618,7 @@ public class WhenGettingSearchResults
             actualModel?.DisabilityConfident.Should().Be(disabilityConfident);
             actualModel?.NoSearchResultsByUnknownLocation.Should().BeFalse();
             actualModel?.Distance.Should().Be(10);
-            actualModel?.PageTitle.Should().Be("No apprenticeships found");
+            actualModel?.PageTitle.Should().Be("No vacancies found");
         }
     }
 
@@ -725,7 +725,7 @@ public class WhenGettingSearchResults
             actualModel?.DisabilityConfident.Should().Be(disabilityConfident);
             actualModel?.NoSearchResultsByUnknownLocation.Should().BeTrue();
             actualModel?.Distance.Should().Be(10);
-            actualModel?.PageTitle.Should().Be("No apprenticeships found");
+            actualModel?.PageTitle.Should().Be("No vacancies found");
         }
     }
 }
