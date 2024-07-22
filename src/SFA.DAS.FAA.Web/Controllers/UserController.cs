@@ -154,7 +154,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return RedirectToRoute(model.RedirectRoute);
+            return RedirectToRoute(model.RedirectRoute, new { journeyPath = model.JourneyPath });
         }
 
         [HttpGet]
@@ -199,7 +199,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return RedirectToRoute(model.RedirectRoute);
+            return RedirectToRoute(model.RedirectRoute, new { journeyPath = model.JourneyPath });
         }
 
         [HttpGet("postcode-address", Name = RouteNames.PostcodeAddress)]
@@ -289,7 +289,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return model.RedirectRoute == RouteNames.PhoneNumber
                 ? RedirectToRoute(RouteNames.PhoneNumber, new { journeyPath = model.JourneyPath })
-                : RedirectToRoute(model.RedirectRoute);
+                : RedirectToRoute(model.RedirectRoute, new { journeyPath = model.JourneyPath });
         }
 
         [HttpGet("enter-address", Name = RouteNames.EnterAddressManually)]
@@ -345,7 +345,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return model.RedirectRoute == RouteNames.PhoneNumber
                 ? RedirectToRoute(RouteNames.PhoneNumber, new { journeyPath = UserJourneyPath.EnterAddressManually })
-                : RedirectToRoute(model.RedirectRoute);
+                : RedirectToRoute(model.RedirectRoute, new { journeyPath = model.JourneyPath });
         }
 
         [HttpGet("phone-number", Name = RouteNames.PhoneNumber)]
@@ -382,7 +382,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return model.RedirectRoute == RouteNames.NotificationPreferences 
                 ? RedirectToRoute(RouteNames.NotificationPreferences, new { journeyPath = model.JourneyPath }) 
-                : RedirectToRoute(model.RedirectRoute);
+                : RedirectToRoute(model.RedirectRoute, new { journeyPath = model.JourneyPath });
         }
 
         [HttpGet("notification-preferences", Name = RouteNames.NotificationPreferences)]
@@ -416,11 +416,11 @@ namespace SFA.DAS.FAA.Web.Controllers
                 UnfinishedApplicationReminders = model.UnfinishedApplicationReminders ?? false
             });
 
-            return RedirectToRoute(model.RedirectRoute);
+            return RedirectToRoute(model.RedirectRoute, new { journeyPath = model.JourneyPath });
         }
 
         [HttpGet("create-account/check-answers", Name = RouteNames.ConfirmAccountDetails)]
-        public async Task<IActionResult> CheckAnswers()
+        public async Task<IActionResult> CheckAnswers(UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
             var accountDetails = await mediator.Send(new GetCandidateAccountDetailsQuery
             {
@@ -442,6 +442,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Town = accountDetails.Town,
                 Postcode = accountDetails.Postcode,
                 Uprn = accountDetails.Uprn,
+                JourneyPath = journeyPath,
                 CandidatePreferences = accountDetails.CandidatePreferences.Select(cp => new ConfirmAccountDetailsViewModel.CandidatePreference
                 {
                     PreferenceId = cp.PreferenceId,
@@ -465,7 +466,16 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
             await cacheStorageService.Remove($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
-            await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
+            
+            switch (model.JourneyPath)
+            {
+                case UserJourneyPath.CreateAccount:
+                    await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
+                    break;
+                case UserJourneyPath.AccountFound:
+                    await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountFound}", true);
+                    break;
+            }
 
             if (returnUrl != null)
             {
@@ -569,6 +579,29 @@ namespace SFA.DAS.FAA.Web.Controllers
         public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
         {
             return View(new EmailViewModel(configuration["ResourceEnvironmentName"]!.Equals("PRD", StringComparison.CurrentCultureIgnoreCase)) { JourneyPath = journeyPath });
+        }
+
+        [HttpGet]
+        [Route("account-found", Name = RouteNames.AccountFound)]
+        public async Task<IActionResult> AccountFound()
+        {
+            var name = await mediator.Send(new GetCandidateNameQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            });
+
+            var model = new AccountFoundInformViewModel
+            {
+                FirstName = name.FirstName,
+            };
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("account-found-terms-and-conditions", Name = RouteNames.AccountFoundTermsAndConditions)]
+        public IActionResult AccountFoundTermsAndConditions()
+        {
+           return View();
         }
     }
 }

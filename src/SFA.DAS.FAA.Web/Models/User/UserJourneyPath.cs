@@ -8,5 +8,6 @@
         EnterAddressManually,
         PhoneNumber,
         Settings,
+        AccountFound,
     }
 }

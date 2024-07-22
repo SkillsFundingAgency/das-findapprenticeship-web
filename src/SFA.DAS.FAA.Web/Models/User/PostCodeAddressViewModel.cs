@@ -12,6 +12,7 @@ public class PostcodeAddressViewModel : ViewModelBase
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.DateOfBirth
         };

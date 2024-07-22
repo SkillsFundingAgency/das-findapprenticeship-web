@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 .ReturnsAsync(showBanner);
 
             //sut
-            var result = await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService.Object, key);
+            var result = await NotificationBannerService.ShowAccountBanner(cacheStorageService.Object, key);
 
             //assert
             result.Should().Be(showBanner);
@@ -42,7 +42,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 .ReturnsAsync(showBanner);
 
             //sut
-            var result = await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService.Object, key);
+            var result = await NotificationBannerService.ShowAccountBanner(cacheStorageService.Object, key);
 
             //assert
             result.Should().Be(showBanner);
