@@ -30,6 +30,7 @@ using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.GovUK.Auth.Models;
 using SFA.DAS.GovUK.Auth.Services;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidateStatus;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
@@ -585,14 +586,15 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("account-found", Name = RouteNames.AccountFound)]
         public async Task<IActionResult> AccountFound()
         {
-            var name = await mediator.Send(new GetCandidateNameQuery
+            var result = await mediator.Send(new UpdateCandidateStatusCommand
             {
-                CandidateId = (Guid)User.Claims.CandidateId()!
+                GovIdentifier = User.Claims.GovIdentifier(),
+                CandidateEmail = User.Claims.Email()!
             });
 
             var model = new AccountFoundInformViewModel
             {
-                FirstName = name.FirstName,
+                FirstName = result.FirstName,
             };
             return View(model);
         }

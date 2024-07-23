@@ -24,10 +24,16 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
                 !context.ActionDescriptor.DisplayName.Contains(nameof(HomeController), StringComparison.CurrentCultureIgnoreCase))
             {
                 var response = await GetCandidateDetails(context, identity);
-                if (response.Status != UserStatus.Completed)
+                if (response.Status == UserStatus.Incomplete)
                 {
                     var requestPath = context.HttpContext.Request.Path;
                     context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new { returnUrl = requestPath });
+                    return;
+                }
+                if (response.Status == UserStatus.InProgress)
+                {
+                    var requestPath = context.HttpContext.Request.Path;
+                    context.Result = new RedirectToRouteResult(RouteNames.AccountFound, new { returnUrl = requestPath });
                     return;
                 }
             }

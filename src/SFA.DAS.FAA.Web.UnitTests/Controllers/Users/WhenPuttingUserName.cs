@@ -20,6 +20,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
         [Test]
         [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.DateOfBirth)]
         [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+        [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails)]
         [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
         public async Task When_Model_State_Is_Valid_Should_Redirect_To_What_Is_Your_Date_Of_Birth(
          UserJourneyPath journeyPath,
@@ -53,6 +54,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             // Assert
             result.Should().NotBeNull();
             result!.RouteName.Should().Be(redirectRoute);
+            result.RouteValues["journeyPath"].Should().Be(journeyPath);
             mediator.Verify(x => x.Send(It.Is<UpdateNameCommand>(c =>
                 c.CandidateId.Equals(candidateId)
                 && c.FirstName.Equals(model.FirstName)
