@@ -39,7 +39,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         [TestCase("01 Feb 2000", "Closes in 31 days (Tuesday 1 February at 11:59pm)")]
         [TestCase("01 Jan 2000", "Closes today at 11:59pm")]
         [TestCase("02 Jan 2000", "Closes tomorrow (Sunday 2 January at 11:59pm)")]
-        [TestCase("01 Apr 2000", "Closes on Saturday 1 April at 11:59pm")]
+        [TestCase("01 Apr 2000", "Closes on Saturday 1 April")]
         public void GetClosingDate(string closingDate, string? expectedResult)
         {
             //arrange

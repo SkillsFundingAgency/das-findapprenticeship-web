@@ -7,7 +7,6 @@ using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 using SFA.DAS.FAA.Domain.Applications.GetApplications;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Domain.User;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
 {

@@ -1,13 +1,16 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Web.Models;
 @model LocationViewModel
+@{
+    ViewData["Title"] = "Location – Find an apprenticeship – GOV.UK";
+}
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.BrowseByInterests" asp-all-route-data="@Model.RouteData">Back</a>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial model="@ViewData.ModelState" name="_ValidationSummary" />
+        <partial name="_ValidationSummary" />
         <div class="govuk-form-group">
             <form class="form" method="post">
                 <div

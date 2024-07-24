@@ -56,6 +56,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
             actual.Should().NotBeNull();
             actual?.RouteName.Should().Be(RouteNames.Apply);
             actual?.RouteValues.Should().NotBeEmpty();
+            mediator.Verify(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 
@@ -89,6 +90,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         {
             actual.Should().NotBeNull();
             actual?.RouteName.Should().Be(RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience);
+            mediator.Verify(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()), Times.Never);
         }
     }
 }

@@ -13,7 +13,11 @@
         <span class="govuk-caption-l">Application questions</span>
         <form class="form" method="post">
             @Html.HiddenFor(x => x.AdditionalQuestionLabel)
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-8">@Model.AdditionalQuestionLabel</h1>
+            <h1 class="govuk-label-wrapper govuk-!-margin-bottom-6">
+                <label class="govuk-label govuk-label--l" for="AdditionalQuestionAnswer">
+                    @Model.AdditionalQuestionLabel
+                </label>
+            </h1>
             <partial name="_AdditionalQuestionForm" model="@Model" />
             <div class="govuk-button-group">
                 <button class="govuk-button" data-module="govuk-button">

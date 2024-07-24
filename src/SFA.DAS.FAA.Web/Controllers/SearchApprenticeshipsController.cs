@@ -12,6 +12,7 @@ using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
+using LocationViewModel = SFA.DAS.FAA.Web.Models.LocationViewModel;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
@@ -23,6 +24,7 @@ public class SearchApprenticeshipsController(
     SearchModelValidator searchModelValidator,
     GetSearchResultsRequestValidator searchRequestValidator) : Controller
 {
+    [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
     {
@@ -55,7 +57,7 @@ public class SearchApprenticeshipsController(
         }
         else if (search == 1)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { searchTerm = model.WhatSearchTerm, sort = "AgeAsc" });
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
@@ -80,20 +82,20 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests(BrowseByInterestRequestViewModel model)
+    public async Task<IActionResult> BrowseByInterests(BrowseByInterestViewModel model)
     {
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
             var viewModel = (BrowseByInterestViewModel)result;
-
+            
             viewModel.AllocateRouteGroup();
 
             return View(viewModel);
         }
 
-        return RedirectToRoute(RouteNames.Location, new { RouteIds = model.SelectedRouteIds });
+        return RedirectToRoute(RouteNames.Location, new { routeIds = model.SelectedRouteIds });
     }
 
     [Route("location", Name = RouteNames.Location)]
@@ -227,6 +229,46 @@ public class SearchApprenticeshipsController(
         return View(viewmodel);
     }
 
+    [HttpGet]
+    [Route("map-search-results", Name = RouteNames.MapSearchResults)]
+    public async Task<IActionResult> MapSearchResults([FromQuery] GetSearchResultsRequest request)
+    {
+        var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
+        if (request.Distance <= 0)
+        {
+            request.Distance = null;
+        }
+        else if (request.Distance.HasValue && !validDistanceValues.Contains((int)request.Distance))
+        {
+            request.Distance = 10;
+        }
+
+        var result = await mediator.Send(new GetSearchResultsQuery
+        {
+            Location = request.Location,
+            SelectedRouteIds = request.RouteIds,
+            SelectedLevelIds = request.LevelIds,
+            Distance = request.Distance,
+            SearchTerm = request.SearchTerm,
+            PageNumber = 1,
+            PageSize = 300,
+            Sort = request.Sort,
+            DisabilityConfident = request.DisabilityConfident,
+            CandidateId = User.Claims.CandidateId().Equals(null) ? null
+                : User.Claims.CandidateId()!.ToString()
+        });
+
+        var model = new MapSearchResultsViewModel
+        {
+            ApprenticeshipMapData = result.Vacancies.Count != 0
+                ? result.Vacancies.Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService, c)).ToList()
+                : [],
+            SearchedLocation = result.Location
+        };
+        
+        return Json(model);
+    }
+
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
         => new()
         {
@@ -247,12 +289,14 @@ public class SearchApprenticeshipsController(
     private static string GetPageTitle(SearchResultsViewModel model)
     {
         if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
-            return "No apprenticeships found";
+            return "No vacancies found";
+
         return model.Total switch
         {
-            <= 10 => "Apprenticeships found",
+            1 => $"{model.Total} Vacancy found",
+            <= 10 => $"{model.Total} Vacancies found",
             _ =>
-                $"Apprenticeships found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
+                $"{model.Total} Vacancies found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
         };
     }
 }

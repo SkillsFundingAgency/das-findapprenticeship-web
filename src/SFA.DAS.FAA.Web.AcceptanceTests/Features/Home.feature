@@ -80,13 +80,13 @@ Scenario: Location search option selected no postcode
 Scenario: Navigate to search results page with no filters
 	When I navigate to the following url: /apprenticeships
 	Then a http status code of 200 is returned
-	And the page content includes the following: 339 apprenticeships found
+	And the page content includes the following: 339 vacancies found
 
 @WireMockServer
 Scenario: Navigate to search results page with no results found
 	When I navigate to the following url: /apprenticeships?location=manchester
 	Then a http status code of 200 is returned
-	And the page content includes the following: No apprenticeships found
+	And the page content includes the following: No vacancies found
 
 @WireMockServer
 Scenario: Navigate to vacancy details page with vacancy found
@@ -99,3 +99,21 @@ Scenario: Navigate to vacancy details page with invalid vacancy reference format
 	When I navigate to the following url: /apprenticeship/ABC1000012484
 	Then a http status code of 404 is returned
 	And the page content includes the following: Page not found
+
+@WireMockServer
+Scenario: Navigate to cookies page
+	When I navigate to the following url: /Home/cookies
+	Then a http status code of 200 is returned
+	And the page content includes the following: Cookies
+
+@WireMockServer
+Scenario: Navigate to Accessibility Statement page
+	When I navigate to the following url: /Home/Accessibility-statement
+	Then a http status code of 200 is returned
+	And the page content includes the following: Accessibility
+
+@WireMockServer
+Scenario: Navigate to Terms and Conditions page
+	When I navigate to the following url: /Home/terms-and-conditions
+	Then a http status code of 200 is returned
+	And the page content includes the following: Terms and conditions

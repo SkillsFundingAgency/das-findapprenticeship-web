@@ -18,17 +18,22 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
     }
     public SubjectViewModelValidator(QualificationDisplayTypeViewModel model)
     {
+        var isApprenticeship = model.GroupTitle.Equals("apprenticeships", StringComparison.CurrentCultureIgnoreCase);
+        var isDegree = model.GroupTitle.Equals("degree", StringComparison.CurrentCultureIgnoreCase);
+        var isOther = model.GroupTitle.Equals("Other qualifications", StringComparison.CurrentCultureIgnoreCase);
         
-        RuleFor(c => c.Name).ValidFreeTextCharacters().WithName(model.SubjectLabel);
+        
+        if (!isApprenticeship)
+        {
+            RuleFor(c => c.Name).ValidFreeTextCharacters().WithName(model.SubjectLabel);    
+        }
         RuleFor(c => c.AdditionalInformation).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
         RuleFor(c => c.Level).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
         RuleFor(c => c.Grade).ValidFreeTextCharacters().WithName(model.GradeLabel);
         
         When(x => x.IsDeleted is false, () =>
         {
-            var isApprenticeship = model.GroupTitle.Equals("apprenticeships", StringComparison.CurrentCultureIgnoreCase);
-            var isDegree = model.GroupTitle.Equals("degree", StringComparison.CurrentCultureIgnoreCase);
-            var isOther = model.GroupTitle.Equals("Other qualifications", StringComparison.CurrentCultureIgnoreCase);
+            
 
             if (isOther)
             {
