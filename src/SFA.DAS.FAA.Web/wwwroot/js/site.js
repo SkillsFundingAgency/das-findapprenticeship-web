@@ -5,6 +5,7 @@ if (locationInputs.length > 0) {
   for (let i = 0; i < locationInputs.length; i++) {
     const input = locationInputs[i];
     const container = document.createElement("div");
+    const withinSelect = document.getElementById("within");
 
     container.className = "das-autocomplete-wrap";
     container.dataset.trackUserSelected = input.dataset.trackUserSelected;
@@ -44,6 +45,11 @@ if (locationInputs.length > 0) {
           const hiddenField = document.getElementById(trackSelection);
           if (hiddenField) {
             hiddenField.value = "true";
+          }
+        }
+        if (withinSelect) {
+          if (withinSelect.value === "all") {
+            withinSelect.value = "10";
           }
         }
       },
