@@ -25,7 +25,7 @@ public class WhenCreatingVacancyDetailsViewModel
             HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
             Duration = source.Vacancy?.ExpectedDuration,
             PositionsAvailable = source.Vacancy?.NumberOfPositions,
-            WorkDescription = source.Vacancy?.TrainingDescription,
+            WorkDescription = source.Vacancy?.LongDescription,
             ThingsToConsider = source.Vacancy?.ThingsToConsider,
             ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.Vacancy.ClosingDate, !string.IsNullOrEmpty(source.Vacancy.ApplicationUrl)),
             PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
