@@ -33,6 +33,7 @@ public class WhenCreatingVacancyDetailsViewModel
             WorkLocation = source.Vacancy.Address,
             WorkingPattern = source.Vacancy?.WorkingWeek,
             TrainingProviderName = source.Vacancy?.ProviderName,
+            TrainingPlan = source.Vacancy?.TrainingDescription,
             OutcomeDescription = source.Vacancy?.OutcomeDescription,
             Skills = source.Vacancy?.Skills?.ToList(),
             EmployerWebsite =

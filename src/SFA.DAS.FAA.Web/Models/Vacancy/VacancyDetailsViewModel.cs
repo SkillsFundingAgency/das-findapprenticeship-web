@@ -34,7 +34,6 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public Address WorkLocation { get; init; } = new();
         public string? WorkDescription { get; init; }
         public string? TrainingProviderName { get; init; }
-        public string? TrainingDescription { get; init; }
         public List<string>? Skills { get; init; } = [];
         public string? CourseTitle { get; init; }
         public string? ThingsToConsider { get; init; }
@@ -79,7 +78,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 WorkLocation = source.Vacancy.Address,
                 WorkingPattern = source.Vacancy?.WorkingWeek,
                 TrainingProviderName = source.Vacancy?.ProviderName,
-                TrainingDescription = source.Vacancy?.TrainingDescription,//TODO This isn't correct
+                TrainingPlan = source.Vacancy?.TrainingDescription,
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
                 Skills = source.Vacancy?.Skills?.ToList(),
                 EmployerWebsite =
