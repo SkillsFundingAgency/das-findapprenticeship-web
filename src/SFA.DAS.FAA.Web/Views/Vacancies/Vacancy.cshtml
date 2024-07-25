@@ -1,11 +1,8 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 
 @section BackLink {
-    <div class="faa-js-back-link-history">
-        <a class="govuk-back-link" asp-route="@RouteNames.SearchResults">Back</a>
-    </div>
+    <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
 }
 
 @if (Model.ShowAccountCreatedBanner)

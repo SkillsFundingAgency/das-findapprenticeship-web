@@ -1,6 +1,5 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
 
 @{
@@ -8,7 +7,7 @@
 }
 
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">Back</a>
+    <a class="govuk-back-link" href="@Model.PageBackLink">Back</a>
 }
 
 <div class="govuk-grid-row">
