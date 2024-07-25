@@ -47,10 +47,11 @@ public class WhenCreatingVacanciesViewModel
         var closingDate = Convert.ToDateTime(closeDate) ;
 
         vacancies.ClosingDate = closingDate;
+        vacancies.ApplicationUrl = null;
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies); 
 
-        actual.ClosingDateDescription.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, closingDate));
+        actual.ClosingDateDescription.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, closingDate, false));
     }
 
     [Test]

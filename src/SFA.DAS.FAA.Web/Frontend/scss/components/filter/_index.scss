@@ -15,17 +15,17 @@
 }
 
 .faa-filter__body {
-  padding-top: 0;
+  padding-top: 15px;
 }
 
 .faa-filter__selected {
-  background: govuk-colour("light-grey");
-  padding: 15px;
-  margin-bottom: 15px;
-  @include govuk-media-query(tablet) {
-    padding: 20px;
-    margin-bottom: 20px;
-  }
+    background: govuk-colour("light-grey");
+    box-shadow: inset 0 0 0 1px #b1b4b6;
+    padding: 15px;
+    @include govuk-media-query(tablet) {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
 }
 
 .faa-filter__selected-header {

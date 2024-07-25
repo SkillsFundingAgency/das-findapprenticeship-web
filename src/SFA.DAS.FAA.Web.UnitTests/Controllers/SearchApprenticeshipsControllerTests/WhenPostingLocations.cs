@@ -65,7 +65,6 @@ public class WhenPostingLocations
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SearchApprenticeshipsController controller)
     {
-        model.ErrorDictionary.Clear();
         model.NationalSearch = false;
         model.SearchTerm = cityOrPostcodeValue;
         mediator.Setup(m => m.Send(It.Is<GetBrowseByInterestsLocationQuery>(c => c.LocationSearchTerm.Equals(model.SearchTerm)),

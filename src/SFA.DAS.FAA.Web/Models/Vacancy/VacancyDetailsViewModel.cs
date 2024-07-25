@@ -110,8 +110,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 ApplicationUrl = source.Vacancy?.ApplicationUrl != null && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
                 GoogleMapsId = googleMapsId,
                 CandidatePostcode = source.Vacancy?.CandidatePostcode,
-                Latitude = source.Vacancy?.Location.Lat,
-                Longitude = source.Vacancy?.Location.Lon,
+                Latitude = source.Vacancy?.Location?.Lat,
+                Longitude = source.Vacancy?.Location?.Lon,
             };
 
         
