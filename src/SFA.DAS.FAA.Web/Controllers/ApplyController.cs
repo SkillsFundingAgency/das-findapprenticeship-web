@@ -29,6 +29,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             };
 
             var result = await mediator.Send(query);
+
             var viewModel = IndexViewModel.Map(dateTimeService, request, result);
             viewModel.PageBackLink =
 	            Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.Applications.ViewApplications);
