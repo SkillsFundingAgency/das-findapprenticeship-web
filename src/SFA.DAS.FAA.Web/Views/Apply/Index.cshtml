@@ -1,11 +1,15 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
 
 @{
     ViewData["Title"] = $"Apply for {Model.VacancyTitle} – Find an apprenticeship – GOV.UK";
 }
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Model.PageBackLink">Back</a>
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -228,10 +232,7 @@
                     Continue
                 </a>
             }
-            <a class="govuk-link"
-               href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started })">
-               Save and finish later
-           </a>
+            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">Save and finish later</a>
         </div>
     </div>
 </div>
