@@ -4,7 +4,7 @@
     <fieldset class="govuk-fieldset faa-extra-fields__fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subjects")</legend>
-        @for (var index = 0; index < 20; index++)
+        @for (var index = 0; index < 25; index++)
         {
             if (index < Model.Subjects.Count)
             {

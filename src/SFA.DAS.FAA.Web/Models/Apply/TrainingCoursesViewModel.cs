@@ -5,7 +5,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply;
 
 public class TrainingCoursesViewModel
 {
-    public static readonly int MaximumItems = 50;
+    public static readonly int MaximumItems = 25;
 
     [FromRoute]
     public required Guid ApplicationId { get; init; }
