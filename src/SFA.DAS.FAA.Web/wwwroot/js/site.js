@@ -160,7 +160,7 @@ function ExtraFieldRows(container) {
   this.addButtonText = this.container.dataset.addButtonText || "Add another";
   this.fieldset.classList.add("faa-extra-fields__form-group--loaded");
   this.maxMessage = this.container.querySelector(
-    "#faa-extra-fildes-max-message"
+    "#faa-extra-fields-max-message"
   );
 }
 
@@ -176,6 +176,10 @@ ExtraFieldRows.prototype.init = function () {
   const hiddenRowCount = this.showHideEmptyRows();
   if (hiddenRowCount === this.extraFieldRows.length) {
     this.showRow(this.extraFieldRows[0]);
+  }
+  if (hiddenRowCount === 0) {
+    this.addLink.classList.add(this.hiddenClass);
+    this.maxMessage.classList.remove(this.hiddenClass);
   }
 };
 
