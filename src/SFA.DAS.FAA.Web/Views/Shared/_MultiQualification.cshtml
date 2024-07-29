@@ -3,7 +3,7 @@
 <div data-extra-field-rows="true" data-add-button-text="Add another subject">
     <fieldset class="govuk-fieldset faa-extra-fields__fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-            @(Model.QualificationDisplayTypeViewModel.SubjectLabel ?? "Add subjects")</legend>
+            @(Model.QualificationDisplayTypeViewModel?.SubjectLabel ?? "Add subjects")</legend>
         @for (var index = 0; index < 25; index++)
         {
             if (index < Model.Subjects.Count)
@@ -42,7 +42,7 @@
 
                     <div class="govuk-grid-column-one-third">
                         <div class="govuk-form-group">
-                            @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)
+                            @if (Model.QualificationDisplayTypeViewModel != null && Model.QualificationDisplayTypeViewModel.CanShowPredicted)
                             {
                                 <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
                                     <div class="govuk-checkboxes__item">
