@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.Controllers
@@ -9,6 +10,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("404", Name = RouteNames.Error.Error404)]
         public IActionResult PageNotFound()
         {
+            HttpContext.Response.StatusCode = (int) HttpStatusCode.OK;
             return View();
         }
 

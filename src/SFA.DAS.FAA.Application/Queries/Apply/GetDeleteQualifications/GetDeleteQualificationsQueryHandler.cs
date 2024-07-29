@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
+using SFA.DAS.FAA.Domain.Exceptions;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetDeleteQualifications;
@@ -8,10 +9,12 @@ public class GetDeleteQualificationsQueryHandler(IApiClient apiClient): IRequest
 {
     public async Task<GetDeleteQualificationsQueryResult> Handle(GetDeleteQualificationsQuery request, CancellationToken cancellationToken)
     {
-        var result = await apiClient.Get<GetDeleteQualificationsApiResponse>(
+        var response = await apiClient.Get<GetDeleteQualificationsApiResponse>(
             new GetDeleteQualificationsApiRequest(request.ApplicationId, request.CandidateId,
                 request.QualificationType, request.Id));
 
-        return result;
+        if (response == null) throw new ResourceNotFoundException();
+
+        return response;
     }
 }

@@ -1,12 +1,11 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using SFA.DAS.FAA.Web.Models.Apply
+﻿@using SFA.DAS.FAA.Web.Models.Apply
 @model InterviewAdjustmentsViewModel
 @{
     ViewData["Title"] = "Get support at an interview - Find an apprenticeship - GOV.UK";
 }
 
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+    <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
 }
 
 
