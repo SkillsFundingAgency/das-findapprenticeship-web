@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
-using SFA.DAS.FAA.Application.Queries.Apply.GetCandidateSkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
@@ -24,12 +23,11 @@ public class WhenCallingPost
         Guid candidateId,
         Guid applicationId,
         GetExpectedSkillsAndStrengthsQueryResult expectedSkills,
-        GetCandidateSkillsAndStrengthsQueryResult candidateSkills,
         UpdateSkillsAndStrengthsCommandResult createSkillsAndStrengthsCommandResult,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SkillsAndStrengthsController controller)
     {
-        var request = new SkillsAndStrengthsViewModel(expectedSkills, candidateSkills, applicationId)
+        var request = new SkillsAndStrengthsViewModel(expectedSkills, applicationId)
         {
             ApplicationId = Guid.NewGuid(),
             IsSectionComplete = true

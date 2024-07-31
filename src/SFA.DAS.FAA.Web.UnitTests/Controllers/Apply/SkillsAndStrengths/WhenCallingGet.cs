@@ -13,7 +13,6 @@ using FluentAssertions.Execution;
 using FluentAssertions;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
-using SFA.DAS.FAA.Application.Queries.Apply.GetCandidateSkillsAndStrengths;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.SkillsAndStrengths;
 public class WhenCallingGet
@@ -23,7 +22,6 @@ public class WhenCallingGet
         Guid candidateId,
         Guid applicationId,
         GetExpectedSkillsAndStrengthsQueryResult queryResult,
-        GetCandidateSkillsAndStrengthsQueryResult candidatesQueryResult,
         [Frozen] Mock<IMediator> mediator)
     {
         var mockUrlHelper = new Mock<IUrlHelper>();
@@ -49,10 +47,6 @@ public class WhenCallingGet
             (x => x.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
-        mediator.Setup(x => x.Send(It.Is<GetCandidateSkillsAndStrengthsQuery>
-            (x => x.ApplicationId == applicationId), CancellationToken.None))
-            .ReturnsAsync(candidatesQueryResult);
-
         var actual = await controller.Get(applicationId);
         var actualViewResult = actual as ViewResult;
 
@@ -62,7 +56,7 @@ public class WhenCallingGet
             actualViewResult.Model.Should().BeOfType<SkillsAndStrengthsViewModel>();
             actualViewResult.Model.As<SkillsAndStrengthsViewModel>().Employer.Should().BeEquivalentTo(queryResult.Employer);
             actualViewResult.Model.As<SkillsAndStrengthsViewModel>().ExpectedSkillsAndStrengths.Should().BeEquivalentTo(queryResult.ExpectedSkillsAndStrengths.ToList());
-            actualViewResult.Model.As<SkillsAndStrengthsViewModel>().SkillsAndStrengths.Should().BeEquivalentTo(candidatesQueryResult.Strengths);
+            actualViewResult.Model.As<SkillsAndStrengthsViewModel>().SkillsAndStrengths.Should().BeEquivalentTo(queryResult.Strengths);
         }
     }
 }
