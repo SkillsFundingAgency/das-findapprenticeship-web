@@ -5,6 +5,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 {
     public class QualificationsViewModel
     {
+        public static readonly int MaximumItems = 50;
+
         [FromRoute]
         public required Guid ApplicationId { get; set; }
 
@@ -15,6 +17,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public List<QualificationGroup> QualificationGroups { get; set; } = new List<QualificationGroup>();
 
         public bool ShowQualifications { get; set; }
+        public bool MaximumItemsReached => QualificationGroups?.Count >= MaximumItems;
 
         public class QualificationGroup
         {
