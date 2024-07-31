@@ -570,5 +570,16 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             return View(new EmailViewModel(configuration["ResourceEnvironmentName"]!.Equals("PRD", StringComparison.CurrentCultureIgnoreCase)) { JourneyPath = journeyPath });
         }
+
+        [HttpGet("email-already-migrated", Name = RouteNames.EmailAlreadyMigrated)]
+        public IActionResult EmailAlreadyMigrated()
+        {
+            var viewModel = new EmailAlreadyMigratedViewModel
+            {
+                Email = User.Claims.Email()!
+            };
+
+            return View(viewModel);
+        }
     }
 }

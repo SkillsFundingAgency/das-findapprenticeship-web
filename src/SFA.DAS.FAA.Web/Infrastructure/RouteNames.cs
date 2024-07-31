@@ -37,6 +37,7 @@ public static class RouteNames
     public const string Cookies = "cookies";
     public const string AccessibilityStatement = "accessibility-statement";
     public const string TermsAndConditions = "terms-and-conditions";
+    public const string EmailAlreadyMigrated = "email-already-migrated";
 
     public static class Applications
     {

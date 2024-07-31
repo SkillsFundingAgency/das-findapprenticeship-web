@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -16,6 +17,16 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
         ActionExecutionDelegate next)
     {
         var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
+
+        if (identity.HasClaim(p => p.Type == CustomClaims.EmailAddressMigrated))
+        {
+            if (!(context.ActionDescriptor.DisplayName.Contains(nameof(UserController))
+                  && context.ActionDescriptor.DisplayName.Contains(nameof(UserController.EmailAlreadyMigrated))))
+            {
+                context.Result = new RedirectToRouteResult(RouteNames.EmailAlreadyMigrated, new { });
+                return;
+            }
+        }
 
         if (identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
         {

@@ -1,0 +1,25 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model SFA.DAS.FAA.Web.Models.User.EmailAlreadyMigratedViewModel;
+
+@{
+    ViewData["Title"] = "You cannot use this GOV.UK One Login with Find an apprenticeship – Find an apprenticeship – GOV.UK ";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">You cannot use this GOV.UK One Login with Find an apprenticeship</h1>
+        <p class="govuk-body">You have transferred the Find an apprenticeship account data for @Model.Email to a different GOV.UK One Login.</p>
+
+        <h2 class="govuk-heading-m">What to do next</h2>
+        <p class="govuk-body">Sign in to Find an apprenticeship using the GOV.UK One Login you transferred your account data to. You'll need to <a class="govuk-link" href="@Url.RouteUrl(RouteNames.SignOut)">sign out</a> first. </p>
+        <p class="govuk-body">If you need help, you can contact us.</p>
+        <p class="govuk-body">
+            Email: <a href="mailto:nationalhelpdesk@apprenticeships.gov.uk" class="govuk-link">nationalhelpdesk@apprenticeships.gov.uk</a>
+            <br/>
+            Telephone: 08000 150 400
+        </p>
+        <p class ="govuk-body">
+            <a class="govuk-link" href="https://www.gov.uk/call-charges">Find out more about call charges</a>
+        </p>
+    </div>
+</div>
