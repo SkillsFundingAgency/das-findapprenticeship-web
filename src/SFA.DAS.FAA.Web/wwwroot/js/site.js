@@ -165,6 +165,9 @@ function ExtraFieldRows(container) {
   this.hiddenClass = "faa-extra-field__form-group--hidden";
   this.addButtonText = this.container.dataset.addButtonText || "Add another";
   this.fieldset.classList.add("faa-extra-fields__form-group--loaded");
+  this.maxMessage = this.container.querySelector(
+    "#faa-extra-fields-max-message"
+  );
 }
 
 ExtraFieldRows.prototype.init = function () {
@@ -179,6 +182,10 @@ ExtraFieldRows.prototype.init = function () {
   const hiddenRowCount = this.showHideEmptyRows();
   if (hiddenRowCount === this.extraFieldRows.length) {
     this.showRow(this.extraFieldRows[0]);
+  }
+  if (hiddenRowCount === 0) {
+    this.addLink.classList.add(this.hiddenClass);
+    this.maxMessage.classList.remove(this.hiddenClass);
   }
 };
 
@@ -239,6 +246,7 @@ ExtraFieldRows.prototype.appendRemoveLink = function (row, index) {
   removeLink.addEventListener("click", function (e) {
     e.preventDefault();
     that.addLink.classList.remove(that.hiddenClass);
+    that.maxMessage.classList.add(that.hiddenClass);
     that.hideRow(row);
     that.updateRowOrder();
   });
@@ -261,8 +269,9 @@ ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
       hiddenRowCount++;
     }
   }
-  if (hiddenRowCount === 1) {
+  if (hiddenRowCount < 2) {
     this.addLink.classList.add(this.hiddenClass);
+    this.maxMessage.classList.remove(this.hiddenClass);
   }
   this.showRow(rowToShow, true);
   e.preventDefault();
@@ -292,6 +301,9 @@ ExtraFieldRows.prototype.hideRow = function (row) {
 };
 
 ExtraFieldRows.prototype.showRow = function (row, focus = false) {
+  if (row === undefined) {
+    return;
+  }
   const textInput = row.querySelector("input");
   const hiddenInput = row.querySelector("[data-type-remove]");
   hiddenInput.value = "false";
