@@ -22,6 +22,7 @@ using SFA.DAS.FAA.Application.Commands.MigrateData;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
+using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -35,6 +36,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("")]
+    [AllowIncompleteAccountAccess]
     public class UserController(IMediator mediator, ICacheStorageService cacheStorageService, IConfiguration configuration, IOidcService oidcService) : Controller
     {
         [HttpGet]
@@ -572,6 +574,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpGet("email-already-migrated", Name = RouteNames.EmailAlreadyMigrated)]
+        [AllowMigratedAccountAccess]
         public IActionResult EmailAlreadyMigrated()
         {
             var viewModel = new EmailAlreadyMigratedViewModel

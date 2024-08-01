@@ -2,7 +2,6 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Moq;
 using NUnit.Framework;
@@ -14,7 +13,9 @@ using SFA.DAS.FAA.Web.Filters;
 using SFA.DAS.FAA.Web.UnitTests.Customisations;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
-using System.Security.Principal;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using SFA.DAS.FAA.Web.Attributes;
+using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Filters;
 
@@ -41,81 +42,6 @@ public class WhenFilteringNewAccountUsers
         Assert.That(context.Result ,Is.Null);
     }
     
-    [Test, MoqAutoData]
-    public async Task And_Has_Candidate_And_No_Display_Name_And_UserController_The_Continues(
-        Guid candidateId,
-        [ArrangeActionContext<UserController>] ActionExecutingContext contextController,
-        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
-        NewFaaUserAccountFilter filter)
-    {
-        //Arrange
-        contextController.ActionDescriptor = new ActionDescriptor
-        {
-            DisplayName = nameof(UserController)
-        };
-        contextController.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-        {
-            new(CustomClaims.CandidateId, candidateId.ToString())
-        }));
-            
-        //Act
-        await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
-
-        //Assert
-        nextMethod.Verify( x => x(), Times.Once);
-        Assert.That(contextController.Result ,Is.Null);
-    }
-
-    [Test, MoqAutoData]
-    public async Task And_Has_Candidate_And_No_Display_Name_And_HomeController_The_Continues(
-        Guid candidateId,
-        [ArrangeActionContext<HomeController>] ActionExecutingContext contextController,
-        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
-        NewFaaUserAccountFilter filter)
-    {
-        //Arrange
-        contextController.ActionDescriptor = new ActionDescriptor
-        {
-            DisplayName = nameof(HomeController)
-        };
-        contextController.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-        {
-            new(CustomClaims.CandidateId, candidateId.ToString())
-        }));
-
-        //Act
-        await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
-
-        //Assert
-        nextMethod.Verify(x => x(), Times.Once);
-        Assert.That(contextController.Result, Is.Null);
-    }
-
-    [Test, MoqAutoData]
-    public async Task And_Has_Candidate_And_No_Display_Name_And_ServiceController_The_Continues(
-        Guid candidateId,
-        [ArrangeActionContext<ServiceController>] ActionExecutingContext contextController,
-        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
-        NewFaaUserAccountFilter filter)
-    {
-        //Arrange
-        contextController.ActionDescriptor = new ActionDescriptor
-        {
-            DisplayName = nameof(ServiceController)
-        };
-        contextController.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-        {
-            new(CustomClaims.CandidateId, candidateId.ToString())
-        }));
-
-        //Act
-        await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
-
-        //Assert
-        nextMethod.Verify(x => x(), Times.Once);
-        Assert.That(contextController.Result, Is.Null);
-    }
-
     [Test]
     [MoqInlineAutoData(UserStatus.Completed, true)]
     [MoqInlineAutoData(UserStatus.Incomplete, false)]
@@ -190,5 +116,117 @@ public class WhenFilteringNewAccountUsers
         apiClient.Verify(x => x.Put<PutCandidateApiResponse>(
             It.Is<PutCandidateApiRequest>(c => c.PutUrl.Equals(request.PutUrl)
                                                && ((PutCandidateApiRequestData)c.Data).Email == It.IsAny<string>())), Times.Never);
+    }
+
+    [Test, MoqAutoData]
+    public async Task And_Account_Incomplete_Then_Redirected(
+        Guid candidateId,
+        [ArrangeActionContext<UserController>] ActionExecutingContext contextController,
+        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
+        [Frozen] Mock<IApiClient> apiClient,
+        NewFaaUserAccountFilter filter)
+    {
+        //Arrange
+        var httpContext = new Mock<HttpContext>();
+        httpContext.Setup(x => x.RequestServices.GetService(typeof(IApiClient)))
+            .Returns(apiClient.Object);
+        httpContext.Setup(x => x.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+        {
+            new(CustomClaims.CandidateId, candidateId.ToString())
+        })));
+
+        var httpRequest = new Mock<HttpRequest>();
+        httpRequest.Setup(x => x.Path).Returns(() => new PathString("/some-url"));
+        httpContext.Setup(x => x.Request).Returns(httpRequest.Object);
+
+        contextController.ActionDescriptor = new ControllerActionDescriptor
+        {
+            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.NoExemption))!
+        };
+        contextController.HttpContext = httpContext.Object;
+
+        //Act
+        await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
+
+        //Assert
+        nextMethod.Verify(x => x(), Times.Never);
+        contextController.Result.Should().BeOfType<RedirectToRouteResult>();
+        var redirectToRouteResult = contextController.Result as RedirectToRouteResult;
+        redirectToRouteResult!.RouteName.Should().Be(RouteNames.CreateAccount);
+    }
+
+
+    [Test, MoqAutoData]
+    public async Task And_Account_Has_Already_Been_Migrated_Then_Redirected(
+        Guid candidateId,
+        [ArrangeActionContext<UserController>] ActionExecutingContext contextController,
+        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
+        NewFaaUserAccountFilter filter)
+    {
+        //Arrange
+        contextController.ActionDescriptor = new ControllerActionDescriptor
+        {
+            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.NoExemption))!
+        };
+
+        contextController.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+        {
+            new(CustomClaims.CandidateId, candidateId.ToString()),
+            new(CustomClaims.EmailAddressMigrated, "true")
+        }));
+
+        //Act
+        await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
+
+        //Assert
+        nextMethod.Verify(x => x(), Times.Never);
+        contextController.Result.Should().BeOfType<RedirectToRouteResult>();
+        var redirectToRouteResult = contextController.Result as RedirectToRouteResult;
+        redirectToRouteResult!.RouteName.Should().Be(RouteNames.EmailAlreadyMigrated);
+    }
+
+    [Test, MoqAutoData]
+    public async Task And_Account_Has_Already_Been_Migrated_And_Target_Is_Exempt_Then_Continues(
+        Guid candidateId,
+        [ArrangeActionContext<UserController>] ActionExecutingContext contextController,
+        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
+        NewFaaUserAccountFilter filter)
+    {
+        //Arrange
+        contextController.ActionDescriptor = new ControllerActionDescriptor
+        {
+            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.AllowMigratedAccountAccess))!,
+        };
+
+        contextController.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+        {
+            new(CustomClaims.CandidateId, candidateId.ToString()),
+            new(CustomClaims.AccountSetupCompleted, "true"),
+            new(CustomClaims.EmailAddressMigrated, "true")
+        }));
+
+        //Act
+        await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
+
+        //Assert
+        nextMethod.Verify(x => x(), Times.Once);
+        Assert.That(contextController.Result, Is.Null);
+    }
+
+    internal class DummyExemptionClass
+    {
+        public void NoExemption()
+        {
+        }
+
+        [AllowIncompleteAccountAccess]
+        public void AllowIncompleteAccountAccess()
+        {
+        }
+
+        [AllowMigratedAccountAccess]
+        public void AllowMigratedAccountAccess()
+        {
+        }
     }
 }
