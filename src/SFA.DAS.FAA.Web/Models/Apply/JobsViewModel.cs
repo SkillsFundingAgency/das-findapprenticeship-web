@@ -5,6 +5,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 {
     public class JobsViewModel
     {
+        public static readonly int MaximumItems = 100;
+
         [FromRoute] 
         public required Guid ApplicationId { get; init; }
 
@@ -14,6 +16,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public bool? IsSectionCompleted { get; set; }
         public bool? DoYouWantToAddAnyJobs { get; set; }
+        public bool MaximumItemsReached => JobHistory?.Count >= MaximumItems;
 
         public class Job
         {

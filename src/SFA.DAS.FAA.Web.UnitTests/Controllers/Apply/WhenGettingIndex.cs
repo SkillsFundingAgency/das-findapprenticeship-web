@@ -4,6 +4,7 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
@@ -20,25 +21,38 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply
     {
         [Test, MoqAutoData]
         public async Task Then_The_Mediator_Query_Is_Called_And_Index_Returned(
+            string pageUrl,
             Guid candidateId,
             GetIndexQueryResult result,
             GetIndexRequest request,
             [Frozen] Mock<IDateTimeService> dateTimeService,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] ApplyController controller)
+            [Frozen] Mock<IMediator> mediator)
         {
-            mediator.Setup(x => x.Send(It.Is<GetIndexQuery>(c=>
+	        var mockUrlHelper = new Mock<IUrlHelper>();
+	        mockUrlHelper
+		        .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+		        .Returns(pageUrl);
+
+			mediator.Setup(x => x.Send(It.Is<GetIndexQuery>(c=>
                     c.CandidateId.Equals(candidateId)
                     && c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new(CustomClaims.CandidateId, candidateId.ToString()),
-            }));
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext { User = user }
-            };
+
+			var controller = new ApplyController(mediator.Object, dateTimeService.Object)
+			{
+				ControllerContext = new ControllerContext
+				{
+					HttpContext = new DefaultHttpContext
+					{
+						User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+						{
+							new(CustomClaims.CandidateId, candidateId.ToString()),
+						}))
+					}
+				},
+				Url = mockUrlHelper.Object,
+			};
+			
 
             var actual = await controller.Index(request) as ViewResult;
 
@@ -47,7 +61,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply
             var actualModel = actual.Model as IndexViewModel;
             actualModel.Should().BeEquivalentTo(expected, options => options
                 .Excluding(x => x.ClosingDate)
-                .Excluding(x => x.ApplicationId));
+                .Excluding(x => x.ApplicationId)
+                .Excluding(x => x.PageBackLink));
+            actualModel.PageBackLink.Should().Be(pageUrl);
             actualModel?.ApplicationId.Should().Be(request.ApplicationId);
         }
     }
