@@ -14,6 +14,7 @@ namespace SFA.DAS.FAA.Web.Controllers;
 
 [Route("")]
 [AllowIncompleteAccountAccess]
+[AllowMigratedAccountAccess]
 public class ServiceController(IStubAuthenticationService stubAuthenticationService, IConfiguration configuration, IDataProtectorService dataProtectorService) : Controller
 {
     [Route("signout", Name = RouteNames.SignOut)]

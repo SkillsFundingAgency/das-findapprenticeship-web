@@ -8,7 +8,10 @@ namespace SFA.DAS.FAA.Web.Extensions
     {
         public static bool HasAttribute<T>(this ActionDescriptor actionDescriptor) where T: Attribute
         {
-            return actionDescriptor is ControllerActionDescriptor controllerActionDescription && controllerActionDescription.MethodInfo.GetCustomAttributes<T>().Any();
+            if (actionDescriptor is not ControllerActionDescriptor controllerActionDescription) return false;
+
+            return controllerActionDescription.ControllerTypeInfo.GetCustomAttribute<T>() != null
+                   || controllerActionDescription.MethodInfo.GetCustomAttribute<T>() != null;
         }
     }
 }
