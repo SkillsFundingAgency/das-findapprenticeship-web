@@ -326,12 +326,12 @@
                 }
                 else
                 {
-                    <p>Model.TrainingPlan</p>
+                    <p>@Html.Raw(Model.TrainingPlan)</p>
                 }
                 @if (!string.IsNullOrEmpty(Model.AdditionalTrainingInformation))
                 {
-                    <h3 class="govuk-heading-s">Additional training information</h3>
-                    <p>Model.AdditionalTrainingInformation</p>
+                    <h3 class="govuk-heading-s">More training information</h3>
+                    <p>@Html.Raw(@Model.AdditionalTrainingInformation)</p>
                 }
             </section>
             <section class="faa-vacancy__section" id="requirements">
