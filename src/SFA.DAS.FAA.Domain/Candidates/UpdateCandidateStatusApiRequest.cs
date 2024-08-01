@@ -2,10 +2,10 @@
 
 namespace SFA.DAS.FAA.Domain.Candidates
 {
-    public record UpdateCandidateStatusApiRequest(string GovIdentifier, UpdateCandidateStatusApiRequest.UpdateCandidateStatusApiRequestData Body) : IPostApiRequest
+    public class UpdateCandidateStatusApiRequest(string govIdentifier, UpdateCandidateStatusApiRequest.UpdateCandidateStatusApiRequestData body) : IPostApiRequest
     {
-        public string PostUrl => $"candidates/{GovIdentifier}/status";
-        public object Data { get; set; } = Body;
+        public string PostUrl => $"candidates/{govIdentifier}/status";
+        public object Data { get; set; } = body;
 
         public class UpdateCandidateStatusApiRequestData
         {
