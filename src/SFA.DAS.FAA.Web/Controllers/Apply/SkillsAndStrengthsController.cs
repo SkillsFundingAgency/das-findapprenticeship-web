@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
-using SFA.DAS.FAA.Application.Queries.Apply.GetCandidateSkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
@@ -27,13 +26,7 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
             CandidateId = (Guid)User.Claims.CandidateId()!
         });
 
-        var candidateResult = await mediator.Send(new GetCandidateSkillsAndStrengthsQuery
-        {
-            ApplicationId = applicationId,
-            CandidateId = (Guid)User.Claims.CandidateId()!
-        });
-
-        var viewModel = new SkillsAndStrengthsViewModel(expectedResult, candidateResult, applicationId);
+        var viewModel = new SkillsAndStrengthsViewModel(expectedResult, applicationId);
         return View(ViewPath, viewModel);
     }
 
@@ -49,13 +42,7 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            var candidateResult = await mediator.Send(new GetCandidateSkillsAndStrengthsQuery
-            {
-                ApplicationId = applicationId,
-                CandidateId = (Guid)User.Claims.CandidateId()!
-            });
-
-            viewModel = new SkillsAndStrengthsViewModel(expectedResult, candidateResult, applicationId);
+            viewModel = new SkillsAndStrengthsViewModel(expectedResult, applicationId);
             return View(ViewPath, viewModel);
         }
 

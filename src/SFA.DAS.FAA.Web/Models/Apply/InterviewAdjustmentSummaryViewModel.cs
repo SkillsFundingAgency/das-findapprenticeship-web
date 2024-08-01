@@ -11,5 +11,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         [BindProperty]
         public bool? IsSectionCompleted { get; set; }
+        public string? BackLinkUrl { get; set; }
     }
 }

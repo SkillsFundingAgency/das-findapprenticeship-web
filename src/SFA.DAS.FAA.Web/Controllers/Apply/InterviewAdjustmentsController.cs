@@ -41,6 +41,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                         ? isEdit ? false : null 
                         : true,
                 InterviewAdjustmentsDescription = result.InterviewAdjustmentsDescription,
+                BackLinkUrl = isEdit
+                    ? Url.RouteUrl(RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary, new { applicationId }) ?? string.Empty
+                    : Url.RouteUrl(RouteNames.Apply, new { applicationId }) ?? string.Empty
             };
 
             return View(ListViewPath, model);
@@ -104,7 +107,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 ApplicationId = applicationId,
                 SupportRequestAnswer = result.InterviewAdjustmentsDescription,
                 IsSupportRequestRequired = !IsNullOrEmpty(result.InterviewAdjustmentsDescription),
-                IsSectionCompleted = result.Status
+                IsSectionCompleted = result.Status,
+                BackLinkUrl = Url.RouteUrl(RouteNames.Apply, new { applicationId }) ?? string.Empty
             };
 
             return View(SummaryViewPath, viewModel);

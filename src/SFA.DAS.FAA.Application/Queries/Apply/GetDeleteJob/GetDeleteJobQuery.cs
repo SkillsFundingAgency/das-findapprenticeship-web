@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Apply.WorkHistory;
+using SFA.DAS.FAA.Domain.Exceptions;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob
@@ -36,6 +37,8 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDeleteJob
             var request = new GetDeleteJobApiRequest(query.ApplicationId, query.CandidateId, query.JobId);
 
             var response = await _apiClient.Get<GetDeleteJobApiResponse>(request);
+
+            if (response == null) throw new ResourceNotFoundException();
 
             return new GetDeleteJobQueryResult
             {

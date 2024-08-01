@@ -4,6 +4,7 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetModifyQualification;
@@ -23,10 +24,18 @@ public class WhenGettingAddQualification
         Guid qualificationReferenceId,
         Guid candidateId,
         GetModifyQualificationQueryResult queryResult,
-        [Frozen] Mock<IMediator> mediator,
-        [Greedy] QualificationsController controller)
+        [Frozen] Mock<IMediator> mediator)
     {
-        controller.ControllerContext = new ControllerContext
+	    var mockUrlHelper = new Mock<IUrlHelper>();
+	    mockUrlHelper
+		    .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+		    .Returns("https://baseUrl");
+
+	    var controller = new QualificationsController(mediator.Object)
+	    {
+		    Url = mockUrlHelper.Object
+	    };
+		controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
             {
@@ -56,10 +65,18 @@ public class WhenGettingAddQualification
         Guid qualificationReferenceId,
         Guid candidateId,
         GetModifyQualificationQueryResult queryResult,
-        [Frozen] Mock<IMediator> mediator,
-        [Greedy] QualificationsController controller)
+        [Frozen] Mock<IMediator> mediator)
     {
-        controller.ControllerContext = new ControllerContext
+	    var mockUrlHelper = new Mock<IUrlHelper>();
+	    mockUrlHelper
+		    .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+		    .Returns("https://baseUrl");
+
+	    var controller = new QualificationsController(mediator.Object)
+	    {
+		    Url = mockUrlHelper.Object
+	    };
+		controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
             {

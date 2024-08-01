@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
+using SFA.DAS.FAA.Domain.Exceptions;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
@@ -75,6 +76,8 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
         {
             var response = await apiClient.Get<GetQualificationsApiResponse>(
                 new GetQualificationsApiRequest(request.ApplicationId, request.CandidateId));
+
+            if (response == null) throw new ResourceNotFoundException();
 
             return response;
         }
