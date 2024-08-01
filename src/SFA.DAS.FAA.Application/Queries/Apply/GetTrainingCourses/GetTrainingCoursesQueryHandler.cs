@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Apply.GetTrainingCourses;
+using SFA.DAS.FAA.Domain.Exceptions;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourses;
@@ -9,6 +10,8 @@ public class GetTrainingCoursesQueryHandler(IApiClient ApiClient) : IRequestHand
     {
         var response = await ApiClient.Get<GetTrainingCoursesApiResponse>(
             new GetTrainingCoursesApiRequest(request.ApplicationId, request.CandidateId));
+
+        if (response == null) throw new ResourceNotFoundException();
 
         return response;
     }
