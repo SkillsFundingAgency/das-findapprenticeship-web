@@ -34,7 +34,6 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public Address WorkLocation { get; init; } = new();
         public string? WorkDescription { get; init; }
         public string? TrainingProviderName { get; init; }
-        public string? TrainingDescription { get; init; }
         public List<string>? Skills { get; init; } = [];
         public string? CourseTitle { get; init; }
         public string? ThingsToConsider { get; init; }
@@ -52,7 +51,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public CandidateApplicationDetails? ApplicationDetails { get; set; }
         public bool ShowAccountCreatedBanner { get; set; } = false;
         public string? TrainingPlan { get; set; } //TODO
-        public string? CompanyBenefits { get; set; }//TODO
+        public string? CompanyBenefits { get; set; }
         public string? WageAdditionalInformation { get; set; }//TODO
         public string? AdditionalTrainingInformation { get; set; }//TODO
         public string? GoogleMapsId { get; set; }
@@ -71,7 +70,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
                 Duration = source.Vacancy?.ExpectedDuration,
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
-                WorkDescription = source.Vacancy?.TrainingDescription,
+                WorkDescription = source.Vacancy?.LongDescription,
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate,!string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
@@ -79,7 +78,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 WorkLocation = source.Vacancy.Address,
                 WorkingPattern = source.Vacancy?.WorkingWeek,
                 TrainingProviderName = source.Vacancy?.ProviderName,
-                TrainingDescription = source.Vacancy?.TrainingDescription,//TODO This isn't correct
+                TrainingPlan = source.Vacancy?.TrainingDescription,
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
                 Skills = source.Vacancy?.Skills?.ToList(),
                 EmployerWebsite =
@@ -112,6 +111,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 CandidatePostcode = source.Vacancy?.CandidatePostcode,
                 Latitude = source.Vacancy?.Location?.Lat,
                 Longitude = source.Vacancy?.Location?.Lon,
+                CompanyBenefits = source.Vacancy?.CompanyBenefitsInformation,
+                AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription
             };
 
         

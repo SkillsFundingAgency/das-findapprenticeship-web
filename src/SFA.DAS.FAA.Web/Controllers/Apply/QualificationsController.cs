@@ -13,6 +13,7 @@ using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteQualifications;
 using SFA.DAS.FAA.Application.Queries.Apply.GetModifyQualification;
+using System.Reflection;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -158,7 +159,10 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 Subjects = !qualificationDisplayTypeViewModel.AllowMultipleAdd && id == null ? [] : result.Qualifications!.Select(c=>(SubjectViewModel)c).ToList(),
                 Courses = result.Courses.Select(c=>(CourseDataListItem)c).ToList(),
                 SingleQualificationId = id,
-                QualificationType = result.QualificationType.Name
+                QualificationType = result.QualificationType.Name,
+                BackLinkUrl = id.HasValue
+                    ? Url.RouteUrl(RouteNames.ApplyApprenticeship.Qualifications, new { applicationId })
+                    : Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualificationSelectType, new { applicationId })
             };
             return View(AddQualificationViewName, model);
         }

@@ -57,7 +57,7 @@ namespace SFA.DAS.FAA.Web.Validators
                 .When(x => x.IsCurrentRole is false);
 
             RuleFor(x => x).Cascade(CascadeMode.Stop)
-                .Must(x => x.EndDate?.DateTimeValue == default(DateTime) || x.StartDate?.DateTimeValue == default(DateTime) || x.EndDate?.DateTimeValue > x.StartDate?.DateTimeValue)
+                .Must(x => x.EndDate?.DateTimeValue == default(DateTime) || x.StartDate?.DateTimeValue == default(DateTime) || x.EndDate?.DateTimeValue >= x.StartDate?.DateTimeValue)
                 .WithMessage(EndDateMustBeGreaterThanStartDate)
                 .When(x => x.IsCurrentRole is false)
                 .WithName(nameof(VolunteeringAndWorkExperienceViewModelBase.EndDate));

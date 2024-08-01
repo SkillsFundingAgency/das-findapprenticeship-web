@@ -29,8 +29,11 @@ namespace SFA.DAS.FAA.Web.Controllers
             };
 
             var result = await mediator.Send(query);
+
             var viewModel = IndexViewModel.Map(dateTimeService, request, result);
-            return View(viewModel);
+            viewModel.PageBackLink =
+	            Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.Applications.ViewApplications);
+			return View(viewModel);
         }
 
         [HttpGet("preview", Name = RouteNames.ApplyApprenticeship.Preview)]

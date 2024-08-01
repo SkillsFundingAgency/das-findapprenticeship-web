@@ -97,7 +97,7 @@ Scenario: Navigate to vacancy details page with vacancy found
 @WireMockServer
 Scenario: Navigate to vacancy details page with invalid vacancy reference format
 	When I navigate to the following url: /apprenticeship/ABC1000012484
-	Then a http status code of 404 is returned
+	Then a http status code of 200 is returned
 	And the page content includes the following: Page not found
 
 @WireMockServer

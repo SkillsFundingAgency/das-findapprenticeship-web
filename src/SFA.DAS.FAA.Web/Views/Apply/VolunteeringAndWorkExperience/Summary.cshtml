@@ -51,9 +51,20 @@
                 </div>
             </div>
         }
-        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-9" href="@Model.AddAnotherVolunteeringAndWorkExperienceLinkUrl">
-            Add volunteering or work experience
-        </a>
+        
+        @if (Model.MaximumItemsReached)
+        {
+            <div class="govuk-inset-text">
+                You’ve added all the volunteering and work experience you can. To add other volunteering and work experience, you’ll need to delete some first.
+            </div>
+        }
+        else
+        {
+            <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-9" href="@Model.AddAnotherVolunteeringAndWorkExperienceLinkUrl">
+                Add volunteering or work experience
+            </a>
+        }
+
         <div class="govuk-!-padding-bottom-5"></div>
         <form class="form" method="post">
             <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted"
