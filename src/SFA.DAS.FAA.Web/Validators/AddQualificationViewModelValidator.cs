@@ -27,7 +27,7 @@ public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
         {
             RuleFor(c => c.Name).ValidFreeTextCharacters().WithName(model.SubjectLabel);    
         }
-        RuleFor(c => c.AdditionalInformation).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
+        RuleFor(c => c.AdditionalInformation).MaximumLength(500).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
         RuleFor(c => c.Level).ValidFreeTextCharacters().WithName(model.AdditionalInformationLabel);
         RuleFor(c => c.Grade).ValidFreeTextCharacters().WithName(model.GradeLabel);
         

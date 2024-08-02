@@ -164,7 +164,8 @@ public class WhenValidatingSubjectViewModel
     [TestCase("name","","", false)]
     [TestCase("","","grade", false)]
     [TestCase("name","additionalInfo","grade", true)]
-    public async Task Then_The_Degree_Qualification_Is_Validated_For_New(string name, string additionalInformation,string grade, bool isValid)
+    [TestCase("", "randomly generated words haley silvery normal broadband sly angry passive high-pitched heinous advisable madeline baronetcy following expressionless colonnade  civilian neutral ripped inexperienced avenue sleeveless unfriendly livid sorry understandable alabama varied earthworks dogged petrified high-energy clara disturbed how-to regina cherokee oubliette admitting metaphorical armored kate outward belligerent spent motorized austin gas station deadly slower transnational feasible aurelia underga", "grade", false)]
+    public async Task Then_The_Degree_Qualification_Is_Validated_For_New(string name, string additionalInformation, string grade, bool isValid)
     {
         var model = new SubjectViewModel
         {
