@@ -161,15 +161,17 @@
                             @Model.AnnualWage
                             <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">
                                 <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
-                                    rel="noreferrer noopener" target="_blank">
+                                   rel="noreferrer noopener" target="_blank">
                                     Minimum wage rates (opens in new
                                     tab)
                                 </a>
                             </p>
-                            <p class="govuk-body govuk-!-padding-top-3">
-                                The pay may be negotiated and may rise after a probation period
-                                has been successfully completed.
-                            </p>
+                            @if (!string.IsNullOrWhiteSpace(Model.WageAdditionalInformation))
+                            {
+                                <p class="govuk-body govuk-!-padding-top-3">
+                                    @Html.Raw(Model.WageAdditionalInformation)
+                                </p>
+                            }
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
