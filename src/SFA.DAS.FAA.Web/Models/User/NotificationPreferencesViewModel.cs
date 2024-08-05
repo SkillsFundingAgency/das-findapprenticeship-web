@@ -9,7 +9,7 @@ public class NotificationPreferencesViewModel : ViewModelBase
     public UserJourneyPath JourneyPath { get; set; }
     public string RedirectRoute => GetRedirectRoute();
     public string PageTitle => JourneyPath == UserJourneyPath.Settings ? "Change if you get reminders about your unfinished applications – Find an apprenticeship – GOV.UK" : "Get reminders about your unfinished applications – Find an apprenticeship – GOV.UK";
-    public string PageCaption => JourneyPath == UserJourneyPath.Settings ? string.Empty : "Create an account";
+    public string PageCaption => GetPageCaption();
     public string PageHeading => JourneyPath == UserJourneyPath.Settings ? "Change if you get reminders about your unfinished applications" : "Get reminders about your unfinished applications";
     public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
 
@@ -19,6 +19,7 @@ public class NotificationPreferencesViewModel : ViewModelBase
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
+            UserJourneyPath.AccountFound => RouteNames.AccountFoundTermsAndConditions,
             _ => RouteNames.PhoneNumber
         };
     }
@@ -28,8 +29,19 @@ public class NotificationPreferencesViewModel : ViewModelBase
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.ConfirmAccountDetails
+        };
+    }
+
+    private string GetPageCaption()
+    {
+        return JourneyPath switch
+        {
+            UserJourneyPath.AccountFound => string.Empty,
+            UserJourneyPath.Settings => string.Empty,
+            _ => "Create an account"
         };
     }
 }

@@ -10,7 +10,7 @@ public class PhoneNumberViewModel : ViewModelBase
     public UserJourneyPath JourneyPath { get; set; }
     public string RedirectRoute => GetRedirectRoute();
     public string PageTitle => JourneyPath == UserJourneyPath.Settings ? "Change your telephone number – Find an apprenticeship – GOV.UK" : "What is your telephone number? – Find an apprenticeship – GOV.UK";
-    public string PageCaption => JourneyPath == UserJourneyPath.Settings ? string.Empty : "Create an account";
+    public string PageCaption => GetPageCaption();
     public string PageHeading => JourneyPath == UserJourneyPath.Settings ? "Change your telephone number" : "What is your telephone number?";
     public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
     
@@ -19,6 +19,7 @@ public class PhoneNumberViewModel : ViewModelBase
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             UserJourneyPath.SelectAddress => RouteNames.SelectAddress,
             UserJourneyPath.EnterAddressManually => RouteNames.EnterAddressManually,
@@ -31,8 +32,18 @@ public class PhoneNumberViewModel : ViewModelBase
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.NotificationPreferences
+        };
+    }
+    private string GetPageCaption()
+    {
+        return JourneyPath switch
+        {
+            UserJourneyPath.AccountFound => string.Empty,
+            UserJourneyPath.Settings => string.Empty,
+            _ => "Create an account"
         };
     }
 }

@@ -20,6 +20,7 @@ public class WhenGettingEnterAddressManually
     [MoqInlineAutoData(null, RouteNames.PostcodeAddress, "Create an account", "Continue")]
     [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.PostcodeAddress, "Create an account", "Continue")]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "Create an account", "Continue")]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails, "", "Continue")]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings, "", "Save")]
     public async Task When_Address_Not_From_Lookup_Then_The_BackLink_Returns_Expected(
         UserJourneyPath userJourneyPath,
@@ -48,6 +49,7 @@ public class WhenGettingEnterAddressManually
         resultModel!.BackLink.Should().BeEquivalentTo(pageBackLink);
         resultModel.JourneyPath.Should().Be(userJourneyPath);
         resultModel.PageCaption.Should().Be(pageCaption);
+        resultModel.PageCtaButtonLabel.Should().Be(pageCtaButtonLabel);
     }
 
     [Test(Description = "This scenario covers the user opting to manually enter an address from either Enter Postcode or Select Address The back link should return them to the Enter Postcode page."), MoqAutoData]

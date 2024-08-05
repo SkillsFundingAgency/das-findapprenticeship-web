@@ -23,6 +23,9 @@ public class ConfirmAccountDetailsViewModel
         }
     }
     public List<CandidatePreference>? CandidatePreferences { get; set; }
+    public UserJourneyPath JourneyPath { get; set; }
+    public string PageCaption => JourneyPath == UserJourneyPath.AccountFound ? string.Empty : "Create an account";
+    public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.AccountFound ? "Continue" : "Create your account";
 
     public class CandidatePreference 
     {
