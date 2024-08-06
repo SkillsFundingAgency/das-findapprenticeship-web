@@ -10,8 +10,12 @@ namespace SFA.DAS.FAA.Web.Extensions
         {
             if (actionDescriptor is not ControllerActionDescriptor controllerActionDescription) return false;
 
-            return controllerActionDescription.ControllerTypeInfo.GetCustomAttribute<T>() != null
-                   || controllerActionDescription.MethodInfo.GetCustomAttribute<T>() != null;
+            if (controllerActionDescription.ControllerTypeInfo != null && controllerActionDescription.ControllerTypeInfo.GetCustomAttributes<T>().Any())
+            {
+                return true;
+            }
+
+            return controllerActionDescription.MethodInfo?.GetCustomAttributes<T>().Any() ?? false;
         }
     }
 }
