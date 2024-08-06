@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Route("[controller]")]
+    [AllowIncompleteAccountAccess]
     public class HomeController : Controller
     {
         [AllowAnonymous]

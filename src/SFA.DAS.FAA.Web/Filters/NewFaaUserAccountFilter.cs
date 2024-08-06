@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.FAA.Domain.Candidates;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
-using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Attributes;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.Filters;
@@ -17,11 +18,19 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
     {
         var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
 
+        if (identity.HasClaim(p => p.Type == CustomClaims.EmailAddressMigrated))
+        {
+            if (!context.ActionDescriptor.HasAttribute<AllowMigratedAccountAccessAttribute>())
+            {
+                ((Controller)context.Controller).ViewData["IsAccountStatusCompleted"] = false;
+                context.Result = new RedirectToRouteResult(RouteNames.EmailAlreadyMigrated, new { });
+                return;
+            }
+        }
+
         if (identity != null && identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
         {
-            if (!context.ActionDescriptor.DisplayName!.Contains(nameof(UserController), StringComparison.CurrentCultureIgnoreCase) &&
-                !context.ActionDescriptor.DisplayName.Contains(nameof(ServiceController), StringComparison.CurrentCultureIgnoreCase) &&
-                !context.ActionDescriptor.DisplayName.Contains(nameof(HomeController), StringComparison.CurrentCultureIgnoreCase))
+            if (!context.ActionDescriptor.HasAttribute<AllowIncompleteAccountAccessAttribute>())
             {
                 var response = await GetCandidateDetails(context, identity);
                 if (response.Status == UserStatus.Incomplete)

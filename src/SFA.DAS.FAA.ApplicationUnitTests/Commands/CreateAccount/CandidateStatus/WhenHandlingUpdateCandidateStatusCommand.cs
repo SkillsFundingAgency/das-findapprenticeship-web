@@ -53,6 +53,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.CreateAccount.CandidateStat
             result.Should().BeEquivalentTo(putCandidateApiResponse, options => options
                 .Excluding(c => c.Status)
                 .Excluding(c => c.PhoneNumber)
+                .Excluding(c => c.IsEmailAddressMigrated)
             );
             apiClientMock.Verify(x =>
                 x.PostWithResponseCode(It.Is<UpdateCandidateStatusApiRequest>(c =>
@@ -98,6 +99,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.CreateAccount.CandidateStat
             result.Should().BeEquivalentTo(putCandidateApiResponse, options => options
                 .Excluding(c => c.Status)
                 .Excluding(c => c.PhoneNumber)
+                .Excluding(c => c.IsEmailAddressMigrated)
             );
             apiClientMock.Verify(x =>
                 x.PostWithResponseCode(It.Is<UpdateCandidateStatusApiRequest>(c =>
