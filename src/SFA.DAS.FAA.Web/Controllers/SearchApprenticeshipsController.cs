@@ -61,9 +61,8 @@ public class SearchApprenticeshipsController(
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
-        viewModel.ShowAccountCreatedBanner =
-            await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
-                $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
+        viewModel.ShowAccountCreatedBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
+        viewModel.ShowAccountFoundBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountFound}");
 
         return View(viewModel);
     }
@@ -221,7 +220,7 @@ public class SearchApprenticeshipsController(
         viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
         viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
         viewmodel.ShowAccountCreatedBanner =
-            await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
+            await NotificationBannerService.ShowAccountBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
         viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
         viewmodel.PageTitle = GetPageTitle(viewmodel);

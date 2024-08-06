@@ -5,7 +5,7 @@
     ViewData["Title"] = "What is your address? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-        <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
+    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-journeyPath="@Model.JourneyPath">Back</a>
 }
 
 <div class="govuk-grid-row">

@@ -24,7 +24,7 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
             .First(c => c.Type.Equals(ClaimTypes.Email))
             .Value;
 
-        var requestData = new PutCandidateApiRequestData()
+        var requestData = new PutCandidateApiRequestData
         {
             Email = email
         };

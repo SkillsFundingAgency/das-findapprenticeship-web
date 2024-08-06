@@ -22,6 +22,7 @@ public class WhenGettingPhoneNumber
     [MoqInlineAutoData(UserJourneyPath.EnterAddressManually, RouteNames.EnterAddressManually, "What is your telephone number? – Find an apprenticeship – GOV.UK", "Create an account", "What is your telephone number?", "Continue")]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "What is your telephone number? – Find an apprenticeship – GOV.UK", "Create an account", "What is your telephone number?", "Continue")]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings, "Change your telephone number – Find an apprenticeship – GOV.UK", "", "Change your telephone number", "Save")]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails, "What is your telephone number? – Find an apprenticeship – GOV.UK", "", "What is your telephone number?", "Continue")]
     public async Task Then_View_Is_Returned(
         UserJourneyPath journeyPath,
         string pageBackLink,

@@ -10,7 +10,7 @@ public class DateOfBirthViewModel
     public UserJourneyPath JourneyPath { get; set; } = UserJourneyPath.CreateAccount;
     public string RedirectRoute => GetRedirectRoute();
     public string PageTitle => JourneyPath == UserJourneyPath.Settings ? "Change your date of birth – Find an apprenticeship – GOV.UK" : "Date of birth – Find an apprenticeship – GOV.UK";
-    public string PageCaption => JourneyPath == UserJourneyPath.Settings ? string.Empty : "Create an account";
+    public string PageCaption => GetPageCaption();
     public string PageHeading => JourneyPath == UserJourneyPath.Settings ? "Change your date of birth" : "Date of birth";
     public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
 
@@ -20,6 +20,7 @@ public class DateOfBirthViewModel
         {
             UserJourneyPath.CreateAccount => RouteNames.UserName,
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.UserName
         };
@@ -30,8 +31,19 @@ public class DateOfBirthViewModel
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.PostcodeAddress
+        };
+    }
+
+    private string GetPageCaption()
+    {
+        return JourneyPath switch
+        {
+            UserJourneyPath.AccountFound => string.Empty,
+            UserJourneyPath.Settings => string.Empty,
+            _ => "Create an account"
         };
     }
 }

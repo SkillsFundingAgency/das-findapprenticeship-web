@@ -20,6 +20,7 @@ public class WhenPostingEnterAddressManually
     [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.PhoneNumber)]
     [MoqInlineAutoData(UserJourneyPath.PhoneNumber, RouteNames.PhoneNumber)]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails)]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Phone_Number_Page(
         UserJourneyPath journeyPath,
@@ -50,8 +51,7 @@ public class WhenPostingEnterAddressManually
 
         result.Should().NotBeNull();
         result!.RouteName.Should().Be(redirectRoute);
-        mediator.Verify(x => x.Send(It.IsAny<UpdateManuallyEnteredAddressCommand>(), CancellationToken.None
-            ), Times.Once);
+        mediator.Verify(x => x.Send(It.IsAny<UpdateManuallyEnteredAddressCommand>(), CancellationToken.None), Times.Once);
     }
 
     [Test, MoqAutoData]

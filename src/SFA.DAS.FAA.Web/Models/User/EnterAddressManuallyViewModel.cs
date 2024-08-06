@@ -18,7 +18,7 @@ public class EnterAddressManuallyViewModel
     public string? BackLink { get; set; }
     public string CustomBackLink => GetCustomBackLink();
     public string RedirectRoute => GetRedirectRoute();
-    public string PageCaption => JourneyPath == UserJourneyPath.Settings ? "" : "Create an account";
+    public string PageCaption => GetPageCaption();
     public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
 
     private string GetCustomBackLink()
@@ -26,6 +26,7 @@ public class EnterAddressManuallyViewModel
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.PostcodeAddress
         };
@@ -36,9 +37,20 @@ public class EnterAddressManuallyViewModel
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             UserJourneyPath.PhoneNumber => RouteNames.PhoneNumber,
             _ => RouteNames.PhoneNumber
+        };
+    }
+
+    private string GetPageCaption()
+    {
+        return JourneyPath switch
+        {
+            UserJourneyPath.AccountFound => string.Empty,
+            UserJourneyPath.Settings => string.Empty,
+            _ => "Create an account"
         };
     }
 }

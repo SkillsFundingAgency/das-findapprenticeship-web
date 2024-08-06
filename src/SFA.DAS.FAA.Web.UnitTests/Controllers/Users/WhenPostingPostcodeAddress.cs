@@ -19,6 +19,7 @@ public class WhenPostingPostcodeAddress
     [MoqInlineAutoData(UserJourneyPath.CreateAccount)]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails)]
     [MoqInlineAutoData(UserJourneyPath.Settings)]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound)]
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Enter_Your_Address(
         UserJourneyPath journeyPath,
         string redirectRoute,
@@ -51,6 +52,7 @@ public class WhenPostingPostcodeAddress
 
         result.Should().NotBeNull();
         result!.RouteName.Should().Be(RouteNames.SelectAddress);
+        result.RouteValues["journeyPath"].Should().Be(journeyPath);
         mediator.Verify(x => x.Send(It.Is<GetCandidatePostcodeAddressQuery>(c =>
             c.Postcode.Equals(model.Postcode)
             ), It.IsAny<CancellationToken>()), Times.Once);
