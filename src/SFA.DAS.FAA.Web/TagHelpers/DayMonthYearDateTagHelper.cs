@@ -96,7 +96,7 @@ public class DayMonthYearDateTagHelper : TagHelper
         writer.AddAttribute("name", id);
         writer.AddAttribute("autocomplete", "off");
         writer.AddAttribute("class", $"govuk-input govuk-date-input__input govuk-input--width-{width}");
-        writer.WriteAttribute("inputmode", "numeric");
+        writer.AddAttribute("inputmode", "numeric");
         if (!string.IsNullOrWhiteSpace(value))
         {
             writer.AddAttribute("value", value);
