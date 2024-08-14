@@ -5,7 +5,8 @@
     ViewData["Title"] = "Which of the following best describes your background? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId, Model.IsEdit })">Back</a>
+    <a class="govuk-back-link"
+        href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowEthnicGroup, new { Model.ApplicationId, Model.IsEdit })">Back</a>
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -15,33 +16,42 @@
             Which of the following best describes your background?
         </h1>
         <form class="form" method="post">
-            <div class="govuk-form-group" das-highlight-error-for="EthnicSubGroup" error-class="govuk-form-group--error">
+            <div class="govuk-form-group" das-highlight-error-for="EthnicSubGroup"
+                error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
+                    <legend class="govuk-visually-hidden">Which of the following best describes your background?
+                    </legend>
                     <span das-validation-for="EthnicSubGroup" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="21" id="EthnicSubGroup">
+                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="21"
+                                id="EthnicSubGroup">
                             <label class="govuk-label govuk-radios__label" for="EthnicSubGroup">
                                 Arab
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="22" id="EthnicSubGroup-Other" aria-controls="conditional-EthnicSubGroup-Other" aria-expanded="false">
+                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="22"
+                                id="EthnicSubGroup-Other" aria-controls="conditional-EthnicSubGroup-Other"
+                                aria-expanded="false">
                             <label class="govuk-label govuk-radios__label" for="EthnicSubGroup-Other">
                                 Any other ethnic group
                             </label>
                         </div>
-                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-EthnicSubGroup-Other">
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                            id="conditional-EthnicSubGroup-Other">
                             <div class="govuk-form-group">
                                 <label class="govuk-label" for="OtherEthnicSubGroupAnswer">
                                     How would you describe your background? (optional)
                                 </label>
-                                <input class="govuk-input govuk-!-width-one-half" asp-for="OtherEthnicSubGroupAnswer" type="text" id="OtherEthnicSubGroupAnswer">
+                                <input class="govuk-input govuk-!-width-one-half" asp-for="OtherEthnicSubGroupAnswer"
+                                    type="text" id="OtherEthnicSubGroupAnswer">
                             </div>
                         </div>
                         <div class="govuk-radios__divider">or</div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="23" id="EthnicSubGroup-Black-NA">
+                            <input class="govuk-radios__input" asp-for="EthnicSubGroup" type="radio" value="23"
+                                id="EthnicSubGroup-Black-NA">
                             <label class="govuk-label govuk-radios__label" for="EthnicSubGroup-Black-NA">
                                 Prefer not to say
                             </label>
