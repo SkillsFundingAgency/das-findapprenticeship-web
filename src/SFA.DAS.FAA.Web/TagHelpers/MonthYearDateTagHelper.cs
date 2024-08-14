@@ -92,6 +92,7 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             writer.RenderEndTag();
             writer.AddAttribute("id", id);
             writer.AddAttribute("name", id);
+            writer.AddAttribute("autocomplete", "off");
             writer.AddAttribute("class", $"govuk-input govuk-date-input__input govuk-input--width-{width}");
             writer.WriteAttribute("inputmode", "numeric");
             if (!string.IsNullOrWhiteSpace(value))

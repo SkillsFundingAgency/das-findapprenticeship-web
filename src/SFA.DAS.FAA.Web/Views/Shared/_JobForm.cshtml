@@ -6,7 +6,7 @@
         Job title
     </label>
     <span das-validation-for="JobTitle" class="govuk-error-message"></span>
-    <input class="govuk-input" asp-for="JobTitle" type="text">
+    <input class="govuk-input" asp-for="JobTitle" type="text" autocomplete="off">
 </div>
 <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="EmployerName"
     error-class="govuk-form-group--error">
@@ -14,7 +14,7 @@
         Company
     </label>
     <span das-validation-for="EmployerName" class="govuk-error-message"></span>
-    <input class="govuk-input" asp-for="EmployerName" type="text">
+    <input class="govuk-input" asp-for="EmployerName" type="text" autocomplete="off">
 </div>
 <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="100">
     <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="JobDescription"

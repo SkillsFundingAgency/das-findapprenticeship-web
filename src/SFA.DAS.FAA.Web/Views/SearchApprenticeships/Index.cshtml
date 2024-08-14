@@ -9,7 +9,8 @@
     {
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
-                <div class="govuk-notification-banner govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner govuk-notification-banner" role="alert"
+                    aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                     <div class="govuk-notification-banner__header">
                         <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                             Important
@@ -25,7 +26,7 @@
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
     }
     @if (Model.ShowAccountCreatedBanner)
     {
@@ -60,7 +61,7 @@
                             Enter a job or company
                         </div>
                         <input asp-for="WhatSearchTerm" type="text" aria-describedby="what-hint" class="govuk-input"
-                            id="WhatSearchTerm" />
+                            id="WhatSearchTerm" autocomplete="off" />
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
