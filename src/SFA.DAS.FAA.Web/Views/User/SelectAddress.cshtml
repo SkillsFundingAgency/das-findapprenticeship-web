@@ -5,7 +5,8 @@
     ViewData["Title"] = "Select your address – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    @if (Model.JourneyPath is UserJourneyPath.Settings or UserJourneyPath.ConfirmAccountDetails or UserJourneyPath.AccountFound)
+    @if (Model.JourneyPath is UserJourneyPath.Settings or UserJourneyPath.ConfirmAccountDetails or
+   UserJourneyPath.AccountFound)
     {
         <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-journeyPath="@Model.JourneyPath">Back</a>
     }
@@ -35,13 +36,13 @@
                     <label for="SelectedAddress" class="govuk-visually-hidden">Select an address from the list</label>
                     @if (Model.Addresses.Count == 1)
                 {
-                    <div id="location-hint" class="govuk-hint">
+                    <div id="addresses-found" class="govuk-hint">
                         1 address found
                     </div>
                 }
                 else
                 {
-                    <div id="location-hint" class="govuk-hint">
+                    <div id="addresses-found" class="govuk-hint">
                         @Model.Addresses.Count addresses found
                     </div>
                 }
