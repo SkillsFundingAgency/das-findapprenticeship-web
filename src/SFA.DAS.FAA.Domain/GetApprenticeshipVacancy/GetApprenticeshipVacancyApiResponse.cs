@@ -26,6 +26,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public decimal? WageAmountUpperBound { get; init; }
         public string? WageText { get; init; }
         public int WageUnit { get; init; }
+        public string WageAdditionalInformation { get; set; }
 
         public decimal? Distance { get; init; }
 
