@@ -12,7 +12,7 @@ public class SelectAddressViewModel : ViewModelBase
     public UserJourneyPath JourneyPath { get; set; } = UserJourneyPath.CreateAccount;
     public string BackLink => GetBackLink();
     public string RedirectRoute => GetRedirectRoute();
-    public string PageCaption => JourneyPath == UserJourneyPath.Settings ? "" : "Create an account";
+    public string PageCaption => GetPageCaption();
     public string PageCtaButtonLabel => JourneyPath == UserJourneyPath.Settings ? "Save" : "Continue";
     private string GetBackLink()
     {
@@ -20,6 +20,7 @@ public class SelectAddressViewModel : ViewModelBase
         {
             UserJourneyPath.CreateAccount => RouteNames.PostcodeAddress,
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.PostcodeAddress
         };
@@ -30,9 +31,20 @@ public class SelectAddressViewModel : ViewModelBase
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             UserJourneyPath.PhoneNumber => RouteNames.PhoneNumber,
             _ => RouteNames.PhoneNumber
+        };
+    }
+
+    private string GetPageCaption()
+    {
+        return JourneyPath switch
+        {
+            UserJourneyPath.AccountFound => string.Empty,
+            UserJourneyPath.Settings => string.Empty,
+            _ => "Create an account"
         };
     }
 

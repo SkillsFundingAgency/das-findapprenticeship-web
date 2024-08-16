@@ -26,7 +26,9 @@
             </summary>
             <div class="govuk-details__text">
                 <p class="govuk-body">You’ll need to contact us for help.</p>
-                <p class="govuk-body govuk-!-margin-bottom-0">Email: <a class="govuk-link" href="mailto:nationalhelpdesk@apprenticeships.gov.uk">nationalhelpdesk@apprenticeships.gov.uk</a></p>
+                <p class="govuk-body govuk-!-margin-bottom-0">Email: <a class="govuk-link"
+                        href="mailto:nationalhelpdesk@apprenticeships.gov.uk">nationalhelpdesk@apprenticeships.gov.uk</a>
+                </p>
                 <p class="govuk-body">Telephone: 08000 150 400</p>
                 <a href="https://www.gov.uk/call-charges" class="govuk-link">Find out more about call charges</a>
             </div>
@@ -42,16 +44,22 @@
                                 Email address
                             </label>
                             <span das-validation-for="Email" class="govuk-error-message"></span>
-                            <input class="govuk-input govuk-input--width-20" asp-for="Email" type="text">
-                            <div style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div>
+                            <input class="govuk-input govuk-input--width-20" asp-for="Email" type="text"
+                                autocomplete="email">
+                            <div
+                                style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;">
+                            </div>
                         </div>
                         <div class="govuk-form-group" das-highlight-error-for="Password">
                             <label class="govuk-label govuk-label--s" for="Password">
                                 Password
                             </label>
                             <span das-validation-for="Password" class="govuk-error-message"></span>
-                            <input class="govuk-input govuk-input--width-20" asp-for="Password" type="password">
-                            <div style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div>
+                            <input class="govuk-input govuk-input--width-20" asp-for="Password" type="password"
+                                autocomplete="off">
+                            <div
+                                style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;">
+                            </div>
                         </div>
                         <div class="govuk-button-group">
                             <button type="submit" class="govuk-button" data-module="govuk-button">

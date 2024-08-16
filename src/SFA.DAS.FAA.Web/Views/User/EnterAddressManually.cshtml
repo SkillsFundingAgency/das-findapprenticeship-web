@@ -4,7 +4,8 @@
     ViewData["Title"] = "What is your address? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.SelectAddressPostcode" asp-route-journeyPath="@Model.JourneyPath">Back</a>
+    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.SelectAddressPostcode"
+        asp-route-journeyPath="@Model.JourneyPath">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -24,7 +25,8 @@
                 </legend>
                 <p class="govuk-body">Use the address you want to appear on your applications</p>
 
-                <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.AddressLine1)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
+                <div
+                    class="govuk-form-group @(ViewData.ModelState[nameof(Model.AddressLine1)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
                     <label class="govuk-label" asp-for="AddressLine1">
                         Address line 1
                     </label>
@@ -39,27 +41,32 @@
                     <input class="govuk-input" asp-for="AddressLine2" type="text" autocomplete="address-line2">
                 </div>
 
-                <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.TownOrCity)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
+                <div
+                    class="govuk-form-group @(ViewData.ModelState[nameof(Model.TownOrCity)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
                     <label class="govuk-label" asp-for="TownOrCity">
                         Town or city
                     </label>
                     <span asp-validation-for="TownOrCity" class="govuk-error-message"></span>
-                    <input class="govuk-input govuk-!-width-two-thirds" asp-for="TownOrCity" type="text" autocomplete="address-level2">
+                    <input class="govuk-input govuk-!-width-two-thirds" asp-for="TownOrCity" type="text"
+                        autocomplete="address-level2">
                 </div>
 
                 <div class="govuk-form-group">
                     <label class="govuk-label" asp-for="County">
                         County (optional)
                     </label>
-                    <input class="govuk-input govuk-!-width-two-thirds" asp-for="County" type="text">
+                    <input class="govuk-input govuk-!-width-two-thirds" asp-for="County" type="text"
+                        autocomplete="country">
                 </div>
 
-                <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
+                <div
+                    class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
                     <label class="govuk-label" asp-for="Postcode">
                         Postcode
                     </label>
                     <span asp-validation-for="Postcode" class="govuk-error-message"></span>
-                    <input class="govuk-input govuk-input--width-10" asp-for="Postcode" type="text" autocomplete="postal-code">
+                    <input class="govuk-input govuk-input--width-10" asp-for="Postcode" type="text"
+                        autocomplete="postal-code">
                 </div>
 
             </fieldset>

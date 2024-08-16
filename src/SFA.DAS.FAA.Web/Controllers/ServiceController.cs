@@ -8,10 +8,13 @@ using Microsoft.AspNetCore.Authorization;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Models;
 using System.Security.Claims;
+using SFA.DAS.FAA.Web.Attributes;
 
 namespace SFA.DAS.FAA.Web.Controllers;
 
 [Route("")]
+[AllowIncompleteAccountAccess]
+[AllowMigratedAccountAccess]
 public class ServiceController(IStubAuthenticationService stubAuthenticationService, IConfiguration configuration, IDataProtectorService dataProtectorService) : Controller
 {
     [Route("signout", Name = RouteNames.SignOut)]

@@ -1,0 +1,39 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Models.User
+@{
+    ViewData["Title"] = "Terms and conditions – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.AccountFound">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Terms and conditions</h1>
+        <div class="govuk-inset-text">
+            Our terms and conditions have changed.
+        </div>
+        <div class="govuk-!-padding-bottom-3"></div>
+        <p class="govuk-body">By continuing, you confirm that you agree to our:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>
+                <p class="govuk-body">
+                    <a asp-route="@RouteNames.TermsAndConditions" target="_blank" class="govuk-link govuk-link--no-visited-state">terms and conditions (opens in new tab)</a>
+                    - how we run this service
+                </p>
+            </li>
+            <li>
+                <p class="govuk-body">
+                    <a href="https://www.gov.uk/government/publications/privacy-information-key-stage-4-and-5-and-adult-education/privacy-information-key-stage-4-and-5-and-adult-education?#using-your-data-to-support-your-learning-including-apprenticeships"
+                       target="_blank"
+                       rel="noreferrer noopener"
+                       class="govuk-link govuk-link--no-visited-state">privacy policy (opens in new tab)</a> - how
+                    we use your data
+                </p>
+            </li>
+        </ul>
+        <div class="govuk-!-padding-bottom-3"></div>
+        <a asp-route="@RouteNames.NotificationPreferences" class="govuk-button" asp-route-journeyPath="@UserJourneyPath.AccountFound" role="button">Continue</a>
+    </div>
+</div>

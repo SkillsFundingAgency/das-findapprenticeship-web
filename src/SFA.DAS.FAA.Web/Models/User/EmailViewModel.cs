@@ -4,7 +4,7 @@ namespace SFA.DAS.FAA.Web.Models.User
 {
     public class EmailViewModel(bool isProd)
     {
-        public string PageCaption => JourneyPath == UserJourneyPath.Settings ? string.Empty : "Create an account";
+        public string PageCaption => GetPageCaption();
         public string BackLink => GetBackLink();
         public UserJourneyPath JourneyPath { get; init; } = UserJourneyPath.ConfirmAccountDetails;
 
@@ -17,8 +17,19 @@ namespace SFA.DAS.FAA.Web.Models.User
             return JourneyPath switch
             {
                 UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
+                UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
                 UserJourneyPath.Settings => RouteNames.Settings,
                 _ => RouteNames.ConfirmAccountDetails
+            };
+        }
+
+        private string GetPageCaption()
+        {
+            return JourneyPath switch
+            {
+                UserJourneyPath.AccountFound => string.Empty,
+                UserJourneyPath.Settings => string.Empty,
+                _ => "Create an account"
             };
         }
     }

@@ -15,8 +15,10 @@
         <span class="govuk-caption-l">Interview adjustments</span>
         <h1 class="govuk-heading-l">Ask for support at an interview</h1>
 
-        <p class="govuk-body">You can ask for support at an interview if you have a disability, health condition or neurodiversity.</p>
-        <p class="govuk-body">You can ask for your interview to have reasonable adjustments. Adjustments could include things like:</p>
+        <p class="govuk-body">You can ask for support at an interview if you have a disability, health condition or
+            neurodiversity.</p>
+        <p class="govuk-body">You can ask for your interview to have reasonable adjustments. Adjustments could include
+            things like:</p>
 
         <ul class="govuk-list govuk-list--bullet">
             <li>step-free access to the interview room</li>
@@ -26,7 +28,8 @@
         <h2 class="govuk-heading-m">It's your choice when to discuss your interview needs</h2>
         <p class="govuk-body">If you make a request here, we'll show it on your application.</p>
         <p class="govuk-body">
-            You can choose to select 'No' on this question, even if you need adjustments. You can wait and see if the company
+            You can choose to select 'No' on this question, even if you need adjustments. You can wait and see if the
+            company
             offers you an interview first, and then discuss your needs with them.
         </p>
 
@@ -34,7 +37,8 @@
 
         <form class="form" method="post">
 
-            <div class="govuk-form-group" das-highlight-error-for="DoYouWantInterviewAdjustments" error-class="govuk-form-group--error">
+            <div class="govuk-form-group" das-highlight-error-for="DoYouWantInterviewAdjustments"
+                error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h1 class="govuk-fieldset__heading">
@@ -44,30 +48,42 @@
                     <span das-validation-for="DoYouWantInterviewAdjustments" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantInterviewAdjustments" value="true" type="radio" data-aria-controls="conditional-DoYouWantInterviewAdjustments" />
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantInterviewAdjustments"
+                                value="true" type="radio"
+                                data-aria-controls="conditional-DoYouWantInterviewAdjustments" />
                             <label class="govuk-label govuk-radios__label" for="DoYouWantInterviewAdjustments">
                                 Yes
                             </label>
                         </div>
-                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-DoYouWantInterviewAdjustments">
-                            <div class="govuk-form-group" das-highlight-error-for="InterviewAdjustmentsDescription" error-class="govuk-form-group--error">
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                            id="conditional-DoYouWantInterviewAdjustments">
+                            <div class="govuk-form-group" das-highlight-error-for="InterviewAdjustmentsDescription"
+                                error-class="govuk-form-group--error">
                                 <label class="govuk-label" for="InterviewAdjustmentsDescription">
                                     Interview support request
                                 </label>
-                                <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="500">
-                                    <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="InterviewAdjustmentsDescription" error-class="govuk-form-group--error">
-                                        <label class="govuk-label govuk-label--m" for="InterviewAdjustmentsDescription"></label>
-                                        <span das-validation-for="InterviewAdjustmentsDescription" class="govuk-error-message"></span>
-                                        <textarea class="govuk-textarea govuk-js-character-count" asp-for="InterviewAdjustmentsDescription" rows="5" aria-describedby="InterviewAdjustmentsDescription-info" spellcheck="false" value="@Model.InterviewAdjustmentsDescription"></textarea>
+                                <div class="govuk-character-count" data-module="govuk-character-count"
+                                    data-maxwords="500">
+                                    <div class="govuk-form-group govuk-!-margin-bottom-7"
+                                        das-highlight-error-for="InterviewAdjustmentsDescription"
+                                        error-class="govuk-form-group--error">
+                                        <span das-validation-for="InterviewAdjustmentsDescription"
+                                            class="govuk-error-message"></span>
+                                        <textarea class="govuk-textarea govuk-js-character-count"
+                                            asp-for="InterviewAdjustmentsDescription" rows="5"
+                                            aria-describedby="InterviewAdjustmentsDescription-info" spellcheck="false"
+                                            value="@Model.InterviewAdjustmentsDescription"></textarea>
                                     </div>
-                                    <div id="InterviewAdjustmentsDescription-info" class="govuk-hint govuk-character-count__message">
+                                    <div id="InterviewAdjustmentsDescription-info"
+                                        class="govuk-hint govuk-character-count__message">
                                         You have 500 words remaining
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantInterviewAdjustments" value="false" id="interview-adjustments-false" type="radio" />
+                            <input class="govuk-radios__input" type="radio" asp-for="DoYouWantInterviewAdjustments"
+                                value="false" id="interview-adjustments-false" type="radio" />
                             <label class="govuk-label govuk-radios__label" for="interview-adjustments-false">
                                 No, I don't need support or I'll discuss it if I get an interview
                             </label>

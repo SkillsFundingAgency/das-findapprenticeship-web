@@ -3,7 +3,7 @@
     ViewData["Title"] = Model.PageTitle;
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
+    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-journeyPath="@Model.JourneyPath">Back</a>
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -23,14 +23,14 @@
                     First name
                 </label>
                 <span das-validation-for="FirstName" class="govuk-error-message"></span>
-                <input asp-for="FirstName" class="govuk-input govuk-!-width-two-thirds"/>
+                <input asp-for="FirstName" class="govuk-input govuk-!-width-two-thirds" autocomplete="given-name" />
             </div>
             <div class="govuk-form-group" das-highlight-error-for="LastName" error-class="govuk-form-group--error">
                 <label class="govuk-label" asp-for="LastName">
                     Last name
                 </label>
                 <span das-validation-for="LastName" class="govuk-error-message"></span>
-                <input asp-for="LastName" class="govuk-input govuk-!-width-two-thirds"/>
+                <input asp-for="LastName" class="govuk-input govuk-!-width-two-thirds" autocomplete="family-name" />
             </div>
             <div class="govuk-button-group">
                 <button class="govuk-button" data-module="govuk-button">

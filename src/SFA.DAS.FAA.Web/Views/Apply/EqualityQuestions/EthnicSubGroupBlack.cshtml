@@ -17,6 +17,7 @@
         <form class="form" method="post">
             <div class="govuk-form-group" das-highlight-error-for="EthnicSubGroup" error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
+                     <legend class="govuk-visually-hidden">Which of the following best describes your Black, African, Caribbean or Black British background?</legend>
                     <span das-validation-for="EthnicSubGroup" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
@@ -42,7 +43,7 @@
                                 <label class="govuk-label" for="OtherEthnicSubGroupAnswer">
                                     How would you describe your background? (optional)
                                 </label>
-                                <input class="govuk-input govuk-!-width-one-half" asp-for="OtherEthnicSubGroupAnswer" type="text" id="OtherEthnicSubGroupAnswer">
+                                <input class="govuk-input govuk-!-width-one-half" asp-for="OtherEthnicSubGroupAnswer" type="text" id="OtherEthnicSubGroupAnswer" autocomplete="off">
                             </div>
                         </div>
                         <div class="govuk-radios__divider">or</div>

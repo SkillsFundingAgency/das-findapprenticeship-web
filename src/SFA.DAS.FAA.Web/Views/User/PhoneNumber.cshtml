@@ -4,9 +4,9 @@
     ViewData["Title"] = Model.PageTitle;
 }
 @section BackLink {
-    @if(Model.JourneyPath is UserJourneyPath.Settings or UserJourneyPath.ConfirmAccountDetails)
+    @if(Model.JourneyPath is UserJourneyPath.Settings or UserJourneyPath.ConfirmAccountDetails or UserJourneyPath.AccountFound)
     {
-        <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
+        <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-journeyPath="@Model.JourneyPath">Back</a>
     }
     else
     {

@@ -24,7 +24,7 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
             .First(c => c.Type.Equals(ClaimTypes.Email))
             .Value;
 
-        var requestData = new PutCandidateApiRequestData()
+        var requestData = new PutCandidateApiRequestData
         {
             Email = email
         };
@@ -50,7 +50,12 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
                 claims.Add(new Claim(ClaimTypes.MobilePhone, candidate.PhoneNumber));
             }
         }
-        
+
+        if (candidate.IsEmailAddressMigrated)
+        {
+            claims.Add(new Claim(CustomClaims.EmailAddressMigrated, "true"));
+        }
+
         return claims;
     }
 }

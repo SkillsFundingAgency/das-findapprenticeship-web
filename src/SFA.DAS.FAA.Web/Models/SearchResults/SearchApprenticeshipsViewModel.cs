@@ -9,6 +9,7 @@ public class SearchApprenticeshipsViewModel
     public string? WhatSearchTerm { get; set; }
     public int? Distance { get; set; } = 10;
     public bool ShowAccountCreatedBanner { get; set; } = false;
+    public bool ShowAccountFoundBanner { get; set; } = false;
 
     public static implicit operator SearchApprenticeshipsViewModel(GetSearchApprenticeshipsIndexResult source)
     {
