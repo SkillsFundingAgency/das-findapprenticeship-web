@@ -15,7 +15,7 @@
             <form class="form" method="post">
                 <div
                     class="govuk-form-group @(ViewData.ModelState[nameof(Model.NationalSearch)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "govuk-form-group--error" : "")">
-                    <fieldset class="govuk-fieldset" aria-describedby="location-hint">
+                    <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <span class="govuk-caption-l">Question 2 of 2</span>
                             <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
@@ -37,8 +37,9 @@
                                         City or postcode
                                     </label>
                                     <span asp-validation-for="SearchTerm" class="govuk-error-message"></span>
-                                    <input class="govuk-input govuk-input--width-10 faa-location-autocomplete" asp-for="SearchTerm" id="SearchTerm"
-                                           type="search" spellcheck="false" autocomplete="postal-code" data-track-user-selected="SuggestedLocationSelected">
+                                    <input class="govuk-input govuk-input--width-10 faa-location-autocomplete"
+                                        asp-for="SearchTerm" id="SearchTerm" type="search" spellcheck="false"
+                                        autocomplete="postal-code" data-track-user-selected="SuggestedLocationSelected">
                                 </div>
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" asp-for="@Model.Distance">
@@ -55,7 +56,7 @@
                                     </select>
                                 </div>
                             </div>
-    
+
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="true"
                                     id="NationalSearch-National">
@@ -66,9 +67,9 @@
                         </div>
                     </fieldset>
                 </div>
-                    <div class="govuk-button-group">
-                        <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
-                    </div>
+                <div class="govuk-button-group">
+                    <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
+                </div>
             </form>
         </div>
     </div>

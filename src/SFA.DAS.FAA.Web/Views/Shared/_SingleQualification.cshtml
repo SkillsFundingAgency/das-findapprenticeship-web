@@ -43,7 +43,7 @@
                 {
                     <span das-validation-for="Subjects[0].Name" class="govuk-error-message"></span>
                     <input class="govuk-input" id="Subjects[0].Name" name="subjects[0][name]" type="text"
-                        value="@existingApplicationQualification.Name">
+                        value="@existingApplicationQualification.Name" autocomplete="off">
                 }
 
 
@@ -88,7 +88,7 @@
                     </label>
                     <span das-validation-for="Subjects[0].AdditionalInformation" class="govuk-error-message"></span>
                     <input class="govuk-input" id="Subjects[0].AdditionalInformation"
-                        name="subjects[0][AdditionalInformation]" type="text"
+                        name="subjects[0][AdditionalInformation]" type="text" autocomplete="off"
                         value="@existingApplicationQualification.AdditionalInformation">
                 </div>
             </div>
@@ -102,7 +102,7 @@
                         </label>
                         <span das-validation-for="Subjects[0].Grade" class="govuk-error-message"></span>
                         <input class="govuk-input" id="Subjects[0].Grade" name="subjects[0][grade]" type="text"
-                            value="@existingApplicationQualification.Grade">
+                            value="@existingApplicationQualification.Grade" autocomplete="off">
                     </div>
                     <div class="govuk-grid-column-two-thirds">
                         @if (Model.QualificationDisplayTypeViewModel.CanShowPredicted)

@@ -23,7 +23,7 @@
                             </label>
                             <span das-validation-for="Subjects[index].Name" class="govuk-error-message"></span>
                             <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text"
-                                value="@subject.Name">
+                                value="@subject.Name" autocomplete="off">
                         </div>
                     </div>
 
@@ -36,13 +36,14 @@
                             </label>
                             <span das-validation-for="Subjects[index].Grade" class="govuk-error-message"></span>
                             <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text"
-                                value="@subject.Grade">
+                                value="@subject.Grade" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="govuk-grid-column-one-third">
                         <div class="govuk-form-group">
-                            @if (Model.QualificationDisplayTypeViewModel != null && Model.QualificationDisplayTypeViewModel.CanShowPredicted)
+                            @if (Model.QualificationDisplayTypeViewModel != null &&
+                           Model.QualificationDisplayTypeViewModel.CanShowPredicted)
                             {
                                 <div class="govuk-checkboxes govuk-!-margin-top-5" data-module="govuk-checkboxes">
                                     <div class="govuk-checkboxes__item">
@@ -72,7 +73,8 @@
                                 Subject
                             </label>
 
-                            <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text">
+                            <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text"
+                                autocomplete="off">
                         </div>
                     </div>
                     <div class="govuk-grid-column-one-quarter">
@@ -80,7 +82,8 @@
                             <label class="govuk-label" for="Subjects[@index].Grade">
                                 Grade
                             </label>
-                            <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text">
+                            <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text"
+                                autocomplete="off">
                         </div>
                     </div>
                     <div class="govuk-grid-column-one-third">

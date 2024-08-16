@@ -16,41 +16,48 @@
             @Html.HiddenFor(x => x.IsEdit)
             <div class="govuk-form-group" das-highlight-error-for="EthnicGroup" error-class="govuk-form-group--error">
                 <fieldset class="govuk-fieldset">
+                    <legend class="govuk-visually-hidden">Select your ethnic group</legend>
                     <span das-validation-for="EthnicGroup" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="1" id="EthnicGroup">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="1"
+                                id="EthnicGroup">
                             <label class="govuk-label govuk-radios__label" for="EthnicGroup">
                                 White
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="2" id="EthnicGroup-Mixed">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="2"
+                                id="EthnicGroup-Mixed">
                             <label class="govuk-label govuk-radios__label" for="EthnicGroup-Mixed">
                                 Mixed or multiple ethnic groups
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="3" id="EthnicGroup-Asian">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="3"
+                                id="EthnicGroup-Asian">
                             <label class="govuk-label govuk-radios__label" for="EthnicGroup-Asian">
                                 Asian or Asian British
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="4" id="EthnicGroup-Black">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="4"
+                                id="EthnicGroup-Black">
                             <label class="govuk-label govuk-radios__label" for="EthnicGroup-Black">
                                 Black, African, Caribbean or Black British
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="5" id="EthnicGroup-Other">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="5"
+                                id="EthnicGroup-Other">
                             <label class="govuk-label govuk-radios__label" for="EthnicGroup-Other">
                                 Other ethnic group
                             </label>
                         </div>
                         <div class="govuk-radios__divider">or</div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="6" id="EthnicGroup-NA">
+                            <input class="govuk-radios__input" asp-for="EthnicGroup" type="radio" value="6"
+                                id="EthnicGroup-NA">
                             <label class="govuk-label govuk-radios__label" for="EthnicGroup-NA">
                                 Prefer not to say
                             </label>

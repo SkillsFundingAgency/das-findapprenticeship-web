@@ -31,19 +31,21 @@
                 <partial name="_SelectedCategoriesFilter" />
                 <div class="faa-filter__body das-!-show--from-tablet" id="faa-filter-options">
                     <form asp-route="@RouteNames.SearchResults" method="GET">
-                        <input type="hidden" name="sort" value="@Model.Sort"/> 
+                        <input type="hidden" name="sort" value="@Model.Sort" />
                         <div class="govuk-form-group">
                             <label for="SearchTerm"
                                 class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
                             <p class="govuk-hint">Enter a job or company</p>
-                            <input asp-for="SearchTerm" type="text" class="govuk-input" id="SearchTerm" name="searchTerm"/> 
+                            <input asp-for="SearchTerm" type="text" class="govuk-input" id="SearchTerm"
+                                name="searchTerm" autocomplete="off" />
                         </div>
                         <div class="govuk-form-group">
                             <label for="location"
                                 class="govuk-label govuk-label--m govuk-!-margin-bottom-0">Where</label>
                             <p class="govuk-hint">Enter a city or postcode</p>
                             <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location"
-                                id="location" type="search" spellcheck="false" autocomplete="postal-code" aria-describedby="where-hint"> 
+                                id="location" type="search" spellcheck="false" autocomplete="postal-code"
+                                aria-describedby="where-hint">
                             <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
                             <select class="govuk-select" id="within" name="distance">
                                 <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
@@ -113,7 +115,8 @@
                         </div>
                         <div class="govuk-form-group">
                             <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Disability Confident scheme</h2>
-                            <p class="govuk-hint">Companies that have committed to support people with disabilities and long-term health conditions</p>
+                            <p class="govuk-hint">Companies that have committed to support people with disabilities and
+                                long-term health conditions</p>
                             <div class="govuk-checkboxes govuk-checkboxes--small">
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input" id="DisabilityConfident"
@@ -146,7 +149,9 @@
         {
             <div class="faa-search-results-header">
                 <div class="faa-search-results-header__map">
-                    @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) && Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven) && bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
+                    @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&
+                   Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven) &&
+                   bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
                     {
                         @if (Model.Total <= 300)
                         {

@@ -23,14 +23,14 @@
                     First name
                 </label>
                 <span das-validation-for="FirstName" class="govuk-error-message"></span>
-                <input asp-for="FirstName" class="govuk-input govuk-!-width-two-thirds"/>
+                <input asp-for="FirstName" class="govuk-input govuk-!-width-two-thirds" autocomplete="given-name" />
             </div>
             <div class="govuk-form-group" das-highlight-error-for="LastName" error-class="govuk-form-group--error">
                 <label class="govuk-label" asp-for="LastName">
                     Last name
                 </label>
                 <span das-validation-for="LastName" class="govuk-error-message"></span>
-                <input asp-for="LastName" class="govuk-input govuk-!-width-two-thirds"/>
+                <input asp-for="LastName" class="govuk-input govuk-!-width-two-thirds" autocomplete="family-name" />
             </div>
             <div class="govuk-button-group">
                 <button class="govuk-button" data-module="govuk-button">

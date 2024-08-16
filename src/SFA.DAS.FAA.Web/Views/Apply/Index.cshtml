@@ -32,29 +32,34 @@
                 </div>
             </div>
         }
-        
+
         @if (Model.ShowPreviousAnswersBanner)
         {
-            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-import"
+                data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
                     <h2 class="govuk-notification-banner__title" id="govuk-notification-import">
                         Important
                     </h2>
                 </div>
                 <div class="govuk-notification-banner__content">
-                    <p class="govuk-notification-banner__heading">We’ve imported your previous answers. Check they’re suitable for
+                    <p class="govuk-notification-banner__heading">We’ve imported your previous answers. Check they’re
+                        suitable for
                         this application.</p>
-                    <p class="govuk-body">Answers from your application for <b>@Model.PreviousApplication.VacancyTitle</b> at <b>@Model.PreviousApplication.EmployerName</b> (submitted @Model.PreviousApplication.SubmissionDate.ToString("d MMMM yyyy")).</p>
+                    <p class="govuk-body">Answers from your application for <b>@Model.PreviousApplication.VacancyTitle</b>
+                        at <b>@Model.PreviousApplication.EmployerName</b> (submitted
+                        @Model.PreviousApplication.SubmissionDate.ToString("d MMMM yyyy")).</p>
                 </div>
             </div>
         }
 
-        
+
         @if (Model.ShowApplicationMigratedBanner)
         {
-            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title-important"
+                data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
-                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title-important">
                         Important
                     </h2>
                 </div>
@@ -85,7 +90,8 @@
         <ul class="govuk-task-list">
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.Qualifications" asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.Qualifications"
+                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
                         School, college and university qualifications
                     </a>
                 </div>
@@ -95,7 +101,8 @@
             </li>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.TrainingCourses" asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.TrainingCourses"
+                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
                         Training courses
                     </a>
                 </div>
@@ -120,8 +127,8 @@
             </li>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience" asp-route-applicationId="@Model.ApplicationId" 
-                    class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience"
+                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
                         Volunteering and work experience
                     </a>
                 </div>
@@ -135,8 +142,8 @@
         <ul class="govuk-task-list">
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths" asp-route-applicationId="@Model.ApplicationId"
-                    class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths"
+                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
                         What are your skills and strengths?
                     </a>
                 </div>
@@ -146,8 +153,8 @@
             </li>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.WhatInterestsYou" asp-route-applicationId="@Model.ApplicationId" 
-                       class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.WhatInterestsYou"
+                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
                         What interests you about this apprenticeship?
                     </a>
                 </div>
@@ -159,13 +166,12 @@
             {
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">
-                        <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion" 
-                        asp-route-applicationId="@Model.ApplicationId" 
-                        asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1Id"
-                           asp-route-additionalQuestion="1"
-                           class="govuk-link govuk-task-list__link">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
+                            asp-route-applicationId="@Model.ApplicationId"
+                            asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1Id"
+                            asp-route-additionalQuestion="1" class="govuk-link govuk-task-list__link">
                             @Model.ApplicationQuestions.AdditionalQuestion1Label
-                           </a>
+                        </a>
                     </div>
                     <div class="govuk-task-list__status">
                         <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1" />
@@ -177,10 +183,9 @@
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">
                         <a asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
-                        asp-route-applicationId="@Model.ApplicationId"
-                        asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2Id"
-                           asp-route-additionalQuestion="2"
-                           class="govuk-link govuk-task-list__link">
+                            asp-route-applicationId="@Model.ApplicationId"
+                            asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2Id"
+                            asp-route-additionalQuestion="2" class="govuk-link govuk-task-list__link">
                             @Model.ApplicationQuestions.AdditionalQuestion2Label
                         </a>
                     </div>
@@ -195,8 +200,9 @@
         <ul class="govuk-task-list">
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.InterviewAdjustments" asp-route-applicationId="@Model.ApplicationId" asp-route-isEdit="false"
-                       class="govuk-link govuk-task-list__link">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.InterviewAdjustments"
+                        asp-route-applicationId="@Model.ApplicationId" asp-route-isEdit="false"
+                        class="govuk-link govuk-task-list__link">
                         Request adjustments on your application
                     </a>
                 </div>
@@ -213,8 +219,8 @@
             <ul class="govuk-task-list">
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">
-                        <a a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident" asp-route-applicationId="@Model.ApplicationId"
-                           class="govuk-link govuk-task-list__link">
+                        <a a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident"
+                            asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
                             Interview under the Disability Confident scheme
                         </a>
                     </div>
@@ -228,11 +234,13 @@
         <div class="govuk-button-group govuk-!-margin-top-8">
             @if (Model.IsApplicationComplete)
             {
-                <a class="govuk-button" data-module="govuk-button" asp-route="@RouteNames.ApplyApprenticeship.Preview" asp-route-applicationId="@Model.ApplicationId">
+                <a class="govuk-button" data-module="govuk-button" asp-route="@RouteNames.ApplyApprenticeship.Preview"
+                    asp-route-applicationId="@Model.ApplicationId">
                     Continue
                 </a>
             }
-            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">Save and finish later</a>
+            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">Save and finish
+                later</a>
         </div>
     </div>
 </div>

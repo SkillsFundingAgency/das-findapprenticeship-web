@@ -34,15 +34,19 @@ public class DayMonthYearDateTagHelper : TagHelper
         var stringWriter = new StringWriter();
         var writer = new HtmlTextWriter(stringWriter);
 
-        //fieldset
-        writer.AddAttribute("class", "govuk-fieldset");
-        writer.RenderBeginTag("fieldset");
 
-        //legend
-        writer.AddAttribute("class", "govuk-fieldset__legend govuk-fieldset__legend--m");
-        writer.RenderBeginTag("legend");
-        writer.Write(Label);
-        writer.RenderEndTag();
+        if (!string.IsNullOrWhiteSpace(Label))
+        {
+            //fieldset
+            writer.AddAttribute("class", "govuk-fieldset");
+            writer.RenderBeginTag("fieldset");
+
+            //legend
+            writer.AddAttribute("class", "govuk-fieldset__legend govuk-fieldset__legend--m");
+            writer.RenderBeginTag("legend");
+            writer.Write(Label);
+            writer.RenderEndTag();
+        }
 
         //hint
         writer.AddAttribute("class", "govuk-hint");
@@ -67,8 +71,11 @@ public class DayMonthYearDateTagHelper : TagHelper
         WriteInput(writer, $"{Property.Name}Month", monthValue, "Month", 2);
         WriteInput(writer, $"{Property.Name}Year", yearValue, "Year", 4);
         writer.RenderEndTag();
-
-        writer.RenderEndTag(); //fieldset
+        
+        if (!string.IsNullOrWhiteSpace(Label))
+        {
+            writer.RenderEndTag(); //fieldset
+        }
 
         var errorHighlight = string.IsNullOrWhiteSpace(errorMessage) ? string.Empty : ErrorCssClass;
         output.TagName = "div";
@@ -94,8 +101,9 @@ public class DayMonthYearDateTagHelper : TagHelper
         writer.RenderEndTag();
         writer.AddAttribute("id", id);
         writer.AddAttribute("name", id);
+        writer.AddAttribute("autocomplete", "off");
         writer.AddAttribute("class", $"govuk-input govuk-date-input__input govuk-input--width-{width}");
-        writer.WriteAttribute("inputmode", "numeric");
+        writer.AddAttribute("inputmode", "numeric");
         if (!string.IsNullOrWhiteSpace(value))
         {
             writer.AddAttribute("value", value);
