@@ -52,8 +52,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool ShowAccountCreatedBanner { get; set; } = false;
         public string? TrainingPlan { get; set; } //TODO
         public string? CompanyBenefits { get; set; }
-        public string? WageAdditionalInformation { get; set; }//TODO
-        public string? AdditionalTrainingInformation { get; set; }//TODO
+        public string? WageAdditionalInformation { get; set; }
+        public string? AdditionalTrainingInformation { get; set; }
         public string? GoogleMapsId { get; set; }
         public string? CandidatePostcode { get; set; }
         public double? Longitude { get; set; }
@@ -112,7 +112,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Latitude = source.Vacancy?.Location?.Lat,
                 Longitude = source.Vacancy?.Location?.Lon,
                 CompanyBenefits = source.Vacancy?.CompanyBenefitsInformation,
-                AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription
+                AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription,
+                WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation
             };
 
         

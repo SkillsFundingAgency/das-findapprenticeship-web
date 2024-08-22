@@ -55,7 +55,7 @@ public class VacanciesController(
             ? Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab})
             : Url.RouteUrl(RouteNames.SearchResults)) ?? "";
         viewModel.ShowAccountCreatedBanner =
-            await NotificationBannerService.ShowAccountCreatedBanner(cacheStorageService,
+            await NotificationBannerService.ShowAccountBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
 
         return View(viewModel);

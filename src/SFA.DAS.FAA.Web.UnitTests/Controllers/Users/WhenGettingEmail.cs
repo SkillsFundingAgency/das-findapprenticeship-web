@@ -16,6 +16,7 @@ public class WhenGettingEmail
     [Test]
     [MoqInlineAutoData(null, RouteNames.ConfirmAccountDetails, "Create an account")]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "Create an account")]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails, "")]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings, "")]
     public void Then_View_Is_Returned(
         UserJourneyPath journeyPath,
@@ -35,6 +36,7 @@ public class WhenGettingEmail
         actualModel.Should().NotBeNull();
         actualModel!.JourneyPath.Should().Be(journeyPath);
         actualModel.BackLink.Should().Be(pageBackLink);
+        actualModel.PageCaption.Should().Be(pageCaption);
         actualModel.ChangeEmailLink.Should().Be("https://home.account.gov.uk/settings");
     }
 

@@ -20,7 +20,7 @@
             <p class="govuk-body"><b>@Model.Employer</b> is looking for people with:</p>
             <ul class="govuk-list govuk-list--bullet">
 
-                @foreach(var skillOrStrength in Model.ExpectedSkillsAndStrengths)
+                @foreach (var skillOrStrength in Model.ExpectedSkillsAndStrengths)
                 {
                     <li>@skillOrStrength</li>
                 }
@@ -34,33 +34,38 @@
         <form class="form" method="post">
 
             <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="300">
-                <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="SkillsAndStrengths" error-class="govuk-form-group--error">
+                <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="SkillsAndStrengths"
+                    error-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" for="SkillsAndStrengths">
                         Your skills and strengths
                     </label>
                     <span das-validation-for="SkillsAndStrengths" class="govuk-error-message"></span>
-                    <textarea class="govuk-textarea govuk-js-character-count" asp-for="SkillsAndStrengths" rows="5" aria-describedby="SkillsAndStrengths-info"></textarea>
+                    <textarea class="govuk-textarea govuk-js-character-count" asp-for="SkillsAndStrengths" rows="5"
+                        aria-describedby="SkillsAndStrengths-info"></textarea>
                 </div>
                 <div id="SkillsAndStrengths-info" class="govuk-hint govuk-character-count__message">
                     You have 300 words remaining
                 </div>
             </div>
 
-            <div class="govuk-form-group" das-highlight-error-for="IsSectionComplete" error-class="govuk-form-group--error">
-                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+            <div class="govuk-form-group" das-highlight-error-for="IsSectionComplete"
+                error-class="govuk-form-group--error">
+                <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Have you completed this section?
                     </legend>
                     <span das-validation-for="IsSectionComplete" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsSectionComplete" type="radio" value="true" id="IsSectionComplete">
+                            <input class="govuk-radios__input" asp-for="IsSectionComplete" type="radio" value="true"
+                                id="IsSectionComplete">
                             <label class="govuk-label govuk-radios__label" for="IsSectionComplete">
                                 Yes, I've completed this section
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" asp-for="IsSectionComplete" id="IsSectionComplete-No" type="radio" value="false">
+                            <input class="govuk-radios__input" asp-for="IsSectionComplete" id="IsSectionComplete-No"
+                                type="radio" value="false">
                             <label class="govuk-label govuk-radios__label" for="IsSectionComplete-No">
                                 No, I'll come back to it later (saves your answer)
                             </label>

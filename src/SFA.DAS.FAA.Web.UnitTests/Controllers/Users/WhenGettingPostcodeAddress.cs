@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -11,12 +10,18 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.Testing.AutoFixture;
+using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingPostcodeAddress
 {
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount)]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound)]
+    [MoqInlineAutoData(UserJourneyPath.Settings)]
     public async Task Then_View_Is_Returned(
+        UserJourneyPath journeyPath,
         string email,
         Guid candidateId,
         string govIdentifier,
@@ -41,15 +46,21 @@ public class WhenGettingPostcodeAddress
         mediator.Setup(x => x.Send(It.Is<GetCandidatePostcodeQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var result = await controller.PostcodeAddress((string)null!) as ViewResult;
+        var result = await controller.PostcodeAddress((string)null!, journeyPath) as ViewResult;
 
         result.Should().NotBeNull();
         var actualModel = result.Model as PostcodeAddressViewModel;
         actualModel.Postcode.Should().Be(queryResult.Postcode);
+        actualModel.JourneyPath.Should().Be(journeyPath);
     }
     
-    [Test, MoqAutoData]
+    [Test]
+    [MoqInlineAutoData(UserJourneyPath.CreateAccount)]
+    [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound)]
+    [MoqInlineAutoData(UserJourneyPath.Settings)]
     public async Task Then_View_Is_Returned_And_Postcode_Shown_If_Passed(
+        UserJourneyPath journeyPath,
         string email,
         Guid candidateId,
         string govIdentifier,
@@ -74,10 +85,11 @@ public class WhenGettingPostcodeAddress
         mediator.Setup(x => x.Send(It.Is<GetCandidatePostcodeQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var result = await controller.PostcodeAddress(postcode) as ViewResult;
+        var result = await controller.PostcodeAddress(postcode, journeyPath) as ViewResult;
 
         result.Should().NotBeNull();
         var actualModel = result.Model as PostcodeAddressViewModel;
         actualModel.Postcode.Should().Be(postcode);
+        actualModel.JourneyPath.Should().Be(journeyPath);
     }
 }

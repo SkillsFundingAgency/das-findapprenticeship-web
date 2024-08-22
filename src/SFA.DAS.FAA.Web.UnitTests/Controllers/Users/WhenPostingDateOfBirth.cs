@@ -19,6 +19,7 @@ public class WhenPostingDateOfBirth
     [Test]
     [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.PostcodeAddress)]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails)]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
     public async Task When_Model_State_Is_Valid_Should_Redirect(
          UserJourneyPath journeyPath,
@@ -48,6 +49,7 @@ public class WhenPostingDateOfBirth
 
         result.Should().NotBeNull();
         result.RouteName.Should().Be(redirectRoute);
+        result.RouteValues["journeyPath"].Should().Be(journeyPath);
         mediator.Verify(x => x.Send(It.Is<UpdateDateOfBirthCommand>(c =>
             c.CandidateId.Equals(candidateId)
             && c.DateOfBirth.Equals(model.DateOfBirth.DateTimeValue.Value)

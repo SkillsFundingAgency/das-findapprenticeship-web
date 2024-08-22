@@ -19,6 +19,7 @@ public class WhenPostingNotificationPreferences
     [Test]
     [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.ConfirmAccountDetails)]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails)]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
     public async Task When_Model_State_Is_Valid_Should_Redirect(
         UserJourneyPath journeyPath,
@@ -48,6 +49,7 @@ public class WhenPostingNotificationPreferences
         mediator.Verify(x => x.Send(It.Is<UpsertCandidatePreferencesCommand>(c =>
             c.UnfinishedApplicationReminders == model.UnfinishedApplicationReminders), It.IsAny<CancellationToken>()), Times.Once);
         result!.RouteName.Should().BeEquivalentTo(redirectRoute);
+        result.RouteValues["journeyPath"].Should().Be(journeyPath);
     }
 
     [Test, MoqAutoData]

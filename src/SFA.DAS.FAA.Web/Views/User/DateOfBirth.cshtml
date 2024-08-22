@@ -3,7 +3,7 @@
     ViewData["Title"] = Model.PageTitle;
 }
 @section BackLink {
-    <a class="govuk-back-link" asp-route="@Model.BackLink">Back</a>
+    <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-journeyPath="@Model.JourneyPath">Back</a>
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -14,18 +14,17 @@
         <form class="form" method="post">
             <input type="hidden" asp-for="@Model.JourneyPath" />
             <input type="hidden" asp-for="BackLink" />
-            <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint">
+            <fieldset class="govuk-fieldset" role="group" aria-describedby="DateOfBirthHint">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 class="govuk-fieldset__heading">
                         @Model.PageHeading
                     </h1>
                 </legend>
-                <div class="govuk-inset-text">
-                    <p class="govuk-body">We don't share your date of birth when you apply for an apprenticeship.</p>
-                </div>
-                <p class="govuk-body">We need to check you’re old enough to use Find an apprenticeship. We also monitor what age groups use our service to help us make improvements. </p>
+                <p class="govuk-body">We need to check you’re old enough to use Find an apprenticeship. We also monitor
+                    what age groups use our service to help us make improvements. </p>
                 <h2 class="govuk-heading-m">What is your date of birth?</h2>
-                <day-month-year-date property="DateOfBirth" label="" hint-text="For example, 31 03 1980" error-class="govuk-form-group--error" />
+                <day-month-year-date property="DateOfBirth" label="" hint-text="For example, 31 03 1980"
+                    error-class="govuk-form-group--error" />
             </fieldset>
             <button class="govuk-button" data-module="govuk-button">
                 @Model.PageCtaButtonLabel

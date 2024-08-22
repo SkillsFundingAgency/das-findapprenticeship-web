@@ -19,6 +19,7 @@ public class WhenPostingPhoneNumber
     [Test]
     [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.NotificationPreferences)]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
+    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails)]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Enter_Your_Address(
         UserJourneyPath journeyPath,
@@ -50,6 +51,7 @@ public class WhenPostingPhoneNumber
 
         result.Should().NotBeNull();
         result.RouteName.Should().Be(redirectRoute);
+        result.RouteValues["journeyPath"].Should().Be(journeyPath);
         mediator.Verify(x => x.Send(It.Is<UpdatePhoneNumberCommand>(c =>
             c.Email.Equals(email)
             ), It.IsAny<CancellationToken>()), Times.Once);
