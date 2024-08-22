@@ -7,7 +7,7 @@ namespace SFA.DAS.FAA.Web.Infrastructure;
 public interface IDataProtectorService
 {
     string EncodedData(string data);
-    string? DecodeData(string data);
+    string? DecodeData(string? data);
 }
     
 public class DataProtectorService : IDataProtectorService
@@ -27,10 +27,14 @@ public class DataProtectorService : IDataProtectorService
             System.Text.Encoding.UTF8.GetBytes($"{data}")));
     }
 
-    public string? DecodeData(string data)
+    public string? DecodeData(string? data)
     {
         try
         {
+            if (data == null)
+            {
+                return null;
+            }
             var base64EncodedBytes = WebEncoders.Base64UrlDecode(data);
             var encodedData = System.Text.Encoding.UTF8.GetString(_faaDataProtector.Unprotect(base64EncodedBytes));
             return encodedData;
