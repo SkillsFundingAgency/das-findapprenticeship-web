@@ -1,8 +1,8 @@
-﻿using System.Globalization;
-using SFA.DAS.FAA.Domain.Enums;
+﻿using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
+using System.Globalization;
 
 namespace SFA.DAS.FAA.Web.Models;
 
@@ -48,11 +48,11 @@ public class VacanciesViewModel
             ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancies.ClosingDate,!string.IsNullOrEmpty(vacancies.ApplicationUrl)),
             PostedDate = FormatPostDate(vacancies.PostedDate),
             WageType = vacancies.WageType,
-            VacancyLocation = !string.IsNullOrEmpty(vacancies.AddressLine4) ? vacancies.AddressLine4 :
-                !string.IsNullOrEmpty(vacancies.AddressLine3) ? vacancies.AddressLine3 :
-                !string.IsNullOrEmpty(vacancies.AddressLine2) ? vacancies.AddressLine2 :
-                !string.IsNullOrEmpty(vacancies.AddressLine1) ? vacancies.AddressLine1 :
-                string.Empty,
+            VacancyLocation = !string.IsNullOrEmpty(vacancies.AddressLine4) ? $"{vacancies.AddressLine4}, {vacancies.Postcode}" :
+                !string.IsNullOrEmpty(vacancies.AddressLine3) ? $"{vacancies.AddressLine3}, {vacancies.Postcode}" :
+                !string.IsNullOrEmpty(vacancies.AddressLine2) ? $"{vacancies.AddressLine2}, {vacancies.Postcode}" :
+                !string.IsNullOrEmpty(vacancies.AddressLine1) ? $"{vacancies.AddressLine1}, {vacancies.Postcode}" :
+                vacancies.Postcode,
             Distance = vacancies.Distance.HasValue ? Math.Round(vacancies.Distance.Value, 1) : null,
             ApprenticeshipLevel = vacancies.ApprenticeshipLevel,
             CourseId = vacancies.CourseId,
@@ -62,7 +62,7 @@ public class VacanciesViewModel
             IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
             IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsDisabilityConfident = vacancies.IsDisabilityConfident,
-            ApplicationStatus = vacancies.CandidateApplicationDetails?.Status
+            ApplicationStatus = vacancies.CandidateApplicationDetails?.Status,
         };
     }
 
