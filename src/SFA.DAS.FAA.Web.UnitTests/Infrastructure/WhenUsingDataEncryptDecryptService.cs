@@ -34,6 +34,19 @@ public class WhenUsingDataEncryptDecryptService
         //Assert
         actual.Should().BeNull();
     }
+    
+    [Test, MoqAutoData]
+    public void Then_Null_Is_Returned_If_Null_Passed(
+        [Frozen] Mock<IDataProtector> mockProtector,
+        [Frozen] Mock<IDataProtectionProvider> mockProvider,
+        DataProtectorService service)
+    {
+        //Act
+        var actual = service.DecodeData(null);
+        
+        //Assert
+        actual.Should().BeNull();
+    }
 
     [Test, MoqAutoData]
     public void Then_If_Incorrect_Format_Then_Exception_Thrown_And_Null_Returned(
