@@ -142,4 +142,22 @@ public class WhenCreatingVacancyDetailsViewModel
         actual.ApplicationUrl.Should().Be(expectedUrl);
         actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM})");
     }
+    [Test]
+    [MoqInlineAutoData("","")]
+    [MoqInlineAutoData(null,null)]
+    public void Then_If_External_The_Application_Url_Is_Correctly_Formatted_And_Closing_Date_For_Internal(
+        string url,
+        string expectedUrl,
+        GetApprenticeshipVacancyQueryResult result,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow.AddDays(-30));
+        result.Vacancy.ClosingDate = DateTime.UtcNow.AddDays(-20);
+        result.Vacancy.ApplicationUrl = url;
+
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
+
+        actual.ApplicationUrl.Should().Be(expectedUrl);
+        actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM} at 11:59pm)");
+    }
 }
