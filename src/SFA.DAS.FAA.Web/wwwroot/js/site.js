@@ -777,52 +777,58 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     return "";
   }
 
-  function closePanelButton(t) {
-    const that = t;
-    const closeButton = document.createElement("button");
-    closeButton.classList.add("faa-map__panel-close");
-    closeButton.innerHTML = `<span class="faa-map__close-icon"></span>`;
-    closeButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      that.hideRoleOverLay(panel);
-    });
-    return closeButton;
-  }
-
-  function showDistance(distance) {
-    if (distance > 0) {
-      return `<li><strong>Distance</strong> ${distance} miles</li>`;
+    function closePanelButton(t) {
+        const that = t;
+        const closeButton = document.createElement("button");
+        closeButton.classList.add("faa-map__panel-close");
+        closeButton.innerHTML = `<span class="faa-map__close-icon"></span>`;
+        closeButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            that.hideRoleOverLay(panel);
+        });
+        return closeButton;
     }
-    return "";
-  }
 
-  panel.innerHTML = `
+    function isEmpty(value) {
+        return (value == null || (typeof value === "string" && value.trim().length === 0));
+    }
+
+    function showDistance(distance) {
+        if (distance > 0) {
+            return `<li><strong>Distance</strong> ${distance} miles</li>`;
+        }
+        return "";
+    }
+
+    function showLocation(address, postcode) {
+        if (isEmpty(address)) {
+            return `${postcode}`;
+        } else {
+            return `${address}, ${postcode}`;
+        }
+    }    
+
+    panel.innerHTML = `
       ${statusTag(role.job)}
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/apprenticeship/VAC${
-        role.job.id
-      }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading">${
-    role.job.title
-  }</a></h2>
-      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
-        role.job.company
-      }</p>
-      <p class="govuk-!-font-size-16 govuk-hint">${role.job.addressLine1}, ${
-    role.job.postcode
-  }</p>
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/apprenticeship/VAC${role.job.id
+        }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading">${role.job.title
+        }</a></h2>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${role.job.company
+        }</p>
+      <p class="govuk-!-font-size-16 govuk-hint">${showLocation(role.job.addressLine1, role.job.postcode)}      
+  </p>
       <ul class="govuk-list govuk-!-font-size-16">
       ${showDistance(role.job.distance)}
       <li><strong>Training course</strong> ${role.job.apprenticeship}</li>
       <li><strong>Annual wage</strong>  ${role.job.wage}</li>
       </ul>
-      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
-        role.job.closingDate
-      }</p>
-      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0 govuk-hint">${
-        role.job.postedDate
-      }</p>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${role.job.closingDate
+        }</p>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0 govuk-hint">${role.job.postedDate
+        }</p>
   `;
-  panel.append(closePanelButton(this));
-  panel.classList.remove("faa-map__panel--hidden");
+    panel.append(closePanelButton(this));
+    panel.classList.remove("faa-map__panel--hidden");
 };
 
 FaaMap.prototype.hideRoleOverLay = function (panel) {
