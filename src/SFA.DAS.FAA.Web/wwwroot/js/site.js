@@ -777,45 +777,50 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     return "";
   }
 
-    function closePanelButton(t) {
-        const that = t;
-        const closeButton = document.createElement("button");
-        closeButton.classList.add("faa-map__panel-close");
-        closeButton.innerHTML = `<span class="faa-map__close-icon"></span>`;
-        closeButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            that.hideRoleOverLay(panel);
-        });
-        return closeButton;
+  function closePanelButton(t) {
+    const that = t;
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("faa-map__panel-close");
+    closeButton.innerHTML = `<span class="faa-map__close-icon"></span>`;
+    closeButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      that.hideRoleOverLay(panel);
+    });
+    return closeButton;
+  }
+
+  function showDistance(distance) {
+    if (distance > 0) {
+      return `<li><strong>Distance</strong> ${distance} miles</li>`;
     }
+    return "";
+  }
 
-    function showDistance(distance) {
-        if (distance > 0) {
-            return `<li><strong>Distance</strong> ${distance} miles</li>`;
-        }
-        return "";
-    }      
-
-    panel.innerHTML = `
+  panel.innerHTML = `
       ${statusTag(role.job)}
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/apprenticeship/VAC${role.job.id
-        }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading">${role.job.title
-        }</a></h2>
-      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${role.job.company
-        }</p>
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="/apprenticeship/VAC${
+        role.job.id
+      }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading">${
+    role.job.title
+  }</a></h2>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
+        role.job.company
+      }</p>
       <p class="govuk-!-font-size-16 govuk-hint">${role.job.vacancyLocation}</p>
       <ul class="govuk-list govuk-!-font-size-16">
       ${showDistance(role.job.distance)}
       <li><strong>Training course</strong> ${role.job.apprenticeship}</li>
       <li><strong>Annual wage</strong>  ${role.job.wage}</li>
       </ul>
-      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${role.job.closingDate
-        }</p>
-      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0 govuk-hint">${role.job.postedDate
-        }</p>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
+        role.job.closingDate
+      }</p>
+      <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0 govuk-hint">${
+        role.job.postedDate
+      }</p>
   `;
-    panel.append(closePanelButton(this));
-    panel.classList.remove("faa-map__panel--hidden");
+  panel.append(closePanelButton(this));
+  panel.classList.remove("faa-map__panel--hidden");
 };
 
 FaaMap.prototype.hideRoleOverLay = function (panel) {
