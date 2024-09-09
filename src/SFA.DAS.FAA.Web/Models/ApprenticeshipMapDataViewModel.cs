@@ -18,11 +18,11 @@ public class ApprenticeshipMapData
                 Id = source.Id,
                 Title = source.Title,
                 Company = source.EmployerName,
-                AddressLine1 = source.AddressLine1,
-                AddressLine2 = source.AddressLine2,
-                AddressLine3 = source.AddressLine3,
-                AddressLine4 = source.AddressLine4,
-                Postcode = source.Postcode,
+                VacancyLocation = !string.IsNullOrEmpty(source.AddressLine4) ? $"{source.AddressLine4}, {source.Postcode}" :
+                    !string.IsNullOrEmpty(source.AddressLine3) ? $"{source.AddressLine3}, {source.Postcode}" :
+                    !string.IsNullOrEmpty(source.AddressLine2) ? $"{source.AddressLine2}, {source.Postcode}" :
+                    !string.IsNullOrEmpty(source.AddressLine1) ? $"{source.AddressLine1}, {source.Postcode}" :
+                    source.Postcode,
                 Distance = source.Distance.HasValue ? Math.Round(source.Distance.Value, 1) : null,
                 Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
                 Wage = source.WageText,
@@ -52,11 +52,7 @@ public class ApprenticeshipMapJob
     public long Id { get; set; }
     public string? Title { get; set; }
     public string? Company { get; set; }
-    public string? AddressLine1 { get; set; }
-    public string? AddressLine2 { get; set; }
-    public string? AddressLine3 { get; set; }
-    public string? AddressLine4 { get; set; }
-    public string? Postcode { get; set; }
+    public string? VacancyLocation { get; set; }
     public decimal? Distance { get; set; }
     public string? Apprenticeship { get; set; }
     public string? Wage { get; set; }

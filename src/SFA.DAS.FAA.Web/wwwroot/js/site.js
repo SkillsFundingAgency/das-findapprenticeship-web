@@ -789,24 +789,12 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
         return closeButton;
     }
 
-    function isEmpty(value) {
-        return (value == null || (typeof value === "string" && value.trim().length === 0));
-    }
-
     function showDistance(distance) {
         if (distance > 0) {
             return `<li><strong>Distance</strong> ${distance} miles</li>`;
         }
         return "";
-    }
-
-    function showLocation(address, postcode) {
-        if (isEmpty(address)) {
-            return `${postcode}`;
-        } else {
-            return `${address}, ${postcode}`;
-        }
-    }    
+    }      
 
     panel.innerHTML = `
       ${statusTag(role.job)}
@@ -815,8 +803,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
         }</a></h2>
       <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${role.job.company
         }</p>
-      <p class="govuk-!-font-size-16 govuk-hint">${showLocation(role.job.addressLine1, role.job.postcode)}      
-  </p>
+      <p class="govuk-!-font-size-16 govuk-hint">${role.job.vacancyLocation}</p>
       <ul class="govuk-list govuk-!-font-size-16">
       ${showDistance(role.job.distance)}
       <li><strong>Training course</strong> ${role.job.apprenticeship}</li>
