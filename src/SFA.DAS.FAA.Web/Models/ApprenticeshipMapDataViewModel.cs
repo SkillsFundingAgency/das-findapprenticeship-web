@@ -27,7 +27,7 @@ public class ApprenticeshipMapData
                 Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
                 Wage = source.WageText,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
-                PostedDate = source.PostedDate.GetPostedDate(),
+                PostedDate = source.PostedDate.GetMapsPostedDate(),
                 ApplicationStatus = source.CandidateApplicationDetails?.Status,
                 IsClosingSoon = source.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
                 IsNew = source.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
