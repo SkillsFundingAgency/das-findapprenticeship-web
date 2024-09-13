@@ -52,8 +52,8 @@ public class VacanciesController(
 
         var viewModel = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result, faaConfiguration.Value.GoogleMapsId);
         viewModel.BackLinkUrl = (source == NavigationSource.Applications
-            ? Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab})
-            : Url.RouteUrl(RouteNames.SearchResults)) ?? "";
+            ? Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab })
+            : Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults)) ?? "";
         viewModel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
