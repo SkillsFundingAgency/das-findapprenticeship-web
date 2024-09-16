@@ -111,13 +111,31 @@ https://localhost:7276/apprenticeshipsearch?sort=ClosingAsc -> Closing soon vaca
 
 https://localhost:7276/apprenticeshipsearch?searchTerm=&location=Coventry%2C+West+Midlands&distance=10&sort=DistanceAsc -> Displays vacancies within 10 miles of Coventry
 
+https://localhost:7276/apprenticeshipsearch?searchTerm=random -> Displays no search results page
+
+
 ### Vacancy
 https://localhost:7276/apprenticeship/VAC1000012484 -> View vacancy details
 
 https://localhost:7276/apprenticeship/VACABC1000012484 -> Vacancy not found
 
+https://localhost:7276/saved-vacancies -> Saved Vacancies
+
 ### Browse by interests
-https://localhost:7276/browse-by-interests -> Browser by your interests
+https://localhost:7276/browse-by-interests -> Browse by your interests
+
+### Applications
+https://localhost:7276/applications?tab=Started -> View applications that are started
+
+https://localhost:7276/applications?tab=Submitted -> View applications that are submitted
+
+https://localhost:7276/applications?tab=Successful -> View applications that are successful
+
+https://localhost:7276/applications?tab=Unsuccessful -> View applications that are Unsuccessful
+
+### Profile
+https://localhost:7276/settings -> Candidate/User Settings
+
 
 ## License
 
