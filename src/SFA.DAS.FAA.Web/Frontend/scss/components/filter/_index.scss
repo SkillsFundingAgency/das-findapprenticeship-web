@@ -1,5 +1,12 @@
 .faa-filter {
   border: 1px solid $govuk-border-colour;
+  .govuk-select {
+    min-width: 0;
+    width: 100%;
+    @include govuk-media-query(tablet) {
+      width: 11.5em;
+    }
+  }
 }
 
 .faa-filter__header,
