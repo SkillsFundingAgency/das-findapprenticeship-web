@@ -55,3 +55,11 @@ jobs:
             ServiceConnection: ${{ parameters.ServiceConnection }}
             AppServiceName: $(AppServiceName)
             DeploymentPackagePath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.Web.zip
+        - ${{ if eq(parameters.Environment, 'AT') }}:
+            - template: azure-pipelines-templates/deploy/step/grafana-annotation.yml@das-platform-building-blocks
+              parameters:
+                dashboardUID: "db248fdc-33d2-4579-9f9e-40fd81c92484"
+                panelId: 2
+                tags: "release,$(Release.ReleaseName)"
+                text: "Release to AT environment"
+                BearerToken: $(GrafanaToken)
