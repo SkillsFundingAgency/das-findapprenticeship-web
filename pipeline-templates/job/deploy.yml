@@ -63,3 +63,4 @@ jobs:
                 tags: "release,$(Release.ReleaseName)"
                 text: "Release to AT environment"
                 BearerToken: $(GrafanaToken)
+                IsMultiRepoCheckout: true
