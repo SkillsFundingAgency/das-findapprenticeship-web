@@ -63,6 +63,6 @@ jobs:
                 tags:
                   - "buildnumber"
                   - "$(Build.BuildNumber)"
-                text: "Release to AT environment"
-                BearerToken: $(GrafanaToken)
+                text: "Build Info"
+                BearerToken: "$(GrafanaToken)"
                 IsMultiRepoCheckout: true
