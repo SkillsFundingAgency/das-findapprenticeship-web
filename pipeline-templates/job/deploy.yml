@@ -61,8 +61,8 @@ jobs:
                 dashboardUID: "db248fdc-33d2-4579-9f9e-40fd81c92484"
                 panelId: 2
                 tags:
-                  - "release"
-                  - "$(Release.ReleaseName)"
+                  - "buildnumber"
+                  - "$(Build.BuildNumber)"
                 text: "Release to AT environment"
                 BearerToken: $(GrafanaToken)
                 IsMultiRepoCheckout: true
