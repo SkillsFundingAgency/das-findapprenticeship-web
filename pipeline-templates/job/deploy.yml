@@ -60,9 +60,7 @@ jobs:
               parameters:
                 dashboardUID: "db248fdc-33d2-4579-9f9e-40fd81c92484"
                 panelId: 2
-                tags:
-                  - "buildnumber"
-                  - "$(Build.BuildNumber)"
-                text: "Build Info"
-                BearerToken: "$(GrafanaToken)"
+                tags: "BuildNumber,$(Build.BuildNumber)"
+                text: "Build info"
+                BearerToken: $(GrafanaToken)
                 IsMultiRepoCheckout: true
