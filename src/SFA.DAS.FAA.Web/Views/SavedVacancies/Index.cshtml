@@ -6,7 +6,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Saved vacancies</h1>
+        <h1 class="govuk-heading-xl faa-page-heading">Saved vacancies</h1>
 
         <div class="govuk-inset-text">
             You’ll be able to save vacancies soon. Until then, we’ve transferred your saved vacancies from the old Find
@@ -75,7 +75,8 @@
                         }
                         else
                         {
-                            <form method="post" asp-route="@RouteNames.Vacancies" asp-route-vacancyreference="@vacancy.VacancyReference">
+                            <form method="post" asp-route="@RouteNames.Vacancies"
+                                asp-route-vacancyreference="@vacancy.VacancyReference">
                                 <p class="govuk-body govuk-!-margin-bottom-2">
                                     <button type="submit" class="das-button--inline-link">Apply now
                                         <span class="govuk-visually-hidden">for @vacancy.Title</span></button>

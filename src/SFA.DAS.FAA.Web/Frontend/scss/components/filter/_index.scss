@@ -1,5 +1,12 @@
 .faa-filter {
   border: 1px solid $govuk-border-colour;
+  .govuk-select {
+    min-width: 0;
+    width: 100%;
+    @include govuk-media-query(tablet) {
+      width: 11.5em;
+    }
+  }
 }
 
 .faa-filter__header,
@@ -8,6 +15,12 @@
   @include govuk-media-query(tablet) {
     padding: 20px;
   }
+}
+
+.faa-filter__header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $govuk-border-colour;
 }
 
 .faa-filter__heading {
@@ -19,13 +32,13 @@
 }
 
 .faa-filter__selected {
-    background: govuk-colour("light-grey");
-    box-shadow: inset 0 0 0 1px #b1b4b6;
-    padding: 15px;
-    @include govuk-media-query(tablet) {
-        padding: 20px;
-        margin-bottom: 20px;
-    }
+  background: govuk-colour("light-grey");
+  border-bottom: 1px solid $govuk-border-colour;
+  padding: 15px;
+  @include govuk-media-query(tablet) {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
 }
 
 .faa-filter__selected-header {
@@ -115,5 +128,5 @@
 }
 
 .faa-filter .govuk-accordion__controls {
-    display: none;
+  display: none;
 }
