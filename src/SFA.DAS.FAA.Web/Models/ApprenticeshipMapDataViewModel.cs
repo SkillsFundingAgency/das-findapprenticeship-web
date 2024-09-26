@@ -26,7 +26,7 @@ public class ApprenticeshipMapData
                 Distance = source.Distance.HasValue ? Math.Round(source.Distance.Value, 1) : null,
                 Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
                 Wage = source.WageText,
-                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
+                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate, !string.IsNullOrEmpty(source.ApplicationUrl)),
                 PostedDate = source.PostedDate.GetMapsPostedDate(),
                 ApplicationStatus = source.CandidateApplicationDetails?.Status,
                 IsClosingSoon = source.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
