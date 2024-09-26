@@ -1,10 +1,12 @@
 using System.Net;
+using Azure.Core;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Commands.Apply;
+using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -79,5 +81,19 @@ public class VacanciesController(
         });
 
         return RedirectToAction("Index", "Apply", new { result.ApplicationId });
+    }
+
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [HttpGet]
+    [Route("apprenticeship/{vacancyReference}/save", Name = RouteNames.SaveVacancy)]
+    public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference)
+    {
+        await mediator.Send(new SaveVacancyCommand
+        {
+            VacancyReference = vacancyReference,
+            CandidateId = (Guid)User.Claims.CandidateId()!
+        });
+
+        return RedirectToRoute(RouteNames.Vacancies, new { vacancyReference = vacancyReference });
     }
 }

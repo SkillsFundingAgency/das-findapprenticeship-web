@@ -60,6 +60,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public double? Latitude { get; set; }
 
         public string? ApplicationUrl { get; set; }
+        public bool IsSavedVacancy { get; set; } = false;
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
             {
@@ -113,7 +114,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Longitude = source.Vacancy?.Location?.Lon,
                 CompanyBenefits = source.Vacancy?.CompanyBenefitsInformation,
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription,
-                WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation
+                WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
+                IsSavedVacancy = source.Vacancy.IsSavedVacancy,
             };
 
         
