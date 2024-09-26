@@ -87,6 +87,7 @@ namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy
         public CandidateApplicationDetails? Application { get; set; }
         public string? ApplicationUrl { get; set; }
         public string? CandidatePostcode { get; set; }
+        public bool IsSavedVacancy { get; set; } = false;
     }
 
     public class VacancyQualificationApiResponse
