@@ -12,7 +12,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 
-namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
+namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SavedVacancies
 {
     [TestFixture]
     public class WhenPostingSaveVacancy
@@ -24,9 +24,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
             SaveVacancyCommandResult mediatorResult,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.VacanciesController controller)
+            [Greedy] Web.Controllers.SavedVacanciesController controller)
         {
-            
+
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SavedVacancies;
 
@@ -7,11 +8,13 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
     public class GetSavedVacanciesQuery : IRequest<GetSavedVacanciesQueryResult>
     {
         public Guid CandidateId { get; set; }
+        public string? DeleteVacancyReference { get; set; }
     }
 
     public class GetSavedVacanciesQueryResult
     {
         public List<SavedVacancy> SavedVacancies { get; set; } = [];
+        public DeletedSavedVacancy DeletedVacancy { get; set; } = new();
 
         public class SavedVacancy
         {
@@ -26,6 +29,13 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
             public bool IsExternalVacancy { get; set; }
             public string ExternalVacancyUrl { get; set; }
 
+        }
+
+        public class DeletedSavedVacancy
+        {
+            public string? VacancyReference { get; set; }
+            public string? VacancyTitle { get; set; }
+            public string? EmployerName { get; set; }
         }
 
         public static implicit operator GetSavedVacanciesQueryResult(GetSavedVacanciesApiResponse source)
@@ -54,7 +64,22 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
         public async Task<GetSavedVacanciesQueryResult> Handle(GetSavedVacanciesQuery request, CancellationToken cancellationToken)
         {
             var response = await apiClient.Get<GetSavedVacanciesApiResponse>(
-                new GetSavedVacanciesApiRequest(request.CandidateId));
+                new GetSavedVacanciesApiRequest(request.CandidateId)) ?? new GetSavedVacanciesQueryResult();
+
+            if (string.IsNullOrEmpty(request.DeleteVacancyReference)) return response;
+
+            if (!request.DeleteVacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
+            {
+                request.DeleteVacancyReference = $"VAC{request.DeleteVacancyReference}";
+            }
+
+            var getApprenticeshipVacancyApiResponse = await apiClient.Get<GetApprenticeshipVacancyApiResponse>(new GetApprenticeshipVacancyApiRequest(request.DeleteVacancyReference, null));
+            response.DeletedVacancy = new GetSavedVacanciesQueryResult.DeletedSavedVacancy
+            {
+                VacancyReference = getApprenticeshipVacancyApiResponse.VacancyReference,
+                EmployerName = getApprenticeshipVacancyApiResponse.EmployerName,
+                VacancyTitle = getApprenticeshipVacancyApiResponse.Title,
+            };
 
             return response;
         }

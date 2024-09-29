@@ -6,6 +6,7 @@ using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAA.Application.Queries.GetSavedVacancies;
 using SFA.DAS.FAA.Domain.SavedVacancies;
+using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
 {
@@ -19,6 +20,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
             GetSavedVacanciesQueryHandler handler)
         {
             // Arrange
+            query.DeleteVacancyReference = null;
             var apiRequestUri = new GetSavedVacanciesApiRequest(query.CandidateId);
 
             apiClientMock.Setup(client =>
@@ -32,6 +34,51 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
 
             // Assert
             result.SavedVacancies.Should().BeEquivalentTo(apiResponse.SavedVacancies);
+            result.DeletedVacancy.EmployerName.Should().BeNull();
+            result.DeletedVacancy.VacancyReference.Should().BeNull();
+            result.DeletedVacancy.VacancyTitle.Should().BeNull();
+
+            apiClientMock.Verify(client =>
+                client.Get<GetApprenticeshipVacancyApiResponse>(
+                    It.Is<GetApprenticeshipVacancyApiRequest>(c =>
+                        c.GetUrl == apiRequestUri.GetUrl)), Times.Never);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_VacancyReference_Is_Null_Result_Is_Returned(
+            GetSavedVacanciesQuery query,
+            GetSavedVacanciesApiResponse apiResponse,
+            GetApprenticeshipVacancyApiResponse getApprenticeshipVacancyApiResponse,
+            [Frozen] Mock<IApiClient> apiClientMock,
+            GetSavedVacanciesQueryHandler handler)
+        {
+            // Arrange
+            query.DeleteVacancyReference = getApprenticeshipVacancyApiResponse.VacancyReference;
+            var apiRequestUri = new GetSavedVacanciesApiRequest(query.CandidateId);
+
+            apiClientMock.Setup(client =>
+                    client.Get<GetSavedVacanciesApiResponse>(
+                        It.Is<GetSavedVacanciesApiRequest>(c =>
+                            c.GetUrl == apiRequestUri.GetUrl)))
+                .ReturnsAsync(apiResponse);
+
+
+            var getApprenticeshipVacancyApiRequest = new GetApprenticeshipVacancyApiRequest(query.DeleteVacancyReference, null);
+
+            apiClientMock.Setup(client =>
+                    client.Get<GetApprenticeshipVacancyApiResponse>(
+                        It.Is<GetApprenticeshipVacancyApiRequest>(c =>
+                            c.GetUrl == getApprenticeshipVacancyApiRequest.GetUrl)))
+                .ReturnsAsync(getApprenticeshipVacancyApiResponse);
+
+            // Act
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.SavedVacancies.Should().BeEquivalentTo(apiResponse.SavedVacancies);
+            result.DeletedVacancy.EmployerName.Should().Be(getApprenticeshipVacancyApiResponse.EmployerName);
+            result.DeletedVacancy.VacancyTitle.Should().Be(getApprenticeshipVacancyApiResponse.Title);
+            result.DeletedVacancy.VacancyReference.Should().Be(getApprenticeshipVacancyApiResponse.VacancyReference);
         }
     }
 }
