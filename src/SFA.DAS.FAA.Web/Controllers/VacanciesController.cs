@@ -85,7 +85,7 @@ public class VacanciesController(
 
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [HttpGet]
-    [Route("apprenticeship/{vacancyReference}/save", Name = RouteNames.SaveVacancy)]
+    [Route("apprenticeship/{vacancyReference}/save", Name = RouteNames.AddSavedVacancy)]
     public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference)
     {
         await mediator.Send(new SaveVacancyCommand
