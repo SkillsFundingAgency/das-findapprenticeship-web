@@ -115,15 +115,39 @@
 
 .faa-map__marker {
   height: 40px;
-  width: 30px;
+  width: 40px;
+  position: relative;
+  border-radius: 50%;
+  text-align: center;
+  &.expanded {
+    background: #000;
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    margin-bottom: 12px;
+    svg {
+      display: none;
+    }
+  }
 }
 
 .faa-map__marker > svg {
   height: 40px;
+  width: 31px;
 }
 
 .faa-map__marker.highlight > svg > path {
   fill: #1d70b8;
+}
+
+.faa-map__marker-tail {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 3px;
+    background: #000;
 }
 
 a[href^="http://maps.google.com/maps"],
