@@ -136,12 +136,13 @@ public class WhenCreatingVacanciesViewModel
     }
 
     [Test]
-    [MoqInlineAutoData("1","blablaLane","Morden", "London", "London")]
-    [MoqInlineAutoData("1", "blablaLane", "Morden", null, "Morden")]
-    [MoqInlineAutoData("1", "blablaLane",null,null, "blablaLane")]
-    [MoqInlineAutoData("1", null, null, null, "1")]
+    [MoqInlineAutoData("1","blablaLane","Morden", "London", "EC1", "London, EC1")]
+    [MoqInlineAutoData("1", "blablaLane", "Morden", null, "EC1", "Morden, EC1")]
+    [MoqInlineAutoData("1", "blablaLane",null,null, "EC1", "blablaLane, EC1")]
+    [MoqInlineAutoData("1", null, null, null, "EC1", "1, EC1")]
+    [MoqInlineAutoData("", null, null, null, "EC1", "EC1")]
 
-    public void Then_The_Address_Is_Shown_Correctly(string addressLine1, string? addressLine2, string? addressLine3, string? addressLine4, string expected,
+    public void Then_The_Address_Is_Shown_Correctly(string addressLine1, string? addressLine2, string? addressLine3, string? addressLine4, string postcode, string expected,
         Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService
     )
     {
@@ -149,6 +150,7 @@ public class WhenCreatingVacanciesViewModel
         vacancies.AddressLine2 = addressLine2;
         vacancies.AddressLine3 = addressLine3;
         vacancies.AddressLine4 = addressLine4;
+        vacancies.Postcode = postcode;
 
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 

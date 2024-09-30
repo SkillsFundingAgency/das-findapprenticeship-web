@@ -77,5 +77,17 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             //assert
             result.Should().Be(expectedResult);
         }
+
+        [TestCase("30 Jan 2000", "Posted on 30 January")]
+        [TestCase("01 Jan 2000", "Posted on 1 January")]
+        [TestCase("04 Jun 2024", "Posted on 4 June")]
+        public void GetMapsPostedDate(string startDate, string? expectedResult)
+        {
+            //sut
+            var result = Convert.ToDateTime(startDate).GetMapsPostedDate();
+
+            //assert
+            result.Should().Be(expectedResult);
+        }
     }
 }

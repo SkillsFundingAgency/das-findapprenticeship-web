@@ -806,9 +806,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
       <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
         role.job.company
       }</p>
-      <p class="govuk-!-font-size-16 govuk-hint">${role.job.addressLine1}, ${
-    role.job.postcode
-  }</p>
+      <p class="govuk-!-font-size-16 govuk-hint">${role.job.vacancyLocation}</p>
       <ul class="govuk-list govuk-!-font-size-16">
       ${showDistance(role.job.distance)}
       <li><strong>Training course</strong> ${role.job.apprenticeship}</li>

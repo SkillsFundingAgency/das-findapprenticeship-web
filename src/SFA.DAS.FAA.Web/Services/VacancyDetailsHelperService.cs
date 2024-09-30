@@ -55,5 +55,10 @@ namespace SFA.DAS.FAA.Web.Services
         {
             return startDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture);
         }
+
+        public static string GetMapsPostedDate(this DateTime postedDate)
+        {
+            return $"Posted on {postedDate.ToString("d MMMM", CultureInfo.InvariantCulture)}";
+        }
     }
 }
