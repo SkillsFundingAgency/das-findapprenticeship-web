@@ -771,7 +771,7 @@ FaaMap.prototype.loadMap = async function () {
       content: this.plusMarkerHtml(),
     });
     Marker.addListener("click", () => {
-      this.handlePlusMarkerClick(Marker, group);
+      this.handlePlusMarkerClick(Marker, group, mapRoleDetailsWrap);
       this.map.panTo(group[0].position);
     });
     this.map.markers.push(Marker);
@@ -794,7 +794,7 @@ FaaMap.prototype.loadMap = async function () {
   );
 };
 
-FaaMap.prototype.handlePlusMarkerClick = function (markerElement, group) {
+FaaMap.prototype.handlePlusMarkerClick = function (markerElement, group, mapRoleDetailsWrap) {
   markerElement.content.classList.add("expanded");
   markerElement.zIndex = 1;
 
@@ -807,6 +807,10 @@ FaaMap.prototype.handlePlusMarkerClick = function (markerElement, group) {
         map: this.map,
         position: group[0].position,
         content: this.markerHtml(x, y, a)
+      });
+      Marker.addListener("click", () => {
+        this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+        this.map.panTo(role.position);
       });
      this.map.markers.push(Marker);
     })
