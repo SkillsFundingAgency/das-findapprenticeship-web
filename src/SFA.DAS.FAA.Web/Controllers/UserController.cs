@@ -32,6 +32,9 @@ using SFA.DAS.GovUK.Auth.Models;
 using SFA.DAS.GovUK.Auth.Services;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidateStatus;
+using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
+using SFA.DAS.FAA.Application.Queries.Applications.GetSubmittedApplications;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
@@ -618,6 +621,27 @@ namespace SFA.DAS.FAA.Web.Controllers
         public IActionResult AccountFoundTermsAndConditions()
         {
            return View();
+        }
+
+        [HttpGet]
+        [Route("confirm-account-deletion", Name = RouteNames.ConfirmAccountDelete)]
+        public IActionResult ConfirmAccountDeletion()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("account-deletion-withdraw-applications", Name = RouteNames.AccountDeleteWithDrawApplication)]
+        public async Task<IActionResult> AccountDeletionWithDrawApplications()
+        {
+            var result = await mediator.Send(new GetSubmittedApplicationsQuery((Guid)User.Claims.CandidateId()!)
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+            });
+
+            return result.SubmittedApplications.Count == 0
+                ? RedirectToRoute(RouteNames.AccountDelete)
+                : View((AccountDeletionWithDrawApplicationsViewModel) result);
         }
     }
 }
