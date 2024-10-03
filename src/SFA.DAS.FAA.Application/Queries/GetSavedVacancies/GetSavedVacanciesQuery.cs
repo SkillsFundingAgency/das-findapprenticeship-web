@@ -14,7 +14,7 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
     public class GetSavedVacanciesQueryResult
     {
         public List<SavedVacancy> SavedVacancies { get; set; } = [];
-        public DeletedSavedVacancy DeletedVacancy { get; set; } = new();
+        public DeletedSavedVacancy? DeletedVacancy { get; set; }
 
         public class SavedVacancy
         {
