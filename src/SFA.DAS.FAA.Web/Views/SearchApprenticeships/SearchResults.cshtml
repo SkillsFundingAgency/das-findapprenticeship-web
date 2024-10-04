@@ -6,7 +6,7 @@
     ViewData["Title"] = $"{Model.PageTitle} - Find an apprenticeship - GOV.UK";
 }
 @section BackLink {
-    @if (Model.SelectedRouteIds != null && Model.SelectedRouteIds.Any())
+    @if (Model is { PageBackLinkRoutePath: not null, SelectedRouteIds: not null } && Model.SelectedRouteIds.Any())
     {
         <a class="govuk-back-link" asp-route="@RouteNames.Location" asp-all-route-data="@Model.RouteData">Back</a>
     }

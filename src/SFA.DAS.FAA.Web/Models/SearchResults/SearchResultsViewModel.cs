@@ -52,6 +52,7 @@ public class SearchResultsViewModel : ViewModelBase
 
     public Dictionary<string, string> RouteData { get => GetRouteData(); }
 
+    public string? PageBackLinkRoutePath { get; set; }
 
     private Dictionary<string, string> GetRouteData()
     {
