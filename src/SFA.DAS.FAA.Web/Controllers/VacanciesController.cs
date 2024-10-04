@@ -82,18 +82,4 @@ public class VacanciesController(
 
         return RedirectToAction("Index", "Apply", new { result.ApplicationId });
     }
-
-    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [HttpGet]
-    [Route("apprenticeship/{vacancyReference}/save", Name = RouteNames.AddSavedVacancy)]
-    public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference)
-    {
-        await mediator.Send(new SaveVacancyCommand
-        {
-            VacancyReference = vacancyReference,
-            CandidateId = (Guid)User.Claims.CandidateId()!
-        });
-
-        return RedirectToRoute(RouteNames.Vacancies, new { vacancyReference = vacancyReference });
-    }
 }

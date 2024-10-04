@@ -1,4 +1,5 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Net;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +13,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 
-namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
+namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SavedVacancies
 {
     [TestFixture]
     public class WhenPostingSaveVacancy
@@ -24,9 +25,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
             SaveVacancyCommandResult mediatorResult,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.VacanciesController controller)
+            [Greedy] Web.Controllers.SavedVacanciesController controller)
         {
-            
+
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
@@ -46,6 +47,35 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
             actual!.RouteName.Should().Be(RouteNames.Vacancies);
             actual.RouteValues.Should().NotBeEmpty();
             actual.RouteValues!["VacancyReference"].Should().Be(vacancyReference);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_Query_With_Redirect_Command_Returns_JsonOk_Returned(
+            Guid candidateId,
+            string vacancyReference,
+            SaveVacancyCommandResult mediatorResult,
+            IDateTimeService dateTimeService,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] Web.Controllers.SavedVacanciesController controller)
+        {
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                    }))
+
+                }
+            };
+            mediator.Setup(x => x.Send(It.IsAny<SaveVacancyCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
+
+            var actual = await controller.SaveVacancy(vacancyReference, false) as JsonResult;
+
+            actual!.Value.Should().Be(StatusCodes.Status200OK);
         }
     }
 }
