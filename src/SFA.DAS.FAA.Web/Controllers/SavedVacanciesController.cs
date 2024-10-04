@@ -42,12 +42,9 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            if (redirect)
-            {
-                return RedirectToRoute(RouteNames.Vacancies, new { vacancyReference = vacancyReference });
-            }
-
-            return Accepted();
+            return redirect
+                ? RedirectToRoute(RouteNames.Vacancies, new { vacancyReference })
+                : new JsonResult(StatusCodes.Status200OK);
         }
 
         [HttpGet]
@@ -60,15 +57,12 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            if (redirect)
-            {
-                return RedirectToRoute(RouteNames.SavedVacancies, new
+            return redirect
+                ? RedirectToRoute(RouteNames.SavedVacancies, new
                 {
                     VacancyReference = vacancyReference
-                });
-            }
-
-            return Accepted();
+                })
+                : new JsonResult(StatusCodes.Status200OK);
         }
     }
 }
