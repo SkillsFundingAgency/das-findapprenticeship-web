@@ -5,6 +5,7 @@ using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
@@ -218,7 +219,7 @@ public class SearchApprenticeshipsController(
         viewmodel.SelectedLevelCount = request.LevelIds?.Count ?? 0;
         viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
         viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
-        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
+        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults, new{sort = VacancySort.AgeAsc} )!;
         viewmodel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");

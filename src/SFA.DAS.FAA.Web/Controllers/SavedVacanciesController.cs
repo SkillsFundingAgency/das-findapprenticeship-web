@@ -34,7 +34,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("{vacancyReference}/save", Name = RouteNames.SaveVacancy)]
-        public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference)
+        public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
         {
             await mediator.Send(new SaveVacancyCommand
             {
@@ -42,12 +42,17 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            return RedirectToRoute(RouteNames.Vacancies, new { vacancyReference = vacancyReference });
+            if (redirect)
+            {
+                return RedirectToRoute(RouteNames.Vacancies, new { vacancyReference = vacancyReference });
+            }
+
+            return Accepted();
         }
 
         [HttpGet]
         [Route("{vacancyReference}/delete", Name = RouteNames.DeleteSavedVacancy)]
-        public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference)
+        public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
         {
             await mediator.Send(new DeleteSavedVacancyCommand
             {
@@ -55,10 +60,15 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            return RedirectToRoute(RouteNames.SavedVacancies, new
+            if (redirect)
             {
-                VacancyReference = vacancyReference
-            });
+                return RedirectToRoute(RouteNames.SavedVacancies, new
+                {
+                    VacancyReference = vacancyReference
+                });
+            }
+
+            return Accepted();
         }
     }
 }

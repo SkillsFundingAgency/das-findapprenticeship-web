@@ -58,9 +58,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? CandidatePostcode { get; set; }
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
-
         public string? ApplicationUrl { get; set; }
         public bool IsSavedVacancy { get; set; } = false;
+        public string? ApplicationInstructions { get; set; }
+        
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
             {
@@ -69,7 +70,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 VacancySummary = source.Vacancy?.Description,
                 AnnualWage = source.Vacancy?.WageText,
                 HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
-                Duration = source.Vacancy?.ExpectedDuration,
+                Duration = source.Vacancy?.ExpectedDuration.ToLower(),
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
                 WorkDescription = source.Vacancy?.LongDescription,
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
@@ -108,6 +109,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 IsClosed = source.Vacancy?.IsClosed ?? false,
                 ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
                 ApplicationUrl = !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
+                ApplicationInstructions = source.Vacancy.ApplicationInstructions,
                 GoogleMapsId = googleMapsId,
                 CandidatePostcode = source.Vacancy?.CandidatePostcode,
                 Latitude = source.Vacancy?.Location?.Lat,
@@ -118,7 +120,6 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 IsSavedVacancy = source.Vacancy.IsSavedVacancy,
             };
 
-        
     }
 
     public class Address

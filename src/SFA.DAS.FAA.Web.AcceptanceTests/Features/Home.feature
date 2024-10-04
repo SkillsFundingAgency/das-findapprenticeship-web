@@ -39,7 +39,7 @@ So that it is clear what actions I can take
 	| Field            | Value |
 	| SelectedRouteIds | 1     |
 	Then I am redirected to the following url: /location
-	And the page redirect content includes the following: What is your location?
+	And the page redirect content includes the following: Location
 
 @WireMockServer
 	Scenario: Browse by interests with validation failure
@@ -51,7 +51,7 @@ So that it is clear what actions I can take
 	Scenario: Navigate to the location page
 	When I navigate to the following url: /location
 	Then a http status code of 200 is returned
-	And the page content includes the following: What is your location?
+	And the page content includes the following: Location
 	
 @WireMockServer
 Scenario: Location search no location found
