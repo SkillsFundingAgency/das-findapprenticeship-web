@@ -68,11 +68,6 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
 
             if (string.IsNullOrEmpty(request.DeleteVacancyReference)) return response;
 
-            if (!request.DeleteVacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
-            {
-                request.DeleteVacancyReference = $"VAC{request.DeleteVacancyReference}";
-            }
-
             var getApprenticeshipVacancyApiResponse = await apiClient.Get<GetApprenticeshipVacancyApiResponse>(new GetApprenticeshipVacancyApiRequest(request.DeleteVacancyReference, null));
             response.DeletedVacancy = new GetSavedVacanciesQueryResult.DeletedSavedVacancy
             {
