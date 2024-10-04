@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace SFA.DAS.FAA.Domain.Applications.GetSubmittedApplications
+namespace SFA.DAS.FAA.Domain.User
 {
-    public record GetSubmittedApplicationsApiResponse
+    public record GetAccountDeletionApplicationsToWithdrawApiResponse
     {
         [JsonProperty("submittedApplications")]
         public List<SubmittedApplication> SubmittedApplications { get; set; } = [];

@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Applications.GetSubmittedApplications;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
         public async Task Then_View_Is_Returned(
             Guid candidateId,
             string email,
-            GetSubmittedApplicationsQueryResult response,
+            GetAccountDeletionApplicationsToWithdrawQueryResult response,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] UserController controller)
         {
@@ -39,7 +39,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
                 }
             };
 
-            mediator.Setup(x => x.Send(It.Is<GetSubmittedApplicationsQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            mediator.Setup(x => x.Send(It.Is<GetAccountDeletionApplicationsToWithdrawQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 
             var result = await controller.AccountDeletionWithDrawApplications() as ViewResult;
@@ -64,7 +64,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
         public async Task Then_Redirect_Is_Returned_As_Expected(
             Guid candidateId,
             string email,
-            GetSubmittedApplicationsQueryResult response,
+            GetAccountDeletionApplicationsToWithdrawQueryResult response,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] UserController controller)
         {
@@ -82,7 +82,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
                 }
             };
 
-            mediator.Setup(x => x.Send(It.Is<GetSubmittedApplicationsQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
+            mediator.Setup(x => x.Send(It.Is<GetAccountDeletionApplicationsToWithdrawQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 
             var result = await controller.AccountDeletionWithDrawApplications() as RedirectToRouteResult;

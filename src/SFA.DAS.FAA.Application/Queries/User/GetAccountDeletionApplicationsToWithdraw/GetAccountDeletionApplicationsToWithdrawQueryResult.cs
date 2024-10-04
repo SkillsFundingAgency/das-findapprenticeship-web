@@ -1,15 +1,15 @@
-﻿using SFA.DAS.FAA.Domain.Applications.GetSubmittedApplications;
-using SFA.DAS.FAA.Domain.Enums;
+﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.User;
 
-namespace SFA.DAS.FAA.Application.Queries.Applications.GetSubmittedApplications
+namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw
 {
-    public record GetSubmittedApplicationsQueryResult
+    public record GetAccountDeletionApplicationsToWithdrawQueryResult
     {
         public List<Application> SubmittedApplications { get; set; } = [];
 
-        public static implicit operator GetSubmittedApplicationsQueryResult(GetSubmittedApplicationsApiResponse source)
+        public static implicit operator GetAccountDeletionApplicationsToWithdrawQueryResult(GetAccountDeletionApplicationsToWithdrawApiResponse source)
         {
-            return new GetSubmittedApplicationsQueryResult
+            return new GetAccountDeletionApplicationsToWithdrawQueryResult
             {
                 SubmittedApplications = source.SubmittedApplications.Select(app => (Application)app).ToList()
             };
@@ -28,7 +28,7 @@ namespace SFA.DAS.FAA.Application.Queries.Applications.GetSubmittedApplications
             public DateTime ClosingDate { get; set; }
             public ApplicationStatus Status { get; set; }
 
-            public static implicit operator Application(GetSubmittedApplicationsApiResponse.SubmittedApplication source)
+            public static implicit operator Application(GetAccountDeletionApplicationsToWithdrawApiResponse.SubmittedApplication source)
             {
                 return new Application
                 {

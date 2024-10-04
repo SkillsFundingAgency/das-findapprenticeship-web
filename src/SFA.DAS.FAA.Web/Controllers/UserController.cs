@@ -18,7 +18,7 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
 using SFA.DAS.FAA.Application.Commands.MigrateData;
-using SFA.DAS.FAA.Application.Queries.Applications.GetSubmittedApplications;
+using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
@@ -523,7 +523,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = accountDetails.Postcode,
                 Uprn = accountDetails.Uprn,
                 HasAnsweredEqualityQuestions = accountDetails.HasAnsweredEqualityQuestions,
-                FeatureToggle = faaConfiguration.Value.FeatureToggle,
+                FeatureToggle = faaConfiguration.Value.AccountDeletionFeature,
                 CandidatePreferences = accountDetails.CandidatePreferences.Select(cp => new SettingsViewModel.CandidatePreference
                 {
                     Meaning = cp.Meaning,
@@ -640,7 +640,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("account-deletion-withdraw-applications", Name = RouteNames.AccountDeleteWithDrawApplication)]
         public async Task<IActionResult> AccountDeletionWithDrawApplications()
         {
-            var result = await mediator.Send(new GetSubmittedApplicationsQuery((Guid)User.Claims.CandidateId()!)
+            var result = await mediator.Send(new GetAccountDeletionApplicationsToWithdrawQuery((Guid)User.Claims.CandidateId()!)
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
             });

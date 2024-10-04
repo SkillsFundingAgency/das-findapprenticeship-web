@@ -1,5 +1,5 @@
-﻿using SFA.DAS.FAA.Application.Queries.Applications.GetSubmittedApplications;
-using System.Globalization;
+﻿using System.Globalization;
+using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 
 namespace SFA.DAS.FAA.Web.Models.User
 {
@@ -7,7 +7,7 @@ namespace SFA.DAS.FAA.Web.Models.User
     {
         public List<Application> SubmittedApplications { get; set; } = [];
 
-        public static implicit operator AccountDeletionWithDrawApplicationsViewModel(GetSubmittedApplicationsQueryResult source)
+        public static implicit operator AccountDeletionWithDrawApplicationsViewModel(GetAccountDeletionApplicationsToWithdrawQueryResult source)
         {
             return new AccountDeletionWithDrawApplicationsViewModel
             {
@@ -24,7 +24,7 @@ namespace SFA.DAS.FAA.Web.Models.User
             public string? Address { get; set; }
             public string? SubmittedDate { get; set; }
 
-            public static implicit operator Application(GetSubmittedApplicationsQueryResult.Application source)
+            public static implicit operator Application(GetAccountDeletionApplicationsToWithdrawQueryResult.Application source)
             {
                 return new Application
                 {
