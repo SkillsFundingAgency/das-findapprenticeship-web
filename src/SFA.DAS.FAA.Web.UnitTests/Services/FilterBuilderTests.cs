@@ -383,7 +383,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
         }
 
-        [TestCase(null,"Coventry (Across England)")]
+        [TestCase(null,"Coventry (across England)")]
         [TestCase(10,"Coventry (within 10 miles)")]
         public void Then_Where_With_Distance_Search_Term_Is_Added_To_Filter_List(int? distance, string expected)
         {

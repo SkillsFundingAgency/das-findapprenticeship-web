@@ -448,7 +448,12 @@
                         create one at the same time as applying for this apprenticeship.</p>
                     if (!string.IsNullOrEmpty(Model.ApplicationUrl))
                     {
-                        <p class="govuk-body">After signing in, you’ll apply for this apprenticeship on the company's website.</p> 
+                        <p class="govuk-body">After signing in, you’ll apply for this apprenticeship on the company's website.</p>
+                        if (!string.IsNullOrEmpty(Model.ApplicationInstructions))
+                        {
+                            <h3>Company’s application instructions </h3>
+                            <p>@Model.ApplicationInstructions</p>
+                        }
                     }
                     <form class="form" method="post">
 
@@ -461,11 +466,18 @@
                 }
                 else
                 {
-                    if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted } or
+                    if (Model.ApplicationDetails is 
                         {
-                            Status:
-                    ApplicationStatus.Successful
-                        } or { Status: ApplicationStatus.Unsuccessful })
+                            Status: ApplicationStatus.Submitted
+                        } 
+                        or
+                        {
+                            Status: ApplicationStatus.Successful
+                        } 
+                        or
+                        {
+                            Status: ApplicationStatus.Unsuccessful
+                        })
                     {
                     }
                     else
@@ -475,6 +487,12 @@
                         
                         if (!string.IsNullOrEmpty(Model.ApplicationUrl))
                         {
+                            if (!string.IsNullOrEmpty(Model.ApplicationInstructions))
+                            {
+                                <h3>Company’s application instructions </h3>
+                                <p>@Model.ApplicationInstructions</p>
+                            }
+                            
                             <a href="@Model.ApplicationUrl" class="govuk-button">Apply on company’s website</a>
                         }
                         else

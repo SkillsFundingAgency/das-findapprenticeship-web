@@ -18,7 +18,7 @@
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <span class="govuk-caption-l">Question 2 of 2</span>
-                            <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
+                            <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Location</h1>
                         </legend>
                         <span asp-validation-for="NationalSearch" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" asp-for="@Model.Distance">
-                                        Distance you can travel
+                                        Within
                                     </label>
                                     <select class="govuk-select" asp-for="@Model.Distance">
                                         <option value="2">2 miles</option>
@@ -68,7 +68,7 @@
                     </fieldset>
                 </div>
                 <div class="govuk-button-group">
-                    <button class="govuk-button" data-module="govuk-button">Search apprenticeships</button>
+                    <button class="govuk-button" data-module="govuk-button">Search</button>
                 </div>
             </form>
         </div>
