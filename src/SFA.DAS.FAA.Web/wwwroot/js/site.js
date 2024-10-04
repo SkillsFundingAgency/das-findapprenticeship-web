@@ -153,7 +153,6 @@ if (jsSelectChangeSubmitForm) {
   });
 }
 
-
 // Save to favourites
 
 function Favourites(container) {
@@ -167,27 +166,27 @@ Favourites.prototype.init = function () {
     return;
   }
   this.addLink.addEventListener("click", async (e) => {
-      e.preventDefault();
-      await this.submit(this.addLink, "add");
+    e.preventDefault();
+    await this.submit(this.addLink, "add");
   });
   this.deleteLink.addEventListener("click", async (e) => {
-      e.preventDefault();
-      await this.submit(this.deleteLink, "delete");
+    e.preventDefault();
+    await this.submit(this.deleteLink, "delete");
   });
-}
+};
 
 Favourites.prototype.submit = async function (link, action) {
-    const url = link.href;
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("X-Requested-With", "XMLHttpRequest");
-    await fetch(url, {
-        method: "GET",
-    })
+  const url = link.href + "?redirect=false";
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("X-Requested-With", "XMLHttpRequest");
+  await fetch(url, {
+    method: "GET",
+  })
     .then((response) => {
-    if (response.ok) {
+      if (response.ok) {
         return response.json();
-    }
+      }
       throw new Error("Something went wrong");
     })
     .then((data) => {
@@ -196,7 +195,7 @@ Favourites.prototype.submit = async function (link, action) {
     .catch((error) => {
       console.error("Error: ", error);
     });
-}
+};
 
 Favourites.prototype.updateUI = function (action) {
   if (action === "add") {
@@ -208,7 +207,7 @@ Favourites.prototype.updateUI = function (action) {
     this.deleteLink.ariaHidden = true;
     this.container.classList.remove("faa-save-vacancy--saved");
   }
-}
+};
 
 const addToFavourites = document.querySelectorAll("[data-favourite]");
 
