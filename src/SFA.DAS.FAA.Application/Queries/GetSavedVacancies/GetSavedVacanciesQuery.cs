@@ -14,7 +14,7 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
     public class GetSavedVacanciesQueryResult
     {
         public List<SavedVacancy> SavedVacancies { get; set; } = [];
-        public DeletedSavedVacancy DeletedVacancy { get; set; } = new();
+        public DeletedSavedVacancy? DeletedVacancy { get; set; }
 
         public class SavedVacancy
         {
@@ -67,11 +67,6 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
                 new GetSavedVacanciesApiRequest(request.CandidateId)) ?? new GetSavedVacanciesQueryResult();
 
             if (string.IsNullOrEmpty(request.DeleteVacancyReference)) return response;
-
-            if (!request.DeleteVacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
-            {
-                request.DeleteVacancyReference = $"VAC{request.DeleteVacancyReference}";
-            }
 
             var getApprenticeshipVacancyApiResponse = await apiClient.Get<GetApprenticeshipVacancyApiResponse>(new GetApprenticeshipVacancyApiRequest(request.DeleteVacancyReference, null));
             response.DeletedVacancy = new GetSavedVacanciesQueryResult.DeletedSavedVacancy

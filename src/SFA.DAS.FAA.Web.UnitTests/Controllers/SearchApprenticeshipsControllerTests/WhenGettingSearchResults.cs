@@ -63,8 +63,10 @@ public class WhenGettingSearchResults
         var mediator = new Mock<IMediator>();
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Setup(x => x.RouteUrl(It.Is<UrlRouteContext>(c=>c.RouteName!.Equals(RouteNames.SearchResults))))
             .Returns("https://baseUrl");
+        
+        
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
@@ -150,7 +152,7 @@ public class WhenGettingSearchResults
                     break;
                 case 1:
                     actualModel.PageTitle.Should()
-                        .Be($"{actualModel.Total} Vacancy found");
+                            .Be($"{actualModel.Total} Vacancy found");
                     break;
                 default:
                     actualModel.PageTitle.Should()
@@ -168,6 +170,7 @@ public class WhenGettingSearchResults
             }
 
             actualModel.MapId.Should().Be(mapId);
+            actualModel.ClearSelectedFiltersLink.Should().Be("https://baseUrl");
         }
     }
 

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
-using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.GetSavedVacancies;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -30,19 +29,6 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var viewModel = IndexViewModel.Map(result, dateTimeService, sortOrder);
             return View(viewModel);
-        }
-
-        [HttpGet]
-        [Route("{vacancyReference}/save", Name = RouteNames.SaveVacancy)]
-        public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference)
-        {
-            await mediator.Send(new SaveVacancyCommand
-            {
-                VacancyReference = vacancyReference,
-                CandidateId = (Guid)User.Claims.CandidateId()!
-            });
-
-            return RedirectToRoute(RouteNames.Vacancies, new { vacancyReference = vacancyReference });
         }
 
         [HttpGet]

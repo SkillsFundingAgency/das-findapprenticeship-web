@@ -4,7 +4,7 @@
     ViewData["Title"] = "Saved vacancies - Find an apprenticeship - GOV.UK";
 }
 
-@if (Model is {ShowDeletedVacancyConfirmationMessage: true, DeletedVacancy: not null})
+@if (Model is { ShowDeletedVacancyConfirmationMessage: true, DeletedVacancy: not null })
 {
     <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
         <div class="govuk-notification-banner__header">

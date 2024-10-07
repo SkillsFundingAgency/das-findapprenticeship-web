@@ -34,9 +34,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
 
             // Assert
             result.SavedVacancies.Should().BeEquivalentTo(apiResponse.SavedVacancies);
-            result.DeletedVacancy.EmployerName.Should().BeNull();
-            result.DeletedVacancy.VacancyReference.Should().BeNull();
-            result.DeletedVacancy.VacancyTitle.Should().BeNull();
+            result.DeletedVacancy.Should().BeNull();
 
             apiClientMock.Verify(client =>
                 client.Get<GetApprenticeshipVacancyApiResponse>(

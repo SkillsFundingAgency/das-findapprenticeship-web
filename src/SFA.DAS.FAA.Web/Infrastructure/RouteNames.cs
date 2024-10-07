@@ -8,7 +8,6 @@ public static class RouteNames
     public const string SearchResults = "search-results";
     public const string MapSearchResults = "map-search-results";
     public const string Vacancies = "vacancies";
-    public const string AddSavedVacancy = nameof(AddSavedVacancy);
     public const string SaveVacancy = nameof(SaveVacancy);
     public const string DeleteSavedVacancy = nameof(DeleteSavedVacancy);
     public const string VacanciesReference = "vacancies-reference";
@@ -43,6 +42,10 @@ public static class RouteNames
     public const string EmailAlreadyMigrated = "email-already-migrated";
     public const string AccountFound = "account-found";
     public const string AccountFoundTermsAndConditions = "account-found-terms-and-conditions";
+    public const string SaveVacancyFromDetailsPage = "save-vacancy-details-page";
+    public const string DeleteSavedVacancyFromDetailsPage = "delete-vacancy-details-page";
+    public const string SaveVacancyFromSearchResultsPage = "save-vacancy-search-results-page";
+    public const string DeleteSavedVacancyFromSearchResultsPage = "delete-vacancy-search-results-page";
 
     public static class Applications
     {
