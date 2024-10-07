@@ -12,5 +12,6 @@ namespace SFA.DAS.FAA.Web.Models.SearchResults
         [FromQuery] public int? PageNumber { get; set; }
         [FromQuery] public string? Sort {get; set; }
         [FromQuery] public bool DisabilityConfident { get; set; }
+        [FromQuery] public string? RoutePath { get; set; }
     }
 }

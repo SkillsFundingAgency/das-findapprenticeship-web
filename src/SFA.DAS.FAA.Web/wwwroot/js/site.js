@@ -727,7 +727,24 @@ FaaMap.prototype.loadMap = async function () {
 
   const activeMapMarker = localStorage.getItem("faaMapActiveRole");
 
-  for (const role of this.mapData) {
+  const duplicates = this.mapData.reduce((acc, current, index, array) => {
+    if (array.findIndex(item => item.position.lat === current.position.lat && item.position.lng === current.position.lng) !== index && !acc.find(item => item.position.lat === current.position.lat && item.position.lng === current.position.lng)) {
+      acc.push(current);
+    }
+    return acc;
+  }, []);
+
+  const duplicatedGroups = []
+  duplicates.forEach((duplicatedGroup) => {
+      const array = this.mapData.filter((item) => item.position.lat === duplicatedGroup.position.lat && item.position.lng === duplicatedGroup.position.lng);
+    duplicatedGroups.push(array);
+  })
+
+  const duplicatesRemoved = this.mapData.filter((item) => {
+    return !duplicates.some((duplicatedGroup) => duplicatedGroup.position.lat === item.position.lat && duplicatedGroup.position.lng === item.position.lng);
+  })
+
+  for (const role of duplicatesRemoved) {
     const Marker = new google.maps.marker.AdvancedMarkerElement({
       map: this.map,
       position: role.position,
@@ -737,7 +754,7 @@ FaaMap.prototype.loadMap = async function () {
       this.toggleMarker(Marker, role, mapRoleDetailsWrap);
       this.map.panTo(role.position);
     });
-    this.map.markers.push(Marker);
+   this.map.markers.push(Marker);
 
     if (activeMapMarker === role.job.id.toString()) {
       this.toggleMarker(Marker, role, mapRoleDetailsWrap);
@@ -745,6 +762,26 @@ FaaMap.prototype.loadMap = async function () {
     }
 
     bounds.extend(role.position);
+  }
+
+  for (const group of duplicatedGroups) {
+    const Marker = new google.maps.marker.AdvancedMarkerElement({
+      map: this.map,
+      position: group[0].position,
+      content: this.plusMarkerHtml(),
+    });
+    Marker.addListener("click", () => {
+      this.handlePlusMarkerClick(Marker, group, mapRoleDetailsWrap);
+      this.map.panTo(group[0].position);
+    });
+    this.map.markers.push(Marker);
+
+    if (activeMapMarker === group[0].job.id.toString()) {
+      this.toggleMarker(Marker, group, mapRoleDetailsWrap);
+      this.map.panTo(group[0].position);
+    }
+
+    bounds.extend(group[0].position);
   }
 
   this.map.fitBounds(bounds);
@@ -755,6 +792,50 @@ FaaMap.prototype.loadMap = async function () {
   this.map.controls[google.maps.ControlPosition.INLINE_END_BLOCK_END].push(
     mapRoleDetailsWrap
   );
+};
+
+FaaMap.prototype.handlePlusMarkerClick = function (markerElement, group, mapRoleDetailsWrap) {
+  markerElement.content.classList.add("expanded");
+  markerElement.zIndex = 1;
+
+  const angle = 360 / group.length;
+    group.forEach((role, index) => {
+      const a = Math.round(angle * index)
+      const x = Math.round(100 * Math.cos(a * (Math.PI/180)));
+      const y = Math.round(100 * Math.sin(a * (Math.PI/180)));
+      const Marker = new google.maps.marker.AdvancedMarkerElement({
+        map: this.map,
+        position: group[0].position,
+        content: this.markerHtml(x, y, a)
+      });
+      Marker.addListener("click", () => {
+        this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+        this.map.panTo(role.position);
+      });
+     this.map.markers.push(Marker);
+    })
+}
+
+FaaMap.prototype.markerHtml = function (marginLeft = 0, marginTop = 0, angle = 0) {
+  const pinSvgString =
+      '<svg viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<path fill="#000" stroke="black" stroke-width="1.5" d="M19.25 9.75C19.25 10.7082 18.9155 11.923 18.3178 13.3034C17.7257 14.671 16.9022 16.1408 15.9852 17.591C14.152 20.4903 11.9832 23.2531 10.6551 24.8737C10.3145 25.2858 9.68536 25.2857 9.34482 24.8735C8.0167 23.2529 5.8479 20.4903 4.01478 17.591C3.09784 16.1408 2.27428 14.671 1.68215 13.3034C1.08446 11.923 0.75 10.7082 0.75 9.75C0.75 4.79919 4.87537 0.75 10 0.75C15.1246 0.75 19.25 4.79919 19.25 9.75ZM12.8806 6.9149C12.1135 6.16693 11.0769 5.75 10 5.75C8.92307 5.75 7.88655 6.16693 7.1194 6.9149C6.35161 7.6635 5.91667 8.68292 5.91667 9.75C5.91667 10.8171 6.35161 11.8365 7.1194 12.5851C7.88655 13.3331 8.92307 13.75 10 13.75C11.0769 13.75 12.1135 13.3331 12.8806 12.5851C13.6484 11.8365 14.0833 10.8171 14.0833 9.75C14.0833 8.68292 13.6484 7.6635 12.8806 6.9149Z" />' +
+      "</svg>";
+  const content = document.createElement("div");
+  content.classList.add("faa-map__marker");
+  content.innerHTML = pinSvgString;
+
+
+  if (marginLeft !== 0 || marginTop !== 0 || angle !== 0) {
+    content.style.transform = `translate(${marginLeft}px, ${marginTop}px)`;
+    const xOffset = (marginLeft * -1 + 100) / 2 - 100;
+    const tail = document.createElement("span");
+    tail.classList.add("faa-map__marker-tail");
+    tail.style.transform = `rotate(${angle}deg)` + `translate(${xOffset}px, ${marginTop / 2}px)`;
+    content.appendChild(tail);
+  }
+
+  return content;
 };
 
 FaaMap.prototype.showRoleOverLay = function (role, panel) {
@@ -841,11 +922,16 @@ FaaMap.prototype.toggleMarker = function (markerElement, role, panel) {
   this.showRoleOverLay(role, panel);
 };
 
-FaaMap.prototype.markerHtml = function () {
+
+
+FaaMap.prototype.plusMarkerHtml = function () {
   const pinSvgString =
-    '<svg viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<path fill="#000" stroke="black" stroke-width="1.5" d="M19.25 9.75C19.25 10.7082 18.9155 11.923 18.3178 13.3034C17.7257 14.671 16.9022 16.1408 15.9852 17.591C14.152 20.4903 11.9832 23.2531 10.6551 24.8737C10.3145 25.2858 9.68536 25.2857 9.34482 24.8735C8.0167 23.2529 5.8479 20.4903 4.01478 17.591C3.09784 16.1408 2.27428 14.671 1.68215 13.3034C1.08446 11.923 0.75 10.7082 0.75 9.75C0.75 4.79919 4.87537 0.75 10 0.75C15.1246 0.75 19.25 4.79919 19.25 9.75ZM12.8806 6.9149C12.1135 6.16693 11.0769 5.75 10 5.75C8.92307 5.75 7.88655 6.16693 7.1194 6.9149C6.35161 7.6635 5.91667 8.68292 5.91667 9.75C5.91667 10.8171 6.35161 11.8365 7.1194 12.5851C7.88655 13.3331 8.92307 13.75 10 13.75C11.0769 13.75 12.1135 13.3331 12.8806 12.5851C13.6484 11.8365 14.0833 10.8171 14.0833 9.75C14.0833 8.68292 13.6484 7.6635 12.8806 6.9149Z" />' +
-    "</svg>";
+      '<svg viewBox="0 0 44 57" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<g>' +
+        '<path fill="#000" d="M22,0C9.9,0,0,9.6,0,21.4s13.4,27.1,19.3,34.3c1.4,1.7,4,1.7,5.4,0,5.9-7.2,19.3-24.5,19.3-34.3S34.1,0,22,0Z"/>' +
+        '<polygon fill="#fff" points="34 19 25 19 25 10 19 10 19 19 10 19 10 25 19 25 19 34 25 34 25 25 34 25 34 19"/>' +
+      '</g>' +
+    '</svg>';
   const content = document.createElement("div");
   content.classList.add("faa-map__marker");
   content.innerHTML = pinSvgString;

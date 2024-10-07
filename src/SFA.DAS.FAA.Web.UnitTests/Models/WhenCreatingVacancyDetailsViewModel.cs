@@ -23,7 +23,7 @@ public class WhenCreatingVacancyDetailsViewModel
             VacancySummary = source.Vacancy?.Description,
             AnnualWage = source.Vacancy?.WageText,
             HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
-            Duration = source.Vacancy?.ExpectedDuration,
+            Duration = source.Vacancy?.ExpectedDuration!.ToLower(),
             PositionsAvailable = source.Vacancy?.NumberOfPositions,
             WorkDescription = source.Vacancy?.LongDescription,
             ThingsToConsider = source.Vacancy?.ThingsToConsider,
