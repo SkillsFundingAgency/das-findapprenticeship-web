@@ -42,6 +42,8 @@ public static class RouteNames
     public const string EmailAlreadyMigrated = "email-already-migrated";
     public const string AccountFound = "account-found";
     public const string AccountFoundTermsAndConditions = "account-found-terms-and-conditions";
+    public const string SaveVacancyFromDetailsPage = "save-vacancy-details-page";
+    public const string DeleteSavedVacancyFromDetailsPage = "delete-vacancy-details-page";
 
     public static class Applications
     {

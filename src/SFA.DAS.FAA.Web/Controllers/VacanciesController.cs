@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Commands.Apply;
+using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Authentication;
@@ -81,5 +82,35 @@ public class VacanciesController(
         });
 
         return RedirectToAction("Index", "Apply", new { result.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apprenticeship/{vacancyReference}/save", Name = RouteNames.SaveVacancyFromDetailsPage)]
+    public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    {
+        await mediator.Send(new SaveVacancyCommand
+        {
+            VacancyReference = vacancyReference,
+            CandidateId = (Guid)User.Claims.CandidateId()!
+        });
+
+        return redirect
+            ? RedirectToRoute(RouteNames.Vacancies, new { vacancyReference })
+            : new JsonResult(StatusCodes.Status200OK);
+    }
+
+    [HttpGet]
+    [Route("apprenticeship/{vacancyReference}/delete", Name = RouteNames.DeleteSavedVacancyFromDetailsPage)]
+    public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    {
+        await mediator.Send(new DeleteSavedVacancyCommand
+        {
+            VacancyReference = vacancyReference,
+            CandidateId = (Guid)User.Claims.CandidateId()!
+        });
+
+        return redirect
+            ? RedirectToRoute(RouteNames.Vacancies, new { vacancyReference })
+            : new JsonResult(StatusCodes.Status200OK);
     }
 }
