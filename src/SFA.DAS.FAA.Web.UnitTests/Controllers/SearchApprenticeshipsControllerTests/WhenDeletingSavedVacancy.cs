@@ -38,7 +38,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerT
                 }
             };
 
-            var actual = await controller.DeleteSavedVacancy(vacancyReference, true) as RedirectToRouteResult;
+            var actual = await controller.SearchResultsDeleteSavedVacancy(vacancyReference, true) as RedirectToRouteResult;
 
             actual!.RouteName.Should().Be(RouteNames.SearchResults);
 

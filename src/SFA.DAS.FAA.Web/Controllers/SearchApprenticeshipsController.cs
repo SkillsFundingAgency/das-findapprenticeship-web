@@ -276,7 +276,7 @@ public class SearchApprenticeshipsController(
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("search-results/save/{vacancyReference}", Name = RouteNames.SaveVacancyFromSearchResultsPage)]
-    public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    public async Task<IActionResult> SearchResultsSaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new SaveVacancyCommand
         {
@@ -292,7 +292,7 @@ public class SearchApprenticeshipsController(
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("search-results/delete/{vacancyReference}", Name = RouteNames.DeleteSavedVacancyFromSearchResultsPage)]
-    public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    public async Task<IActionResult> SearchResultsDeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new DeleteSavedVacancyCommand
         {

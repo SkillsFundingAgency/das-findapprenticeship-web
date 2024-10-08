@@ -41,7 +41,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerT
             mediator.Setup(x => x.Send(It.IsAny<SaveVacancyCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
 
-            var actual = await controller.SaveVacancy(vacancyReference) as RedirectToRouteResult;
+            var actual = await controller.SearchResultsSaveVacancy(vacancyReference) as RedirectToRouteResult;
 
             actual!.RouteName.Should().Be(RouteNames.SearchResults);
         }
@@ -70,7 +70,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerT
             mediator.Setup(x => x.Send(It.IsAny<SaveVacancyCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
 
-            var actual = await controller.SaveVacancy(vacancyReference, false) as JsonResult;
+            var actual = await controller.SearchResultsSaveVacancy(vacancyReference, false) as JsonResult;
 
             actual!.Value.Should().Be(StatusCodes.Status200OK);
         }
