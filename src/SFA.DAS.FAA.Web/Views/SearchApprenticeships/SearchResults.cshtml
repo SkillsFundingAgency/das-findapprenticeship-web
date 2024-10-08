@@ -6,7 +6,7 @@
     ViewData["Title"] = $"{Model.PageTitle} - Find an apprenticeship - GOV.UK";
 }
 @section BackLink {
-    @if (Model.SelectedRouteIds != null && Model.SelectedRouteIds.Any())
+    @if (Model is { PageBackLinkRoutePath: not null, SelectedRouteIds: not null } && Model.SelectedRouteIds.Any())
     {
         <a class="govuk-back-link" asp-route="@RouteNames.Location" asp-all-route-data="@Model.RouteData">Back</a>
     }
@@ -55,7 +55,7 @@
                                 <option value="20" selected="@(Model.Distance == 20)">20 miles</option>
                                 <option value="30" selected="@(Model.Distance == 30)">30 miles</option>
                                 <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
-                                <option value="all" selected="@(Model.Distance == null)">Across England</option>
+                                <option value="all" selected="@(Model.Distance == null)">across England</option>
                             </select>
                         </div>
                         <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
@@ -179,11 +179,11 @@
                     <div class="faa-search-results-sort">
                         <label class="govuk-label faa-search-results-sort__label" for="sort-results">Sort results</label>
                         <select class="govuk-select faa-search-results-sort__select" id="sort-results" name="sort">
+                            <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Nearest first</option>
                             <option value="AgeAsc" selected="@(Model.Sort == "AgeAsc")">Most recent</option>
-                            <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Distance</option>
-                            <option value="ClosingAsc" selected="@(Model.Sort == "ClosingAsc")">Closing soon</option>
-                            <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Salary high to low</option>
-                            <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")02">Salary low to high</option>
+                            <option value="ClosingAsc" selected="@(Model.Sort == "ClosingAsc")">Closing soonest</option>
+                            <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Annual wage (high to low)</option>
+                            <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")">Annual wage (low to high)</option>
                         </select>
                     </div>
                 </div>

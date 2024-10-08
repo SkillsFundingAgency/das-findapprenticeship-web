@@ -1,10 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
@@ -132,8 +134,13 @@ public class SearchApprenticeshipsController(
             return View(model);
         }
 
-        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.SearchTerm : null, distance = model.Distance });
-
+        return RedirectToRoute(RouteNames.SearchResults, new
+        {
+            routeIds = model.SelectedRouteIds,
+            location = model.NationalSearch is null or false ? model.SearchTerm : null,
+            distance = model.Distance,
+            routePath = Constants.SearchResultRoutePath.Location
+        });
     }
 
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
@@ -218,12 +225,14 @@ public class SearchApprenticeshipsController(
         viewmodel.SelectedLevelCount = request.LevelIds?.Count ?? 0;
         viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
         viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
-        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults)!;
+        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults, new{sort = VacancySort.AgeAsc} )!;
         viewmodel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
         viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
         viewmodel.PageTitle = GetPageTitle(viewmodel);
+
+        viewmodel.PageBackLinkRoutePath = request.RoutePath; 
 
         return View(viewmodel);
     }
