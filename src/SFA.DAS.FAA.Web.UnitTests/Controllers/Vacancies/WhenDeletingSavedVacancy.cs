@@ -39,7 +39,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
                 }
             };
 
-            var actual = await controller.DeleteSavedVacancy(vacancyReference, true) as RedirectToRouteResult;
+            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyReference, true) as RedirectToRouteResult;
 
             actual!.RouteName.Should().Be(RouteNames.Vacancies);
             actual.RouteValues.Should().NotBeEmpty();
@@ -69,7 +69,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
                 }
             };
 
-            var actual = await controller.DeleteSavedVacancy(vacancyReference, false) as JsonResult;
+            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyReference, false) as JsonResult;
 
             actual!.Value.Should().Be(StatusCodes.Status200OK);
 

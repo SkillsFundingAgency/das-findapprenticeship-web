@@ -66,7 +66,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerT
                 }
             };
 
-            var actual = await controller.DeleteSavedVacancy(vacancyReference, false) as JsonResult;
+            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyReference, false) as JsonResult;
 
             actual!.Value.Should().Be(StatusCodes.Status200OK);
 

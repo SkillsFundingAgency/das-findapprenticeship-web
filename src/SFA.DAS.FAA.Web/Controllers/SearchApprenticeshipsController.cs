@@ -273,9 +273,9 @@ public class SearchApprenticeshipsController(
         return Json(model);
     }
 
-    [HttpGet]
+    [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("search-results/{vacancyReference}/save", Name = RouteNames.SaveVacancyFromSearchResultsPage)]
+    [Route("search-results/save/{vacancyReference}", Name = RouteNames.SaveVacancyFromSearchResultsPage)]
     public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new SaveVacancyCommand
@@ -289,9 +289,9 @@ public class SearchApprenticeshipsController(
             : new JsonResult(StatusCodes.Status200OK);
     }
 
-    [HttpGet]
+    [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("search-results/{vacancyReference}/delete", Name = RouteNames.DeleteSavedVacancyFromSearchResultsPage)]
+    [Route("search-results/delete/{vacancyReference}", Name = RouteNames.DeleteSavedVacancyFromSearchResultsPage)]
     public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new DeleteSavedVacancyCommand
