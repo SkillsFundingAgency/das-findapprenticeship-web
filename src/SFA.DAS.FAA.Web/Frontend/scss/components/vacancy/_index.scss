@@ -48,6 +48,12 @@
   display: flex;
   align-items: center;
   flex-direction: row;
+  background: none;
+  border: none;
+  padding: 0;
+  color: $govuk-link-colour;
+  cursor: pointer;
+  @include govuk-font-size(16);
   @include govuk-media-query(tablet) {
     margin-right: 15px;
   }
@@ -78,6 +84,24 @@
   .faa-save-vacancy__link--delete {
     display: flex;
     pointer-events: auto;
+  }
+}
+
+.faa-search-result-header {
+  display: flex;
+  gap: 15px;
+  flex-direction: row;
+  .faa-save-vacancy {
+    flex-basis: 20px;
+    margin-left: auto;
+    .faa-vacancy-actions__link {
+      margin-right: 0;
+      .faa-vacancy-actions__icon {
+        margin: 0;
+        width: 20px;
+        max-height: none;
+      }
+    }
   }
 }
 
