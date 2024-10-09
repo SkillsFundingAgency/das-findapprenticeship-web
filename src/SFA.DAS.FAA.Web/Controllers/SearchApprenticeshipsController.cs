@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
@@ -137,8 +138,13 @@ public class SearchApprenticeshipsController(
             return View(model);
         }
 
-        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.SearchTerm : null, distance = model.Distance });
-
+        return RedirectToRoute(RouteNames.SearchResults, new
+        {
+            routeIds = model.SelectedRouteIds,
+            location = model.NationalSearch is null or false ? model.SearchTerm : null,
+            distance = model.Distance,
+            routePath = Constants.SearchResultRoutePath.Location
+        });
     }
 
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
@@ -229,6 +235,8 @@ public class SearchApprenticeshipsController(
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
         viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
         viewmodel.PageTitle = GetPageTitle(viewmodel);
+
+        viewmodel.PageBackLinkRoutePath = request.RoutePath; 
 
         return View(viewmodel);
     }
