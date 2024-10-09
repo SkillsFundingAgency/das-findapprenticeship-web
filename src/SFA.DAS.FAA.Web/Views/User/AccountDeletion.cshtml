@@ -1,0 +1,52 @@
+﻿@model SFA.DAS.FAA.Web.Models.User.AccountDeletionViewModel;
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Confirm your account deletion – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(Model.PageBackLink)">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ValidationSummary" />
+        <h1 class="govuk-heading-l">Confirm your account deletion</h1>
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-visually-hidden">Warning</span>
+                You'll no longer be able to view your saved vacancies and application history.
+                @if(Model.IsAnyOutstandingApplications)
+                {
+                    <span>Your outstanding applications will be withdrawn.</span>
+                }
+            </strong>
+        </div>
+        <div class="govuk-!-padding-bottom-3"></div>
+        <form class="form" method="post">
+            <input asp-for="JourneyPath" type="hidden"/>
+            <div class="govuk-form-group">
+                <h1 class="govuk-label-wrapper">
+                    <label class="govuk-label govuk-label--m">
+                        Confirm your account deletion
+                    </label>
+                </h1>
+                <div id="account-number-hint" class="govuk-hint">
+                    Enter your email address to delete your Find an apprenticeship account
+                </div>
+                <label class="govuk-label @(ViewData.ModelState[nameof(Model.Email)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")" for="Email">
+                    Your email address
+                </label>
+                <span asp-validation-for="Email" class="govuk-error-message"></span>
+                <input asp-for="Email" class="govuk-input govuk-!-width-two-thirds" type="email" />
+            </div>
+            <div class="govuk-button-group" href="delete-your-account-success-banner.html">
+                <button type="submit" class="govuk-button govuk-button--warning" data-module="govuk-button">
+                    Delete my account
+                </button>
+                <a class="govuk-link" asp-route="@RouteNames.Settings">Cancel (return to settings)</a>
+            </div>
+        </form>
+    </div>
+</div>
