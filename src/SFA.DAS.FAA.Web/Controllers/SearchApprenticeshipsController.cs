@@ -55,7 +55,7 @@ public class SearchApprenticeshipsController(
         }
         else if (result.LocationSearched && result.Location != null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm, sort = VacancySort.DistanceAsc });
         }
         else if (search == 1)
         {
@@ -183,7 +183,7 @@ public class SearchApprenticeshipsController(
             SearchTerm = request.SearchTerm,
             PageNumber = request.PageNumber,
             PageSize = 10,
-            Sort = request.Sort,
+            Sort = request.Sort == null && request.Distance != null ? VacancySort.DistanceAsc.ToString() : request.Sort,
             DisabilityConfident = request.DisabilityConfident,
             CandidateId = User.Claims.CandidateId().Equals(null) ? null
                 : User.Claims.CandidateId()!.ToString()
