@@ -40,6 +40,9 @@ public static class RouteNames
     public const string EmailAlreadyMigrated = "email-already-migrated";
     public const string AccountFound = "account-found";
     public const string AccountFoundTermsAndConditions = "account-found-terms-and-conditions";
+    public const string ConfirmAccountDelete = "confirm-account-deletion";
+    public const string AccountDelete = "account-delete";
+    public const string AccountDeleteWithDrawApplication = "account-deletion-withdraw-applications";
 
     public static class Applications
     {
