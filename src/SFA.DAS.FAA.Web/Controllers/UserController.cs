@@ -646,8 +646,38 @@ namespace SFA.DAS.FAA.Web.Controllers
             });
 
             return result.SubmittedApplications.Count == 0
-                ? RedirectToRoute(RouteNames.AccountDelete)
+                ? RedirectToRoute(RouteNames.AccountDelete, new { journeyPath = AccountDeletionViewModel.RouthPath.ConfirmAccountDeletion })
                 : View((AccountDeletionWithDrawApplicationsViewModel) result);
+        }
+
+        [HttpGet]
+        [Route("account-delete", Name = RouteNames.AccountDelete)]
+        public IActionResult AccountDeletion(AccountDeletionViewModel.RouthPath journeyPath = AccountDeletionViewModel.RouthPath.ConfirmAccountDeletion)
+        {
+            var model = new AccountDeletionViewModel
+            {
+                JourneyPath = journeyPath
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("account-delete", Name = RouteNames.AccountDelete)]
+        public IActionResult AccountDeletion(AccountDeletionViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            };
+
+            if (!model.Email.Equals(User.Claims.Email(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                ModelState.AddModelError(nameof(AccountDeletionViewModel.Email), "This is not the email address you use with Find an apprenticeship. Check your email address and try again");
+                return View(model);
+            }
+
+            return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@model SFA.DAS.FAA.Web.Models.User.AccountDeletionWithDrawApplicationsViewModel;
 @using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Models.User
 @{
     ViewData["Title"] = "Withdraw your outstanding applications – Find an apprenticeship – GOV.UK";
 }
@@ -29,7 +30,7 @@
             <div class="govuk-grid-column-two-thirds">
                 <div class="govuk-!-padding-bottom-8"></div>
                 <div class="govuk-button-group">
-                    <a class="govuk-button" href="#">
+                    <a class="govuk-button" asp-route="@RouteNames.AccountDelete" asp-route-journeyPath="@AccountDeletionViewModel.RouthPath.WithdrawApplications">
                         Continue
                     </a>
                     <a class="govuk-link" asp-route="@RouteNames.Settings">Cancel (return to settings)</a>
