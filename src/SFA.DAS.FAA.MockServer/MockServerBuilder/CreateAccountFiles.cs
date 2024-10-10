@@ -34,20 +34,12 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithBodyFromFile($"{BaseFilePath}/get-inform.json"));
 
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"/candidates/sign-in-to-your-old-account", RegexOptions.None, RegexMaxTimeOut))
-                .UsingGet()
-                .WithParam("email", "invalid@test.com")
+                .UsingPost()
                 ).RespondWith(
                 Response.Create()
-                    .WithStatusCode(202)
+                    .WithStatusCode(200)
             .WithBodyFromFile($"{BaseFilePath}/get-sign-in-to-your-old-account-failure.json"));
 
-
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"/candidates/sign-in-to-your-old-account", RegexOptions.None, RegexMaxTimeOut))
-                .UsingGet()
-            ).RespondWith(
-                Response.Create()
-                    .WithStatusCode(202)
-                    .WithBodyFromFile($"{BaseFilePath}/get-sign-in-to-your-old-account-success.json"));
 
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"users/{Constants.CandidateIdIncomplete}/create-account/user-name", RegexOptions.None, RegexMaxTimeOut))
                 .UsingGet()
