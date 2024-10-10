@@ -6,7 +6,7 @@ namespace SFA.DAS.FAA.Web.Models.User
     {
         public string PageBackLink => GetPageBackLink();
         public string Email { get; set; }
-        public bool IsAnyOutstandingApplications => JourneyPath == RouthPath.WithdrawApplications;
+        public bool HasAnyOutstandingApplications => JourneyPath == RouthPath.WithdrawApplications;
         public RouthPath JourneyPath { get; set; }
 
         public string GetPageBackLink()

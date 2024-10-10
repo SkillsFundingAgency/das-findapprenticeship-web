@@ -17,7 +17,7 @@
             <strong class="govuk-warning-text__text">
                 <span class="govuk-visually-hidden">Warning</span>
                 You'll no longer be able to view your saved vacancies and application history.
-                @if(Model.IsAnyOutstandingApplications)
+                @if(Model.HasAnyOutstandingApplications)
                 {
                     <span>Your outstanding applications will be withdrawn.</span>
                 }

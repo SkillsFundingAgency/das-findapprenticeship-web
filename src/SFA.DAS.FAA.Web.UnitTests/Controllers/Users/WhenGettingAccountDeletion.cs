@@ -20,7 +20,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
         public void Then_View_Is_Returned(
             AccountDeletionViewModel.RouthPath journeyPath,
             string pageBackLink,
-            bool isAnyOutstandingApplications,
+            bool hasAnyOutstandingApplications,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] UserController controller)
         {
@@ -32,7 +32,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             actualModel.Should().NotBeNull();
             actualModel!.JourneyPath.Should().Be(journeyPath);
             actualModel.PageBackLink.Should().Be(pageBackLink);
-            actualModel.IsAnyOutstandingApplications.Should().Be(isAnyOutstandingApplications);
+            actualModel.HasAnyOutstandingApplications.Should().Be(hasAnyOutstandingApplications);
         }
     }
 }
