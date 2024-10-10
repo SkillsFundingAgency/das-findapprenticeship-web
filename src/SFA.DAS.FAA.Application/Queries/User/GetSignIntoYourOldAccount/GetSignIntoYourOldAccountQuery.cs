@@ -7,8 +7,8 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount
     public class GetSignIntoYourOldAccountQuery : IRequest<GetSignIntoYourOldAccountQueryResult>
     {
         public Guid CandidateId { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public  required string Email { get; set; }
+        public required string Password { get; set; }
     }
 
     public class GetSignIntoYourOldAccountQueryResult
@@ -20,8 +20,19 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount
     {
         public async Task<GetSignIntoYourOldAccountQueryResult> Handle(GetSignIntoYourOldAccountQuery request, CancellationToken cancellationToken)
         {
-            var apiRequest = new GetSignIntoYourOldAccountApiRequest(request.CandidateId, request.Email, request.Password);
-            var result = await apiClient.Get<GetSignIntoYourOldAccountApiResponse>(apiRequest);
+            var apiRequest = new PostSignIntoYourOldAccountApiRequest(new PostSignIntoYourOldAccountApiRequestData
+            {
+                CandidateId = request.CandidateId,
+                Email = request.Email,
+                Password = request.Password
+            });
+            var result = await apiClient.PostWithResponseCode<PostSignIntoYourOldAccountApiResponse>(apiRequest);
+
+            if (result is null)
+                return new GetSignIntoYourOldAccountQueryResult
+                {
+                    IsValid = false
+                };
 
             return new GetSignIntoYourOldAccountQueryResult
             {

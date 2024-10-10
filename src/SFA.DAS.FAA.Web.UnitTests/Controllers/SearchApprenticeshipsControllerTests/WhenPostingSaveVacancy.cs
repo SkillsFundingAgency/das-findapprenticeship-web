@@ -1,30 +1,30 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Security.Claims;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
+using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
-using JsonResult = Microsoft.AspNetCore.Mvc.JsonResult;
 
-namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
+namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests
 {
     [TestFixture]
-    public class WhenDeletingSavedVacancy
+    public class WhenPostingSaveVacancy
     {
         [Test, MoqAutoData]
         public async Task Then_If_Command_Returns_Redirect_Returned(
             Guid candidateId,
             string vacancyReference,
+            SaveVacancyCommandResult mediatorResult,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.VacanciesController controller)
+            [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
         {
 
             controller.ControllerContext = new ControllerContext
@@ -38,23 +38,22 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
 
                 }
             };
+            mediator.Setup(x => x.Send(It.IsAny<SaveVacancyCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
 
-            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyReference, true) as RedirectToRouteResult;
+            var actual = await controller.SearchResultsSaveVacancy(vacancyReference) as RedirectToRouteResult;
 
-            actual!.RouteName.Should().Be(RouteNames.Vacancies);
-            actual.RouteValues.Should().NotBeEmpty();
-            actual.RouteValues!["VacancyReference"].Should().Be(vacancyReference);
-
-            mediator.Verify(x => x.Send(It.IsAny<DeleteSavedVacancyCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            actual!.RouteName.Should().Be(RouteNames.SearchResults);
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_Command_Returns_JsonOk_Returned(
+        public async Task Then_If_Query_With_Redirect_Command_Returns_JsonOk_Returned(
             Guid candidateId,
             string vacancyReference,
+            SaveVacancyCommandResult mediatorResult,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.VacanciesController controller)
+            [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
         {
 
             controller.ControllerContext = new ControllerContext
@@ -68,12 +67,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
 
                 }
             };
+            mediator.Setup(x => x.Send(It.IsAny<SaveVacancyCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
 
-            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyReference, false) as JsonResult;
+            var actual = await controller.SearchResultsSaveVacancy(vacancyReference, false) as JsonResult;
 
             actual!.Value.Should().Be(StatusCodes.Status200OK);
-
-            mediator.Verify(x => x.Send(It.IsAny<DeleteSavedVacancyCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

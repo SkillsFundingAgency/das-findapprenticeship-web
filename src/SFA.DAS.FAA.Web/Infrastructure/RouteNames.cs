@@ -42,8 +42,13 @@ public static class RouteNames
     public const string EmailAlreadyMigrated = "email-already-migrated";
     public const string AccountFound = "account-found";
     public const string AccountFoundTermsAndConditions = "account-found-terms-and-conditions";
+    public const string ConfirmAccountDelete = "confirm-account-deletion";
+    public const string AccountDelete = "account-delete";
+    public const string AccountDeleteWithDrawApplication = "account-deletion-withdraw-applications";
     public const string SaveVacancyFromDetailsPage = "save-vacancy-details-page";
     public const string DeleteSavedVacancyFromDetailsPage = "delete-vacancy-details-page";
+    public const string SaveVacancyFromSearchResultsPage = "save-vacancy-search-results-page";
+    public const string DeleteSavedVacancyFromSearchResultsPage = "delete-vacancy-search-results-page";
 
     public static class Applications
     {

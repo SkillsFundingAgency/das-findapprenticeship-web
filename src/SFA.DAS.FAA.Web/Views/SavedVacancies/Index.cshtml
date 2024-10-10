@@ -100,11 +100,14 @@
                                 }
                             </li>
                             <li class="govuk-summary-list__actions-list-item">
-                                <p class="govuk-body  govuk-!-margin-bottom-2">
-                                    <a asp-route="@RouteNames.DeleteSavedVacancy" class="govuk-link govuk-link--no-visited-state" asp-route-vacancyReference="@vacancy.VacancyReference">
-                                        Remove
-                                    </a>
-                                </p>
+                                <form method="post" asp-route="@RouteNames.DeleteSavedVacancy"
+                                      asp-route-vacancyreference="@vacancy.VacancyReference">
+                                    <p class="govuk-body govuk-!-margin-bottom-2">
+                                        <button type="submit" class="das-button--inline-link">
+                                            Remove
+                                        </button>
+                                    </p>
+                                </form>
                             </li>
                         </ul>
                     </li>

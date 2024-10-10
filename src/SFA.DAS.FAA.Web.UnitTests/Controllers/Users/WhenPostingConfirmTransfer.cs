@@ -14,6 +14,7 @@ using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using SFA.DAS.GovUK.Auth.Services;
+using Microsoft.Extensions.Options;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
@@ -25,10 +26,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             string email,
             Guid candidateId,
             ConfirmTransferViewModel viewModel,
+            [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), Mock.Of<IOidcService>())
+            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), faaConfig.Object, Mock.Of<IOidcService>())
             {
                 ControllerContext = new ControllerContext
                 {
@@ -59,10 +61,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             string email,
             Guid candidateId,
             ConfirmTransferViewModel viewModel,
+            [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), Mock.Of<IOidcService>())
+            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), faaConfig.Object, Mock.Of<IOidcService>())
             {
                 ControllerContext = new ControllerContext
                 {

@@ -84,9 +84,10 @@ public class VacanciesController(
         return RedirectToAction("Index", "Apply", new { result.ApplicationId });
     }
 
-    [HttpGet]
-    [Route("apprenticeship/{vacancyReference}/save", Name = RouteNames.SaveVacancyFromDetailsPage)]
-    public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("vacancy/save/{vacancyReference}", Name = RouteNames.SaveVacancyFromDetailsPage)]
+    public async Task<IActionResult> VacancyDetailsSaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new SaveVacancyCommand
         {
@@ -99,9 +100,10 @@ public class VacanciesController(
             : new JsonResult(StatusCodes.Status200OK);
     }
 
-    [HttpGet]
-    [Route("apprenticeship/{vacancyReference}/delete", Name = RouteNames.DeleteSavedVacancyFromDetailsPage)]
-    public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("vacancy/delete/{vacancyReference}", Name = RouteNames.DeleteSavedVacancyFromDetailsPage)]
+    public async Task<IActionResult> VacancyDetailsDeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new DeleteSavedVacancyCommand
         {

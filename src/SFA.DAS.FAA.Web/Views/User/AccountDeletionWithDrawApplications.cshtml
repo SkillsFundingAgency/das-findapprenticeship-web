@@ -1,0 +1,40 @@
+﻿@model SFA.DAS.FAA.Web.Models.User.AccountDeletionWithDrawApplicationsViewModel;
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Withdraw your outstanding applications – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.ConfirmAccountDelete">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Withdraw your outstanding applications</h1>
+        <p class="govuk-body">When we delete your account, we'll withdraw applications you've submitted that have not received a response yet.</p>
+        <div class="govuk-!-padding-bottom-5"></div>
+        <h2 class="govuk-heading-m">Applications we’ll withdraw</h2>
+        @foreach (var application in Model.SubmittedApplications)
+        {
+            <div class="govuk-grid-column-one-thirds faa-delete-account-application">
+                <h3 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
+                    @application.Title
+                </h3>
+                <p class="govuk-body govuk-!-margin-bottom-0">@application.EmployerName</p>
+                <p class="govuk-body govuk-!-margin-bottom-5 gov-uk-hint">@application.Address</p>
+                <p class="govuk-body govuk-!-margin-bottom-1">@application.SubmittedDate</p>
+            </div>    
+        }
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <div class="govuk-!-padding-bottom-8"></div>
+                <div class="govuk-button-group">
+                    <a class="govuk-button" href="#">
+                        Continue
+                    </a>
+                    <a class="govuk-link" asp-route="@RouteNames.Settings">Cancel (return to settings)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,20 +8,23 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidatePreferences;
+using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidateStatus;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.CheckAnswers;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.ManuallyEnteredAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.PhoneNumber;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
+using SFA.DAS.FAA.Application.Commands.MigrateData;
+using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
-using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
-using SFA.DAS.FAA.Application.Commands.MigrateData;
-using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
+using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
 using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -31,14 +34,19 @@ using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.GovUK.Auth.Models;
 using SFA.DAS.GovUK.Auth.Services;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
-using SFA.DAS.FAA.Application.Commands.CreateAccount.CandidateStatus;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("")]
     [AllowIncompleteAccountAccess]
-    public class UserController(IMediator mediator, ICacheStorageService cacheStorageService, IConfiguration configuration, IOidcService oidcService) : Controller
+    public class UserController(
+        IMediator mediator,
+        ICacheStorageService cacheStorageService,
+        IConfiguration configuration,
+        IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration,
+        IOidcService oidcService)
+        : Controller
     {
         [HttpGet]
         [Route("create-account", Name = RouteNames.CreateAccount)]
@@ -515,6 +523,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = accountDetails.Postcode,
                 Uprn = accountDetails.Uprn,
                 HasAnsweredEqualityQuestions = accountDetails.HasAnsweredEqualityQuestions,
+                FeatureToggle = faaConfiguration.Value.AccountDeletionFeature,
                 CandidatePreferences = accountDetails.CandidatePreferences.Select(cp => new SettingsViewModel.CandidatePreference
                 {
                     Meaning = cp.Meaning,
@@ -618,6 +627,27 @@ namespace SFA.DAS.FAA.Web.Controllers
         public IActionResult AccountFoundTermsAndConditions()
         {
            return View();
+        }
+
+        [HttpGet]
+        [Route("confirm-account-deletion", Name = RouteNames.ConfirmAccountDelete)]
+        public IActionResult ConfirmAccountDeletion()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("account-deletion-withdraw-applications", Name = RouteNames.AccountDeleteWithDrawApplication)]
+        public async Task<IActionResult> AccountDeletionWithDrawApplications()
+        {
+            var result = await mediator.Send(new GetAccountDeletionApplicationsToWithdrawQuery((Guid)User.Claims.CandidateId()!)
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+            });
+
+            return result.SubmittedApplications.Count == 0
+                ? RedirectToRoute(RouteNames.AccountDelete)
+                : View((AccountDeletionWithDrawApplicationsViewModel) result);
         }
     }
 }

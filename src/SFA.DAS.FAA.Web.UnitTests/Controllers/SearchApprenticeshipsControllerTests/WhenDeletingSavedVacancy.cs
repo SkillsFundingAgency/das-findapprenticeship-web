@@ -13,7 +13,7 @@ using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 using JsonResult = Microsoft.AspNetCore.Mvc.JsonResult;
 
-namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
+namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests
 {
     [TestFixture]
     public class WhenDeletingSavedVacancy
@@ -24,7 +24,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
             string vacancyReference,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
-            [Greedy] Web.Controllers.VacanciesController controller)
+            [Greedy] Web.Controllers.SearchApprenticeshipsController controller)
         {
 
             controller.ControllerContext = new ControllerContext
@@ -35,15 +35,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
                     {
                         new Claim(CustomClaims.CandidateId, candidateId.ToString()),
                     }))
-
                 }
             };
 
-            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyReference, true) as RedirectToRouteResult;
+            var actual = await controller.SearchResultsDeleteSavedVacancy(vacancyReference, true) as RedirectToRouteResult;
 
-            actual!.RouteName.Should().Be(RouteNames.Vacancies);
-            actual.RouteValues.Should().NotBeEmpty();
-            actual.RouteValues!["VacancyReference"].Should().Be(vacancyReference);
+            actual!.RouteName.Should().Be(RouteNames.SearchResults);
 
             mediator.Verify(x => x.Send(It.IsAny<DeleteSavedVacancyCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
