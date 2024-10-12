@@ -578,6 +578,63 @@ public class WhenGettingSearchResults
     }
     
     [Test, MoqAutoData]
+    public async Task Then_Sort_Is_Set_To_Distance_When_Location_And_Sort_Is_Set_But_No_Other_Filters(
+        GetSearchResultsRequest request,
+        GetSearchResultsResult result,
+        string mapId,
+        List<string>? routeIds,
+        Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Frozen] Mock<IDateTimeService> dateTimeService,
+        [Frozen] Mock<GetSearchResultsRequestValidator> validator)
+    {
+        request.Sort = VacancySort.AgeDesc.ToString();
+        request.LevelIds = [];
+        request.RouteIds = [];
+        request.DisabilityConfident = false;
+        request.SearchTerm = string.Empty;
+        result.PageNumber = 1;
+        var mediator = new Mock<IMediator>();
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
+            .ReturnsAsync(
+                new ValidationResult()
+            );
+        
+        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        {
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
+        };
+        result.VacancyReference = null;
+
+        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c=>c.Sort == VacancySort.DistanceAsc.ToString()), CancellationToken.None)).ReturnsAsync(result);
+
+        var actual = await controller.SearchResults(request) as ViewResult;
+
+        Assert.That(actual, Is.Not.Null);
+        var actualModel = actual!.Model as SearchResultsViewModel;
+        actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
+
+        actualModel?.PageNumber.Should().Be(result.PageNumber);
+    }
+    
+    [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_No_Search_Results_Found_View_Returned(
         string? location,
         int? distance,
