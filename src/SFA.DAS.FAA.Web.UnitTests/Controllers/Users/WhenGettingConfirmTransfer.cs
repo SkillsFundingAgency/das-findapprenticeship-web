@@ -4,20 +4,18 @@ using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
-using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models.Apply;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.Extensions.Configuration;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
-using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
-using SFA.DAS.GovUK.Auth.Services;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
@@ -28,10 +26,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             string legacyEmail,
             string email,
             Guid candidateId,
+            [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), Mock.Of<IOidcService>())
+            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), faaConfig.Object, Mock.Of<IOidcService>())
             {
                 ControllerContext = new ControllerContext
                 {
@@ -63,10 +62,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             string email,
             Guid candidateId,
             GetTransferUserDataQueryResult queryResult,
+            [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
-            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), Mock.Of<IOidcService>())
+            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), faaConfig.Object, Mock.Of<IOidcService>())
             {
                 ControllerContext = new ControllerContext
                 {
