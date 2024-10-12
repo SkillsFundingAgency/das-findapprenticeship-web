@@ -200,9 +200,6 @@
     <None Update="CreateAccount\get-inform.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="CreateAccount\get-sign-in-to-your-old-account-success.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="CreateAccount\get-sign-in-to-your-old-account-failure.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
