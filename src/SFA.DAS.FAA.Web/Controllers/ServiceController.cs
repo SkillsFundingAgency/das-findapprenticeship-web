@@ -36,6 +36,8 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
             schemes.Add(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
+        if(TempData.ContainsKey(CacheKeys.AccountDeleted)) TempData.Keep(CacheKeys.AccountDeleted);
+
         return SignOut(
             authenticationProperties,
             schemes.ToArray());
