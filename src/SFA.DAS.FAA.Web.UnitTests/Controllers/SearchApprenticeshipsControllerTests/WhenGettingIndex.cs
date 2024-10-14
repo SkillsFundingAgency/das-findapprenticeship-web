@@ -18,6 +18,7 @@ using System.Security.Claims;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Validators;
 
@@ -231,5 +232,6 @@ public class WhenGettingIndex
 
         result!.RouteName.Should().Be(RouteNames.SearchResults);
         result.RouteValues!["location"].Should().Be(queryResult.Location.LocationName);
+        result.RouteValues!["sort"].Should().Be(VacancySort.DistanceAsc);
     }
 }

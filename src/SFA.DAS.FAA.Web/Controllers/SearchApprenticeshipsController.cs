@@ -55,7 +55,7 @@ public class SearchApprenticeshipsController(
         }
         else if (result.LocationSearched && result.Location != null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm, sort = VacancySort.DistanceAsc });
         }
         else if (search == 1)
         {
@@ -172,6 +172,15 @@ public class SearchApprenticeshipsController(
         else if (request.PageNumber <= 0)
         {
             request.PageNumber = 1;
+        }
+
+        if (string.IsNullOrEmpty(request.SearchTerm) && request.LevelIds is { Count: 0 } && request.RouteIds is { Count: 0 })
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
+        }
+        else if ( request.Sort == null && request.Location != null)
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
         }
         
         var result = await mediator.Send(new GetSearchResultsQuery
