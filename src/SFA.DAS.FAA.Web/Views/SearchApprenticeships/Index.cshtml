@@ -15,8 +15,23 @@
     }
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <partial model="@ViewData.ModelState" name="_ValidationSummary" />
-
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+                    <h2 class="govuk-error-summary__title" id="error-summary-title">
+                        There is a problem
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            <li>
+                                <a href="#@nameof(Model.WhereSearchTerm)">
+                                    <span class="govuk-visually-hidden">Error: </span>@ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.Errors.FirstOrDefault()?.ErrorMessage
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            }
             <h1 class="govuk-heading-xl govuk-!-margin-bottom-3 faa-page-heading">Search apprenticeships</h1>
             <p class="govuk-hint govuk-!-font-size-24">@Model.TotalText</p>
         </div>
