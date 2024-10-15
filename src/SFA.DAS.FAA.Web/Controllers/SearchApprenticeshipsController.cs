@@ -301,8 +301,10 @@ public class SearchApprenticeshipsController(
             CandidateId = (Guid)User.Claims.CandidateId()!
         });
 
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+
         return redirect
-            ? RedirectToRoute(RouteNames.SearchResults)
+            ? Redirect(redirectUrl)
             : new JsonResult(StatusCodes.Status200OK);
     }
 
@@ -317,8 +319,10 @@ public class SearchApprenticeshipsController(
             CandidateId = (Guid)User.Claims.CandidateId()!
         });
 
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+
         return redirect
-            ? RedirectToRoute(RouteNames.SearchResults)
+            ? Redirect(redirectUrl)
             : new JsonResult(StatusCodes.Status200OK);
     }
 
