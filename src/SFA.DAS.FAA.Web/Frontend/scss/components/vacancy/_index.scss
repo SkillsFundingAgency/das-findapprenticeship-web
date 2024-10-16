@@ -59,6 +59,28 @@
   margin-right: 5px;
 }
 
+.faa-save-vacancy {
+  .faa-save-vacancy__link--save {
+    display: flex;
+    pointer-events: auto;
+  }
+  .faa-save-vacancy__link--delete {
+    display: none;
+    pointer-events: none;
+  }
+}
+
+.faa-save-vacancy--saved {
+  .faa-save-vacancy__link--save {
+    display: none;
+    pointer-events: none;
+  }
+  .faa-save-vacancy__link--delete {
+    display: flex;
+    pointer-events: auto;
+  }
+}
+
 .faa-vacancy__section > h2:not([class]) {
   @extend .govuk-heading-l;
 }

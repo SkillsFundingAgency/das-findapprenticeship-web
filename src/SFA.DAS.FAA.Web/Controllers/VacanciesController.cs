@@ -1,10 +1,12 @@
 using System.Net;
+using Azure.Core;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Commands.Apply;
+using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;

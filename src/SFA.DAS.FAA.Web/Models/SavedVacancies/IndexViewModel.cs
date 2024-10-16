@@ -14,12 +14,22 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
         public bool HasSavedVacancies => SavedVacancies.Any();
         public bool ShowSortComponent => SavedVacancies.Count > 1;
         public SortOrder SortOrder { get; set; }
+        public DeletedSavedVacancy? DeletedVacancy { get; set; }
+        public bool ShowDeletedVacancyConfirmationMessage => DeletedVacancy != null;
 
-        public List<SelectListItem> SortOrderOptions => new List<SelectListItem>
-        {
-            new SelectListItem { Value = SortOrder.RecentlySaved.ToString(), Text = "Recently saved", Selected = SortOrder == SortOrder.RecentlySaved },
-            new SelectListItem { Value = SortOrder.ClosingSoonest.ToString(), Text = "Closing soonest", Selected = SortOrder == SortOrder.ClosingSoonest }
-        };
+        public List<SelectListItem> SortOrderOptions =>
+        [
+            new SelectListItem
+            {
+                Value = SortOrder.RecentlySaved.ToString(), Text = "Recently saved",
+                Selected = SortOrder == SortOrder.RecentlySaved
+            },
+            new SelectListItem
+            {
+                Value = SortOrder.ClosingSoonest.ToString(), Text = "Closing soonest",
+                Selected = SortOrder == SortOrder.ClosingSoonest
+            }
+        ];
 
         public class SavedVacancy
         {
@@ -36,11 +46,36 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
             public string ExternalVacancyUrl { get; set; }
         }
 
+        public class DeletedSavedVacancy
+        {
+            public string? VacancyReference { get; set; }
+            public string? VacancyTitle { get; set; }
+            public string? EmployerName { get; set; }
+
+            public static implicit operator DeletedSavedVacancy?(GetSavedVacanciesQueryResult.DeletedSavedVacancy? source)
+            {
+                if (source is null) return null;
+
+                return new DeletedSavedVacancy
+                {
+                    EmployerName = source.EmployerName,
+                    VacancyReference = source.VacancyReference,
+                    VacancyTitle = source.VacancyTitle
+                };
+            }
+        }
+
         public static IndexViewModel Map(GetSavedVacanciesQueryResult source, IDateTimeService dateTimeService, SortOrder sortOrder)
         {
             var result = new IndexViewModel
             {
                 SortOrder = sortOrder,
+                DeletedVacancy = source.DeletedVacancy != null ? new DeletedSavedVacancy
+                {
+                    VacancyReference = source.DeletedVacancy?.VacancyReference,
+                    VacancyTitle = source.DeletedVacancy?.VacancyTitle,
+                    EmployerName = source.DeletedVacancy?.EmployerName,
+                } : null
             };
 
             var expired = new List<SavedVacancy>();
