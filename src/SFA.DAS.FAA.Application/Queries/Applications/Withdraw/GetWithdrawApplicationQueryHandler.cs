@@ -14,7 +14,8 @@ public class GetWithdrawApplicationQueryHandler(IApiClient apiClient) : IRequest
             new GetWithdrawApplicationApiRequest(request.ApplicationId, request.CandidateId)
         );
 
-        if (response == null) throw new ResourceNotFoundException();
+        if (response == null)
+            throw new ResourceNotFoundException();
 
         return new GetWithdrawApplicationQueryResult
         {
