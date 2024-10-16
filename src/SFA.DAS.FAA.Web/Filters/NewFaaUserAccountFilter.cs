@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.FAA.Domain.Candidates;
 using SFA.DAS.FAA.Domain.Interfaces;
@@ -16,6 +17,10 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
         ActionExecutingContext context,
         ActionExecutionDelegate next)
     {
+        var descriptor = (ControllerActionDescriptor)context.ActionDescriptor;
+        var attributes = descriptor.MethodInfo.CustomAttributes;
+        var skipNewFaaUserAccountCheck = attributes.Any(a => a.AttributeType == typeof(SkipNewFaaUserAccountFilter));
+
         var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
 
         if (identity.HasClaim(p => p.Type == CustomClaims.EmailAddressMigrated))
@@ -28,7 +33,7 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
             }
         }
 
-        if (identity != null && identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
+        if (!skipNewFaaUserAccountCheck && identity != null && identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
         {
             if (!context.ActionDescriptor.HasAttribute<AllowIncompleteAccountAccessAttribute>())
             {
@@ -48,7 +53,7 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
             }
         }
 
-        if (identity != null && identity.HasClaim(c => c.Type == ClaimTypes.Email) && identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
+        if (!skipNewFaaUserAccountCheck && identity != null && identity.HasClaim(c => c.Type == ClaimTypes.Email) && identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
         {
             var response = await GetCandidateDetails(context, identity);
             ((Controller)context.Controller).ViewData["IsAccountStatusCompleted"] = response.Status switch
