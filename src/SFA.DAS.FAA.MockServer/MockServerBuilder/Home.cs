@@ -111,7 +111,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
             
             
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/1000012333", RegexOptions.None, regexMaxTimeOut))
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/VAC1000012333", RegexOptions.None, regexMaxTimeOut))
                     .UsingGet())
                 .RespondWith(
                     Response.Create()
