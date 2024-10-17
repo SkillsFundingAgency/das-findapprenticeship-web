@@ -100,6 +100,13 @@ Scenario: Navigate to vacancy details page with invalid vacancy reference format
 	Then a http status code of 200 is returned
 	And the page content includes the following: Page not found
 
+
+@WireMockServer
+Scenario: Navigate to vacancy details page with closed vacancy
+	When I navigate to the following url: /apprenticeship/VAC1000012333
+	Then a http status code of 200 is returned
+	And the page content includes the following: You can no longer apply for this apprenticeship
+
 @WireMockServer
 Scenario: Navigate to cookies page
 	When I navigate to the following url: /Home/cookies
