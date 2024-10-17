@@ -383,11 +383,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
         }
 
-        [TestCase(null,"Coventry (across England)")]
-        [TestCase(10,"Coventry (within 10 miles)")]
-        public void Then_Where_With_Distance_Search_Term_Is_Added_To_Filter_List(int? distance, string expected)
+        [TestCase(null, VacancySort.AgeAsc,"Coventry (across England)","searchResults?sort=AgeAsc")]
+        [TestCase(10, VacancySort.DistanceAsc,"Coventry (within 10 miles)","searchResults")]
+        public void Then_Where_With_Distance_Search_Term_Is_Added_To_Filter_List(int? distance, VacancySort sort, string expected, string expectedClearFilter)
         {
-            var request = new GetSearchResultsRequest { RouteIds = [], Location = "Coventry", Distance = distance};
+            var request = new GetSearchResultsRequest { RouteIds = [], Location = "Coventry", Distance = distance, Sort = sort.ToString()};
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -399,7 +399,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             actual.First().FieldName.Should().Be("Where");
             actual.First().Filters.First().Value.Should().Be(expected);
-            actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
+            actual.First().Filters.First().ClearFilterLink.Should().Be(expectedClearFilter);
         }
 
         [TestCase(true, "Disability Confident", "Only show Disability Confident companies")]

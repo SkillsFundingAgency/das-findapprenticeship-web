@@ -4,8 +4,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -79,5 +81,16 @@ public class WhenPostingLocations
         actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
         mediator.Verify(x=>x.Send(It.IsAny<GetBrowseByInterestsLocationQuery>(), It.IsAny<CancellationToken>()), Times.Once);
     }
-    
+
+    [Test, MoqAutoData]
+    public async Task Then_Redirect_Result_Is_Returned(
+        LocationViewModel locationViewModel,
+        List<string>? routeIds,
+        [Greedy] SearchApprenticeshipsController controller)
+    {
+        var result = await controller.Location(routeIds, locationViewModel) as RedirectToRouteResult;
+
+        result!.RouteName.Should().Be(RouteNames.SearchResults);
+        result.RouteValues!["RoutePath"].Should().Be(Constants.SearchResultRoutePath.Location);
+    }
 }

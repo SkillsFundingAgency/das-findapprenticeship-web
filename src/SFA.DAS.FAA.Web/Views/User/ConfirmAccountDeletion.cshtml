@@ -1,0 +1,30 @@
+﻿@model SFA.DAS.FAA.Web.Models.User.AccountFoundInformViewModel;
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Delete your Find an apprenticeship account – Find an apprenticeship – GOV.UK";
+}
+@section BackLink {
+    <a class="govuk-back-link" asp-route="@RouteNames.Settings">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Delete your Find an apprenticeship account</h1>
+        <p class="govuk-body">You'll no longer be able to view your:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>saved vacancies</li>
+            <li>application history</li>
+        </ul>
+        <p class="govuk-body">We'll stop sending you emails from Find an apprenticeship.</p>
+        <div class="govuk-inset-text">
+            Deleting your account will not delete your GOV.UK One Login. Your GOV.UK One Login will keep working with other GOV.UK services.
+        </div>
+        <div class="govuk-button-group">
+            <a class="govuk-button" asp-route="@RouteNames.AccountDeleteWithDrawApplication">
+                Continue
+            </a>
+            <a class="govuk-link" asp-route="@RouteNames.Settings">Cancel (return to settings)</a>
+        </div>
+    </div>
+</div>

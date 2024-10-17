@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using NUnit.Framework;
@@ -27,11 +28,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             string expectedUrl,
             string govIdentifier,
             [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
         {
             cacheStorageService.Setup(x => x.Get<string>($"{govIdentifier}-{CacheKeys.CreateAccountReturnUrl}"))
                 .ReturnsAsync(expectedUrl);
-            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), Mock.Of<IOidcService>())
+            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), faaConfig.Object, Mock.Of<IOidcService>())
             {
                 ControllerContext = new ControllerContext
                 {
@@ -60,6 +62,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
         public async Task Then_View_Is_Returned_And_Back_Link_Set_To_Applications_If_No_Cached_Value(
             string expectedUrl,
             string govIdentifier,
+            [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
             [Frozen] Mock<IUrlHelper> urlHelper,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICacheStorageService> cacheStorageService)
@@ -67,7 +70,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             cacheStorageService.Setup(x => x.Get<string>($"{govIdentifier}-{CacheKeys.CreateAccountReturnUrl}"))
                 .ReturnsAsync((string)null);
             urlHelper.Setup(x => x.RouteUrl(It.Is<UrlRouteContext>(c=>c.RouteName == RouteNames.Applications.ViewApplications))).Returns(expectedUrl);
-            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), Mock.Of<IOidcService>())
+            var controller = new UserController(mediator.Object, cacheStorageService.Object, Mock.Of<IConfiguration>(), faaConfig.Object, Mock.Of<IOidcService>())
             {
                 ControllerContext = new ControllerContext
                 {
