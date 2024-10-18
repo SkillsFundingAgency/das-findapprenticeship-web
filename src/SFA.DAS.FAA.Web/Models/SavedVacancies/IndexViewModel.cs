@@ -3,6 +3,7 @@ using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Models.SavedVacancies
 {
@@ -44,6 +45,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
             public string Location { get; set; }
             public bool IsExternalVacancy { get; set; }
             public string ExternalVacancyUrl { get; set; }
+            public bool ShowApplyButton { get; set; }
         }
 
         public class DeletedSavedVacancy
@@ -99,7 +101,8 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                         $"Saved on {vacancy.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     ClosingDate = vacancy.ClosingDate,
                     ClosingDateLabel = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancy.ClosingDate, vacancy.IsExternalVacancy),
-                    IsClosingSoon = daysToExpiry is >= 0 and <= 7
+                    IsClosingSoon = daysToExpiry is >= 0 and <= 7,
+                    ShowApplyButton = vacancy.Status == null || (vacancy.Status != ApplicationStatus.Submitted && vacancy.Status != ApplicationStatus.Successful && vacancy.Status != ApplicationStatus.Unsuccessful),
                 };
 
                 if (daysToExpiry < 0)
