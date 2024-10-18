@@ -1,11 +1,16 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Application.Constants;
+using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
+using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
@@ -54,7 +59,7 @@ public class SearchApprenticeshipsController(
         }
         else if (result.LocationSearched && result.Location != null)
         {
-            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm });
+            return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm, sort = VacancySort.DistanceAsc });
         }
         else if (search == 1)
         {
@@ -133,8 +138,13 @@ public class SearchApprenticeshipsController(
             return View(model);
         }
 
-        return RedirectToRoute(RouteNames.SearchResults, new { routeIds = model.SelectedRouteIds, location = (model.NationalSearch == null || model.NationalSearch == false) ? model.SearchTerm : null, distance = model.Distance });
-
+        return RedirectToRoute(RouteNames.SearchResults, new
+        {
+            routeIds = model.SelectedRouteIds,
+            location = model.NationalSearch is null or false ? model.SearchTerm : null,
+            distance = model.Distance,
+            routePath = Constants.SearchResultRoutePath.Location
+        });
     }
 
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
@@ -166,6 +176,15 @@ public class SearchApprenticeshipsController(
         else if (request.PageNumber <= 0)
         {
             request.PageNumber = 1;
+        }
+
+        if (string.IsNullOrEmpty(request.SearchTerm) && request.LevelIds is { Count: 0 } && request.RouteIds is { Count: 0 })
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
+        }
+        else if ( request.Sort == null && request.Location != null)
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
         }
         
         var result = await mediator.Send(new GetSearchResultsQuery
@@ -226,6 +245,8 @@ public class SearchApprenticeshipsController(
         viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
         viewmodel.PageTitle = GetPageTitle(viewmodel);
 
+        viewmodel.PageBackLinkRoutePath = request.RoutePath; 
+
         return View(viewmodel);
     }
 
@@ -267,6 +288,42 @@ public class SearchApprenticeshipsController(
         };
         
         return Json(model);
+    }
+
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("search-results/save/{vacancyReference}", Name = RouteNames.SaveVacancyFromSearchResultsPage)]
+    public async Task<IActionResult> SearchResultsSaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    {
+        await mediator.Send(new SaveVacancyCommand
+        {
+            VacancyReference = vacancyReference,
+            CandidateId = (Guid)User.Claims.CandidateId()!
+        });
+
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+
+        return redirect
+            ? Redirect(redirectUrl)
+            : new JsonResult(StatusCodes.Status200OK);
+    }
+
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("search-results/delete/{vacancyReference}", Name = RouteNames.DeleteSavedVacancyFromSearchResultsPage)]
+    public async Task<IActionResult> SearchResultsDeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    {
+        await mediator.Send(new DeleteSavedVacancyCommand
+        {
+            VacancyReference = vacancyReference,
+            CandidateId = (Guid)User.Claims.CandidateId()!
+        });
+
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+
+        return redirect
+            ? Redirect(redirectUrl)
+            : new JsonResult(StatusCodes.Status200OK);
     }
 
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)

@@ -15,22 +15,53 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.CreateAccount
         [Test, MoqAutoData]
         public async Task Then_Result_Is_Returned(
             GetSignIntoYourOldAccountQuery query,
-            GetSignIntoYourOldAccountApiResponse apiResponse,
+            PostSignIntoYourOldAccountApiResponse apiResponse,
             [Frozen] Mock<IApiClient> apiClientMock,
             GetSignIntoYourOldAccountQueryHandler handler)
         {
-            var apiRequestUri = new GetSignIntoYourOldAccountApiRequest(query.CandidateId, query.Email, query.Password);
+            var apiRequestUri = new PostSignIntoYourOldAccountApiRequest(new PostSignIntoYourOldAccountApiRequestData
+            {
+                CandidateId = query.CandidateId,
+                Email = query.Email,
+                Password = query.Password
+            });
 
             apiClientMock.Setup(client =>
-                    client.Get<GetSignIntoYourOldAccountApiResponse>(
-                        It.Is<GetSignIntoYourOldAccountApiRequest>(c =>
-                            c.GetUrl == apiRequestUri.GetUrl)))
+                    client.PostWithResponseCode<PostSignIntoYourOldAccountApiResponse>(
+                        It.Is<PostSignIntoYourOldAccountApiRequest>(c =>
+                            c.PostUrl == apiRequestUri.PostUrl)))
                 .ReturnsAsync(apiResponse);
 
             var result = await handler.Handle(query, CancellationToken.None);
 
             result.Should().NotBeNull();
             result.IsValid.Should().Be(apiResponse.IsValid);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_Result_Is_Null_IsValid_False_Returned(
+            GetSignIntoYourOldAccountQuery query,
+            PostSignIntoYourOldAccountApiResponse apiResponse,
+            [Frozen] Mock<IApiClient> apiClientMock,
+            GetSignIntoYourOldAccountQueryHandler handler)
+        {
+            var apiRequestUri = new PostSignIntoYourOldAccountApiRequest(new PostSignIntoYourOldAccountApiRequestData
+            {
+                CandidateId = query.CandidateId,
+                Email = query.Email,
+                Password = query.Password
+            });
+
+            apiClientMock.Setup(client =>
+                    client.PostWithResponseCode<PostSignIntoYourOldAccountApiResponse>(
+                        It.Is<PostSignIntoYourOldAccountApiRequest>(c =>
+                            c.PostUrl == apiRequestUri.PostUrl)))
+                .ReturnsAsync(() => null);
+
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            result.Should().NotBeNull();
+            result.IsValid.Should().BeFalse();
         }
     }
 }

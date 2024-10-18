@@ -17,6 +17,7 @@ public class SettingsViewModel
     public string EmailAddress { get; set; }
     public bool HasAnsweredEqualityQuestions { get; set; }
     public List<CandidatePreference> CandidatePreferences { get; set; }
+    public bool FeatureToggle { get; set; }
 
     public bool UnfinishedApplicationReminders
     {
