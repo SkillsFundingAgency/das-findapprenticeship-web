@@ -153,6 +153,70 @@ if (jsSelectChangeSubmitForm) {
   });
 }
 
+// Save to favourites
+
+function Favourites(container) {
+  this.container = container;
+  this.addLink = this.container.querySelector("[data-add-favourite]");
+  this.deleteLink = this.container.querySelector("[data-delete-favourite]");
+}
+
+Favourites.prototype.init = function () {
+  if (!this.addLink || !this.deleteLink) {
+    return;
+  }
+  this.addLink.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await this.submit(this.addLink, "add");
+  });
+  this.deleteLink.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await this.submit(this.deleteLink, "delete");
+  });
+};
+
+Favourites.prototype.submit = async function (link, action) {
+  const url = link.href + "?redirect=false";
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("X-Requested-With", "XMLHttpRequest");
+  await fetch(url, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("Something went wrong");
+    })
+    .then((data) => {
+      this.updateUI(action);
+    })
+    .catch((error) => {
+      console.error("Error: ", error);
+    });
+};
+
+Favourites.prototype.updateUI = function (action) {
+  if (action === "add") {
+    this.addLink.ariaHidden = true;
+    this.deleteLink.ariaHidden = false;
+    this.container.classList.add("faa-save-vacancy--saved");
+  } else {
+    this.addLink.ariaHidden = false;
+    this.deleteLink.ariaHidden = true;
+    this.container.classList.remove("faa-save-vacancy--saved");
+  }
+};
+
+const addToFavourites = document.querySelectorAll("[data-favourite]");
+
+if (addToFavourites) {
+  addToFavourites.forEach(function (container) {
+    new Favourites(container).init();
+  });
+}
+
 // Show/Hide Extra Form Fields
 
 function ExtraFieldRows(container) {
