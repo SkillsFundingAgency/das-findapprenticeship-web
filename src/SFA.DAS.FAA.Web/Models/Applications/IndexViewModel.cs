@@ -24,6 +24,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
         public class Application
         {
+            private const string DateFormat = "d MMMM yyyy";
+            
             public Guid Id { get; set; }
             public string? VacancyReference { get; set; }
             public string? Title { get; set; }
@@ -51,19 +53,19 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     Title = source.Title,
                     EmployerName = source.EmployerName,
                     CloseDateTime = source.ClosingDate,
-                    StartedOn = $"Started on {source.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                    StartedOn = $"Started on {source.CreatedDate.ToString(DateFormat, CultureInfo.InvariantCulture)}",
                     ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate, source.ClosedDate),
                     IsClosingSoon = !source.ClosedDate.HasValue && (daysToExpiry is >= 0 and <= 7),
                     IsClosed = source.ClosedDate.HasValue,
                     Status = source.Status,
                     SubmittedDate = source.Status is (ApplicationStatus.Submitted)
-                        ? $"Submitted on {source.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
+                        ? $"Submitted on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}" 
                         : string.Empty,
-                    WithdrawnDate = $"Withdrawn application on {source.WithdrawnDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                    WithdrawnDate = $"Withdrawn application on {source.WithdrawnDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
                     ResponseDate = source.Status switch
                     {
-                        (ApplicationStatus.Successful) => $"Offered on {source.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
-                        ApplicationStatus.Unsuccessful => $"Feedback received on {source.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        (ApplicationStatus.Successful) => $"Offered on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
+                        ApplicationStatus.Unsuccessful => $"Feedback received on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
                         _ => string.Empty
                     },
                     ResponseNotes = source.Status is ApplicationStatus.Unsuccessful
