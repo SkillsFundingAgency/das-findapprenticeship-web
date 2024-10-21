@@ -76,5 +76,13 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Home
 
             result.Should().NotBeNull();
         }
+
+        [Test, MoqAutoData]
+        public void Then_Get_Help_View_Is_Returned([Greedy] HomeController controller)
+        {
+            var result = controller.GetHelp() as ViewResult;
+
+            result.Should().NotBeNull();
+        }
     }
 }
