@@ -23,7 +23,7 @@ public class WithdrawApplicationViewModel
         ApplicationId = source.ApplicationId;
         AdvertTitle = source.AdvertTitle;
         EmployerName = source.EmployerName;
-        ClosesOnDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate);
+        ClosesOnDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosedDate ?? source.ClosingDate);
         SubmittedDate = source.SubmittedDate!.Value.GetStartDate();
         ClosesToday = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 0;
         ClosesTomorrow = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 1;

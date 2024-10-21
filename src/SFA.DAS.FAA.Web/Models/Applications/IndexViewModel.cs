@@ -91,17 +91,17 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             {
                 var applicationViewModel = Application.From(application, dateTimeService);
                 
-                if (applicationViewModel.IsClosed)
+                switch (applicationViewModel.Status)
                 {
-                    expiredApplications.Add(applicationViewModel);
-                }
-                else if (applicationViewModel.Status == ApplicationStatus.Withdrawn)
-                {
-                    result.WithdrawnApplications.Add(applicationViewModel);
-                }
-                else
-                {
-                    result.Applications.Add(applicationViewModel);
+                    case ApplicationStatus.Expired:
+                        expiredApplications.Add(applicationViewModel);
+                        break;
+                    case ApplicationStatus.Withdrawn:
+                        result.WithdrawnApplications.Add(applicationViewModel);
+                        break;
+                    default:
+                        result.Applications.Add(applicationViewModel);
+                        break;
                 }
             }
             result.TabTitle = tab.GetTabTitle();
