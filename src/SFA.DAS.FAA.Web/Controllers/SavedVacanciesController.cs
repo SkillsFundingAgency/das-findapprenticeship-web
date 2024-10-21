@@ -31,7 +31,7 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("{vacancyReference}/delete", Name = RouteNames.DeleteSavedVacancy)]
         public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference)
         {

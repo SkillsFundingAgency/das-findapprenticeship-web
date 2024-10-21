@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SavedVacancies;
@@ -28,7 +29,7 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
             public string Postcode { get; set; }
             public bool IsExternalVacancy { get; set; }
             public string ExternalVacancyUrl { get; set; }
-
+            public ApplicationStatus? Status { get; set; }
         }
 
         public class DeletedSavedVacancy
@@ -53,7 +54,8 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
                     City = x.City,
                     Postcode = x.Postcode,
                     IsExternalVacancy = x.IsExternalVacancy,
-                    ExternalVacancyUrl = x.ExternalVacancyUrl
+                    ExternalVacancyUrl = x.ExternalVacancyUrl,
+                    Status = x.Status,
                 }).ToList()
             };
         }
