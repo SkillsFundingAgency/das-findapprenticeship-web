@@ -31,6 +31,7 @@ public class VacanciesViewModel
     public bool IsClosingSoon { get; set; }
     public bool IsNew { get; set; }
     public bool IsDisabilityConfident { get; set; }
+    public bool IsSavedVacancy { get; set; } = false;
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
@@ -63,6 +64,7 @@ public class VacanciesViewModel
             IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsDisabilityConfident = vacancies.IsDisabilityConfident,
             ApplicationStatus = vacancies.CandidateApplicationDetails?.Status,
+            IsSavedVacancy = vacancies.IsSavedVacancy,
         };
     }
 

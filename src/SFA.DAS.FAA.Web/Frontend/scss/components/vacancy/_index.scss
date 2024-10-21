@@ -48,6 +48,12 @@
   display: flex;
   align-items: center;
   flex-direction: row;
+  background: none;
+  border: none;
+  padding: 0;
+  color: $govuk-link-colour;
+  cursor: pointer;
+  @include govuk-font-size(16);
   @include govuk-media-query(tablet) {
     margin-right: 15px;
   }
@@ -57,6 +63,46 @@
   max-height: 1em;
   min-width: 1em;
   margin-right: 5px;
+}
+
+.faa-save-vacancy {
+  .faa-save-vacancy__link--save {
+    display: flex;
+    pointer-events: auto;
+  }
+  .faa-save-vacancy__link--delete {
+    display: none;
+    pointer-events: none;
+  }
+}
+
+.faa-save-vacancy--saved {
+  .faa-save-vacancy__link--save {
+    display: none;
+    pointer-events: none;
+  }
+  .faa-save-vacancy__link--delete {
+    display: flex;
+    pointer-events: auto;
+  }
+}
+
+.faa-search-result-header {
+  display: flex;
+  gap: 15px;
+  flex-direction: row;
+  .faa-save-vacancy {
+    flex-basis: 20px;
+    margin-left: auto;
+    .faa-vacancy-actions__link {
+      margin-right: 0;
+      .faa-vacancy-actions__icon {
+        margin: 0;
+        width: 20px;
+        max-height: none;
+      }
+    }
+  }
 }
 
 .faa-vacancy__section > h2:not([class]) {

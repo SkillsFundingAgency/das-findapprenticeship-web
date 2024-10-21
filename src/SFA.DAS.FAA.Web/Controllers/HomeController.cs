@@ -48,5 +48,13 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             return View();
         }
+
+        [AllowAnonymous]
+        [Route("get-help", Name = RouteNames.GetHelp)]
+        [HttpGet]
+        public IActionResult GetHelp()
+        {
+            return View();
+        }
     }
 }
