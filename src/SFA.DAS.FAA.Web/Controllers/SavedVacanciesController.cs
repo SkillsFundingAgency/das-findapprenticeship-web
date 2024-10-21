@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
-using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.GetSavedVacancies;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -32,24 +31,9 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
-        [Route("{vacancyReference}/save", Name = RouteNames.SaveVacancy)]
-        public async Task<IActionResult> SaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
-        {
-            await mediator.Send(new SaveVacancyCommand
-            {
-                VacancyReference = vacancyReference,
-                CandidateId = (Guid)User.Claims.CandidateId()!
-            });
-
-            return redirect
-                ? RedirectToRoute(RouteNames.Vacancies, new { vacancyReference })
-                : new JsonResult(StatusCodes.Status200OK);
-        }
-
-        [HttpGet]
+        [HttpPost]
         [Route("{vacancyReference}/delete", Name = RouteNames.DeleteSavedVacancy)]
-        public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+        public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference)
         {
             await mediator.Send(new DeleteSavedVacancyCommand
             {
@@ -57,12 +41,10 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            return redirect
-                ? RedirectToRoute(RouteNames.SavedVacancies, new
-                {
-                    VacancyReference = vacancyReference
-                })
-                : new JsonResult(StatusCodes.Status200OK);
+            return RedirectToRoute(RouteNames.SavedVacancies, new
+            {
+                VacancyReference = vacancyReference
+            });
         }
     }
 }

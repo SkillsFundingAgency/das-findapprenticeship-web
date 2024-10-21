@@ -1,12 +1,16 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Constants;
+using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
+using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
@@ -284,6 +288,42 @@ public class SearchApprenticeshipsController(
         };
         
         return Json(model);
+    }
+
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("search-results/save/{vacancyReference}", Name = RouteNames.SaveVacancyFromSearchResultsPage)]
+    public async Task<IActionResult> SearchResultsSaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    {
+        await mediator.Send(new SaveVacancyCommand
+        {
+            VacancyReference = vacancyReference,
+            CandidateId = (Guid)User.Claims.CandidateId()!
+        });
+
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+
+        return redirect
+            ? Redirect(redirectUrl)
+            : new JsonResult(StatusCodes.Status200OK);
+    }
+
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("search-results/delete/{vacancyReference}", Name = RouteNames.DeleteSavedVacancyFromSearchResultsPage)]
+    public async Task<IActionResult> SearchResultsDeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    {
+        await mediator.Send(new DeleteSavedVacancyCommand
+        {
+            VacancyReference = vacancyReference,
+            CandidateId = (Guid)User.Claims.CandidateId()!
+        });
+
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+
+        return redirect
+            ? Redirect(redirectUrl)
+            : new JsonResult(StatusCodes.Status200OK);
     }
 
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)

@@ -176,25 +176,30 @@ Favourites.prototype.init = function () {
 };
 
 Favourites.prototype.submit = async function (link, action) {
-  const url = link.href + "?redirect=false";
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-  headers.append("X-Requested-With", "XMLHttpRequest");
-  await fetch(url, {
-    method: "GET",
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Something went wrong");
+    const url = link.parentElement.action + "?redirect=false";
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("X-Requested-With", "XMLHttpRequest");
+    headers.append("RequestVerificationToken", link.nextElementSibling.value);
+    await fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+            __RequestVerificationToken: link.nextElementSibling.value,
+        }),
     })
-    .then((data) => {
-      this.updateUI(action);
-    })
-    .catch((error) => {
-      console.error("Error: ", error);
-    });
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error("Something went wrong");
+        })
+        .then((data) => {
+            this.updateUI(action);
+        })
+        .catch((error) => {
+            console.error("Error: ", error);
+        });
 };
 
 Favourites.prototype.updateUI = function (action) {

@@ -1,4 +1,6 @@
-﻿using SFA.DAS.FAA.Domain.Interfaces;
+﻿using Newtonsoft.Json;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.SavedVacancies
 {
@@ -23,7 +25,8 @@ namespace SFA.DAS.FAA.Domain.SavedVacancies
             public string Postcode { get; set; }
             public bool IsExternalVacancy { get; set; }
             public string ExternalVacancyUrl { get; set; }
-
+            [JsonProperty("applicationStatus")]
+            public ApplicationStatus? Status { get; set; }
         }
     }
 }
