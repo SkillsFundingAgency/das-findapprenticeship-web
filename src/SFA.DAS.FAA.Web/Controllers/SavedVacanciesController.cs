@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Queries.GetSavedVacancies;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -16,22 +17,34 @@ namespace SFA.DAS.FAA.Web.Controllers
     {
         [Route("", Name = RouteNames.SavedVacancies)]
         [HttpGet]
-        public async Task<IActionResult> Index(SortOrder sortOrder = SortOrder.RecentlySaved)
+        public async Task<IActionResult> Index(
+            [FromQuery] string? vacancyReference = null,
+            SortOrder sortOrder = SortOrder.RecentlySaved)
         {
             var result = await mediator.Send(new GetSavedVacanciesQuery
             {
-                CandidateId = (Guid)User.Claims.CandidateId()!
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                DeleteVacancyReference = vacancyReference
             });
 
             var viewModel = IndexViewModel.Map(result, dateTimeService, sortOrder);
             return View(viewModel);
         }
 
-        [Route("", Name = RouteNames.SavedVacancies)]
         [HttpPost]
-        public async Task<IActionResult> Index(string vacancyReference)
+        [Route("{vacancyReference}/delete", Name = RouteNames.DeleteSavedVacancy)]
+        public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference)
         {
-            return View($"vacancyReference: {vacancyReference}");
+            await mediator.Send(new DeleteSavedVacancyCommand
+            {
+                VacancyReference = vacancyReference,
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            });
+
+            return RedirectToRoute(RouteNames.SavedVacancies, new
+            {
+                VacancyReference = vacancyReference
+            });
         }
     }
 }

@@ -8,6 +8,8 @@ public static class RouteNames
     public const string SearchResults = "search-results";
     public const string MapSearchResults = "map-search-results";
     public const string Vacancies = "vacancies";
+    public const string SaveVacancy = nameof(SaveVacancy);
+    public const string DeleteSavedVacancy = nameof(DeleteSavedVacancy);
     public const string VacanciesReference = "vacancies-reference";
     public const string Apply = "apply";
     public const string UserName = "user-name";
@@ -34,6 +36,7 @@ public static class RouteNames
     public const string SavedVacancies = "saved-vacancies";
     public const string ConfirmDataTransfer = "confirm-data-transfer";
     public const string FinishAccountSetup = "finish-account-setup";
+    public const string GetHelp = "get-help";
     public const string Cookies = "cookies";
     public const string AccessibilityStatement = "accessibility-statement";
     public const string TermsAndConditions = "terms-and-conditions";
@@ -43,6 +46,10 @@ public static class RouteNames
     public const string ConfirmAccountDelete = "confirm-account-deletion";
     public const string AccountDelete = "account-delete";
     public const string AccountDeleteWithDrawApplication = "account-deletion-withdraw-applications";
+    public const string SaveVacancyFromDetailsPage = "save-vacancy-details-page";
+    public const string DeleteSavedVacancyFromDetailsPage = "delete-vacancy-details-page";
+    public const string SaveVacancyFromSearchResultsPage = "save-vacancy-search-results-page";
+    public const string DeleteSavedVacancyFromSearchResultsPage = "delete-vacancy-search-results-page";
 
     public static class Applications
     {

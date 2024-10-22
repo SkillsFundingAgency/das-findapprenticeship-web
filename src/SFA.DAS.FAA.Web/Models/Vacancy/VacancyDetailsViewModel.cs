@@ -59,6 +59,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
         public string? ApplicationUrl { get; set; }
+        public bool IsSavedVacancy { get; set; } = false;
         public string? ApplicationInstructions { get; set; }
         
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
@@ -69,7 +70,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 VacancySummary = source.Vacancy?.Description,
                 AnnualWage = source.Vacancy?.WageText,
                 HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
-                Duration = source.Vacancy?.ExpectedDuration.ToLower(),
+                Duration = source.Vacancy?.ExpectedDuration?.ToLower(),
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
                 WorkDescription = source.Vacancy?.LongDescription,
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
@@ -115,7 +116,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Longitude = source.Vacancy?.Location?.Lon,
                 CompanyBenefits = source.Vacancy?.CompanyBenefitsInformation,
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription,
-                WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation
+                WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
+                IsSavedVacancy = source.Vacancy.IsSavedVacancy,
             };
 
     }

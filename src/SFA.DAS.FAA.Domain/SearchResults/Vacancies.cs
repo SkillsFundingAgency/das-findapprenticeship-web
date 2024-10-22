@@ -83,6 +83,9 @@ public class Vacancies
 
     [JsonProperty("applicationUrl")]
     public string? ApplicationUrl { get; set; }
+
+    [JsonProperty("isSavedVacancy")]
+    public bool IsSavedVacancy { get; set; }
 }
 
 public class CandidateApplicationDetails
