@@ -24,6 +24,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
         public class Application
         {
+            private const string DateFormat = "d MMMM yyyy";
+            
             public Guid Id { get; set; }
             public string? VacancyReference { get; set; }
             public string? Title { get; set; }
@@ -38,6 +40,39 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public ApplicationStatus Status { get; set; }
             public string ResponseNotes { get; set; } = null!;
             public DateTime CloseDateTime { get; set; }
+
+            public static Application From(GetIndexQueryResult.Application source, IDateTimeService dateTimeService)
+            {
+                var timeUntilClosing = (source.ClosedDate ?? source.ClosingDate).Date - dateTimeService.GetDateTime();
+                var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
+                
+                return new Application()
+                {
+                    Id = source.Id,
+                    VacancyReference = source.VacancyReference,
+                    Title = source.Title,
+                    EmployerName = source.EmployerName,
+                    CloseDateTime = source.ClosingDate,
+                    StartedOn = $"Started on {source.CreatedDate.ToString(DateFormat, CultureInfo.InvariantCulture)}",
+                    ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate, source.ClosedDate),
+                    IsClosingSoon = !source.ClosedDate.HasValue && (daysToExpiry is >= 0 and <= 7),
+                    IsClosed = source.ClosedDate.HasValue,
+                    Status = source.Status,
+                    SubmittedDate = source.Status is (ApplicationStatus.Submitted)
+                        ? $"Submitted on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}" 
+                        : string.Empty,
+                    WithdrawnDate = $"Withdrawn application on {source.WithdrawnDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
+                    ResponseDate = source.Status switch
+                    {
+                        (ApplicationStatus.Successful) => $"Offered on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
+                        ApplicationStatus.Unsuccessful => $"Feedback received on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
+                        _ => string.Empty
+                    },
+                    ResponseNotes = source.Status is ApplicationStatus.Unsuccessful
+                        ? source.ResponseNotes
+                        : string.Empty
+                };
+            }
         }
 
         public static IndexViewModel Map(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
@@ -56,36 +91,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 
             foreach (var application in applications)
             {
-                var timeUntilClosing = application.ClosingDate.Date - dateTimeService.GetDateTime();
-                var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
-
-                var applicationViewModel = new Application
-                {
-                    Id = application.Id,
-                    VacancyReference = application.VacancyReference,
-                    Title = application.Title,
-                    EmployerName = application.EmployerName,
-                    CloseDateTime = application.ClosingDate,
-                    StartedOn =
-                        $"Started on {application.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
-                    ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, application.ClosingDate),
-                    IsClosingSoon = daysToExpiry is >= 0 and <= 7,
-                    IsClosed = daysToExpiry < 0,
-                    Status = application.Status,
-                    SubmittedDate = application.Status is (ApplicationStatus.Submitted)
-                        ? $"Submitted on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}" 
-                        : string.Empty,
-                    WithdrawnDate = $"Withdrawn application on {application.WithdrawnDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
-                    ResponseDate = application.Status switch
-                    {
-                        (ApplicationStatus.Successful) => $"Offered on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
-                        ApplicationStatus.Unsuccessful => $"Feedback received on {application.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
-                        _ => string.Empty
-                    },
-                    ResponseNotes = application.Status is ApplicationStatus.Unsuccessful
-                        ? application.ResponseNotes
-                        : string.Empty
-                };
+                var applicationViewModel = Application.From(application, dateTimeService);
                 
                 switch (applicationViewModel.Status)
                 {
