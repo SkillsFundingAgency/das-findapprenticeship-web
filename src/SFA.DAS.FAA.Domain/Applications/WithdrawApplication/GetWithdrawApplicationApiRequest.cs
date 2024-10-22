@@ -18,4 +18,6 @@ public class GetWithdrawApplicationApiResponse
     public DateTime? SubmittedDate { get; set; }
 
     public DateTime ClosingDate { get; set; }
+    
+    public DateTime? ClosedDate { get; set; }
 }
