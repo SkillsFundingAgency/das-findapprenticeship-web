@@ -5,7 +5,7 @@ namespace SFA.DAS.FAA.Web.Models.User
     public class AccountDeletionViewModel : ViewModelBase
     {
         public string PageBackLink => GetPageBackLink();
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public bool HasAnyOutstandingApplications => JourneyPath == RouthPath.WithdrawApplications;
         public RouthPath JourneyPath { get; set; }
 
