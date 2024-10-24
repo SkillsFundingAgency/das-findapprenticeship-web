@@ -6,12 +6,16 @@
     ViewBag.Title = "Cookies – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="faa-js-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    <div class="faa-js-back-link-history">
+        <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    </div>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner" id="confirmation-banner" hidden>
+        <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+            aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner"
+            id="confirmation-banner" hidden>
             <div class="govuk-notification-banner__header">
                 <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                     Success
@@ -26,14 +30,16 @@
                 </p>
             </div>
         </div>
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-8">Cookies</h1>
-        <p class="govuk-body">Cookies are small files saved on your phone, tablet or computer when you visit a website.</p>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-8">Cookies</h1>
+        <p class="govuk-body">Cookies are small files saved on your phone, tablet or computer when you visit a website.
+        </p>
         <p class="govuk-body">
             We use cookies to make Find an apprenticeship work and collect information about how you use our service.
         </p>
         <h2 class="govuk-heading-m">Essential cookies</h2>
         <p class="govuk-body">
-            Essential cookies are required for Find an apprenticeship to work. We do not need to ask permission to use them.
+            Essential cookies are required for Find an apprenticeship to work. We do not need to ask permission to use
+            them.
         </p>
         <table class="govuk-table govuk-table--small-text-until-tablet">
             <thead class="govuk-table__head">
@@ -110,13 +116,17 @@
                     </legend>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" name="ConsentFunctionalCookie" type="radio" asp-for="ConsentFunctionalCookie" value="true" id="consentFunctionalCookie-true" type="radio" />
+                            <input class="govuk-radios__input" name="ConsentFunctionalCookie" type="radio"
+                                asp-for="ConsentFunctionalCookie" value="true" id="consentFunctionalCookie-true"
+                                type="radio" />
                             <label class="govuk-label govuk-radios__label" for="consentFunctionalCookie-true">
                                 Yes
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" name="ConsentFunctionalCookie" type="radio" asp-for="ConsentFunctionalCookie" value="false" id="consentFunctionalCookie-false" type="radio" />
+                            <input class="govuk-radios__input" name="ConsentFunctionalCookie" type="radio"
+                                asp-for="ConsentFunctionalCookie" value="false" id="consentFunctionalCookie-false"
+                                type="radio" />
                             <label class="govuk-label govuk-radios__label" for="consentFunctionalCookie-false">
                                 No
                             </label>
@@ -176,13 +186,17 @@
                     </legend>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" name="ConsentAnalyticsCookie" type="radio" asp-for="ConsentAnalyticsCookie" value="true" id="consentAnalyticsCookie-true" type="radio" />
+                            <input class="govuk-radios__input" name="ConsentAnalyticsCookie" type="radio"
+                                asp-for="ConsentAnalyticsCookie" value="true" id="consentAnalyticsCookie-true"
+                                type="radio" />
                             <label class="govuk-label govuk-radios__label" for="consentAnalyticsCookie-true">
                                 Yes
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" name="ConsentAnalyticsCookie" type="radio" asp-for="ConsentAnalyticsCookie" value="false" id="consentAnalyticsCookie-false" type="radio" />
+                            <input class="govuk-radios__input" name="ConsentAnalyticsCookie" type="radio"
+                                asp-for="ConsentAnalyticsCookie" value="false" id="consentAnalyticsCookie-false"
+                                type="radio" />
                             <label class="govuk-label govuk-radios__label" for="consentAnalyticsCookie-false">
                                 No
                             </label>

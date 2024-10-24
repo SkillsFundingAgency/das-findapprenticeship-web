@@ -5,7 +5,9 @@
     ViewBag.Title = "Terms and conditions – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="faa-js-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    <div class="faa-js-back-link-history">
+        <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    </div>
 }
 
 <div class="govuk-grid-row">
@@ -13,9 +15,6 @@
         <h1 class="govuk-heading-xl">Terms and conditions</h1>
         <p class="govuk-body">This service is run by the Department for Education (DfE).</p>
         <p class="govuk-body">By using this service, you agree to our terms and conditions.</p>
-
-        <div class="govuk-!-padding-bottom-3"></div>
-
         <h2 class="govuk-heading-m">Using a Find an apprenticeship account</h2>
         <h3 class="govuk-heading-s">Creating an account</h3>
         <p class="govuk-body">You must be at least 13 years old to have a Find an apprenticeship account.</p>
@@ -27,20 +26,23 @@
             <li>being dishonest in your applications or pretending to be someone else</li>
             <li>using abusive language</li>
             <li>
-                using the service for illegal reasons, including those listed in the 
-                <a href="https://www.legislation.gov.uk/ukpga/1990/18/contents" target="_blank" rel="noreferrer noopener" class="govuk-link">
-                    Computer Misuse Act 1990
+                using the service for illegal reasons, including those listed in the
+                <a href="https://www.legislation.gov.uk/ukpga/1990/18/contents" target="_blank"
+                    rel="noreferrer noopener" class="govuk-link">
+                    Computer Misuse Act 1990 (opens in a new tab)
                 </a>
             </li>
         </ul>
         <h2 class="govuk-heading-m">Our responsibility for this service</h2>
         <p class="govuk-body">
-            We strive to ensure that this service remains constantly available, free from viruses, and that the information provided is accurate and complete.
+            We strive to ensure that this service remains constantly available, free from viruses, and that the
+            information provided is accurate and complete.
         </p>
         <p class="govuk-body">However, we do not accept liability for:</p>
         <ul class="govuk-list govuk-list--bullet">
             <li>
-                you being unable to access the service (such as when we experience excessive demand or take the service down for maintenance)
+                you being unable to access the service (such as when we experience excessive demand or take the service
+                down for maintenance)
             </li>
             <li>delay or failure in receiving data</li>
             <li>indirect damages arising from you using the service or relying on its content</li>

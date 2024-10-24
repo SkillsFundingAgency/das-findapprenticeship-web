@@ -4,12 +4,14 @@
     ViewBag.Title = "Get help with Find an apprenticeship – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    <a class="faa-js-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    <div class="faa-js-back-link-history">
+        <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+    </div>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-8">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-8">
             Get help with Find an apprenticeship
         </h1>
 
@@ -17,17 +19,17 @@
             Contact the Apprenticeship service
         </h2>
         <p class="govuk-body">
-           Contact us if you're having a problem with the service.
+            Contact us if you're having a problem with the service.
         </p>
-        
+
         <h2 class="govuk-heading-s">
             Call us
         </h2>
         <p class="govuk-body">
             Call 0800 015 0400
-            <br/>
+            <br />
             Open Monday to Friday, 9am to 5pm
-            <br/>
+            <br />
             Free from UK mobiles and landlines
         </p>
 
@@ -35,7 +37,8 @@
             Email us
         </h2>
         <p class="govuk-body">
-            <a href="mailto:nationalhelpdesk@findapprenticeship.service.gov.uk" class="govuk-link">nationalhelpdesk@findapprenticeship.service.gov.uk</a>
+            <a href="mailto:nationalhelpdesk@findapprenticeship.service.gov.uk"
+                class="govuk-link">nationalhelpdesk@findapprenticeship.service.gov.uk</a>
         </p>
     </div>
 </div>
