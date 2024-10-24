@@ -1,9 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.CookiesViewModel
 @{
     Layout = "_Layout";
     ViewBag.Title = "Cookies – Find an apprenticeship – GOV.UK";
 }
+@section BackLink {
+    <a class="faa-js-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner" id="confirmation-banner" hidden>

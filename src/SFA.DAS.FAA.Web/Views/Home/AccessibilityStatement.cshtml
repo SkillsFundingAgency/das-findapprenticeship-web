@@ -1,7 +1,13 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Infrastructure
+@{
     Layout = "_Layout";
     ViewBag.Title = "Accessibility statement for Find an apprenticeship – Find an apprenticeship – GOV.UK";
 }
+@section BackLink {
+    <a class="faa-js-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-8">
