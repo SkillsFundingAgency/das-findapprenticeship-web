@@ -12,8 +12,8 @@ namespace SFA.DAS.FAA.Web.Validators
         public AccountDeletionViewModelValidator()
         {
             RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage(EmailAddressEmptyErrorMessage);
+                .NotNull().WithMessage(EmailAddressEmptyErrorMessage)
+                .NotEmpty().WithMessage(EmailAddressEmptyErrorMessage);
 
             RuleFor(x => x.Email)
                 .Must((model, _) =>
