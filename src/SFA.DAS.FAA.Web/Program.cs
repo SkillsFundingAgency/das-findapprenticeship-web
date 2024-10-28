@@ -33,6 +33,14 @@ builder.Services.AddServiceRegistration(isIntegrationTest);
 builder.Services.AddAuthenticationServices(rootConfiguration);
 builder.Services.AddCacheServices(rootConfiguration);
 builder.Services.AddHealthChecks();
+builder.Services.AddControllersWithViews()
+    .AddSessionStateTempDataProvider();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(15);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.Configure<RouteOptions>(_ =>
 {
@@ -78,6 +86,8 @@ app.UseAuthorization();
 app.AddRedirectRules();
 app.UseStaticFiles();
 app.UseCookiePolicy();
+
+app.UseSession();
 
 app.UseEndpoints(endpointBuilder =>
 {
