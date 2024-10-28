@@ -1,26 +1,25 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
-using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
-using SFA.DAS.FAA.Web.Services;
+using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.Extensions.Options;
-using SFA.DAS.FAA.Domain.SearchResults;
-using SFA.DAS.FAA.Web.Models;
-using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 public class WhenGettingIndex
@@ -30,12 +29,24 @@ public class WhenGettingIndex
         GetSearchApprenticeshipsIndexResult result,
         Guid govIdentifier,
         bool showBanner,
+        bool showAccountDeletedBanner,
         [Frozen] Mock<SearchModelValidator> validator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<IMediator> mediator)
     {
         result.LocationSearched = false;
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
+            }))
+        };
+        var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>())
+        {
+            [CacheKeys.AccountDeleted] = showAccountDeletedBanner.ToString().ToLower()
+        };
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -54,23 +65,22 @@ public class WhenGettingIndex
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
             {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                    }))
-                }
-            }
+                HttpContext = httpContext
+            },
+            TempData = tempData
         };
 
         var actual = await controller.Index(new SearchModel()) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
-        actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options.Excluding(prop => prop.ShowAccountCreatedBanner));
+        actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
+            .Excluding(prop => prop.ShowAccountCreatedBanner)
+            .Excluding(prop => prop.ShowAccountDeletedBanner)
+        );
         var actualModel = actual!.Model as SearchApprenticeshipsViewModel;
         Assert.That(actualModel, Is.Not.Null);
         actualModel!.ShowAccountCreatedBanner.Should().Be(showBanner);
+        actualModel.ShowAccountDeletedBanner.Should().Be(showAccountDeletedBanner);
     }
     
     [Test, MoqAutoData]
@@ -168,6 +178,7 @@ public class WhenGettingIndex
     public async Task ModelStateIsInvalid_ModelIsReturned(
         string whatSearchTerm,
         string whereSearchTerm,
+        bool showAccountDeletedBanner,
         Guid govIdentifier,
         GetSearchApprenticeshipsIndexResult queryResult,
         SearchApprenticeshipsViewModel viewModel,
@@ -176,6 +187,17 @@ public class WhenGettingIndex
         [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<ICacheStorageService> cacheStorageService)
     {
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
+            }))
+        };
+        var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>())
+        {
+            [CacheKeys.AccountDeleted] = showAccountDeletedBanner.ToString().ToLower()
+        };
         queryResult.LocationSearched = true;
         queryResult.Location = null;
         mediator.Setup(x => x.Send(It.Is<GetSearchApprenticeshipsIndexQuery>(c => c.LocationSearchTerm.Equals(whereSearchTerm)), It.IsAny<CancellationToken>()))
@@ -193,14 +215,9 @@ public class WhenGettingIndex
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
             {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                    }))
-                }
-            }
+                HttpContext = httpContext
+            },
+            TempData = tempData,
         };
         controller.ModelState.AddModelError("test", "message");
         var model = new SearchModel

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using SFA.DAS.FAA.Domain.Candidates;
 using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.GovUK.Auth.Services;
 
 namespace SFA.DAS.FAA.Web.AppStart;
@@ -16,6 +17,20 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
     }
     public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext ctx)
     {
+        // Access the HttpContext from the TokenValidatedContext
+        var httpContext = ctx.HttpContext;
+
+        // Extract the route information (path)
+        if (!string.IsNullOrEmpty(httpContext.Request.Path.Value))
+        {
+            var path = httpContext.Request.Path.Value?[1..];
+
+            if (!string.IsNullOrEmpty(path) && path.Equals(RouteNames.SignOut, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return new List<Claim>();
+            }
+        }
+
         var userId = ctx.Principal.Claims
             .First(c => c.Type.Equals(ClaimTypes.NameIdentifier))
             .Value;

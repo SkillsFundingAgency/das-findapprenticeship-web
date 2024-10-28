@@ -18,6 +18,7 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
 using SFA.DAS.FAA.Application.Commands.MigrateData;
+using SFA.DAS.FAA.Application.Commands.User.PostAccountDeletion;
 using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
@@ -664,7 +665,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("account-delete", Name = RouteNames.AccountDelete)]
-        public IActionResult AccountDeletion(AccountDeletionViewModel model)
+        public async Task<IActionResult> AccountDeletion(AccountDeletionViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -677,7 +678,11 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return RedirectToRoute(RouteNames.ServiceStartDefault);
+            await mediator.Send(new AccountDeletionCommand((Guid)User.Claims.CandidateId()!));
+
+            TempData[CacheKeys.AccountDeleted] = "true";
+
+            return RedirectToRoute(RouteNames.SignOut);
         }
     }
 }
