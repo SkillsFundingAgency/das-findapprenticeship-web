@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Application.Commands.SaveSearch;
 using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
@@ -163,30 +164,9 @@ public class SearchApprenticeshipsController(
                 Location = request.Location
             });
         }
-        
-        var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
-        if (request.Distance <= 0)
-        {
-            request.Distance = null;
-        }
-        else if (request.Distance.HasValue && !validDistanceValues.Contains((int)request.Distance))
-        {
-            request.Distance = 10;
-        }
-        else if (request.PageNumber <= 0)
-        {
-            request.PageNumber = 1;
-        }
 
-        if (string.IsNullOrEmpty(request.SearchTerm) && request.LevelIds is { Count: 0 } && request.RouteIds is { Count: 0 })
-        {
-            request.Sort = VacancySort.DistanceAsc.ToString();
-        }
-        else if ( request.Sort == null && request.Location != null)
-        {
-            request.Sort = VacancySort.DistanceAsc.ToString();
-        }
-        
+        EnsureValidSearchParameters(request);
+
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,
@@ -324,6 +304,65 @@ public class SearchApprenticeshipsController(
         return redirect
             ? Redirect(redirectUrl)
             : new JsonResult(StatusCodes.Status200OK);
+    }
+    
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("search-results/save-search", Name = RouteNames.SaveSearch)]
+    public async Task<IActionResult> SaveSearch([FromQuery] GetSearchResultsRequest request)
+    {
+        var validationResult = await searchRequestValidator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            foreach (var validationFailure in validationResult.Errors)
+            {
+                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
+            }
+            return new JsonResult(StatusCodes.Status400BadRequest);
+        }
+        
+        EnsureValidSearchParameters(request);
+        
+        await mediator.Send(new SaveSearchCommand
+        {
+            SearchTerm = request.SearchTerm,
+            CandidateId = User.Claims.CandidateId() ?? Guid.Empty,
+            DisabilityConfident = request.DisabilityConfident,
+            Distance = request.Distance,
+            Location = request.Location,
+            SelectedLevelIds = request.LevelIds,
+            SelectedRouteIds = request.RouteIds,
+            SortOrder = request.Sort
+        });
+
+        return new JsonResult(StatusCodes.Status200OK);
+    }
+    
+    private static readonly List<int> ValidDistanceValues = [2, 5, 10, 15, 20, 30, 40];
+
+    private void EnsureValidSearchParameters(GetSearchResultsRequest request)
+    {
+        request.Distance = request.Distance switch
+        {
+            null or <= 0 => null,
+            > 0 when !ValidDistanceValues.Contains(request.Distance.Value) => 10,
+            _ => request.Distance
+        };
+        
+        request.PageNumber = request.PageNumber switch
+        {
+            <= 0 => 1,
+            _ => request.PageNumber
+        };
+        
+        if (string.IsNullOrEmpty(request.SearchTerm) && request is { LevelIds: { Count: 0 }, RouteIds.Count: 0 })
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
+        }
+        else if ( request.Sort == null && request.Location != null)
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
+        }
     }
 
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
