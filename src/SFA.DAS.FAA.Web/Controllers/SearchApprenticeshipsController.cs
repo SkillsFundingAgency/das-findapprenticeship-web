@@ -316,7 +316,7 @@ public class SearchApprenticeshipsController(
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("search-results/save-search", Name = RouteNames.SaveSearch)]
-    public async Task<IActionResult> SaveSearch([FromQuery] GetSearchResultsRequest request)
+    public async Task<IActionResult> SaveSearch([FromBody] GetSearchResultsRequest request)
     {
         var validationResult = await searchRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
