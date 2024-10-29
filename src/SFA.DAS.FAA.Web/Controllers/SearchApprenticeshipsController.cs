@@ -70,6 +70,13 @@ public class SearchApprenticeshipsController(
         var viewModel = (SearchApprenticeshipsViewModel)result;
         viewModel.ShowAccountCreatedBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
         viewModel.ShowAccountFoundBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountFound}");
+        
+        var isAccountDeleted = TempData[CacheKeys.AccountDeleted] as string;
+        if (isAccountDeleted is "true")
+        {
+            viewModel.ShowAccountDeletedBanner = true;
+            TempData.Remove(CacheKeys.AccountDeleted);
+        }
 
         return View(viewModel);
     }
