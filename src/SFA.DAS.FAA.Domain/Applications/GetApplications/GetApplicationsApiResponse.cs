@@ -15,6 +15,7 @@ public class GetApplicationsApiResponse
         public string EmployerName { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ClosingDate { get; set; }
+        public DateTime? ClosedDate { get; set; }
         public DateTime? SubmittedDate { get; set; }
         public DateTime? WithdrawnDate { get; set; }
         public DateTime? ResponseDate { get; set; }
