@@ -326,7 +326,7 @@ public class SearchApprenticeshipsController(
         await mediator.Send(new SaveSearchCommand
         {
             SearchTerm = request.SearchTerm,
-            CandidateId = User.Claims.CandidateId() ?? Guid.Empty,
+            CandidateId = (Guid)User.Claims.CandidateId()!,
             DisabilityConfident = request.DisabilityConfident,
             Distance = request.Distance,
             Location = request.Location,
