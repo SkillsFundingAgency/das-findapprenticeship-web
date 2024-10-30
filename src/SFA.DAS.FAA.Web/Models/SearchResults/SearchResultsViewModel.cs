@@ -34,6 +34,7 @@ public class SearchResultsViewModel : ViewModelBase
     public string? MapId { get; set; }
 
     public bool ShowAccountCreatedBanner { get; set; } = false;
+    public int SavedSearchesCount { get; set; }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
@@ -46,7 +47,8 @@ public class SearchResultsViewModel : ViewModelBase
             TotalPages = source.TotalPages,
             VacancyReference =source.VacancyReference,
             Sort = source.Sort,
-            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList()
+            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList(),
+            SavedSearchesCount = source.SavedSearchesCount,
         };
     }
 

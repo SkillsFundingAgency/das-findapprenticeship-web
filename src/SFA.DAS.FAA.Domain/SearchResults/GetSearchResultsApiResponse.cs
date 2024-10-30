@@ -40,6 +40,8 @@ public class GetSearchResultsApiResponse
 
     [JsonProperty("DisabilityConfident")]
     public bool DisabilityConfident { get; set; }
+
+    public int SavedSearchesCount { get; set; }
 }
 
 public class Location
