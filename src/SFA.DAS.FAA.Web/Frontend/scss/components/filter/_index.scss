@@ -130,3 +130,43 @@
 .faa-filter .govuk-accordion__controls {
   display: none;
 }
+
+.faa-filter-alert {
+  margin-top: 1rem;
+}
+
+.faa-filter-alert__link {
+  font-weight: $govuk-font-weight-bold;
+  span {
+    vertical-align: middle;
+  }
+}
+
+.faa-filter-alert__icon {
+  height: 1em;
+  fill: currentColor;
+}
+
+.faa-filter-alert__heading-icon {
+  height: 1em;
+  fill: $govuk-brand-colour;
+  position: relative;
+  top: 2px;
+  margin-right: 3px;
+}
+
+.faa-filter-alert__confirmation {
+  border-left: 10px solid $govuk-brand-colour;
+  background-color: #fff;
+  padding: 15px;
+  display: none;
+}
+
+.faa-filter-alert--saved {
+  form {
+    display: none;
+  }
+  .faa-filter-alert__confirmation {
+    display: block;
+  }
+}
