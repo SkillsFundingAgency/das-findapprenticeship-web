@@ -316,7 +316,7 @@ public class SearchApprenticeshipsController(
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("search-results/save-search", Name = RouteNames.SaveSearch)]
-    public async Task<IActionResult> SaveSearch([FromBody] GetSearchResultsRequest request)
+    public async Task<IActionResult> SaveSearch([FromBody] GetSearchResultsRequest request, [FromQuery] bool redirect = true)
     {
         var validationResult = await searchRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
@@ -342,7 +342,11 @@ public class SearchApprenticeshipsController(
             SortOrder = request.Sort
         });
 
-        return new JsonResult(StatusCodes.Status200OK);
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+
+        return redirect
+            ? Redirect(redirectUrl)
+            : new JsonResult(StatusCodes.Status200OK);
     }
     
     private static readonly List<int> ValidDistanceValues = [2, 5, 10, 15, 20, 30, 40];
