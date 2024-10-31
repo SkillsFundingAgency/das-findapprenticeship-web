@@ -5,15 +5,15 @@ namespace SFA.DAS.FAA.Domain.SavedSearches
     public class ConfirmSavedSearchUnsubscribeApiResponse
     {
         [JsonProperty("Where")]
-        public string Where { get; set; }
+        public string? Where { get; set; }
 
         [JsonProperty("Distance")]
-        public long Distance { get; set; }
+        public long? Distance { get; set; }
 
         [JsonProperty("Categories")]
-        public string[] Categories { get; set; }
+        public List<string>? Categories { get; set; }
 
         [JsonProperty("Levels")]
-        public long[] Levels { get; set; }
+        public List<long>? Levels { get; set; }
     }
 }
