@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.FAA.Domain.SavedSearches
 {
-    public class ConfirmUnsubscribeApiResponse
+    public class ConfirmSavedSearchUnsubscribeApiResponse
     {
         [JsonProperty("Where")]
         public string Where { get; set; }

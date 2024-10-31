@@ -15,8 +15,8 @@ public class GetConfirmUnsubscribeQueryHandler : IRequestHandler<GetConfirmUnsub
 
     public async Task<GetConfirmUnsubscribeResult> Handle(GetConfirmUnsubscribeQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetConfirmUnsubscribeApiRequest(query.SearchTerm);
-        var response = await _apiClient.Get<ConfirmUnsubscribeApiResponse>(request);
+        var request = new GetConfirmSavedSearchUnsubscribeApiRequest(query.SavedSearchId);
+        var response = await _apiClient.Get<ConfirmSavedSearchUnsubscribeApiResponse>(request);
         return new GetConfirmUnsubscribeResult
         {
             Where = response.Where,

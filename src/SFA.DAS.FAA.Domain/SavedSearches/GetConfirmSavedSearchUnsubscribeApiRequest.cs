@@ -3,11 +3,11 @@ using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.SavedSearches
 {
-    public class GetConfirmUnsubscribeApiRequest : IGetApiRequest
+    public class GetConfirmSavedSearchUnsubscribeApiRequest : IGetApiRequest
     {
         private readonly string? _search_id;
 
-        public GetConfirmUnsubscribeApiRequest(string? search_id)
+        public GetConfirmSavedSearchUnsubscribeApiRequest(string? search_id)
         {
             _search_id = search_id;
         }
