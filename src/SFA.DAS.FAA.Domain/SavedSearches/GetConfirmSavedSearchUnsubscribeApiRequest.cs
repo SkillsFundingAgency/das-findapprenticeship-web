@@ -5,12 +5,12 @@ namespace SFA.DAS.FAA.Domain.SavedSearches
 {
     public class GetConfirmSavedSearchUnsubscribeApiRequest : IGetApiRequest
     {
-        private readonly string? _search_id;
+        private readonly Guid _search_id;
 
-        public GetConfirmSavedSearchUnsubscribeApiRequest(string? search_id)
+        public GetConfirmSavedSearchUnsubscribeApiRequest(Guid search_id)
         {
             _search_id = search_id;
         }
-        public string GetUrl => $"savedsearches?searchId={HttpUtility.UrlEncode(_search_id)}/unsubscribe";
+        public string GetUrl => $"saved-searches/{_search_id}/unsubscribe";
     }
 }

@@ -5,9 +5,14 @@ namespace SFA.DAS.FAA.Application.Queries.SavedSearches
 {
     public class GetConfirmUnsubscribeResult
     {
-        public string Where { get; set; }
-        public long Distance { get; set; }
-        public string[] Categories { get; set; }
-        public long[] Levels { get; set; }
+        public SavedSearch? SavedSearch { get; set; }
+    }
+
+    public class SavedSearch
+    {
+        public string? Where { get; set; }
+        public long? Distance { get; set; }
+        public List<string>? Categories { get; set; }
+        public List<long>? Levels { get; set; }
     }
 }

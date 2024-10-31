@@ -21,12 +21,24 @@ public class WhenHandlingGetConfirmUnsubscribeQuery
         
         var actual = await handler.Handle(query, CancellationToken.None);
         
-        actual.Should().BeEquivalentTo(apiResponse);
+        actual.SavedSearch.Should().BeEquivalentTo(apiResponse);
     }
     
     [Test, MoqAutoData]
-    public async Task Then_The_Query_Is_Handled_And_No_Record_Found_Null_Returned()
+    public async Task Then_The_Query_Is_Handled_And_No_Record_Found_Null_Returned(        
+        GetConfirmUnsubscribeQuery query,
+        ConfirmSavedSearchUnsubscribeApiResponse apiResponse,
+        [Frozen] Mock<IApiClient> apiClient,
+        GetConfirmUnsubscribeQueryHandler handler)
     {
-        
+        var request = new GetConfirmSavedSearchUnsubscribeApiRequest(query.SavedSearchId);
+        apiClient.Setup(x =>
+                x.Get<ConfirmSavedSearchUnsubscribeApiResponse>(
+                    It.Is<GetConfirmSavedSearchUnsubscribeApiRequest>(c => c.GetUrl.Equals(request.GetUrl))))
+            .ReturnsAsync((ConfirmSavedSearchUnsubscribeApiResponse)null!);
+
+        var actual = await handler.Handle(query, CancellationToken.None);
+
+        actual.SavedSearch.Should().BeNull();
     }
 }

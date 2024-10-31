@@ -182,7 +182,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                 .WithStatusCode(200)
                 .WithBodyFromFile("get-select-address.json"));
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/savedsearches/\\S+/unsubscribe", RegexOptions.None, regexMaxTimeOut))
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/saved-searches/\\S+/unsubscribe", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
                 .RespondWith(
                 Response.Create()

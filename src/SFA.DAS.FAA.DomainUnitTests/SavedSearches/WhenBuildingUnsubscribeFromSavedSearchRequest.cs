@@ -12,6 +12,6 @@ public class WhenBuildingUnsubscribeFromSavedSearchRequest
     {
         var actual = new GetConfirmSavedSearchUnsubscribeApiRequest(searchId);
         
-        actual.GetUrl.Should().Be($"savedsearches/{searchId}/unsubscribe");
+        actual.GetUrl.Should().Be($"saved-searches/{searchId}/unsubscribe");
     }
 }

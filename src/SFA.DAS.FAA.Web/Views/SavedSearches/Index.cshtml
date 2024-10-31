@@ -1,0 +1,42 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.SavedSearches.UnsubscribeSavedSearchesViewModel
+@{
+    ViewData["Title"] = $"{} – Find an apprenticeship – GOV.UK ";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Education history</span>
+        <h1 class="govuk-heading-l"></h1>
+
+        <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title"></h2>
+            </div>
+            <div class="govuk-summary-card__content">
+                <dl class="govuk-summary-list">
+
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <form method="post">
+            <div class="govuk-button-group">
+                <button class="govuk-button govuk-button--warning" data-module="govuk-button">
+                    Yes, delete
+                </button>
+                <a class="govuk-link" href="">Cancel – don't delete</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+

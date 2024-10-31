@@ -16,13 +16,20 @@ public class GetConfirmUnsubscribeQueryHandler : IRequestHandler<GetConfirmUnsub
     public async Task<GetConfirmUnsubscribeResult> Handle(GetConfirmUnsubscribeQuery query, CancellationToken cancellationToken)
     {
         var request = new GetConfirmSavedSearchUnsubscribeApiRequest(query.SavedSearchId);
-        var response = await _apiClient.Get<ConfirmSavedSearchUnsubscribeApiResponse>(request);
+        var response = await _apiClient.Get<ConfirmSavedSearchUnsubscribeApiResponse?>(request);
+        if (response == null)
+        {
+            return new GetConfirmUnsubscribeResult { };
+        }
+
         return new GetConfirmUnsubscribeResult
         {
-            Where = response.Where,
-            Distance = response.Distance,
-            Categories = response.Categories,
-            Levels = response.Levels
+            SavedSearch = new SavedSearch{
+                Where = response.Where,
+                Distance = response.Distance,
+                Categories = response.Categories,
+                Levels = response.Levels
+            }
         };
     }
 }
