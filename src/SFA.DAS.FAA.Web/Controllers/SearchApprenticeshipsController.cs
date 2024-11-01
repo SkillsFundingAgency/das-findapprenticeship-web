@@ -1,7 +1,9 @@
+using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using SFA.DAS.FAA.Application.Commands.SaveSearch;
 using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
@@ -29,7 +31,9 @@ public class SearchApprenticeshipsController(
     IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, 
     ICacheStorageService cacheStorageService, 
     SearchModelValidator searchModelValidator,
-    GetSearchResultsRequestValidator searchRequestValidator) : Controller
+    GetSearchResultsRequestValidator searchRequestValidator,
+    IDataProtectorService dataProtectorService,
+    ILogger<SearchApprenticeshipsController> logger) : Controller
 {
     [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
@@ -156,7 +160,7 @@ public class SearchApprenticeshipsController(
     }
 
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
+    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request, [FromQuery] bool querySaved = false)
     {
         var validationResult = await searchRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
@@ -171,8 +175,30 @@ public class SearchApprenticeshipsController(
                 Location = request.Location
             });
         }
-
-        EnsureValidSearchParameters(request);
+        
+        var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
+        if (request.Distance <= 0)
+        {
+            request.Distance = null;
+        }
+        else if (request.Distance.HasValue && !validDistanceValues.Contains((int)request.Distance))
+        {
+            request.Distance = 10;
+        }
+        
+        if (request.PageNumber <= 0)
+        {
+            request.PageNumber = 1;
+        }
+        
+        if (string.IsNullOrEmpty(request.SearchTerm) && request.LevelIds is { Count: 0 } && request.RouteIds is { Count: 0 })
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
+        }
+        else if ( request.Sort == null && request.Location != null)
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
+        }
 
         var result = await mediator.Send(new GetSearchResultsQuery
         {
@@ -232,8 +258,11 @@ public class SearchApprenticeshipsController(
         viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
         viewmodel.PageTitle = GetPageTitle(viewmodel);
 
-        viewmodel.PageBackLinkRoutePath = request.RoutePath; 
+        viewmodel.PageBackLinkRoutePath = request.RoutePath;
 
+        viewmodel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
+        viewmodel.QuerySaved = querySaved;
+        
         return View(viewmodel);
     }
 
@@ -315,67 +344,61 @@ public class SearchApprenticeshipsController(
     
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("search-results/save-search", Name = RouteNames.SaveSearch)]
-    public async Task<IActionResult> SaveSearch([FromBody] GetSearchResultsRequest request, [FromQuery] bool redirect = true)
+    [Route("apprenticeships/save-search", Name = RouteNames.SaveSearch)]
+    public async Task<IActionResult> SaveSearch([FromForm] SaveSearchRequest request, [FromQuery] bool redirect = true)
     {
-        var validationResult = await searchRequestValidator.ValidateAsync(request);
-        if (!validationResult.IsValid)
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+        try
         {
-            foreach (var validationFailure in validationResult.Errors)
+            var criteria = DecodeSearchCriteria(request.Data);
+            if (criteria is null)
             {
-                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
+                return Redirect(redirectUrl);
             }
-            return new JsonResult(StatusCodes.Status400BadRequest);
+            
+            await mediator.Send(new SaveSearchCommand
+            {
+                SearchTerm = criteria.SearchTerm,
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                DisabilityConfident = criteria.DisabilityConfident,
+                Distance = criteria.Distance,
+                Location = criteria.Location,
+                SelectedLevelIds = criteria.LevelIds,
+                SelectedRouteIds = criteria.RouteIds,
+                SortOrder = criteria.Sort
+            });
+
+            if (redirect)
+            {
+                var builder = new UriBuilder(redirectUrl);
+                builder.Query = new QueryString(builder.Query).Add("querySaved", "true").ToString();
+                redirectUrl = builder.Uri.ToString();
+            }
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "SaveSearch: Unable to decode search criteria data");
+            return Redirect(redirectUrl);
         }
         
-        EnsureValidSearchParameters(request);
-        
-        await mediator.Send(new SaveSearchCommand
-        {
-            SearchTerm = request.SearchTerm,
-            CandidateId = (Guid)User.Claims.CandidateId()!,
-            DisabilityConfident = request.DisabilityConfident,
-            Distance = request.Distance,
-            Location = request.Location,
-            SelectedLevelIds = request.LevelIds,
-            SelectedRouteIds = request.RouteIds,
-            SortOrder = request.Sort
-        });
-
-        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
-
         return redirect
             ? Redirect(redirectUrl)
             : new JsonResult(StatusCodes.Status200OK);
     }
-    
-    private static readonly List<int> ValidDistanceValues = [2, 5, 10, 15, 20, 30, 40];
 
-    private void EnsureValidSearchParameters(GetSearchResultsRequest request)
+    private GetSearchResultsRequest? DecodeSearchCriteria(string? encodedData)
     {
-        request.Distance = request.Distance switch
+        if (encodedData is null)
         {
-            null or <= 0 => null,
-            > 0 when !ValidDistanceValues.Contains(request.Distance.Value) => 10,
-            _ => request.Distance
-        };
-        
-        request.PageNumber = request.PageNumber switch
-        {
-            <= 0 => 1,
-            _ => request.PageNumber
-        };
-        
-        if (string.IsNullOrEmpty(request.SearchTerm) && request is { LevelIds: { Count: 0 }, RouteIds.Count: 0 })
-        {
-            request.Sort = VacancySort.DistanceAsc.ToString();
+            return null;
         }
-        else if ( request.Sort == null && request.Location != null)
-        {
-            request.Sort = VacancySort.DistanceAsc.ToString();
-        }
+        
+        var data = dataProtectorService.DecodeData(encodedData);
+        return data is null 
+            ? null 
+            : JsonConvert.DeserializeObject<GetSearchResultsRequest>(data);
     }
-
+    
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
         => new()
         {

@@ -241,20 +241,20 @@ Alerts.prototype.init = function () {
 };
 
 Alerts.prototype.submit = async function (button) {
+  const requestValidationToken = this.createForm.querySelector("input[name=__RequestVerificationToken]").value;
   const url = this.createForm.action + "?redirect=false";
   const headers = new Headers();
-  headers.append("Content-Type", "application/json");
   headers.append("X-Requested-With", "XMLHttpRequest");
-  headers.append(
-    "RequestVerificationToken",
-    this.createForm.querySelector("input").value
-  );
+  headers.append("RequestVerificationToken", requestValidationToken);
+  
+  const formData = new FormData();
+  formData.append("__RequestVerificationToken", requestValidationToken);
+  formData.append("Data", this.createForm.querySelector("input[name=Data]").value);
+  
   await fetch(url, {
     method: "POST",
     headers: headers,
-    body: JSON.stringify({
-      __RequestVerificationToken: this.createForm.querySelector("input").value,
-    }),
+    body: formData
   })
     .then((response) => {
       if (response.ok) {
@@ -271,8 +271,6 @@ Alerts.prototype.submit = async function (button) {
 };
 
 Alerts.prototype.updateUI = function () {
-  this.createForm.ariaHidden = true;
-  this.confirmation.ariaHidden = false;
   this.container.classList.add("faa-filter-alert--saved");
 };
 
