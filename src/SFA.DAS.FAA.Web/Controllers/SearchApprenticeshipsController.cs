@@ -175,8 +175,30 @@ public class SearchApprenticeshipsController(
                 Location = request.Location
             });
         }
-
-        EnsureValidSearchParameters(request);
+        
+        var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
+        if (request.Distance <= 0)
+        {
+            request.Distance = null;
+        }
+        else if (request.Distance.HasValue && !validDistanceValues.Contains((int)request.Distance))
+        {
+            request.Distance = 10;
+        }
+        
+        if (request.PageNumber <= 0)
+        {
+            request.PageNumber = 1;
+        }
+        
+        if (string.IsNullOrEmpty(request.SearchTerm) && request.LevelIds is { Count: 0 } && request.RouteIds is { Count: 0 })
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
+        }
+        else if ( request.Sort == null && request.Location != null)
+        {
+            request.Sort = VacancySort.DistanceAsc.ToString();
+        }
 
         var result = await mediator.Send(new GetSearchResultsQuery
         {
@@ -377,33 +399,6 @@ public class SearchApprenticeshipsController(
             : JsonConvert.DeserializeObject<GetSearchResultsRequest>(data);
     }
     
-    private static readonly List<int> ValidDistanceValues = [2, 5, 10, 15, 20, 30, 40];
-
-    private void EnsureValidSearchParameters(GetSearchResultsRequest request)
-    {
-        request.Distance = request.Distance switch
-        {
-            null or <= 0 => null,
-            > 0 when !ValidDistanceValues.Contains(request.Distance.Value) => 10,
-            _ => request.Distance
-        };
-        
-        request.PageNumber = request.PageNumber switch
-        {
-            <= 0 => 1,
-            _ => request.PageNumber
-        };
-        
-        if (string.IsNullOrEmpty(request.SearchTerm) && request is { LevelIds: { Count: 0 }, RouteIds.Count: 0 })
-        {
-            request.Sort = VacancySort.DistanceAsc.ToString();
-        }
-        else if ( request.Sort == null && request.Location != null)
-        {
-            request.Sort = VacancySort.DistanceAsc.ToString();
-        }
-    }
-
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
         => new()
         {
