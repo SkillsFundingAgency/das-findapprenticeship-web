@@ -32,8 +32,9 @@ public class SearchResultsViewModel : ViewModelBase
     public bool NoSearchResultsByUnknownLocation { get; set; }
     public List<ApprenticeshipMapData> MapData { get; set; }
     public string? MapId { get; set; }
-
     public bool ShowAccountCreatedBanner { get; set; } = false;
+    public string? EncodedRequestData { get; set; }
+    public bool QuerySaved { get; set; }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
