@@ -49,7 +49,7 @@
             }
             else
             {
-                <a href="#" class="govuk-link govuk-link--no-visited-state faa-filter-alert__link">
+                <a asp-route="@RouteNames.SignIn" asp-route-signInValue="@ViewBag.SignInValue" class="govuk-link govuk-link--no-visited-state faa-filter-alert__link">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="faa-filter-alert__icon">
                             <path
