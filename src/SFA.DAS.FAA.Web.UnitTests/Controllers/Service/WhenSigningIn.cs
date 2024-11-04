@@ -50,6 +50,7 @@ public class WhenSigningIn
         actual.RouteValues?.Should().ContainEquivalentOf(new KeyValuePair<string, object>("foo", new StringValues([ "yes" ])));
     }
     
+    [Test, MoqAutoData]
     public async Task Then_The_VacancyRef_Is_Included_In_The_RouteValues(
         string controllerName,
         string actionName,
