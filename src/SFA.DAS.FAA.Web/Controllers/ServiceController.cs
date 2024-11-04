@@ -10,7 +10,6 @@ using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Primitives;
 using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Filters;
 
