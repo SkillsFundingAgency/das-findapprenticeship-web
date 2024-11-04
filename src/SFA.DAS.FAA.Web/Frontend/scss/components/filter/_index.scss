@@ -156,14 +156,17 @@
 }
 
 .faa-filter-alert__confirmation {
-  border-left: 10px solid $govuk-brand-colour;
-  background-color: #fff;
-  padding: 15px;
+  .faa-filter & {
+    border-left: 10px solid $govuk-brand-colour;
+    background-color: #fff;
+    padding: 15px;
+  }
   display: none;
 }
 
 .faa-filter-alert--saved {
-  form {
+  form,
+  #faa-no-results-alert--create {
     display: none;
   }
   .faa-filter-alert__confirmation {

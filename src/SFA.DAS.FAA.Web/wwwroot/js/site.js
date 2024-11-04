@@ -228,6 +228,7 @@ function Alerts(container) {
   this.container = container;
   this.createForm = this.container.querySelector("[data-alert-create]");
   this.confirmation = this.container.querySelector("[data-alert-confirmation]");
+  this.noResults = !!document.getElementById("faa-no-results-alert");
 }
 
 Alerts.prototype.init = function () {
@@ -236,25 +237,43 @@ Alerts.prototype.init = function () {
   }
   this.createForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    await this.submit();
+    await this.submitForm();
+  });
+  if (this.noResults) this.extraEvents();
+};
+
+Alerts.prototype.extraEvents = function () {
+  this.nrContainer = document.getElementById("faa-no-results-alert");
+  this.nrCreateForm = document.getElementById("faa-no-results-alert--create");
+  this.nrConfirmation = document.getElementById(
+    "faa-no-results-alert--created"
+  );
+  this.nrCreateForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await this.submitForm();
   });
 };
 
-Alerts.prototype.submit = async function (button) {
-  const requestValidationToken = this.createForm.querySelector("input[name=__RequestVerificationToken]").value;
+Alerts.prototype.submitForm = async function (button) {
+  const requestValidationToken = this.createForm.querySelector(
+    "input[name=__RequestVerificationToken]"
+  ).value;
   const url = this.createForm.action + "?redirect=false";
   const headers = new Headers();
   headers.append("X-Requested-With", "XMLHttpRequest");
   headers.append("RequestVerificationToken", requestValidationToken);
-  
+
   const formData = new FormData();
   formData.append("__RequestVerificationToken", requestValidationToken);
-  formData.append("Data", this.createForm.querySelector("input[name=Data]").value);
-  
+  formData.append(
+    "Data",
+    this.createForm.querySelector("input[name=Data]").value
+  );
+
   await fetch(url, {
     method: "POST",
     headers: headers,
-    body: formData
+    body: formData,
   })
     .then((response) => {
       if (response.ok) {
@@ -272,6 +291,13 @@ Alerts.prototype.submit = async function (button) {
 
 Alerts.prototype.updateUI = function () {
   this.container.classList.add("faa-filter-alert--saved");
+  this.createForm.ariaHidden = true;
+  this.confirmation.ariaHidden = false;
+  if (this.noResults) {
+    this.nrContainer.classList.add("faa-filter-alert--saved");
+    this.nrCreateForm.ariaHidden = true;
+    this.nrConfirmation.ariaHidden = false;
+  }
 };
 
 const createAlert = document.querySelectorAll("[data-alert]");
