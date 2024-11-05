@@ -1,15 +1,14 @@
 @using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel.Application
 <li class="das-search-results__list-item govuk-!-margin-bottom-4">
     @if (Model.IsClosingSoon)
     {
         <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
     }
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
-        <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference })">
-            @Model.Title
-        </a>
-    </h2>
+    
+    <partial name="_VacancyTitle" model=@ValueTuple.Create(Model.Title, Model.VacancyReference, Model.IsClosed, ApplicationsTab.Submitted)/>
+
     <p class="govuk-hint">@Model.EmployerName</p>
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.WithdrawnDate</p>
     <p class="govuk-hint">@Model.ClosingDate</p>

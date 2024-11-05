@@ -1,7 +1,10 @@
+using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using SFA.DAS.FAA.Application.Commands.SaveSearch;
 using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
@@ -28,7 +31,9 @@ public class SearchApprenticeshipsController(
     IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, 
     ICacheStorageService cacheStorageService, 
     SearchModelValidator searchModelValidator,
-    GetSearchResultsRequestValidator searchRequestValidator) : Controller
+    GetSearchResultsRequestValidator searchRequestValidator,
+    IDataProtectorService dataProtectorService,
+    ILogger<SearchApprenticeshipsController> logger) : Controller
 {
     [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
@@ -69,6 +74,13 @@ public class SearchApprenticeshipsController(
         var viewModel = (SearchApprenticeshipsViewModel)result;
         viewModel.ShowAccountCreatedBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
         viewModel.ShowAccountFoundBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountFound}");
+        
+        var isAccountDeleted = TempData[CacheKeys.AccountDeleted] as string;
+        if (isAccountDeleted is "true")
+        {
+            viewModel.ShowAccountDeletedBanner = true;
+            TempData.Remove(CacheKeys.AccountDeleted);
+        }
 
         return View(viewModel);
     }
@@ -148,7 +160,7 @@ public class SearchApprenticeshipsController(
     }
 
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
+    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request, [FromQuery] bool querySaved = false)
     {
         var validationResult = await searchRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
@@ -173,11 +185,12 @@ public class SearchApprenticeshipsController(
         {
             request.Distance = 10;
         }
-        else if (request.PageNumber <= 0)
+        
+        if (request.PageNumber <= 0)
         {
             request.PageNumber = 1;
         }
-
+        
         if (string.IsNullOrEmpty(request.SearchTerm) && request.LevelIds is { Count: 0 } && request.RouteIds is { Count: 0 })
         {
             request.Sort = VacancySort.DistanceAsc.ToString();
@@ -186,7 +199,7 @@ public class SearchApprenticeshipsController(
         {
             request.Sort = VacancySort.DistanceAsc.ToString();
         }
-        
+
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,
@@ -245,8 +258,11 @@ public class SearchApprenticeshipsController(
         viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
         viewmodel.PageTitle = GetPageTitle(viewmodel);
 
-        viewmodel.PageBackLinkRoutePath = request.RoutePath; 
+        viewmodel.PageBackLinkRoutePath = request.RoutePath;
 
+        viewmodel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
+        viewmodel.QuerySaved = querySaved;
+        
         return View(viewmodel);
     }
 
@@ -325,7 +341,64 @@ public class SearchApprenticeshipsController(
             ? Redirect(redirectUrl)
             : new JsonResult(StatusCodes.Status200OK);
     }
+    
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+    [Route("apprenticeships/save-search", Name = RouteNames.SaveSearch)]
+    public async Task<IActionResult> SaveSearch([FromForm] SaveSearchRequest request, [FromQuery] bool redirect = true)
+    {
+        var redirectUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ?? "/";
+        try
+        {
+            var criteria = DecodeSearchCriteria(request.Data);
+            if (criteria is null)
+            {
+                return Redirect(redirectUrl);
+            }
+            
+            await mediator.Send(new SaveSearchCommand
+            {
+                SearchTerm = criteria.SearchTerm,
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                DisabilityConfident = criteria.DisabilityConfident,
+                Distance = criteria.Distance,
+                Location = criteria.Location,
+                SelectedLevelIds = criteria.LevelIds,
+                SelectedRouteIds = criteria.RouteIds,
+                SortOrder = criteria.Sort
+            });
 
+            if (redirect)
+            {
+                var builder = new UriBuilder(redirectUrl);
+                builder.Query = new QueryString(builder.Query).Add("querySaved", "true").ToString();
+                redirectUrl = builder.Uri.ToString();
+            }
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "SaveSearch: Unable to decode search criteria data");
+            return Redirect(redirectUrl);
+        }
+        
+        return redirect
+            ? Redirect(redirectUrl)
+            : new JsonResult(StatusCodes.Status200OK);
+    }
+
+    private GetSearchResultsRequest? DecodeSearchCriteria(string? encodedData)
+    {
+        if (encodedData is null)
+        {
+            return null;
+        }
+        
+        var data = dataProtectorService.DecodeData(encodedData);
+        return data is null 
+            ? null 
+            : JsonConvert.DeserializeObject<GetSearchResultsRequest>(data);
+    }
+    
     private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
         => new()
         {

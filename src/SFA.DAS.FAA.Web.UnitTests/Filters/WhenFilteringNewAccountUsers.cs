@@ -28,6 +28,10 @@ public class WhenFilteringNewAccountUsers
         NewFaaUserAccountFilter filter)
     {
         //Arrange
+        context.ActionDescriptor = new ControllerActionDescriptor
+        {
+            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.NoExemption))!
+        };
         context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
         {
             new Claim(CustomClaims.AccountSetupCompleted, "true"),
@@ -59,6 +63,10 @@ public class WhenFilteringNewAccountUsers
         //Arrange
         response.Status = status;
         var httpContext = new Mock<HttpContext>();
+        context.ActionDescriptor = new ControllerActionDescriptor
+        {
+            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.NoExemption))!
+        };
 
         httpContext.Setup(x => x.RequestServices.GetService(typeof(IApiClient)))
             .Returns(apiClient.Object);
@@ -103,7 +111,11 @@ public class WhenFilteringNewAccountUsers
         {
             new(ClaimTypes.NameIdentifier, candidateId.ToString())
         })));
-        
+
+        context.ActionDescriptor = new ControllerActionDescriptor
+        {
+            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.NoExemption))!,
+        };
         context.HttpContext = httpContext.Object;
         var request = new PutCandidateApiRequest(It.IsAny<string>(), new PutCandidateApiRequestData
         {

@@ -33,6 +33,13 @@ namespace SFA.DAS.FAA.Web.Services
                 _ => $"Closes on {closingDate:dddd d MMMM}"
             };
         }
+        
+        public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate, DateTime? closedDate, bool isExternalVacancy = false)
+        {
+            return closedDate.HasValue
+                ? $"Closed on {closedDate:dddd d MMMM}"
+                : GetClosingDate(dateTimeService, closingDate, isExternalVacancy);    
+        }
 
         public static int GetDaysUntilExpiry(IDateTimeService dateTimeService, DateTime closingDate)
         {

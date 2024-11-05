@@ -24,7 +24,7 @@ public static class RouteNames
     public const string CreateAccount = "create-account";
     public const string TransferYourData = "transfer-your-data";
     public const string SignInToYourOldAccount = "sign-in-to-your-old-account";
-    public const string SignOut = "sign-out";
+    public const string SignOut = "signout";
     public const string SignIn = "sign-in";
     public const string AccountUnavailable = "account-unavailable";
     public const string StubAccountDetailsGet = "account-details-get";
@@ -51,6 +51,7 @@ public static class RouteNames
     public const string SaveVacancyFromSearchResultsPage = "save-vacancy-search-results-page";
     public const string DeleteSavedVacancyFromSearchResultsPage = "delete-vacancy-search-results-page";
     public const string GetSavedSearchesUnsubscribe = "get-unsubscribe-saved-searches";
+    public const string SaveSearch = "save-search";
 
     public static class Applications
     {

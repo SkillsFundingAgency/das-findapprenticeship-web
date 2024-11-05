@@ -16,6 +16,7 @@ public class GetIndexQueryResult
         public string EmployerName { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ClosingDate { get; set; }
+        public DateTime? ClosedDate { get; set; }
         public DateTime? SubmittedDate { get; set; }
         public DateTime? WithdrawnDate { get; set; }
         public DateTime? ResponseDate { get; set; }
@@ -36,6 +37,7 @@ public class GetIndexQueryResult
                 EmployerName = x.EmployerName,
                 CreatedDate = x.CreatedDate,
                 ClosingDate = x.ClosingDate,
+                ClosedDate = x.ClosedDate,
                 SubmittedDate = x.SubmittedDate,
                 ResponseDate = x.ResponseDate,
                 Status = x.Status,

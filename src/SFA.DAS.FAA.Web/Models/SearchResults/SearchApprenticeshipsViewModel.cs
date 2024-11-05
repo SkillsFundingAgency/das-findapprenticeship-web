@@ -10,6 +10,7 @@ public class SearchApprenticeshipsViewModel
     public int? Distance { get; set; } = 10;
     public bool ShowAccountCreatedBanner { get; set; } = false;
     public bool ShowAccountFoundBanner { get; set; } = false;
+    public bool ShowAccountDeletedBanner { get; set; } = false;
 
     public static implicit operator SearchApprenticeshipsViewModel(GetSearchApprenticeshipsIndexResult source)
     {
