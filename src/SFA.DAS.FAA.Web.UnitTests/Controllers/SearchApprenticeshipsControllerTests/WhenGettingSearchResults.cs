@@ -1,12 +1,7 @@
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.AppStart;
@@ -14,12 +9,11 @@ using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
@@ -78,7 +72,15 @@ public class WhenGettingSearchResults
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
 
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -206,7 +208,15 @@ public class WhenGettingSearchResults
                 new ValidationResult(new List<ValidationFailure>{new ValidationFailure("WhatSearchTerm","Error")})
             );
         faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -277,7 +287,15 @@ public class WhenGettingSearchResults
             .ReturnsAsync(
                 new ValidationResult()
             );
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -335,7 +353,15 @@ public class WhenGettingSearchResults
             .ReturnsAsync(
                 new ValidationResult()
             );
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -390,7 +416,15 @@ public class WhenGettingSearchResults
             .ReturnsAsync(
                 new ValidationResult()
             );
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -441,7 +475,15 @@ public class WhenGettingSearchResults
             .ReturnsAsync(
                 new ValidationResult()
             );
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -495,7 +537,15 @@ public class WhenGettingSearchResults
                 new ValidationResult()
             );
         
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -549,7 +599,15 @@ public class WhenGettingSearchResults
                 new ValidationResult()
             );
         
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -606,7 +664,15 @@ public class WhenGettingSearchResults
                 new ValidationResult()
             );
         
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object,faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -673,7 +739,15 @@ public class WhenGettingSearchResults
             .ReturnsAsync(
                 new ValidationResult()
             );
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
@@ -779,7 +853,15 @@ public class WhenGettingSearchResults
             .ReturnsAsync(
                 new ValidationResult()
             );
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), validator.Object)
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext

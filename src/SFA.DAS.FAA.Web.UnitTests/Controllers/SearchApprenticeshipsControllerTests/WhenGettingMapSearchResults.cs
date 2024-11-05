@@ -1,12 +1,9 @@
 using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
@@ -15,7 +12,6 @@ using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -49,7 +45,15 @@ public class WhenGettingMapSearchResults
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         
-        var controller = new SearchApprenticeshipsController(mediator.Object, dateTimeService.Object, faaConfig.Object, cacheStorageService.Object, Mock.Of<SearchModelValidator>(), Mock.Of<GetSearchResultsRequestValidator>())
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            Mock.Of<GetSearchResultsRequestValidator>(),
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
             ControllerContext = new ControllerContext
