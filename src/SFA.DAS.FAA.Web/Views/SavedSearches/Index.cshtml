@@ -7,35 +7,104 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-l">Education history</span>
-        <h1 class="govuk-heading-l"></h1>
+        <span class="govuk-caption-l">Unsubscribe from an email</span>
+        <h1 class="govuk-heading-l">Do you want to delete this search alert?</h1>
 
+        <p class="govuk-body">We’ll stop emailing you with new apprenticeships that match this search.</p>
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
-                <h2 class="govuk-summary-card__title"></h2>
+                <h2 class="govuk-summary-card__title">
+                    @Model.SearchTitle
+                </h2>
             </div>
             <div class="govuk-summary-card__content">
                 <dl class="govuk-summary-list">
-
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                        </dd>
-                    </div>
+                    @if (!string.IsNullOrEmpty(Model.What))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                What
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.What
+                            </dd>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Where)) {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Where
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.Where
+                                <p class="govuk-body govuk-!-margin-top-1" style="color:#505a5f">
+                                    @Model.Distance
+                                </p>
+                            </dd>
+                        </div>
+                    }
+                    @if (Model.Categories?.Any() != true)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Categories
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @for (int c = 0; c < Model.Categories?.Count; c++)
+                                    {
+                                    <li>@Model.Categories[c]</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    }
+                    @if (Model.Levels?.Any() != true)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Apprenticeship levels
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @for (int l = 0; l < Model.Levels?.Count; l++)
+                                    {
+                                        <li>@Model.Levels[l]</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    }
+                    @if (Model.DisabilityConfident)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Disability confident
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                Yes
+                            </dd>
+                        </div>
+                    }
                 </dl>
             </div>
         </div>
-
-        <form method="post">
-            <div class="govuk-button-group">
+        
+        <form class="form" action="unsubscribe-search-alert-success-banner"  method="post">
+            <input asp-for="Id" type="hidden" />
+            <div class="govuk-button-group" href="unsubscribe-search-alert-success-banner.html">
                 <button class="govuk-button govuk-button--warning" data-module="govuk-button">
-                    Yes, delete
+                    Delete
                 </button>
                 <a class="govuk-link" href="">Cancel – don't delete</a>
             </div>
         </form>
+
+        <p class="govuk-body">
+            If you want to delete other alerts, 
+            <a href="..//govuk-one-login/sign-in-or-create.html" class="govuk-link">
+                sign in to manage your search alerts</a>.
+        </p>
 
     </div>
 </div>

@@ -25,10 +25,14 @@ public class GetConfirmUnsubscribeQueryHandler : IRequestHandler<GetConfirmUnsub
         return new GetConfirmUnsubscribeResult
         {
             SavedSearch = new SavedSearch{
+                Id = query.SavedSearchId,
+                SearchTitle = response.SearchTitle,
+                What = response.What,
                 Where = response.Where,
                 Distance = response.Distance,
                 Categories = response.Categories,
-                Levels = response.Levels
+                Levels = response.Levels,
+                DisabilityConfident = response.DisabilityConfident
             }
         };
     }
