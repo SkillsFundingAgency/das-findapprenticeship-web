@@ -4,8 +4,8 @@ namespace SFA.DAS.FAA.Domain.SavedSearches
 {
     public class ConfirmSavedSearchUnsubscribeApiResponse
     {
-        [JsonProperty("SearchId")]
-        public string? Id { get; set; }
+        [JsonProperty("Id")]
+        public Guid Id { get; set; }
 
         [JsonProperty("SearchTitle")]
         public string? SearchTitle { get; set; }

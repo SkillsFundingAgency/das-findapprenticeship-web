@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using SFA.DAS.FAA.Domain.SavedSearches;
-
-namespace SFA.DAS.FAA.Application.Queries.SavedSearches
+﻿namespace SFA.DAS.FAA.Application.Queries.SavedSearches
 {
     public class GetConfirmUnsubscribeResult
     {
@@ -17,6 +14,6 @@ namespace SFA.DAS.FAA.Application.Queries.SavedSearches
         public long? Distance { get; set; }
         public List<string>? Categories { get; set; }
         public List<long>? Levels { get; set; }
-        public bool DisabilityConfident { get; set; } = false;
+        public bool DisabilityConfident { get; set; }
     }
 }

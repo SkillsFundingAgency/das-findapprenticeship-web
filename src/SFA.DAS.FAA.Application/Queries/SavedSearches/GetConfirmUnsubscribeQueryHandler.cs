@@ -25,7 +25,7 @@ public class GetConfirmUnsubscribeQueryHandler : IRequestHandler<GetConfirmUnsub
         return new GetConfirmUnsubscribeResult
         {
             SavedSearch = new SavedSearch{
-                Id = query.SavedSearchId,
+                Id = response.Id,
                 SearchTitle = response.SearchTitle,
                 What = response.What,
                 Where = response.Where,
