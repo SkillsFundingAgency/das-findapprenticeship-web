@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.FAA.Application.Commands.SaveSearch;
+namespace SFA.DAS.FAA.Application.Commands.SavedSearches.SaveSearch;
 
 public class SaveSearchCommand : IRequest<Unit>
 {

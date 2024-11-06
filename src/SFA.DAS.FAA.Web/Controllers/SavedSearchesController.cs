@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.SavedSearches;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SavedSearches;
+using SFA.DAS.FAA.Application.Commands.SavedSearches.DeleteSavedSearch;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
@@ -13,12 +14,16 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet]
         [Route("unsubscribe", Name = RouteNames.GetSavedSearchesUnsubscribe)]
         public async Task<IActionResult> Index([FromQuery]string id)
-        {
-            
+        {            
+            var savedSearchId = dataProtectorService.DecodeData(id);
+            if (!Guid.TryParse(savedSearchId, out var searchId)) 
+            {
+                return RedirectToRoute(RouteNames.ServiceStartDefault);
+            }
             
             var result = await mediator.Send(new GetConfirmUnsubscribeQuery
             {
-                SavedSearchId = id
+                SavedSearchId = searchId
             });
 
             if(result.SavedSearch == null)
@@ -35,14 +40,24 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("unsubscribe", Name = RouteNames.PostSavedSearchesUnsubscribe)]
         public async Task<IActionResult> Index(UnsubscribeSavedSearchesModel model)
         {
-            throw new NotImplementedException();
+            await mediator.Send(new UnsubscribeSavedSearchCommand
+            {
+                SavedSearchId = model.Id
+            });
+
+            return RedirectToRoute(RouteNames.UnsubscribeSavedSearchComplete, new
+            {
+                // Need null coalescing operator here?
+                SearchTitle = model.SearchTitle
+            });
         }
         
         [HttpGet]
-        [Route("unsubscribe-complete", Name = RouteNames.PostSavedSearchesUnsubscribe)]
-        public async Task<IActionResult> UnsubscribeComplete()
+        [Route("unsubscribe-complete", Name = RouteNames.UnsubscribeSavedSearchComplete)]
+        public ActionResult UnsubscribeComplete(string searchTitle)
         {
-            throw new NotImplementedException();
+
+            return View("UnsubscribeComplete", searchTitle);
         }
     }
 }

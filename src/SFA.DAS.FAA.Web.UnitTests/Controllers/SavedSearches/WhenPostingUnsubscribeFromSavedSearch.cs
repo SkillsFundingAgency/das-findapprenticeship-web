@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SavedSearches;
+using SFA.DAS.FAA.Application.Commands.SavedSearches.DeleteSavedSearch;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SavedSearches;
 
@@ -19,6 +20,6 @@ public class WhenPostingUnsubscribeFromSavedSearch
 
         actual.Should().NotBeNull();
         actual!.RouteName.Should().Be(RouteNames.PostSavedSearchesUnsubscribe);
-        mediator.Verify(x=>x.Send(It.Is<UnsubscribeSavedSearchCommand>(c=>c.Id = postModel.Id), It.IsAny<CancellationToken>()), Times.Once);
+        mediator.Verify(x=>x.Send(It.Is<UnsubscribeSavedSearchCommand>(c => c.SavedSearchId = postModel.Id), It.IsAny<CancellationToken>()), Times.Once);
     }
 }
