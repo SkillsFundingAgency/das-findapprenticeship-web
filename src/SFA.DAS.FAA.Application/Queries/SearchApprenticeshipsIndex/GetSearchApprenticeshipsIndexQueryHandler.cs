@@ -14,7 +14,7 @@ public class GetSearchApprenticeshipsIndexQueryHandler : IRequestHandler<GetSear
     }
     public async Task<GetSearchApprenticeshipsIndexResult> Handle(GetSearchApprenticeshipsIndexQuery query, CancellationToken cancellationToken)
     {
-        var request = new GetSearchApprenticeshipsIndexApiRequest(query.LocationSearchTerm);
+        var request = new GetSearchApprenticeshipsIndexApiRequest(query.LocationSearchTerm, query.CandidateId);
         var response = await _apiClient.Get<SearchApprenticeshipsApiResponse>(request);
         return new GetSearchApprenticeshipsIndexResult
         {

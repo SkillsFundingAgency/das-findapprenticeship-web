@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries
             apiClientMock.Setup(client =>
                     client.Get<SearchApprenticeshipsApiResponse>(
                         It.Is<GetSearchApprenticeshipsIndexApiRequest>(c =>
-                            c.GetUrl.Contains(query.LocationSearchTerm))))
+                            c.GetUrl.Contains(query.LocationSearchTerm!) && c.GetUrl.Contains(query.CandidateId.ToString()!))))
                 .ReturnsAsync(expectedResponse);
 
             // Act
