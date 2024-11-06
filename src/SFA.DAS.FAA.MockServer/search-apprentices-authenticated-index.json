@@ -1,0 +1,26 @@
+{
+  "totalApprenticeshipCount" : 1034,
+  "savedSearches" : [
+    {
+      "what": "Business 1",
+      "where" : "",
+      "categories": ["Agriculture and Something","Category 1","Commercial and more","Business and things"],
+      "levels": [1,2,3,4],
+      "disabilityConfident": false
+    },
+    {
+      "what": "Business 2",
+      "where" : "Coventry 10 miles",
+      "categories": [],
+      "levels": [3],
+      "disabilityConfident": true
+    },
+    {
+      "what": "Business 2",
+      "where" : "",
+      "categories": [],
+      "levels": [],
+      "disabilityConfident": false
+    }
+  ]
+}
