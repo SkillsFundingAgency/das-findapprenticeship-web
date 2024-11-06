@@ -55,7 +55,8 @@ public class SearchApprenticeshipsController(
         
         var result = await mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
-            LocationSearchTerm = model.WhereSearchTerm
+            LocationSearchTerm = model.WhereSearchTerm,
+            CandidateId = User.Claims.CandidateId()
         });
 
         if (result is { LocationSearched: true, Location: null })
