@@ -2,32 +2,46 @@
 
 namespace SFA.DAS.FAA.Web.Models.User;
 
-public class SavedSearchesViewModel
+public record SavedSearchViewModel(
+    string Title,
+    Guid Id,
+    string? SearchTerm,
+    int? Distance,
+    List<string>? SelectedRoutes,
+    List<string>? SelectedLevelIds,
+    bool DisabilityConfident,
+    string? Location)
 {
-    public class SavedSearchViewModel
+    public static SavedSearchViewModel From(SavedSearch source, List<RouteInfo> routes)
     {
-        public Guid Id { get; init; }
-        public string? SearchTerm { get; init; }
-        public int? Distance { get; init; }
-        public List<string> Categories { get; init; } = [];
-        public List<string> Levels { get; init; } = [];
-        public bool DisabilityConfident { get; init; }
-        public string? Location { get; init; }
-
-        public static SavedSearchViewModel From(SavedSearch source)
+        var definingCharacteristic = source.SearchParameters switch
         {
-            return new SavedSearchViewModel
-            {
-                Id = source.Id,
-                SearchTerm = source.SearchParameters.SearchTerm,
-                Distance = source.SearchParameters.Distance,
-                Categories = source.SearchParameters.Categories,
-                Levels = source.SearchParameters.Levels,
-                DisabilityConfident = source.SearchParameters.DisabilityConfident,
-                Location = source.SearchParameters.Location
-            };
-        }
-    }
+            { SearchTerm: not null } => source.SearchParameters.SearchTerm,
+            { SelectedRouteIds: { Count: 1 } } => routes.First(route => route.Id.ToString() == source.SearchParameters.SelectedRouteIds.First()).Name,
+            { SelectedRouteIds: { Count: > 1 } } => $"{source.SearchParameters.SelectedRouteIds.Count} categories",
+            { SelectedLevelIds.Count: 1 } => $"Level {source.SearchParameters.SelectedLevelIds.First()}",
+            { SelectedLevelIds.Count: > 1 } => $"{source.SearchParameters.SelectedLevelIds.Count} apprenticeship levels",
+            { DisabilityConfident: true } => $"Disability Confident",
+            _ => "All apprenticeships"
+        };
 
-    public List<SavedSearchViewModel> SavedSearches { get; init; } = [];
+        var location = source.SearchParameters.Location is null
+            ? "all of England"
+            : $"{source.SearchParameters.Location}";
+                
+        var title = $"{definingCharacteristic} in {location}";
+            
+        return new SavedSearchViewModel(
+            title,
+            source.Id,
+            source.SearchParameters.SearchTerm,
+            source.SearchParameters.Distance,
+            source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id.ToString() == category)?.Name ?? string.Empty).ToList(),
+            source.SearchParameters.SelectedLevelIds,
+            source.SearchParameters.DisabilityConfident,
+            source.SearchParameters.Location
+        );
+    }
 }
+
+public record SavedSearchesViewModel(List<SavedSearchViewModel> SavedSearches);

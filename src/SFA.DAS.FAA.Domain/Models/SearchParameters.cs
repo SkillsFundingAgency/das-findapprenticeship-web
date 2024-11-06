@@ -2,9 +2,9 @@
 
 public record SearchParameters(
     string? SearchTerm,
-    List<string> Categories,
+    List<string>? SelectedRouteIds,
     int? Distance,
     bool DisabilityConfident,
-    List<string> Levels,
+    List<string>? SelectedLevelIds,
     string? Location
 );

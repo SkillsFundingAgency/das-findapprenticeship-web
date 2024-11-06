@@ -28,6 +28,7 @@ using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -547,11 +548,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             }, cancellationToken);
 
-            var model = new SavedSearchesViewModel
-            {
-                SavedSearches = result.SavedSearches.Select(SavedSearchesViewModel.SavedSearchViewModel.From).ToList()
-            };
-
+            var model = new SavedSearchesViewModel(result.SavedSearches.Select(x => SavedSearchViewModel.From(x, result.Routes)).ToList());
             return View(model);
         }
         

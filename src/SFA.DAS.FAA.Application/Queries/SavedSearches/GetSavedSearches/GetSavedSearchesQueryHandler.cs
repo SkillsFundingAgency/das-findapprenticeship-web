@@ -13,6 +13,7 @@ public class GetSavedSearchesQueryHandler(IApiClient apiClient) : IRequestHandle
 
         return new GetSavedSearchesQueryResult
         {
+            Routes = result.Routes.Select(x => new RouteInfo(x.Id, x.Name)).ToList(),
             SavedSearches = result.SavedSearches.Select(x => new SavedSearch(
                 x.Id,
                 x.DateCreated,
