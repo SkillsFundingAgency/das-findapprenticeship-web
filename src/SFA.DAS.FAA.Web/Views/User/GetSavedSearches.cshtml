@@ -1,0 +1,25 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.Models.User
+
+@model SFA.DAS.FAA.Web.Models.User.SavedSearchesViewModel
+
+@{
+    ViewData["Title"] = "Saved searches – Find an apprenticeship – GOV.UK";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl faa-page-heading">Saved searches</h1>
+
+        @foreach (var savedSearch in Model.SavedSearches)
+        {
+            <form method="post" asp-route="@RouteNames.DeleteSavedSearch"
+                  asp-route-savedSearchId="@savedSearch.Id">
+                <button type="submit" class="das-button--inline-link">
+                    Remove
+                </button>
+            </form>
+        }
+        
+    </div>
+</div>

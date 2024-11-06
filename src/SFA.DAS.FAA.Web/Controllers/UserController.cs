@@ -18,7 +18,9 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
 using SFA.DAS.FAA.Application.Commands.MigrateData;
+using SFA.DAS.FAA.Application.Commands.SavedSearches.PostDeleteSavedSearch;
 using SFA.DAS.FAA.Application.Commands.User.PostAccountDeletion;
+using SFA.DAS.FAA.Application.Queries.SavedSearches.GetSavedSearches;
 using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
@@ -534,6 +536,36 @@ namespace SFA.DAS.FAA.Web.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("saved-searches", Name = RouteNames.SavedSearches)]
+        public async Task<IActionResult> GetSavedSearches(CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new GetSavedSearchesQuery
+            {
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            }, cancellationToken);
+
+            var model = new SavedSearchesViewModel
+            {
+                SavedSearches = result.SavedSearches.Select(SavedSearchesViewModel.SavedSearchViewModel.From).ToList()
+            };
+
+            return View(model);
+        }
+        
+        [HttpPost]
+        [Route("saved-searches/{savedSearchId}/delete", Name = RouteNames.DeleteSavedSearch)]
+        public async Task<IActionResult> DeleteSavedSearch([FromRoute] Guid savedSearchId, CancellationToken cancellationToken)
+        {
+            await mediator.Send(new DeleteSavedSearchCommand
+            {
+                Id = savedSearchId,
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            }, cancellationToken);
+
+            return RedirectToRoute(RouteNames.SavedSearches);
         }
 
         private async Task<GovUkUser?> GetEmailFromUserInfoEndpoint()

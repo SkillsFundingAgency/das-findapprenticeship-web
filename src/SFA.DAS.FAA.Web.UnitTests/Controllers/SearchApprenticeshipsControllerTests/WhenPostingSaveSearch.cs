@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
-using SFA.DAS.FAA.Application.Commands.SaveSearch;
+using SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -53,16 +53,7 @@ public class WhenPostingSaveSearch
         httpContextMock.Setup(ctx => ctx.Request.Headers.Referer).Returns(new StringValues(RedirectUrl));
 
         _sut.Url = mockUrlHelper.Object;
-        _sut.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
-                    new (CustomClaims.CandidateId, CandidateId.ToString()),
-                })),
-            }
-        };
+        _sut.AddControllerContext().WithUser(CandidateId);
     }
     
     [Test, MoqAutoData]
@@ -79,7 +70,8 @@ public class WhenPostingSaveSearch
             .Returns(json);
         
         SaveSearchCommand? passedCommand = null;
-        _mediator.Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
+        _mediator
+            .Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
             .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand);
         
         // act
@@ -112,7 +104,8 @@ public class WhenPostingSaveSearch
             .Returns(json);
         
         SaveSearchCommand? passedCommand = null;
-        _mediator.Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
+        _mediator
+            .Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
             .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand);
         
         // act

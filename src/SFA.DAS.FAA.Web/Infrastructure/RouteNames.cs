@@ -51,6 +51,8 @@ public static class RouteNames
     public const string SaveVacancyFromSearchResultsPage = "save-vacancy-search-results-page";
     public const string DeleteSavedVacancyFromSearchResultsPage = "delete-vacancy-search-results-page";
     public const string SaveSearch = "save-search";
+    public const string SavedSearches = "saved-searches";
+    public const string DeleteSavedSearch = "delete-saved-search";
 
     public static class Applications
     {
