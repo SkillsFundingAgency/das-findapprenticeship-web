@@ -6,13 +6,16 @@ using SFA.DAS.FAA.Web.Models.SavedSearches;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
+    
     [Route("saved-searches")]
-    public class SavedSearchesController(IMediator mediator) : Controller
+    public class SavedSearchesController(IMediator mediator, IDataProtectorService dataProtectorService) : Controller
     {
-        [Route("unsubscribe", Name = RouteNames.GetSavedSearchesUnsubscribe)]
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery]Guid id)
+        [Route("unsubscribe", Name = RouteNames.GetSavedSearchesUnsubscribe)]
+        public async Task<IActionResult> Index([FromQuery]string id)
         {
+            
+            
             var result = await mediator.Send(new GetConfirmUnsubscribeQuery
             {
                 SavedSearchId = id
@@ -26,6 +29,20 @@ namespace SFA.DAS.FAA.Web.Controllers
             var viewModel = (UnsubscribeSavedSearchesViewModel?)result;
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("unsubscribe", Name = RouteNames.PostSavedSearchesUnsubscribe)]
+        public async Task<IActionResult> Index(UnsubscribeSavedSearchesModel model)
+        {
+            throw new NotImplementedException();
+        }
+        
+        [HttpGet]
+        [Route("unsubscribe-complete", Name = RouteNames.PostSavedSearchesUnsubscribe)]
+        public async Task<IActionResult> UnsubscribeComplete()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -188,6 +188,15 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                 Response.Create()
                 .WithStatusCode(200)
                 .WithBodyFromFile("get-confirm-unsubscribe.json"));
+            
+            server.Given(Request.Create().WithPath(s =>
+                        Regex.IsMatch(s, "/saved-searches/\\S+/unsubscribe", RegexOptions.None, regexMaxTimeOut))
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody(string.Empty));
 
             return server;
         }
