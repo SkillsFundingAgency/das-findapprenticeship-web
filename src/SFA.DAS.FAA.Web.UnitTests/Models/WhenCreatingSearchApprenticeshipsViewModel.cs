@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
@@ -24,4 +25,12 @@ public class WhenCreatingSearchApprenticeshipsViewModel
 
     }
 
+    [Test, AutoData]
+    public void Then_The_Saved_Searches_Are_Mapped(GetSearchApprenticeshipsIndexResult source)
+    {
+        var actual = (SearchApprenticeshipsViewModel)source;
+
+        actual.SavedSearches.Should()
+            .BeEquivalentTo(source.SavedSearches.Select(c => SavedSearchViewModel.From(c, source.Routes)));
+    }
 }

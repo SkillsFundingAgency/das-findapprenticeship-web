@@ -22,8 +22,8 @@ public class GetSearchApprenticeshipsIndexQueryHandler : IRequestHandler<GetSear
             Total = response.Total,
             LocationSearched = response.LocationSearched,
             Location = response.Location,
-            Routes = response.Routes.Select(x => new RouteInfo(x.Id, x.Name)).ToList(),
-            SavedSearches = response.SavedSearches.Select(x => new SavedSearch(
+            Routes = response.Routes?.Select(x => new RouteInfo(x.Id, x.Name)).ToList(),
+            SavedSearches = response.SavedSearches?.Select(x => new SavedSearch(
                 x.Id,
                 x.DateCreated,
                 x.LastRunDate,

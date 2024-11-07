@@ -13,9 +13,9 @@ public class SearchApprenticeshipsApiResponse
     [JsonProperty("location")]
     public Location? Location { get; set; }
     [JsonProperty("savedSearches")]
-    public List<SavedSearchDto> SavedSearches { get; set; }
+    public List<SavedSearchDto>? SavedSearches { get; set; }
     [JsonProperty("routes")]
-    public List<RouteResponse> Routes { get; set; }
+    public List<RouteResponse>? Routes { get; set; }
 }
 public class Location
 {

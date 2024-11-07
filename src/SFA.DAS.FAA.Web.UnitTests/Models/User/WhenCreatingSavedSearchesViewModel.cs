@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models.User;
@@ -38,10 +38,10 @@ public class WhenCreatingSavedSearchViewModel
             null, null,
             new SearchParameters(
                 searchTerm,
-                routes?.ToList(),
+                routes?.Select(x => x).ToList(),
                 10,
                 disabilityConfident,
-                levels?.ToList(),
+                levels?.Select(x => x).ToList(),
                 location
             )
         );
