@@ -6,5 +6,4 @@ public class FindAnApprenticeship
     public string? RedisConnectionString { get; set; }
     public string? GoogleMapsApiKey { get; set; }
     public string? GoogleMapsId { get; set; }
-    public bool AccountDeletionFeature { get; set; } = false;
 }
