@@ -311,7 +311,7 @@ public class WhenGettingIndex
         var result = await controller.Index(model) as RedirectToRouteResult;
 
         result!.RouteName.Should().Be(RouteNames.SearchResults);
-        result.RouteValues!["location"].Should().Be(queryResult.Location.LocationName);
+        result.RouteValues!["location"].Should().Be(queryResult.Location?.LocationName);
         result.RouteValues!["sort"].Should().Be(VacancySort.DistanceAsc);
     }
 }

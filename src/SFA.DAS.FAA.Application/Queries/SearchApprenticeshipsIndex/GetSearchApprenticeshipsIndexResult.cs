@@ -1,11 +1,13 @@
 ﻿using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 
-namespace SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex
+namespace SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+
+public class GetSearchApprenticeshipsIndexResult
 {
-    public class GetSearchApprenticeshipsIndexResult
-    {
-        public int Total { get; set; }
-        public Location? Location { get; set; }
-        public bool LocationSearched { get; set; }
-    }
+    public int Total { get; set; }
+    public Location? Location { get; set; }
+    public bool LocationSearched { get; set; }
+    public List<SavedSearch> SavedSearches { get; set; }
 }
+
+public record SavedSearch(string What, string Where, List<string> Categories, List<int> Levels, bool DisabilityConfident);

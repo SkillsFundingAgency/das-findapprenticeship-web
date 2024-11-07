@@ -31,6 +31,28 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries
             // Assert
             result.Should().BeEquivalentTo(expectedResponse);
         }
+        [Test, MoqAutoData]
+        public async Task Then_Result_Is_Returned_For_No_Searches_Or_Location(
+            GetSearchApprenticeshipsIndexQuery query,
+            SearchApprenticeshipsApiResponse expectedResponse,
+            [Frozen] Mock<IApiClient> apiClientMock,
+            GetSearchApprenticeshipsIndexQueryHandler handler)
+        {
+            // Arrange
+            expectedResponse.Location = null;
+            expectedResponse.SavedSearches = [];
+            apiClientMock.Setup(client =>
+                    client.Get<SearchApprenticeshipsApiResponse>(
+                        It.Is<GetSearchApprenticeshipsIndexApiRequest>(c =>
+                            c.GetUrl.Contains(query.LocationSearchTerm!) && c.GetUrl.Contains(query.CandidateId.ToString()!))))
+                .ReturnsAsync(expectedResponse);
+
+            // Act
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.Should().BeEquivalentTo(expectedResponse);
+        }
     }
 }
 

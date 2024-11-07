@@ -20,7 +20,11 @@ public class GetSearchApprenticeshipsIndexQueryHandler : IRequestHandler<GetSear
         {
             Total = response.Total,
             LocationSearched = response.LocationSearched,
-            Location = response.Location
+            Location = response.Location,
+            SavedSearches = response.SavedSearches
+                .Select(c=>
+                    new SavedSearch(c.What, c.Where, c.Categories, c.Levels, c.DisabilityConfident))
+                .ToList(),
         };
     }
 }
