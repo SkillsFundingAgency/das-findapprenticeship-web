@@ -1,0 +1,76 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+
+@model SFA.DAS.FAA.Web.Models.User.SavedSearchesViewModel
+
+@{
+    ViewData["Title"] = "Saved searches – Find an apprenticeship – GOV.UK";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl faa-page-heading">Settings</h1>
+
+        @if (Model.SavedSearches.Count == 0)
+        {
+            
+        }
+        else
+        {
+            foreach (var savedSearch in Model.SavedSearches)
+            {
+                <h2>@savedSearch.Title</h2>
+                <form method="post" asp-route="@RouteNames.DeleteSavedSearch"
+                      asp-route-savedSearchId="@savedSearch.Id">
+                    <button type="submit" class="das-button--inline-link">
+                        Remove
+                    </button>
+                </form>
+                
+                <ul>
+                    @if (savedSearch.SearchTerm is not null)
+                    {
+                        <li>What: @savedSearch.SearchTerm</li>    
+                    }
+
+                    @if (savedSearch.Location is not null)
+                    {
+                        <li>Where: @savedSearch.Location</li>
+                        @if (savedSearch.Distance is not null)
+                        {
+                            <li>Within @savedSearch.Distance miles</li>
+                        }
+                    }
+
+                    @if (savedSearch.SelectedRoutes?.Count is > 0)
+                    {
+                        <li>Categories:
+                            <ul>
+                                @foreach (var category in savedSearch.SelectedRoutes)
+                                {
+                                    <li>@category</li>                                    
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    @if (savedSearch.SelectedLevelIds?.Count is > 0)
+                    {
+                        <li>Levels:
+                            <ul>
+                                @foreach (var level in savedSearch.SelectedLevelIds)
+                                {
+                                    <li>Level @level</li>                                    
+                                }
+                            </ul>
+                        </li>
+                    }
+                    
+                    @if (savedSearch.DisabilityConfident)
+                    {
+                        <li>Show disability confident employers</li>
+                    }
+                </ul>
+            }    
+        }
+    </div>
+</div>

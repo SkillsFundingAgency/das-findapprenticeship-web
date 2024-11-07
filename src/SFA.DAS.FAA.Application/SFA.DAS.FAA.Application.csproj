@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Commands\AdditionalQuestion\AddAdditionalQuestion\" />
+    <Folder Include="Queries\SavedSearches\" />
   </ItemGroup>
 
 </Project>
