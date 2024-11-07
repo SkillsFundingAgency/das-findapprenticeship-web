@@ -10,8 +10,10 @@ namespace SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex
         public bool LocationSearched { get; set; }
         [JsonProperty("location")]
         public Location? Location { get; set; }
+        [JsonProperty("savedSearches")]
+        public List<SavedSearchItem> SavedSearches { get; set; }
     }
-    public partial class Location
+    public class Location
     {
         [JsonProperty("lat")]
         public double Lat { get; set; }
@@ -21,6 +23,20 @@ namespace SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex
 
         [JsonProperty("locationName")]
         public string LocationName { get; set; }
+    }
+
+    public class SavedSearchItem
+    {
+        [JsonProperty("what")]
+        public string What { get; set; }
+        [JsonProperty("where")]
+        public string Where { get; set; }
+        [JsonProperty("categories")]
+        public List<string> Categories  { get; set; }
+        [JsonProperty("levels")]
+        public List<int> Levels  { get; set; }
+        [JsonProperty("disabilityConfident")]
+        public bool DisabilityConfident  { get; set; }
     }
 }
 
