@@ -20,6 +20,11 @@ public class WhenPostingUnsubscribeFromSavedSearch
 
         actual.Should().NotBeNull();
         actual!.RouteName.Should().Be(RouteNames.PostSavedSearchesUnsubscribe);
-        mediator.Verify(x=>x.Send(It.Is<UnsubscribeSavedSearchCommand>(c => c.SavedSearchId = postModel.Id), It.IsAny<CancellationToken>()), Times.Once);
+        mediator.Verify(
+            x=>x.Send(
+                It.Is<UnsubscribeSavedSearchCommand>(
+                    c => c.SavedSearchId.Equals(postModel.Id)
+                    ), It.IsAny<CancellationToken>()
+                ), Times.Once);
     }
 }

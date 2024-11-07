@@ -1,8 +1,6 @@
-using SFA.DAS.FAA.Infrastructure.Api;
-using SFA.DAS.FAA.Application.Commands.SavedSearches.DeleteSavedSearch;
 using MediatR;
+using SFA.DAS.FAA.Application.Commands.SavedSearches.DeleteSavedSearch;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Domain.SavedSearches;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.SaveSearch;
@@ -13,8 +11,7 @@ public class WhenHandlingUnsubscribeSavedSearchCommand
     public async Task Then_Command_Is_Handled_And_Api_Request_Made(
         UnsubscribeSavedSearchCommand command,
         [Frozen] Mock<IApiClient> apiClient,
-        UnsubscribeSavedSearchCommandHandler handler
-        )
+        UnsubscribeSavedSearchCommandHandler sut)
     {
         // Arrange
         PostSavedSearchUnsubscribeApiRequest? request = null;
@@ -24,20 +21,13 @@ public class WhenHandlingUnsubscribeSavedSearchCommand
             .Returns(() => Task.CompletedTask);
 
         // Act
-        var response = await handler.Handle(command, default);
+        var response = await sut.Handle(command, default);
         var payload = request?.Data as PostSavedSearchUnsubscribeApiRequest;
 
         // Assert
-        response.Should
-
-        // act
-        var response = await sut.Handle(command, default);
-        var payload = request?.Data as PostSaveSearchApiRequest.PostSaveSearchApiRequestData;
-
-        // assert
         response.Should().Be(Unit.Value);
-        request?.PostUrl.Should().Be($"searchapprenticeships/saved-search?candidateId={command.CandidateId}");
+        request?.PostUrl.Should().Be($"saved-searches/{command.SavedSearchId}/unsubscribe");
         payload.Should().NotBeNull();
-        payload.Should().BeEquivalentTo(command, options => options.Excluding(x => x.CandidateId));
+        payload.Should().BeEquivalentTo(command, options => options.Including(x => x.SavedSearchId));
     }
 }

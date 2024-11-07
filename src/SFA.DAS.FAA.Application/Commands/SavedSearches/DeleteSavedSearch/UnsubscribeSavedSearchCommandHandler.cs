@@ -10,11 +10,12 @@ namespace SFA.DAS.FAA.Application.Commands.SavedSearches.DeleteSavedSearch
 
         public UnsubscribeSavedSearchCommandHandler(IApiClient apiClient) => _apiClient = apiClient;
 
-        public async Task Handle(UnsubscribeSavedSearchCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UnsubscribeSavedSearchCommand request, CancellationToken cancellationToken)
         {
             var apiRequest = new PostSavedSearchUnsubscribeApiRequest(request.SavedSearchId);
 
             await _apiClient.PostWithResponseCode(apiRequest);
+            return Unit.Value;
         }
     }
 }

@@ -47,8 +47,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             return RedirectToRoute(RouteNames.UnsubscribeSavedSearchComplete, new
             {
-                // Need null coalescing operator here?
-                SearchTitle = model.SearchTitle
+                SearchTitle = model.SearchTitle ?? string.Empty
             });
         }
         
