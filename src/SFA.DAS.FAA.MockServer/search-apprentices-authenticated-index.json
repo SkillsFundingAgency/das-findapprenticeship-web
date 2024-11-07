@@ -2,28 +2,49 @@
   "totalApprenticeshipCount" : 1034,
   "savedSearches" : [
     {
-      "searchTerm": "Business",
-      "location" : "",
-      "distance" : 0,
-      "selectedRouteIds": [1,2,3,4],
-      "selectedLevelIds": [4,5],
-      "disabilityConfident": false
+      "id": "EF50F687-174B-4657-92EB-880BBB926CA7",
+      "searchParameters": {
+        "searchTerm": "Business",
+        "location": "",
+        "distance": 0,
+        "selectedRouteIds": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "selectedLevelIds": [
+          4,
+          5
+        ],
+        "disabilityConfident": false
+      }
     },
     {
-      "searchTerm": "Business Advanced",
-      "location" : "Coventry",
-      "distance" : 10.6,
-      "selectedRouteIds": [],
-      "selectedLevelIds": [3],
-      "disabilityConfident": true
+      "id": "5EB68CB4-2CF5-4EC5-A8D1-0809A0428408",
+      "searchParameters": {
+        "searchTerm": "Business Advanced",
+        "location": "Coventry",
+        "distance": 10,
+        "selectedRouteIds": [],
+        "selectedLevelIds": [
+          3
+        ],
+        "disabilityConfident": true
+      }
     },
     {
-      "searchTerm": "Welder",
-      "location" : "Leicester",
-      "distance" : 1,
-      "selectedRouteIds": [3],
-      "selectedLevelIds": [],
-      "disabilityConfident": false
+      "id": "1239ECA6-3EB8-467D-84CE-E08E07792EF3",
+      "searchParameters": {
+        "searchTerm": "Welder",
+        "location": "Leicester",
+        "distance": 1,
+        "selectedRouteIds": [
+          3
+        ],
+        "selectedLevelIds": [],
+        "disabilityConfident": false
+      }
     }
   ],
   "levels": [

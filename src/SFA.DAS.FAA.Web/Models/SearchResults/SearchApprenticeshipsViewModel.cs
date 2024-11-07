@@ -19,7 +19,7 @@ public class SearchApprenticeshipsViewModel
     {
         return new SearchApprenticeshipsViewModel
         {
-            SavedSearches = source.SavedSearches!=null ? source.SavedSearches.Select(c=> SavedSearchViewModel.From(c,source.Routes)).ToList(): [],
+            
             TotalText = $"{source.Total:N0} {(source.Total == 1 ? "apprenticeship" : "apprenticeships")} currently listed"
         };
     }

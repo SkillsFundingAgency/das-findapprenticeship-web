@@ -57,7 +57,7 @@
                             Enter a job or company
                         </div>
                         <input asp-for="WhatSearchTerm" type="text" aria-describedby="what-hint" class="govuk-input"
-                            id="WhatSearchTerm" autocomplete="off" />
+                               id="WhatSearchTerm" autocomplete="off" />
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
@@ -72,8 +72,8 @@
                             Enter a city or postcode
                         </div>
                         <input asp-for="WhereSearchTerm" type="text" type="search" spellcheck="false"
-                            autocomplete="postal-code" aria-describedby="where-hint"
-                            class="govuk-input faa-location-autocomplete" id="WhereSearchTerm" />
+                               autocomplete="postal-code" aria-describedby="where-hint"
+                               class="govuk-input faa-location-autocomplete" id="WhereSearchTerm" />
                     </div>
                 </div>
             </div>
@@ -83,5 +83,85 @@
                     your interests instead</a>
             </div>
         </form>
+        @if (Model.SavedSearches.Any())
+        {
+            <div class="govuk-grid-row">
+                <h2>Your search alerts</h2>  
+                @foreach (var savedSearch in Model.SavedSearches)
+                {
+                    <h3>
+                        <a href="@savedSearch.SearchUrl" >@savedSearch.Title</a>
+                    </h3>
+                    @if (savedSearch.SearchTerm is not null)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                What
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @savedSearch.SearchTerm
+                            </dd>
+                        </div>
+                    }
+                    @if (savedSearch.Location is not null)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Where
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @savedSearch.Location
+                                @if (savedSearch.Distance is not null)
+                                {
+                                    <div class="govuk-hint govuk-!-margin-top-1" style="color:#505a5f">
+                                        Within @savedSearch.Distance miles
+                                    </div>
+                                }
+                            </dd>
+                        </div>
+                    }
+                    @if (savedSearch.SelectedRoutes?.Count is > 0)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Categories</dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @foreach (var category in savedSearch.SelectedRoutes)
+                                    {
+                                        <li>@category</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    }
+                    @if (savedSearch.SelectedLevelIds?.Count is > 0)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Levels</dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @foreach (var level in savedSearch.SelectedLevelIds)
+                                    {
+                                        <li>Level @level</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    }
+                    @if (savedSearch.DisabilityConfident)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Disability confident
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                Only show disability confident employers
+                            </dd>
+                        </div>
+                    }
+                }
+            </div>    
+        }
+        
     </div>
 </div>

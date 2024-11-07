@@ -211,7 +211,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
 
         private static bool MatchCandidateId(IDictionary<string, WireMockList<string>> arg)
         {
-            return arg.ContainsKey("candidateId") && arg["candidateId"].Count != 0 && arg["candidateId"][0].Equals(Constants.CandidateIdWithApplications, StringComparison.CurrentCultureIgnoreCase);
+            return arg.ContainsKey("candidateId") && arg["candidateId"].Count != 0 && Guid.TryParse(arg["candidateId"][0], out _);
         }
 
     }

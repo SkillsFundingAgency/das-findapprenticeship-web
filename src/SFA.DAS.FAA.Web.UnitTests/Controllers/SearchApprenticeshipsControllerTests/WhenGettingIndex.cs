@@ -17,6 +17,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Security.Claims;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 public class WhenGettingIndex
@@ -34,6 +35,7 @@ public class WhenGettingIndex
         [Greedy] SearchApprenticeshipsController controller)
     {
         result.LocationSearched = false;
+        result.SavedSearches = [];
         var httpContext = new DefaultHttpContext
         {
             User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
@@ -130,11 +132,13 @@ public class WhenGettingIndex
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
             .Excluding(prop => prop.ShowAccountCreatedBanner)
             .Excluding(prop => prop.ShowAccountDeletedBanner)
+            .Excluding(prop => prop.SavedSearches)
         );
         var actualModel = actual!.Model as SearchApprenticeshipsViewModel;
         Assert.That(actualModel, Is.Not.Null);
         actualModel!.ShowAccountCreatedBanner.Should().Be(showBanner);
         actualModel.ShowAccountDeletedBanner.Should().Be(showAccountDeletedBanner);
+        actualModel.SavedSearches.Should().BeEquivalentTo(result.SavedSearches!.Select(c=> SavedSearchViewModel.From(c, result.Routes!, mockUrlHelper.Object)), options => options);
     }
     
     [Test, MoqAutoData]

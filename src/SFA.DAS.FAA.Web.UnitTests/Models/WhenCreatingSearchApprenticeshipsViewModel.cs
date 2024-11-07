@@ -24,13 +24,4 @@ public class WhenCreatingSearchApprenticeshipsViewModel
         Assert.That(actual.TotalText, Is.EqualTo(expectedText));
 
     }
-
-    [Test, AutoData]
-    public void Then_The_Saved_Searches_Are_Mapped(GetSearchApprenticeshipsIndexResult source)
-    {
-        var actual = (SearchApprenticeshipsViewModel)source;
-
-        actual.SavedSearches.Should()
-            .BeEquivalentTo(source.SavedSearches.Select(c => SavedSearchViewModel.From(c, source.Routes)));
-    }
 }
