@@ -17,6 +17,7 @@ public class WhenMappingVacanciesToMapData
         Vacancies source, 
         [Frozen]Mock<IDateTimeService> dateTimeService)
     {
+        source.ApplicationUrl = string.Empty;
         dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow);
         
         var actual = new ApprenticeshipMapData().MapToViewModel(dateTimeService.Object, source);

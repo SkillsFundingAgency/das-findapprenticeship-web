@@ -524,7 +524,6 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Postcode = accountDetails.Postcode,
                 Uprn = accountDetails.Uprn,
                 HasAnsweredEqualityQuestions = accountDetails.HasAnsweredEqualityQuestions,
-                FeatureToggle = faaConfiguration.Value.AccountDeletionFeature,
                 CandidatePreferences = accountDetails.CandidatePreferences.Select(cp => new SettingsViewModel.CandidatePreference
                 {
                     Meaning = cp.Meaning,
