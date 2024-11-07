@@ -9,68 +9,128 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl faa-page-heading">Settings</h1>
-
+        <nav class="faa-tab-nav">
+            <ul class="faa-tab-nav__list">
+                <li class="faa-tab-nav__list-item">
+                    <a asp-route="@RouteNames.Settings" class="faa-tab-nav__link">
+                        Your account
+                    </a>
+                </li>
+                <li class="faa-tab-nav__list-item">
+                    <a asp-route="@RouteNames.SavedSearches" class="faa-tab-nav__link  faa-tab-nav__link--active">
+                        Search alerts
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <h2 class="govuk-heading-l govuk-!-margin-top-8">Search alerts</h2>
         @if (Model.SavedSearches.Count == 0)
         {
-            
+            <p>You have not created any search alerts.</p>
+            <div class="govuk-inset-text">
+                <p class="govuk-body">
+                    To create a search alert,
+                    <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">search
+                        for an apprenticeship</a>
+                    and then select <b> Create a search alert</b> in the <b>Filters</b>.
+                    We'll email you every Monday at 9am with new apprenticeships that match your search.
+                </p>
+            </div>
         }
         else
         {
             foreach (var savedSearch in Model.SavedSearches)
             {
-                <h2>@savedSearch.Title</h2>
-                <form method="post" asp-route="@RouteNames.DeleteSavedSearch"
-                      asp-route-savedSearchId="@savedSearch.Id">
-                    <button type="submit" class="das-button--inline-link">
-                        Remove
-                    </button>
-                </form>
-                
-                <ul>
-                    @if (savedSearch.SearchTerm is not null)
-                    {
-                        <li>What: @savedSearch.SearchTerm</li>    
-                    }
-
-                    @if (savedSearch.Location is not null)
-                    {
-                        <li>Where: @savedSearch.Location</li>
-                        @if (savedSearch.Distance is not null)
-                        {
-                            <li>Within @savedSearch.Distance miles</li>
-                        }
-                    }
-
-                    @if (savedSearch.SelectedRoutes?.Count is > 0)
-                    {
-                        <li>Categories:
-                            <ul>
-                                @foreach (var category in savedSearch.SelectedRoutes)
-                                {
-                                    <li>@category</li>                                    
-                                }
-                            </ul>
-                        </li>
-                    }
-
-                    @if (savedSearch.SelectedLevelIds?.Count is > 0)
-                    {
-                        <li>Levels:
-                            <ul>
-                                @foreach (var level in savedSearch.SelectedLevelIds)
-                                {
-                                    <li>Level @level</li>                                    
-                                }
-                            </ul>
-                        </li>
-                    }
-                    
-                    @if (savedSearch.DisabilityConfident)
-                    {
-                        <li>Show disability confident employers</li>
-                    }
-                </ul>
-            }    
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h3 class="govuk-summary-card__title">
+                            @savedSearch.Title
+                        </h3>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <form method="post" asp-route="@RouteNames.DeleteSavedSearch"
+                                    asp-route-savedSearchId="@savedSearch.Id">
+                                    <button type="submit" class="das-button--inline-link">Delete<span
+                                            class="govuk-visually-hidden">
+                                            @savedSearch.Title
+                                            search alert</span></button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            @if (savedSearch.SearchTerm is not null)
+                            {
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        What
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @savedSearch.SearchTerm
+                                    </dd>
+                                </div>
+                            }
+                            @if (savedSearch.Location is not null)
+                            {
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Where
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @savedSearch.Location
+                                        @if (savedSearch.Distance is not null)
+                                        {
+                                            <div class="govuk-hint govuk-!-margin-top-1" style="color:#505a5f">
+                                                Within @savedSearch.Distance miles
+                                            </div>
+                                        }
+                                    </dd>
+                                </div>
+                            }
+                            @if (savedSearch.SelectedRoutes?.Count is > 0)
+                            {
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Categories</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul class="govuk-list govuk-list--bullet">
+                                            @foreach (var category in savedSearch.SelectedRoutes)
+                                            {
+                                                <li>@category</li>
+                                            }
+                                        </ul>
+                                    </dd>
+                                </div>
+                            }
+                            @if (savedSearch.SelectedLevelIds?.Count is > 0)
+                            {
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Levels</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul class="govuk-list govuk-list--bullet">
+                                            @foreach (var level in savedSearch.SelectedLevelIds)
+                                            {
+                                                <li>Level @level</li>
+                                            }
+                                        </ul>
+                                    </dd>
+                                </div>
+                            }
+                            @if (savedSearch.DisabilityConfident)
+                            {
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Disability confident
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        Show disability confident employers
+                                    </dd>
+                                </div>
+                            }
+                        </dl>
+                    </div>
+                </div>
+            }
         }
     </div>
 </div>
