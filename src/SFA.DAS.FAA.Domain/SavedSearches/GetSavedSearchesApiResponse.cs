@@ -14,10 +14,10 @@ public class GetSavedSearchesApiResponse
 
     public record SearchParametersDto(
         string? SearchTerm,
-        List<string>? Categories,
-        int? Distance,
+        List<int>? SelectedRouteIds,
+        decimal? Distance,
         bool DisabilityConfident,
-        List<string>? Levels,
+        List<int>? SelectedLevelIds,
         string? Location
     );
     

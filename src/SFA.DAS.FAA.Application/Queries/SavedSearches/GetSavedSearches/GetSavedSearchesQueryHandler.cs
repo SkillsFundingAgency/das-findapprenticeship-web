@@ -21,10 +21,10 @@ public class GetSavedSearchesQueryHandler(IApiClient apiClient) : IRequestHandle
                 x.EmailLastSendDate,
                 new SearchParameters(
                     x.SearchParameters.SearchTerm,
-                    x.SearchParameters.Categories,
+                    x.SearchParameters.SelectedRouteIds,
                     x.SearchParameters.Distance,
                     x.SearchParameters.DisabilityConfident,
-                    x.SearchParameters.Levels,
+                    x.SearchParameters.SelectedLevelIds,
                     x.SearchParameters.Location
                 )
             )).ToList()

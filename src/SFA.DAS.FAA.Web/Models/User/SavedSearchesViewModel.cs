@@ -6,9 +6,9 @@ public record SavedSearchViewModel(
     string Title,
     Guid Id,
     string? SearchTerm,
-    int? Distance,
+    decimal? Distance,
     List<string>? SelectedRoutes,
-    List<string>? SelectedLevelIds,
+    List<int>? SelectedLevelIds,
     bool DisabilityConfident,
     string? Location)
 {
@@ -17,7 +17,7 @@ public record SavedSearchViewModel(
         var definingCharacteristic = source.SearchParameters switch
         {
             { SearchTerm: not null } => source.SearchParameters.SearchTerm,
-            { SelectedRouteIds: { Count: 1 } } => routes.First(route => route.Id.ToString() == source.SearchParameters.SelectedRouteIds.First()).Name,
+            { SelectedRouteIds: { Count: 1 } } => routes.First(route => route.Id == source.SearchParameters.SelectedRouteIds.First()).Name,
             { SelectedRouteIds: { Count: > 1 } } => $"{source.SearchParameters.SelectedRouteIds.Count} categories",
             { SelectedLevelIds.Count: 1 } => $"Level {source.SearchParameters.SelectedLevelIds.First()}",
             { SelectedLevelIds.Count: > 1 } => $"{source.SearchParameters.SelectedLevelIds.Count} apprenticeship levels",
@@ -36,7 +36,7 @@ public record SavedSearchViewModel(
             source.Id,
             source.SearchParameters.SearchTerm,
             source.SearchParameters.Distance,
-            source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id.ToString() == category)?.Name ?? string.Empty).ToList(),
+            source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id == category)?.Name ?? string.Empty).ToList(),
             source.SearchParameters.SelectedLevelIds,
             source.SearchParameters.DisabilityConfident,
             source.SearchParameters.Location
