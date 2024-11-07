@@ -11,20 +11,23 @@ public class WhenPostingUnsubscribeFromSavedSearch
 {
     [Test, MoqAutoData]
     public async Task Then_The_SearchAlert_Command_Is_Made_And_Redirect_To_Confirmation(
-        Guid savedSearchId,
         UnsubscribeSavedSearchesModel postModel,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SavedSearchesController savedSearchesController)
     {
         var actual = await savedSearchesController.Index(postModel) as RedirectToRouteResult;
 
         actual.Should().NotBeNull();
-        actual!.RouteName.Should().Be(RouteNames.PostSavedSearchesUnsubscribe);
+        actual!.RouteName.Should().Be(RouteNames.UnsubscribeSavedSearchComplete);
+        actual.RouteValues!["id"].Should().Be(postModel.Id);
         mediator.Verify(
             x=>x.Send(
                 It.Is<UnsubscribeSavedSearchCommand>(
                     c => c.SavedSearchId.Equals(postModel.Id)
                     ), It.IsAny<CancellationToken>()
                 ), Times.Once);
+        cacheStorageService.Verify(x => 
+            x.Set($"{postModel.Id}-savedsearch", postModel.SearchTitle!, 5, 5), Times.Once);
     }
 }

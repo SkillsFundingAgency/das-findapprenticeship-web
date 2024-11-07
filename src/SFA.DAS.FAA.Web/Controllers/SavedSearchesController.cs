@@ -9,7 +9,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 {
     
     [Route("saved-searches")]
-    public class SavedSearchesController(IMediator mediator, IDataProtectorService dataProtectorService) : Controller
+    public class SavedSearchesController(IMediator mediator, IDataProtectorService dataProtectorService, ICacheStorageService cacheStorageService) : Controller
     {
         [HttpGet]
         [Route("unsubscribe", Name = RouteNames.GetSavedSearchesUnsubscribe)]
@@ -45,17 +45,25 @@ namespace SFA.DAS.FAA.Web.Controllers
                 SavedSearchId = model.Id
             });
 
+            await cacheStorageService.Set($"{model.Id}-savedsearch", model.SearchTitle!, 5, 5);
+            
             return RedirectToRoute(RouteNames.UnsubscribeSavedSearchComplete, new
             {
-                SearchTitle = model.SearchTitle ?? string.Empty
+                model.Id
             });
         }
         
         [HttpGet]
         [Route("unsubscribe-complete", Name = RouteNames.UnsubscribeSavedSearchComplete)]
-        public ActionResult UnsubscribeComplete(string searchTitle)
+        public async Task<IActionResult> UnsubscribeComplete(Guid id)
         {
-
+            var searchTitle = await cacheStorageService.Get<string?>($"{id}-savedsearch");
+            
+            if(string.IsNullOrEmpty(searchTitle))
+            {
+                return RedirectToRoute(RouteNames.ServiceStartDefault);
+            }
+            
             return View("UnsubscribeComplete", searchTitle);
         }
     }

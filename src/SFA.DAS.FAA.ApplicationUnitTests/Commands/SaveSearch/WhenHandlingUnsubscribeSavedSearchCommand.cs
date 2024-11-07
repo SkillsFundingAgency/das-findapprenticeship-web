@@ -13,21 +13,15 @@ public class WhenHandlingUnsubscribeSavedSearchCommand
         [Frozen] Mock<IApiClient> apiClient,
         UnsubscribeSavedSearchCommandHandler sut)
     {
-        // Arrange
-        PostSavedSearchUnsubscribeApiRequest? request = null;
-        apiClient
-            .Setup(client => client.PostWithResponseCode(It.IsAny<PostSavedSearchUnsubscribeApiRequest>()))
-            .Callback<IPostApiRequest>(cb => request = cb as PostSavedSearchUnsubscribeApiRequest)
-            .Returns(() => Task.CompletedTask);
-
         // Act
-        var response = await sut.Handle(command, default);
-        var payload = request?.Data as PostSavedSearchUnsubscribeApiRequest;
-
+        await sut.Handle(command, default);
+        
         // Assert
-        response.Should().Be(Unit.Value);
-        request?.PostUrl.Should().Be($"saved-searches/{command.SavedSearchId}/unsubscribe");
-        payload.Should().NotBeNull();
-        payload.Should().BeEquivalentTo(command, options => options.Including(x => x.SavedSearchId));
+        apiClient
+            .Verify(client => client.PostWithResponseCode(
+                    It.Is<PostSavedSearchUnsubscribeApiRequest>(c =>
+                        c.PostUrl.Equals("saved-searches/unsubscribe") &&
+                        ((PostSavedSearchUnsubscribeApiRequestData)c.Data).SavedSearchId
+                        .Equals(command.SavedSearchId))), Times.Once);
     }
 }
