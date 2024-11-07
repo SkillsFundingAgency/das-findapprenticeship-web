@@ -2,25 +2,60 @@
   "totalApprenticeshipCount" : 1034,
   "savedSearches" : [
     {
-      "what": "Business 1",
-      "where" : "",
-      "categories": ["Agriculture and Something","Category 1","Commercial and more","Business and things"],
-      "levels": [1,2,3,4],
+      "searchTerm": "Business",
+      "location" : "",
+      "distance" : 0,
+      "selectedRouteIds": [1,2,3,4],
+      "selectedLevelIds": [4,5],
       "disabilityConfident": false
     },
     {
-      "what": "Business 2",
-      "where" : "Coventry 10 miles",
-      "categories": [],
-      "levels": [3],
+      "searchTerm": "Business Advanced",
+      "location" : "Coventry",
+      "distance" : 10.6,
+      "selectedRouteIds": [],
+      "selectedLevelIds": [3],
       "disabilityConfident": true
     },
     {
-      "what": "Business 2",
-      "where" : "",
-      "categories": [],
-      "levels": [],
+      "searchTerm": "Welder",
+      "location" : "Leicester",
+      "distance" : 1,
+      "selectedRouteIds": [3],
+      "selectedLevelIds": [],
       "disabilityConfident": false
+    }
+  ],
+  "levels": [
+    {
+      "name": "GCSE",
+      "id": 3
+    },
+    {
+      "name": "AS-Level",
+      "id": 4
+    },
+    {
+      "name": "A-Level",
+      "id": 5
+    }
+  ],
+  "routes": [
+    {
+      "name": "Agriculture, environmental and animal care",
+      "id": 1
+    },
+    {
+      "name": "Business and administration",
+      "id": 2
+    },
+    {
+      "name": "Care services",
+      "id": 3
+    },
+    {
+      "name": "Catering and hospitality",
+      "id": 4
     }
   ]
 }

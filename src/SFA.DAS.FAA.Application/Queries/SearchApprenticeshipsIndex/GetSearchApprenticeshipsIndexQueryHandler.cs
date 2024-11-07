@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 
 namespace SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
@@ -21,10 +22,21 @@ public class GetSearchApprenticeshipsIndexQueryHandler : IRequestHandler<GetSear
             Total = response.Total,
             LocationSearched = response.LocationSearched,
             Location = response.Location,
-            SavedSearches = response.SavedSearches
-                .Select(c=>
-                    new SavedSearch(c.What, c.Where, c.Categories, c.Levels, c.DisabilityConfident))
-                .ToList(),
+            Routes = response.Routes.Select(x => new RouteInfo(x.Id, x.Name)).ToList(),
+            SavedSearches = response.SavedSearches.Select(x => new SavedSearch(
+                x.Id,
+                x.DateCreated,
+                x.LastRunDate,
+                x.EmailLastSendDate,
+                new SearchParameters(
+                    x.SearchParameters.SearchTerm,
+                    x.SearchParameters.SelectedRouteIds,
+                    x.SearchParameters.Distance,
+                    x.SearchParameters.DisabilityConfident,
+                    x.SearchParameters.SelectedLevelIds,
+                    x.SearchParameters.Location
+                )
+            )).ToList()
         };
     }
 }

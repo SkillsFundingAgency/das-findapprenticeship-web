@@ -29,7 +29,8 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            result.Should().BeEquivalentTo(expectedResponse);
+            result.Should().BeEquivalentTo(expectedResponse, options => options.Excluding(c=>c.SavedSearches));
+            result.SavedSearches.Should().BeEquivalentTo(expectedResponse.SavedSearches);
         }
         [Test, MoqAutoData]
         public async Task Then_Result_Is_Returned_For_No_Searches_Or_Location(

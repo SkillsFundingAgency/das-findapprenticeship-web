@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
+﻿using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 
 namespace SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 
@@ -8,6 +9,6 @@ public class GetSearchApprenticeshipsIndexResult
     public Location? Location { get; set; }
     public bool LocationSearched { get; set; }
     public List<SavedSearch> SavedSearches { get; set; }
+    public List<RouteInfo> Routes { get; init; } = [];
 }
 
-public record SavedSearch(string What, string Where, List<string> Categories, List<int> Levels, bool DisabilityConfident);
