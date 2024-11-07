@@ -54,6 +54,8 @@ public static class RouteNames
     public const string PostSavedSearchesUnsubscribe = "post-unsubscribe-saved-searches";
     public const string UnsubscribeSavedSearchComplete = "get-unsubscribe-saved-search-complete";
     public const string SaveSearch = "save-search";
+    public const string SavedSearches = "saved-searches";
+    public const string DeleteSavedSearch = "delete-saved-search";
 
     public static class Applications
     {

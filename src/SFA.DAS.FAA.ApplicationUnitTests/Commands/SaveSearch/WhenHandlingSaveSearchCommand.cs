@@ -1,5 +1,5 @@
-﻿using MediatR;
-using SFA.DAS.FAA.Application.Commands.SavedSearches.SaveSearch;
+using MediatR;
+using SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Infrastructure.Api;
