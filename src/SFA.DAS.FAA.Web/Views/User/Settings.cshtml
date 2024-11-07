@@ -8,9 +8,24 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl faa-page-heading">Settings</h1>
-        @* <h2 class="govuk-heading-l">Your account</h2> *@
 
-        <div class="govuk-!-padding-bottom-5"></div>
+        <nav class="faa-tab-nav">
+            <ul class="faa-tab-nav__list">
+                <li class="faa-tab-nav__list-item">
+                    <a asp-route="@RouteNames.Settings" class="faa-tab-nav__link faa-tab-nav__link--active">
+                        Your account
+                    </a>
+                </li>
+                <li class="faa-tab-nav__list-item">
+                    <a asp-route="@RouteNames.SavedSearches" class="faa-tab-nav__link">
+                        Search alerts
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <h2 class="govuk-heading-l govuk-!-margin-top-8">Your account</h2>
+
         <h3 class="govuk-heading-m">Personal details</h3>
         <dl class="govuk-summary-list govuk-!-margin-bottom-6">
             <div class="govuk-summary-list__row">
@@ -29,7 +44,7 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-route="@RouteNames.UserName"
-                       asp-route-journeyPath="@UserJourneyPath.Settings" id="name-change-link">
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="name-change-link">
                         Change<span class="govuk-visually-hidden"> name</span>
                     </a>
                 </dd>
@@ -43,7 +58,7 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-route="@RouteNames.DateOfBirth"
-                       asp-route-journeyPath="@UserJourneyPath.Settings" id="dob-change-link">
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="dob-change-link">
                         Change<span class="govuk-visually-hidden"> date of birth</span>
                     </a>
                 </dd>
@@ -62,15 +77,15 @@
                     @if (Model.IsAddressFromLookup)
                     {
                         <a class="govuk-link" asp-route="@RouteNames.PostcodeAddress"
-                           asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode"
-                           id="address-change-link">
+                            asp-route-journeyPath="@UserJourneyPath.Settings" asp-route-postcode="@Model.Postcode"
+                            id="address-change-link">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     }
                     else
                     {
                         <a class="govuk-link" asp-route="@RouteNames.EnterAddressManually"
-                           asp-route-journeyPath="@UserJourneyPath.Settings" id="address-change-manual-link">
+                            asp-route-journeyPath="@UserJourneyPath.Settings" id="address-change-manual-link">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     }
@@ -85,7 +100,7 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-route="@RouteNames.PhoneNumber"
-                       asp-route-journeyPath="@UserJourneyPath.Settings" id="phone-number-change-link">
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="phone-number-change-link">
                         Change<span class="govuk-visually-hidden"> telephone number</span>
                     </a>
                 </dd>
@@ -99,7 +114,7 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-route="@RouteNames.Email"
-                       asp-route-journeyPath="@UserJourneyPath.Settings" id="email-change-link">
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="email-change-link">
                         Change<span class="govuk-visually-hidden">Email address</span>
                     </a>
                 </dd>
@@ -109,7 +124,7 @@
         @if (Model.HasAnsweredEqualityQuestions)
         {
             <a href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EqualityQuestions.EditEqualityQuestions)"
-               class="govuk-link">Change your answers to the equality questions</a>
+                class="govuk-link">Change your answers to the equality questions</a>
             <div class="govuk-!-padding-bottom-9"></div>
         }
 
@@ -132,17 +147,17 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-route="@RouteNames.NotificationPreferences"
-                       asp-route-journeyPath="@UserJourneyPath.Settings" id="notification-preferences-change-link">
+                        asp-route-journeyPath="@UserJourneyPath.Settings" id="notification-preferences-change-link">
                         Change<span class="govuk-visually-hidden"> notification preferences</span>
                     </a>
                 </dd>
             </div>
         </dl>
         <div class="govuk-!-padding-bottom-9"></div>
-          @if(Model.FeatureToggle)
-          {
-                <h3 class="govuk-heading-m">Delete your account</h3>
-                <a asp-route="@RouteNames.ConfirmAccountDelete" class="govuk-link">Delete my account</a>
-          }
+        @if (Model.FeatureToggle)
+        {
+            <h3 class="govuk-heading-m">Delete your account</h3>
+            <a asp-route="@RouteNames.ConfirmAccountDelete" class="govuk-link">Delete my account</a>
+        }
     </div>
 </div>

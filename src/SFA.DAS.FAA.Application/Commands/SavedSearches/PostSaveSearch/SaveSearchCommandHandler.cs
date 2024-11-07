@@ -1,9 +1,8 @@
 ﻿using MediatR;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchResults;
-using SFA.DAS.FAA.Infrastructure.Api;
 
-namespace SFA.DAS.FAA.Application.Commands.SaveSearch;
+namespace SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
 
 public class SaveSearchCommandHandler(IApiClient apiClient) : IRequestHandler<SaveSearchCommand, Unit>
 {
