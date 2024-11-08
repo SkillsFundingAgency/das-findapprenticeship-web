@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Application.Queries.SavedSearches.GetSavedSearches;
+﻿using SFA.DAS.FAA.Application.Queries.User.GetSavedSearches;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SavedSearches;
 

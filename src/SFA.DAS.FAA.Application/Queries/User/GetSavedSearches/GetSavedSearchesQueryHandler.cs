@@ -3,7 +3,7 @@ using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SavedSearches;
 
-namespace SFA.DAS.FAA.Application.Queries.SavedSearches.GetSavedSearches;
+namespace SFA.DAS.FAA.Application.Queries.User.GetSavedSearches;
 
 public class GetSavedSearchesQueryHandler(IApiClient apiClient) : IRequestHandler<GetSavedSearchesQuery, GetSavedSearchesQueryResult>
 {
@@ -11,10 +11,8 @@ public class GetSavedSearchesQueryHandler(IApiClient apiClient) : IRequestHandle
     {
         var result = await apiClient.Get<GetSavedSearchesApiResponse>(new GetSavedSearchesApiRequest(request.CandidateId));
 
-        return new GetSavedSearchesQueryResult
-        {
-            Routes = result.Routes.Select(x => new RouteInfo(x.Id, x.Name)).ToList(),
-            SavedSearches = result.SavedSearches.Select(x => new SavedSearch(
+        return new GetSavedSearchesQueryResult(
+            result.SavedSearches.Select(x => new SavedSearch(
                 x.Id,
                 x.DateCreated,
                 x.LastRunDate,
@@ -27,7 +25,7 @@ public class GetSavedSearchesQueryHandler(IApiClient apiClient) : IRequestHandle
                     x.SearchParameters.SelectedLevelIds,
                     x.SearchParameters.Location
                 )
-            )).ToList()
-        };
+            )).ToList(),
+            result.Routes.Select(x => new RouteInfo(x.Id, x.Name)).ToList());
     }
 }

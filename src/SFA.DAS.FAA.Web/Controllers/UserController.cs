@@ -20,11 +20,12 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
 using SFA.DAS.FAA.Application.Commands.MigrateData;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.PostDeleteSavedSearch;
 using SFA.DAS.FAA.Application.Commands.User.PostAccountDeletion;
-using SFA.DAS.FAA.Application.Queries.SavedSearches.GetSavedSearches;
 using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
+using SFA.DAS.FAA.Application.Queries.User.GetSavedSearch;
+using SFA.DAS.FAA.Application.Queries.User.GetSavedSearches;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
@@ -540,15 +541,36 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpGet]
         [Route("saved-searches", Name = RouteNames.SavedSearches)]
-        public async Task<IActionResult> GetSavedSearches(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetSavedSearches([FromQuery] Guid? deleted, CancellationToken cancellationToken)
         {
+            string? deleteSavedSearchTitle = null;
+            if (deleted is not null)
+            {
+                deleteSavedSearchTitle = await cacheStorageService.Get<string?>($"{(Guid)User.Claims.CandidateId()!}-{deleted}-savedsearch");
+            }
+            
             var result = await mediator.Send(new GetSavedSearchesQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!
             }, cancellationToken);
 
-            var model = new SavedSearchesViewModel(result.SavedSearches.Select(x => SavedSearchViewModel.From(x, result.Routes)).ToList());
+            var model = new SavedSearchesViewModel(result.SavedSearches.Select(x => SavedSearchViewModel.From(x, result.Routes)).ToList(), deleted is not null, deleteSavedSearchTitle);
             return View(model);
+        }
+        
+        [HttpGet]
+        [Route("saved-searches/{savedSearchId}/delete", Name = RouteNames.ConfirmDeleteSavedSearch)]
+        public async Task<IActionResult> ConfirmDeleteSavedSearch([FromRoute] Guid savedSearchId, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new GetSavedSearchQuery((Guid)User.Claims.CandidateId()!, savedSearchId), cancellationToken);
+            if (result.SavedSearch is null)
+            {
+                return NotFound();
+            }
+
+            var model = SavedSearchViewModel.From(result.SavedSearch, result.Routes, true);
+            await cacheStorageService.Set($"{(Guid)User.Claims.CandidateId()!}-{savedSearchId}-savedsearch", model.Title, 5, 5);
+            return View(); 
         }
         
         [HttpPost]
@@ -561,7 +583,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             }, cancellationToken);
 
-            return RedirectToRoute(RouteNames.SavedSearches);
+            return RedirectToRoute(RouteNames.SavedSearches, new { deleted = savedSearchId });
         }
 
         private async Task<GovUkUser?> GetEmailFromUserInfoEndpoint()

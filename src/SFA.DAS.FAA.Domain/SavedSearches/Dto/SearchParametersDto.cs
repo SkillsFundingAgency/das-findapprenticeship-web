@@ -1,6 +1,6 @@
-﻿namespace SFA.DAS.FAA.Domain.Models;
+﻿namespace SFA.DAS.FAA.Domain.SavedSearches.Dto;
 
-public record SearchParameters(
+public record SearchParametersDto(
     string? SearchTerm,
     List<int>? SelectedRouteIds,
     int? Distance,

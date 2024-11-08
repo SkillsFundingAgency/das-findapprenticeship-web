@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.FAA.Application.Queries.SavedSearches.GetSavedSearches;
+namespace SFA.DAS.FAA.Application.Queries.User.GetSavedSearches;
 
 public class GetSavedSearchesQuery : IRequest<GetSavedSearchesQueryResult>
 {

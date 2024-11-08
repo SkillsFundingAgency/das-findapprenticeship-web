@@ -10,38 +10,43 @@ public record SavedSearchViewModel(
     List<string>? SelectedRoutes,
     List<int>? SelectedLevelIds,
     bool DisabilityConfident,
-    string? Location)
+    string? Location,
+    bool ReadOnly = false)
 {
-    public static SavedSearchViewModel From(SavedSearch source, List<RouteInfo> routes)
+    public static string CreateTitle(SearchParameters searchParameters, List<RouteInfo> routes)
     {
-        var definingCharacteristic = source.SearchParameters switch
+        var definingCharacteristic = searchParameters switch
         {
-            { SearchTerm: not null } => source.SearchParameters.SearchTerm,
-            { SelectedRouteIds: { Count: 1 } } => routes.First(route => route.Id == source.SearchParameters.SelectedRouteIds.First()).Name,
-            { SelectedRouteIds: { Count: > 1 } } => $"{source.SearchParameters.SelectedRouteIds.Count} categories",
-            { SelectedLevelIds.Count: 1 } => $"Level {source.SearchParameters.SelectedLevelIds.First()}",
-            { SelectedLevelIds.Count: > 1 } => $"{source.SearchParameters.SelectedLevelIds.Count} apprenticeship levels",
+            { SearchTerm: not null } => searchParameters.SearchTerm,
+            { SelectedRouteIds: { Count: 1 } } => routes.First(route => route.Id == searchParameters.SelectedRouteIds.First()).Name,
+            { SelectedRouteIds: { Count: > 1 } } => $"{searchParameters.SelectedRouteIds.Count} categories",
+            { SelectedLevelIds.Count: 1 } => $"Level {searchParameters.SelectedLevelIds.First()}",
+            { SelectedLevelIds.Count: > 1 } => $"{searchParameters.SelectedLevelIds.Count} apprenticeship levels",
             { DisabilityConfident: true } => $"Disability Confident",
             _ => "All apprenticeships"
         };
 
-        var location = source.SearchParameters.Location is null
+        var location = searchParameters.Location is null
             ? "all of England"
-            : $"{source.SearchParameters.Location}";
+            : $"{searchParameters.Location}";
                 
-        var title = $"{definingCharacteristic} in {location}";
-            
+        return $"{definingCharacteristic} in {location}";
+    }
+    
+    public static SavedSearchViewModel From(SavedSearch source, List<RouteInfo> routes, bool readOnly = false)
+    {
         return new SavedSearchViewModel(
-            title,
+            CreateTitle(source.SearchParameters, routes),
             source.Id,
             source.SearchParameters.SearchTerm,
             source.SearchParameters.Distance,
             source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id == category)?.Name ?? string.Empty).ToList(),
             source.SearchParameters.SelectedLevelIds,
             source.SearchParameters.DisabilityConfident,
-            source.SearchParameters.Location
+            source.SearchParameters.Location,
+            readOnly
         );
     }
 }
 
-public record SavedSearchesViewModel(List<SavedSearchViewModel> SavedSearches);
+public record SavedSearchesViewModel(List<SavedSearchViewModel> SavedSearches, bool ShowDeletedBanner = false, string? DeletedSavedSearchTitle = null);
