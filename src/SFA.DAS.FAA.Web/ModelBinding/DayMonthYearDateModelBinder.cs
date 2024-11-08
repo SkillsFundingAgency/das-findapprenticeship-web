@@ -76,27 +76,27 @@ public class DayMonthYearDateModelBinder : IModelBinder
 
     private static void CheckIfDateIsIncomplete(ValueProviderResult dayValue, ValueProviderResult monthValue, ValueProviderResult yearValue, ModelBindingContext bindingContext, string modelName)
     {
-        if (!dayValue.FirstValue.IsNullOrEmpty() && monthValue.FirstValue.IsNullOrEmpty() && yearValue.FirstValue.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(dayValue.FirstValue) && string.IsNullOrEmpty(monthValue.FirstValue) && string.IsNullOrEmpty(yearValue.FirstValue))
         {
             bindingContext.ModelState.AddModelError(modelName, DayMonthYearDateModelErrors.DateOfBirthIncomplete);
         }
-        else if (dayValue.FirstValue.IsNullOrEmpty() && !monthValue.FirstValue.IsNullOrEmpty() && yearValue.FirstValue.IsNullOrEmpty())
+        else if (string.IsNullOrEmpty(dayValue.FirstValue) && !string.IsNullOrEmpty(monthValue.FirstValue) && string.IsNullOrEmpty(yearValue.FirstValue))
         {
             bindingContext.ModelState.AddModelError(modelName, DayMonthYearDateModelErrors.DateOfBirthIncomplete);
         }
-        else if (dayValue.FirstValue.IsNullOrEmpty() && monthValue.FirstValue.IsNullOrEmpty() && !yearValue.FirstValue.IsNullOrEmpty())
+        else if (string.IsNullOrEmpty(dayValue.FirstValue) && string.IsNullOrEmpty(monthValue.FirstValue) && !string.IsNullOrEmpty(yearValue.FirstValue))
         {
             bindingContext.ModelState.AddModelError(modelName, DayMonthYearDateModelErrors.DateOfBirthIncomplete);
         }
-        else if (!dayValue.FirstValue.IsNullOrEmpty() && !monthValue.FirstValue.IsNullOrEmpty() && yearValue.FirstValue.IsNullOrEmpty())
+        else if (!string.IsNullOrEmpty(dayValue.FirstValue) && !string.IsNullOrEmpty(monthValue.FirstValue) && string.IsNullOrEmpty(yearValue.FirstValue))
         {
             bindingContext.ModelState.AddModelError(modelName, DayMonthYearDateModelErrors.DateOfBirthIncomplete);
         }
-        else if (dayValue.FirstValue.IsNullOrEmpty() && !monthValue.FirstValue.IsNullOrEmpty() && !yearValue.FirstValue.IsNullOrEmpty())
+        else if (string.IsNullOrEmpty(dayValue.FirstValue) && !string.IsNullOrEmpty(monthValue.FirstValue) && !string.IsNullOrEmpty(yearValue.FirstValue))
         {
             bindingContext.ModelState.AddModelError(modelName, DayMonthYearDateModelErrors.DateOfBirthIncomplete);
         }
-        else if (!dayValue.FirstValue.IsNullOrEmpty() && monthValue.FirstValue.IsNullOrEmpty() && !yearValue.FirstValue.IsNullOrEmpty())
+        else if (!string.IsNullOrEmpty(dayValue.FirstValue) && string.IsNullOrEmpty(monthValue.FirstValue) && !string.IsNullOrEmpty(yearValue.FirstValue))
         {
             bindingContext.ModelState.AddModelError(modelName, DayMonthYearDateModelErrors.DateOfBirthIncomplete);
         }
