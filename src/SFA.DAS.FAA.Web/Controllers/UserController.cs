@@ -570,7 +570,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var model = SavedSearchViewModel.From(result.SavedSearch, result.Routes, true);
             await cacheStorageService.Set($"{(Guid)User.Claims.CandidateId()!}-{savedSearchId}-savedsearch", model.Title, 5, 5);
-            return View(); 
+            return View(model); 
         }
         
         [HttpPost]
