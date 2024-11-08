@@ -209,6 +209,9 @@
     <None Update="CreateAccount\get-user-select-address.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="get-confirm-unsubscribe.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="post-application-details-existing.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

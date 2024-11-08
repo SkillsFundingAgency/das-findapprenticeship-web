@@ -50,6 +50,9 @@ public static class RouteNames
     public const string DeleteSavedVacancyFromDetailsPage = "delete-vacancy-details-page";
     public const string SaveVacancyFromSearchResultsPage = "save-vacancy-search-results-page";
     public const string DeleteSavedVacancyFromSearchResultsPage = "delete-vacancy-search-results-page";
+    public const string GetSavedSearchesUnsubscribe = "get-unsubscribe-saved-searches";
+    public const string PostSavedSearchesUnsubscribe = "post-unsubscribe-saved-searches";
+    public const string UnsubscribeSavedSearchComplete = "get-unsubscribe-saved-search-complete";
     public const string SaveSearch = "save-search";
     public const string SavedSearches = "saved-searches";
     public const string DeleteSavedSearch = "delete-saved-search";
