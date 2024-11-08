@@ -38,10 +38,10 @@ public class WhenCreatingSavedSearchViewModel
             null, null,
             new SearchParameters(
                 searchTerm,
-                routes?.Select(x => x).ToList(),
+                routes?.ToList(),
                 10,
                 disabilityConfident,
-                levels?.Select(x => x).ToList(),
+                levels?.ToList(),
                 location
             )
         );
