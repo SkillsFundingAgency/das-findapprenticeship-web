@@ -2,7 +2,6 @@
 using SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchResults;
-using SFA.DAS.FAA.Infrastructure.Api;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.SaveSearch;
 
@@ -28,8 +27,11 @@ public class WhenHandlingSaveSearchCommand
         
         // assert
         response.Should().Be(Unit.Value);
-        request?.PostUrl.Should().Be($"searchapprenticeships/saved-search?candidateId={command.CandidateId}");
+        request?.PostUrl.Should().Be($"searchapprenticeships/saved-search?candidateId={command.CandidateId}&id={command.Id}");
         payload.Should().NotBeNull();
-        payload.Should().BeEquivalentTo(command, options => options.Excluding(x => x.CandidateId));
+        payload.Should().BeEquivalentTo(command, options => options
+            .Excluding(x => x.CandidateId)
+            .Excluding(x => x.Id)
+        );
     }
 }

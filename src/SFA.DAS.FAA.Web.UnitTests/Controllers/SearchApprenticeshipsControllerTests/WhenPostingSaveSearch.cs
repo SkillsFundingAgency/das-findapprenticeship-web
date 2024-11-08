@@ -56,6 +56,8 @@ public class WhenPostingSaveSearch
     
     [Test, MoqAutoData]
     public async Task When_Valid_State_And_No_Redirect_Required_Then_The_Search_Parameters_Are_Saved_And_A_JsonResult_Is_Returned(
+        Guid saveSearchId,
+        string encodedString,
         GetSearchResultsRequest getSearchResultsRequest,
         SaveSearchRequest saveSearchRequest)
     {
@@ -66,6 +68,9 @@ public class WhenPostingSaveSearch
             .Setup(x => x.DecodeData(It.IsAny<string>()))
             .Callback<string?>(x => passedData = x)
             .Returns(json);
+
+        _dataProtectorService.Setup(x => x.EncodedData(saveSearchId.ToString()))
+            .Returns(encodedString);
         
         SaveSearchCommand? passedCommand = null;
         _mediator
@@ -83,6 +88,7 @@ public class WhenPostingSaveSearch
                 .WithMapping("LevelIds", "SelectedLevelIds")
                 .WithMapping("RouteIds", "SelectedRouteIds")
                 .WithMapping("Sort", "SortOrder")
+                .WithMapping("UnSubscribeToken", encodedString)
                 .Excluding(x => x.RoutePath)
                 .Excluding(x => x.PageNumber)
             );
@@ -90,6 +96,8 @@ public class WhenPostingSaveSearch
     
     [Test, MoqAutoData]
     public async Task When_Valid_State_And_Redirect_Required_Then_The_Search_Parameters_Are_Saved_And_A_RedirectResult_Is_Returned(
+        Guid saveSearchId,
+        string encodedString,
         GetSearchResultsRequest getSearchResultsRequest,
         SaveSearchRequest saveSearchRequest)
     {
@@ -105,7 +113,10 @@ public class WhenPostingSaveSearch
         _mediator
             .Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
             .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand);
-        
+
+        _dataProtectorService.Setup(x => x.EncodedData(saveSearchId.ToString()))
+            .Returns(encodedString);
+
         // act
         var result = await _sut.SaveSearch(saveSearchRequest) as RedirectResult;
         
@@ -117,6 +128,7 @@ public class WhenPostingSaveSearch
                 .WithMapping("LevelIds", "SelectedLevelIds")
                 .WithMapping("RouteIds", "SelectedRouteIds")
                 .WithMapping("Sort", "SortOrder")
+                .WithMapping("UnSubscribeToken", encodedString)
                 .Excluding(x => x.RoutePath)
                 .Excluding(x => x.PageNumber)
         );

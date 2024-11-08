@@ -355,9 +355,12 @@ public class SearchApprenticeshipsController(
             {
                 return Redirect(redirectUrl);
             }
-            
+
+            var saveSearchId = Guid.NewGuid();
+
             await mediator.Send(new SaveSearchCommand
             {
+                Id = saveSearchId,
                 SearchTerm = criteria.SearchTerm,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
                 DisabilityConfident = criteria.DisabilityConfident,
@@ -365,7 +368,8 @@ public class SearchApprenticeshipsController(
                 Location = criteria.Location,
                 SelectedLevelIds = criteria.LevelIds,
                 SelectedRouteIds = criteria.RouteIds,
-                SortOrder = criteria.Sort
+                SortOrder = criteria.Sort,
+                UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString())
             });
 
             if (redirect)

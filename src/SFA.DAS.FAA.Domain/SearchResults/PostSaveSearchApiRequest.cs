@@ -2,9 +2,9 @@
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
-public class PostSaveSearchApiRequest(Guid candidateId, PostSaveSearchApiRequest.PostSaveSearchApiRequestData payload) : IPostApiRequest
+public class PostSaveSearchApiRequest(Guid candidateId, Guid id, PostSaveSearchApiRequest.PostSaveSearchApiRequestData payload) : IPostApiRequest
 {
-    public string PostUrl => $"searchapprenticeships/saved-search?candidateId={candidateId}";
+    public string PostUrl => $"searchapprenticeships/saved-search?candidateId={candidateId}&id={id}";
     public object Data { get; set; } = payload;
 
     public record PostSaveSearchApiRequestData(
@@ -14,6 +14,7 @@ public class PostSaveSearchApiRequest(Guid candidateId, PostSaveSearchApiRequest
         string? SearchTerm,
         List<string>? SelectedLevelIds,
         List<string>? SelectedRouteIds,
-        string? SortOrder
+        string? SortOrder,
+        string UnSubscribeToken
     );
 }
