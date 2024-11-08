@@ -1,4 +1,7 @@
 ﻿using MediatR;
+
+namespace SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
+
 public class SaveSearchCommand : IRequest<Unit>
 {
     public Guid CandidateId { get; set; }
