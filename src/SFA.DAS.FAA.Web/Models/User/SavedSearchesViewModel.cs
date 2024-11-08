@@ -1,4 +1,7 @@
-﻿using SFA.DAS.FAA.Domain.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Services;
 
 namespace SFA.DAS.FAA.Web.Models.User;
 
@@ -10,9 +13,10 @@ public record SavedSearchViewModel(
     List<string>? SelectedRoutes,
     List<int>? SelectedLevelIds,
     bool DisabilityConfident,
-    string? Location)
+    string? Location,
+    string? SearchUrl)
 {
-    public static SavedSearchViewModel From(SavedSearch source, List<RouteInfo> routes)
+    public static SavedSearchViewModel From(SavedSearch source, List<RouteInfo> routes, IUrlHelper? urlHelper = null)
     {
         var definingCharacteristic = source.SearchParameters switch
         {
@@ -30,7 +34,19 @@ public record SavedSearchViewModel(
             : $"{source.SearchParameters.Location}";
                 
         var title = $"{definingCharacteristic} in {location}";
-            
+
+        var url = urlHelper == null
+            ? string.Empty
+            : FilterBuilder.BuildFullQueryString(new GetSearchResultsRequest
+            {
+                Location = source.SearchParameters.Location,
+                SearchTerm = source.SearchParameters.SearchTerm,
+                Distance = source.SearchParameters.Distance,
+                DisabilityConfident = source.SearchParameters.DisabilityConfident,
+                LevelIds = source.SearchParameters.SelectedLevelIds != null ? source.SearchParameters.SelectedLevelIds.Select(x=>x.ToString()).ToList() : [],
+                RouteIds = source.SearchParameters.SelectedRouteIds != null ? source.SearchParameters.SelectedRouteIds.Select(x=>x.ToString()).ToList() : [],
+            }, urlHelper);
+        
         return new SavedSearchViewModel(
             title,
             source.Id,
@@ -39,7 +55,8 @@ public record SavedSearchViewModel(
             source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id == category)?.Name ?? string.Empty).ToList(),
             source.SearchParameters.SelectedLevelIds,
             source.SearchParameters.DisabilityConfident,
-            source.SearchParameters.Location
+            source.SearchParameters.Location,
+            url
         );
     }
 }

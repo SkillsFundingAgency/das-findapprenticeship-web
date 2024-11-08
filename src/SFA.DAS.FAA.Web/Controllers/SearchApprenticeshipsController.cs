@@ -17,6 +17,7 @@ using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -54,7 +55,8 @@ public class SearchApprenticeshipsController(
         
         var result = await mediator.Send(new GetSearchApprenticeshipsIndexQuery
         {
-            LocationSearchTerm = model.WhereSearchTerm
+            LocationSearchTerm = model.WhereSearchTerm,
+            CandidateId = User.Claims.CandidateId()
         });
 
         if (result is { LocationSearched: true, Location: null })
@@ -71,6 +73,9 @@ public class SearchApprenticeshipsController(
         }
 
         var viewModel = (SearchApprenticeshipsViewModel)result;
+        viewModel.SavedSearches = result.SavedSearches != null
+            ? result.SavedSearches.Select(c => SavedSearchViewModel.From(c, result.Routes!, Url)).ToList()
+            : [];
         viewModel.ShowAccountCreatedBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
         viewModel.ShowAccountFoundBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountFound}");
         
