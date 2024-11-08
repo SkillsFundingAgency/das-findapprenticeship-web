@@ -38,7 +38,7 @@
       "searchParameters": {
         "searchTerm": "Welder",
         "location": "Leicester",
-        "distance": 1,
+        "distance": 2,
         "selectedRouteIds": [
           3
         ],
