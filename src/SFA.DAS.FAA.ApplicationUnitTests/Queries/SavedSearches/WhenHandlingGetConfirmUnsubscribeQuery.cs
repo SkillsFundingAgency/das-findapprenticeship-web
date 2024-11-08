@@ -22,7 +22,7 @@ public class WhenHandlingGetConfirmUnsubscribeQuery
         
         var actual = await handler.Handle(query, CancellationToken.None);
         
-        actual.SavedSearch.Should().BeEquivalentTo(apiResponse);
+        actual.SavedSearch.Should().BeEquivalentTo(apiResponse.SavedSearch);
     }
     
     [Test, MoqAutoData]
@@ -36,7 +36,7 @@ public class WhenHandlingGetConfirmUnsubscribeQuery
         apiClient.Setup(x =>
                 x.Get<ConfirmSavedSearchUnsubscribeApiResponse>(
                     It.Is<GetConfirmSavedSearchUnsubscribeApiRequest>(c => c.GetUrl.Equals(request.GetUrl))))
-            .ReturnsAsync((ConfirmSavedSearchUnsubscribeApiResponse)null!);
+            .ReturnsAsync(new ConfirmSavedSearchUnsubscribeApiResponse{SavedSearch = null});
 
         var actual = await handler.Handle(query, CancellationToken.None);
 

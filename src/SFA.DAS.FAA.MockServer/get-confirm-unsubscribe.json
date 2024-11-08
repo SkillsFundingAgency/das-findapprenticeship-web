@@ -1,6 +1,39 @@
 {
-  "Where": "Sheffield within South yorkshire",
-  "Distance": 20,
-  "Categories": [ "Agriculture", "Business" ],
-  "Levels": [ 4, 5 ]
+  "savedSearch" : {
+    "id": "EF50F687-174B-4657-92EB-880BBB926CA7",
+    "searchParameters": {
+      "searchTerm": "Business",
+      "location": "",
+      "distance": 0,
+      "selectedRouteIds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "selectedLevelIds": [
+        4,
+        5
+      ],
+      "disabilityConfident": false
+    }
+  },
+  "routes": [
+    {
+      "name": "Agriculture, environmental and animal care",
+      "id": 1
+    },
+    {
+      "name": "Business and administration",
+      "id": 2
+    },
+    {
+      "name": "Care services",
+      "id": 3
+    },
+    {
+      "name": "Catering and hospitality",
+      "id": 4
+    }
+  ]
 }

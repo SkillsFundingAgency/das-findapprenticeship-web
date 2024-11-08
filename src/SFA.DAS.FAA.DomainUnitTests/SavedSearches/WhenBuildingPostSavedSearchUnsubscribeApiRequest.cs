@@ -12,6 +12,7 @@ public class WhenBuildingPostSavedSearchUnsubscribeApiRequest
     {
         var actual = new PostSavedSearchUnsubscribeApiRequest(searchId);
         
-        actual.PostUrl.Should().Be($"saved-searches/{searchId}/unsubscribe");
+        actual.PostUrl.Should().Be($"saved-searches/unsubscribe");
+        ((PostSavedSearchUnsubscribeApiRequestData)actual.Data).SavedSearchId.Should().Be(searchId);
     }
 }

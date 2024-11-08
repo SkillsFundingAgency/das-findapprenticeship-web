@@ -5,6 +5,7 @@ using SFA.DAS.FAA.Application.Queries.SavedSearches.GetConfirmUnsubscribe;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SavedSearches;
+using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SavedSearches;
 
@@ -29,7 +30,7 @@ public class WhenGettingUnsubscribeFromSavedSearch
         actual.Should().NotBeNull();
         var actualModel = actual!.Model as UnsubscribeSavedSearchesViewModel;
         actualModel.Should().NotBeNull();
-        actualModel.Should().BeEquivalentTo(queryResult.SavedSearch);
+        actualModel!.SavedSearch.Should().BeEquivalentTo(SavedSearchViewModel.From(queryResult.SavedSearch!, queryResult.Routes));
     }
 
     [Test, MoqAutoData]

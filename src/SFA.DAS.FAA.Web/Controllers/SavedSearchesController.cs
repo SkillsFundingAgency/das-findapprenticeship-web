@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Queries.SavedSearches;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SavedSearches;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.DeleteSavedSearch;
@@ -34,7 +33,9 @@ namespace SFA.DAS.FAA.Web.Controllers
             }
 
             var viewModel = new UnsubscribeSavedSearchesViewModel
-                { SavedSearch = SavedSearchViewModel.From(result.SavedSearch, result.Routes) };
+            {
+                SavedSearch = SavedSearchViewModel.From(result.SavedSearch, result.Routes)
+            };
 
             return View(viewModel);
         }

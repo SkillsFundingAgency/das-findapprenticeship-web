@@ -18,7 +18,7 @@ public class GetConfirmUnsubscribeQueryHandler : IRequestHandler<GetConfirmUnsub
     {
         var request = new GetConfirmSavedSearchUnsubscribeApiRequest(query.SavedSearchId);
         var response = await _apiClient.Get<ConfirmSavedSearchUnsubscribeApiResponse?>(request);
-        if (response == null)
+        if (response?.SavedSearch == null)
         {
             return new GetConfirmUnsubscribeResult();
         }
