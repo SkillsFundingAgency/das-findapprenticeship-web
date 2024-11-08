@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models.User;

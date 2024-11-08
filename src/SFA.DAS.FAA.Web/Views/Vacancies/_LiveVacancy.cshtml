@@ -8,68 +8,68 @@
     { Status: ApplicationStatus.Unsuccessful })
 {
     <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
-            data-module="govuk-notification-banner">
-            <div class="govuk-notification-banner__header">
-                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                    Important
-                </h2>
-            </div>
-            <div class="govuk-notification-banner__content">
-                <p class="govuk-notification-banner__heading">
-                    You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
-                </p>
-                <p class="govuk-body">Check its status in your
-                    <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications"
-                        asp-route-tab="@ApplicationsTab.Submitted">submitted applications</a>.
-                </p>
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
+                data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
+                    </p>
+                    <p class="govuk-body">Check its status in your
+                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications"
+                            asp-route-tab="@ApplicationsTab.Submitted">submitted applications</a>.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 @if (Model.ApplicationDetails is { Status: ApplicationStatus.Draft })
 {
     <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
-            data-module="govuk-notification-banner">
-            <div class="govuk-notification-banner__header">
-                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                    Important
-                </h2>
-            </div>
-            <div class="govuk-notification-banner__content">
-                <p class="govuk-notification-banner__heading">
-                    Application started.
-                    <a class="govuk-notification-banner__link" asp-route="@RouteNames.Apply"
-                        asp-route-ApplicationId="@Model.ApplicationDetails.ApplicationId">Continue your application</a>.
-                </p>
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
+                data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        Application started.
+                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Apply"
+                            asp-route-ApplicationId="@Model.ApplicationDetails.ApplicationId">Continue your application</a>.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 @if (Model.ApplicationDetails is { Status: ApplicationStatus.Withdrawn })
 {
     <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
-            data-module="govuk-notification-banner">
-            <div class="govuk-notification-banner__header">
-                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                    Important
-                </h2>
-            </div>
-            <div class="govuk-notification-banner__content">
-                <p class="govuk-notification-banner__heading">
-                    You withdrew your application for this apprenticeship on @Model.ApplicationDetails.WithdrawnDate.
-                </p>
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
+                data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        You withdrew your application for this apprenticeship on @Model.ApplicationDetails.WithdrawnDate.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
     <h1 class="govuk-heading-l faa-vacancy__title"><span itemprop="title">@Model.Title</span></h1>
@@ -317,21 +317,24 @@
                         </span>
                     </summary>
                     <div class="govuk-details__text">
-                        @if (Model.CourseSkills is { Count: > 0 })
+                        @if (Model.CourseSkills is { Count: > 0 } || Model.CourseSkills is { Count: > 0 })
                         {
-                            @foreach (var skills in Model.CourseSkills)
-                            {
-                                <li>@skills</li>
-                                <div class="govuk-!-padding-bottom-3"></div>
-                            }
-                        }
-                        @if (Model.CourseCoreDuties is { Count: > 0 })
-                        {
-                            @foreach (var skills in Model.CourseCoreDuties)
-                            {
-                                <li>@skills</li>
-                                <div class="govuk-!-padding-bottom-3"></div>
-                            }
+                            <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
+                                @if (Model.CourseSkills is { Count: > 0 })
+                                {
+                                    @foreach (var skills in Model.CourseSkills)
+                                    {
+                                        <li>@skills</li>
+                                    }
+                                }
+                                @if (Model.CourseCoreDuties is { Count: > 0 })
+                                {
+                                    @foreach (var skills in Model.CourseCoreDuties)
+                                    {
+                                        <li>@skills</li>
+                                    }
+                                }
+                        </ul>
                         }
                     </div>
                 </details>
@@ -383,14 +386,13 @@
                     adjust the apprenticeship to reflect what you already know.
                 </p>
                 <h3 class="govuk-heading-s">Skills</h3>
-                <p>
                 <ul class="govuk-list govuk-list--bullet">
                         @foreach (var skills in Model.Skills)
                         {
                         <li>@skills</li>
                         }
                 </ul>
-                </p>
+                
                 @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
                 {
                     <h3 class="govuk-heading-s">Other requirements</h3>
@@ -475,7 +477,7 @@
                     }
                     <form class="form" method="post">
 
-                        <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                        <div class="govuk-button-group">
                             <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
                                 Sign in to apply
                             </button>
@@ -516,7 +518,7 @@
                         else
                         {
                             <form class="form" method="post">
-                                <div class="govuk-button-group" href="govuk-one-login/sign-in-or-create.html">
+                                <div class="govuk-button-group">
                                     <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
                                         @(Model.ApplicationDetails is { Status: ApplicationStatus.Draft } ? "Continue your application" : " Apply for apprenticeship")
                                     </button>

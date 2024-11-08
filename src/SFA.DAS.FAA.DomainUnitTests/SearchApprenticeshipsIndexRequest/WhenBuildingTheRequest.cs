@@ -13,15 +13,23 @@ public class WhenBuildingTheRequest
     {
         locationName = $"{locationName}&!@*£(£<>{locationName}";
         
-        var actual = new GetSearchApprenticeshipsIndexApiRequest(locationName);
+        var actual = new GetSearchApprenticeshipsIndexApiRequest(locationName, null);
 
-        actual.GetUrl.Should().Be($"searchapprenticeships?locationSearchTerm={HttpUtility.UrlEncode(locationName)}");
+        actual.GetUrl.Should().Be($"searchapprenticeships?locationSearchTerm={HttpUtility.UrlEncode(locationName)}&candidateId=");
     }
     [Test]
     public void Then_The_Url_Is_Correctly_Constructed_With_No_Params()
     {
-        var actual = new GetSearchApprenticeshipsIndexApiRequest(null);
+        var actual = new GetSearchApprenticeshipsIndexApiRequest(null, null);
 
-        actual.GetUrl.Should().Be($"searchapprenticeships?locationSearchTerm=");
+        actual.GetUrl.Should().Be($"searchapprenticeships?locationSearchTerm=&candidateId=");
+    }
+    
+    [Test, AutoData]
+    public void Then_The_Url_Is_Correctly_Constructed_With_Just_CandidateId(Guid candidateId)
+    {
+        var actual = new GetSearchApprenticeshipsIndexApiRequest(null, candidateId);
+
+        actual.GetUrl.Should().Be($"searchapprenticeships?locationSearchTerm=&candidateId={candidateId}");
     }
 }
