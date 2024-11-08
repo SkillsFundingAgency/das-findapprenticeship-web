@@ -4,6 +4,8 @@ using SFA.DAS.FAA.Application.Queries.SavedSearches;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SavedSearches;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.DeleteSavedSearch;
+using SFA.DAS.FAA.Application.Queries.SavedSearches.GetConfirmUnsubscribe;
+using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
@@ -31,7 +33,8 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return RedirectToRoute(RouteNames.ServiceStartDefault);
             }
 
-            var viewModel = (UnsubscribeSavedSearchesViewModel?)result;
+            var viewModel = new UnsubscribeSavedSearchesViewModel
+                { SavedSearch = SavedSearchViewModel.From(result.SavedSearch, result.Routes) };
 
             return View(viewModel);
         }

@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Application.Queries.SavedSearches;
+using SFA.DAS.FAA.Application.Queries.SavedSearches.GetConfirmUnsubscribe;
 using SFA.DAS.FAA.Web.Models.SavedSearches;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models

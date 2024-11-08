@@ -1,5 +1,4 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.SavedSearches.UnsubscribeSavedSearchesViewModel
 @{
     ViewData["Title"] = $"Confirm unsubscribe – Find an apprenticeship – GOV.UK ";
@@ -13,85 +12,85 @@
         <p class="govuk-body">We’ll stop emailing you with new apprenticeships that match this search.</p>
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
-                <h2 class="govuk-summary-card__title">
-                    @Model.SearchTitle
-                </h2>
+                <h3 class="govuk-summary-card__title">
+                    @Model.SavedSearch.Title
+                </h3>
             </div>
             <div class="govuk-summary-card__content">
                 <dl class="govuk-summary-list">
-                    @if (!string.IsNullOrEmpty(Model.What))
+                    @if (Model.SavedSearch.SearchTerm is not null)
                     {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                What
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @Model.What
-                            </dd>
-                        </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            What
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.SavedSearch.SearchTerm
+                        </dd>
+                    </div>
                     }
-                    @if (!string.IsNullOrEmpty(Model.Where)) {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Where
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @Model.Where
-                                <p class="govuk-body govuk-!-margin-top-1" style="color:#505a5f">
-                                    @Model.Distance
-                                </p>
-                            </dd>
-                        </div>
-                    }
-                    @if (Model.Categories?.Any() != true)
+                    @if (Model.SavedSearch.Location is not null)
                     {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Categories
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                <ul class="govuk-list govuk-list--bullet">
-                                    @for (int c = 0; c < Model.Categories?.Count; c++)
-                                    {
-                                    <li>@Model.Categories[c]</li>
-                                    }
-                                </ul>
-                            </dd>
-                        </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Where
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.SavedSearch.Location
+                            @if (Model.SavedSearch.Distance is not null)
+                            {
+                            <div class="govuk-hint govuk-!-margin-top-1" style="color:#505a5f">
+                                Within @Model.SavedSearch.Distance miles
+                            </div>
+                            }
+                        </dd>
+                    </div>
                     }
-                    @if (Model.Levels?.Any() != true)
+                    @if (Model.SavedSearch.SelectedRoutes?.Count is > 0)
                     {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Apprenticeship levels
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                <ul class="govuk-list govuk-list--bullet">
-                                    @for (int l = 0; l < Model.Levels?.Count; l++)
-                                    {
-                                        <li>@Model.Levels[l]</li>
-                                    }
-                                </ul>
-                            </dd>
-                        </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Categories</dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var category in Model.SavedSearch.SelectedRoutes)
+                                {
+                                <li>@category</li>
+                                }
+                            </ul>
+                        </dd>
+                    </div>
                     }
-                    @if (Model.DisabilityConfident)
+                    @if (Model.SavedSearch.SelectedLevelIds?.Count is > 0)
                     {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Disability confident
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                Yes
-                            </dd>
-                        </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Levels</dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var level in Model.SavedSearch.SelectedLevelIds)
+                                {
+                                <li>Level @level</li>
+                                }
+                            </ul>
+                        </dd>
+                    </div>
+                    }
+                    @if (Model.SavedSearch.DisabilityConfident)
+                    {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Disability confident
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            Show disability confident employers
+                        </dd>
+                    </div>
                     }
                 </dl>
             </div>
         </div>
         
         <form class="form" action="unsubscribe-search-alert-success-banner"  method="post">
-            <input asp-for="Id" type="hidden" />
+            <input asp-for="SavedSearch.Id" type="hidden" />
             <div class="govuk-button-group" href="unsubscribe-search-alert-success-banner.html">
                 <button class="govuk-button govuk-button--warning" data-module="govuk-button">
                     Delete
