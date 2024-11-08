@@ -40,6 +40,15 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("search-apprentices-index.json"));
 
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet()
+                .WithParam(MatchCandidateId)
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("search-apprentices-authenticated-index.json"));
+            
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, @"/locations", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
                 .RespondWith(
@@ -198,6 +207,11 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
         private static bool MatchLocationParamManchester(IDictionary<string, WireMockList<string>> arg)
         {
             return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Equals("Manchester", StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        private static bool MatchCandidateId(IDictionary<string, WireMockList<string>> arg)
+        {
+            return arg.ContainsKey("candidateId") && arg["candidateId"].Count != 0 && Guid.TryParse(arg["candidateId"][0], out _);
         }
 
     }

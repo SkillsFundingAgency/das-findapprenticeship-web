@@ -10,6 +10,14 @@ So that it is clear what actions I can take
 	Then a http status code of 200 is returned
 	And the page content includes the following: Search apprenticeships
 	And the page content includes the following: 1,034 apprenticeships currently listed
+	
+@AuthenticatedUser
+@WireMockServer
+Scenario: Navigate to home page authenticated user with saved searches
+	When I navigate to the following url: /apprenticeshipsearch
+	Then a http status code of 200 is returned
+	And the page content includes the following: Search apprenticeships
+	And the page content includes the following: Your search alerts
 
 @WireMockServer
 	Scenario: Location search from home page no location found
