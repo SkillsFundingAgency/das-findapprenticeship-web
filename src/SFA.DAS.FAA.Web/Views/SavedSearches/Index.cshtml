@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.SavedSearches.UnsubscribeSavedSearchesViewModel
 @{
     ViewData["Title"] = $"Confirm unsubscribe – Find an apprenticeship – GOV.UK ";
@@ -89,21 +90,30 @@
             </div>
         </div>
         
-        <form class="form" action="unsubscribe-search-alert-success-banner"  method="post">
-            <input asp-for="SavedSearch.Id" type="hidden" />
+        <form class="form" method="post">
+            <input asp-for="SavedSearch.Id" name="Id" type="hidden" />
+            <input asp-for="SavedSearch.Title" name="Title" type="hidden" />
             <div class="govuk-button-group" href="unsubscribe-search-alert-success-banner.html">
                 <button class="govuk-button govuk-button--warning" data-module="govuk-button">
                     Delete
                 </button>
-                <a class="govuk-link" href="">Cancel – don't delete</a>
             </div>
         </form>
 
-        <p class="govuk-body">
-            If you want to delete other alerts, 
-            <a href="..//govuk-one-login/sign-in-or-create.html" class="govuk-link">
-                sign in to manage your search alerts</a>.
-        </p>
+        @if (User.Identity is { IsAuthenticated: true })
+        {
+            <p class="govuk-body">
+                If you want to delete other alerts, 
+                <a asp-route="@RouteNames.SavedSearches" class="govuk-link">manage your search alerts</a>.
+            </p>
+        }
+        else
+        {
+            <p class="govuk-body">
+                If you want to delete other alerts, 
+                <a asp-route="@RouteNames.SavedSearches" class="govuk-link">sign in to manage your search alerts</a>.
+            </p>    
+        }
 
     </div>
 </div>

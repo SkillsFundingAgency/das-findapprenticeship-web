@@ -11,19 +11,19 @@ public class WhenGettingUnsubscribeComplete
     [Test, MoqAutoData]
     public async Task Then_The_Confirmation_Is_Shown(
         Guid savedSearchId,
-        string searchTitle,
+        UnsubscribeSavedSearchesModel model,
         UnsubscribeSavedSearchesModel postModel,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SavedSearchesController savedSearchesController)
     {
         cacheStorageService.Setup(x => 
-            x.Get<string>($"{savedSearchId}-savedsearch")).ReturnsAsync(searchTitle);
+            x.Get<UnsubscribeSavedSearchesModel?>($"{savedSearchId}-savedsearch")).ReturnsAsync(model);
         
         var actual = await savedSearchesController.UnsubscribeComplete(savedSearchId) as ViewResult;
 
         actual.Should().NotBeNull();
-        
+        ((string)actual.Model).Should().Be(model.Title);
     }
     
     [Test, MoqAutoData]
@@ -36,7 +36,7 @@ public class WhenGettingUnsubscribeComplete
         [Greedy] SavedSearchesController savedSearchesController)
     {
         cacheStorageService.Setup(x => 
-            x.Get<string?>($"{savedSearchId}-savedsearch")).ReturnsAsync((string)null!);
+            x.Get<UnsubscribeSavedSearchesModel?>($"{savedSearchId}-savedsearch")).ReturnsAsync((UnsubscribeSavedSearchesModel)null!);
         
         var actual = await savedSearchesController.UnsubscribeComplete(savedSearchId) as RedirectToRouteResult;
 

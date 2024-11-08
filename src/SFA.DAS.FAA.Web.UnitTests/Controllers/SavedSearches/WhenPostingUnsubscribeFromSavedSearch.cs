@@ -28,6 +28,6 @@ public class WhenPostingUnsubscribeFromSavedSearch
                     ), It.IsAny<CancellationToken>()
                 ), Times.Once);
         cacheStorageService.Verify(x => 
-            x.Set($"{postModel.Id}-savedsearch", postModel.SearchTitle!, 5, 5), Times.Once);
+            x.Set($"{postModel.Id}-savedsearch", postModel, 5, 5), Times.Once);
     }
 }

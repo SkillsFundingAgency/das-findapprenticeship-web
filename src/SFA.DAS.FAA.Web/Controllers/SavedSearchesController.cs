@@ -49,7 +49,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 SavedSearchId = model.Id
             });
 
-            await cacheStorageService.Set($"{model.Id}-savedsearch", model.SearchTitle!, 5, 5);
+            await cacheStorageService.Set($"{model.Id}-savedsearch", model, 5, 5);
             
             return RedirectToRoute(RouteNames.UnsubscribeSavedSearchComplete, new
             {
@@ -61,14 +61,14 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("unsubscribe-complete", Name = RouteNames.UnsubscribeSavedSearchComplete)]
         public async Task<IActionResult> UnsubscribeComplete(Guid id)
         {
-            var searchTitle = await cacheStorageService.Get<string?>($"{id}-savedsearch");
+            var model = await cacheStorageService.Get<UnsubscribeSavedSearchesModel?>($"{id}-savedsearch");
             
-            if(string.IsNullOrEmpty(searchTitle))
+            if(model == null)
             {
                 return RedirectToRoute(RouteNames.ServiceStartDefault);
             }
             
-            return View("UnsubscribeComplete", searchTitle);
+            return View("UnsubscribeComplete", model.Title);
         }
     }
 }

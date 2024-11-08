@@ -190,7 +190,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                 .WithBodyFromFile("get-confirm-unsubscribe.json"));
             
             server.Given(Request.Create().WithPath(s =>
-                        Regex.IsMatch(s, "/saved-searches/\\S+/unsubscribe", RegexOptions.None, regexMaxTimeOut))
+                        Regex.IsMatch(s, "/saved-searches/unsubscribe", RegexOptions.None, regexMaxTimeOut))
                     .UsingPost())
                 .RespondWith(
                     Response.Create()
