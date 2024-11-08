@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Web;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SavedSearches;
@@ -68,7 +69,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return RedirectToRoute(RouteNames.ServiceStartDefault);
             }
             
-            return View("UnsubscribeComplete", model.Title);
+            return View("UnsubscribeComplete", HttpUtility.HtmlEncode(model.Title));
         }
     }
 }
