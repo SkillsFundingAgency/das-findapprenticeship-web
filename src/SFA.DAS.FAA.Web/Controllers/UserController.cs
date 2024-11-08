@@ -568,7 +568,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return NotFound();
             }
 
-            var model = SavedSearchViewModel.From(result.SavedSearch, result.Routes, true);
+            var model = SavedSearchViewModel.From(result.SavedSearch, result.Routes, null, true);
             await cacheStorageService.Set($"{(Guid)User.Claims.CandidateId()!}-{savedSearchId}-savedsearch", model.Title, 5, 5);
             return View(model); 
         }
