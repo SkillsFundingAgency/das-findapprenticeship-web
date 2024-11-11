@@ -83,14 +83,14 @@
                         <form method="post" asp-route="@RouteNames.SaveSearch" data-alert-create="true">
                             <button type="submit" class="govuk-button govuk-button--secondary"
                                     id="faa-no-results-alert--create-button">
-                                Create an alert for this search</button>
+                                Create alert</button>
                             <input name="Data" type="hidden" value="@Model.EncodedRequestData"/>
                         </form>
                     }
                     else
                     {
                         <a asp-route="@RouteNames.SignIn" asp-route-signInValue="@ViewBag.SignInValue"
-                           class="govuk-button govuk-button--secondary">Sign in to create alert</a>
+                           class="govuk-button govuk-button--secondary">Sign in to create an alert</a>
                     }
                 </div>
                 <div id="faa-no-results-alert--created" class="faa-filter-alert__confirmation" aria-hidden="true">
