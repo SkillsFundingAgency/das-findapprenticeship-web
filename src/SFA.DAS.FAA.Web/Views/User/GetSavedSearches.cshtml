@@ -81,6 +81,18 @@
             {
                 <partial name="_SavedSearch" model="@savedSearch"></partial>
             }
+            
+            @if (Model.SavedSearches.Count < Model.SavedSearchLimit)
+            {
+                
+                <h3 class="govuk-heading-m govuk-!-margin-top-8">
+                    Create a new search alert
+                </h3>
+                <p>
+                    To create a search alert, <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link">search for an apprenticeship</a>
+                    and then select <strong>Create a search alert</strong> in the <strong>Filters</strong>.
+                </p>
+            }
         }
     </div>
 </div>
