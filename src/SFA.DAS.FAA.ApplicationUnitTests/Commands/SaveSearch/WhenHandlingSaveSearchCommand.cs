@@ -27,8 +27,11 @@ public class WhenHandlingSaveSearchCommand
         
         // assert
         response.Should().Be(Unit.Value);
-        request?.PostUrl.Should().Be($"searchapprenticeships/saved-search?candidateId={command.CandidateId}");
+        request?.PostUrl.Should().Be($"searchapprenticeships/saved-search?candidateId={command.CandidateId}&id={command.Id}");
         payload.Should().NotBeNull();
-        payload.Should().BeEquivalentTo(command, options => options.Excluding(x => x.CandidateId));
+        payload.Should().BeEquivalentTo(command, options => options
+            .Excluding(x => x.CandidateId)
+            .Excluding(x => x.Id)
+        );
     }
 }

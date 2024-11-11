@@ -9,6 +9,7 @@ public class SaveSearchCommandHandler(IApiClient apiClient) : IRequestHandler<Sa
     public async Task<Unit> Handle(SaveSearchCommand request, CancellationToken cancellationToken)
     {
         var apiRequest = new PostSaveSearchApiRequest(request.CandidateId,
+            request.Id,
             new PostSaveSearchApiRequest.PostSaveSearchApiRequestData(
                 request.DisabilityConfident,
                 request.Distance,
@@ -16,7 +17,8 @@ public class SaveSearchCommandHandler(IApiClient apiClient) : IRequestHandler<Sa
                 request.SearchTerm,
                 request.SelectedLevelIds,
                 request.SelectedRouteIds,
-                request.SortOrder
+                request.SortOrder,
+                request.UnSubscribeToken
             )
         );
 
