@@ -58,12 +58,25 @@
                     <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">search
                         for an apprenticeship</a>
                     and then select <b> Create a search alert</b> in the <b>Filters</b>.
-                    We'll email you every Monday at 9am with new apprenticeships that match your search.
+                    We’ll email you every Monday at 8am with new apprenticeships that match your search.
                 </p>
             </div>
         }
         else
         {
+            <p class="govuk-body">
+                We’ll email you about these searches every Monday at 8am.
+            </p>
+            
+            @if (Model.SavedSearches.Count >= Model.SavedSearchLimit)
+            {
+                <div class="govuk-inset-text">
+                    <p class="govuk-body">
+                        You’ve created all the search alerts you can. To create a new search alert, you’ll need to delete one first.
+                    </p>
+                </div>    
+            }
+            
             foreach (var savedSearch in Model.SavedSearches)
             {
                 <partial name="_SavedSearch" model="@savedSearch"></partial>

@@ -63,4 +63,8 @@ public record SavedSearchViewModel(
     }
 }
 
-public record SavedSearchesViewModel(List<SavedSearchViewModel> SavedSearches, bool ShowDeletedBanner = false, string? DeletedSavedSearchTitle = null);
+public record SavedSearchesViewModel(
+    List<SavedSearchViewModel> SavedSearches,
+    int SavedSearchLimit,
+    bool ShowDeletedBanner = false,
+    string? DeletedSavedSearchTitle = null);

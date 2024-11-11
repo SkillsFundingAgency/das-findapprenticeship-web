@@ -42,6 +42,7 @@ public class GetSearchResultsApiResponse
     public bool DisabilityConfident { get; set; }
 
     public int SavedSearchesCount { get; set; }
+    public bool SearchAlreadySaved { get; set; }
 }
 
 public class Location

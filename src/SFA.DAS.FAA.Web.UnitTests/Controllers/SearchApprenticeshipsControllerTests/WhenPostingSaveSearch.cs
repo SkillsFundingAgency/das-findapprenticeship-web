@@ -110,7 +110,7 @@ public class WhenPostingSaveSearch
         var result = await _sut.SaveSearch(saveSearchRequest) as RedirectResult;
         
         // assert
-        result?.Url.Should().Be($"{RedirectUrl}?querySaved=true");
+        result?.Url.Should().Be(RedirectUrl);
         passedData.Should().Be(saveSearchRequest.Data);
         passedCommand.Should().BeEquivalentTo(getSearchResultsRequest, options => 
             options

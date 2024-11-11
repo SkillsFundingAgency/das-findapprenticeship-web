@@ -20,6 +20,7 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
 using SFA.DAS.FAA.Application.Commands.MigrateData;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.PostDeleteSavedSearch;
 using SFA.DAS.FAA.Application.Commands.User.PostAccountDeletion;
+using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
@@ -29,7 +30,6 @@ using SFA.DAS.FAA.Application.Queries.User.GetSavedSearches;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
 using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
 using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
-using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -554,7 +554,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 CandidateId = (Guid)User.Claims.CandidateId()!
             }, cancellationToken);
 
-            var model = new SavedSearchesViewModel(result.SavedSearches.Select(x => SavedSearchViewModel.From(x, result.Routes)).ToList(), deleted is not null, deleteSavedSearchTitle);
+            var model = new SavedSearchesViewModel(result.SavedSearches.Select(x => SavedSearchViewModel.From(x, result.Routes)).ToList(), Constants.SavedSearchLimit, deleted is not null, deleteSavedSearchTitle);
             return View(model);
         }
         

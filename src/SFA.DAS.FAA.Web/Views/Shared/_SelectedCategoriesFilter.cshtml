@@ -22,31 +22,54 @@
 
             @if (User.Identity is { IsAuthenticated: true })
             {
-                <div data-alert="true" class="@(Model.QuerySaved ? "faa-filter-alert--saved": string.Empty)">
-                    <form method="post" asp-route="@RouteNames.SaveSearch" data-alert-create="true" id="faa-create-alert-form">
-                        <button type="submit" class="das-button--inline-link faa-filter-alert__link">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="faa-filter-alert__icon">
+                if (Model.SearchAlreadySaved)
+                {
+                    <div data-alert="true" class="faa-filter-alert--saved">
+                        <div class="faa-filter-alert__confirmation" data-alert-confirmation="true">
+                            <h3 class="govuk-heading-s">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                     class="faa-filter-alert__heading-icon">
                                     <path
-                                        d="M224 0c-17.7 0-32 14.3-32 32l0 19.2C119 66 64 130.6 64 208l0 25.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416l400 0c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4l0-25.4c0-77.4-55-142-128-156.8L256 32c0-17.7-14.3-32-32-32zm0 96c61.9 0 112 50.1 112 112l0 25.4c0 47.9 13.9 94.6 39.7 134.6L72.3 368C98.1 328 112 281.3 112 233.4l0-25.4c0-61.9 50.1-112 112-112zm64 352l-64 0-64 0c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z" />
-                                </svg>
-                            </span>
-                            Create an alert for this search</button>
-                        <input name="Data" type="hidden" value="@Model.EncodedRequestData" />
-                    </form>
-
-                    <div class="faa-filter-alert__confirmation" data-alert-confirmation="true">
-                        <h3 class="govuk-heading-s">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
-                                class="faa-filter-alert__heading-icon">
-                                <path
-                                    d="M224 0c-17.7 0-32 14.3-32 32l0 19.2C119 66 64 130.6 64 208l0 18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416l384 0c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8l0-18.8c0-77.4-55-142-128-156.8L256 32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3l-64 0-64 0c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z" />
-                            </svg> Alert created
-                        </h3>
-                        <p class="govuk-body-s">You'll get weekly emails with new apprenticeships matching this search.</p>
-                        <a asp-route="@RouteNames.SavedSearches" class="govuk-link govuk-link--no-visited-state">Manage your alerts</a>
+                                        d="M224 0c-17.7 0-32 14.3-32 32l0 19.2C119 66 64 130.6 64 208l0 18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416l384 0c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8l0-18.8c0-77.4-55-142-128-156.8L256 32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3l-64 0-64 0c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/>
+                                </svg> Alert created
+                            </h3>
+                            <p class="govuk-body-s">You'll get weekly emails with new apprenticeships matching this search.</p>
+                            <a asp-route="@RouteNames.SavedSearches" class="govuk-link govuk-link--no-visited-state">Manage your alerts</a>
+                        </div>
                     </div>
-                </div>
+                }
+                else if (Model.SavedSearchLimitReached)
+                {
+                    <p>You’ve created all the search alerts you can. <a asp-route="@RouteNames.SavedSearches" class="govuk-link govuk-link--no-visited-state">Manage your alerts</a></p>
+                }
+                else
+                {
+                    <div data-alert="true" class="@(Model.SearchAlreadySaved ? "faa-filter-alert--saved" : string.Empty)">
+                        <form method="post" asp-route="@RouteNames.SaveSearch" data-alert-create="true" id="faa-create-alert-form">
+                            <button type="submit" class="das-button--inline-link faa-filter-alert__link">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="faa-filter-alert__icon">
+                                        <path
+                                            d="M224 0c-17.7 0-32 14.3-32 32l0 19.2C119 66 64 130.6 64 208l0 25.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416l400 0c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4l0-25.4c0-77.4-55-142-128-156.8L256 32c0-17.7-14.3-32-32-32zm0 96c61.9 0 112 50.1 112 112l0 25.4c0 47.9 13.9 94.6 39.7 134.6L72.3 368C98.1 328 112 281.3 112 233.4l0-25.4c0-61.9 50.1-112 112-112zm64 352l-64 0-64 0c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"/>
+                                    </svg>
+                                </span>
+                                Create an alert for this search</button>
+                            <input name="Data" type="hidden" value="@Model.EncodedRequestData"/>
+                        </form>
+
+                        <div class="faa-filter-alert__confirmation" data-alert-confirmation="true">
+                            <h3 class="govuk-heading-s">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                     class="faa-filter-alert__heading-icon">
+                                    <path
+                                        d="M224 0c-17.7 0-32 14.3-32 32l0 19.2C119 66 64 130.6 64 208l0 18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416l384 0c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8l0-18.8c0-77.4-55-142-128-156.8L256 32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3l-64 0-64 0c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/>
+                                </svg> Alert created
+                            </h3>
+                            <p class="govuk-body-s">You'll get weekly emails with new apprenticeships matching this search.</p>
+                            <a asp-route="@RouteNames.SavedSearches" class="govuk-link govuk-link--no-visited-state">Manage your alerts</a>
+                        </div>
+                    </div>
+                }
             }
             else
             {

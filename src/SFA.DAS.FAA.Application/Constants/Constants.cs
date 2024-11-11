@@ -11,4 +11,6 @@ public class Constants
     {
         public const string Location = nameof(Location);
     }
+
+    public const int SavedSearchLimit = 10;
 }

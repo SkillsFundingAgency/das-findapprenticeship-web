@@ -1,3 +1,4 @@
+using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 
 namespace SFA.DAS.FAA.Web.Models.SearchResults;
@@ -33,9 +34,9 @@ public class SearchResultsViewModel : ViewModelBase
     public List<ApprenticeshipMapData> MapData { get; set; }
     public string? MapId { get; set; }
     public bool ShowAccountCreatedBanner { get; set; } = false;
-    public int SavedSearchesCount { get; set; }
     public string? EncodedRequestData { get; set; }
-    public bool QuerySaved { get; set; }
+    public bool SearchAlreadySaved { get; set; }
+    public bool SavedSearchLimitReached  { get; set; }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
@@ -49,7 +50,8 @@ public class SearchResultsViewModel : ViewModelBase
             VacancyReference =source.VacancyReference,
             Sort = source.Sort,
             Levels = source.Levels.Select(l => (LevelViewModel)l).ToList(),
-            SavedSearchesCount = source.SavedSearchesCount,
+            SavedSearchLimitReached = source.SavedSearchesCount >= Constants.SavedSearchLimit,
+            SearchAlreadySaved = source.SearchAlreadySaved
         };
     }
 
