@@ -1,10 +1,10 @@
-using SFA.DAS.FAA.Domain.BrowseByInterests;
+﻿using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.SavedSearches.Dto;
 
 namespace SFA.DAS.FAA.Domain.SavedSearches;
 
-public class GetSavedSearchesApiResponse
+public class GetSavedSearchApiResponse
 {
-    public List<SavedSearchDto> SavedSearches { get; init; }
+    public SavedSearchDto? SavedSearch { get; init; }
     public List<RouteResponse> Routes { get; init; }
 }

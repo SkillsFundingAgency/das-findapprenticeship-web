@@ -39,6 +39,7 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             Levels = response.Levels,
             DisabilityConfident = response.DisabilityConfident,
             SavedSearchesCount = response.SavedSearchesCount,
+            SearchAlreadySaved = response.SearchAlreadySaved
         };
     }
 }

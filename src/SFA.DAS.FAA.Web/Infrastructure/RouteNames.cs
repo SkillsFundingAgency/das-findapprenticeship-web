@@ -56,6 +56,7 @@ public static class RouteNames
     public const string SaveSearch = "save-search";
     public const string SavedSearches = "saved-searches";
     public const string DeleteSavedSearch = "delete-saved-search";
+    public const string ConfirmDeleteSavedSearch = "confirm-delete-saved-search";
 
     public static class Applications
     {

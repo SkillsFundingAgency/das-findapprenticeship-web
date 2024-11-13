@@ -165,7 +165,7 @@ public class SearchApprenticeshipsController(
     }
 
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request, [FromQuery] bool querySaved = false)
+    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
         var validationResult = await searchRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
@@ -266,7 +266,7 @@ public class SearchApprenticeshipsController(
         viewmodel.PageBackLinkRoutePath = request.RoutePath;
 
         viewmodel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
-        viewmodel.QuerySaved = querySaved;
+        viewmodel.SearchAlreadySaved = result.SearchAlreadySaved;
         
         return View(viewmodel);
     }
@@ -376,13 +376,6 @@ public class SearchApprenticeshipsController(
                 SortOrder = criteria.Sort,
                 UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString())
             });
-
-            if (redirect)
-            {
-                var builder = new UriBuilder(redirectUrl);
-                builder.Query = new QueryString(builder.Query).Add("querySaved", "true").ToString();
-                redirectUrl = builder.Uri.ToString();
-            }
         }
         catch (Exception e)
         {

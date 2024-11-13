@@ -14,9 +14,10 @@ public record SavedSearchViewModel(
     List<int>? SelectedLevelIds,
     bool DisabilityConfident,
     string? Location,
-    string? SearchUrl)
+    string? SearchUrl,
+    bool ReadOnly = false)
 {
-    public static SavedSearchViewModel From(SavedSearch source, List<RouteInfo> routes, IUrlHelper? urlHelper = null)
+    public static SavedSearchViewModel From(SavedSearch source, List<RouteInfo> routes, IUrlHelper? urlHelper = null, bool readOnly = false)
     {
         var definingCharacteristic = source.SearchParameters switch
         {
@@ -32,7 +33,7 @@ public record SavedSearchViewModel(
         var location = source.SearchParameters.Location is null
             ? "all of England"
             : $"{source.SearchParameters.Location}";
-                
+            
         var title = $"{definingCharacteristic} in {location}";
 
         var url = urlHelper == null
@@ -56,9 +57,14 @@ public record SavedSearchViewModel(
             source.SearchParameters.SelectedLevelIds,
             source.SearchParameters.DisabilityConfident,
             source.SearchParameters.Location,
-            url
+            url,
+            readOnly
         );
     }
 }
 
-public record SavedSearchesViewModel(List<SavedSearchViewModel> SavedSearches);
+public record SavedSearchesViewModel(
+    List<SavedSearchViewModel> SavedSearches,
+    int SavedSearchLimit,
+    bool ShowDeletedBanner = false,
+    string? DeletedSavedSearchTitle = null);
