@@ -204,8 +204,8 @@
                     }
                     @foreach (var vacancy in Model.Vacancies)
                     {
-                        <li class="das-search-results__list-item govuk-!-padding-top-6">
-                            <div class="@(Model.ShowCompetitiveSalaryBanner && vacancy.ShowInsertTextCssClass ? "govuk-inset-text" : string.Empty)">
+                        <li class="das-search-results__list-item govuk-!-padding-top-6 @(Model.ShowCompetitiveSalaryBanner && vacancy.ShowInsertTextCssClass ? "faa-search-listing--highlight" : string.Empty)">
+    
                                 <div class="faa-search-result-header">
                                     <div>
                                         @if (vacancy.IsClosingSoon)
@@ -284,7 +284,7 @@
                                     <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
                                          alt="Disability Confident" no-cdn />
                                 }
-                            </div>
+                            
                         </li>
                     }
                 </ol>
