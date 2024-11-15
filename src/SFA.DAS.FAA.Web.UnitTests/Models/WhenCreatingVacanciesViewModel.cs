@@ -1,13 +1,8 @@
-﻿using Moq;
-using SFA.DAS.FAA.Domain.SearchResults;
+﻿using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
-using SFA.DAS.Testing.AutoFixture;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Services;
-using Assert = NUnit.Framework.Assert;
 using SFA.DAS.FAT.Domain.Interfaces;
+using Assert = NUnit.Framework.Assert;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 public class WhenCreatingVacanciesViewModel
@@ -30,6 +25,7 @@ public class WhenCreatingVacanciesViewModel
             .Excluding(c => c.IsNew)
             .Excluding(c => c.IsClosingSoon)
             .Excluding(c => c.ApplicationUrl)
+            .Excluding(c => c.WageType)
         );
         actual.CourseTitle.Should().Be($"{vacancies.CourseTitle} (level {vacancies.CourseLevel})");
         actual.VacancyPostCode.Should().Be(vacancies.Postcode);

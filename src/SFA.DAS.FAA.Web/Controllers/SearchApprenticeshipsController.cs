@@ -2,13 +2,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using SFA.DAS.FAA.Application.Constants;
+using Microsoft.VisualBasic;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -18,6 +19,7 @@ using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
+using Constants = SFA.DAS.FAA.Application.Constants.Constants;
 using LocationViewModel = SFA.DAS.FAA.Web.Models.LocationViewModel;
 
 namespace SFA.DAS.FAA.Web.Controllers;
@@ -193,7 +195,7 @@ public class SearchApprenticeshipsController(
         {
             request.Sort = VacancySort.DistanceAsc.ToString();
         }
-        
+
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             Location = request.Location,
@@ -204,6 +206,7 @@ public class SearchApprenticeshipsController(
             PageNumber = request.PageNumber,
             PageSize = 10,
             Sort = request.Sort,
+            SkipWageType = request.IncludeCompetitiveSalaryVacancies ? null : WageType.CompetitiveSalary,
             DisabilityConfident = request.DisabilityConfident,
             CandidateId = User.Claims.CandidateId().Equals(null) ? null
                 : User.Claims.CandidateId()!.ToString()
@@ -252,7 +255,11 @@ public class SearchApprenticeshipsController(
         viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
         viewmodel.PageTitle = GetPageTitle(viewmodel);
 
-        viewmodel.PageBackLinkRoutePath = request.RoutePath; 
+        viewmodel.PageBackLinkRoutePath = request.RoutePath;
+        
+        viewmodel.CompetitiveSalaryRoutePath = request.IncludeCompetitiveSalaryVacancies
+            ? FilterBuilder.ReplaceQueryStringParam(filterUrl, "IncludeCompetitiveSalaryVacancies", "false")
+            : FilterBuilder.ReplaceQueryStringParam(filterUrl, "IncludeCompetitiveSalaryVacancies", "true");
 
         return View(viewmodel);
     }

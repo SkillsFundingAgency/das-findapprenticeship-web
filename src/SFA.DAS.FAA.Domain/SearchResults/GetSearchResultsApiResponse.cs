@@ -8,6 +8,9 @@ public class GetSearchResultsApiResponse
     [JsonProperty("totalApprenticeshipCount")]
     public int Total { get; set; }
 
+    [JsonProperty("totalCompetitiveVacanciesCount")]
+    public int TotalCompetitiveVacanciesCount { get; init; }
+
     [JsonProperty("totalFound")]
     public int TotalFound { get; set; }
     

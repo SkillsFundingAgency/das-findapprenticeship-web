@@ -1,26 +1,19 @@
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
-using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.Extensions.Options;
-using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Validators;
+using SFA.DAS.FAT.Domain.Interfaces;
+using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -113,7 +106,8 @@ public class WhenGettingSearchResults
             PageNumber = pageNumber,
             LevelIds = levelIds,
             DisabilityConfident = disabilityConfident,
-            RoutePath = routhPath
+            RoutePath = routhPath,
+            IncludeCompetitiveSalaryVacancies = true
         }) as ViewResult;
 
         using (new AssertionScope())
@@ -653,6 +647,7 @@ public class WhenGettingSearchResults
         [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<GetSearchResultsRequestValidator> validator)
     {
+        result.TotalCompetitiveVacanciesCount = 0;
         result.PageNumber = pageNumber;
         result.Sort = sort.ToString();
         result.VacancyReference = null;
@@ -708,7 +703,8 @@ public class WhenGettingSearchResults
             SearchTerm = searchTerm,
             PageNumber = pageNumber,
             LevelIds = levelIds,
-            DisabilityConfident = disabilityConfident
+            DisabilityConfident = disabilityConfident,
+            IncludeCompetitiveSalaryVacancies = false
         }) as ViewResult;
 
         using (new AssertionScope())
