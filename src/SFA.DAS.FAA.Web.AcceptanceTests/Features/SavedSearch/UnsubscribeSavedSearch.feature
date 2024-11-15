@@ -21,3 +21,4 @@ Scenario: Navigate to unsubscribe page and delete
     Then I am redirected to the Saved Search Unsubscribe Complete page
     And a http status code of 302 is returned
     And the page redirect content includes the following:  Search alert deleted
+    And the page redirect content includes the following:  My Deleted Search Alert
