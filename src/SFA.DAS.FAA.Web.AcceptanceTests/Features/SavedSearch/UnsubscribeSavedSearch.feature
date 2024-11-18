@@ -19,5 +19,6 @@ Scenario: Navigate to unsubscribe page and delete
     | Id    | 00EA277E-BF45-4110-B7A2-7AA5A32F31B7 |
     | Title | My Deleted Search Alert              |
     Then I am redirected to the Saved Search Unsubscribe Complete page
-    Then a http status code of 302 is returned
-#    And the page content includes the following: Search alert deleted    //TODO need to implement the reading of the redirected page content
+    And a http status code of 302 is returned
+    And the page redirect content includes the following:  Search alert deleted
+    And the page redirect content includes the following:  My Deleted Search Alert
