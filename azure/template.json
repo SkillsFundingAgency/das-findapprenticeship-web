@@ -86,6 +86,9 @@
         },
         "subnetDelegations": {
             "type": "array"
+        },
+        "applicationInsightsConnectionString": {
+            "type": "securestring"
         }
     },
     "variables": {
@@ -265,7 +268,7 @@
                                 },
                                 {
                                     "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-                                    "value": "[reference(concat(variables('appServiceName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
+                                    "value": "[parameters('applicationInsightsConnectionString')]"
                                 },
                                 {
                                     "name": "LoggingRedisConnectionString",
