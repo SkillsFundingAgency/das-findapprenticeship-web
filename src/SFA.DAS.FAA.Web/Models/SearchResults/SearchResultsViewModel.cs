@@ -12,7 +12,7 @@ public class SearchResultsViewModel : ViewModelBase
     public List<RouteViewModel> Routes { get; set; }
     public List<LevelViewModel> Levels { get; set; }
     public int Total { get; set; }
-    public string TotalMessage => $"{(Total == 0 || NoSearchResultsByUnknownLocation ? "No" : Total.ToString("N0"))} {(Total != 1 ? "vacancies" : "vacancy")} found";
+    public string TotalMessage => $"{(Total == 0 || NoSearchResultsByUnknownLocation ? "No" : Total.ToString("N0"))} {(Total != 1 ? "results" : "result")} found";
     public int? Distance { get; set; }
     public string? SearchTerm { get; set; }
 
