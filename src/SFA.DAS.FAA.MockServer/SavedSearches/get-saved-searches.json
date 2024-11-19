@@ -1,0 +1,86 @@
+{
+  "savedSearches": [
+    {
+      "id": "c55838a5-f274-4340-be91-697447032414",
+      "userReference": "0209c8a8-4f24-415c-819a-8a043a1a175e",
+      "dateCreated": "2024-11-13T19:09:00.14",
+      "lastRunDate": null,
+      "emailLastSendDate": null,
+      "searchParameters": {
+        "searchTerm": null,
+        "selectedRouteIds": null,
+        "distance": null,
+        "disabilityConfident": false,
+        "selectedLevelIds": [
+          2,
+          3
+        ],
+        "location": null,
+        "latitude": null,
+        "longitude": null
+      }
+    }
+  ],
+  "routes": [
+    {
+      "id": 1,
+      "name": "Agriculture, environmental and animal care"
+    },
+    {
+      "id": 2,
+      "name": "Business and administration"
+    },
+    {
+      "id": 3,
+      "name": "Care services"
+    },
+    {
+      "id": 4,
+      "name": "Catering and hospitality"
+    },
+    {
+      "id": 5,
+      "name": "Construction and the built environment"
+    },
+    {
+      "id": 6,
+      "name": "Creative and design"
+    },
+    {
+      "id": 7,
+      "name": "Digital"
+    },
+    {
+      "id": 8,
+      "name": "Education and early years"
+    },
+    {
+      "id": 9,
+      "name": "Engineering and manufacturing"
+    },
+    {
+      "id": 10,
+      "name": "Hair and beauty"
+    },
+    {
+      "id": 11,
+      "name": "Health and science"
+    },
+    {
+      "id": 12,
+      "name": "Legal, finance and accounting"
+    },
+    {
+      "id": 13,
+      "name": "Protective services"
+    },
+    {
+      "id": 14,
+      "name": "Sales, marketing and procurement"
+    },
+    {
+      "id": 15,
+      "name": "Transport and logistics"
+    }
+  ]
+}

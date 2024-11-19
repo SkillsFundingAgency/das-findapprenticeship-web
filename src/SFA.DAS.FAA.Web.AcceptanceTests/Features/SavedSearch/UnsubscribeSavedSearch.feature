@@ -1,4 +1,4 @@
-Feature: Home
+Feature: Unsubscribe Saved Search
 
 As an FAA user
 I want a clear home page
