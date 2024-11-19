@@ -148,20 +148,20 @@ public class WhenGettingSearchResults
             {
                 case 0:
                     actualModel.PageTitle.Should()
-                        .Be("No vacancies found");
+                        .Be("No results found");
                     break;
                 case > 10:
                     actualModel.PageTitle.Should()
                         .Be(
-                            $"{actualModel.Total} Vacancies found (page {actualModel.PaginationViewModel.CurrentPage} of {actualModel.PaginationViewModel.TotalPages})");
+                            $"{actualModel.Total} results found (page {actualModel.PaginationViewModel.CurrentPage} of {actualModel.PaginationViewModel.TotalPages})");
                     break;
                 case 1:
                     actualModel.PageTitle.Should()
-                            .Be($"{actualModel.Total} Vacancy found");
+                            .Be($"{actualModel.Total} result found");
                     break;
                 default:
                     actualModel.PageTitle.Should()
-                        .Be($"{actualModel.Total} Vacancies found");
+                        .Be($"{actualModel.Total} results found");
                     break;
             }
 
@@ -809,7 +809,7 @@ public class WhenGettingSearchResults
             actualModel?.DisabilityConfident.Should().Be(disabilityConfident);
             actualModel?.NoSearchResultsByUnknownLocation.Should().BeFalse();
             actualModel?.Distance.Should().Be(10);
-            actualModel?.PageTitle.Should().Be("No vacancies found");
+            actualModel?.PageTitle.Should().Be("No results found");
         }
     }
 
@@ -924,7 +924,7 @@ public class WhenGettingSearchResults
             actualModel?.DisabilityConfident.Should().Be(disabilityConfident);
             actualModel?.NoSearchResultsByUnknownLocation.Should().BeTrue();
             actualModel?.Distance.Should().Be(10);
-            actualModel?.PageTitle.Should().Be("No vacancies found");
+            actualModel?.PageTitle.Should().Be("No results found");
         }
     }
 }

@@ -10,23 +10,19 @@
         <p class="govuk-body">We don't recognise <b>@Model.Location</b>.</p>
         <p class="govuk-body">Check the location you've entered or enter a different location that's nearby.</p>
         <p class="govuk-body">Change your search by using the filters on this page or
-            <a
-                asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">start a new
-                search</a>.</p>
+            <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">start a new search</a>.</p>
     }
     else
     {
-        <h2 class="govuk-heading-m">No apprenticeships currently match your search</h2>
+        <h2 class="govuk-heading-m">Nothing currently matches this search</h2>
         <p class="govuk-body">We can't find anything that matches your search.</p>
         <p class="govuk-body">You may need to:</p>
         <ul class="govuk-list govuk-list--bullet">
-            <li>change the job or company you entered</li>
             <li>increase the area of your search</li>
             <li>remove filters you've selected</li>
         </ul>
         <p class="govuk-body">Change your search by using the filters on this page or
-            <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">start a new
-                search</a>.
+            <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">start a new search</a>.
         </p>
 
         <hr class="govuk-section-break govuk-section-break--m"/>

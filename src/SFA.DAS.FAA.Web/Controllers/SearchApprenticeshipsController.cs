@@ -421,14 +421,14 @@ public class SearchApprenticeshipsController(
     private static string GetPageTitle(SearchResultsViewModel model)
     {
         if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
-            return "No vacancies found";
+            return "No results found";
 
         return model.Total switch
         {
-            1 => $"{model.Total} Vacancy found",
-            <= 10 => $"{model.Total} Vacancies found",
+            1 => $"{model.Total} results found",
+            <= 10 => $"{model.Total} results found",
             _ =>
-                $"{model.Total} Vacancies found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
+                $"{model.Total} results found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
         };
     }
 }
