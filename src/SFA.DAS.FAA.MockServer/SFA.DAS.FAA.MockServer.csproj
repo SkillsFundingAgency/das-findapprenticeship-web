@@ -131,6 +131,10 @@
     <Content Include="search-apprentices-authenticated-index.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Remove="SavedSearches\get-saved-searches.json" />
+    <Content Include="SavedSearches\get-saved-searches.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
 
   </ItemGroup>
   <ItemGroup>
@@ -218,9 +222,6 @@
     <None Update="post-application-details-new.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SavedSearches\" />
   </ItemGroup>
   
 </Project>
