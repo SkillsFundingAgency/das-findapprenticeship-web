@@ -3,6 +3,7 @@
 .service-header__container nav,
 .govuk-back-link,
 .faa-vacancy-actions,
+.faa-vacancy-actions__link,
 .faa-contents,
 .govuk-footer {
   display: none;
@@ -37,4 +38,17 @@ html {
 
 .faa-vacancy__section :last-child {
   margin-bottom: 0;
+}
+
+.faa-flex-row {
+  display: block;
+}
+
+.faa-flex-row h2 + p > a,
+.faa-flex-row h3 + p > a {
+  display: none;
+}
+
+.govuk-section-break.govuk-section-break--xl.govuk-section-break--visible {
+  margin: 10px 0;
 }
