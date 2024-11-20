@@ -4,6 +4,7 @@ using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 
+
 namespace SFA.DAS.FAA.Web.Models;
 
 public class VacanciesViewModel
@@ -33,19 +34,20 @@ public class VacanciesViewModel
     public bool IsDisabilityConfident { get; set; }
     public bool IsSavedVacancy { get; set; } = false;
     public bool ShowInsertTextCssClass => WageType == WageType.CompetitiveSalary;
+    public VacancyDataSource VacancySource { get; set; }
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
         return new VacanciesViewModel
         {
-            Title = vacancies.Title,
+            Title = vacancies.VacancySource == VacancyDataSource.Nhs ? $"{vacancies.Title} (from NHS Jobs)" : vacancies.Title,
             EmployerName = vacancies.EmployerName,
             AddressLine1 = vacancies.AddressLine1,
             AddressLine2 = vacancies.AddressLine2,
             AddressLine3 = vacancies.AddressLine3,
             AddressLine4 = vacancies.AddressLine4,
             VacancyPostCode = vacancies.Postcode,
-            CourseTitle = $"{vacancies.CourseTitle} (level {vacancies.CourseLevel})",
+            CourseTitle = vacancies.VacancySource == VacancyDataSource.Nhs ? "See more details on NHS Jobs" : $"{vacancies.CourseTitle} (level {vacancies.CourseLevel})",
             WageAmount = vacancies.WageAmount,
             ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancies.ClosingDate,!string.IsNullOrEmpty(vacancies.ApplicationUrl)),
             PostedDate = FormatPostDate(vacancies.PostedDate),
@@ -66,6 +68,7 @@ public class VacanciesViewModel
             IsDisabilityConfident = vacancies.IsDisabilityConfident,
             ApplicationStatus = vacancies.CandidateApplicationDetails?.Status,
             IsSavedVacancy = vacancies.IsSavedVacancy,
+            VacancySource = vacancies.VacancySource,
         };
     }
 
