@@ -1,11 +1,9 @@
-﻿using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Web.Services;
+﻿using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Services
 {
+    [TestFixture]
     public class VacancyDetailsHelperServiceTests
     {
         [TestCase("", "")]
@@ -124,6 +122,58 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             // assert
             actual.Should().Be(expected);
+        }
+
+        
+        [Test]
+        [InlineAutoData(null, null)] // Null input
+        [InlineAutoData("", "")] // Empty input
+        public void GetWageText_ShouldHandleNullOrEmptyInput(string input, string expected)
+        {
+            // Act
+            var result = VacancyDetailsHelperService.GetWageText(input);
+
+            // Assert
+            result.Should().Be(expected);
+        }
+
+        [Test]
+        [InlineAutoData("£50", "£50 an hour")] // Less than 100
+        [InlineAutoData("£50.00", "£50 an hour")] // Less than 100
+        [InlineAutoData("£99.99", "£99.99 an hour")] // Edge case: Just below 100
+        public void GetWageText_ShouldHandleHourlyWages(string input, string expected)
+        {
+            // Act
+            var result = VacancyDetailsHelperService.GetWageText(input);
+
+            // Assert
+            result.Should().Be(expected);
+        }
+
+        [Test]
+        [InlineAutoData("£5001.00", "£5,001 a year")] // Greater than 5000
+        [InlineAutoData("£6000.75", "£6,000.75 a year")] // Above threshold
+        public void GetWageText_ShouldHandleAnnualWages(string input, string expected)
+        {
+            // Act
+            var result = VacancyDetailsHelperService.GetWageText(input);
+
+            // Assert
+            result.Should().Be(expected);
+        }
+
+        [Test]
+        [InlineAutoData("£100", "£100")] // Between 100 and 5000
+        [InlineAutoData("£4999.99", "£4999.99")] // Edge case: Just below 5000
+        [InlineAutoData("NoPoundSign", "NoPoundSign")] // Invalid format
+        [InlineAutoData("£Invalid", "£Invalid")] // Invalid numeric value
+        public void GetWageText_ShouldReturnOriginalTextForOtherCases(string input, string expected)
+        {
+            // Act
+            var result = VacancyDetailsHelperService.GetWageText(input);
+
+            // Assert
+            result.Should().Be(expected);
         }
     }
 }

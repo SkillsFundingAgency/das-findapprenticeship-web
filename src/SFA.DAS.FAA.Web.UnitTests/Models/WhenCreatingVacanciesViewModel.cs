@@ -29,6 +29,7 @@ public class WhenCreatingVacanciesViewModel
             .Excluding(c => c.IsClosingSoon)
             .Excluding(c => c.ApplicationUrl)
             .Excluding(c => c.WageType)
+            .Excluding(c => c.WageAmount)
         );
         actual.CourseTitle.Should().Be($"{vacancies.CourseTitle} (level {vacancies.CourseLevel})");
         actual.VacancyPostCode.Should().Be(vacancies.Postcode);
@@ -206,6 +207,7 @@ public class WhenCreatingVacanciesViewModel
             .Excluding(c => c.IsClosingSoon)
             .Excluding(c => c.ApplicationUrl)
             .Excluding(c => c.WageType)
+            .Excluding(c => c.WageAmount)
         );
         actual.CourseTitle.Should().Be("See more details on NHS Jobs");
         actual.Title.Should().Be($"{vacancies.Title} (from NHS Jobs)");
