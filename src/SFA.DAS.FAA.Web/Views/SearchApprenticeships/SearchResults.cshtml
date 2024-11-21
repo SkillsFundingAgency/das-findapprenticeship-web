@@ -1,5 +1,6 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Domain.Enums
 @using WebEssentials.AspNetCore.CdnTagHelpers
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @{
@@ -232,7 +233,7 @@
                                             </a>
                                         </h2>
                                     </div>
-                                    @if (User.Identity is { IsAuthenticated: true })
+                                    @if (User.Identity is { IsAuthenticated: true } && vacancy.VacancySource == VacancyDataSource.Raa)
                                     {
                                         <div data-favourite="true"
                                              class="faa-save-vacancy @(vacancy.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
