@@ -68,9 +68,8 @@ public class SearchResultsViewModel : ViewModelBase
             Sort = source.Sort,
             Levels = source.Levels.Select(l => (LevelViewModel)l).ToList(),
             SavedSearchLimitReached = source.SavedSearchesCount >= Constants.SavedSearchLimit,
-            SearchAlreadySaved = source.SearchAlreadySaved
+            SearchAlreadySaved = source.SearchAlreadySaved,
             SkipWageType = source.SkipWageType,
-            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList()
         };
     }
 
