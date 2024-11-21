@@ -10,11 +10,11 @@ public class WhenCreatingSearchResultsViewModel
 {
 
     [Test]
-    [InlineAutoData(0, 0, "No vacancies found")]
-    [InlineAutoData(1, 0, "1 vacancy found")]
-    [InlineAutoData(2, 0, "2 vacancies found")]
-    [InlineAutoData(2034, 20, "2,054 vacancies found")]
-    public void Then_The_Text_Is_Shown_Correctly_For_Number_Of_Vacancies(int numberOfVacancies, int numberOfCompetitiveVacancies, string expectedText, GetSearchResultsResult source)
+    [InlineAutoData(0, "No results found")]
+    [InlineAutoData(1, "1 result found")]
+    [InlineAutoData(2, "2 results found")]
+    [InlineAutoData(2034, "2,034 results found")]
+    public void Then_The_Text_Is_Shown_Correctly_For_Number_Of_Vacancies(int numberOfVacancies, string expectedText, GetSearchResultsResult source)
     {
         source.Total = numberOfVacancies;
         source.TotalCompetitiveVacanciesCount = numberOfCompetitiveVacancies;

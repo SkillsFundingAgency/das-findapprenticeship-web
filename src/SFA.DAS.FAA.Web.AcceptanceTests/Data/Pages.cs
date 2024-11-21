@@ -44,7 +44,13 @@ public static class Pages
             new Page { Name = "Delete Qualifications (single)", Url = "/apply/{applicationId}/qualifications/delete/2cb6af9b-77f9-4f47-af64-253a8bcc87bb" },
             new Page { Name = "Delete Qualifications (multiple)", Url = "/apply/{applicationId}/qualifications/delete/20d1923f-25b4-4a37-8580-d04643cf1fba" },
             //Create Account
-            new Page { Name = "change email", Url="/create-account/email"},
+            new Page { Name = "change email", Url="/email"},
+            //Saved Search
+            new Page { Name = "Saved Searches", Url="/saved-searches"},
+            new Page { Name = "Saved Search Unsubscribe", Url="/saved-searches/unsubscribe"},
+            new Page { Name = "Saved Search Unsubscribe Complete", Url="/saved-searches/unsubscribe-complete?Id=00ea277e-bf45-4110-b7a2-7aa5a32f31b7"},
+            //Search
+            new Page { Name = "Search Results", Url="/apprenticeships" }
         ];
     }
 

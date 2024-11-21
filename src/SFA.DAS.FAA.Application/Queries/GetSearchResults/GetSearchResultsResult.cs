@@ -17,4 +17,6 @@ public class GetSearchResultsResult
     public string? VacancyReference { get; set; }
     public List<LevelResponse> Levels { get; set; }
     public bool DisabilityConfident { get; set; }
+    public int SavedSearchesCount { get; set; }
+    public bool SearchAlreadySaved { get; set; }
 }

@@ -1,0 +1,37 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model string 
+@{
+    ViewData["Title"] = $"Search alert deleted – Find an apprenticeship – GOV.UK ";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Search alert deleted
+            </h1>
+            <div class="govuk-panel__body">
+                @Model
+            </div>
+        </div>
+
+        <div class="govuk-!-padding-bottom-5"></div>
+
+        <h2 class="govuk-heading-m">What to do next</h2>
+        @if (User.Identity is { IsAuthenticated: true })
+        {
+            <p class="govuk-body">
+                If you want to delete other alerts,
+                <a asp-route="@RouteNames.SavedSearches" class="govuk-link">manage your search alerts</a>.
+            </p>
+        }
+        else
+        {
+            <p class="govuk-body">
+                If you want to delete other alerts,
+                <a asp-route="@RouteNames.SavedSearches" class="govuk-link">sign in to manage your search alerts</a>.
+            </p>
+        }
+    </div>
+</div>

@@ -128,6 +128,13 @@
     <Content Include="search-vacancy-details.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="search-apprentices-authenticated-index.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="SavedSearches\get-saved-searches.json" />
+    <Content Include="SavedSearches\get-saved-searches.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
 
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +211,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="CreateAccount\get-user-select-address.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="get-confirm-unsubscribe.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="post-application-details-existing.json">

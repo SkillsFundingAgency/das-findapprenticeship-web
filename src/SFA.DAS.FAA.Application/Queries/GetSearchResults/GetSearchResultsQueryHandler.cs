@@ -45,6 +45,8 @@ public class GetSearchResultsQueryHandler(IApiClient apiClient)
             VacancyReference = response.VacancyReference,
             Levels = response.Levels,
             DisabilityConfident = response.DisabilityConfident,
+            SavedSearchesCount = response.SavedSearchesCount,
+            SearchAlreadySaved = response.SearchAlreadySaved
         };
     }
 }
