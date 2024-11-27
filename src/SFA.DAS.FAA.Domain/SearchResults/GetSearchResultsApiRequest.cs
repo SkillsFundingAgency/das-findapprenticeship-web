@@ -6,8 +6,8 @@ namespace SFA.DAS.FAA.Domain.SearchResults;
 public class GetSearchResultsApiRequest : IGetApiRequest
 {
     private readonly string? _location;
-    private readonly string _routes;
-    private readonly string _levels;
+    private readonly string? _routes;
+    private readonly string? _levels;
     private readonly int? _distance;
     private readonly string? _searchTerm;
     private readonly int? _pageNumber;
@@ -30,8 +30,8 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         string? candidateId)
     {
         _location = location;
-        _routes = routes != null ? string.Join("&routeIds=", routes) : string.Empty;
-        _levels = levels != null ? string.Join("&levelIds=", levels) : string.Empty;
+        _routes = routes != null ? string.Join("&routeIds=", routes) : null;
+        _levels = levels != null ? string.Join("&levelIds=", levels) : null;
         _distance = distance;
         _searchTerm = searchTerm;
         _pageNumber = pageNumber;
@@ -43,5 +43,15 @@ public class GetSearchResultsApiRequest : IGetApiRequest
     }
 
     public string GetUrl =>
-        $"searchapprenticeships/searchResults?location={_location}&routeIds={_routes}&distance={_distance}&searchTerm={_searchTerm}&pageNumber={_pageNumber}&pageSize={_pageSize}&sort={_sort}&levelIds={_levels}&disabilityConfident={_disabilityConfident}&candidateId={_candidateId}&skipWageType={_skipWageType}";
+        $"searchapprenticeships/searchResults?location={_location}" +
+        $"&distance={_distance}" +
+        $"&searchTerm={_searchTerm}" +
+        $"&pageNumber={_pageNumber}" +
+        $"&pageSize={_pageSize}" +
+        $"&sort={_sort}" +
+        $"&disabilityConfident={_disabilityConfident}" +
+        $"&candidateId={_candidateId}" +
+        $"&skipWageType={_skipWageType}" +
+        (_routes is not null ? $"&routeIds={_routes}" : null) +
+        (_levels is not null ? $"&levelIds={_levels}" : null);
 }

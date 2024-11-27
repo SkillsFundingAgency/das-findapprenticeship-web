@@ -1,3 +1,4 @@
+using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.SearchResults;
 
@@ -12,7 +13,7 @@ public class SearchResultsViewModel : ViewModelBase
     public List<RouteViewModel> Routes { get; set; }
     public List<LevelViewModel> Levels { get; set; }
     public int Total { get; set; }
-    public string TotalMessage => $"{(Total == 0 || NoSearchResultsByUnknownLocation ? "No" : Total.ToString("N0"))} {(Total != 1 ? "vacancies" : "vacancy")} found";
+    public string TotalMessage => $"{(Total == 0 || NoSearchResultsByUnknownLocation ? "No" : Total.ToString("N0"))} {(Total != 1 ? "results" : "result")} found";
     public int? Distance { get; set; }
     public string? SearchTerm { get; set; }
 
@@ -43,6 +44,9 @@ public class SearchResultsViewModel : ViewModelBase
             : "Show vacancies without a listed annual wage";
     
     public bool ShowAccountCreatedBanner { get; set; } = false;
+    public string? EncodedRequestData { get; set; }
+    public bool SearchAlreadySaved { get; set; }
+    public bool SavedSearchLimitReached  { get; set; }
 
     public bool ShowCompetitiveSalaryBanner =>
         string.Equals(Sort, VacancySort.SalaryAsc.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
@@ -63,7 +67,9 @@ public class SearchResultsViewModel : ViewModelBase
             VacancyReference =source.VacancyReference,
             Sort = source.Sort,
             SkipWageType = source.SkipWageType,
-            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList()
+            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList(),
+            SavedSearchLimitReached = source.SavedSearchesCount >= Constants.SavedSearchLimit,
+            SearchAlreadySaved = source.SearchAlreadySaved
         };
     }
 

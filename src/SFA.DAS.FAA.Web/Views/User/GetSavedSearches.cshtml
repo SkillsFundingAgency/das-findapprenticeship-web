@@ -1,0 +1,101 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+
+@model SFA.DAS.FAA.Web.Models.User.SavedSearchesViewModel
+
+@{
+    ViewData["Title"] = "Settings – Find an apprenticeship – GOV.UK ";
+}
+
+@if (Model.ShowDeletedBanner)
+{
+    var message = Model.DeletedSavedSearchTitle is null
+            ? "Search alert deleted."
+            : $"Search alert for {Model.DeletedSavedSearchTitle} deleted.";
+    
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+                 aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Success
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        @message                        
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl faa-page-heading">Settings</h1>
+        <nav class="faa-tab-nav">
+            <ul class="faa-tab-nav__list">
+                <li class="faa-tab-nav__list-item">
+                    <a asp-route="@RouteNames.Settings" class="faa-tab-nav__link">
+                        Your account
+                    </a>
+                </li>
+                <li class="faa-tab-nav__list-item">
+                    <a asp-route="@RouteNames.SavedSearches" class="faa-tab-nav__link  faa-tab-nav__link--active">
+                        Search alerts
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <h2 class="govuk-heading-l govuk-!-margin-top-8">Search alerts</h2>
+        @if (Model.SavedSearches.Count == 0)
+        {
+            <p>You have not created any search alerts.</p>
+            <div class="govuk-inset-text">
+                <p class="govuk-body">
+                    To create a search alert,
+                    <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">search
+                        for an apprenticeship</a>
+                    and then select <b> Create a search alert</b> in the <b>Filters</b>.
+                    We’ll email you every Monday at 8am with new apprenticeships that match your search.
+                </p>
+            </div>
+        }
+        else
+        {
+            <p class="govuk-body">
+                We’ll email you about these searches every Monday at 8am.
+            </p>
+            
+            @if (Model.SavedSearches.Count >= Model.SavedSearchLimit)
+            {
+                <div class="govuk-inset-text">
+                    <p class="govuk-body">
+                        You’ve created all the search alerts you can. To create a new search alert, you’ll need to delete one first.
+                    </p>
+                </div>    
+            }
+            
+            foreach (var savedSearch in Model.SavedSearches)
+            {
+                <partial name="_SavedSearch" model="@savedSearch"></partial>
+            }
+            
+            @if (Model.SavedSearches.Count < Model.SavedSearchLimit)
+            {
+                
+                <h3 class="govuk-heading-m govuk-!-margin-top-8">
+                    Create a new search alert
+                </h3>
+                
+                <p class="govuk-body">
+                    To create a search alert,
+                    <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">search
+                        for an apprenticeship</a>
+                    and then select <b> Create a search alert</b> in the <b>Filters</b>.
+                </p>
+            }
+        }
+    </div>
+</div>

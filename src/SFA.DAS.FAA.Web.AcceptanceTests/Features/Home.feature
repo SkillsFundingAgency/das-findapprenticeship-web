@@ -10,6 +10,14 @@ So that it is clear what actions I can take
 	Then a http status code of 200 is returned
 	And the page content includes the following: Search apprenticeships
 	And the page content includes the following: 1,034 apprenticeships currently listed
+	
+@AuthenticatedUser
+@WireMockServer
+Scenario: Navigate to home page authenticated user with saved searches
+	When I navigate to the following url: /apprenticeshipsearch
+	Then a http status code of 200 is returned
+	And the page content includes the following: Search apprenticeships
+	And the page content includes the following: Your search alerts
 
 @WireMockServer
 	Scenario: Location search from home page no location found
@@ -80,13 +88,13 @@ Scenario: Location search option selected no postcode
 Scenario: Navigate to search results page with no filters
 	When I navigate to the following url: /apprenticeships
 	Then a http status code of 200 is returned
-	And the page content includes the following: 339 vacancies found
+	And the page content includes the following: 339 results found
 
 @WireMockServer
 Scenario: Navigate to search results page with no results found
 	When I navigate to the following url: /apprenticeships?location=manchester
 	Then a http status code of 200 is returned
-	And the page content includes the following: No vacancies found
+	And the page content includes the following: No results found
 
 @WireMockServer
 Scenario: Navigate to vacancy details page with vacancy found
