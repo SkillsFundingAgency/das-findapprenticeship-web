@@ -1,3 +1,4 @@
+using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 
 namespace SFA.DAS.FAA.Web.Models.SearchResults;
@@ -11,7 +12,7 @@ public class SearchResultsViewModel : ViewModelBase
     public List<RouteViewModel> Routes { get; set; }
     public List<LevelViewModel> Levels { get; set; }
     public int Total { get; set; }
-    public string TotalMessage => $"{(Total == 0 || NoSearchResultsByUnknownLocation ? "No" : Total.ToString("N0"))} {(Total != 1 ? "vacancies" : "vacancy")} found";
+    public string TotalMessage => $"{(Total == 0 || NoSearchResultsByUnknownLocation ? "No" : Total.ToString("N0"))} {(Total != 1 ? "results" : "result")} found";
     public int? Distance { get; set; }
     public string? SearchTerm { get; set; }
 
@@ -32,8 +33,10 @@ public class SearchResultsViewModel : ViewModelBase
     public bool NoSearchResultsByUnknownLocation { get; set; }
     public List<ApprenticeshipMapData> MapData { get; set; }
     public string? MapId { get; set; }
-
     public bool ShowAccountCreatedBanner { get; set; } = false;
+    public string? EncodedRequestData { get; set; }
+    public bool SearchAlreadySaved { get; set; }
+    public bool SavedSearchLimitReached  { get; set; }
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
@@ -46,7 +49,9 @@ public class SearchResultsViewModel : ViewModelBase
             TotalPages = source.TotalPages,
             VacancyReference =source.VacancyReference,
             Sort = source.Sort,
-            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList()
+            Levels = source.Levels.Select(l => (LevelViewModel)l).ToList(),
+            SavedSearchLimitReached = source.SavedSearchesCount >= Constants.SavedSearchLimit,
+            SearchAlreadySaved = source.SearchAlreadySaved
         };
     }
 

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
@@ -23,5 +24,4 @@ public class WhenCreatingSearchApprenticeshipsViewModel
         Assert.That(actual.TotalText, Is.EqualTo(expectedText));
 
     }
-
 }

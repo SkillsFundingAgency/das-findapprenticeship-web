@@ -38,6 +38,8 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             VacancyReference = response.VacancyReference,
             Levels = response.Levels,
             DisabilityConfident = response.DisabilityConfident,
+            SavedSearchesCount = response.SavedSearchesCount,
+            SearchAlreadySaved = response.SearchAlreadySaved
         };
     }
 }
