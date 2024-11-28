@@ -13,7 +13,7 @@ public class WhenBuildingTheRequest
     {
         var actual = new GetSearchResultsApiRequest(location, routes, levels, distance, searchTerm, pageNumber, pageSize, sort, skipWageType, disabilityConfident, candidateId);
 
-        actual.GetUrl.Should().Be($"searchapprenticeships/searchResults?location={location}&distance={distance}&searchTerm={searchTerm}&pageNumber={pageNumber}&pageSize={pageSize}&sort={sort}&disabilityConfident={disabilityConfident}&candidateId={candidateId}&routeIds={string.Join("&routeIds=",routes)}&levelIds={string.Join("&levelIds=", levels)}");
+        actual.GetUrl.Should().Be($"searchapprenticeships/searchResults?location={location}&distance={distance}&searchTerm={searchTerm}&pageNumber={pageNumber}&pageSize={pageSize}&sort={sort}&disabilityConfident={disabilityConfident}&candidateId={candidateId}&skipWageType={skipWageType}&routeIds={string.Join("&routeIds=",routes)}&levelIds={string.Join("&levelIds=", levels)}");
     }
 
     [Test]
@@ -21,6 +21,6 @@ public class WhenBuildingTheRequest
     {
         var actual = new GetSearchResultsApiRequest(null, null, null, null, null, null, null, VacancySort.DistanceAsc, null, false, null);
 
-        actual.GetUrl.Should().Be("searchapprenticeships/searchResults?location=&distance=&searchTerm=&pageNumber=&pageSize=&sort=DistanceAsc&disabilityConfident=False&candidateId=");
+        actual.GetUrl.Should().Be("searchapprenticeships/searchResults?location=&distance=&searchTerm=&pageNumber=&pageSize=&sort=DistanceAsc&disabilityConfident=False&candidateId=&skipWageType=");
     }
 }

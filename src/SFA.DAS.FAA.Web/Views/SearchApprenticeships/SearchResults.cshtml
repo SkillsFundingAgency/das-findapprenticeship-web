@@ -183,8 +183,8 @@
                             <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Nearest first</option>
                             <option value="AgeAsc" selected="@(Model.Sort == "AgeAsc")">Most recent</option>
                             <option value="ClosingAsc" selected="@(Model.Sort == "ClosingAsc")">Closing soonest</option>
-                            <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Salary high to low</option>
-                            <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")">Salary low to high</option>
+                            <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Wage high to low</option>
+                            <option value="SalaryAsc" selected="@(Model.Sort == "SalaryAsc")">Wage low to high</option>
                         </select>
                     </div>
                 </div>
@@ -195,11 +195,13 @@
                     {
                         <li class="das-search-results__list-item govuk-!-padding-top-6 faa-search-result-banner">
                             <h3 class="govuk-heading-s  das-search-results__heading">
-                                @Model.TotalCompetitiveVacanciesCount results do not have a listed annual wage
+                                @Model.CompetitiveSalaryBannerHeaderText cannot be shown in this list
                             </h3>
-                            <p class="govuk-body">There are some vacancies where we do not know how much you'll get paid a year. We cannot include these vacancies in a list sorted by annual wage.</p>
                             <p class="govuk-body">
-                                <a href="@Model.CompetitiveSalaryRoutePath" class="govuk-link govuk-link--no-visited-state">@Model.CompetitiveSalaryBannerText</a>
+                                We have not included vacancies where we do not know the wage. 
+                            </p>
+                            <p class="govuk-body">
+                                <a href="@Model.CompetitiveSalaryRoutePath" class="govuk-link govuk-link--no-visited-state">@Model.CompetitiveSalaryBannerLinkText</a>
                             </p>
                         </li>
                     }
