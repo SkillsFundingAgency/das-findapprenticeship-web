@@ -35,13 +35,18 @@ public class SearchResultsViewModel : ViewModelBase
     public List<ApprenticeshipMapData> MapData { get; set; }
     public string? MapId { get; set; }
     public long TotalCompetitiveVacanciesCount { get; set; }
+
+    public string CompetitiveSalaryBannerHeaderText => TotalCompetitiveVacanciesCount > 1
+        ? $"{TotalCompetitiveVacanciesCount} results"
+        : $"{TotalCompetitiveVacanciesCount} result";
+
     public string? SkipWageType { get; set; }
 
     public string? CompetitiveSalaryRoutePath { get; set; }
-    public string? CompetitiveSalaryBannerText =>
+    public string? CompetitiveSalaryBannerLinkText =>
         string.IsNullOrEmpty(SkipWageType)
-            ? "Hide vacancies without a listed annual wage"
-            : "Show vacancies without a listed annual wage";
+            ? "Hide vacancies without a wage"
+            : "Show vacancies without a wage";
     
     public bool ShowAccountCreatedBanner { get; set; } = false;
     public string? EncodedRequestData { get; set; }

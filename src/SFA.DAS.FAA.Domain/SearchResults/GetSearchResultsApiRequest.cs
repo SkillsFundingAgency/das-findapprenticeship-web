@@ -51,6 +51,7 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         $"&sort={_sort}" +
         $"&disabilityConfident={_disabilityConfident}" +
         $"&candidateId={_candidateId}" +
+        $"&skipWageType={_skipWageType}" +
         (_routes is not null ? $"&routeIds={_routes}" : null) +
         (_levels is not null ? $"&levelIds={_levels}" : null);
 }
