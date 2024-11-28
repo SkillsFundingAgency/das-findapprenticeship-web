@@ -22,6 +22,7 @@
     <!--[if !IE 8]><!-->
     <link href="css/main.css" rel="stylesheet" />
     <link href="/css/faa.css" rel="stylesheet" no-cdn asp-append-version="true" />
+    <link href="/css/print.css" rel="stylesheet" media="print" no-cdn asp-append-version="true" />
     <!--<![endif]-->
     <meta property="og:image" content="assets/images/govuk-opengraph-image.png" />
 
@@ -159,7 +160,8 @@
             <div class="govuk-width-container">
                 <div class="service-header__container">
                     <h2 class="service-header__heading">Find an apprenticeship</h2>
-                    @if (User.Identity is { IsAuthenticated: true } && ViewData["IsAccountStatusCompleted"] != null && ViewData["IsAccountStatusCompleted"]!.Equals(true))
+                    @if (User.Identity is { IsAuthenticated: true } && ViewData["IsAccountStatusCompleted"] != null &&
+                    ViewData["IsAccountStatusCompleted"]!.Equals(true))
                     {
                         <div>
                             <button type="button" aria-controls="service-header__nav"
@@ -182,12 +184,15 @@
                                             Search
                                         </a>
                                     </li>
-                                    <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "SavedVacancies" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
-                                        <a class="service-header__nav-list-item-link" asp-route="@RouteNames.SavedVacancies">
+                                    <li
+                                        class="@(Context.Request.RouteValues["controller"]?.ToString() == "SavedVacancies" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
+                                        <a class="service-header__nav-list-item-link"
+                                            asp-route="@RouteNames.SavedVacancies">
                                             Saved vacancies
                                         </a>
                                     </li>
-                                    <li class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/")) 
+                                    <li
+                                        class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/")) 
                                                  || Context.Request.RouteValues["controller"]?.ToString() == "Applications" 
                                                  || Context.Request.RouteValues["controller"]?.ToString() == "Apply" 
                                                    ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
@@ -216,7 +221,7 @@
                                         class="@(Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships"
                                                  || Context.Request.RouteValues["controller"]?.ToString() == "Vacancies" ? "service-header__nav-list-item--active":"") service-header__nav-list-item">
                                         <a class="service-header__nav-list-item-link"
-                                           asp-route="@RouteNames.ServiceStartDefault">
+                                            asp-route="@RouteNames.ServiceStartDefault">
                                             Search
                                         </a>
                                     </li>
@@ -244,9 +249,8 @@
                     <h2 class="govuk-visually-hidden">Support links</h2>
                     <ul class="govuk-footer__inline-list">
                         <li class="govuk-footer__inline-list-item">
-                            You can 
-                            <a class="govuk-footer__link"
-                               asp-route="@RouteNames.GetHelp">
+                            You can
+                            <a class="govuk-footer__link" asp-route="@RouteNames.GetHelp">
                                 get help
                             </a>
                             or
@@ -305,6 +309,6 @@
         window.DASFrontend.initAll();
     </script>
     @await RenderSectionAsync("AfterJSScripts", required: false)
-    </body>
+</body>
 
 </html>
