@@ -5,3 +5,8 @@ $govuk-include-default-font-face: false;
 @import "core/all";
 @import "components/all";
 @import "libs/all";
+
+.faa-search-listing--highlight {
+  border-left: 10px solid #b1b4b6;
+  padding-left: 15px;
+}

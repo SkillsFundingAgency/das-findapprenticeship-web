@@ -8,12 +8,14 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Security.Claims;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
@@ -115,7 +117,8 @@ public class WhenGettingSearchResults
             PageNumber = pageNumber,
             LevelIds = levelIds,
             DisabilityConfident = disabilityConfident,
-            RoutePath = routhPath
+            RoutePath = routhPath,
+            IncludeCompetitiveSalaryVacancies = true
         }) as ViewResult;
 
         using (new AssertionScope())
@@ -719,6 +722,7 @@ public class WhenGettingSearchResults
         [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<GetSearchResultsRequestValidator> validator)
     {
+        result.TotalCompetitiveVacanciesCount = 0;
         result.PageNumber = pageNumber;
         result.Sort = sort.ToString();
         result.VacancyReference = null;
@@ -782,7 +786,8 @@ public class WhenGettingSearchResults
             SearchTerm = searchTerm,
             PageNumber = pageNumber,
             LevelIds = levelIds,
-            DisabilityConfident = disabilityConfident
+            DisabilityConfident = disabilityConfident,
+            IncludeCompetitiveSalaryVacancies = false
         }) as ViewResult;
 
         using (new AssertionScope())
@@ -925,6 +930,165 @@ public class WhenGettingSearchResults
             actualModel?.NoSearchResultsByUnknownLocation.Should().BeTrue();
             actualModel?.Distance.Should().Be(10);
             actualModel?.PageTitle.Should().Be("No results found");
+        }
+    }
+
+    [Test]
+    [MoqInlineAutoData(VacancySort.SalaryDesc, true, "CompetitiveSalary")]
+    [MoqInlineAutoData(VacancySort.SalaryAsc, true, null)]
+    [MoqInlineAutoData(VacancySort.AgeAsc, false, null)]
+    public async Task Then_Sort_Is_Salary_Type_The_Mediator_Query_Is_Called_And_Search_Results_View_Returned(
+        VacancySort sort,
+        bool expectedResult,
+        string skipWageType,
+        int? distance,
+        bool distanceIsValid,
+        string mapId,
+        GetSearchResultsResult result,
+        List<string>? routeIds,
+        List<string>? levelIds,
+        string? location,
+        string? searchTerm,
+        int pageNumber,
+        bool disabilityConfident,
+        Guid candidateId,
+        Guid govIdentifier,
+        bool showBanner,
+        string routhPath,
+        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<GetSearchResultsRequestValidator> validator,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        result.SkipWageType = skipWageType;
+        result.PageNumber = pageNumber;
+        result.Sort = sort.ToString();
+        result.VacancyReference = null;
+        var mediator = new Mock<IMediator>();
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName!.Equals(RouteNames.SearchResults))))
+            .Returns("https://baseUrl");
+
+
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
+            .ReturnsAsync(
+                new ValidationResult()
+            );
+
+        cacheStorageService
+            .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
+            .ReturnsAsync(showBanner);
+
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
+        {
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
+                    }))
+                }
+            }
+        };
+        routeIds = [result.Routes.First().Id.ToString()];
+        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
+                c.SearchTerm!.Equals(searchTerm)
+                && c.Location!.Equals(location)
+                && c.SelectedRouteIds!.Equals(routeIds)
+                && c.PageNumber!.Equals(pageNumber)
+                && c.PageSize!.Equals(10)
+                && c.DisabilityConfident!.Equals(disabilityConfident)
+            ), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+
+        var actual = await controller.SearchResults(new GetSearchResultsRequest
+        {
+            Location = location,
+            Distance = distance,
+            RouteIds = routeIds,
+            SearchTerm = searchTerm,
+            PageNumber = pageNumber,
+            LevelIds = levelIds,
+            DisabilityConfident = disabilityConfident,
+            RoutePath = routhPath,
+            IncludeCompetitiveSalaryVacancies = true,
+            Sort = sort.ToString(),
+        }) as ViewResult;
+
+        using (new AssertionScope())
+        {
+            Assert.That(actual, Is.Not.Null);
+            var actualModel = actual!.Model as SearchResultsViewModel;
+            actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
+            actualModel?.SelectedRouteIds.Should().Equal(routeIds);
+            actualModel?.SelectedRouteCount.Should().Be(routeIds.Count);
+            actualModel?.SelectedLevelCount.Should().Be(levelIds.Count);
+            actualModel?.Location.Should().BeEquivalentTo(location);
+            actualModel?.PageNumber.Should().Be(pageNumber);
+            actualModel?.Vacancies.Should().NotBeNullOrEmpty();
+            actualModel?.MapData.Should().NotBeNullOrEmpty();
+            actualModel?.Sort.Should().Be(sort.ToString());
+            actualModel?.SelectedRoutes.Should()
+                .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)
+                    .ToList());
+            actualModel?.Routes.FirstOrDefault(x => x.Id.ToString() == routeIds.First())?.Selected.Should().BeTrue();
+            actualModel?.Routes.Where(x => x.Id.ToString() != routeIds.First()).Select(x => x.Selected).ToList()
+                .TrueForAll(x => x).Should().BeFalse();
+            actualModel?.Levels.FirstOrDefault(x => x.Id.ToString() == levelIds.First())?.Selected.Should().BeTrue();
+            actualModel?.Levels.Where(x => x.Id.ToString() != levelIds.First()).Select(x => x.Selected).ToList()
+                .TrueForAll(x => x).Should().BeFalse();
+            actualModel.DisabilityConfident.Should().Be(disabilityConfident);
+            actualModel.ShowAccountCreatedBanner.Should().Be(showBanner);
+            actualModel.PageBackLinkRoutePath.Should().NotBeNull();
+
+            switch (actualModel.Total)
+            {
+                case 0:
+                    actualModel.PageTitle.Should()
+                        .Be("No results found");
+                    break;
+                case > 10:
+                    actualModel.PageTitle.Should()
+                        .Be(
+                            $"{actualModel.Total} results found (page {actualModel.PaginationViewModel.CurrentPage} of {actualModel.PaginationViewModel.TotalPages})");
+                    break;
+                case 1:
+                    actualModel.PageTitle.Should()
+                            .Be($"{actualModel.Total} result found");
+                    break;
+                default:
+                    actualModel.PageTitle.Should()
+                        .Be($"{actualModel.Total} results found");
+                    break;
+            }
+            actualModel.MapId.Should().Be(mapId);
+            actualModel.ClearSelectedFiltersLink.Should().Be("https://baseUrl");
+            if (expectedResult)
+            {
+                actualModel.ShowCompetitiveSalaryBanner.Should().BeTrue();
+            }
+            else
+            {
+                actualModel.ShowCompetitiveSalaryBanner.Should().BeFalse();
+            }
+
+            actualModel.CompetitiveSalaryBannerLinkText.Should().Be(!string.IsNullOrEmpty(skipWageType)
+                ? "Show vacancies without a wage"
+                : "Hide vacancies without a wage");
         }
     }
 }

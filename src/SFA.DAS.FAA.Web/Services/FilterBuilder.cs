@@ -2,6 +2,7 @@
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using System.Web;
 
 namespace SFA.DAS.FAA.Web.Services
 {
@@ -66,7 +67,38 @@ namespace SFA.DAS.FAA.Web.Services
             {
                 queryParameters.Add($"DisabilityConfident={request.DisabilityConfident}");
             }
+
+            if (request.IncludeCompetitiveSalaryVacancies)
+                queryParameters.Add($"IncludeCompetitiveSalaryVacancies=true");
+            else
+                queryParameters.Remove("IncludeCompetitiveSalaryVacancies=false");
+
             return queryParameters;
+        }
+
+        public static string ReplaceQueryStringParam(string currentPageUrl, string paramToReplace, string newValue)
+        {
+            var urlWithoutQuery = currentPageUrl.IndexOf('?') >= 0
+                ? currentPageUrl[..currentPageUrl.IndexOf('?')]
+                : currentPageUrl;
+
+            var queryString = currentPageUrl.IndexOf('?') >= 0
+                ? currentPageUrl[currentPageUrl.IndexOf('?')..]
+                : null;
+
+            var queryParamList = queryString != null
+                ? HttpUtility.ParseQueryString(queryString)
+                : HttpUtility.ParseQueryString(string.Empty);
+
+            if (queryParamList[paramToReplace] != null)
+            {
+                queryParamList[paramToReplace] = newValue;
+            }
+            else
+            {
+                queryParamList.Add(paramToReplace, newValue);
+            }
+            return $"{urlWithoutQuery}?{queryParamList}";
         }
 
         private static string? BuildQueryString(IUrlHelper url, IEnumerable<string> queryParameters, List<string> filterToRemove)

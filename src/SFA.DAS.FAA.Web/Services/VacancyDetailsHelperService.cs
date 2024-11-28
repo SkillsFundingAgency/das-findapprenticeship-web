@@ -67,5 +67,21 @@ namespace SFA.DAS.FAA.Web.Services
         {
             return $"Posted on {postedDate.ToString("d MMMM", CultureInfo.InvariantCulture)}";
         }
+
+        public static string GetWageText(string wageAmountText)
+        {
+            if (string.IsNullOrEmpty(wageAmountText)) return wageAmountText;
+
+            var poundRemovedStr = wageAmountText.Replace("£", string.Empty);
+
+            if (!decimal.TryParse(poundRemovedStr, out var wageAmount)) return wageAmountText;
+
+            return wageAmount switch
+            {
+                < 100.00M => wageAmount % 1 == 0 ? $"£{wageAmount:#,##} an hour" : $"£{wageAmount:#,##.00} an hour",
+                > 5000.00M => wageAmount % 1 == 0 ? $"£{wageAmount:#,##} a year" : $"£{wageAmount:#,##.00} a year",
+                _ => wageAmountText
+            };
+        }
     }
 }

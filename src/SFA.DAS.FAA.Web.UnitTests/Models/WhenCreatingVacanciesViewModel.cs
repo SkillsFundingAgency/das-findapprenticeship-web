@@ -1,13 +1,9 @@
-﻿using Moq;
+﻿using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models;
-using SFA.DAS.Testing.AutoFixture;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Services;
-using Assert = NUnit.Framework.Assert;
 using SFA.DAS.FAT.Domain.Interfaces;
+using Assert = NUnit.Framework.Assert;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 public class WhenCreatingVacanciesViewModel
@@ -15,6 +11,8 @@ public class WhenCreatingVacanciesViewModel
     [Test, MoqAutoData]
     public void Then_The_Fields_Are_Mapped(Vacancies vacancies, [Frozen] Mock <IDateTimeService> dateTimeService)
     {
+        vacancies.VacancySource = VacancyDataSource.Raa;
+
         var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
 
         actual.Should().BeEquivalentTo(vacancies, options=> options
@@ -30,6 +28,8 @@ public class WhenCreatingVacanciesViewModel
             .Excluding(c => c.IsNew)
             .Excluding(c => c.IsClosingSoon)
             .Excluding(c => c.ApplicationUrl)
+            .Excluding(c => c.WageType)
+            .Excluding(c => c.WageAmount)
         );
         actual.CourseTitle.Should().Be($"{vacancies.CourseTitle} (level {vacancies.CourseLevel})");
         actual.VacancyPostCode.Should().Be(vacancies.Postcode);
@@ -184,6 +184,33 @@ public class WhenCreatingVacanciesViewModel
         var actual = VacanciesViewModel.CalculateDaysUntilClosing(dateTimeService.Object, closingDate);
 
         Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test, MoqAutoData]
+    public void Then_The_Nhs_Vacancies_Fields_Are_Mapped_Returned_As_Expected(Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        vacancies.VacancySource = VacancyDataSource.Nhs;
+        var actual = new VacanciesViewModel().MapToViewModel(dateTimeService.Object, vacancies);
+
+        actual.Should().BeEquivalentTo(vacancies, options => options
+            .Excluding(c => c.ClosingDate)
+            .Excluding(c => c.PostedDate)
+            .Excluding(c => c.Id)
+            .Excluding(c => c.CourseTitle)
+            .Excluding(c => c.Title)
+            .Excluding(c => c.Postcode)
+            .Excluding(c => c.CandidateApplicationDetails)
+            .Excluding(c => c.ApplicationStatus)
+            .Excluding(c => c.Lat)
+            .Excluding(c => c.Lon)
+            .Excluding(c => c.IsNew)
+            .Excluding(c => c.IsClosingSoon)
+            .Excluding(c => c.ApplicationUrl)
+            .Excluding(c => c.WageType)
+            .Excluding(c => c.WageAmount)
+        );
+        actual.CourseTitle.Should().Be("See more details on NHS Jobs");
+        actual.Title.Should().Be($"{vacancies.Title} (from NHS Jobs)");
     }
 
 }
