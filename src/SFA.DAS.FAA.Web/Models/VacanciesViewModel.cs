@@ -4,11 +4,11 @@ using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 
-
 namespace SFA.DAS.FAA.Web.Models;
 
 public class VacanciesViewModel
 {
+    public long Id { get; private set; }
     public string Title { get; private set; }
     public string EmployerName { get; private set; }
     public string? AddressLine1 { get; private set; }
@@ -18,7 +18,7 @@ public class VacanciesViewModel
     public string VacancyPostCode { get; private set;}
     public string CourseTitle { get;  private set; }
     public string? PostedDate { get; private set; }
-    public WageType WageType { get; private set; }
+    private WageType WageType { get; set; }
     public string VacancyLocation { get; private set; }
     public decimal? Distance { get; private set; }
     public string ClosingDateDescription { get; private set; }
@@ -39,6 +39,7 @@ public class VacanciesViewModel
     {
         return new VacanciesViewModel
         {
+            Id = vacancies.Id,
             Title = vacancies.VacancySource == VacancyDataSource.Nhs ? $"{vacancies.Title} (from NHS Jobs)" : vacancies.Title,
             EmployerName = vacancies.EmployerName,
             AddressLine1 = vacancies.AddressLine1,
