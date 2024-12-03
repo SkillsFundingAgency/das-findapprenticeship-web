@@ -1,8 +1,5 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
@@ -441,5 +438,13 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             }
         }
 
+        [TestCase("https://baseUrl.com?searchTerm=something", "searchTerm", "newValue", "https://baseUrl.com?searchTerm=newValue")]
+        [TestCase("https://baseUrl.com?searchTerm=something&RouteId=10", "RouteId", "20", "https://baseUrl.com?searchTerm=something&RouteId=20")]
+        public void Then_The_Query_Already_Exist_And_The_Value_Gets_Replace_To_Filter_List(string url, string paramToReplace, string newValue, string expected)
+        {
+            var actual = FilterBuilder.ReplaceQueryStringParam(url, paramToReplace, newValue);
+
+            actual.Should().Be(expected);
+        }
     }
 }

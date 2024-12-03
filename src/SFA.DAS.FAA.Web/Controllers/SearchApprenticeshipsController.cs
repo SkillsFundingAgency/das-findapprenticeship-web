@@ -12,6 +12,7 @@ using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -22,6 +23,7 @@ using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
+using Constants = SFA.DAS.FAA.Application.Constants.Constants;
 using LocationViewModel = SFA.DAS.FAA.Web.Models.LocationViewModel;
 
 namespace SFA.DAS.FAA.Web.Controllers;
@@ -215,6 +217,7 @@ public class SearchApprenticeshipsController(
             PageNumber = request.PageNumber,
             PageSize = 10,
             Sort = request.Sort,
+            SkipWageType = request.IncludeCompetitiveSalaryVacancies ? null : WageType.CompetitiveSalary,
             DisabilityConfident = request.DisabilityConfident,
             CandidateId = User.Claims.CandidateId().Equals(null) ? null
                 : User.Claims.CandidateId()!.ToString()
@@ -264,6 +267,10 @@ public class SearchApprenticeshipsController(
         viewmodel.PageTitle = GetPageTitle(viewmodel);
 
         viewmodel.PageBackLinkRoutePath = request.RoutePath;
+        
+        viewmodel.CompetitiveSalaryRoutePath = request.IncludeCompetitiveSalaryVacancies
+            ? FilterBuilder.ReplaceQueryStringParam(filterUrl, "IncludeCompetitiveSalaryVacancies", "false")
+            : FilterBuilder.ReplaceQueryStringParam(filterUrl, "IncludeCompetitiveSalaryVacancies", "true");
 
         viewmodel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
         viewmodel.SearchAlreadySaved = result.SearchAlreadySaved;

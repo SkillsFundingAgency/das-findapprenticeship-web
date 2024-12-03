@@ -18,7 +18,7 @@ public class VacanciesViewModel
     public string CourseTitle { get;  private set; }
     public string WageAmount { get; private set;  }
     public string? PostedDate { get; private set; }
-    public int WageType { get; private set; }
+    public WageType WageType { get; private set; }
     public string VacancyLocation { get; private set; }
     public decimal? Distance { get; private set; }
     public string ClosingDateDescription { get; private set; }
@@ -32,6 +32,7 @@ public class VacanciesViewModel
     public bool IsNew { get; set; }
     public bool IsDisabilityConfident { get; set; }
     public bool IsSavedVacancy { get; set; } = false;
+    public bool ShowInsertTextCssClass => WageType == WageType.CompetitiveSalary;
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
@@ -48,7 +49,7 @@ public class VacanciesViewModel
             WageAmount = vacancies.WageAmount,
             ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancies.ClosingDate,!string.IsNullOrEmpty(vacancies.ApplicationUrl)),
             PostedDate = FormatPostDate(vacancies.PostedDate),
-            WageType = vacancies.WageType,
+            WageType = (WageType)vacancies.WageType,
             VacancyLocation = !string.IsNullOrEmpty(vacancies.AddressLine4) ? $"{vacancies.AddressLine4}, {vacancies.Postcode}" :
                 !string.IsNullOrEmpty(vacancies.AddressLine3) ? $"{vacancies.AddressLine3}, {vacancies.Postcode}" :
                 !string.IsNullOrEmpty(vacancies.AddressLine2) ? $"{vacancies.AddressLine2}, {vacancies.Postcode}" :

@@ -2,12 +2,14 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Security.Claims;
 using FluentValidation;
@@ -115,7 +117,8 @@ public class WhenGettingSearchResults
             PageNumber = pageNumber,
             LevelIds = levelIds,
             DisabilityConfident = disabilityConfident,
-            RoutePath = routhPath
+            RoutePath = routhPath,
+            IncludeCompetitiveSalaryVacancies = true
         }) as ViewResult;
 
         using (new AssertionScope())
@@ -719,6 +722,7 @@ public class WhenGettingSearchResults
         [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<GetSearchResultsRequestValidator> validator)
     {
+        result.TotalCompetitiveVacanciesCount = 0;
         result.PageNumber = pageNumber;
         result.Sort = sort.ToString();
         result.VacancyReference = null;
@@ -782,7 +786,8 @@ public class WhenGettingSearchResults
             SearchTerm = searchTerm,
             PageNumber = pageNumber,
             LevelIds = levelIds,
-            DisabilityConfident = disabilityConfident
+            DisabilityConfident = disabilityConfident,
+            IncludeCompetitiveSalaryVacancies = false
         }) as ViewResult;
 
         using (new AssertionScope())
