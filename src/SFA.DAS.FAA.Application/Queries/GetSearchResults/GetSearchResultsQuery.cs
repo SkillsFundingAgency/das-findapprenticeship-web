@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Application.Queries.GetSearchResults;
 
@@ -14,4 +15,5 @@ public class GetSearchResultsQuery : IRequest<GetSearchResultsResult>
     public string? Sort { get; set; }
     public bool DisabilityConfident { get; set; }
     public string? CandidateId { get; set; }
+    public WageType? SkipWageType { get; set; }
 }

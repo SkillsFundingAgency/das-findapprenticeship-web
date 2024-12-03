@@ -4,14 +4,9 @@ using SFA.DAS.FAA.Domain.SearchResults;
 
 namespace SFA.DAS.FAA.Application.Queries.GetSearchResults;
 
-public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuery, GetSearchResultsResult>
+public class GetSearchResultsQueryHandler(IApiClient apiClient)
+    : IRequestHandler<GetSearchResultsQuery, GetSearchResultsResult>
 {
-    private readonly IApiClient _apiClient;
-
-    public GetSearchResultsQueryHandler(IApiClient apiClient)
-    {
-        _apiClient = apiClient;
-    }
     public async Task<GetSearchResultsResult> Handle(GetSearchResultsQuery query, CancellationToken cancellationToken)
     {
         var vacancySort = VacancySort.DistanceAsc;
@@ -23,18 +18,30 @@ public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuer
             }
         }
         
-        var request = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, vacancySort, query.DisabilityConfident, query.CandidateId);
-        var response = await _apiClient.Get<GetSearchResultsApiResponse>(request);
+        var request = new GetSearchResultsApiRequest(query.Location,
+            query.SelectedRouteIds,
+            query.SelectedLevelIds,
+            query.Distance,
+            query.SearchTerm,
+            query.PageNumber,
+            query.PageSize,
+            vacancySort,
+            query.SkipWageType,
+            query.DisabilityConfident,
+            query.CandidateId);
+        var response = await apiClient.Get<GetSearchResultsApiResponse>(request);
 
         return new GetSearchResultsResult
         {
             Total = response.TotalFound,
+            TotalCompetitiveVacanciesCount = response.TotalCompetitiveVacanciesCount,
             Location = response.Location,
             Vacancies = response.Vacancies,
             Routes = response.Routes,
             PageNumber = response.PageNumber,
             TotalPages = response.TotalPages,
             Sort = vacancySort.ToString(),
+            SkipWageType = query.SkipWageType?.ToString(),
             VacancyReference = response.VacancyReference,
             Levels = response.Levels,
             DisabilityConfident = response.DisabilityConfident,
