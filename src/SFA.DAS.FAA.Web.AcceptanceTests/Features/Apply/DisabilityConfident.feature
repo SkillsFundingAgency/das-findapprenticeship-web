@@ -9,7 +9,7 @@ So that I can choose whether or not to apply under the scheme
 @NewApplication
 Scenario: See my options for Disability Confident
 	When I navigate to the Disability Confident page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Equal opportunity
 	And the page content includes the following: Disability Confident scheme
 
@@ -18,7 +18,7 @@ Scenario: See my options for Disability Confident
 @NewApplication
 Scenario: Validation error on disability confident page
 	When I post an empty form to the Disability Confident page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following error: Select if you want to apply under the Disability Confident scheme
 
 @WireMockServer
@@ -53,6 +53,6 @@ Scenario: See my options for Disability Confident while editing previous answer
 	When I navigate to the Disability Confident page with querystring parameters
 	  | Field  | Value |
 	  | isEdit | true  |
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Equal opportunity
 	And the page content includes the following: Disability Confident scheme

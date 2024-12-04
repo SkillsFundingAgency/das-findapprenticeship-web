@@ -117,16 +117,18 @@ public sealed class HttpSteps(ScenarioContext context)
         context.Set(response, ContextKeys.HttpResponse);
         context.Set(responseContent, ContextKeys.HttpResponseContent);
     }
-
-    [Then("a http status code of (.*) is returned")]
-    public void ThenAHttpStatusCodeIsReturned(int httpStatusCode)
+    
+    [Then("the page is (.*)")]
+    public void ThenPageIsReturned(string httpStatusCode)
     {
+        var response = context.GetStatusCode(httpStatusCode);
+        
         if (!context.TryGetValue<HttpResponseMessage>(ContextKeys.HttpResponse, out var result))
         {
             Assert.Fail($"scenario context does not contain value for key [{ContextKeys.HttpResponse}]");
         }
 
-        result.StatusCode.Should().Be((HttpStatusCode)httpStatusCode);
+        result.StatusCode.Should().Be((HttpStatusCode)response.StatusCode);
     }
 
     [Then("I am redirected to the following url: (.*)")]

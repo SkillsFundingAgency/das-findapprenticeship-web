@@ -7,7 +7,7 @@ Feature: Create Saved Searches
   @WireMockServer
   Scenario: Sign in to create a saved search
     When I navigate to the following url: /apprenticeships?location=manchester
-    Then a http status code of 200 is returned
+    Then the page is successfully returned
     And the page content includes the following: No results found
     And the page content includes the following: Sign in to create an alert for this search
     
@@ -15,7 +15,7 @@ Feature: Create Saved Searches
   @WireMockServer
   Scenario: Can save a search
     When I navigate to the following url: /apprenticeships?location=manchester
-    Then a http status code of 200 is returned
+    Then the page is successfully returned
     And the page content includes the following: No results found
     And the page content includes the following: Create an alert for this search</button>
   

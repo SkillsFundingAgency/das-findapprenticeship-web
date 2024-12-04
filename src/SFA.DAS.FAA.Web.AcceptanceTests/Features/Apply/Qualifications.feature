@@ -9,7 +9,7 @@ So that I can show how I am qualified for the role
 @NewApplication
 Scenario: See my options for entering qualifications
 	When I navigate to the Qualifications page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Education history
 	And the page content includes the following: School, college and university qualifications 
 	And the page content includes the following: Do you want to add any qualifications?
@@ -29,7 +29,7 @@ Scenario: Opt to add my first qualification
 @NewApplication
 Scenario: Validation error on qualifications page
 	When I post an empty form to the Qualifications page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following error: Select if you want to add any qualifications
 
 @WireMockServer
@@ -37,7 +37,7 @@ Scenario: Validation error on qualifications page
 @ExistingApplication
 Scenario: See the qualifications I've already entered
 	When I navigate to the Qualifications page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Education history
 	And the page content includes the following: School, college and university qualifications 
 	And the page content includes the following: Have you completed this section?
@@ -49,7 +49,7 @@ Scenario: Validation error on completed qualifications page
 	When I post to the Qualifications page
 	| Field              | Value |
 	| ShowQualifications | true  |
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following error: Select if you have finished this section
 
 	
@@ -78,7 +78,7 @@ Scenario: Confirm non-completion of the qualifications page
 @ExistingApplication
 Scenario: Delete multiple qualifications of a single type
 	When I navigate to the Delete Qualifications (multiple) page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Do you want to delete these qualifications?
 
 @WireMockServer
@@ -86,7 +86,7 @@ Scenario: Delete multiple qualifications of a single type
 @ExistingApplication
 Scenario: Delete a single qualification of a single type
 	When I navigate to the Delete Qualifications (single) page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Do you want to delete this qualification?
 
 @WireMockServer

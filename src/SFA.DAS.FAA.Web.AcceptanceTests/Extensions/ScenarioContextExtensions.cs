@@ -31,5 +31,17 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Extensions
             
             return page;
         }
+        
+        public static Responses.Response GetStatusCode(this ScenarioContext context, string responseName)
+        {
+            var page = Responses.GetResponses().SingleOrDefault(x => x.Name.Equals(responseName, StringComparison.InvariantCultureIgnoreCase));
+
+            if (page == null)
+            {
+                throw new InvalidOperationException($"Unable to Get Response {responseName} - not found in dictionary");
+            }
+
+            return page;
+        }
     }
 }

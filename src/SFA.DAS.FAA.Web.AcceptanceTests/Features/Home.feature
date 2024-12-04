@@ -38,7 +38,7 @@ Scenario: Navigate to home page authenticated user with saved searches
 @WireMockServer
 	Scenario: Navigate to the browse by your interests page
 	When I navigate to the following url: /browse-by-interests
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Browse by your interests
 
 @WireMockServer
@@ -52,13 +52,13 @@ Scenario: Navigate to home page authenticated user with saved searches
 @WireMockServer @AcceptanceTestEnvironment
 	Scenario: Browse by interests with validation failure
 	When I post an empty form to the following url: /browse-by-interests
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Select at least one job category
 
 @WireMockServer @AcceptanceTestEnvironment
 	Scenario: Navigate to the location page
 	When I navigate to the following url: /location
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Location
 	
 @WireMockServer
@@ -87,54 +87,54 @@ Scenario: Location search option selected no postcode
 @WireMockServer
 Scenario: Navigate to search results page with no filters
 	When I navigate to the following url: /apprenticeships
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: 339 results found
 
 @WireMockServer
 Scenario: Navigate to search results page with no results found
 	When I navigate to the following url: /apprenticeships?location=manchester
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: No results found
 
 @WireMockServer
 Scenario: Navigate to vacancy details page with vacancy found
 	When I navigate to the following url: /apprenticeship/VAC1000012484
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Summary
 
 @WireMockServer
 Scenario: Navigate to vacancy details page with invalid vacancy reference format
 	When I navigate to the following url: /apprenticeship/ABC1000012484
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Page not found
 
 
 @WireMockServer
 Scenario: Navigate to vacancy details page with closed vacancy
 	When I navigate to the following url: /apprenticeship/VAC1000012333
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: You can no longer apply for this apprenticeship
 
 @WireMockServer
 Scenario: Navigate to cookies page
 	When I navigate to the following url: /Home/cookies
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Cookies
 
 @WireMockServer
 Scenario: Navigate to Accessibility Statement page
 	When I navigate to the following url: /Home/Accessibility-statement
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Accessibility
 
 @WireMockServer
 Scenario: Navigate to Terms and Conditions page
 	When I navigate to the following url: /Home/terms-and-conditions
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Terms and conditions
 
 @WireMockServer
 Scenario: Navigate to Get Help page
 	When I navigate to the following url: /Home/get-help
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Get help
