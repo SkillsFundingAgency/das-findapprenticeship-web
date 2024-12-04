@@ -71,10 +71,10 @@ public class SearchResultsViewModel : ViewModelBase
             TotalPages = source.TotalPages,
             VacancyReference =source.VacancyReference,
             Sort = source.Sort,
+            SkipWageType = source.SkipWageType,
             Levels = source.Levels.Select(l => (LevelViewModel)l).ToList(),
             SavedSearchLimitReached = source.SavedSearchesCount >= Constants.SavedSearchLimit,
-            SearchAlreadySaved = source.SearchAlreadySaved,
-            SkipWageType = source.SkipWageType,
+            SearchAlreadySaved = source.SearchAlreadySaved
         };
     }
 

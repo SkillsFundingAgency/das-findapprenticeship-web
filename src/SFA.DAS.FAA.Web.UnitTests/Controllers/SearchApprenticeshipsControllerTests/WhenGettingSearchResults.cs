@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.AppStart;

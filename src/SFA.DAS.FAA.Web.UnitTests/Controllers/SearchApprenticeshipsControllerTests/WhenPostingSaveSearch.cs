@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
