@@ -1,5 +1,6 @@
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
+using System.Text;
 
 namespace SFA.DAS.FAA.Web.Services
 {
@@ -74,7 +75,8 @@ namespace SFA.DAS.FAA.Web.Services
 
             var poundRemovedStr = wageAmountText
                 .Replace("£", string.Empty)
-                .Replace("\\u00A3", string.Empty);
+                .Replace("\\u00A3", string.Empty)
+                .Replace("u+00A3", string.Empty);
 
             if (!decimal.TryParse(poundRemovedStr, out var wageAmount)) return $"{wageAmountText}";
 
