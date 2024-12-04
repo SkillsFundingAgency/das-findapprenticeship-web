@@ -78,8 +78,8 @@ namespace SFA.DAS.FAA.Web.Services
 
             return wageAmount switch
             {
-                < 100.00M => wageAmount % 1 == 0 ? $"£{wageAmount:#,##} an hour" : $"£{wageAmount:#,##.00} an hour",
-                > 5000.00M => wageAmount % 1 == 0 ? $"£{wageAmount:#,##} a year" : $"£{wageAmount:#,##.00} a year",
+                < 100.00M => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} an hour", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} an hour", wageAmount),
+                > 5000.00M => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} a year", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} a year", wageAmount),
                 _ => wageAmountText
             };
         }
