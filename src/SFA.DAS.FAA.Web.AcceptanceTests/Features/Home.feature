@@ -5,24 +5,24 @@ I want a clear home page
 So that it is clear what actions I can take
 
 @WireMockServer
-	Scenario: Navigate to home page
-	When I navigate to the following url: /apprenticeshipsearch
-	Then a http status code of 200 is returned
+	Scenario: Navigate to home page has total vacancy positions
+	When I navigate to the Home page
+	Then the page is successfully returned
 	And the page content includes the following: Search apprenticeships
 	And the page content includes the following: 1,034 apprenticeships currently listed
 	
 @AuthenticatedUser
 @WireMockServer
-Scenario: Navigate to home page authenticated user with saved searches
-	When I navigate to the following url: /apprenticeshipsearch
-	Then a http status code of 200 is returned
+Scenario: Navigate to home page authenticated user with saved searches shows saved searches on home page
+	When I navigate to the Home page
+	Then the page is successfully returned
 	And the page content includes the following: Search apprenticeships
 	And the page content includes the following: Your search alerts
 
 @WireMockServer
 	Scenario: Location search from home page no location found
 	When I navigate to the following url: /apprenticeshipsearch/?whereSearchTerm=Coventry
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
 
 @WireMockServer
