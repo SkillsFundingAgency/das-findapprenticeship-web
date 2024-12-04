@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.ComponentModel.Design;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,7 +19,7 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 public sealed class TestEnvironmentManagement
 {
     private readonly ScenarioContext _context;
-    private static TestHttpClient _testHttpClient;
+    private static ITestHttpClient _testHttpClient;
     private static IWireMockServer _staticApiServer;
     private Mock<IApiClient> _mockApiClient;
     private static TestServer _server;
@@ -39,6 +40,15 @@ public sealed class TestEnvironmentManagement
         _testHttpClient = new TestHttpClient(_server);
 
         _context.Set(_server, ContextKeys.TestServer);
+        _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
+    }
+    
+    [BeforeScenario("AcceptanceTestEnvironment")]
+    public void StartWebAppAcceptanceTestEnvironment()
+    {
+        _testHttpClient = new AcceptanceTestHttpClient("https://at-findapprenticeship.apprenticeships.education.gov.uk");
+
+        _context.Set<TestServer>(null!, ContextKeys.TestServer);
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
     }
 
@@ -79,7 +89,7 @@ public sealed class TestEnvironmentManagement
     [BeforeScenario("AuthenticatedUser")]
     public async Task AuthenticatedUser()
     {
-        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
         var formData = new Dictionary<string, string>
         {
@@ -88,15 +98,29 @@ public sealed class TestEnvironmentManagement
             { "MobilePhone", "12345 67890" }
         };
 
-        var content = new FormUrlEncodedContent(formData);
-
-        await client.PostAsync("/account-details", content);
+        await client.PostAsync("/account-details", formData);
     }
+    
+    
+    [BeforeScenario("AuthenticatedUserATEnvironment")]
+    public async Task AuthenticatedUserATEnvironment()
+    {
+        var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
+        var formData = new Dictionary<string, string>
+        {
+            { "Id", MockServer.Constants.CandidateOnAT },
+            { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" },
+            { "MobilePhone", "12345 67890" }
+        };
+
+        await client.PostAsync("/account-details", formData);
+    }
+    
     [BeforeScenario("AuthenticatedUserWithIncompleteSetup")]
     public async Task AuthenticatedUserWithIncompleteSetup()
     {
-        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
         var formData = new Dictionary<string, string>
         {
@@ -105,15 +129,14 @@ public sealed class TestEnvironmentManagement
             { "MobilePhone", "12345 67890" }
         };
 
-        var content = new FormUrlEncodedContent(formData);
-
-        await client.PostAsync("/account-details", content);
+        await client.PostAsync("/account-details", formData);
     }
 
     [AfterScenario("WireMockServer")]
     public void StopEnvironment()
     {
-        _server.Dispose();
+        _server
+            .Dispose();
         _staticApiServer?.Stop();
         _staticApiServer?.Dispose();
         _testHttpClient?.Dispose();
