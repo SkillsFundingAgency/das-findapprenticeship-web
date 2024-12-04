@@ -49,13 +49,13 @@ Scenario: Navigate to home page authenticated user with saved searches shows sav
 	Then I am redirected to the following url: /location
 	And the page redirect content includes the following: Location
 	
-@WireMockServer @AcceptanceTestEnvironment
+@WireMockServer @RunOnEnvironment
 	Scenario: Browse by interests with validation failure
 	When I post an empty form to the following url: /browse-by-interests
 	Then the page is successfully returned
 	And the page content includes the following: Select at least one job category
 
-@WireMockServer @AcceptanceTestEnvironment
+@WireMockServer @RunOnEnvironment
 	Scenario: Navigate to the location page
 	When I navigate to the following url: /location
 	Then the page is successfully returned
@@ -77,7 +77,7 @@ Scenario: Location search no option selected
 	When I post an empty form to the following url: /location
 	Then the page content includes the following error: Select if you want to enter a city or postcode
 	
-@WireMockServer @AcceptanceTestEnvironment
+@WireMockServer @RunOnEnvironment
 Scenario: Location search option selected no postcode
 	When I post to the following url: /location
 	  | Field          | Value |

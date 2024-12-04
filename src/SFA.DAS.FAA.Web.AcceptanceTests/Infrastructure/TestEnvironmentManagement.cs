@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Design;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +7,7 @@ using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.MockServer.MockServerBuilder;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using TechTalk.SpecFlow;
 using WireMock.Server;
@@ -22,16 +22,24 @@ public sealed class TestEnvironmentManagement
     private static ITestHttpClient _testHttpClient;
     private static IWireMockServer _staticApiServer;
     private Mock<IApiClient> _mockApiClient;
+    private readonly string? _environment;
     private static TestServer _server;
 
     public TestEnvironmentManagement(ScenarioContext context)
     {
         _context = context;
+        var environment = Environment.GetEnvironmentVariable("ENVIRONMENT");
+        _environment = !string.IsNullOrEmpty(environment) ? $"https://{DomainExtensions.GetDomain(environment)}" : null;
+        Console.WriteLine($"Environment: {_environment}");
     }
 
     [BeforeScenario("WireMockServer")]
     public void StartWebApp()
     {
+        if (!string.IsNullOrEmpty(_environment))
+        {
+            return;
+        }
         _staticApiServer = MockApiServer.Start();
         var webApp = new CustomWebApplicationFactory<SearchApprenticeshipsController>()
             .WithWebHostBuilder(c=>c.UseEnvironment("IntegrationTest").UseConfiguration(ConfigBuilder.GenerateConfiguration()));
@@ -43,10 +51,14 @@ public sealed class TestEnvironmentManagement
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
     }
     
-    [BeforeScenario("AcceptanceTestEnvironment")]
-    public void StartWebAppAcceptanceTestEnvironment()
+    [BeforeScenario("RunOnEnvironment")]
+    public void SetupRunOnEnvironment()
     {
-        _testHttpClient = new AcceptanceTestHttpClient("https://at-findapprenticeship.apprenticeships.education.gov.uk");
+        if (_environment == null)
+        {
+            return;
+        }
+        _testHttpClient = new AcceptanceTestHttpClient(_environment);
 
         _context.Set<TestServer>(null!, ContextKeys.TestServer);
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
@@ -135,6 +147,10 @@ public sealed class TestEnvironmentManagement
     [AfterScenario("WireMockServer")]
     public void StopEnvironment()
     {
+        if (!string.IsNullOrEmpty(_environment))
+        {
+            return;
+        }
         _server
             .Dispose();
         _staticApiServer?.Stop();
