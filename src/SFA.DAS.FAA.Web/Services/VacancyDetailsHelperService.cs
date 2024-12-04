@@ -70,13 +70,13 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string GetWageText(string wageAmountText)
         {
-            if (string.IsNullOrEmpty(wageAmountText)) return $"{wageAmountText} a year";
+            if (string.IsNullOrEmpty(wageAmountText)) return $"{wageAmountText}";
 
             var poundRemovedStr = wageAmountText
                 .Replace("£", string.Empty)
                 .Replace("\\u00A3", string.Empty);
 
-            if (!decimal.TryParse(poundRemovedStr, out var wageAmount)) return $"{wageAmountText} a year";
+            if (!decimal.TryParse(poundRemovedStr, out var wageAmount)) return $"{wageAmountText}";
 
             return wageAmount switch
             {

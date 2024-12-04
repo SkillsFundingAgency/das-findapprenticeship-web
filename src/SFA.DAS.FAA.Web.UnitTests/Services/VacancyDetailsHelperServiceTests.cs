@@ -126,7 +126,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
         
         [Test]
-        [InlineAutoData(null, null)] // Null input
+        [InlineAutoData(null, "")] // Null input
         [InlineAutoData("", "")] // Empty input
         public void GetWageText_ShouldHandleNullOrEmptyInput(string input, string expected)
         {
@@ -137,7 +137,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expected);
         }
 
-        [Ignore("Some reason it keeps failing in Pipeline. Need to be looked")]
         [Test]
         [InlineAutoData("£50", "£50 an hour")] // Less than 100
         [InlineAutoData("£50.00", "£50 an hour")] // Less than 100
@@ -151,7 +150,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expected);
         }
 
-        [Ignore("Some reason it keeps failing in Pipeline. Need to be looked")]
         [Test]
         [InlineAutoData("£5001.00", "£5,001 a year")] // Greater than 5000
         [InlineAutoData("£6000.75", "£6,000.75 a year")] // Above threshold
@@ -164,7 +162,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expected);
         }
 
-        [Test]
         [InlineAutoData("£100", "£100")] // Between 100 and 5000
         [InlineAutoData("£4999.99", "£4999.99")] // Edge case: Just below 5000
         [InlineAutoData("NoPoundSign", "NoPoundSign")] // Invalid format
