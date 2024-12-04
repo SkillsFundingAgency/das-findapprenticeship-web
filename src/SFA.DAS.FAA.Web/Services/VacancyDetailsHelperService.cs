@@ -77,7 +77,8 @@ namespace SFA.DAS.FAA.Web.Services
             string decoded = Encoding.UTF8.GetString(encodedBytes);
 
             var poundRemovedStr = decoded
-                .Replace("£", string.Empty)
+                .Replace("ï¿½", string.Empty)
+                .Replace("Â£", string.Empty)
                 .Replace("\u00A3", string.Empty)
                 .Replace("u+00A3", string.Empty);
 
@@ -85,8 +86,8 @@ namespace SFA.DAS.FAA.Web.Services
 
             return wageAmount switch
             {
-                < 100.00M => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} an hour", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} an hour", wageAmount),
-                > 5000.00M => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} a year", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} a year", wageAmount),
+                < 100.00M => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "Â£{0:#,##} an hour", wageAmount) : string.Format(CultureInfo.InvariantCulture, "Â£{0:#,##.00} an hour", wageAmount),
+                > 5000.00M => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "Â£{0:#,##} a year", wageAmount) : string.Format(CultureInfo.InvariantCulture, "Â£{0:#,##.00} a year", wageAmount),
                 _ => wageAmountText
             };
         }
