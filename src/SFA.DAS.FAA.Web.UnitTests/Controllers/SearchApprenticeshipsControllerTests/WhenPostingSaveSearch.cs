@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -91,6 +91,7 @@ public class WhenPostingSaveSearch
                 .WithMapping("UnSubscribeToken", encodedString)
                 .Excluding(x => x.RoutePath)
                 .Excluding(x => x.PageNumber)
+                .Excluding(x => x.IncludeCompetitiveSalaryVacancies)
             );
     }
     
@@ -131,6 +132,7 @@ public class WhenPostingSaveSearch
                 .WithMapping("UnSubscribeToken", encodedString)
                 .Excluding(x => x.RoutePath)
                 .Excluding(x => x.PageNumber)
+                .Excluding(x => x.IncludeCompetitiveSalaryVacancies)
         );
     }
     

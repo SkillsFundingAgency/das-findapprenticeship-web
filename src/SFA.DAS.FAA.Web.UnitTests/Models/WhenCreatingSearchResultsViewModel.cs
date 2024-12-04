@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
@@ -10,13 +10,14 @@ public class WhenCreatingSearchResultsViewModel
 {
 
     [Test]
-    [InlineAutoData(0, "No results found")]
-    [InlineAutoData(1, "1 result found")]
-    [InlineAutoData(2, "2 results found")]
-    [InlineAutoData(2034, "2,034 results found")]
-    public void Then_The_Text_Is_Shown_Correctly_For_Number_Of_Vacancies(int numberOfVacancies, string expectedText, GetSearchResultsResult source)
+    [InlineAutoData(0, 0, "No results found")]
+    [InlineAutoData(1, 0, "1 result found")]
+    [InlineAutoData(2, 0, "2 results found")]
+    [InlineAutoData(2034, 20,"2,054 results found")]
+    public void Then_The_Text_Is_Shown_Correctly_For_Number_Of_Vacancies(int numberOfVacancies, int numberOfCompetitiveVacancies, string expectedText, GetSearchResultsResult source)
     {
         source.Total = numberOfVacancies;
+        source.TotalCompetitiveVacanciesCount = numberOfCompetitiveVacancies;
 
         var actual = (SearchResultsViewModel)source;
 
