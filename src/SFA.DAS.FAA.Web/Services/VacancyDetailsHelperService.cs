@@ -73,9 +73,12 @@ namespace SFA.DAS.FAA.Web.Services
         {
             if (string.IsNullOrEmpty(wageAmountText)) return $"{wageAmountText}";
 
-            var poundRemovedStr = wageAmountText
+            byte[] encodedBytes = Encoding.UTF8.GetBytes(wageAmountText);
+            string decoded = Encoding.UTF8.GetString(encodedBytes);
+
+            var poundRemovedStr = decoded
                 .Replace("£", string.Empty)
-                .Replace("\\u00A3", string.Empty)
+                .Replace("\u00A3", string.Empty)
                 .Replace("u+00A3", string.Empty);
 
             if (!decimal.TryParse(poundRemovedStr, out var wageAmount)) return $"{wageAmountText}";
