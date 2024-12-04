@@ -193,16 +193,18 @@
                 <ol class="das-search-results__list">
                     @if (Model.ShowCompetitiveSalaryBanner)
                     {
-                        <li class="das-search-results__list-item govuk-!-padding-top-6 govuk-!-margin-bottom-6 faa-search-result-banner">
-                            <h3 class="govuk-heading-s das-search-results__heading">
-                                @Model.CompetitiveSalaryBannerHeaderText cannot be shown in this list
-                            </h3>
-                            <p class="govuk-body">
-                                We have not included vacancies where we do not know the wage. 
-                            </p>
-                            <p class="govuk-body">
-                                <a href="@Model.CompetitiveSalaryRoutePath" class="govuk-link govuk-link--no-visited-state">@Model.CompetitiveSalaryBannerLinkText</a>
-                            </p>
+                        <li class="das-search-results__list-item govuk-!-padding-top-6 govuk-!-margin-bottom-6">
+                            <div class="faa-search-result-banner">
+                                <h3 class="govuk-heading-s das-search-results__heading">
+                                    @Model.CompetitiveSalaryBannerHeaderText cannot be shown in this list
+                                </h3>
+                                <p class="govuk-body">
+                                    We have not included vacancies where we do not know the wage. 
+                                </p>
+                                <p class="govuk-body">
+                                    <a href="@Model.CompetitiveSalaryRoutePath" class="govuk-link govuk-link--no-visited-state">@Model.CompetitiveSalaryBannerLinkText</a>
+                                </p>
+                            </div>
                         </li>
                     }
                     @foreach (var vacancy in Model.Vacancies)
