@@ -272,6 +272,8 @@ public class SearchApprenticeshipsController(
             ? FilterBuilder.ReplaceQueryStringParam(filterUrl, "IncludeCompetitiveSalaryVacancies", "false")
             : FilterBuilder.ReplaceQueryStringParam(filterUrl, "IncludeCompetitiveSalaryVacancies", "true");
 
+        viewmodel.PageBackLinkRoutePath = request.RoutePath;
+
         viewmodel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
         viewmodel.SearchAlreadySaved = result.SearchAlreadySaved;
         

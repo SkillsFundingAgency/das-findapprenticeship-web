@@ -8,6 +8,7 @@ namespace SFA.DAS.FAA.Web.Models;
 
 public class VacanciesViewModel
 {
+    public long Id { get; private set; }
     public string Title { get; private set; }
     public string EmployerName { get; private set; }
     public string? AddressLine1 { get; private set; }
@@ -16,9 +17,8 @@ public class VacanciesViewModel
     public string? AddressLine4 { get; private set; }
     public string VacancyPostCode { get; private set;}
     public string CourseTitle { get;  private set; }
-    public string WageAmount { get; private set;  }
     public string? PostedDate { get; private set; }
-    public WageType WageType { get; private set; }
+    private WageType WageType { get; set; }
     public string VacancyLocation { get; private set; }
     public decimal? Distance { get; private set; }
     public string ClosingDateDescription { get; private set; }
@@ -33,20 +33,21 @@ public class VacanciesViewModel
     public bool IsDisabilityConfident { get; set; }
     public bool IsSavedVacancy { get; set; } = false;
     public bool ShowInsertTextCssClass => WageType == WageType.CompetitiveSalary;
+    public VacancyDataSource VacancySource { get; set; }
 
     public VacanciesViewModel MapToViewModel(IDateTimeService dateTimeService, Vacancies vacancies)
     {
         return new VacanciesViewModel
         {
-            Title = vacancies.Title,
+            Id = vacancies.Id,
+            Title = vacancies.VacancySource == VacancyDataSource.Nhs ? $"{vacancies.Title} (from NHS Jobs)" : vacancies.Title,
             EmployerName = vacancies.EmployerName,
             AddressLine1 = vacancies.AddressLine1,
             AddressLine2 = vacancies.AddressLine2,
             AddressLine3 = vacancies.AddressLine3,
             AddressLine4 = vacancies.AddressLine4,
             VacancyPostCode = vacancies.Postcode,
-            CourseTitle = $"{vacancies.CourseTitle} (level {vacancies.CourseLevel})",
-            WageAmount = vacancies.WageAmount,
+            CourseTitle = vacancies.VacancySource == VacancyDataSource.Nhs ? "See more details on NHS Jobs" : $"{vacancies.CourseTitle} (level {vacancies.CourseLevel})",
             ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancies.ClosingDate,!string.IsNullOrEmpty(vacancies.ApplicationUrl)),
             PostedDate = FormatPostDate(vacancies.PostedDate),
             WageType = (WageType)vacancies.WageType,
@@ -60,12 +61,13 @@ public class VacanciesViewModel
             CourseId = vacancies.CourseId,
             CourseLevel = vacancies.CourseLevel,
             VacancyReference = vacancies.VacancyReference,
-            WageText = vacancies.WageText,
+            WageText = vacancies.VacancySource == VacancyDataSource.Nhs ? VacancyDetailsHelperService.GetWageText(vacancies.WageText) : vacancies.WageText,
             IsClosingSoon = vacancies.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
             IsNew = vacancies.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsDisabilityConfident = vacancies.IsDisabilityConfident,
             ApplicationStatus = vacancies.CandidateApplicationDetails?.Status,
             IsSavedVacancy = vacancies.IsSavedVacancy,
+            VacancySource = vacancies.VacancySource,
         };
     }
 

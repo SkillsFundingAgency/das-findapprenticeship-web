@@ -86,6 +86,9 @@ public class Vacancies
 
     [JsonProperty("isSavedVacancy")]
     public bool IsSavedVacancy { get; set; }
+
+    [JsonPropertyName("vacancySource")]
+    public VacancyDataSource VacancySource { get; set; }
 }
 
 public class CandidateApplicationDetails

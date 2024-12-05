@@ -1,13 +1,20 @@
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SFA.DAS.FAA.Web.Services
 {
     public static partial class VacancyDetailsHelperService
     {
         [System.Text.RegularExpressions.GeneratedRegex(@"^(http?|https):\/\/[^\s\/$.?#].[^\s]*$")]
-        private static partial System.Text.RegularExpressions.Regex WebsiteUrlRegex();
+        private static partial Regex WebsiteUrlRegex();
+        [GeneratedRegex(@"\d+\.\d{2}")]
+        private static partial Regex NhsWageAmountRegex();
 
+        private const decimal NhsLowerWageAmountLimit = 100.00M;
+        private const decimal NhsUpperWageAmountLimit = 5000.00M;
+        
         public static string GetWorkingHours(this string? duration)
         {
             if (!decimal.TryParse(duration, out var workHours)) return "0 hours a week";
@@ -67,5 +74,50 @@ namespace SFA.DAS.FAA.Web.Services
         {
             return $"Posted on {postedDate.ToString("d MMMM", CultureInfo.InvariantCulture)}";
         }
+
+        public static string GetWageText(string wageAmountText)
+        {
+            if (string.IsNullOrEmpty(wageAmountText)) return $"{wageAmountText}";
+
+            var encodedBytes = Encoding.UTF8.GetBytes(wageAmountText);
+            var decoded = Encoding.UTF8.GetString(encodedBytes);
+
+            var poundRemovedStr = decoded
+                .Replace("�", string.Empty) // Application env & Pipeline doesn't recognise the Pound Sign
+                .Replace("£", string.Empty) 
+                .Replace("\u00A3", string.Empty) // Unicode for Pound Sign
+                .Replace("u+00A3", string.Empty);
+            
+            var matches = NhsWageAmountRegex().Matches(wageAmountText);
+
+            if (matches.Count == 2)
+            {
+                var lowerBound = decimal.Parse(matches[0].Value, CultureInfo.InvariantCulture);
+                var upperBound = decimal.Parse(matches[1].Value, CultureInfo.InvariantCulture);
+
+                var lowerBoundText = lowerBound % 1 == 0
+                    ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##}", lowerBound)
+                    : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00}", lowerBound);
+                
+                var upperBoundText = upperBound % 1 == 0
+                    ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##}", upperBound)
+                    : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00}", upperBound);
+
+                return upperBound > NhsUpperWageAmountLimit 
+                    ? $"{lowerBoundText} to {upperBoundText} a year" 
+                    : $"{lowerBoundText} to {upperBoundText}";
+            }
+
+            if (!decimal.TryParse(poundRemovedStr, out var wageAmount)) return $"{wageAmountText}";
+
+            return wageAmount switch
+            {
+                < NhsLowerWageAmountLimit => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} an hour", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} an hour", wageAmount),
+                > NhsUpperWageAmountLimit => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} a year", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} a year", wageAmount),
+                _ => wageAmountText
+            };
+         }
+
+       
     }
 }
