@@ -68,16 +68,11 @@ namespace SFA.DAS.FAA.Web.Services
                 queryParameters.Add($"DisabilityConfident={request.DisabilityConfident}");
             }
 
-            switch (request.IncludeCompetitiveSalaryVacancies)
-            {
-                case true:
-                    queryParameters.Add($"IncludeCompetitiveSalaryVacancies=true");
-                    break;
-                default:
-                    queryParameters.Remove("IncludeCompetitiveSalaryVacancies=false");
-                    break;
-            }
-            
+            if (request.IncludeCompetitiveSalaryVacancies)
+                queryParameters.Add($"IncludeCompetitiveSalaryVacancies=true");
+            else
+                queryParameters.Remove("IncludeCompetitiveSalaryVacancies=false");
+
             return queryParameters;
         }
 
