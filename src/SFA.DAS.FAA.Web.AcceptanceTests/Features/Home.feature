@@ -109,7 +109,7 @@ Scenario: Navigate to vacancy details page with vacancy found
 	Then the page is successfully returned
 	And the page content includes the following: Summary
 
-@WireMockServer
+@WireMockServer @RunOnEnvironment
 Scenario: Navigate to vacancy details page with invalid vacancy reference format
 	When I navigate to the following url: /apprenticeship/ABC1000012484
 	Then the page is successfully returned
