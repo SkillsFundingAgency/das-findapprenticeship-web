@@ -163,9 +163,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         }
         
         [Test]
-        [InlineAutoData("£4000.00 to £5000.00", "£4000.00 to £5000.00")] 
-        [InlineAutoData("£5001.00 to £15000.00", "£5001.00 to £15000.00 a year")] // Greater than 5000
-        [InlineAutoData("£1000 to £4999.00", "£1000 to £4999.00")] // Above threshold
+        [InlineAutoData("£4000.75 to £5000.25", "£4,000.75 to £5,000.25 a year")] 
+        [InlineAutoData("£4000.00 to £5001.00", "£4,000 to £5,001 a year")] 
+        [InlineAutoData("£4000.00 to £5000.00", "£4,000 to £5,000")] 
+        [InlineAutoData("£5001.00 to £15000.00", "£5,001 to £15,000 a year")] // Greater than 5000
+        [InlineAutoData("£1000.00 to £4999.00", "£1,000 to £4,999")] // Below threshold
         public void Then_WageAmount_With_Lower_Higher_Limit_GetWageText_ShouldHandleAnnualWages(string input, string expected)
         {
             // Act

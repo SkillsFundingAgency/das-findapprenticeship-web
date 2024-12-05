@@ -92,10 +92,20 @@ namespace SFA.DAS.FAA.Web.Services
 
             if (matches.Count == 2)
             {
-                var upperBound = decimal.Parse(matches[1].Value);
+                var lowerBound = decimal.Parse(matches[0].Value, CultureInfo.InvariantCulture);
+                var upperBound = decimal.Parse(matches[1].Value, CultureInfo.InvariantCulture);
+
+                var lowerBoundText = lowerBound % 1 == 0
+                    ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##}", lowerBound)
+                    : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00}", lowerBound);
+                
+                var upperBoundText = upperBound % 1 == 0
+                    ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##}", upperBound)
+                    : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00}", upperBound);
+
                 return upperBound > NhsUpperWageAmountLimit 
-                    ? $"{wageAmountText} a year" 
-                    : wageAmountText;
+                    ? $"{lowerBoundText} to {upperBoundText} a year" 
+                    : $"{lowerBoundText} to {upperBoundText}";
             }
 
             if (!decimal.TryParse(poundRemovedStr, out var wageAmount)) return $"{wageAmountText}";
