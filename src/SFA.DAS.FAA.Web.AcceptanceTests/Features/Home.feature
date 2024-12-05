@@ -13,41 +13,48 @@ So that it is clear what actions I can take
 	
 @AuthenticatedUser
 @WireMockServer
-Scenario: Navigate to home page authenticated user with saved searches shows saved searches on home page
+Scenario: Navigate to home page as an authenticated user with saved searches shows saved searches on home page
 	When I navigate to the Home page
 	Then the page is successfully returned
 	And the page content includes the following: Search apprenticeships
 	And the page content includes the following: Your search alerts
 
 @WireMockServer
-	Scenario: Location search from home page no location found
-	When I navigate to the following url: /apprenticeshipsearch/?whereSearchTerm=Coventry
+	Scenario: Location search from home page with non existing location shows no location found
+	When I navigate to the Home page with querystring parameters
+	  | Field           | Value    |
+	  | whereSearchTerm | Coventry |	
 	Then the page is successfully returned
 	And the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
 
 @WireMockServer
 	Scenario: Location search from home page no option selected
-	When I navigate to the following url: /apprenticeshipsearch/?search=1
-	Then I am redirected to the following url: /apprenticeships
+	When I navigate to the Home page with querystring parameters
+	  | Field  | Value |
+	  | search | 1     |
+	Then I am redirected to the Search Results page
 	
 @WireMockServer
-	Scenario: Location search from home page with valid entry
-	When I navigate to the following url: /apprenticeshipsearch/?whereSearchTerm=Manchester&search=1
-	Then I am redirected to the following url: /apprenticeships
+	Scenario: Location search from home page with valid location shows search results
+	When I navigate to the Home page with querystring parameters
+	  | Field           | Value      |
+	  | whereSearchTerm | Manchester |
+	  | &search          | 1          |
+	Then I am redirected to the Search Results page
+
+@WireMockServer @RunOnEnvironment
+Scenario: Navigate to the browse by your interests page
+When I navigate to the following url: /browse-by-interests
+Then the page is successfully returned
+And the page content includes the following: Browse by your interests
 
 @WireMockServer
-	Scenario: Navigate to the browse by your interests page
-	When I navigate to the following url: /browse-by-interests
-	Then the page is successfully returned
-	And the page content includes the following: Browse by your interests
-
-@WireMockServer
-	Scenario: Browse by interests no validation failure
-	When I post to the following url: /browse-by-interests
+Scenario: Browse by interests no validation failure
+When I post to the following url: /browse-by-interests
 	| Field            | Value |
 	| SelectedRouteIds | 1     |
-	Then I am redirected to the following url: /location
-	And the page redirect content includes the following: Location
+Then I am redirected to the Location page
+And the page redirect content includes the following: Location
 	
 @WireMockServer @RunOnEnvironment
 	Scenario: Browse by interests with validation failure

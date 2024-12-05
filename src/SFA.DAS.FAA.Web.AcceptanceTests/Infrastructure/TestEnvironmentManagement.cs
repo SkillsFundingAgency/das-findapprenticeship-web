@@ -54,10 +54,11 @@ public sealed class TestEnvironmentManagement
     [BeforeScenario("RunOnEnvironment")]
     public void SetupRunOnEnvironment()
     {
-        if (_environment == null)
+        if (string.IsNullOrEmpty(_environment))
         {
             return;
         }
+        
         _testHttpClient = new AcceptanceTestHttpClient(_environment);
 
         _context.Set<TestServer>(null!, ContextKeys.TestServer);

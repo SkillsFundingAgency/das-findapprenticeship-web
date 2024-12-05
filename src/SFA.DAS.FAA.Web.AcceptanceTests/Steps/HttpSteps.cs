@@ -164,4 +164,17 @@ public sealed class HttpSteps(ScenarioContext context)
         context.Remove(ContextKeys.HttpResponseRedirectContent);
         context.Set(responseContent, ContextKeys.HttpResponseRedirectContent);
     }
+    
+    
+    [Then("I am shown the (.*) page")]
+    public async Task ThenIAmShownAPage(string pageName)
+    {
+        var page = context.GetPage(pageName);
+
+        var redirection = context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
+        var redirectUrl = redirection.Headers.Location?.ToString();
+        var getUrl = redirection.RequestMessage!.RequestUri?.ToString(); 
+        redirectUrl.Should().Contain(getUrl);    
+        
+    }
 }
