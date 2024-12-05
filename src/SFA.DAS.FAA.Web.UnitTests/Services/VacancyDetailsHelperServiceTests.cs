@@ -161,6 +161,19 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             // Assert
             result.Should().Be(expected);
         }
+        
+        [Test]
+        [InlineAutoData("£4000.00 to £5000.00", "£4000.00 to £5000.00")] 
+        [InlineAutoData("£5001.00 to £15000.00", "£5001.00 to £15000.00 a year")] // Greater than 5000
+        [InlineAutoData("£1000 to £4999.00", "£1000 to £4999.00")] // Above threshold
+        public void Then_WageAmount_With_Lower_Higher_Limit_GetWageText_ShouldHandleAnnualWages(string input, string expected)
+        {
+            // Act
+            var result = VacancyDetailsHelperService.GetWageText(input);
+
+            // Assert
+            result.Should().Be(expected);
+        }
 
         [InlineAutoData("£100", "£100")] // Between 100 and 5000
         [InlineAutoData("£4999.99", "£4999.99")] // Edge case: Just below 5000
