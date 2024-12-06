@@ -1,17 +1,10 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Web.Models.Applications
 
-@model (string? Title, string? VacancyReference, bool IsClosed, ApplicationsTab Tab)
+@model (string? Title, string? VacancyReference, ApplicationsTab Tab)
 
 <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
-    @if (Model.IsClosed)
-    {
+    <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference, source = "applications", tab = Model.Tab })">
         @Model.Title
-    }
-    else
-    {
-        <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference, source = "applications", tab = Model.Tab })">
-            @Model.Title
-        </a>
-    }
+    </a>
 </h2>

@@ -9,17 +9,24 @@
 {
     <partial name="_AccountCreatedBanner" />
 }
-@if (Model.IsClosed)
+
+
+@if (!Model.IsClosed)
 {
-    ViewData["Title"] = "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
-    
-    <partial name="_ClosedVacancy" model="Model" />
+    ViewData["Title"] = $"{Model.Title!} – Find an apprenticeship – GOV.UK";
+    <partial name="_LiveVacancy" model="Model"/>
 }
 else
 {
-    ViewData["Title"] = $"{Model.Title!} – Find an apprenticeship – GOV.UK";
-    
-    <partial name="_LiveVacancy" model="Model"/>
+    ViewData["Title"] = "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
+    if (User.Identity is { IsAuthenticated: false })
+    {
+        <partial name="_ClosedVacancy" model="Model" />    
+    }
+    else
+    {
+        <partial name="_ClosedVacancyWhenAuthenticated" model="Model" />
+    }
 }
 
 @section AfterJSScripts {
