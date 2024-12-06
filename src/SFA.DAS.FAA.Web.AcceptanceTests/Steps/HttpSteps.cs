@@ -14,7 +14,7 @@ public sealed class HttpSteps(ScenarioContext context)
     [When("I navigate to the following url: (.*)")]
     public async Task WhenINavigateToTheFollowingUrl(string url)
     {
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(url);
         var responseContent = await response.Content.ReadAsStringAsync();
         context.ClearResponseContext();
@@ -27,7 +27,7 @@ public sealed class HttpSteps(ScenarioContext context)
     {
         var page = context.GetPage(pageName);
 
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(page.Url);
         var responseContent = await response.Content.ReadAsStringAsync();
         context.ClearResponseContext();
@@ -50,7 +50,7 @@ public sealed class HttpSteps(ScenarioContext context)
             url.Append(querystringParameter.Value);
         }
 
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync($"{url}");
         var responseContent = await response.Content.ReadAsStringAsync();
         context.ClearResponseContext();
@@ -64,13 +64,11 @@ public sealed class HttpSteps(ScenarioContext context)
     {
         var page = context.GetPage(pageName);
 
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
         var contentDictionary = formBody.Rows.ToDictionary(r => r[0], r => r[1]);
 
-        var content = new FormUrlEncodedContent(contentDictionary);
-
-        var response = await client.PostAsync(page.Url, content);
+        var response = await client.PostAsync(page.Url, contentDictionary);
         var responseContent = await response.Content.ReadAsStringAsync();
         context.ClearResponseContext();
         context.Set(response, ContextKeys.HttpResponse);
@@ -83,9 +81,9 @@ public sealed class HttpSteps(ScenarioContext context)
     {
         var page = context.GetPage(pageName);
 
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
-        var response = await client.PostAsync(page.Url, new StringContent(string.Empty));
+        var response = await client.PostAsync(page.Url, new Dictionary<string, string>());
         var responseContent = await response.Content.ReadAsStringAsync();
         context.ClearResponseContext();
         context.Set(response, ContextKeys.HttpResponse);
@@ -96,13 +94,11 @@ public sealed class HttpSteps(ScenarioContext context)
     [When("I post to the following url: (.*)")]
     public async Task WhenIPostToTheFollowingUrl(string url, Table formBody)
     {
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
         var contentDictionary = formBody.Rows.ToDictionary(r => r[0], r => r[1]);
 
-        var content = new FormUrlEncodedContent(contentDictionary);
-
-        var response = await client.PostAsync(url, content);
+        var response = await client.PostAsync(url, contentDictionary);
         var responseContent = await response.Content.ReadAsStringAsync();
         context.ClearResponseContext();
         context.Set(response, ContextKeys.HttpResponse);
@@ -113,24 +109,26 @@ public sealed class HttpSteps(ScenarioContext context)
     [When("I post an empty form to the following url: (.*)")]
     public async Task WhenIPostAnEmptyFormToTheFollowingUrl(string url)
     {
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
-        var response = await client.PostAsync(url, new StringContent(string.Empty));
+        var response = await client.PostAsync(url, new Dictionary<string, string>());
         var responseContent = await response.Content.ReadAsStringAsync();
         context.ClearResponseContext();
         context.Set(response, ContextKeys.HttpResponse);
         context.Set(responseContent, ContextKeys.HttpResponseContent);
     }
-
-    [Then("a http status code of (.*) is returned")]
-    public void ThenAHttpStatusCodeIsReturned(int httpStatusCode)
+    
+    [Then("the page is (.*)")]
+    public void ThenPageIsReturned(string httpStatusCode)
     {
+        var response = context.GetStatusCode(httpStatusCode);
+        
         if (!context.TryGetValue<HttpResponseMessage>(ContextKeys.HttpResponse, out var result))
         {
             Assert.Fail($"scenario context does not contain value for key [{ContextKeys.HttpResponse}]");
         }
 
-        result.StatusCode.Should().Be((HttpStatusCode)httpStatusCode);
+        result.StatusCode.Should().Be((HttpStatusCode)response.StatusCode);
     }
 
     [Then("I am redirected to the following url: (.*)")]
@@ -141,7 +139,7 @@ public sealed class HttpSteps(ScenarioContext context)
         var redirectUrl = redirection.Headers.Location?.ToString(); 
         redirectUrl.Should().StartWith(url);
 
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(redirectUrl!);
         var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -159,11 +157,24 @@ public sealed class HttpSteps(ScenarioContext context)
         var redirectUrl = redirection.Headers.Location?.ToString(); 
         redirectUrl.Should().StartWith(page.Url);
 
-        var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
         var response = await client.GetAsync(redirectUrl!);
         var responseContent = await response.Content.ReadAsStringAsync();
         
         context.Remove(ContextKeys.HttpResponseRedirectContent);
         context.Set(responseContent, ContextKeys.HttpResponseRedirectContent);
+    }
+    
+    
+    [Then("I am shown the (.*) page")]
+    public async Task ThenIAmShownAPage(string pageName)
+    {
+        var page = context.GetPage(pageName);
+
+        var redirection = context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
+        var redirectUrl = redirection.Headers.Location?.ToString();
+        var getUrl = redirection.RequestMessage!.RequestUri?.ToString(); 
+        redirectUrl.Should().Contain(getUrl);    
+        
     }
 }

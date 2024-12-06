@@ -9,7 +9,7 @@ So that I can show my work experience
 @NewApplication
 Scenario: See my options for entering jobs
 	When I navigate to the Jobs page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Jobs
 
@@ -27,7 +27,7 @@ Scenario: Opt to add my first job
 @NewApplication
 Scenario: Add a job
 	When I navigate to the Add a Job page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Add a job
 
@@ -61,7 +61,7 @@ Scenario: Validation on the Add a job page
 @NewApplication
 Scenario: Validation error on job summary page
 	When I post an empty form to the Jobs page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following error: Select if you want to add any jobs
 
 @WireMockServer
@@ -78,7 +78,7 @@ Scenario: Completion of job section without entering any jobs
 @ExistingApplication
 Scenario: Revisit the jobs page having already completed it previously
 	When I navigate to the Jobs page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Jobs
 	And the page content includes the following: Junior Developer
@@ -98,7 +98,7 @@ Scenario: Confirm completion of the jobs page on a return visit
 @ExistingApplication
 Scenario: Edit an existing job
 	When I navigate to the Edit Job page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Add a job
 
@@ -121,7 +121,7 @@ Scenario: Complete edit of an existing job
 @ExistingApplication
 Scenario: Delete a job
 	When I navigate to the Delete Job page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Do you want to delete this job?
 	And the page content includes the following: Junior Developer
 

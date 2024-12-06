@@ -6,7 +6,6 @@ namespace SFA.DAS.FAA.Web.Models;
 
 public class BrowseByInterestViewModel
 {
-    [FromForm]
     public List<int>? SelectedRouteIds { get; set; }
     public List<RouteViewModel> Routes { get; set; } = new();
     public Dictionary<string, RouteObject> AgricultureEnvironmentalAndAnimalCareDictionary { get; set; } = new();

@@ -8,14 +8,14 @@ So that I can import all my applications and personal details
 @AuthenticatedUserWithIncompleteSetup
 Scenario: See banner about transferring my legacy account
 	When I navigate to the Create Account page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: transfer your data
 
 @WireMockServer
 @AuthenticatedUserWithIncompleteSetup
 Scenario: Opt to transfer my legacy account
 	When I navigate to the Transfer Your Data page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Transfer your data to the new Find an apprenticeship
 
 
@@ -23,7 +23,7 @@ Scenario: Opt to transfer my legacy account
 @AuthenticatedUserWithIncompleteSetup
 Scenario: Proceed with transferring my legacy account
 	When I navigate to the Sign into your Old Account page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Sign in to your old Find an apprenticeship account
 
 @WireMockServer
@@ -33,7 +33,7 @@ Scenario: Attempt to login to my legacy account with invalid credentials
 	  | Field    | Value            |
 	  | email    | invalid@test.com |
 	  | password | password         |
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: There is a problem
 	And the page content includes the following: Check your account details.
 	And the page content includes the following: entered an incorrect email address or password.
@@ -45,7 +45,7 @@ Scenario: Attempt to login to my legacy account with no email address
 	  | Field    | Value    |
 	  | email    |          |
 	  | password | password |
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: There is a problem
 	And the page content includes the following: Enter your email address
 
@@ -56,7 +56,7 @@ Scenario: Attempt to login to my legacy account with an invalid format for email
 	  | Field    | Value           |
 	  | email    | thisaintnoemail |
 	  | password | password        |
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: There is a problem
 	And the page content includes the following: Enter an email address in the correct format, like name@example.com
 
@@ -67,6 +67,6 @@ Scenario: Attempt to login to my legacy account with no password
 	  | Field    | Value         |
 	  | email    | test@test.com |
 	  | password |               |
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: There is a problem
 	And the page content includes the following: Enter your password

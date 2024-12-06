@@ -50,7 +50,10 @@ public static class Pages
             new Page { Name = "Saved Search Unsubscribe", Url="/saved-searches/unsubscribe"},
             new Page { Name = "Saved Search Unsubscribe Complete", Url="/saved-searches/unsubscribe-complete?Id=00ea277e-bf45-4110-b7a2-7aa5a32f31b7"},
             //Search
-            new Page { Name = "Search Results", Url="/apprenticeships" }
+            new Page { Name = "Search Results", Url="/apprenticeships" },
+            new Page { Name = "Location", Url="/location" },
+            //Start
+            new Page { Name = "Home", Url="/apprenticeshipsearch" }
         ];
     }
 

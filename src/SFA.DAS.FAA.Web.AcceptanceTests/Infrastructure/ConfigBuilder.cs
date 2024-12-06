@@ -10,8 +10,8 @@ public static class ConfigBuilder
 
         var configSource = new MemoryConfigurationSource
         {
-            InitialData = new[]
-            {
+            InitialData =
+            [
                 new KeyValuePair<string, string>("ConfigurationStorageConnectionString", "UseDevelopmentStorage=true;"),
                 new KeyValuePair<string, string>("ConfigNames", "SFA.DAS.FindApprenticeships.Web,SFA.DAS.Employer.GovSignIn"),
                 new KeyValuePair<string, string>("EnvironmentName", "DEV"),
@@ -24,7 +24,7 @@ public static class ConfigBuilder
                 new KeyValuePair<string, string>("GovUkOidcConfiguration:BaseUrl","https://test-url"),
                 new KeyValuePair<string, string>("GovUkOidcConfiguration:ClientId","bd5f0343-7cd7-4ea9-8aa1-63ea8d16ce32"),
                 new KeyValuePair<string, string>("GovUkOidcConfiguration:KeyVaultIdentifier","urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=")
-            }
+            ]
         };
         var provider = new MemoryConfigurationProvider(configSource);
         return new ConfigurationRoot(new List<IConfigurationProvider>() { provider });

@@ -4,17 +4,18 @@ using System.Net;
 
 namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure
 {
-    public class TestHttpClient : IDisposable
+    public class TestHttpClient : ITestHttpClient
     {
         private TestServer Server { get; }
         private CookieContainer CookieContainer { get; }
 
-        private Uri SubstituteBaseUrl => new Uri("https://www.test.com/");
+        private Uri SubstituteBaseUrl { get; }
 
-        public TestHttpClient(TestServer server)
+        public TestHttpClient(TestServer server, string baseUrl = "https://www.test.com/")
         {
             Server = server;
             CookieContainer = new CookieContainer();
+            SubstituteBaseUrl = new Uri(baseUrl);
         }
 
         private RequestBuilder BuildRequest(string url)
@@ -50,10 +51,10 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure
             return response;
         }
 
-        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent content)
+        public async Task<HttpResponseMessage> PostAsync(string url, Dictionary<string,string> content)
         {
             var builder = BuildRequest(url);
-            builder.And(request => request.Content = content);
+            builder.And(request => request.Content = new FormUrlEncodedContent(content));
             var response = await builder.PostAsync();
             UpdateCookies(url, response);
             return response;
