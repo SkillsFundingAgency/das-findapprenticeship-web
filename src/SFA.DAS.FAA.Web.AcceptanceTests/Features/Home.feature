@@ -105,7 +105,7 @@ Scenario: Navigate to search results page with no results found
 
 @WireMockServer @RunOnEnvironment
 Scenario: Navigate to search results page with NHS search results found
-	When I navigate to the following url: /apprenticeships??sort=AgeAsc&searchTerm=NHS
+	When I navigate to the following url: /apprenticeships?sort=AgeAsc&searchTerm=NHS
 	Then the page is successfully returned
 	And the page content includes the following: NHS
 	
