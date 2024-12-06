@@ -53,9 +53,9 @@ namespace SFA.DAS.FAA.Web.Services
         {
             if (string.IsNullOrEmpty(url)) return url;
 
-            var regex = new Regex(@"^(http?|https):\/\/[^\s\/$.?#].[^\s]*$", RegexOptions.None, TimeSpan.FromSeconds(3));
+            var websiteUrlRegex = new Regex(@"^(http?|https):\/\/[^\s\/$.?#].[^\s]*$", RegexOptions.None, TimeSpan.FromSeconds(3));
 
-            return !regex.IsMatch(url) ? $"http://{url}" : url;
+            return !websiteUrlRegex.IsMatch(url) ? $"http://{url}" : url;
         }
 
         public static string GetPostedDate(this DateTime postedDate)
@@ -86,8 +86,8 @@ namespace SFA.DAS.FAA.Web.Services
                 .Replace("\u00A3", string.Empty) // Unicode for Pound Sign
             .Replace("u+00A3", string.Empty);
 
-            var regex = new Regex(@"\d+\.\d{2}", RegexOptions.None, TimeSpan.FromSeconds(3));
-            var matches = regex.Matches(wageAmountText);
+            var wageTextRegex = new Regex(@"\d+\.\d{2}", RegexOptions.None, TimeSpan.FromSeconds(3));
+            var matches = wageTextRegex.Matches(wageAmountText);
 
             if (matches.Count == 2)
             {
