@@ -103,6 +103,12 @@ Scenario: Navigate to search results page with no results found
 	Then the page is successfully returned
 	And the page content includes the following: No results found
 
+@WireMockServer @RunOnEnvironment
+Scenario: Navigate to search results page with NHS search results found
+	When I navigate to the following url: /apprenticeships??sort=AgeAsc&searchTerm=NHS
+	Then the page is successfully returned
+	And the page content includes the following: 28 results found
+
 @WireMockServer
 Scenario: Navigate to vacancy details page with vacancy found
 	When I navigate to the following url: /apprenticeship/VAC1000012484
