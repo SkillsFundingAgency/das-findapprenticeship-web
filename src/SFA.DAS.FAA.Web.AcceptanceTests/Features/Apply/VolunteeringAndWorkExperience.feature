@@ -9,7 +9,7 @@ So that I can show work I've volunteered for
 @NewApplication
 Scenario: See my options for entering work experience
 	When I navigate to the Volunteering and Work Experience page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Volunteering and work experience
 
@@ -34,7 +34,7 @@ Scenario: Revisit the work experience page having previously completed it
 @ExistingApplication
 Scenario: Revisit the work experience summary page having previously completed it
 	When I navigate to the Volunteering and Work Experience Summary page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Volunteering and work experience
 
@@ -43,7 +43,7 @@ Scenario: Revisit the work experience summary page having previously completed i
 @ExistingApplication
 Scenario: Delete work experience
 	When I navigate to the Delete Work Experience page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Work history
 	And the page content includes the following: Do you want to delete this volunteering or work experience?
 	And the page content includes the following: Cleaning bottles

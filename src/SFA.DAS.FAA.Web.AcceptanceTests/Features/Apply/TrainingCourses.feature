@@ -9,7 +9,7 @@ So that I can show my relevant training
 @NewApplication
 Scenario: See my options for entering training courses
 	When I navigate to the Training Courses page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Education history
 	And the page content includes the following: Training courses
 
@@ -36,7 +36,7 @@ Scenario: Opt to add no training courses
 @NewApplication
 Scenario: Add a Training Course
 	When I navigate to the Add a Training Course page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following: Education history
 	And the page content includes the following: Add a training course
 
@@ -63,7 +63,7 @@ Scenario: Validation on the Add a Training Course page
 @NewApplication
 Scenario: Validation error on job summary page
 	When I post an empty form to the Training Courses page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	And the page content includes the following error: Select if you want to add any training courses
 
 @WireMockServer
@@ -71,7 +71,7 @@ Scenario: Validation error on job summary page
 @ExistingApplication
 Scenario: Edit a Training Course
 	When I navigate to the Edit a Training Course page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 
 @WireMockServer
 @AuthenticatedUser
@@ -88,7 +88,7 @@ Scenario: Complete editing a Training Course
 @ExistingApplication
 Scenario: Delete a Training Course
 	When I navigate to the Delete a Training Course page
-	Then a http status code of 200 is returned
+	Then the page is successfully returned
 	
 @WireMockServer
 @AuthenticatedUser

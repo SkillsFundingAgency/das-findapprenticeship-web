@@ -17,13 +17,13 @@ public sealed class SavedSearchSteps(ScenarioContext context)
         if (data is { Captures.Count: 1 })
         {
             var value = HttpUtility.HtmlDecode(data.Groups["val"].Value);
-            var client = context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+            var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
             var formData = new MultipartFormDataContent()
             {
                 { new StringContent(value), "Data" },
             };
             
-            var response = await client.PostAsync("apprenticeships/save-search", formData);
+            var response = await client.PostAsync("apprenticeships/save-search", new Dictionary<string, string>{{"Data", value}});
             var responseContent = await response.Content.ReadAsStringAsync();
             context.ClearResponseContext();
             context.Set(response, ContextKeys.HttpResponse);

@@ -10,5 +10,7 @@
 
         public const string CandidateIdWithApplications = "7d9ce612-65b3-4eaf-95fb-78982c8cc20b";
         public const string CandidateIdIncomplete = "fbd1f8fd-2ad7-4658-a78a-a191726dccad";
+
+        public const string CandidateOnAT = "C6BDD248-0B05-4877-BB1D-28183179FFF5";
     }
 }

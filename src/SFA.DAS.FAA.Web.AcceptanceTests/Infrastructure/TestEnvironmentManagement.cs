@@ -7,6 +7,7 @@ using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.MockServer.MockServerBuilder;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using TechTalk.SpecFlow;
 using WireMock.Server;
@@ -18,19 +19,27 @@ namespace SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
 public sealed class TestEnvironmentManagement
 {
     private readonly ScenarioContext _context;
-    private static TestHttpClient _testHttpClient;
+    private static ITestHttpClient _testHttpClient;
     private static IWireMockServer _staticApiServer;
     private Mock<IApiClient> _mockApiClient;
+    private readonly string? _environment;
     private static TestServer _server;
 
     public TestEnvironmentManagement(ScenarioContext context)
     {
         _context = context;
+        var environment = Environment.GetEnvironmentVariable("ENVIRONMENT");
+        _environment = !string.IsNullOrEmpty(environment) ? $"https://{DomainExtensions.GetDomain(environment)}" : null;
+        Console.WriteLine($"Environment: {_environment}");
     }
 
     [BeforeScenario("WireMockServer")]
     public void StartWebApp()
     {
+        if (!string.IsNullOrEmpty(_environment))
+        {
+            return;
+        }
         _staticApiServer = MockApiServer.Start();
         var webApp = new CustomWebApplicationFactory<SearchApprenticeshipsController>()
             .WithWebHostBuilder(c=>c.UseEnvironment("IntegrationTest").UseConfiguration(ConfigBuilder.GenerateConfiguration()));
@@ -39,6 +48,20 @@ public sealed class TestEnvironmentManagement
         _testHttpClient = new TestHttpClient(_server);
 
         _context.Set(_server, ContextKeys.TestServer);
+        _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
+    }
+    
+    [BeforeScenario("RunOnEnvironment")]
+    public void SetupRunOnEnvironment()
+    {
+        if (string.IsNullOrEmpty(_environment))
+        {
+            return;
+        }
+        
+        _testHttpClient = new AcceptanceTestHttpClient(_environment);
+
+        _context.Set<TestServer>(null!, ContextKeys.TestServer);
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
     }
 
@@ -79,7 +102,7 @@ public sealed class TestEnvironmentManagement
     [BeforeScenario("AuthenticatedUser")]
     public async Task AuthenticatedUser()
     {
-        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
         var formData = new Dictionary<string, string>
         {
@@ -88,15 +111,29 @@ public sealed class TestEnvironmentManagement
             { "MobilePhone", "12345 67890" }
         };
 
-        var content = new FormUrlEncodedContent(formData);
-
-        await client.PostAsync("/account-details", content);
+        await client.PostAsync("/account-details", formData);
     }
+    
+    
+    [BeforeScenario("AuthenticatedUserATEnvironment")]
+    public async Task AuthenticatedUserATEnvironment()
+    {
+        var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
+        var formData = new Dictionary<string, string>
+        {
+            { "Id", MockServer.Constants.CandidateOnAT },
+            { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" },
+            { "MobilePhone", "12345 67890" }
+        };
+
+        await client.PostAsync("/account-details", formData);
+    }
+    
     [BeforeScenario("AuthenticatedUserWithIncompleteSetup")]
     public async Task AuthenticatedUserWithIncompleteSetup()
     {
-        var client = _context.Get<TestHttpClient>(ContextKeys.TestHttpClient);
+        var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
         var formData = new Dictionary<string, string>
         {
@@ -105,15 +142,18 @@ public sealed class TestEnvironmentManagement
             { "MobilePhone", "12345 67890" }
         };
 
-        var content = new FormUrlEncodedContent(formData);
-
-        await client.PostAsync("/account-details", content);
+        await client.PostAsync("/account-details", formData);
     }
 
     [AfterScenario("WireMockServer")]
     public void StopEnvironment()
     {
-        _server.Dispose();
+        if (!string.IsNullOrEmpty(_environment))
+        {
+            return;
+        }
+        _server
+            .Dispose();
         _staticApiServer?.Stop();
         _staticApiServer?.Dispose();
         _testHttpClient?.Dispose();
