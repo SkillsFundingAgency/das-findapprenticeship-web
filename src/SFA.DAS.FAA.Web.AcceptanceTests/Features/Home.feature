@@ -95,7 +95,7 @@ Scenario: Location search option selected no postcode
 Scenario: Navigate to search results page with no filters
 	When I navigate to the following url: /apprenticeships
 	Then the page is successfully returned
-	And the page content includes the following: 339 results found
+	And the page content includes the following: 351 results found
 
 @WireMockServer
 Scenario: Navigate to search results page with no results found
