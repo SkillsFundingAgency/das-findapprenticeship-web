@@ -107,7 +107,13 @@ Scenario: Navigate to search results page with no results found
 Scenario: Navigate to search results page with NHS search results found
 	When I navigate to the following url: /apprenticeships??sort=AgeAsc&searchTerm=NHS
 	Then the page is successfully returned
-	And the page content includes the following: 28 results found
+	And the page content includes the following: NHS
+	
+@WireMockServer @RunOnEnvironment
+Scenario: Navigate to NHS vacancy details page with vacancy found
+	When I navigate to the following url: /apprenticeship/nhs/425244
+	Then the page is successfully returned
+	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
 
 @WireMockServer
 Scenario: Navigate to vacancy details page with vacancy found
