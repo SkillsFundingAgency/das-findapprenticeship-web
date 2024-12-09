@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Options;
 using Reqnroll;
-using SFA.DAS.FAA.AcceptanceTests.Core;
+using SFA.DAS.FAA.AcceptanceTests.Pages;
 using SFA.DAS.FAA.MockServer.MockServerBuilder;
 using SFA.DAS.FAA.Web.Controllers;
 using WireMock.Server;
 
-namespace SFA.DAS.FAA.AcceptanceTests;
+namespace SFA.DAS.FAA.AcceptanceTests.Core;
 
 [Binding]
 public class Hooks
@@ -46,5 +46,12 @@ public class Hooks
         _staticApiServer?.Stop();
         _staticApiServer?.Dispose();
         _server?.Dispose();
+    }
+    
+    [BeforeScenario("Authenticated")]
+    public static async Task AuthenticatedUser(ITestContext context, SignInPage signInPage)
+    {
+        await signInPage.VisitAsync();
+        await signInPage.SignInAsync();
     }
 }

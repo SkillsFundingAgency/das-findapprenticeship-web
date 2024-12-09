@@ -1,13 +1,9 @@
 ﻿using Reqnroll;
+using SFA.DAS.FAA.AcceptanceTests.Core;
+using SFA.DAS.FAA.AcceptanceTests.Models;
 using SFA.DAS.FAA.AcceptanceTests.Pages;
 
 namespace SFA.DAS.FAA.AcceptanceTests.Steps;
-
-public class BasicSearch
-{
-    public string? What { get; set; }
-    public string? Where { get; set; }
-}
 
 [Binding]
 public class SearchStepDefinitions(ITestContext testContext, HomePage homePage, SearchResultsPage searchResultsPage)
@@ -22,8 +18,8 @@ public class SearchStepDefinitions(ITestContext testContext, HomePage homePage, 
     [When(@"I search for")]
     public async Task WhenISearchFor(Table table)
     {
-        var basicSearch = table.CreateInstance<BasicSearch>();
-        await homePage.SearchAsync(basicSearch);
+        var searchCriteria = table.CreateInstance<SearchCriteria>();
+        await homePage.SearchAsync(searchCriteria);
     }
 
     [Then(@"I am shown the search results")]

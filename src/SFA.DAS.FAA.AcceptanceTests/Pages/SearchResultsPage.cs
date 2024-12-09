@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.FAA.AcceptanceTests.Pages;
+﻿using SFA.DAS.FAA.AcceptanceTests.Core;
+
+namespace SFA.DAS.FAA.AcceptanceTests.Pages;
 
 public class SearchResultsPage(ITestContext testContext)
 {

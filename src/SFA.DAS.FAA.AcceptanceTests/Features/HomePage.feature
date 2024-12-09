@@ -18,6 +18,7 @@ Scenario: I can search from the homepage
     Then I am shown the search results
     And my search criteria are populated in the sidebar
    
+@Authenticated
 Scenario: I can search from the homepage and specify a search area
     Given I visit the HomePage
     When I search for

@@ -1,4 +1,5 @@
 ﻿using Reqnroll;
+using SFA.DAS.FAA.AcceptanceTests.Core;
 
 namespace SFA.DAS.FAA.AcceptanceTests.Steps;
 

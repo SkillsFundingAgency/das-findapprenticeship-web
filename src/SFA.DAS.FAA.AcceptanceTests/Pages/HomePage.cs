@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.AcceptanceTests.Core;
+using SFA.DAS.FAA.AcceptanceTests.Models;
 using SFA.DAS.FAA.AcceptanceTests.Steps;
 
 namespace SFA.DAS.FAA.AcceptanceTests.Pages;
@@ -13,36 +14,29 @@ public class HomePage(ITestContext testContext)
     
     public async Task VisitAsync()
     {
-        var uri = new Uri(new Uri(testContext.ApplicationSettings.Value.BaseUrl), PageUrl);
+        var uri = new Uri(new Uri(testContext.ApplicationSettings.BaseUrl), PageUrl);
         await testContext.Page.GotoAsync(uri.AbsoluteUri);
-        CheckUrl();
     }
 
-    public void CheckUrl()
+    public async Task SearchAsync(SearchCriteria searchCriteria)
     {
-        var uri = new Uri(testContext.Page.Url);
-        uri.AbsolutePath.Should().EndWith($"/{PageUrl}");
-    }
-
-    public async Task SearchAsync(BasicSearch basicSearch)
-    {
-        if (basicSearch.What is not null)
+        if (searchCriteria.What is not null)
         {
-            await WhatInput.FillAsync(basicSearch.What);
+            await WhatInput.FillAsync(searchCriteria.What);
         }
 
-        if (basicSearch.Where is not null)
+        if (searchCriteria.Where is not null)
         {
-            await WhereInput.FillAsync(basicSearch.Where);
+            await WhereInput.FillAsync(searchCriteria.Where);
             await WhereSelectListOption0.WaitForAsync(new LocatorWaitForOptions()
             {
                 Timeout = 3000
             });
             await WhereSelectListOption0.ClickAsync();
-            basicSearch.Where = await WhereInput.InputValueAsync();
+            searchCriteria.Where = await WhereInput.InputValueAsync();
         }
 
         await SearchButton.ClickAsync();
-        testContext.SearchCriteria = new SearchCriteria(basicSearch.What ?? string.Empty, basicSearch.Where ?? string.Empty);
+        testContext.SearchCriteria = searchCriteria;
     }
 }

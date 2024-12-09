@@ -1,13 +1,14 @@
-﻿using Autofac;
+﻿using System.Reflection;
+using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using NUnit.Framework;
 using Reqnroll.Autofac;
 using Reqnroll.Autofac.ReqnrollPlugin;
-using SFA.DAS.FAA.AcceptanceTests.Core;
 using SFA.DAS.FAA.AcceptanceTests.Pages;
 using SFA.DAS.FAA.AcceptanceTests.Steps;
 
-namespace SFA.DAS.FAA.AcceptanceTests;
+namespace SFA.DAS.FAA.AcceptanceTests.Core;
 
 public static class TestStartup
 {
@@ -30,6 +31,7 @@ public static class TestStartup
     private static void RegisterPages(this ContainerBuilder builder)
     {
         builder.RegisterType<HomePage>().AsSelf().InstancePerLifetimeScope();
+        builder.RegisterType<SignInPage>().AsSelf().InstancePerLifetimeScope();
         builder.RegisterType<SearchResultsPage>().AsSelf().InstancePerLifetimeScope();
     }
     

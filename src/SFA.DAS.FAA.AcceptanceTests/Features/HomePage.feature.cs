@@ -151,12 +151,14 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I can search from the homepage and specify a search area")]
+        [NUnit.Framework.CategoryAttribute("Authenticated")]
         public async System.Threading.Tasks.Task ICanSearchFromTheHomepageAndSpecifyASearchArea()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Authenticated"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can search from the homepage and specify a search area", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 21
+#line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -166,7 +168,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 22
+#line 23
     await testRunner.GivenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
                 global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
@@ -175,13 +177,13 @@ this.ScenarioInitialize(scenarioInfo);
                 table2.AddRow(new string[] {
                             "apprentice",
                             "London"});
-#line 23
+#line 24
     await testRunner.WhenAsync("I search for", ((string)(null)), table2, "When ");
 #line hidden
-#line 26
+#line 27
     await testRunner.ThenAsync("I am shown the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 27
+#line 28
     await testRunner.AndAsync("my search criteria are populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
