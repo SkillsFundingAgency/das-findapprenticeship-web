@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace SFA.DAS.FAA.AcceptanceTests.Features.Search
+namespace SFA.DAS.FAA.AcceptanceTests.Features
 {
     using Reqnroll;
     using System;
@@ -28,8 +28,8 @@ namespace SFA.DAS.FAA.AcceptanceTests.Features.Search
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Search", "Home page search", "  As an FAA User\r\n  I can visit the FindAnApprenticeship service page\r\n  And sear" +
-                "ch for apprenticeships\r\n  So that I can apply for vacancies", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Home page search", "    As an FAA User\r\n    I can visit the FindAnApprenticeship service page\r\n    An" +
+                "d search for apprenticeships\r\n    So that I can apply for vacancies", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "HomePage.feature"
 #line hidden
@@ -100,13 +100,13 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 9
-  await testRunner.GivenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 10
-  await testRunner.ThenAsync("the page title is \"Search apprenticeship – Find an apprenticeship – GOV.UK\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the page title is \"Search apprenticeship – Find an apprenticeship – GOV.UK\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 11
-  await testRunner.AndAsync("the page heading is \"Search apprenticeships\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("the page heading is \"Search apprenticeships\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -130,20 +130,20 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 14
-  await testRunner.WhenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.GivenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
                 global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "What"});
                 table1.AddRow(new string[] {
                             "apprentice"});
 #line 15
-  await testRunner.AndAsync("I search for", ((string)(null)), table1, "And ");
+    await testRunner.WhenAsync("I search for", ((string)(null)), table1, "When ");
 #line hidden
 #line 18
-  await testRunner.ThenAsync("I am shown the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("I am shown the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 19
-  await testRunner.AndAsync("my search criteria populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("my search criteria are populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -167,7 +167,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 22
-  await testRunner.WhenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.GivenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
                 global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
                             "What",
@@ -176,13 +176,13 @@ this.ScenarioInitialize(scenarioInfo);
                             "apprentice",
                             "London"});
 #line 23
-  await testRunner.AndAsync("I search for", ((string)(null)), table2, "And ");
+    await testRunner.WhenAsync("I search for", ((string)(null)), table2, "When ");
 #line hidden
 #line 26
-  await testRunner.ThenAsync("I am shown the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("I am shown the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 27
-  await testRunner.AndAsync("my search criteria populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("my search criteria are populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

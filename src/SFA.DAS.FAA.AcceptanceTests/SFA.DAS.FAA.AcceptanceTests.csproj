@@ -46,4 +46,13 @@
       <ProjectReference Include="..\SFA.DAS.FAA.Web\SFA.DAS.FAA.Web.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Features\HomePage.feature.cs">
+        <DependentUpon>HomePage.feature</DependentUpon>
+        <AutoGen>true</AutoGen>
+        <DesignTime>true</DesignTime>
+        <Visible>true</Visible>
+      </Compile>
+    </ItemGroup>
+
 </Project>

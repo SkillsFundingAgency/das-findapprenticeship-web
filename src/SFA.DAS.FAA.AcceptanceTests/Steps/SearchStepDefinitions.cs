@@ -36,6 +36,8 @@ public class SearchStepDefinitions(ITestContext testContext, HomePage homePage, 
     [Then(@"my search criteria are populated in the sidebar")]
     public async Task ThenMySearchCriteriaArePopulatedInTheSidebar()
     {
-        await searchResultsPage.AssertSearchCriteria();
+        testContext.SearchCriteria.Should().NotBeNull();
+        (await searchResultsPage.WhatInput.InputValueAsync()).Should().Be(testContext.SearchCriteria!.What ?? string.Empty);
+        (await searchResultsPage.WhereInput.InputValueAsync()).Should().Be(testContext.SearchCriteria.Where ?? string.Empty);
     }
 }
