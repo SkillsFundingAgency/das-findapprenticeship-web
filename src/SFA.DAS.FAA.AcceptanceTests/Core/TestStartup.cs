@@ -37,8 +37,10 @@ public static class TestStartup
     
     private static void RegisterSteps(this ContainerBuilder builder)
     {
-        builder.RegisterType<GeneralPageStepDefinitions>().InstancePerDependency();
-        builder.RegisterType<SearchStepDefinitions>().InstancePerDependency();
+        builder.RegisterType<GeneralStepDefinitions>().InstancePerDependency();
+        builder.RegisterType<SearchResultsPageSteps>().InstancePerDependency();
+        builder.RegisterType<HomePageSteps>().InstancePerDependency();
+        builder.RegisterType<SavedVacanciesSteps>().InstancePerDependency();
     }
 
     private static void RegisterConfiguration(this ContainerBuilder builder)

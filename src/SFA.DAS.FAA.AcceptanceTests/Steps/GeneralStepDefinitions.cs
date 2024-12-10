@@ -4,7 +4,7 @@ using SFA.DAS.FAA.AcceptanceTests.Core;
 namespace SFA.DAS.FAA.AcceptanceTests.Steps;
 
 [Binding]
-public class GeneralPageStepDefinitions(ITestContext testContext)
+public class GeneralStepDefinitions(ITestContext testContext)
 {
     private ILocator CookieAcceptButton => testContext.Page.GetByRole(AriaRole.Button, new() { Name = "Accept additional cookies" });
     private ILocator CookieRejectButton => testContext.Page.GetByRole(AriaRole.Button, new() { Name = "Reject additional cookies" });

@@ -14,6 +14,12 @@ public class HomePage(ITestContext testContext)
     
     public async Task VisitAsync()
     {
+        var currentUri = new Uri(testContext.Page.Url);
+        if (currentUri.AbsolutePath == PageUrl)
+        {
+            return;
+        }
+        
         var uri = new Uri(new Uri(testContext.ApplicationSettings.BaseUrl), PageUrl);
         await testContext.Page.GotoAsync(uri.AbsoluteUri);
     }

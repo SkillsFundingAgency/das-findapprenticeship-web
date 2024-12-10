@@ -20,18 +20,18 @@ namespace SFA.DAS.FAA.AcceptanceTests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Home page search")]
-    public partial class HomePageSearchFeature
+    [NUnit.Framework.DescriptionAttribute("Saved vacancies")]
+    public partial class SavedVacanciesFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Home page search", "    As an FAA User\r\n    I can visit the FindAnApprenticeship service page\r\n    An" +
-                "d search for apprenticeships\r\n    So that I can apply for vacancies", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Saved vacancies", "    As an FAA User\r\n    I want to save vacancies\r\n    So that I can quickly retur" +
+                "n to them at a later point in time", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
-#line 1 "HomePage.feature"
+#line 1 "SaveVacancies.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
@@ -83,69 +83,41 @@ namespace SFA.DAS.FAA.AcceptanceTests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I can visit the homepage")]
-        public async System.Threading.Tasks.Task ICanVisitTheHomepage()
+        [NUnit.Framework.DescriptionAttribute("I can save a vacancy")]
+        [NUnit.Framework.CategoryAttribute("Authenticated")]
+        public async System.Threading.Tasks.Task ICanSaveAVacancy()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Authenticated"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can visit the homepage", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can save a vacancy", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 7
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
 #line 8
-this.ScenarioInitialize(scenarioInfo);
+    await testRunner.GivenAsync("I have no saved vacancies", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 9
-    await testRunner.GivenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 10
-    await testRunner.ThenAsync("the page title is \"Search apprenticeship – Find an apprenticeship – GOV.UK\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 11
-    await testRunner.AndAsync("the page heading is \"Search apprenticeships\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I can search from the homepage")]
-        public async System.Threading.Tasks.Task ICanSearchFromTheHomepage()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can search from the homepage", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 13
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 14
-    await testRunner.GivenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
                             "What",
                             "Where"});
-                table1.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "apprentice",
                             "London"});
-#line 15
-    await testRunner.WhenAsync("I search from the homepage for", ((string)(null)), table1, "When ");
+#line 9
+    await testRunner.WhenAsync("I search for", ((string)(null)), table2, "When ");
 #line hidden
-#line 18
-    await testRunner.ThenAsync("I am shown the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 12
+    await testRunner.AndAsync("save the first vacancy in the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 19
-    await testRunner.AndAsync("my search criteria are populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 13
+    await testRunner.ThenAsync("the vacancy shows in the Saved Vacancies section", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
