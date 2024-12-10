@@ -1,8 +1,9 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Microsoft.Playwright;
 using Reqnroll.Autofac;
+using Reqnroll.Autofac.ReqnrollPlugin;
+using SFA.DAS.FAA.AcceptanceTests.Core;
 using SFA.DAS.FAA.AcceptanceTests.Pages;
 using SFA.DAS.FAA.AcceptanceTests.Steps;
 
@@ -10,14 +11,19 @@ namespace SFA.DAS.FAA.AcceptanceTests;
 
 public static class TestStartup
 {
-    [ScenarioDependencies]
-    public static void CreateServices(ContainerBuilder builder)
+    [GlobalDependencies]
+    public static void GlobalDependencies(ContainerBuilder builder)
     {
         builder.RegisterConfiguration();
         builder.RegisterAppSettings();
+    }
+
+    [ScenarioDependencies]
+    public static void CreateServices(ContainerBuilder builder)
+    {
         builder.RegisterPlaywright();
-        builder.RegisterPages();
         builder.RegisterType<TestContext>().As<ITestContext>().InstancePerLifetimeScope();
+        builder.RegisterPages();
         builder.RegisterSteps();
     }
 
@@ -29,6 +35,7 @@ public static class TestStartup
     
     private static void RegisterSteps(this ContainerBuilder builder)
     {
+        builder.RegisterType<GeneralPageStepDefinitions>().InstancePerDependency();
         builder.RegisterType<SearchStepDefinitions>().InstancePerDependency();
     }
 

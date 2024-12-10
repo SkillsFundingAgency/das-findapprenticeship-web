@@ -83,13 +83,13 @@ namespace SFA.DAS.FAA.AcceptanceTests.Features.Search
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I can search from the homepage")]
-        public async System.Threading.Tasks.Task ICanSearchFromTheHomepage()
+        [NUnit.Framework.DescriptionAttribute("I can visit the homepage")]
+        public async System.Threading.Tasks.Task ICanVisitTheHomepage()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can search from the homepage", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can visit the homepage", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -99,21 +99,51 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 8
+#line 9
+  await testRunner.GivenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 10
+  await testRunner.ThenAsync("the page title is \"Search apprenticeship – Find an apprenticeship – GOV.UK\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 11
+  await testRunner.AndAsync("the page heading is \"Search apprenticeships\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I can search from the homepage")]
+        public async System.Threading.Tasks.Task ICanSearchFromTheHomepage()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can search from the homepage", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 13
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 14
   await testRunner.WhenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "What"});
                 table1.AddRow(new string[] {
                             "apprentice"});
-#line 9
+#line 15
   await testRunner.AndAsync("I search for", ((string)(null)), table1, "And ");
 #line hidden
-#line 12
+#line 18
   await testRunner.ThenAsync("I am shown the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 13
-  await testRunner.AndAsync("My search criteria populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 19
+  await testRunner.AndAsync("my search criteria populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -126,7 +156,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can search from the homepage and specify a search area", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 15
+#line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -136,7 +166,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 16
+#line 22
   await testRunner.WhenAsync("I visit the HomePage", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
@@ -145,14 +175,14 @@ this.ScenarioInitialize(scenarioInfo);
                 table2.AddRow(new string[] {
                             "apprentice",
                             "London"});
-#line 17
+#line 23
   await testRunner.AndAsync("I search for", ((string)(null)), table2, "And ");
 #line hidden
-#line 20
+#line 26
   await testRunner.ThenAsync("I am shown the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 21
-  await testRunner.AndAsync("My search criteria populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 27
+  await testRunner.AndAsync("my search criteria populated in the sidebar", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

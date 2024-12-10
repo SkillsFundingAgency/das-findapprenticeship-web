@@ -4,13 +4,19 @@
   And search for apprenticeships
   So that I can apply for vacancies
 
+
+Scenario: I can visit the homepage
+  Given I visit the HomePage
+  Then the page title is "Search apprenticeship – Find an apprenticeship – GOV.UK"
+  And the page heading is "Search apprenticeships"
+    
 Scenario: I can search from the homepage
   When I visit the HomePage
   And I search for
     | What          |
     | apprentice    |
   Then I am shown the search results
-  And My search criteria populated in the sidebar
+  And my search criteria are populated in the sidebar
    
 Scenario: I can search from the homepage and specify a search area
   When I visit the HomePage
@@ -18,4 +24,4 @@ Scenario: I can search from the homepage and specify a search area
     | What       | Where  |
     | apprentice | London |
   Then I am shown the search results
-  And My search criteria populated in the sidebar
+  And my search criteria are populated in the sidebar

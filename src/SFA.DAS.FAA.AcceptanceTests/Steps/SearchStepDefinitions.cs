@@ -10,8 +10,9 @@ public class BasicSearch
 }
 
 [Binding]
-public class SearchStepDefinitions(HomePage homePage, SearchResultsPage searchResultsPage)
+public class SearchStepDefinitions(ITestContext testContext, HomePage homePage, SearchResultsPage searchResultsPage)
 {
+    [Given(@"I visit the HomePage")]
     [When(@"I visit the HomePage")]
     public async Task WhenIVisitTheHomePage()
     {
@@ -28,12 +29,13 @@ public class SearchStepDefinitions(HomePage homePage, SearchResultsPage searchRe
     [Then(@"I am shown the search results")]
     public void ThenIAmShownTheSearchResults()
     {
-        searchResultsPage.CheckUrl();
+        var uri = new Uri(testContext.Page.Url);
+        uri.AbsolutePath.Should().EndWith($"/{SearchResultsPage.PageUrl}");
     }
 
-    [Then(@"My search criteria populated in the sidebar")]
-    public void ThenMySearchCriteriaPopulatedInTheSidebar()
+    [Then(@"my search criteria are populated in the sidebar")]
+    public async Task ThenMySearchCriteriaArePopulatedInTheSidebar()
     {
-        searchResultsPage.AssertSearchCriteria();
+        await searchResultsPage.AssertSearchCriteria();
     }
 }
