@@ -2,7 +2,7 @@
 @using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel.Application
 <li class="das-search-results__list-item govuk-!-margin-bottom-4">
-    <partial name="_VacancyTitle" model=@ValueTuple.Create(Model.Title, Model.VacancyReference, Model.IsClosed, ApplicationsTab.Unsuccessful)/>
+    <partial name="_VacancyTitle" model=@ValueTuple.Create(Model.Title, Model.VacancyReference, ApplicationsTab.Unsuccessful)/>
     <p class="govuk-hint">@Model.EmployerName</p>
     
     <div class="feedback-card govuk-!-margin-bottom-4" style="background-color:#f4f4f4;padding:20px;margin-bottom:30px;">
