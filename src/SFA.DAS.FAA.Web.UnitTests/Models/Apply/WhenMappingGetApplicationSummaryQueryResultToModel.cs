@@ -16,13 +16,9 @@ public class WhenMappingGetApplicationSummaryQueryResultToModel
 
         using (new AssertionScope())
         {
-            result.Candidate.Should().BeEquivalentTo(source.Candidate);
-            result.WorkHistory.Should().BeEquivalentTo(source.WorkHistory, options => options
-                    .Excluding(fil => fil.Jobs)
-                    .Excluding(fil => fil.VolunteeringAndWorkExperiences));
-            result.WorkHistory.Jobs.Should().BeEquivalentTo(source.WorkHistory.Jobs, options => options
-                .Excluding(fil => fil!.StartDate)
-                .Excluding(fil => fil!.EndDate));
+            result.Candidate.Should().BeEquivalentTo(source.Candidate, options => options.ExcludingMissingMembers());
+            result.WorkHistory.Should().BeEquivalentTo(source.WorkHistory, options => options.ExcludingMissingMembers());
+            result.WorkHistory.Jobs.Should().BeEquivalentTo(source.WorkHistory.Jobs, options => options.ExcludingMissingMembers());
             result.WorkHistory.VolunteeringAndWorkExperiences.Should().BeEquivalentTo(source.WorkHistory.VolunteeringAndWorkExperiences, options => options
                 .Excluding(fil => fil!.StartDate)
                 .Excluding(fil => fil!.EndDate)

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.13.1" />
-    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="HtmlTextWriter" Version="3.0.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
@@ -21,7 +21,7 @@
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.113" />
     <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.119" />
     <PackageReference Include="SFA.DAS.InputValidation" Version="17.1.100" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.22" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.10" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.1.2" />
     <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />

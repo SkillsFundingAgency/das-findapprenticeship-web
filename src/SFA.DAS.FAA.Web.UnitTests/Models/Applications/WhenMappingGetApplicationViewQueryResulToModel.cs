@@ -16,14 +16,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Applications
 
             using (new AssertionScope())
             {
-                result.Candidate.Should().BeEquivalentTo(source.Candidate);
-                result.WorkHistory.Jobs.Should().BeEquivalentTo(source.WorkHistory.Jobs, options => options
-                    .Excluding(fil => fil!.StartDate)
-                    .Excluding(fil => fil!.EndDate));
-                result.WorkHistory.VolunteeringAndWorkExperiences.Should().BeEquivalentTo(source.WorkHistory.VolunteeringAndWorkExperiences, options => options
-                    .Excluding(fil => fil!.StartDate)
-                    .Excluding(fil => fil!.EndDate)
-                    .Excluding(fil => fil!.JobTitle));
+                result.Candidate.Should().BeEquivalentTo(source.Candidate, options => options.ExcludingMissingMembers());
+                result.WorkHistory.Jobs.Should().BeEquivalentTo(source.WorkHistory.Jobs, options => options.ExcludingMissingMembers());
+                result.WorkHistory.VolunteeringAndWorkExperiences.Should().BeEquivalentTo(source.WorkHistory.VolunteeringAndWorkExperiences,
+                    options => options.ExcludingMissingMembers());
                 result.EducationHistory.Should().BeEquivalentTo(source.EducationHistory, options => options
                     .Excluding(fil => fil.Qualifications)
                     .Excluding(fil => fil.QualificationTypes));

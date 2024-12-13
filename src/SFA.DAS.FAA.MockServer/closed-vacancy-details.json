@@ -37,7 +37,7 @@
     "numberOfPositions": 0,
     "providerName": null,
     "standardLarsCode": 0,
-    "vacancyLocationType": 0,
+    "vacancyLocationType": null,
     "workingWeek": null,
     "expectedDuration": null,
     "score": 0,
