@@ -111,7 +111,7 @@ Scenario: Navigate to search results page with NHS search results found
 	
 @WireMockServer
 Scenario: Navigate to NHS vacancy details page with vacancy found
-	When I navigate to the following url: /apprenticeship/nhs/4252449
+	When I navigate to the following url: /apprenticeship/4252449
 	Then the page is successfully returned
 	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
 

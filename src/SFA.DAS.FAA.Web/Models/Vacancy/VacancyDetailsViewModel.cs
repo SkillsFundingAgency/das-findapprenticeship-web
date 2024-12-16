@@ -8,7 +8,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
-    public class VacancyDetailsViewModel
+    public class VacancyDetailsViewModel : NhsVacancyDetailsViewModel
     {
         public string BackLinkUrl { get; set; }
         public string? Title { get; init; }
@@ -61,6 +61,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? ApplicationUrl { get; set; }
         public bool IsSavedVacancy { get; set; } = false;
         public string? ApplicationInstructions { get; set; }
+        public VacancyDataSource VacancySource { get; set; }
         
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
@@ -118,6 +119,12 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription,
                 WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
                 IsSavedVacancy = source.Vacancy.IsSavedVacancy,
+                VacancySource = source.Vacancy.VacancySource,
+                Address = !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine4) ? $"{source.Vacancy?.Address?.AddressLine4}, {source.Vacancy?.Address?.Postcode}" :
+                    !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine3) ? $"{source.Vacancy?.Address?.AddressLine3}, {source.Vacancy?.Address?.Postcode}" :
+                    !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine2) ? $"{source.Vacancy?.Address?.AddressLine2}, {source.Vacancy?.Address?.Postcode}" :
+                    !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine1) ? $"{source.Vacancy?.Address?.AddressLine1}, {source.Vacancy?.Address?.Postcode}" :
+                    source.Vacancy?.Address?.Postcode,
             };
 
     }
