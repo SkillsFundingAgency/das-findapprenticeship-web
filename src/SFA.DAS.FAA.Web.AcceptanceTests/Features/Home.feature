@@ -110,8 +110,26 @@ Scenario: Navigate to search results page with NHS search results found
 	And the page content includes the following: NHS
 	
 @WireMockServer
-Scenario: Navigate to NHS vacancy details page with vacancy found
+Scenario: Navigate to NHS vacancy details page with vacancy found by Id
 	When I navigate to the following url: /apprenticeship/4252449
+	Then the page is successfully returned
+	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
+
+@WireMockServer
+Scenario: Navigate to NHS vacancy details page with vacancy found by Id from saved search alert email
+	When I navigate to the following url: /apprenticeship/nhs/4252449
+	Then the page is successfully returned
+	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
+
+@WireMockServer
+Scenario: Navigate to NHS vacancy details page with vacancy found by reference
+	When I navigate to the following url: /apprenticeship/VACC9348-24-3199
+	Then the page is successfully returned
+	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
+
+@WireMockServer
+Scenario: Navigate to NHS vacancy details page with vacancy found by reference from saved search alert email
+	When I navigate to the following url: /apprenticeship/nhs/VACC9348-24-3199
 	Then the page is successfully returned
 	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
 

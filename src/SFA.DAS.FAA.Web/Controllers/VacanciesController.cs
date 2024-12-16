@@ -26,17 +26,13 @@ public class VacanciesController(
 {
     [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
     [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
+    [Route("apprenticeship/nhs/{vacancyReference}", Name = RouteNames.NhsVacanciesReference, Order = 1)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request, NavigationSource source = NavigationSource.None, ApplicationsTab tab = ApplicationsTab.None)
     {
         var validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)
         {
             return NotFound();
-        }
-
-        if (!request.VacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
-        {
-            request.VacancyReference = $"VAC{request.VacancyReference}";
         }
 
         var result = await mediator.Send(new GetApprenticeshipVacancyQuery
