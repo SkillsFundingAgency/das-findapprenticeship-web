@@ -61,7 +61,7 @@ public class ApiContractTests(ScenarioContext context)
                 
                 // Compare property types
                 var actualPropertyTypeAsApiTypeName = GetOpenApiTypeName(actualProperty.PropertyType);
-                var expectedType =GetOpenApiFormat(propertySchema.Format) ?? propertySchema.Type.GetDisplayName().ToLower();
+                var expectedType = GetOpenApiFormat(propertySchema.Format) ?? propertySchema.Type.GetDisplayName().ToLower();
                 var isApiPropertyRequired = expectedSchema.RequiredProperties.Contains(propertyName);
                 var isNullable = expectedProperty.Value.IsNullableRaw;
                 var isEnum = propertySchema is { HasReference: true, ActualSchema.IsObject: false };
@@ -131,7 +131,7 @@ public class ApiContractTests(ScenarioContext context)
         Assert.That(validationErrors, Is.Empty, string.Join("\n",validationErrors));
     }
     
-    private string GetOpenApiTypeName(Type type)
+    private static string GetOpenApiTypeName(Type type)
     {
         return type switch
         {
@@ -156,7 +156,7 @@ public class ApiContractTests(ScenarioContext context)
         };
     }
 
-    private string? GetOpenApiFormat(string? propertySchemaFormat)
+    private static string? GetOpenApiFormat(string? propertySchemaFormat)
     {
         if (propertySchemaFormat == null)
         {
