@@ -30,16 +30,14 @@ public class ApiContractTests(ScenarioContext context)
 
         var validationErrors = new List<string>();
         
-        foreach (var definition in expectedTypes)
+        foreach (var (key, expectedSchema) in expectedTypes)
         {
-            var expectedSchema = definition.Value;
-
             // Match type from the assembly
             var actualType = apiAssembly.GetTypes()
                 .Where(t => t.GetCustomAttributes(typeof(ApiTypeAttribute), inherit: false).Any())
                 .FirstOrDefault(c => c.CustomAttributes.FirstOrDefault(x =>
                     x.AttributeType == typeof(ApiTypeAttribute) &&
-                    x.ConstructorArguments.FirstOrDefault().Value?.ToString() == definition.Key) != null);
+                    x.ConstructorArguments.FirstOrDefault().Value?.ToString() == key) != null);
 
             if (actualType == null)
             {
@@ -135,41 +133,27 @@ public class ApiContractTests(ScenarioContext context)
     
     private string GetOpenApiTypeName(Type type)
     {
-        switch (type)
+        return type switch
         {
-            case not null when type == typeof(string):
-                return "string";
-            case not null when type == typeof(int):
-                return "int";
-            case not null when type == typeof(long):
-                return "long";
-            case not null when type == typeof(int?):
-                return "int-nullable";
-            case not null when type == typeof(long?):
-                return "long-nullable";
-            case not null when type == typeof(float) || type == typeof(double) || type == typeof(decimal):
-                return "number";
-            case not null when type == typeof(float?) || type == typeof(double?) || type == typeof(decimal?):
-                return "number-nullable";
-            case not null when type == typeof(bool):
-                return "boolean";
-            case not null when type == typeof(bool?):
-                return "boolean-nullable";
-            case not null when type == typeof(DateTime):
-                return "datetime";
-            case not null when type == typeof(DateTime?):
-                return "datetime-nullable";
-            case not null when type == typeof(List<>):
-                return "array";
-            case not null when type.GetGenericArguments().Any() && type.GenericTypeArguments[0].IsEnum:
-                return "enum";
-            case not null when type.IsEnum:
-                return "enum";
-            case not null when type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>) || type.GetGenericTypeDefinition() == typeof(IEnumerable<>)):
-                return "array";
-            default:
-                return "object";
-        }
+            not null when type == typeof(string) => "string",
+            not null when type == typeof(int) => "int",
+            not null when type == typeof(long) => "long",
+            not null when type == typeof(int?) => "int-nullable",
+            not null when type == typeof(long?) => "long-nullable",
+            not null when type == typeof(float) || type == typeof(double) || type == typeof(decimal) => "number",
+            not null when type == typeof(float?) || type == typeof(double?) || type == typeof(decimal?) =>
+                "number-nullable",
+            not null when type == typeof(bool) => "boolean",
+            not null when type == typeof(bool?) => "boolean-nullable",
+            not null when type == typeof(DateTime) => "datetime",
+            not null when type == typeof(DateTime?) => "datetime-nullable",
+            not null when type == typeof(List<>) => "array",
+            not null when type.GetGenericArguments().Any() && type.GenericTypeArguments[0].IsEnum => "enum",
+            not null when type.IsEnum => "enum",
+            not null when type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>) ||
+                                                 type.GetGenericTypeDefinition() == typeof(IEnumerable<>)) => "array",
+            _ => "object"
+        };
     }
 
     private string? GetOpenApiFormat(string? propertySchemaFormat)
@@ -178,18 +162,14 @@ public class ApiContractTests(ScenarioContext context)
         {
             return null;
         }
-        
-        switch (propertySchemaFormat.ToLower())
+
+        return propertySchemaFormat.ToLower() switch
         {
-            case "date-time":
-                return "datetime";
-            case "int32":
-                return "int";
-            case "int64":
-                return "long";
-            default:
-                return null;
-        }
+            "date-time" => "datetime",
+            "int32" => "int",
+            "int64" => "long",
+            _ => null
+        };
     }
     
     private static bool IsRequired(PropertyInfo property)
