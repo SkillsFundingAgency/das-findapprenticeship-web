@@ -178,7 +178,7 @@ public class ApiContractTests(ScenarioContext context)
         {
             return null;
         }
-        // Map .NET types to OpenAPI types (simplified for demo purposes)
+        
         switch (propertySchemaFormat.ToLower())
         {
             case "date-time":
