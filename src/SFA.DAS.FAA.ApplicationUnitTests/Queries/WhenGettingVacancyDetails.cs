@@ -1,12 +1,6 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
+﻿using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries;
 
@@ -89,6 +83,7 @@ public class WhenGettingVacancyDetails
             result.Vacancy.Distance.Should().Be(expectedResponse.Distance);
             result.Vacancy.CourseRoute.Should().Be(expectedResponse.CourseRoute);
             result.Vacancy.CourseLevel.Should().Be(expectedResponse.CourseLevel);
+            result.Vacancy.VacancySource.Should().Be(expectedResponse.VacancySource);
         }
     }
 }

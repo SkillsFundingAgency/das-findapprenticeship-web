@@ -1,36 +1,37 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Domain.Enums
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 
 @section BackLink {
     <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
 }
 
-@if (Model.ShowAccountCreatedBanner)
-{
-    <partial name="_AccountCreatedBanner" />
-}
-
-
-@if (!Model.IsClosed)
-{
-    ViewData["Title"] = $"{Model.Title!} – Find an apprenticeship – GOV.UK";
-    <partial name="_LiveVacancy" model="Model"/>
-}
-else
-{
-    ViewData["Title"] = "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
-    if (User.Identity is { IsAuthenticated: false })
+@if(Model.VacancySource == VacancyDataSource.Raa){
+    @if (Model.ShowAccountCreatedBanner)
     {
-        <partial name="_ClosedVacancy" model="Model" />    
+        <partial name="_AccountCreatedBanner" />
+    }
+
+    @if (!Model.IsClosed)
+    {
+        ViewData["Title"] = $"{Model.Title!} – Find an apprenticeship – GOV.UK";
+        <partial name="_LiveVacancy" model="Model"/>
     }
     else
     {
-        <partial name="_ClosedVacancyWhenAuthenticated" model="Model" />
+        ViewData["Title"] = "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
+        if (User.Identity is { IsAuthenticated: false })
+        {
+            <partial name="_ClosedVacancy" model="Model" />    
+        }
+        else
+        {
+            <partial name="_ClosedVacancyWhenAuthenticated" model="Model" />
+        }
     }
-}
 
-@section AfterJSScripts {
-    <script>
+    @section AfterJSScripts {
+        <script>
         const directionsForm = document.getElementById('faa-directions-form')
         const directionsMap = document.getElementById('faa-directions-map')
 
@@ -38,4 +39,9 @@ else
             new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", directionsForm, directionsMap).init()
         }
     </script>
+    }
+}
+else{
+    ViewData["Title"] = "See more details about this apprenticeship on NHS Jobs - Find an apprenticeship - GOV.UK";
+    <partial name="_NhsVacancy" model="Model"/>
 }

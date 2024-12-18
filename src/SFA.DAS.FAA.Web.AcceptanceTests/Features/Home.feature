@@ -95,13 +95,43 @@ Scenario: Location search option selected no postcode
 Scenario: Navigate to search results page with no filters
 	When I navigate to the following url: /apprenticeships
 	Then the page is successfully returned
-	And the page content includes the following: 339 results found
+	And the page content includes the following: 351 results found
 
 @WireMockServer
 Scenario: Navigate to search results page with no results found
 	When I navigate to the following url: /apprenticeships?location=manchester
 	Then the page is successfully returned
 	And the page content includes the following: No results found
+
+@WireMockServer @RunOnEnvironment
+Scenario: Navigate to search results page with NHS search results found
+	When I navigate to the following url: /apprenticeships?sort=AgeAsc&searchTerm=NHS
+	Then the page is successfully returned
+	And the page content includes the following: NHS
+	
+@WireMockServer
+Scenario: Navigate to NHS vacancy details page with vacancy found by Id
+	When I navigate to the following url: /apprenticeship/4252449
+	Then the page is successfully returned
+	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
+
+@WireMockServer
+Scenario: Navigate to NHS vacancy details page with vacancy found by Id from saved search alert email
+	When I navigate to the following url: /apprenticeship/nhs/4252449
+	Then the page is successfully returned
+	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
+
+@WireMockServer
+Scenario: Navigate to NHS vacancy details page with vacancy found by reference
+	When I navigate to the following url: /apprenticeship/VACC9348-24-3199
+	Then the page is successfully returned
+	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
+
+@WireMockServer
+Scenario: Navigate to NHS vacancy details page with vacancy found by reference from saved search alert email
+	When I navigate to the following url: /apprenticeship/nhs/VACC9348-24-3199
+	Then the page is successfully returned
+	And the page content includes the following: See more details about this apprenticeship on NHS Jobs
 
 @WireMockServer
 Scenario: Navigate to vacancy details page with vacancy found

@@ -24,7 +24,7 @@ public static class AddRedirectRulesExtension
         
         //Account
         options.AddRedirect("(?i)register", "create-account", (int)HttpStatusCode.PermanentRedirect);
-        
+
         app.UseRewriter(options);
     }
 }
