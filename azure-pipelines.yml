@@ -8,14 +8,13 @@ variables:
 - name: SolutionBaseName
   value: SFA.DAS.FAA
 - name: BuildConfiguration
-  value: release
+  value: Release
 - name: BuildPlatform
   value: any cpu
 - group: RELEASE Management Resources
 - group: RELEASE das-findapprenticeship-web
 - name: Deploy
   value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
-
 
 resources:
   repositories:
@@ -58,6 +57,12 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
 
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: AT
+
 - stage: Deploy_TEST
   dependsOn: Build
   displayName: Deploy to TEST
@@ -71,6 +76,12 @@ stages:
       Environment: TEST
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
+
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: TEST
 
 - stage: Deploy_TEST2
   dependsOn: Build
@@ -86,6 +97,12 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
 
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: TEST2
+
 - stage: Deploy_PP
   dependsOn: Build
   displayName: Deploy to PP
@@ -99,6 +116,12 @@ stages:
       Environment: PP
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DIG-PreProd-ARM
+
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: PP
 
 - stage: Deploy_PROD
   dependsOn: Build
@@ -114,6 +137,12 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DIG-Prod-ARM
 
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: PROD
+
 - stage: Deploy_MO
   dependsOn: Build
   displayName: Deploy to MO
@@ -127,6 +156,12 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-ASM-ModelOffice-ARM
 
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: MO
+
 - stage: Deploy_DEMO
   dependsOn: Build
   displayName: Deploy to DEMO
@@ -139,3 +174,9 @@ stages:
       Environment: DEMO
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
+
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: DEMO

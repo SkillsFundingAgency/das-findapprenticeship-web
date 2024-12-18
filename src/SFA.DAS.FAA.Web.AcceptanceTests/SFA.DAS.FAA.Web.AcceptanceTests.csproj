@@ -5,6 +5,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
+		<OutputType>Library</OutputType>
+		<RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -53,4 +55,5 @@
 	    <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
 	  </SpecFlowFeatureFiles>
 	</ItemGroup>
+
 </Project>
