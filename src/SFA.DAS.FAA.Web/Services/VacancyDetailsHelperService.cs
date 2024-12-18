@@ -7,11 +7,6 @@ namespace SFA.DAS.FAA.Web.Services
 {
     public static partial class VacancyDetailsHelperService
     {
-        [System.Text.RegularExpressions.GeneratedRegex(@"^(http?|https):\/\/[^\s\/$.?#].[^\s]*$")]
-        private static partial Regex WebsiteUrlRegex();
-        [GeneratedRegex(@"\d+\.\d{2}")]
-        private static partial Regex NhsWageAmountRegex();
-
         private const decimal NhsLowerWageAmountLimit = 100.00M;
         private const decimal NhsUpperWageAmountLimit = 5000.00M;
         
@@ -57,7 +52,10 @@ namespace SFA.DAS.FAA.Web.Services
         public static string? FormatEmployerWebsiteUrl(string? url)
         {
             if (string.IsNullOrEmpty(url)) return url;
-            return !WebsiteUrlRegex().IsMatch(url) ? $"http://{url}" : url;
+
+            var websiteUrlRegex = new Regex(@"^(http?|https):\/\/[^\s\/$.?#].[^\s]*$", RegexOptions.None, TimeSpan.FromSeconds(3));
+
+            return !websiteUrlRegex.IsMatch(url) ? $"http://{url}" : url;
         }
 
         public static string GetPostedDate(this DateTime postedDate)
@@ -86,9 +84,10 @@ namespace SFA.DAS.FAA.Web.Services
                 .Replace("�", string.Empty) // Application env & Pipeline doesn't recognise the Pound Sign
                 .Replace("£", string.Empty) 
                 .Replace("\u00A3", string.Empty) // Unicode for Pound Sign
-                .Replace("u+00A3", string.Empty);
-            
-            var matches = NhsWageAmountRegex().Matches(wageAmountText);
+            .Replace("u+00A3", string.Empty);
+
+            var wageTextRegex = new Regex(@"\d+\.\d{2}", RegexOptions.None, TimeSpan.FromSeconds(3));
+            var matches = wageTextRegex.Matches(wageAmountText);
 
             if (matches.Count == 2)
             {
@@ -117,7 +116,5 @@ namespace SFA.DAS.FAA.Web.Services
                 _ => wageAmountText
             };
          }
-
-       
     }
 }
