@@ -1,0 +1,35 @@
+parameters:
+  BuildConfiguration:
+  Environment:
+
+jobs:
+- job: RunAcceptanceTests
+  displayName: Run Acceptance Tests in ${{ parameters.Environment }}
+  pool:
+    vmImage: 'windows-latest'
+    workspace:
+      clean: all
+  variables:
+  - group: BUILD Management Resources
+
+  steps:
+  - task: PowerShell@2
+    displayName: Find Acceptance Test DLL
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Searching for Acceptance Test DLL..."
+        $dllPath = Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)\acceptance-tests" -Filter "SFA.DAS.FAA.Web.AcceptanceTests.dll" | Select-Object -First 1 -ExpandProperty FullName
+        if (-not $dllPath) {
+            Write-Error "Acceptance Test DLL not found."
+            exit 1
+        }
+        Write-Host "Found Acceptance Test DLL at: $dllPath"
+        Write-Host "##vso[task.setvariable variable=AcceptanceTestDllPath]$dllPath"
+
+  - task: DotNetCoreCLI@2
+    displayName: Execute Acceptance Tests
+    inputs:
+      command: custom
+      custom: 'vstest'
+      arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=RunOnEnvironment" --environment=${{ parameters.Environment }}'
