@@ -3,16 +3,17 @@ using SFA.DAS.FAA.Domain.BrowseByInterests;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
+[ApiType("SearchApprenticeshipsApiResponse")]
 public class GetSearchResultsApiResponse
 {
     [JsonProperty("totalApprenticeshipCount")]
     public int Total { get; set; }
 
     [JsonProperty("totalCompetitiveVacanciesCount")]
-    public int TotalCompetitiveVacanciesCount { get; init; }
+    public long TotalCompetitiveVacanciesCount { get; init; }
 
     [JsonProperty("totalFound")]
-    public int TotalFound { get; set; }
+    public long TotalFound { get; set; }
     
     [JsonProperty("vacancies")]
     public List<Vacancies> Vacancies { get; set; }

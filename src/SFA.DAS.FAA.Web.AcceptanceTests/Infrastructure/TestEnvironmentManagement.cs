@@ -23,13 +23,16 @@ public sealed class TestEnvironmentManagement
     private static IWireMockServer _staticApiServer;
     private Mock<IApiClient> _mockApiClient;
     private readonly string? _environment;
+    private readonly string? _outerApi;
     private static TestServer _server;
 
     public TestEnvironmentManagement(ScenarioContext context)
     {
         _context = context;
-        var environment = Environment.GetEnvironmentVariable("ENVIRONMENT");
-        _environment = !string.IsNullOrEmpty(environment) ? $"https://{DomainExtensions.GetDomain(environment)}" : null;
+        var environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
+        _outerApi = Environment.GetEnvironmentVariable("OUTERAPI");
+        
+        _environment = !string.IsNullOrEmpty(environmentName) ? $"https://{DomainExtensions.GetDomain(environmentName)}" : null;
         Console.WriteLine($"Environment: {_environment}");
     }
 
@@ -63,6 +66,17 @@ public sealed class TestEnvironmentManagement
 
         _context.Set<TestServer>(null!, ContextKeys.TestServer);
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
+    }
+
+    [BeforeScenario("ApiContract")]
+    public void SetupContractTests()
+    {
+        var apiSpecUrl = "";
+        if (!string.IsNullOrEmpty(_outerApi))
+        {
+            apiSpecUrl = $"https://{_outerApi}/swagger/v1/swagger.json";
+        }
+        _context.Set(apiSpecUrl, ContextKeys.ApiSpecUrl);
     }
 
     [BeforeScenario("MockApiClient")]
