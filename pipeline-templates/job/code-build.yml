@@ -19,6 +19,16 @@ jobs:
       ContinueOnVulnerablePackageScanError: true
 
   - task: DotNetCoreCLI@2
+    displayName: Publish - dotnet publish ${{ parameters.SolutionBaseName }}
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: src/${{ parameters.SolutionBaseName }}.Web/${{ parameters.SolutionBaseName }}.Web.csproj
+      arguments: -o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build
+      modifyOutputPath: true
+      zipAfterPublish: true
+
+  - task: DotNetCoreCLI@2
     displayName: Restore Dependencies
     inputs:
       command: restore
@@ -31,12 +41,28 @@ jobs:
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
       arguments: '--configuration ${{ parameters.BuildConfiguration }} --output $(build.artifactstagingdirectory)/acceptance-tests'
 
+  - task: PowerShell@2
+    displayName: Verify Files After Build
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Files after Build step:"
+        Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)"
+
   - task: DotNetCoreCLI@2
-    displayName: Publish Acceptance Tests
+    isplayName: Publish Acceptance Tests
     inputs:
       command: publish
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
-      arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests/output'
+      arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests'
+
+  - task: PowerShell@2
+    displayName: Verify Files After Publish
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Files after Publish step:"
+        Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)"
 
   - task: PowerShell@2
     displayName: Inspect Acceptance Tests Directory
@@ -45,6 +71,13 @@ jobs:
       script: |
         Get-Item "$(build.artifactstagingdirectory)/acceptance-tests" | Format-List
 
+  - task: CopyFiles@2
+    displayName: Copy Files to $(build.artifactstagingdirectory)/publish
+    inputs:
+      Contents: |
+        azure/**
+      TargetFolder: $(build.artifactstagingdirectory)/publish
+      OverWrite: true
 
   - task: PublishPipelineArtifact@1
     displayName: Publish Build Artifacts
