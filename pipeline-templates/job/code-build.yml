@@ -36,7 +36,15 @@ jobs:
     inputs:
       command: publish
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
-      arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests'
+      arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests/output'
+
+  - task: PowerShell@2
+    displayName: Inspect Acceptance Tests Directory
+    inputs:
+      targetType: 'inline'
+      script: |
+        Get-Item "$(build.artifactstagingdirectory)/acceptance-tests" | Format-List
+
 
   - task: PublishPipelineArtifact@1
     displayName: Publish Build Artifacts
