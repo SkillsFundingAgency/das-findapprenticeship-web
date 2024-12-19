@@ -27,14 +27,16 @@ jobs:
       projects: src/${{ parameters.SolutionBaseName }}.Web/${{ parameters.SolutionBaseName }}.Web.csproj
       arguments: '-o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build'
       modifyOutputPath: true
-      zipAfterPublish: true  # This ensures the web project is zipped as required by deploy.yml
+      zipAfterPublish: true  # Keeps the expected SFA.DAS.FAA.Web.zip intact
 
+  # Restore Dependencies for Acceptance Tests
   - task: DotNetCoreCLI@2
     displayName: Restore Dependencies
     inputs:
       command: restore
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
 
+  # Build Acceptance Tests
   - task: DotNetCoreCLI@2
     displayName: Build Acceptance Tests
     inputs:
@@ -42,59 +44,24 @@ jobs:
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
       arguments: '--configuration ${{ parameters.BuildConfiguration }} --output $(build.artifactstagingdirectory)/acceptance-tests'
 
-  - task: PowerShell@2
-    displayName: Clean Acceptance Tests Directory
-    inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "Cleaning acceptance-tests directory..."
-        if (Test-Path "$(build.artifactstagingdirectory)/acceptance-tests") {
-            Remove-Item -Recurse -Force "$(build.artifactstagingdirectory)/acceptance-tests"
-        }
-
+  # Publish Acceptance Tests
   - task: DotNetCoreCLI@2
     displayName: Publish Acceptance Tests
     inputs:
       command: publish
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
-      arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests/output'
+      arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests'
 
-  # Archive Acceptance Test Files (Manual zipping)
+  # Archive Acceptance Test Files (Optional)
   - task: ArchiveFiles@2
     displayName: Archive Acceptance Test Files
     inputs:
-      rootFolderOrFile: '$(build.artifactstagingdirectory)/acceptance-tests/output'
+      rootFolderOrFile: '$(build.artifactstagingdirectory)/acceptance-tests'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: '$(build.artifactstagingdirectory)/acceptance-tests/SFA.DAS.FAA.AcceptanceTests.zip'
 
-  - task: PowerShell@2
-    displayName: Verify Files After Publish
-    inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "Inspecting acceptance-tests directory after publish..."
-        Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)/acceptance-tests"
-
-  - task: PowerShell@2
-    displayName: Inspect Acceptance Tests Directory
-    inputs:
-      targetType: 'inline'
-      script: |
-        if (Test-Path "$(build.artifactstagingdirectory)/acceptance-tests") {
-            Get-Item "$(build.artifactstagingdirectory)/acceptance-tests" | Format-List
-        } else {
-            Write-Host "Acceptance-tests directory does not exist."
-        }
-
-  - task: CopyFiles@2
-    displayName: Copy Files to $(build.artifactstagingdirectory)/publish
-    inputs:
-      Contents: |
-        azure/**
-      TargetFolder: $(build.artifactstagingdirectory)/publish
-      OverWrite: true
-
+  # Publish the Artifacts
   - task: PublishPipelineArtifact@1
     displayName: Publish Build Artifacts
     inputs:
