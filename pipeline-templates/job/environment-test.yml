@@ -14,6 +14,14 @@ jobs:
 
   steps:
   - task: PowerShell@2
+    displayName: List Files in Acceptance Tests Directory
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Listing files in $(build.artifactstagingdirectory)/acceptance-tests:"
+        Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)\acceptance-tests"
+
+  - task: PowerShell@2
     displayName: Find Acceptance Test DLL
     inputs:
       targetType: 'inline'
