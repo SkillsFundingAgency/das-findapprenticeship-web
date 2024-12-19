@@ -42,34 +42,40 @@ jobs:
       arguments: '--configuration ${{ parameters.BuildConfiguration }} --output $(build.artifactstagingdirectory)/acceptance-tests'
 
   - task: PowerShell@2
-    displayName: Verify Files After Build
+    displayName: Clean Acceptance Tests Directory
     inputs:
       targetType: 'inline'
       script: |
-        Write-Host "Files after Build step:"
-        Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)"
+        Write-Host "Cleaning acceptance-tests directory..."
+        if (Test-Path "$(build.artifactstagingdirectory)/acceptance-tests") {
+            Remove-Item -Recurse -Force "$(build.artifactstagingdirectory)/acceptance-tests"
+        }
 
   - task: DotNetCoreCLI@2
     displayName: Publish Acceptance Tests
     inputs:
       command: publish
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
-      arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests'
+      arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests/output'
 
   - task: PowerShell@2
     displayName: Verify Files After Publish
     inputs:
       targetType: 'inline'
       script: |
-        Write-Host "Files after Publish step:"
-        Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)"
+        Write-Host "Inspecting acceptance-tests directory after publish..."
+        Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)/acceptance-tests"
 
   - task: PowerShell@2
     displayName: Inspect Acceptance Tests Directory
     inputs:
       targetType: 'inline'
       script: |
-        Get-Item "$(build.artifactstagingdirectory)/acceptance-tests" | Format-List
+        if (Test-Path "$(build.artifactstagingdirectory)/acceptance-tests") {
+            Get-Item "$(build.artifactstagingdirectory)/acceptance-tests" | Format-List
+        } else {
+            Write-Host "Acceptance-tests directory does not exist."
+        }
 
   - task: CopyFiles@2
     displayName: Copy Files to $(build.artifactstagingdirectory)/publish
