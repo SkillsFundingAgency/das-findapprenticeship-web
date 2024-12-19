@@ -18,15 +18,16 @@ jobs:
     parameters:
       ContinueOnVulnerablePackageScanError: true
 
+  # Publish Web Project with zipAfterPublish
   - task: DotNetCoreCLI@2
     displayName: Publish - dotnet publish ${{ parameters.SolutionBaseName }}
     inputs:
       command: publish
       publishWebProjects: false
       projects: src/${{ parameters.SolutionBaseName }}.Web/${{ parameters.SolutionBaseName }}.Web.csproj
-      arguments: -o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build
+      arguments: '-o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build'
       modifyOutputPath: true
-      zipAfterPublish: true
+      zipAfterPublish: true  # This ensures the web project is zipped as required by deploy.yml
 
   - task: DotNetCoreCLI@2
     displayName: Restore Dependencies
@@ -57,6 +58,15 @@ jobs:
       command: publish
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
       arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests/output'
+
+  # Archive Acceptance Test Files (Manual zipping)
+  - task: ArchiveFiles@2
+    displayName: Archive Acceptance Test Files
+    inputs:
+      rootFolderOrFile: '$(build.artifactstagingdirectory)/acceptance-tests/output'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(build.artifactstagingdirectory)/acceptance-tests/SFA.DAS.FAA.AcceptanceTests.zip'
 
   - task: PowerShell@2
     displayName: Verify Files After Publish
