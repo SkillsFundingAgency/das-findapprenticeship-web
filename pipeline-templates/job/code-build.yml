@@ -50,7 +50,7 @@ jobs:
         Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)"
 
   - task: DotNetCoreCLI@2
-    isplayName: Publish Acceptance Tests
+    displayName: Publish Acceptance Tests
     inputs:
       command: publish
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
