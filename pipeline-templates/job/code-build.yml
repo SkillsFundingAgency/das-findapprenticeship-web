@@ -20,19 +20,19 @@ jobs:
     parameters:
       ContinueOnVulnerablePackageScanError: true
 
-  # Ensure the correct .NET version and NuGet are used
-  - task: UseDotNet@2
-    displayName: Install .NET SDK and NuGet 5.8+
-    inputs:
-      packageType: sdk
-      version: '6.0.x'  # Adjust to your required .NET SDK version
-      includePreview: false
-
-  - task: UseDotNet@2
+  # Install NuGet 5.8+
+  - task: NuGetToolInstaller@1
     displayName: Install NuGet 5.8+
     inputs:
-      packageType: nuget
-      version: '5.8.0'
+      versionSpec: '5.8.0'
+
+  # Install .NET SDK
+  - task: UseDotNet@2
+    displayName: Install .NET SDK 6.0.x
+    inputs:
+      packageType: sdk
+      version: '6.0.x'
+      includePreview: false
 
   # Clean output directory to avoid conflicts
   - task: PowerShell@2
