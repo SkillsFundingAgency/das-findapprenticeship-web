@@ -13,22 +13,6 @@ jobs:
   - group: BUILD Management Resources
 
   steps:
-  # Extract the Acceptance Tests ZIP
-  - task: ExtractFiles@1
-    displayName: Extract Acceptance Tests
-    inputs:
-      archiveFilePatterns: '$(build.artifactstagingdirectory)/acceptance-tests/SFA.DAS.FAA.Web.AcceptanceTests.zip'
-      destinationFolder: '$(build.artifactstagingdirectory)/acceptance-tests/extracted'
-
-  # List Files in Extracted Acceptance Tests Directory
-  - task: PowerShell@2
-    displayName: List Files in Acceptance Tests Directory
-    inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "Listing files in $(build.artifactstagingdirectory)/acceptance-tests/extracted:"
-        Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)\acceptance-tests\extracted"
-
   # Find Acceptance Test DLL
   - task: PowerShell@2
     displayName: Find Acceptance Test DLL
@@ -36,7 +20,7 @@ jobs:
       targetType: 'inline'
       script: |
         Write-Host "Searching for Acceptance Test DLL..."
-        $dllPath = Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)\acceptance-tests\extracted" -Filter "SFA.DAS.FAA.Web.AcceptanceTests.dll" | Select-Object -First 1 -ExpandProperty FullName
+        $dllPath = Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)\acceptance-tests\" -Filter "SFA.DAS.FAA.Web.AcceptanceTests.dll" | Select-Object -First 1 -ExpandProperty FullName
         if (-not $dllPath) {
             Write-Error "Acceptance Test DLL not found."
             exit 1
