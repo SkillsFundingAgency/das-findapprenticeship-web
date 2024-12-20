@@ -39,6 +39,5 @@ jobs:
   - task: DotNetCoreCLI@2
     displayName: Execute Acceptance Tests
     inputs:
-      command: custom
-      custom: 'vstest'
+      command: test
       arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=RunOnEnvironment" --environment=${{ parameters.Environment }}'
