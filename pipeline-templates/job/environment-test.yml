@@ -34,10 +34,19 @@ jobs:
         }
         Write-Host "Found Acceptance Test DLL at: $dllPath"
         Write-Host "##vso[task.setvariable variable=AcceptanceTestDllPath]$dllPath"
-
-  # Execute the Acceptance Tests
+  
+  # Execute the API contract Tests
+  - task: DotNetCoreCLI@2
+    displayName: Execute API Contract Tests
+    inputs:
+      command: test
+      arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=ApiContract" --environment "OUTERAPI=${{ parameters.Environment }}-apim-faa-api.apprenticeships.education.gov.uk"'
+      
+    # Execute the Acceptance Tests
   - task: DotNetCoreCLI@2
     displayName: Execute Acceptance Tests
     inputs:
       command: test
       arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=RunOnEnvironment" --environment "ENVIRONMENT=${{ parameters.Environment }}"'
+      
+ 
