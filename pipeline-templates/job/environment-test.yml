@@ -40,4 +40,4 @@ jobs:
     displayName: Execute Acceptance Tests
     inputs:
       command: test
-      arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=RunOnEnvironment" --environment=${{ parameters.Environment }}'
+      arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=RunOnEnvironment" --environment "ENVIRONMENT=${{ parameters.Environment }}"'
