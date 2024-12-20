@@ -13,14 +13,21 @@ jobs:
   - group: BUILD Management Resources
 
   steps:
-  # Find Acceptance Test DLL
+  # Download the Build Artifacts
+  - task: DownloadPipelineArtifact@2
+    displayName: Download Build Artifacts
+    inputs:
+      artifactName: SFA.DAS.FAA
+      targetPath: $(build.artifactstagingdirectory)
+
+  # Find the Acceptance Test DLL
   - task: PowerShell@2
     displayName: Find Acceptance Test DLL
     inputs:
       targetType: 'inline'
       script: |
         Write-Host "Searching for Acceptance Test DLL..."
-        $dllPath = Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)\acceptance-tests\" -Filter "SFA.DAS.FAA.Web.AcceptanceTests.dll" | Select-Object -First 1 -ExpandProperty FullName
+        $dllPath = Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)\acceptance-tests" -Filter "SFA.DAS.FAA.Web.AcceptanceTests.dll" | Select-Object -First 1 -ExpandProperty FullName
         if (-not $dllPath) {
             Write-Error "Acceptance Test DLL not found."
             exit 1
@@ -28,7 +35,7 @@ jobs:
         Write-Host "Found Acceptance Test DLL at: $dllPath"
         Write-Host "##vso[task.setvariable variable=AcceptanceTestDllPath]$dllPath"
 
-  # Execute Acceptance Tests
+  # Execute the Acceptance Tests
   - task: DotNetCoreCLI@2
     displayName: Execute Acceptance Tests
     inputs:
