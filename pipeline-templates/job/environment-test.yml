@@ -13,14 +13,12 @@ jobs:
   - group: BUILD Management Resources
 
   steps:
-  # Download the Build Artifacts
   - task: DownloadPipelineArtifact@2
     displayName: Download Build Artifacts
     inputs:
       artifactName: SFA.DAS.FAA
       targetPath: $(build.artifactstagingdirectory)
 
-  # Find the Acceptance Test DLL
   - task: PowerShell@2
     displayName: Find Acceptance Test DLL
     inputs:
@@ -34,19 +32,33 @@ jobs:
         }
         Write-Host "Found Acceptance Test DLL at: $dllPath"
         Write-Host "##vso[task.setvariable variable=AcceptanceTestDllPath]$dllPath"
-  
-  # Execute the API contract Tests
+
+  # Execute the API Contract Tests
   - task: DotNetCoreCLI@2
     displayName: Execute API Contract Tests
     inputs:
       command: test
       arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=ApiContract" --environment "OUTERAPI=${{ parameters.Environment }}-apim-faa-api.apprenticeships.education.gov.uk"'
-      
-    # Execute the Acceptance Tests
+    continueOnError: true
+
+  - task: PublishTestResults@2
+    displayName: Publish API Contract Test Results
+    inputs:
+      testResultsFiles: '**/*.trx'
+      testRunTitle: "API Contract Tests"
+      failTaskOnFailedTests: false
+
+  # Execute the Acceptance Tests
   - task: DotNetCoreCLI@2
     displayName: Execute Acceptance Tests
     inputs:
       command: test
       arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=RunOnEnvironment" --environment "ENVIRONMENT=${{ parameters.Environment }}"'
-      
- 
+    continueOnError: true
+
+  - task: PublishTestResults@2
+    displayName: Publish Acceptance Test Results
+    inputs:
+      testResultsFiles: '**/*.trx'
+      testRunTitle: "Acceptance Tests"
+      failTaskOnFailedTests: false
