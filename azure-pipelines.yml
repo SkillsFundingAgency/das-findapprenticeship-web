@@ -61,7 +61,7 @@ stages:
     parameters:
       BuildConfiguration: $(BuildConfiguration)
       SolutionBaseName: $(SolutionBaseName)
-      Environment: test
+      Environment: at
 
 - stage: Deploy_TEST
   dependsOn: Build
