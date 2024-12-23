@@ -16,7 +16,6 @@ variables:
 - name: Deploy
   value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
 
-
 resources:
   repositories:
   - repository: self
@@ -58,6 +57,18 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
 
+- stage: Test_AT
+  dependsOn: Deploy_AT
+  displayName: Test AT Environment
+  variables:
+  - group: DevTest Management Resources
+  jobs:
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: at
+
 - stage: Deploy_TEST
   dependsOn: Build
   displayName: Deploy to TEST
@@ -71,6 +82,18 @@ stages:
       Environment: TEST
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
+
+# - stage: Test_TEST
+#   dependsOn: Deploy_TEST
+#   displayName: Test TEST Environment
+#   variables:
+#   - group: DevTest Management Resources
+#   jobs:
+#   - template: pipeline-templates/job/environment-test.yml
+#     parameters:
+#       BuildConfiguration: $(BuildConfiguration)
+#       SolutionBaseName: $(SolutionBaseName)
+#       Environment: test
 
 - stage: Deploy_TEST2
   dependsOn: Build
@@ -86,6 +109,18 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
 
+# - stage: Test_TEST2
+#   dependsOn: Deploy_TEST2
+#   displayName: Test TEST2 Environment
+#   variables:
+#   - group: DevTest Management Resources
+#   jobs:
+#   - template: pipeline-templates/job/environment-test.yml
+#     parameters:
+#       BuildConfiguration: $(BuildConfiguration)
+#       SolutionBaseName: $(SolutionBaseName)
+#       Environment: TEST2
+
 - stage: Deploy_PP
   dependsOn: Build
   displayName: Deploy to PP
@@ -99,6 +134,18 @@ stages:
       Environment: PP
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DIG-PreProd-ARM
+
+# - stage: Test_PP
+#   dependsOn: Deploy_PP
+#   displayName: Test PP Environment
+#   variables:
+#   - group: PreProd Management Resources
+#   jobs:
+#   - template: pipeline-templates/job/environment-test.yml
+#     parameters:
+#       BuildConfiguration: $(BuildConfiguration)
+#       SolutionBaseName: $(SolutionBaseName)
+#       Environment: pp
 
 - stage: Deploy_PROD
   dependsOn: Build
@@ -114,6 +161,18 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DIG-Prod-ARM
 
+# - stage: Test_PROD
+#   dependsOn: Deploy_PROD
+#   displayName: Test PROD Environment
+#   variables:
+#   - group: PROD Management Resources
+#   jobs:
+#   - template: pipeline-templates/job/environment-test.yml
+#     parameters:
+#       BuildConfiguration: $(BuildConfiguration)
+#       SolutionBaseName: $(SolutionBaseName)
+#       Environment: prod
+
 - stage: Deploy_MO
   dependsOn: Build
   displayName: Deploy to MO
@@ -126,6 +185,18 @@ stages:
       Environment: MO
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-ASM-ModelOffice-ARM
+
+# - stage: Test_MO
+#   dependsOn: Deploy_MO
+#   displayName: Test MO Environment
+#   variables:
+#   - group: MO Management Resources
+#   jobs:
+#   - template: pipeline-templates/job/environment-test.yml
+#     parameters:
+#       BuildConfiguration: $(BuildConfiguration)
+#       SolutionBaseName: $(SolutionBaseName)
+#       Environment: mo
 
 - stage: Deploy_DEMO
   dependsOn: Build
@@ -140,3 +211,15 @@ stages:
       Environment: DEMO
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
+
+# - stage: Test_DEMO
+#   dependsOn: Deploy_DEMO
+#   displayName: Test DEMO Environment
+#   variables:
+#   - group: DevTest Management Resources
+#   jobs:
+#   - template: pipeline-templates/job/environment-test.yml
+#     parameters:
+#       BuildConfiguration: $(BuildConfiguration)
+#       SolutionBaseName: $(SolutionBaseName)
+#       Environment: demo
