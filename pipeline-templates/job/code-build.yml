@@ -18,13 +18,6 @@ jobs:
     parameters:
       ContinueOnVulnerablePackageScanError: true
 
-  # - task: UseDotNet@2
-  #   displayName: Install .NET SDK 8.0
-  #   inputs:
-  #     packageType: sdk
-  #     version: '8.0.x'
-  #     includePreview: false
-
   - task: DotNetCoreCLI@2
     displayName: Restore Dependencies for WebAcceptanceTests
     inputs:
