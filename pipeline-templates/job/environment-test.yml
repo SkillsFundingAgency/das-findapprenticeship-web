@@ -7,7 +7,7 @@ jobs:
 - job: RunEnvironmentTests
   displayName: Run Environment Tests for ${{ parameters.Environment }}
   pool:
-    vmImage: 'windows-latest'
+    name: DAS - Continuous Integration Agents
     workspace:
       clean: all
   variables:
