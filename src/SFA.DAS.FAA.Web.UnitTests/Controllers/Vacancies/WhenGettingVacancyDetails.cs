@@ -26,7 +26,7 @@ public class WhenGettingVacancyDetails
 {
     [Test]
     [MoqInlineAutoData("VAC1000012484","VAC1000012484")]
-    [MoqInlineAutoData("VAC1000012484","1000012484")]
+    [MoqInlineAutoData("1000012484","1000012484")]
     public async Task Then_The_Mediator_Query_Is_Called_And_VacancyDetails_View_Returned(
         string queryVal,
         string vacancyReference,
@@ -154,7 +154,7 @@ public class WhenGettingVacancyDetails
     [MoqInlineAutoData(NavigationSource.None, null, "https://baseUrl/apprenticeshipsearch", "VAC1000012484","VAC1000012484")]
     [MoqInlineAutoData(NavigationSource.None, null, "", "VAC1000012484", "VAC1000012484")]
     [MoqInlineAutoData(NavigationSource.Applications, null, "https://baseUrl/apprenticeshipsearch", "VAC1000012484", "VAC1000012484")]
-    [MoqInlineAutoData(NavigationSource.Applications,"some url", "some url", "VAC1000012484","1000012484")]
+    [MoqInlineAutoData(NavigationSource.Applications,"some url", "some url", "1000012484","1000012484")]
     public async Task Then_The_Mediator_Query_Is_Called_And_VacancyDetails_View_Returned_With_Expected_BackLink(
         NavigationSource source,
         string previousPageUrl,
