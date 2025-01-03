@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.Apply.GetTrainingCourse;
 
-namespace SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
+namespace SFA.DAS.FAA.Application.Queries.Apply.GetDeleteTrainingCourse;
 public class GetDeleteTrainingCourseQueryResult
 {
     public Guid Id { get; set; }
@@ -8,17 +8,16 @@ public class GetDeleteTrainingCourseQueryResult
     public string CourseName { get; set; }
     public int YearAchieved { get; set; }
 
-    public static implicit operator GetDeleteTrainingCourseQueryResult(GetDeleteTrainingCourseApiResponse source)
+    public static GetDeleteTrainingCourseQueryResult From(GetDeleteTrainingCourseApiResponse source)
     {
-        if (source == null)
-            return null;
-
-        return new GetDeleteTrainingCourseQueryResult
-        {
-            Id = source.Id,
-            ApplicationId = source.ApplicationId,
-            CourseName = source.CourseName,
-            YearAchieved = source.YearAchieved
-        };
+        return source is null
+            ? null
+            : new GetDeleteTrainingCourseQueryResult
+            {
+                Id = source.Id,
+                ApplicationId = source.ApplicationId,
+                CourseName = source.CourseName,
+                YearAchieved = source.YearAchieved
+            };
     }
 }

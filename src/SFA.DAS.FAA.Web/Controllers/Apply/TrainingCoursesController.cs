@@ -5,6 +5,7 @@ using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.DeleteTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.UpdateTrainingCourse;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.TrainingCourses;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteTrainingCourse;
 using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
 using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourses;
 using SFA.DAS.FAA.Domain.Enums;
@@ -183,6 +184,11 @@ public class TrainingCoursesController(IMediator mediator) : Controller
             CandidateId = (Guid)User.Claims.CandidateId()!,
             TrainingCourseId = trainingCourseId
         });
+
+        if (result is null)
+        {
+            return RedirectToRoute(RouteNames.ApplyApprenticeship.TrainingCourses, new { applicationId });
+        }
 
         var viewModel = (DeleteTrainingCourseViewModel)result;
 
