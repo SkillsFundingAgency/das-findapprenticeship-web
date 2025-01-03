@@ -8,7 +8,7 @@
     <div class="govuk-grid-column-three-quarters">
         <partial name="_ApplicationSubmittedPartial" model="@Model.VacancyInfo" />
         
-        @if (!Model.VacancyInfo.HasAnsweredEqualityQuestions)
+        @* @if (!Model.VacancyInfo.HasAnsweredEqualityQuestions) *@
         {
             <form class="form" method="post">
                 <div class="govuk-form-group" das-highlight-error-for="AnswerEqualityQuestions" error-class="govuk-form-group--error">
