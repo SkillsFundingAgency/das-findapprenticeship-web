@@ -10,9 +10,9 @@ using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply
 {
@@ -26,6 +26,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply
             GetIndexQueryResult result,
             GetIndexRequest request,
             [Frozen] Mock<IDateTimeService> dateTimeService,
+            [Frozen] Mock<ICacheStorageService> cacheStorageService,
             [Frozen] Mock<IMediator> mediator)
         {
 	        var mockUrlHelper = new Mock<IUrlHelper>();
@@ -38,7 +39,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply
                     && c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(result);
 
-			var controller = new ApplyController(mediator.Object, dateTimeService.Object)
+			var controller = new ApplyController(mediator.Object, cacheStorageService.Object, dateTimeService.Object)
 			{
 				ControllerContext = new ControllerContext
 				{

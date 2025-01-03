@@ -7,6 +7,7 @@ using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Applications;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Models.Apply.Base;
 using SFA.DAS.FAA.Web.Services;
@@ -273,13 +274,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
             await cacheStorageService.Remove(cacheKey);
 
-            if (applicationId == null)
-            {
-                return RedirectToRoute(RouteNames.Settings);
-            }
-
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation,
-                new { applicationId });
+            return applicationId == null 
+                ? RedirectToRoute(RouteNames.Settings) 
+                : RedirectToRoute(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted, showEqualityQuestionsBanner = true });
         }
 
         private async Task<EqualityQuestionsModel?> GetEqualityQuestionsFromCacheMemory()
