@@ -1,10 +1,8 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteTrainingCourse;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
@@ -18,14 +16,7 @@ public class WhenGettingDeleteTrainingCourseRequest
         [Greedy] TrainingCoursesController controller)
     {
         result.ApplicationId = query.ApplicationId;
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, query.CandidateId.ToString()) }))
-            }
-        };
+        controller.AddControllerContext().WithUser(query.CandidateId);
 
         mediator.Setup(x => x.Send(It.Is<GetDeleteTrainingCourseQuery>(c =>
                 c.ApplicationId == query.ApplicationId
@@ -43,5 +34,23 @@ public class WhenGettingDeleteTrainingCourseRequest
             actual?.Model.Should().NotBeNull();
             actualModel?.ApplicationId.Should().Be(query.ApplicationId);
         }
+    }
+    
+    [Test, MoqAutoData]
+    public async Task Then_Browser_Is_Redirected_When_Training_Course_Not_Found(
+        GetDeleteTrainingCourseQuery query,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] TrainingCoursesController controller)
+    {
+        controller.AddControllerContext().WithUser(query.CandidateId);
+
+        mediator
+            .Setup(x => x.Send(It.IsAny<GetDeleteTrainingCourseQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((GetDeleteTrainingCourseQueryResult)null);
+
+        var actual = await controller.Delete(query.ApplicationId, query.TrainingCourseId) as RedirectToRouteResult;
+
+        actual.Should().NotBeNull();
+        actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.TrainingCourses);
     }
 }
