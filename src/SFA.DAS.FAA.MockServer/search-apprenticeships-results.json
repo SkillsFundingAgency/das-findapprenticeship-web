@@ -1,6 +1,7 @@
 {
   "totalApprenticeshipCount": 339,
   "totalFound": 339,
+  "totalCompetitiveVacanciesCount": 12,
   "location": {
     "lat": 52.629399,
     "lon": -1.12505,
@@ -93,7 +94,10 @@
       "courseLevel": 0,
       "courseId": 274,
       "apprenticeshipLevel": "1",
-      "isDisabilityConfident": "True"
+      "isDisabilityConfident": "True",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000012739,
@@ -112,7 +116,10 @@
       "postCode": "EC4M 7DR",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000006993,
@@ -129,7 +136,10 @@
       "postCode": "EH6 8HH",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000012735,
@@ -148,7 +158,10 @@
       "postCode": "S35 8PE",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000012737,
@@ -167,7 +180,10 @@
       "postCode": "S35 8PE",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000012722,
@@ -186,7 +202,10 @@
       "postCode": "S35 8PE",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000012718,
@@ -205,7 +224,10 @@
       "postCode": "EC4M 7DR",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000006990,
@@ -222,7 +244,10 @@
       "postCode": "EH6 8HH",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000012715,
@@ -241,7 +266,10 @@
       "postCode": "S35 8PE",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
     },
     {
       "id": 1000012713,
@@ -260,7 +288,72 @@
       "postCode": "EC4M 7DR",
       "courseLevel": 0,
       "courseId": 274,
-      "apprenticeshipLevel": "1"
+      "apprenticeshipLevel": "1",
+      "vacancySource": 0,
+      "application": null,
+      "applicationUrl": null
+    },
+    {
+      "id": "4228771",
+      "closingDate": "2024-12-11T00:00:00Z",
+      "employerName": "North Cumbria Integrated Care NHS Foundation Trust",
+      "postedDate": "2024-11-27T16:11:59.152Z",
+      "title": "AHP IMSK Services - Business & Administration Apprentice",
+      "vacancyReference": "VACC9262-24-1846",
+      "courseTitle": null,
+      "wageAmount": null,
+      "wageType": 4,
+      "addressLine1": null,
+      "addressLine2": null,
+      "addressLine3": null,
+      "addressLine4": "Whitehaven",
+      "postCode": "CA28 8JG",
+      "distance": 0,
+      "courseLevel": "0",
+      "courseId": 0,
+      "courseRoute": null,
+      "apprenticeshipLevel": null,
+      "wageText": "£12514.00",
+      "isDisabilityConfident": false,
+      "lon": -3.562598,
+      "lat": 54.530059,
+      "companyBenefitsInformation": null,
+      "additionalTrainingDescription": null,
+      "isSavedVacancy": false,
+      "vacancySource": 1,
+      "application": null,
+      "applicationUrl": "https://beta.jobs.nhs.uk/candidate/jobadvert/C9262-24-1846"
+    },
+    {
+      "id": "4235899",
+      "closingDate": "2024-12-22T00:00:00Z",
+      "employerName": "East Midlands Ambulance Service NHS Trust",
+      "postedDate": "2024-11-29T15:48:33.675Z",
+      "title": "Administrative Assistant (Apprenticeship)",
+      "vacancyReference": "VACC9335-24-0218",
+      "courseTitle": null,
+      "wageAmount": null,
+      "wageType": 4,
+      "addressLine1": null,
+      "addressLine2": null,
+      "addressLine3": null,
+      "addressLine4": "Nottingham",
+      "postCode": "NG8 6PY",
+      "distance": 0,
+      "courseLevel": "0",
+      "courseId": 0,
+      "courseRoute": null,
+      "apprenticeshipLevel": null,
+      "wageText": "£17971.00",
+      "isDisabilityConfident": false,
+      "lon": -1.238124,
+      "lat": 52.98146,
+      "companyBenefitsInformation": null,
+      "additionalTrainingDescription": null,
+      "isSavedVacancy": false,
+      "vacancySource": 1,
+      "application": null,
+      "applicationUrl": "https://beta.jobs.nhs.uk/candidate/jobadvert/C9335-24-0218"
     }
   ]
 }
