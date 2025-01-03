@@ -1,17 +1,11 @@
 ﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteTrainingCourse;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
 public class WhenGettingDeleteTrainingCourseRequest
