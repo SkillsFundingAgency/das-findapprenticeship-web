@@ -58,14 +58,14 @@
                     <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-link govuk-link--no-visited-state">search
                         for an apprenticeship</a>
                     and then select <b> Create a search alert</b> in the <b>Filters</b>.
-                    We’ll email you every Monday at 8am with new apprenticeships that match your search.
+                    We’ll email you every Monday with new apprenticeships that match your search.
                 </p>
             </div>
         }
         else
         {
             <p class="govuk-body">
-                We’ll email you about these searches every Monday at 8am.
+                We’ll email you about these searches every Monday.
             </p>
             
             @if (Model.SavedSearches.Count >= Model.SavedSearchLimit)
