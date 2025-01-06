@@ -30,12 +30,14 @@ public record SavedSearchViewModel(
             _ => "All apprenticeships"
         };
 
-        var location = source.SearchParameters.Location is null
-            ? "all of England"
-            : $"{source.SearchParameters.Location}";
-            
-        var title = $"{definingCharacteristic} in {location}";
-
+        var locationForTitle = "all of England";
+        var location = "Across all of England";
+        if (source.SearchParameters.Location?.Trim() is not null and not "")
+        {
+            location = locationForTitle = source.SearchParameters.Location;
+        }
+        
+        var title = $"{definingCharacteristic} in {locationForTitle}";
         var url = urlHelper == null
             ? string.Empty
             : FilterBuilder.BuildFullQueryString(new GetSearchResultsRequest
@@ -56,7 +58,7 @@ public record SavedSearchViewModel(
             source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id == category)?.Name ?? string.Empty).ToList(),
             source.SearchParameters.SelectedLevelIds,
             source.SearchParameters.DisabilityConfident,
-            source.SearchParameters.Location,
+            location,
             url,
             readOnly
         );
