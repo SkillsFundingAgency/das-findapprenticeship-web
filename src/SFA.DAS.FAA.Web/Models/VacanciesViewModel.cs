@@ -8,7 +8,7 @@ namespace SFA.DAS.FAA.Web.Models;
 
 public class VacanciesViewModel
 {
-    public long Id { get; private set; }
+    public string Id { get; private set; }
     public string Title { get; private set; }
     public string EmployerName { get; private set; }
     public string? AddressLine1 { get; private set; }

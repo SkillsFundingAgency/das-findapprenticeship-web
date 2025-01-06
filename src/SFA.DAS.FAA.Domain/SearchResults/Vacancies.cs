@@ -7,7 +7,7 @@ namespace SFA.DAS.FAA.Domain.SearchResults;
 public class Vacancies
 {
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public string Id { get; set; }
     
     [JsonPropertyName("apprenticeshipLevel")]
     public string ApprenticeshipLevel { get; set; }

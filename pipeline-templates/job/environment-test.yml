@@ -1,0 +1,62 @@
+parameters:
+  BuildConfiguration:
+  SolutionBaseName:
+  Environment:
+
+jobs:
+- job: RunEnvironmentTests
+  displayName: Run Environment Tests for ${{ parameters.Environment }}
+  pool:
+    name: DAS - Continuous Integration Agents
+    workspace:
+      clean: all
+  variables:
+  - group: BUILD Management Resources
+  steps:
+  - task: DownloadPipelineArtifact@2
+    displayName: Download Build Artifacts
+    inputs:
+      artifactName: SFA.DAS.FAA
+      targetPath: $(build.artifactstagingdirectory)
+
+  - task: PowerShell@2
+    displayName: Find Acceptance Test DLL
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Searching for Acceptance Test DLL..."
+        $dllPath = Get-ChildItem -Recurse -Path "$(build.artifactstagingdirectory)\acceptance-tests" -Filter "SFA.DAS.FAA.Web.AcceptanceTests.dll" | Select-Object -First 1 -ExpandProperty FullName
+        if (-not $dllPath) {
+            Write-Error "Acceptance Test DLL not found."
+            exit 1
+        }
+        Write-Host "Found Acceptance Test DLL at: $dllPath"
+        Write-Host "##vso[task.setvariable variable=AcceptanceTestDllPath]$dllPath"
+
+  - task: DotNetCoreCLI@2
+    displayName: Execute API Contract Tests
+    inputs:
+      command: test
+      arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=ApiContract" --environment "OUTERAPI=${{ parameters.Environment }}-apim-faa-api.apprenticeships.education.gov.uk"'
+    continueOnError: true
+
+  - task: PublishTestResults@2
+    displayName: Publish API Contract Test Results
+    inputs:
+      testResultsFiles: '**/*.trx'
+      testRunTitle: "API Contract Tests"
+      failTaskOnFailedTests: false
+
+  - task: DotNetCoreCLI@2
+    displayName: Execute Acceptance Tests
+    inputs:
+      command: test
+      arguments: '$(AcceptanceTestDllPath) --logger:trx --TestCaseFilter:"TestCategory=RunOnEnvironment" --environment "ENVIRONMENT=${{ parameters.Environment }}"'
+    continueOnError: true
+
+  - task: PublishTestResults@2
+    displayName: Publish Acceptance Test Results
+    inputs:
+      testResultsFiles: '**/*.trx'
+      testRunTitle: "Acceptance Tests"
+      failTaskOnFailedTests: false

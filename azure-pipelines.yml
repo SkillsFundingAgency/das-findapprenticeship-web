@@ -16,7 +16,6 @@ variables:
 - name: Deploy
   value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
 
-
 resources:
   repositories:
   - repository: self
@@ -57,6 +56,18 @@ stages:
       Environment: AT
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
+
+- stage: Test_AT
+  dependsOn: Deploy_AT
+  displayName: Test AT Environment
+  variables:
+  - group: DevTest Management Resources
+  jobs:
+  - template: pipeline-templates/job/environment-test.yml
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      SolutionBaseName: $(SolutionBaseName)
+      Environment: at
 
 - stage: Deploy_TEST
   dependsOn: Build
@@ -113,6 +124,7 @@ stages:
       Environment: PROD
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DIG-Prod-ARM
+
 
 - stage: Deploy_MO
   dependsOn: Build

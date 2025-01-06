@@ -7,7 +7,6 @@ using SFA.DAS.FAA.Application.Commands.Apply;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
-using SFA.DAS.FAA.Application.Queries.GetNhsApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -27,17 +26,13 @@ public class VacanciesController(
 {
     [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
     [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 1)]
+    [Route("apprenticeship/nhs/{vacancyReference}", Name = RouteNames.NhsVacanciesReference, Order = 1)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request, NavigationSource source = NavigationSource.None, ApplicationsTab tab = ApplicationsTab.None)
     {
         var validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)
         {
             return NotFound();
-        }
-
-        if (!request.VacancyReference.StartsWith("VAC", StringComparison.CurrentCultureIgnoreCase))
-        {
-            request.VacancyReference = $"VAC{request.VacancyReference}";
         }
 
         var result = await mediator.Send(new GetApprenticeshipVacancyQuery
@@ -59,21 +54,6 @@ public class VacanciesController(
         viewModel.ShowAccountCreatedBanner =
             await NotificationBannerService.ShowAccountBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
-
-        return View(viewModel);
-    }
-
-    [HttpGet]
-    [Route("apprenticeship/nhs/{vacancyReference}", Name = RouteNames.NhsVacancies)]
-    public async Task<IActionResult> NhsVacancy([FromRoute] GetVacancyDetailsRequest request)
-    {
-        var result = await mediator.Send(new GetNhsApprenticeshipVacancyQuery(request.VacancyReference));
-
-        if (result.Vacancy == null) return NotFound();
-
-        var viewModel = (NhsVacancyDetailsViewModel)result;
-
-        viewModel.BackLinkUrl = Request.Headers.Referer.FirstOrDefault() ?? Url.RouteUrl(RouteNames.SearchResults) ;
 
         return View(viewModel);
     }
