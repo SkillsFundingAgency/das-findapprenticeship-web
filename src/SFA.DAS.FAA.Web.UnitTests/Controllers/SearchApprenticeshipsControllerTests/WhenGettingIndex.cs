@@ -133,6 +133,7 @@ public class WhenGettingIndex
             .Excluding(prop => prop.ShowAccountCreatedBanner)
             .Excluding(prop => prop.ShowAccountDeletedBanner)
             .Excluding(prop => prop.SavedSearches)
+            .Excluding(prop => prop.ShowApprenticeshipWeekBanner)
         );
         var actualModel = actual!.Model as SearchApprenticeshipsViewModel;
         Assert.That(actualModel, Is.Not.Null);
@@ -317,5 +318,117 @@ public class WhenGettingIndex
         result!.RouteName.Should().Be(RouteNames.SearchResults);
         result.RouteValues!["location"].Should().Be(queryResult.Location?.LocationName);
         result.RouteValues!["sort"].Should().Be(VacancySort.DistanceAsc);
+    }
+
+    [Test, MoqAutoData]
+    public async Task Then_Apprenticeship_Week_Banner_Shown_If_Before_Feb152025(
+        GetSearchApprenticeshipsIndexResult result,
+        Guid govIdentifier,
+        bool showBanner,
+        bool showAccountDeletedBanner,
+        [Frozen] Mock<SearchModelValidator> validator,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Frozen] Mock<IDateTimeService> dateTimeService,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] SearchApprenticeshipsController controller)
+    {
+        dateTimeService.Setup(x=>x.GetDateTime()).Returns(new DateTime(2025, 02, 16));
+        result.LocationSearched = false;
+        result.SavedSearches = [];
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
+            }))
+        };
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+        mediator.Setup(x => x.Send(It.IsAny<GetSearchApprenticeshipsIndexQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<SearchModel>>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
+
+
+        controller.Url = mockUrlHelper.Object;
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+        controller.TempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>())
+        {
+            [CacheKeys.AccountDeleted] = showAccountDeletedBanner.ToString().ToLower()
+        };
+
+        var actual = await controller.Index(new SearchModel()) as ViewResult;
+
+        Assert.That(actual, Is.Not.Null);
+        actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
+            .Excluding(prop => prop.ShowAccountCreatedBanner)
+            .Excluding(prop => prop.ShowAccountDeletedBanner)
+            .Excluding(prop => prop.ShowApprenticeshipWeekBanner)
+        );
+        var actualModel = actual!.Model as SearchApprenticeshipsViewModel;
+        Assert.That(actualModel, Is.Not.Null);
+        
+        actualModel!.ShowApprenticeshipWeekBanner.Should().BeTrue();
+    }
+    
+    [Test, MoqAutoData]
+    public async Task Then_Apprenticeship_Week_Banner_Not_Shown_If_After_Feb152025(
+        GetSearchApprenticeshipsIndexResult result,
+        Guid govIdentifier,
+        bool showBanner,
+        bool showAccountDeletedBanner,
+        [Frozen] Mock<SearchModelValidator> validator,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Frozen] Mock<IDateTimeService> dateTimeService,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] SearchApprenticeshipsController controller)
+    {
+        dateTimeService.Setup(x=>x.GetDateTime()).Returns(new DateTime(2025, 02, 17));
+        result.LocationSearched = false;
+        result.SavedSearches = [];
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
+            }))
+        };
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+        mediator.Setup(x => x.Send(It.IsAny<GetSearchApprenticeshipsIndexQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<SearchModel>>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
+
+
+        controller.Url = mockUrlHelper.Object;
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+        controller.TempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>())
+        {
+            [CacheKeys.AccountDeleted] = showAccountDeletedBanner.ToString().ToLower()
+        };
+
+        var actual = await controller.Index(new SearchModel()) as ViewResult;
+
+        Assert.That(actual, Is.Not.Null);
+        actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
+            .Excluding(prop => prop.ShowAccountCreatedBanner)
+            .Excluding(prop => prop.ShowAccountDeletedBanner)
+            .Excluding(prop => prop.ShowApprenticeshipWeekBanner)
+        );
+        var actualModel = actual!.Model as SearchApprenticeshipsViewModel;
+        Assert.That(actualModel, Is.Not.Null);
+        
+        actualModel!.ShowApprenticeshipWeekBanner.Should().BeFalse();
     }
 }
