@@ -73,6 +73,7 @@ public class WhenGettingIndex
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
             .Excluding(prop => prop.ShowAccountCreatedBanner)
             .Excluding(prop => prop.ShowAccountDeletedBanner)
+            .Excluding(prop => prop.ShowApprenticeshipWeekBanner)
         );
         var actualModel = actual!.Model as SearchApprenticeshipsViewModel;
         Assert.That(actualModel, Is.Not.Null);
