@@ -133,6 +133,7 @@ public class WhenGettingIndex
             .Excluding(prop => prop.ShowAccountCreatedBanner)
             .Excluding(prop => prop.ShowAccountDeletedBanner)
             .Excluding(prop => prop.SavedSearches)
+            .Excluding(prop => prop.ShowApprenticeshipWeekBanner)
         );
         var actualModel = actual!.Model as SearchApprenticeshipsViewModel;
         Assert.That(actualModel, Is.Not.Null);
