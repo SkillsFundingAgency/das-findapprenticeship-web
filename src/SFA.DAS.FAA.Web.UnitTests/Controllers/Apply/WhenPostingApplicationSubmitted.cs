@@ -30,6 +30,7 @@ public class WhenPostingApplicationSubmitted
         var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
             new(CustomClaims.CandidateId, candidateId.ToString()),
+            new(ClaimTypes.NameIdentifier, govIdentifier)
         }));
         controller.ControllerContext = new ControllerContext
         {
@@ -43,6 +44,7 @@ public class WhenPostingApplicationSubmitted
 
         result.Should().NotBeNull();
         result!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender);
+        cacheStorageService.Verify(x => x.Set($"{govIdentifier}-ApplicationSubmitted", It.IsAny<object>(), 1, 1), Times.Never);
     }
 
     [Test, MoqAutoData]
@@ -64,6 +66,7 @@ public class WhenPostingApplicationSubmitted
         var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
             new(CustomClaims.CandidateId, candidateId.ToString()),
+            new(ClaimTypes.NameIdentifier, govIdentifier)
         }));
         controller.ControllerContext = new ControllerContext
         {
@@ -77,18 +80,16 @@ public class WhenPostingApplicationSubmitted
 
         result.Should().NotBeNull();
         result!.RouteName.Should().Be(RouteNames.Applications.ViewApplications);
+        cacheStorageService.Verify(x => x.Set($"{govIdentifier}-ApplicationSubmitted", It.IsAny<object>(), 1, 1), Times.Once);
     }
 
     [Test, MoqAutoData]
     public async Task Then_If_Not_Valid_View_Returned(
         ApplicationSubmittedViewModel model,
-        string bannerMessage,
-        string govIdentifier,
         Guid candidateId,
         Guid applicationId,
         GetApplicationSubmittedQueryResponse response,
         [Frozen] Mock<IMediator> mediator,
-        [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] ApplyController controller)
     {
         mediator.Setup(x => x.Send(It.Is<GetApplicationSubmittedQuery>(c =>
@@ -96,21 +97,21 @@ public class WhenPostingApplicationSubmitted
                 && c.ApplicationId.Equals(applicationId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(response);
 
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new(CustomClaims.CandidateId, candidateId.ToString()),
-            new(ClaimTypes.NameIdentifier, govIdentifier)
-        }));
+        var user = new ClaimsPrincipal(new ClaimsIdentity(
+        [
+            new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+        ]));
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext { User = user }
         };
+
         controller.ModelState.AddModelError("Error", "Error");
 
         var actual = await controller.ApplicationSubmitted(model) as ViewResult;
 
         actual.Should().NotBeNull();
-        var actualModel = actual.Model as ApplicationSubmittedViewModel;
-        actualModel.ApplicationId.Should().Be(model.ApplicationId);
+        var actualModel = actual!.Model as ApplicationSubmittedViewModel;
+        actualModel!.ApplicationId.Should().Be(model.ApplicationId);
     }
 }
