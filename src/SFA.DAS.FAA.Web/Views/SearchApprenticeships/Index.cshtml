@@ -17,6 +17,10 @@
     {
         <partial name="_AccountDeletedBanner" />
     }
+    @if (Model.ShowApprenticeshipWeekBanner)
+    {
+        <partial name="_NationalApprenticeshipWeekBanner" />
+    }
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @if (!ViewData.ModelState.IsValid)
