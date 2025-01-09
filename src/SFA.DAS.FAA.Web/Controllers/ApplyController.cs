@@ -8,15 +8,19 @@ using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Applications;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAT.Domain.Interfaces;
+using IndexViewModel = SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("applications/{applicationId}", Name = RouteNames.Apply)]
-    public class ApplyController
-        (IMediator mediator, IDateTimeService dateTimeService) : Controller
+    public class ApplyController(
+        IMediator mediator,
+        ICacheStorageService cacheStorageService,
+        IDateTimeService dateTimeService) : Controller
     {
         private const string PreviewViewPath = "~/Views/apply/Preview.cshtml";
 
@@ -112,16 +116,16 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("application-submitted", Name = RouteNames.ApplyApprenticeship.ApplicationSubmitted)]
         public async Task<IActionResult> ApplicationSubmitted(ApplicationSubmittedViewModel model)
         {
+            var query = new GetApplicationSubmittedQuery
+            {
+                ApplicationId = model.ApplicationId,
+                CandidateId = (Guid)User.Claims.CandidateId()!
+            };
+
+            var result = await mediator.Send(query);
+
             if (!ModelState.IsValid)
             {
-                var query = new GetApplicationSubmittedQuery
-                {
-                    ApplicationId = model.ApplicationId,
-                    CandidateId = (Guid)User.Claims.CandidateId()!
-                };
-
-                var result = await mediator.Send(query);
-
                 model = new ApplicationSubmittedViewModel
                 {
                     VacancyInfo = result,
@@ -131,34 +135,14 @@ namespace SFA.DAS.FAA.Web.Controllers
                 return View(model);
             }
 
-            return model.AnswerEqualityQuestions is true 
-                ? RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { model.ApplicationId })
-                : RedirectToRoute(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation, new { model.ApplicationId, skippedEqualityQuestions = true });
-        }
-
-        [HttpGet]
-        [Route("application-submitted-confirmation", Name = RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation)]
-        public async Task<IActionResult> ApplicationSubmittedConfirmation([FromRoute] Guid applicationId, bool? skippedEqualityQuestions)
-        {
-            var query = new GetApplicationSubmittedQuery
+            if (model.AnswerEqualityQuestions is false)
             {
-                ApplicationId = applicationId,
-                CandidateId = (Guid)User.Claims.CandidateId()!
-            };
-
-            var result = await mediator.Send(query);
-
-            var model = new ApplicationSubmittedConfirmationViewModel
-            {
-                VacancyInfo = result,
-            };
-
-            if (skippedEqualityQuestions is true)
-            {
-                model.VacancyInfo.HasAnsweredEqualityQuestions = true;
+                await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-ApplicationSubmitted", $"Your application for {result.VacancyTitle} at {result.EmployerName} has been submitted.", 1, 1);
             }
 
-            return View(model);
+            return model.AnswerEqualityQuestions is true 
+                ? RedirectToRoute(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender, new { model.ApplicationId })
+                : RedirectToRoute(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted });
         }
     }
 }
