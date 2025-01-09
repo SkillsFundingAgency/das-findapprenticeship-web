@@ -19,13 +19,20 @@ namespace SFA.DAS.FAA.Web.Controllers
         private const string ApplicationPreviewViewPath = "~/Views/applications/ViewApplication.cshtml";
 
         [Route("applications", Name = RouteNames.Applications.ViewApplications)]
-        public async Task<IActionResult> Index(ApplicationsTab tab = ApplicationsTab.Started)
+        public async Task<IActionResult> Index(ApplicationsTab tab = ApplicationsTab.Started, bool showEqualityQuestionsBanner = false)
         {
             var bannerMessage = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-VacancyWithdrawn");
             if (!string.IsNullOrEmpty(bannerMessage))
             {
                 await cacheStorageService.Remove($"{User.Claims.GovIdentifier()}-VacancyWithdrawn");
             }
+
+            var applicationSubmittedBannerMessage = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-ApplicationSubmitted");
+            if (!string.IsNullOrEmpty(applicationSubmittedBannerMessage))
+            {
+                await cacheStorageService.Remove($"{User.Claims.GovIdentifier()}-ApplicationSubmitted");
+            }
+
             var result = await mediator.Send(new GetIndexQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
@@ -34,6 +41,8 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var viewModel = IndexViewModel.Map(tab, result, dateTimeService);
             viewModel.WithdrawnBannerMessage = bannerMessage;
+            viewModel.ApplicationSubmittedBannerMessage = applicationSubmittedBannerMessage;
+            viewModel.ShowEqualityQuestionsBannerMessage = showEqualityQuestionsBanner;
             return View(viewModel);
         }
 
