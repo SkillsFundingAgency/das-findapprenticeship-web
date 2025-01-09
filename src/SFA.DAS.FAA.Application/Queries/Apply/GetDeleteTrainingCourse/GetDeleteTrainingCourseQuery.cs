@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
+namespace SFA.DAS.FAA.Application.Queries.Apply.GetDeleteTrainingCourse;
 
 public class GetDeleteTrainingCourseQuery : IRequest<GetDeleteTrainingCourseQueryResult>
 {

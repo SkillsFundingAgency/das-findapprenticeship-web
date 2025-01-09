@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourse;
+using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteTrainingCourse;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
