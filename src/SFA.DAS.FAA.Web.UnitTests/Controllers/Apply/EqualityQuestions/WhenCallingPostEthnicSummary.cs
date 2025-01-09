@@ -108,7 +108,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EqualityQuestions
             using (new AssertionScope())
             {
                 actual.Should().NotBeNull();
-                actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.ApplicationSubmittedConfirmation);
+                actual!.RouteName.Should().Be(RouteNames.Applications.ViewApplications);
+                actual!.RouteValues!["showEqualityQuestionsBanner"].Should().Be(true);
             }
         }
     }

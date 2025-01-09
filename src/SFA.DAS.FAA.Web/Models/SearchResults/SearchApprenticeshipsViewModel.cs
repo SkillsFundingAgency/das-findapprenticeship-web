@@ -12,6 +12,7 @@ public class SearchApprenticeshipsViewModel
     public bool ShowAccountCreatedBanner { get; set; } = false;
     public bool ShowAccountFoundBanner { get; set; } = false;
     public bool ShowAccountDeletedBanner { get; set; } = false;
+    public bool ShowApprenticeshipWeekBanner { get; set; } = false;
 
     public List<SavedSearchViewModel> SavedSearches { get; set; } = new List<SavedSearchViewModel>();
     
