@@ -5,7 +5,16 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.User;
 
 public class WhenCreatingSavedSearchViewModel
 {
-    private static object[] _titleTestCases =
+    private static readonly List<RouteInfo> RouteInfos =
+    [
+        new(1, "Route One"),
+        new(2, "Route Two"),
+        new(3, "Route Three"),
+        new(4, "Route Four"),
+        new(5, "Route Five")
+    ];
+    
+    private static readonly object[] TitleTestCases =
     [
         new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, "Foo in all of England" },
         new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, "Hull", true, "Foo in Hull" },
@@ -19,19 +28,10 @@ public class WhenCreatingSavedSearchViewModel
         new object?[] { null, null, null, "Hull", false, "All apprenticeships in Hull" },
     ];
     
-    [TestCaseSource(nameof(_titleTestCases))]
+    [TestCaseSource(nameof(TitleTestCases))]
     public void Then_The_Title_Is_Constructed_Correctly(string? searchTerm, int[]? routes, int[]? levels, string? location, bool disabilityConfident, string? expectedTitle)
     {
         // arrange
-        var routeInfos = new List<RouteInfo>
-        {
-            new (1, "Route One"),
-            new (2, "Route Two"),
-            new (3, "Route Three"),
-            new (4, "Route Four"),
-            new (5, "Route Five"),
-        };
-        
         var savedSearch = new SavedSearch(
             Guid.NewGuid(),
             DateTime.UtcNow,
@@ -47,9 +47,29 @@ public class WhenCreatingSavedSearchViewModel
         );
         
         // act
-        var result = SavedSearchViewModel.From(savedSearch, routeInfos);
+        var result = SavedSearchViewModel.From(savedSearch, RouteInfos);
 
         // assert
         result.Title.Should().Be(expectedTitle);
+    }
+    
+    [TestCase(null, "Across all of England")]
+    [TestCase("", "Across all of England")]
+    [TestCase("Hull", "Hull")]
+    public void Then_The_Location_Is_Set_Correctly(string? location, string? expectedLocation)
+    {
+        // arrange
+        var savedSearch = new SavedSearch(
+            Guid.NewGuid(),
+            DateTime.UtcNow,
+            null, null,
+            new SearchParameters("Foo", [1, 2], 10, true, [1, 2], location)
+        );
+        
+        // act
+        var result = SavedSearchViewModel.From(savedSearch, RouteInfos);
+
+        // assert
+        result.Location.Should().Be(expectedLocation);
     }
 }
