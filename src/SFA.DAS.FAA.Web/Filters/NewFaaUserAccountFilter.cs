@@ -23,16 +23,6 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
 
         var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
 
-        if (identity.HasClaim(p => p.Type == CustomClaims.EmailAddressMigrated))
-        {
-            if (!context.ActionDescriptor.HasAttribute<AllowMigratedAccountAccessAttribute>())
-            {
-                ((Controller)context.Controller).ViewData["IsAccountStatusCompleted"] = false;
-                context.Result = new RedirectToRouteResult(RouteNames.EmailAlreadyMigrated, new { });
-                return;
-            }
-        }
-
         if (!skipNewFaaUserAccountCheck && identity != null && identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
         {
             if (!context.ActionDescriptor.HasAttribute<AllowIncompleteAccountAccessAttribute>())
