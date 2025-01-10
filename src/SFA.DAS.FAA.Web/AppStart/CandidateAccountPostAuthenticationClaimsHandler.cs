@@ -65,12 +65,7 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
                 claims.Add(new Claim(ClaimTypes.MobilePhone, candidate.PhoneNumber));
             }
         }
-
-        if (candidate.IsEmailAddressMigrated)
-        {
-            claims.Add(new Claim(CustomClaims.EmailAddressMigrated, "true"));
-        }
-
+        
         return claims;
     }
 }

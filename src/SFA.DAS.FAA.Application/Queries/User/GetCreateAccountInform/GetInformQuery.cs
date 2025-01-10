@@ -11,14 +11,12 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform
 
     public class GetInformQueryResult
     {
-        public bool ShowAccountRecoveryBanner { get; set; }
         public bool IsAccountCreated { get; set; }
 
         public static implicit operator GetInformQueryResult(GetInformApiResponse source)
         {
             return new GetInformQueryResult
             {
-                ShowAccountRecoveryBanner = source.ShowAccountRecoveryBanner,
                 IsAccountCreated = source.IsAccountCreated
             };
         }

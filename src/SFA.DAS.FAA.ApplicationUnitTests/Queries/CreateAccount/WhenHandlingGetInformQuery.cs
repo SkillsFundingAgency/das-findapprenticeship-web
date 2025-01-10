@@ -1,11 +1,6 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
+﻿using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.CreateAccount;
 public class WhenHandlingGetInformQuery
@@ -28,6 +23,5 @@ public class WhenHandlingGetInformQuery
         var result = await handler.Handle(query, CancellationToken.None);
 
         result.Should().NotBeNull();
-        result.ShowAccountRecoveryBanner.Should().Be(apiResponse.ShowAccountRecoveryBanner);
     }
 }

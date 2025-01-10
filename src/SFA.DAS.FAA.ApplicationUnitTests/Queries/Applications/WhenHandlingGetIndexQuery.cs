@@ -1,12 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
-using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
+﻿using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 using SFA.DAS.FAA.Domain.Applications.GetApplications;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
 {
@@ -33,7 +28,6 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
 
             // Assert
             result.Applications.Should().BeEquivalentTo(apiResponse.Applications);
-            result.ShowAccountRecoveryBanner.Should().Be(apiResponse.ShowAccountRecoveryBanner);
         }
     }
 }
