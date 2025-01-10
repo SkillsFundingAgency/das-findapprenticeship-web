@@ -14,7 +14,6 @@ using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 using SFA.DAS.FAA.Application.Commands.SubmitApplication;
 
@@ -29,6 +28,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
             Guid candidateId,
             UpdateApplicationStatusCommandResult updateApplicationStatusCommandResult,
             [Frozen] Mock<IDateTimeService> dateTimeService,
+            [Frozen] Mock<ICacheStorageService> cacheStorageService,
             [Frozen] Mock<IMediator> mediator)
         {
 
@@ -43,7 +43,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
 
-            var controller = new ApplyController(mediator.Object, dateTimeService.Object)
+            var controller = new ApplyController(mediator.Object, cacheStorageService.Object, dateTimeService.Object)
             {
                 Url = mockUrlHelper.Object,
                 ControllerContext = new ControllerContext

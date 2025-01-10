@@ -11,7 +11,6 @@
 
         @if (!string.IsNullOrEmpty(Model.WithdrawnBannerMessage))
         {
-
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
                 aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
@@ -25,7 +24,37 @@
                     </h3>
                 </div>
             </div>
-
+        }
+        
+        @if(!string.IsNullOrEmpty(Model.ApplicationSubmittedBannerMessage))
+        {
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Important
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        @Model.ApplicationSubmittedBannerMessage
+                    </p>
+                </div>
+            </div>
+        }
+        @if(Model.ShowEqualityQuestionsBannerMessage)
+        {
+            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Success
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        Your answers to the equality questions have been saved.
+                    </h3>
+                </div>
+            </div>
         }
         <h1 class="govuk-heading-xl faa-page-heading">Your applications</h1>
         <nav class="faa-tab-nav">

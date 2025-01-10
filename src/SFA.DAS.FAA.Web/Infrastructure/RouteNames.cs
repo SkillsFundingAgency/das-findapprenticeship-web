@@ -95,7 +95,6 @@ public static class RouteNames
         public const string AddQualification = nameof(AddQualification);
         public const string DeleteQualifications = nameof(DeleteQualifications);
         public const string ApplicationSubmitted = nameof(ApplicationSubmitted);
-        public const string ApplicationSubmittedConfirmation = nameof(ApplicationSubmittedConfirmation);
 
         public static class EqualityQuestions
         {

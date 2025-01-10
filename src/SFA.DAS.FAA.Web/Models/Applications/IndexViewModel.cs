@@ -20,6 +20,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         public List<Application> ExpiredApplications { get; set; } = [];
         public List<Application> WithdrawnApplications { get; set; } = [];
         public string? WithdrawnBannerMessage { get; set; }
+        public string? ApplicationSubmittedBannerMessage { get; set; }
+        public bool ShowEqualityQuestionsBannerMessage { get; set; }
         public class Application
         {
             private const string DateFormat = "d MMMM yyyy";
