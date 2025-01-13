@@ -102,9 +102,12 @@ namespace SFA.DAS.FAA.Web.Services
                     ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##}", upperBound)
                     : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00}", upperBound);
 
-                return upperBound > NhsUpperWageAmountLimit 
-                    ? $"{lowerBoundText} to {upperBoundText} a year" 
-                    : $"{lowerBoundText} to {upperBoundText}";
+                return upperBound switch
+                {
+                    > NhsUpperWageAmountLimit => $"{lowerBoundText} to {upperBoundText} a year",
+                    < NhsLowerWageAmountLimit => $"{lowerBoundText} to {upperBoundText} an hour",
+                    _ => $"{lowerBoundText} to {upperBoundText}",
+                };
             }
 
             if (!decimal.TryParse(poundRemovedStr, out var wageAmount)) return $"{wageAmountText}";
