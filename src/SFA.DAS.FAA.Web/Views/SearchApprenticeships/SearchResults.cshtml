@@ -243,11 +243,13 @@
                                          class="faa-save-vacancy @(vacancy.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                                         <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromSearchResultsPage"
                                               asp-route-vacancyReference="@vacancy.VacancyReference">
+                                            <span id="Remove-@vacancy.VacancyReference" class="govuk-visually-hidden">Remove from saved vacancies</span>
                                             <button type="submit"
                                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-save-vacancy__link--delete"
                                                     data-delete-favourite="true"
                                                     aria-pressed="True"
-                                                    aria-describeby="Remove from saved vacancies">
+                                                    aria-describeby="Remove-@vacancy.VacancyReference">
+                                                
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                      class="faa-vacancy-actions__icon">
                                                     <path fill="currentColor"
@@ -257,10 +259,11 @@
                                         </form>
                                         <form method="post" asp-route="@RouteNames.SaveVacancyFromSearchResultsPage"
                                               asp-route-vacancyReference="@vacancy.VacancyReference">
+                                            <span id="Save-@vacancy.VacancyReference" class="govuk-visually-hidden">Saved vacancy</span>
                                             <button type="submit"
                                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link  faa-save-vacancy__link--save"
                                                     aria-pressed="False"
-                                                    aria-describeby="Save vacancy"
+                                                    aria-describeby="Save-@vacancy.VacancyReference"
                                                     data-add-favourite="true">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                      class="faa-vacancy-actions__icon">

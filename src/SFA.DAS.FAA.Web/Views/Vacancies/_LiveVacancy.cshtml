@@ -87,8 +87,8 @@
             <div data-favourite="true" class="faa-save-vacancy @(Model.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                 <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromDetailsPage"
                       asp-route-vacancyreference="@Model.VacancyReference">
-                    <button 
-                        aria-describeby="Remove from saved vacancies" 
+                    <span id="Remove-@Model.VacancyReference" class="govuk-visually-hidden">Remove from saved vacancies</span>
+                    <button aria-describeby="Remove-@Model.VacancyReference"
                         aria-pressed="True" 
                         class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-save-vacancy__link--delete" 
                         data-delete-favourite="true" 
@@ -101,8 +101,8 @@
                 </form>
                 <form method="post" asp-route="@RouteNames.SaveVacancyFromDetailsPage"
                       asp-route-vacancyreference="@Model.VacancyReference">
-                    <button 
-                        aria-describeby="Save vacancy"
+                    <span id="Save-@Model.VacancyReference" class="govuk-visually-hidden">Saved vacancy</span>
+                    <button aria-describeby="Save-@Model.VacancyReference"
                         aria-pressed="False"
                         class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link  faa-save-vacancy__link--save"
                         data-add-favourite="true"
