@@ -31,7 +31,7 @@ public record SavedSearchViewModel(
         };
 
         var locationForTitle = "all of England";
-        var location = "Across all of England";
+        var location = "All of England";
         if (source.SearchParameters.Location?.Trim() is not null and not "")
         {
             location = locationForTitle = source.SearchParameters.Location;
