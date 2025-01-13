@@ -105,8 +105,12 @@
                                 </li>
                             }
                             <li class="govuk-summary-list__actions-list-item">
-                                <form method="post" asp-route="@RouteNames.DeleteSavedVacancy"
-                                    asp-route-vacancyreference="@vacancy.VacancyReference">
+                                <form 
+                                    aria-describeby="Remove from saved vacancies"
+                                    aria-pressed="True"
+                                    asp-route="@RouteNames.DeleteSavedVacancy"
+                                    asp-route-vacancyreference="@vacancy.VacancyReference"
+                                    method="post">
                                     <button type="submit" class="das-button--inline-link">
                                         Remove
                                     </button>
