@@ -53,8 +53,8 @@ public class WhenCreatingSavedSearchViewModel
         result.Title.Should().Be(expectedTitle);
     }
     
-    [TestCase(null, "Across all of England")]
-    [TestCase("", "Across all of England")]
+    [TestCase(null, "All of England")]
+    [TestCase("", "All of England")]
     [TestCase("Hull", "Hull")]
     public void Then_The_Location_Is_Set_Correctly(string? location, string? expectedLocation)
     {
