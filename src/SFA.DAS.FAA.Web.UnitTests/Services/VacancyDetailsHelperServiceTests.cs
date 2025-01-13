@@ -179,6 +179,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expected);
         }
 
+        [Test]
         [InlineAutoData("£100", "£100")] // Between 100 and 5000
         [InlineAutoData("£4999.99", "£4999.99")] // Edge case: Just below 5000
         [InlineAutoData("NoPoundSign", "NoPoundSign")] // Invalid format
