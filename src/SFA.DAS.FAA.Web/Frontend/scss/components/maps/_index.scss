@@ -122,11 +122,22 @@
   &.expanded {
     background: #000;
     border-radius: 50%;
-    height: 15px;
-    width: 15px;
-    margin-bottom: 12px;
+    height: 30px;
+    width: 30px;
+    margin-bottom: 5px;
+    position: relative;
     svg {
       display: none;
+    }
+    &:before {
+      content: "";
+      height: 4px;
+      width: 18px;
+      background-color: #fff;
+      position: absolute;
+      top: 50%;
+      margin-top: -2px;
+      left: 6px;
     }
   }
 }
@@ -141,16 +152,14 @@
 }
 
 .faa-map__marker-tail {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100px;
-    height: 3px;
-    z-index: -1;
-    background: #000;
-    background: linear-gradient(270deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 12%, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
-
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 3px;
+  z-index: -1;
+  background: #000;
 }
 
 a[href^="http://maps.google.com/maps"],

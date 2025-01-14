@@ -973,6 +973,14 @@ FaaMap.prototype.handlePlusMarkerClick = function (
   group,
   mapRoleDetailsWrap
 ) {
+  if (markerElement.content.classList.contains("expanded")) {
+    group.forEach((role) => {
+      this.removeMarkersWithTitle(`VAC${role.job.id}`);
+    });
+    markerElement.content.classList.remove("expanded");
+    return;
+  }
+
   markerElement.content.classList.add("expanded");
   markerElement.zIndex = 1;
 
@@ -983,6 +991,7 @@ FaaMap.prototype.handlePlusMarkerClick = function (
     const y = Math.round(100 * Math.sin(a * (Math.PI / 180)));
     const Marker = new google.maps.marker.AdvancedMarkerElement({
       map: this.map,
+      title: `VAC${role.job.id}`,
       position: group[0].position,
       content: this.markerHtml(x, y, a),
     });
@@ -992,6 +1001,14 @@ FaaMap.prototype.handlePlusMarkerClick = function (
     });
     this.map.markers.push(Marker);
   });
+};
+
+FaaMap.prototype.removeMarkersWithTitle = function (title) {
+  for (let i = 0; i < this.map.markers.length; i++) {
+    if (this.map.markers[i].title === title) {
+      this.map.markers[i].setMap(null);
+    }
+  }
 };
 
 FaaMap.prototype.markerHtml = function (
