@@ -72,7 +72,7 @@
     </div>
 }
 <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
-    <h1 class="govuk-heading-l faa-vacancy__title"><span itemprop="title">@Model.Title</span></h1>
+    <h1 class="govuk-heading-l faa-vacancy__title"><span itemprop="title" id="vacancy-title">@Model.Title</span></h1>
     <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
     <p class="govuk-body-l faa-vacancy__location">
         <span itemprop="jobLocation">
@@ -87,9 +87,9 @@
             <div data-favourite="true" class="faa-save-vacancy @(Model.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                 <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromDetailsPage"
                       asp-route-vacancyreference="@Model.VacancyReference">
-                    <span id="Remove-@Model.VacancyReference" class="govuk-visually-hidden">Remove from saved vacancies</span>
                     <button aria-describeby="Remove-@Model.VacancyReference"
-                        aria-pressed="True" 
+                        aria-pressed="true" 
+                        aria-describedby="vacancy-title"
                         class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-save-vacancy__link--delete" 
                         data-delete-favourite="true" 
                         type="submit">
@@ -101,9 +101,9 @@
                 </form>
                 <form method="post" asp-route="@RouteNames.SaveVacancyFromDetailsPage"
                       asp-route-vacancyreference="@Model.VacancyReference">
-                    <span id="Save-@Model.VacancyReference" class="govuk-visually-hidden">Saved vacancy</span>
                     <button aria-describeby="Save-@Model.VacancyReference"
-                        aria-pressed="False"
+                        aria-pressed="false"
+                        aria-describedby="vacancy-title"
                         class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link  faa-save-vacancy__link--save"
                         data-add-favourite="true"
                         type="submit">
