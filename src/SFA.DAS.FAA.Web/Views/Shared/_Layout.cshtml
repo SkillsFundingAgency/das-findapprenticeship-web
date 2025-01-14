@@ -299,6 +299,11 @@
     <script src="js/das-all.js"></script>
     <script src="~/js/site.js" no-cdn asp-append-version="true"></script>
     <script src="~/js/libs/service-header.js" no-cdn></script>
+    <!-- Include the script only if the user is logged in -->
+    @if (User.Identity is { IsAuthenticated: true })
+    {
+        <script src="/js/sessionTimeout.js"></script>
+    }
     <script>
         window.GOVUKFrontend.initAll();
         var oneLoginHeader = document.querySelector("[data-module='one-login-header']");

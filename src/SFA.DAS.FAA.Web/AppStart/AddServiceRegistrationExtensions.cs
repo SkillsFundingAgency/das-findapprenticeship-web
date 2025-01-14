@@ -60,7 +60,9 @@ public static class AddServiceRegistrationExtension
             configuration,
             typeof(CandidateAccountPostAuthenticationClaimsHandler),
             "/apprenticeshipsearch",
-            "/account-details", cookieDomain, loginRedirect);
+            "/account-details",
+            cookieDomain,
+            loginRedirect);
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, CandidateAccountPostAuthenticationClaimsHandler>();
         services.AddAuthorization(options =>
