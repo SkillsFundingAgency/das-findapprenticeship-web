@@ -26,6 +26,7 @@ public static class RouteNames
     public const string TransferYourData = "transfer-your-data";
     public const string SignInToYourOldAccount = "sign-in-to-your-old-account";
     public const string SignOut = "signout";
+    public const string ServiceSignOut = "service-signout";
     public const string SignIn = "sign-in";
     public const string AccountUnavailable = "account-unavailable";
     public const string StubAccountDetailsGet = "account-details-get";

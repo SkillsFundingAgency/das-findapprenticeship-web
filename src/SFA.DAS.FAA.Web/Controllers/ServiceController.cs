@@ -20,7 +20,8 @@ namespace SFA.DAS.FAA.Web.Controllers;
 [AllowMigratedAccountAccess]
 public class ServiceController(IStubAuthenticationService stubAuthenticationService, IConfiguration configuration, IDataProtectorService dataProtectorService) : Controller
 {
-    [Route("signout", Name = RouteNames.SignOut)]
+    [Route("signout", Name = RouteNames.SignOut, Order = 1)]
+    [Route("service/signout", Name = RouteNames.ServiceSignOut, Order = 1)]
     [SkipNewFaaUserAccountFilter]
     public async Task<IActionResult> SignOut()
     {
