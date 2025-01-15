@@ -264,6 +264,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet("select-address", Name = RouteNames.SelectAddress)]
         public async Task<IActionResult> SelectAddress(string? postcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
+            if (string.IsNullOrWhiteSpace(postcode))
+            {
+                return RedirectToRoute(RouteNames.PostcodeAddress, new { postcode });
+            }
+
             var result = await mediator.Send(new GetAddressesByPostcodeQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
