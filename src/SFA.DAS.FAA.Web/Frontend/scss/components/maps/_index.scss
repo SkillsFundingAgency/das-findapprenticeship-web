@@ -138,6 +138,7 @@
       top: 50%;
       margin-top: -2px;
       left: 6px;
+      z-index: 10;
     }
   }
 }
@@ -159,7 +160,15 @@
   width: 100px;
   height: 3px;
   z-index: -1;
-  background: #000;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 9%,
+    rgb(0, 0, 0) 10%,
+    rgb(0, 0, 0) 87%,
+    rgba(0, 0, 0, 0) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 a[href^="http://maps.google.com/maps"],
