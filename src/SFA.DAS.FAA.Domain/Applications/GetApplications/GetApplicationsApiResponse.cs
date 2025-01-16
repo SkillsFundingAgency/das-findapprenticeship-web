@@ -4,7 +4,6 @@ namespace SFA.DAS.FAA.Domain.Applications.GetApplications;
 
 public class GetApplicationsApiResponse
 {
-    public bool ShowAccountRecoveryBanner { get; set; }
     public List<Application> Applications { get; set; } = [];
 
     public class Application
