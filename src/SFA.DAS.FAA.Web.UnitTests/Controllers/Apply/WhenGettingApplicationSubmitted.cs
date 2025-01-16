@@ -11,8 +11,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply;
 public class WhenGettingApplicationSubmitted
 {
     [Test]
-    [MoqInlineAutoData(true, "Do you want to answer equality questions?")]
-    [MoqInlineAutoData(false, "Application submitted")]
+    [MoqInlineAutoData(false, "Do you want to answer equality questions?")]
+    [MoqInlineAutoData(true, "Application submitted")]
     public async Task Then_The_Mediator_Query_Is_Called_And_Index_Returned(
         bool hasAnsweredEqualityQuestions,
         string expectedPageTitle,
@@ -27,10 +27,9 @@ public class WhenGettingApplicationSubmitted
                 c.CandidateId.Equals(candidateId)
                 && c.ApplicationId.Equals(applicationId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-                new(CustomClaims.CandidateId, candidateId.ToString()),
-        }));
+        var user = new ClaimsPrincipal(new ClaimsIdentity([
+            new Claim(CustomClaims.CandidateId, candidateId.ToString())
+        ]));
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext { User = user }
