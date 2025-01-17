@@ -167,36 +167,6 @@ public class WhenFilteringNewAccountUsers
         redirectToRouteResult!.RouteName.Should().Be(RouteNames.CreateAccount);
     }
 
-
-    [Test, MoqAutoData]
-    public async Task And_Account_Has_Already_Been_Migrated_Then_Redirected(
-        Guid candidateId,
-        [ArrangeActionContext<UserController>] ActionExecutingContext contextController,
-        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
-        NewFaaUserAccountFilter filter)
-    {
-        //Arrange
-        contextController.ActionDescriptor = new ControllerActionDescriptor
-        {
-            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.NoExemption))!
-        };
-
-        contextController.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-        {
-            new(CustomClaims.CandidateId, candidateId.ToString()),
-            new(CustomClaims.EmailAddressMigrated, "true")
-        }));
-
-        //Act
-        await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
-
-        //Assert
-        nextMethod.Verify(x => x(), Times.Never);
-        contextController.Result.Should().BeOfType<RedirectToRouteResult>();
-        var redirectToRouteResult = contextController.Result as RedirectToRouteResult;
-        redirectToRouteResult!.RouteName.Should().Be(RouteNames.EmailAlreadyMigrated);
-    }
-
     [Test, MoqAutoData]
     public async Task And_Account_Has_Already_Been_Migrated_And_Target_Is_Exempt_Then_Continues(
         Guid candidateId,
@@ -214,7 +184,6 @@ public class WhenFilteringNewAccountUsers
         {
             new(CustomClaims.CandidateId, candidateId.ToString()),
             new(CustomClaims.AccountSetupCompleted, "true"),
-            new(CustomClaims.EmailAddressMigrated, "true")
         }));
 
         //Act
@@ -225,7 +194,7 @@ public class WhenFilteringNewAccountUsers
         Assert.That(contextController.Result, Is.Null);
     }
 
-    internal class DummyExemptionClass
+    private class DummyExemptionClass
     {
         public void NoExemption()
         {

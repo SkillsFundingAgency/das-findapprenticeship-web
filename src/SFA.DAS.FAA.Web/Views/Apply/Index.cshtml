@@ -54,28 +54,6 @@
         }
 
 
-        @if (Model.ShowApplicationMigratedBanner)
-        {
-            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title-important"
-                data-module="govuk-notification-banner">
-                <div class="govuk-notification-banner__header">
-                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title-important">
-                        Important
-                    </h2>
-                </div>
-                <div class="govuk-notification-banner__content">
-                    <p class="govuk-notification-banner__heading">
-                        You started this application on the old Find an apprenticeship.
-                    </p>
-                    <p class="govuk-body">To submit this application, you’ll need to:</p>
-                    <ul class="govuk-list govuk-list--bullet">
-                        <li>check and complete each section we’ve transferred</li>
-                        <li>answer the new application and Disability Confident questions</li>
-                    </ul>
-                </div>
-            </div>
-        }
-
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Apply for @Model.VacancyTitle</h1>
         <p class="govuk-body-l faa-vacancy__location govuk-!-margin-bottom-4">@Model.EmployerName</p>
         <p class="govuk-body">@Model.ClosingDate</p>
