@@ -23,8 +23,6 @@ public static class RouteNames
     public const string NotificationPreferencesSkip = "notification-preferences-skip";
     public const string ConfirmAccountDetails = "check-your-account-details";
     public const string CreateAccount = "create-account";
-    public const string TransferYourData = "transfer-your-data";
-    public const string SignInToYourOldAccount = "sign-in-to-your-old-account";
     public const string SignOut = "signout";
     public const string SignIn = "sign-in";
     public const string AccountUnavailable = "account-unavailable";
@@ -35,13 +33,11 @@ public static class RouteNames
     public const string ChangeNotificationPreferences = "change-notification-preferences";
     public const string Email = "email";
     public const string SavedVacancies = "saved-vacancies";
-    public const string ConfirmDataTransfer = "confirm-data-transfer";
     public const string FinishAccountSetup = "finish-account-setup";
     public const string GetHelp = "get-help";
     public const string Cookies = "cookies";
     public const string AccessibilityStatement = "accessibility-statement";
     public const string TermsAndConditions = "terms-and-conditions";
-    public const string EmailAlreadyMigrated = "email-already-migrated";
     public const string AccountFound = "account-found";
     public const string AccountFoundTermsAndConditions = "account-found-terms-and-conditions";
     public const string ConfirmAccountDelete = "confirm-account-deletion";
