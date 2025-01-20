@@ -57,6 +57,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Applications
             actualModel.Should().BeEquivalentTo(expected, options  =>options
                 .Excluding(c=>c.WithdrawnBannerMessage)
                 .Excluding(c => c.ApplicationSubmittedBannerMessage)
+                .Excluding(c => c.ShowEqualityQuestionsBannerMessage)
             );
             actualModel!.WithdrawnBannerMessage.Should().Be(bannerMessage);
             actualModel!.ApplicationSubmittedBannerMessage.Should().Be(applicationSubmittedBannerMessage);

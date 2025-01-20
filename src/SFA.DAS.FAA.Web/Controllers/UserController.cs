@@ -17,7 +17,6 @@ using SFA.DAS.FAA.Application.Commands.CreateAccount.PhoneNumber;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
-using SFA.DAS.FAA.Application.Commands.MigrateData;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.PostDeleteSavedSearch;
 using SFA.DAS.FAA.Application.Commands.User.PostAccountDeletion;
 using SFA.DAS.FAA.Application.Constants;
@@ -28,8 +27,6 @@ using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Application.Queries.User.GetSavedSearch;
 using SFA.DAS.FAA.Application.Queries.User.GetSavedSearches;
 using SFA.DAS.FAA.Application.Queries.User.GetSettings;
-using SFA.DAS.FAA.Application.Queries.User.GetSignIntoYourOldAccount;
-using SFA.DAS.FAA.Application.Queries.User.GetTransferUserData;
 using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
@@ -71,59 +68,8 @@ namespace SFA.DAS.FAA.Web.Controllers
             {
                 cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
             }
-            
-            var model = new InformViewModel
-            {
-                ShowAccountRecoveryBanner = result.ShowAccountRecoveryBanner
-            };
 
-            return View(model);
-        }
-
-        [HttpGet]
-        [Route("create-account/transfer-your-data", Name = RouteNames.TransferYourData)]
-        public async Task<IActionResult> TransferYourData()
-        {
-            var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
-            return View(new TransferYourDataViewModel
-            {
-                PreviousPageUrl = returnUrl ?? Url.RouteUrl(RouteNames.Applications.ViewApplications),
-            });
-        }
-
-        [HttpGet]
-        [Route("create-account/sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
-        public IActionResult SignInToYourOldAccount()
-        {
-            var viewModel = new SignInToYourOldAccountViewModel();
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [Route("create-account/sign-in-to-your-old-account", Name = RouteNames.SignInToYourOldAccount)]
-        public async Task<IActionResult> SignInToYourOldAccount(SignInToYourOldAccountViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(viewModel);
-            }
-
-            var result = await mediator.Send(new GetSignIntoYourOldAccountQuery
-            {
-                CandidateId = (Guid)User.Claims.CandidateId()!,
-                Email = viewModel.Email ?? "",
-                Password = viewModel.Password ?? ""
-            });
-
-            if (!result.IsValid)
-            {
-                ModelState.AddModelError(nameof(SignInToYourOldAccountViewModel.Password), "Check your account details. You’ve entered an incorrect email address or password.");
-                return View(viewModel);
-            }
-
-            await cacheStorageService.Set($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}", viewModel.Email);
-            
-            return RedirectToRoute(RouteNames.ConfirmDataTransfer);
+            return View();
         }
 
         [HttpGet]
@@ -603,39 +549,10 @@ namespace SFA.DAS.FAA.Web.Controllers
             return email;
         }
 
-        [HttpGet("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
-        public async Task<IActionResult> ConfirmDataTransfer()
-        {
-            var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
-            if(string.IsNullOrEmpty(legacyEmailAddress)) return RedirectToRoute(RouteNames.ServiceStartDefault);
-
-            var response = await mediator.Send(new GetTransferUserDataQuery
-            {
-                CandidateId = (Guid)User.Claims.CandidateId()!,
-                EmailAddress = legacyEmailAddress!
-            });
-
-            var model = (ConfirmTransferViewModel) response;
-            model.EmailAddress = User.Claims.Email()!;
-            
-            return View(model);
-        }
+        
 		
 
-        [HttpPost("confirm-transfer", Name = RouteNames.ConfirmDataTransfer)]
-        public async Task<IActionResult> ConfirmDataTransfer(ConfirmTransferViewModel viewModel)
-        {
-            var legacyEmailAddress = await cacheStorageService.Get<string>($"{User.Claims.CandidateId()}-{CacheKeys.LegacyEmail}");
-            if (string.IsNullOrEmpty(legacyEmailAddress)) return RedirectToRoute(RouteNames.ServiceStartDefault);
-
-            await mediator.Send(new MigrateDataTransferCommand
-            {
-                CandidateId = (Guid)User.Claims.CandidateId()!,
-                EmailAddress = legacyEmailAddress!
-            });
-
-            return RedirectToRoute(RouteNames.FinishAccountSetup);
-        }
+       
 
         [HttpGet("finish-account-setup", Name = RouteNames.FinishAccountSetup)]
         public IActionResult FinishAccountSetup()
@@ -649,18 +566,6 @@ namespace SFA.DAS.FAA.Web.Controllers
             return View(new EmailViewModel(configuration["ResourceEnvironmentName"]!.Equals("PRD", StringComparison.CurrentCultureIgnoreCase)) { JourneyPath = journeyPath });
         }
 
-        [HttpGet("email-already-migrated", Name = RouteNames.EmailAlreadyMigrated)]
-        [AllowMigratedAccountAccess]
-        public IActionResult EmailAlreadyMigrated()
-        {
-            var viewModel = new EmailAlreadyMigratedViewModel
-            {
-                Email = User.Claims.Email()!
-            };
-
-            return View(viewModel);
-        }
-		
 		[HttpGet]
         [Route("account-found", Name = RouteNames.AccountFound)]
         public async Task<IActionResult> AccountFound()
