@@ -54,26 +54,17 @@ public class WhenGettingSelectAddress
     [MoqInlineAutoData(null)]
     [MoqInlineAutoData("")]
     public async Task Then_If_The_Postcode_Is_Null_Or_Empty_Redirect_To_Enter_Postcode(
-    string postcode,
-    Guid candidateId,
-    GetAddressesByPostcodeQueryResult queryResult,
-    [Frozen] Mock<IMediator> mediator,
-    [Greedy] UserController controller)
+        string postcode,
+        Guid candidateId,
+        GetAddressesByPostcodeQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
     {
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
-                    new(CustomClaims.CandidateId, candidateId.ToString())
-                }))
-            }
-        };
+        controller.AddControllerContext().WithUser(candidateId);
 
         var result = await controller.SelectAddress(postcode) as RedirectToRouteResult;
 
-        result.RouteName.Should().Be(RouteNames.PostcodeAddress);
+        result!.RouteName.Should().Be(RouteNames.PostcodeAddress);
         mediator.Verify(x => x.Send(It.IsAny<GetAddressesByPostcodeQuery>(), CancellationToken.None), Times.Never);
     }
 }
