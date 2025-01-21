@@ -5,7 +5,6 @@ namespace SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 
 public class GetIndexQueryResult
 {
-    public bool ShowAccountRecoveryBanner { get; set; }
     public List<Application> Applications { get; set; } = [];
 
     public class Application
@@ -28,7 +27,6 @@ public class GetIndexQueryResult
     {
         return new GetIndexQueryResult
         {
-            ShowAccountRecoveryBanner = source.ShowAccountRecoveryBanner,
             Applications = source.Applications.Select(x => new Application
             {
                 Id = x.Id,

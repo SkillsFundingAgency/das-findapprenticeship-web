@@ -7,7 +7,8 @@
     {
         <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
     }
-    <partial name="_VacancyTitle" model=@ValueTuple.Create(Model.Title, Model.VacancyReference, ApplicationsTab.Submitted)/>
+    <partial name="_VacancyTitle" model=@ValueTuple.Create(Model.Title, Model.VacancyReference,
+        ApplicationsTab.Submitted) />
     <p class="govuk-hint">@Model.EmployerName</p>
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.SubmittedDate</p>
     <p class="govuk-hint">@Model.ClosingDate</p>
@@ -15,11 +16,13 @@
         <li>
             <a class="govuk-link govuk-link--no-visited-state"
                 href="@Url.RouteUrl(RouteNames.Applications.ViewApplication, new { applicationId = Model.Id })">View
-                application</a>
+                application<span class="govuk-visually-hidden"> for
+                    @Model.Title</span></a>
         </li>
         <li>
             <a class="govuk-link" asp-route="@RouteNames.Applications.WithdrawApplicationGet"
-                asp-route-applicationId="@Model.Id">Withdraw application</a>
+                asp-route-applicationId="@Model.Id">Withdraw application<span class="govuk-visually-hidden"> for
+                    @Model.Title</span></a>
         </li>
     </ul>
 </li>
