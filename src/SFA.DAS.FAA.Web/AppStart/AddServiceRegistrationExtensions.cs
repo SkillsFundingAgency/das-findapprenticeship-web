@@ -8,6 +8,7 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.GovUK.Auth.Models;
 using SFA.DAS.GovUK.Auth.Services;
 
 namespace SFA.DAS.FAA.Web.AppStart;
@@ -58,9 +59,14 @@ public static class AddServiceRegistrationExtension
         
         services.AddAndConfigureGovUkAuthentication(
             configuration,
-            typeof(CandidateAccountPostAuthenticationClaimsHandler),
-            "/apprenticeshipsearch",
-            "/account-details", cookieDomain, loginRedirect);
+            new AuthRedirects
+            {
+                SignedOutRedirectUrl = "/apprenticeshipsearch",
+                LoginRedirect = loginRedirect,
+                CookieDomain = cookieDomain,
+                LocalStubLoginPath = "/account-details"
+            },
+            typeof(CandidateAccountPostAuthenticationClaimsHandler));
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, CandidateAccountPostAuthenticationClaimsHandler>();
         services.AddAuthorization(options =>

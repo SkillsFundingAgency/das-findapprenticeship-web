@@ -24,6 +24,7 @@ public static class RouteNames
     public const string ConfirmAccountDetails = "check-your-account-details";
     public const string CreateAccount = "create-account";
     public const string SignOut = "signout";
+    public const string ServiceSignOut = "service-signout";
     public const string SignIn = "sign-in";
     public const string AccountUnavailable = "account-unavailable";
     public const string StubAccountDetailsGet = "account-details-get";

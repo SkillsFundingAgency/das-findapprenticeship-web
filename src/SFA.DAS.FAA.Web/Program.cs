@@ -4,6 +4,7 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.ModelBinding;
 using SFA.DAS.FAA.Web.Filters;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.GovUK.Auth.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,7 +92,8 @@ app.UseSession();
 
 app.UseEndpoints(endpointBuilder =>
 {
-    endpointBuilder.MapControllerRoute(
+    endpointBuilder?.MapSessionKeepAliveEndpoint();
+    endpointBuilder?.MapControllerRoute(
         name: "default",
         pattern: "{controller=SearchApprenticeshipsController}/{action=Index}/{id?}");
 });
