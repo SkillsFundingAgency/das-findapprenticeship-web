@@ -1,11 +1,9 @@
-using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
-using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
@@ -66,7 +64,7 @@ public class SearchApprenticeshipsController(
         {
             ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
         }
-        else if (result.LocationSearched && result.Location != null)
+        else if (result is {LocationSearched: true, Location: not null})
         {
             return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm, sort = VacancySort.DistanceAsc });
         }
