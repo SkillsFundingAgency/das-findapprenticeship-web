@@ -376,7 +376,7 @@ public class SearchApprenticeshipsController(
                 SearchTerm = criteria.SearchTerm,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
                 DisabilityConfident = criteria.DisabilityConfident,
-                Distance = criteria.Distance,
+                Distance = string.IsNullOrEmpty(criteria.Location) ? null : criteria.Distance,
                 Location = criteria.Location,
                 SelectedLevelIds = criteria.LevelIds,
                 SelectedRouteIds = criteria.RouteIds,
