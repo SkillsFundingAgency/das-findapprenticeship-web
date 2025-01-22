@@ -1,17 +1,12 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
+using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
-using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
-using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.User;
+using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingNotificationPreferences
@@ -21,7 +16,6 @@ public class WhenGettingNotificationPreferences
     [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.PhoneNumber, "Get reminders about your unfinished applications – Find an apprenticeship – GOV.UK", "Create an account", "Get reminders about your unfinished applications", "Continue")]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "Get reminders about your unfinished applications – Find an apprenticeship – GOV.UK", "Create an account", "Get reminders about your unfinished applications", "Continue")]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings, "Change if you get reminders about your unfinished applications – Find an apprenticeship – GOV.UK", "", "Change if you get reminders about your unfinished applications", "Save")]
-    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.AccountFoundTermsAndConditions, "Get reminders about your unfinished applications – Find an apprenticeship – GOV.UK", "", "Get reminders about your unfinished applications", "Continue")]
     public async Task Then_View_Is_Returned(
         UserJourneyPath journeyPath,
         string pageBackLink,

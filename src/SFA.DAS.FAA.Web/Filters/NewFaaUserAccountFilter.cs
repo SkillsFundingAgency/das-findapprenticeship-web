@@ -28,16 +28,10 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
             if (!context.ActionDescriptor.HasAttribute<AllowIncompleteAccountAccessAttribute>())
             {
                 var response = await GetCandidateDetails(context, identity);
-                if (response.Status == UserStatus.Incomplete)
+                if (response.Status is UserStatus.Incomplete or UserStatus.InProgress)
                 {
                     var requestPath = context.HttpContext.Request.Path;
                     context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new { returnUrl = requestPath });
-                    return;
-                }
-                if (response.Status == UserStatus.InProgress)
-                {
-                    var requestPath = context.HttpContext.Request.Path;
-                    context.Result = new RedirectToRouteResult(RouteNames.AccountFound, new { returnUrl = requestPath });
                     return;
                 }
             }

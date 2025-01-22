@@ -5,8 +5,7 @@
     ViewData["Title"] = "Select your address – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
-    @if (Model.JourneyPath is UserJourneyPath.Settings or UserJourneyPath.ConfirmAccountDetails or
-   UserJourneyPath.AccountFound)
+    @if (Model.JourneyPath is UserJourneyPath.Settings or UserJourneyPath.ConfirmAccountDetails)
     {
         <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-journeyPath="@Model.JourneyPath">Back</a>
     }
