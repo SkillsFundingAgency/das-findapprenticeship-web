@@ -39,8 +39,6 @@ public static class RouteNames
     public const string Cookies = "cookies";
     public const string AccessibilityStatement = "accessibility-statement";
     public const string TermsAndConditions = "terms-and-conditions";
-    public const string AccountFound = "account-found";
-    public const string AccountFoundTermsAndConditions = "account-found-terms-and-conditions";
     public const string ConfirmAccountDelete = "confirm-account-deletion";
     public const string AccountDelete = "account-delete";
     public const string AccountDeleteWithDrawApplication = "account-deletion-withdraw-applications";

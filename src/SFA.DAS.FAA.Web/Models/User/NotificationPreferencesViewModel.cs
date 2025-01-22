@@ -19,7 +19,6 @@ public class NotificationPreferencesViewModel : ViewModelBase
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
-            UserJourneyPath.AccountFound => RouteNames.AccountFoundTermsAndConditions,
             _ => RouteNames.PhoneNumber
         };
     }
@@ -29,7 +28,6 @@ public class NotificationPreferencesViewModel : ViewModelBase
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
-            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.ConfirmAccountDetails
         };
@@ -39,7 +37,6 @@ public class NotificationPreferencesViewModel : ViewModelBase
     {
         return JourneyPath switch
         {
-            UserJourneyPath.AccountFound => string.Empty,
             UserJourneyPath.Settings => string.Empty,
             _ => "Create an account"
         };

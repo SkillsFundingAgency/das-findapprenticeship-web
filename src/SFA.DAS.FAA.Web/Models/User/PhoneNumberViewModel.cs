@@ -19,7 +19,6 @@ public class PhoneNumberViewModel : ViewModelBase
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
-            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             UserJourneyPath.SelectAddress => RouteNames.SelectAddress,
             UserJourneyPath.EnterAddressManually => RouteNames.EnterAddressManually,
@@ -32,7 +31,6 @@ public class PhoneNumberViewModel : ViewModelBase
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
-            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.NotificationPreferences
         };
@@ -41,7 +39,6 @@ public class PhoneNumberViewModel : ViewModelBase
     {
         return JourneyPath switch
         {
-            UserJourneyPath.AccountFound => string.Empty,
             UserJourneyPath.Settings => string.Empty,
             _ => "Create an account"
         };
