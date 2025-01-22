@@ -32,7 +32,7 @@ namespace SFA.DAS.FAA.Web.Services
                 0 => $"Closes today{timeSuffix}",
                 1 => $"Closes tomorrow ({closingDate:dddd d MMMM}{timeSuffix})",
                 <= 31 => $"Closes in {daysToExpiry} days ({closingDate:dddd d MMMM}{timeSuffix})",
-                _ => $"Closes on {closingDate:dddd d MMMM}"
+                _ => $"Closes on {closingDate:d MMMM yyyy}"
             };
         }
         
