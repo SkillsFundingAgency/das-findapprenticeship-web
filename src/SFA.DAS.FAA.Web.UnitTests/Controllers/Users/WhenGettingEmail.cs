@@ -16,7 +16,6 @@ public class WhenGettingEmail
     [Test]
     [MoqInlineAutoData(null, RouteNames.ConfirmAccountDetails, "Create an account")]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails, "Create an account")]
-    [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails, "")]
     [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings, "")]
     public void Then_View_Is_Returned(
         UserJourneyPath journeyPath,

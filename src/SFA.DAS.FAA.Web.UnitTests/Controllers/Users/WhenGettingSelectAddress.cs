@@ -1,17 +1,11 @@
-﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
+﻿using CreateAccount.GetAddressesByPostcode;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
-using CreateAccount.GetAddressesByPostcode;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models.User;
-using SFA.DAS.Testing.AutoFixture;
-using SFA.DAS.FAA.Web.Infrastructure;
+using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingSelectAddress
@@ -19,7 +13,6 @@ public class WhenGettingSelectAddress
     [Test]
     [MoqInlineAutoData(UserJourneyPath.CreateAccount)]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails)]
-    [MoqInlineAutoData(UserJourneyPath.AccountFound)]
     [MoqInlineAutoData(UserJourneyPath.Settings)]
     public async Task Then_View_Is_Returned(
         UserJourneyPath journeyPath,

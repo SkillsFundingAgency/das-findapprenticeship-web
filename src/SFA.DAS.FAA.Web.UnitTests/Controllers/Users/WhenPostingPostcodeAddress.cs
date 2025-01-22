@@ -1,15 +1,10 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
+﻿using CreateAccount.GetCandidatePostcodeAddress;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
-using CreateAccount.GetCandidatePostcodeAddress;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
@@ -19,7 +14,6 @@ public class WhenPostingPostcodeAddress
     [MoqInlineAutoData(UserJourneyPath.CreateAccount)]
     [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails)]
     [MoqInlineAutoData(UserJourneyPath.Settings)]
-    [MoqInlineAutoData(UserJourneyPath.AccountFound)]
     public async Task When_Model_State_Is_Valid_Should_Redirect_To_Enter_Your_Address(
         UserJourneyPath journeyPath,
         string redirectRoute,
