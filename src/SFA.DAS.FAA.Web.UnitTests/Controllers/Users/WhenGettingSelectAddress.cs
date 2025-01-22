@@ -42,4 +42,22 @@ public class WhenGettingSelectAddress
         resultModel.Addresses.Count.Should().Be(queryResult.Addresses.Count());
         resultModel.JourneyPath.Should().Be(journeyPath);
     }
+
+    [Test]
+    [MoqInlineAutoData(null)]
+    [MoqInlineAutoData("")]
+    public async Task Then_If_The_Postcode_Is_Null_Or_Empty_Redirect_To_Enter_Postcode(
+        string postcode,
+        Guid candidateId,
+        GetAddressesByPostcodeQueryResult queryResult,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] UserController controller)
+    {
+        controller.AddControllerContext().WithUser(candidateId);
+
+        var result = await controller.SelectAddress(postcode) as RedirectToRouteResult;
+
+        result!.RouteName.Should().Be(RouteNames.PostcodeAddress);
+        mediator.Verify(x => x.Send(It.IsAny<GetAddressesByPostcodeQuery>(), CancellationToken.None), Times.Never);
+    }
 }
