@@ -62,7 +62,7 @@
 
                 @foreach (var vacancy in Model.SavedVacancies)
                 {
-                    <li class="das-search-results__list-item">
+                    <li class="das-search-results__list-item govuk-!-margin-bottom-4">
                         @if (vacancy.IsClosingSoon)
                         {
                             <strong class="govuk-tag govuk-tag--orange govuk-!-margin-top-1 govuk-!-margin-bottom-2">
@@ -81,10 +81,11 @@
                         <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.CreatedOn</p>
                         <p class="govuk-body">@vacancy.ClosingDateLabel</p>
 
-                        <ul class="govuk-!-font-size-19 govuk-summary-list__actions-list">
+
+                        <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
                             @if (vacancy.IsExternalVacancy)
                             {
-                                <li class="govuk-summary-list__actions-list-item">
+                                <li>
                                     <a class="govuk-link govuk-link--no-visited-state" target="_blank"
                                         href="@vacancy.ExternalVacancyUrl">
                                         Apply<span class="govuk-visually-hidden"> for @vacancy.Title</span> on company's website
@@ -95,7 +96,7 @@
                             }
                             else if (vacancy.ShowApplyButton)
                             {
-                                <li class="govuk-summary-list__actions-list-item">
+                                <li>
                                     <form method="post" asp-route="@RouteNames.Vacancies"
                                         asp-route-vacancyreference="@vacancy.VacancyReference">
                                         <button type="submit" class="das-button--inline-link">
