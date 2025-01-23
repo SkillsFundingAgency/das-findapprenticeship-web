@@ -18,7 +18,6 @@ public class WhenGettingConfirmYourAccountDetails
 {
     [Test]
     [MoqInlineAutoData(UserJourneyPath.CreateAccount, "Create an account", "Create your account")]
-    [MoqInlineAutoData(UserJourneyPath.AccountFound, "", "Continue")]
     public async Task Then_View_Is_Returned(
         UserJourneyPath journeyPath,
         string pageCaption,

@@ -210,6 +210,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet("select-address", Name = RouteNames.SelectAddress)]
         public async Task<IActionResult> SelectAddress(string? postcode, UserJourneyPath journeyPath = UserJourneyPath.CreateAccount)
         {
+            if (string.IsNullOrWhiteSpace(postcode))
+            {
+                return RedirectToRoute(RouteNames.PostcodeAddress, new { postcode });
+            }
+
             var result = await mediator.Send(new GetAddressesByPostcodeQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
@@ -428,16 +433,8 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var returnUrl = await cacheStorageService.Get<string>($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
             await cacheStorageService.Remove($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}");
-            
-            switch (model.JourneyPath)
-            {
-                case UserJourneyPath.CreateAccount:
-                    await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
-                    break;
-                case UserJourneyPath.AccountFound:
-                    await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountFound}", true);
-                    break;
-            }
+
+            if (model.JourneyPath == UserJourneyPath.CreateAccount) await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
 
             if (returnUrl != null)
             {
@@ -559,30 +556,6 @@ namespace SFA.DAS.FAA.Web.Controllers
         public IActionResult Email(UserJourneyPath journeyPath = UserJourneyPath.ConfirmAccountDetails)
         {
             return View(new EmailViewModel(configuration["ResourceEnvironmentName"]!.Equals("PRD", StringComparison.CurrentCultureIgnoreCase)) { JourneyPath = journeyPath });
-        }
-
-		[HttpGet]
-        [Route("account-found", Name = RouteNames.AccountFound)]
-        public async Task<IActionResult> AccountFound()
-        {
-            var result = await mediator.Send(new UpdateCandidateStatusCommand
-            {
-                GovIdentifier = User.Claims.GovIdentifier(),
-                CandidateEmail = User.Claims.Email()!
-            });
-
-            var model = new AccountFoundInformViewModel
-            {
-                FirstName = result.FirstName,
-            };
-            return View(model);
-        }
-
-        [HttpGet]
-        [Route("account-found-terms-and-conditions", Name = RouteNames.AccountFoundTermsAndConditions)]
-        public IActionResult AccountFoundTermsAndConditions()
-        {
-           return View();
         }
 
         [HttpGet]

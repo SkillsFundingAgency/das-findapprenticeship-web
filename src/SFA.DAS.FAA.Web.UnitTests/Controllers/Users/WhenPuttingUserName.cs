@@ -1,17 +1,12 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
+using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using SFA.DAS.FAA.Web.AppStart;
-using SFA.DAS.FAA.Application.Commands.CreateAccount.UserName;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
@@ -20,7 +15,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
         [Test]
         [MoqInlineAutoData(UserJourneyPath.CreateAccount, RouteNames.DateOfBirth)]
         [MoqInlineAutoData(UserJourneyPath.ConfirmAccountDetails, RouteNames.ConfirmAccountDetails)]
-        [MoqInlineAutoData(UserJourneyPath.AccountFound, RouteNames.ConfirmAccountDetails)]
         [MoqInlineAutoData(UserJourneyPath.Settings, RouteNames.Settings)]
         public async Task When_Model_State_Is_Valid_Should_Redirect_To_What_Is_Your_Date_Of_Birth(
          UserJourneyPath journeyPath,
