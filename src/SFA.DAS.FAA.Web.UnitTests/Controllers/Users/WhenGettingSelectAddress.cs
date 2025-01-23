@@ -6,6 +6,7 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models.User;
 using System.Security.Claims;
+using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingSelectAddress
