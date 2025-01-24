@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.Interfaces;
 
-namespace SFA.DAS.FAA.Domain.Apply.GetTrainingCourse
+namespace SFA.DAS.FAA.Domain.Apply.DeleteTrainingCourse
 {
     public class GetDeleteTrainingCourseApiRequest(Guid applicationId, Guid candidateId, Guid trainingCourseId) : IGetApiRequest
     {

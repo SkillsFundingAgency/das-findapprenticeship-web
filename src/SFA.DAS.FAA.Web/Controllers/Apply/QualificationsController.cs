@@ -223,6 +223,8 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 Id = id
             });
 
+            if(result is null) return RedirectToRoute(RouteNames.ApplyApprenticeship.Qualifications, new { applicationId });
+
             var viewModel = DeleteQualificationsViewModel.MapFromQueryResult(applicationId, qualificationReferenceId, id, result);
 
             return View(DeleteQualificationsViewName, viewModel);

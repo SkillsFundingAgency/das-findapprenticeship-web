@@ -13,8 +13,6 @@ public class GetDeleteQualificationsQueryHandler(IApiClient apiClient): IRequest
             new GetDeleteQualificationsApiRequest(request.ApplicationId, request.CandidateId,
                 request.QualificationType, request.Id));
 
-        if (response == null) throw new ResourceNotFoundException();
-
         return response;
     }
 }
