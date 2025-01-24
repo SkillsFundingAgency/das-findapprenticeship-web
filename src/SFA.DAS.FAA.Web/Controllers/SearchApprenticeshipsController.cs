@@ -64,7 +64,7 @@ public class SearchApprenticeshipsController(
         {
             ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
         }
-        else if (result.LocationSearched && result.Location != null)
+        else if (result is {LocationSearched: true, Location: not null})
         {
             return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm, sort = VacancySort.DistanceAsc });
         }
@@ -195,13 +195,17 @@ public class SearchApprenticeshipsController(
             request.PageNumber = 1;
         }
         
-        if (string.IsNullOrEmpty(request.SearchTerm) && request.LevelIds is { Count: 0 } && request.RouteIds is { Count: 0 })
+        if (string.IsNullOrEmpty(request.SearchTerm) && request is {LevelIds.Count: 0, RouteIds.Count: 0})
         {
             request.Sort = VacancySort.DistanceAsc.ToString();
         }
-        else if ( request.Sort == null && request.Location != null)
+        else if (!string.IsNullOrEmpty(request.Location))
         {
             request.Sort = VacancySort.DistanceAsc.ToString();
+        }
+        else if (string.IsNullOrEmpty(request.Sort))
+        {
+            request.Sort = VacancySort.AgeAsc.ToString();
         }
 
         var result = await mediator.Send(new GetSearchResultsQuery

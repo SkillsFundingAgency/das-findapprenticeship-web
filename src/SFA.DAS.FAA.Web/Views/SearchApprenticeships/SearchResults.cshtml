@@ -180,7 +180,10 @@
                     <div class="faa-search-results-sort">
                         <label class="govuk-label faa-search-results-sort__label" for="sort-results">Sort results</label>
                         <select class="govuk-select faa-search-results-sort__select" id="sort-results" name="sort">
-                            <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Nearest first</option>
+                            @if (!string.IsNullOrEmpty(Model.Location))
+                            {
+                                <option value="DistanceAsc" selected="@(Model.Sort == "DistanceAsc")">Nearest first</option>
+                            }
                             <option value="AgeAsc" selected="@(Model.Sort == "AgeAsc")">Most recent</option>
                             <option value="ClosingAsc" selected="@(Model.Sort == "ClosingAsc")">Closing soonest</option>
                             <option value="SalaryDesc" selected="@(Model.Sort == "SalaryDesc")">Wage (high to low)</option>
