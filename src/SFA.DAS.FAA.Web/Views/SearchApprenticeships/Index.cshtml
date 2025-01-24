@@ -119,8 +119,14 @@
                                     @savedSearch.Location
                                     @if (savedSearch.Distance is not null)
                                     {
-                                        <div class="govuk-hint govuk-!-margin-top-1" style="color:#505a5f">
+                                        <div class="govuk-hint govuk-!-margin-top-1 faa-search-alert-hint">
                                             Within @savedSearch.Distance miles
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="govuk-hint govuk-!-margin-top-1 faa-search-alert-hint">
+                                            Across England
                                         </div>
                                     }
                                 </dd>

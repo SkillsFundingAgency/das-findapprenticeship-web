@@ -1,7 +1,6 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using WebEssentials.AspNetCore.CdnTagHelpers
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Web.Extensions
 
 <!DOCTYPE html>
 <html lang="en" class="govuk-template faa-template">
@@ -20,7 +19,7 @@
     <link rel="apple-touch-icon" sizes="152x152" href="assets/images/govuk-apple-touch-icon-152x152.png" />
     <link rel="apple-touch-icon" href="assets/images/govuk-apple-touch-icon.png" />
     <!--[if !IE 8]><!-->
-    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" asp-append-version="true" />
     <link href="/css/faa.css" rel="stylesheet" no-cdn asp-append-version="true" />
     <link href="/css/print.css" rel="stylesheet" media="print" no-cdn asp-append-version="true" />
     <!--<![endif]-->
@@ -302,7 +301,7 @@
     <!-- Include the script only if the user is logged in -->
     @if (User.Identity is { IsAuthenticated: true })
     {
-        <script src="/js/sessionTimeout.js"></script>
+        <script src="/js/sessionTimeout.js" asp-append-version="true"></script>
     }
     <script>
         window.GOVUKFrontend.initAll();
