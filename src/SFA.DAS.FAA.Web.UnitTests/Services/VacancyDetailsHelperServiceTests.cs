@@ -37,7 +37,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         [TestCase("01 Feb 2000", "Closes in 31 days (Tuesday 1 February at 11:59pm)")]
         [TestCase("01 Jan 2000", "Closes today at 11:59pm")]
         [TestCase("02 Jan 2000", "Closes tomorrow (Sunday 2 January at 11:59pm)")]
-        [TestCase("01 Apr 2000", "Closes on Saturday 1 April")]
+        [TestCase("01 Apr 2000", "Closes on Saturday 1 April 2000")]
         public void GetClosingDate(string closingDate, string? expectedResult)
         {
             //arrange
@@ -110,7 +110,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         [InlineAutoData("01 Feb 2000", "Closes in 31 days (Tuesday 1 February at 11:59pm)")]
         [InlineAutoData("01 Jan 2000", "Closes today at 11:59pm")]
         [InlineAutoData("02 Jan 2000", "Closes tomorrow (Sunday 2 January at 11:59pm)")]
-        [InlineAutoData("01 Apr 2000", "Closes on Saturday 1 April")]
+        [InlineAutoData("01 Apr 2000", "Closes on Saturday 1 April 2000")]
         public void GetClosingDate_Overload_Has_The_Default_Behaviour_When_ClosedDate_Is_Null(string closingDate, string expected, Mock<IDateTimeService> dateTimeService)
         {
             // arrange
