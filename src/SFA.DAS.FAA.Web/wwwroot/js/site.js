@@ -168,10 +168,12 @@ Favourites.prototype.init = function () {
   this.addLink.addEventListener("click", async (e) => {
     e.preventDefault();
     await this.submit(this.addLink, "add");
+    this.deleteLink.focus();
   });
   this.deleteLink.addEventListener("click", async (e) => {
     e.preventDefault();
     await this.submit(this.deleteLink, "delete");
+    this.addLink.focus();
   });
 };
 

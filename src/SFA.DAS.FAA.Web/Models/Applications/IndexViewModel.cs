@@ -22,8 +22,6 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         public string? WithdrawnBannerMessage { get; set; }
         public string? ApplicationSubmittedBannerMessage { get; set; }
         public bool ShowEqualityQuestionsBannerMessage { get; set; }
-        public bool ShowTransferDataBannerMessage { get; set; }
-
         public class Application
         {
             private const string DateFormat = "d MMMM yyyy";
@@ -114,7 +112,6 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             result.ExpiredApplications = [.. expiredApplications
                 .OrderByDescending(fil => fil.CloseDateTime)
                 .ThenBy(fil => fil.Title)];
-            result.ShowTransferDataBannerMessage = source.ShowAccountRecoveryBanner;
             return result;
         }
     }

@@ -1,5 +1,6 @@
 using System.Net;
 using MediatR;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -188,5 +189,51 @@ public class WhenPostingSaveSearch
         
         // assert
         result?.Url.Should().Be(RedirectUrl);
+    }
+
+    [Test, MoqAutoData]
+    public async Task When_Valid_State_And_Location_Is_Null_And_Distance_Should_Be_Sent_As_Null(
+        Guid saveSearchId,
+        string encodedString,
+        GetSearchResultsRequest getSearchResultsRequest,
+        SaveSearchRequest saveSearchRequest)
+    {
+        // arrange
+        string? passedData = null;
+        getSearchResultsRequest.Location = null;
+        var json = JsonConvert.SerializeObject(getSearchResultsRequest);
+        _dataProtectorService
+            .Setup(x => x.DecodeData(It.IsAny<string>()))
+            .Callback<string?>(x => passedData = x)
+            .Returns(json);
+
+        SaveSearchCommand? passedCommand = null;
+        _mediator
+            .Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
+            .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand);
+
+        _dataProtectorService.Setup(x => x.EncodedData(saveSearchId.ToString()))
+            .Returns(encodedString);
+
+        // act
+        var result = await _sut.SaveSearch(saveSearchRequest) as RedirectResult;
+
+        // assert
+        result?.Url.Should().Be(RedirectUrl);
+        passedData.Should().Be(saveSearchRequest.Data);
+        passedCommand.Should().NotBeNull();
+        passedCommand!.Distance.Should().BeNull();
+        passedCommand!.Location.Should().BeNull();
+        passedCommand.Should().BeEquivalentTo(getSearchResultsRequest, options =>
+            options
+                .WithMapping("LevelIds", "SelectedLevelIds")
+                .WithMapping("RouteIds", "SelectedRouteIds")
+                .WithMapping("Sort", "SortOrder")
+                .WithMapping("UnSubscribeToken", encodedString)
+                .Excluding(x => x.RoutePath)
+                .Excluding(x => x.PageNumber)
+                .Excluding(x => x.IncludeCompetitiveSalaryVacancies)
+                .Excluding(x => x.Distance)
+        );
     }
 }

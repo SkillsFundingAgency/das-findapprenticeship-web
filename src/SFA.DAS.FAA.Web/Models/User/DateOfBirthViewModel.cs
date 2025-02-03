@@ -20,7 +20,6 @@ public class DateOfBirthViewModel
         {
             UserJourneyPath.CreateAccount => RouteNames.UserName,
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
-            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.UserName
         };
@@ -31,7 +30,6 @@ public class DateOfBirthViewModel
         return JourneyPath switch
         {
             UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
-            UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
             UserJourneyPath.Settings => RouteNames.Settings,
             _ => RouteNames.PostcodeAddress
         };
@@ -41,7 +39,6 @@ public class DateOfBirthViewModel
     {
         return JourneyPath switch
         {
-            UserJourneyPath.AccountFound => string.Empty,
             UserJourneyPath.Settings => string.Empty,
             _ => "Create an account"
         };

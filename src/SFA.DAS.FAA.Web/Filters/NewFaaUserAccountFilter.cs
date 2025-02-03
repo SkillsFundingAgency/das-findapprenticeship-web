@@ -23,31 +23,15 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
 
         var identity = (ClaimsIdentity)context.HttpContext.User.Identity;
 
-        if (identity.HasClaim(p => p.Type == CustomClaims.EmailAddressMigrated))
-        {
-            if (!context.ActionDescriptor.HasAttribute<AllowMigratedAccountAccessAttribute>())
-            {
-                ((Controller)context.Controller).ViewData["IsAccountStatusCompleted"] = false;
-                context.Result = new RedirectToRouteResult(RouteNames.EmailAlreadyMigrated, new { });
-                return;
-            }
-        }
-
         if (!skipNewFaaUserAccountCheck && identity != null && identity.HasClaim(p => p.Type == CustomClaims.CandidateId) && !identity.HasClaim(p => p.Type == CustomClaims.AccountSetupCompleted))
         {
             if (!context.ActionDescriptor.HasAttribute<AllowIncompleteAccountAccessAttribute>())
             {
                 var response = await GetCandidateDetails(context, identity);
-                if (response.Status == UserStatus.Incomplete)
+                if (response.Status is UserStatus.Incomplete or UserStatus.InProgress)
                 {
                     var requestPath = context.HttpContext.Request.Path;
                     context.Result = new RedirectToRouteResult(RouteNames.CreateAccount, new { returnUrl = requestPath });
-                    return;
-                }
-                if (response.Status == UserStatus.InProgress)
-                {
-                    var requestPath = context.HttpContext.Request.Path;
-                    context.Result = new RedirectToRouteResult(RouteNames.AccountFound, new { returnUrl = requestPath });
                     return;
                 }
             }

@@ -17,7 +17,6 @@ namespace SFA.DAS.FAA.Web.Models.User
             return JourneyPath switch
             {
                 UserJourneyPath.ConfirmAccountDetails => RouteNames.ConfirmAccountDetails,
-                UserJourneyPath.AccountFound => RouteNames.ConfirmAccountDetails,
                 UserJourneyPath.Settings => RouteNames.Settings,
                 _ => RouteNames.ConfirmAccountDetails
             };
@@ -27,7 +26,6 @@ namespace SFA.DAS.FAA.Web.Models.User
         {
             return JourneyPath switch
             {
-                UserJourneyPath.AccountFound => string.Empty,
                 UserJourneyPath.Settings => string.Empty,
                 _ => "Create an account"
             };

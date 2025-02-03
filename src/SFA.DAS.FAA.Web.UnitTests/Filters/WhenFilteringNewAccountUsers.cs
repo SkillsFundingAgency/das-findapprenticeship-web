@@ -1,21 +1,17 @@
-using AutoFixture.NUnit3;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Candidates;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Filters;
-using SFA.DAS.FAA.Web.UnitTests.Customisations;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using SFA.DAS.FAA.Web.Attributes;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.UnitTests.Customisations;
+using System.Security.Claims;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Filters;
 
@@ -49,6 +45,7 @@ public class WhenFilteringNewAccountUsers
     [Test]
     [MoqInlineAutoData(UserStatus.Completed, true)]
     [MoqInlineAutoData(UserStatus.Incomplete, false)]
+    [MoqInlineAutoData(UserStatus.InProgress, false)]
     public async Task And_Has_CandidateId_And_NameIdentifier_User_Status_Returns_ViewData(
         UserStatus status,
         bool expectedViewData,
@@ -130,21 +127,30 @@ public class WhenFilteringNewAccountUsers
                                                && ((PutCandidateApiRequestData)c.Data).Email == It.IsAny<string>())), Times.Never);
     }
 
-    [Test, MoqAutoData]
-    public async Task And_Account_Incomplete_Then_Redirected(
+    [Test]
+    [MoqInlineAutoData(UserStatus.Incomplete)]
+    [MoqInlineAutoData(UserStatus.InProgress)]
+    public async Task And_Account_Incomplete_or_InProgress_Then_Redirected(
+        UserStatus status,
         Guid candidateId,
+        string email,
+        string userId,
+        PutCandidateApiResponse response,
         [ArrangeActionContext<UserController>] ActionExecutingContext contextController,
         [Frozen] Mock<ActionExecutionDelegate> nextMethod,
         [Frozen] Mock<IApiClient> apiClient,
         NewFaaUserAccountFilter filter)
     {
         //Arrange
+        response.Status = status;
         var httpContext = new Mock<HttpContext>();
         httpContext.Setup(x => x.RequestServices.GetService(typeof(IApiClient)))
             .Returns(apiClient.Object);
         httpContext.Setup(x => x.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
         {
-            new(CustomClaims.CandidateId, candidateId.ToString())
+            new(CustomClaims.CandidateId, candidateId.ToString()),
+            new(ClaimTypes.Email, email),
+            new(ClaimTypes.NameIdentifier, userId)
         })));
 
         var httpRequest = new Mock<HttpRequest>();
@@ -157,6 +163,16 @@ public class WhenFilteringNewAccountUsers
         };
         contextController.HttpContext = httpContext.Object;
 
+        var request = new PutCandidateApiRequest(userId, new PutCandidateApiRequestData
+        {
+            Email = email
+        });
+        apiClient.Setup(x =>
+            x.Put<PutCandidateApiResponse>(
+                It.Is<PutCandidateApiRequest>(c => c.PutUrl.Equals(request.PutUrl)
+                                                   && ((PutCandidateApiRequestData)c.Data).Email == email
+                ))).ReturnsAsync(response);
+
         //Act
         await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
 
@@ -165,36 +181,6 @@ public class WhenFilteringNewAccountUsers
         contextController.Result.Should().BeOfType<RedirectToRouteResult>();
         var redirectToRouteResult = contextController.Result as RedirectToRouteResult;
         redirectToRouteResult!.RouteName.Should().Be(RouteNames.CreateAccount);
-    }
-
-
-    [Test, MoqAutoData]
-    public async Task And_Account_Has_Already_Been_Migrated_Then_Redirected(
-        Guid candidateId,
-        [ArrangeActionContext<UserController>] ActionExecutingContext contextController,
-        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
-        NewFaaUserAccountFilter filter)
-    {
-        //Arrange
-        contextController.ActionDescriptor = new ControllerActionDescriptor
-        {
-            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.NoExemption))!
-        };
-
-        contextController.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-        {
-            new(CustomClaims.CandidateId, candidateId.ToString()),
-            new(CustomClaims.EmailAddressMigrated, "true")
-        }));
-
-        //Act
-        await filter.OnActionExecutionAsync(contextController, nextMethod.Object);
-
-        //Assert
-        nextMethod.Verify(x => x(), Times.Never);
-        contextController.Result.Should().BeOfType<RedirectToRouteResult>();
-        var redirectToRouteResult = contextController.Result as RedirectToRouteResult;
-        redirectToRouteResult!.RouteName.Should().Be(RouteNames.EmailAlreadyMigrated);
     }
 
     [Test, MoqAutoData]
@@ -214,7 +200,6 @@ public class WhenFilteringNewAccountUsers
         {
             new(CustomClaims.CandidateId, candidateId.ToString()),
             new(CustomClaims.AccountSetupCompleted, "true"),
-            new(CustomClaims.EmailAddressMigrated, "true")
         }));
 
         //Act
@@ -225,7 +210,7 @@ public class WhenFilteringNewAccountUsers
         Assert.That(contextController.Result, Is.Null);
     }
 
-    internal class DummyExemptionClass
+    private class DummyExemptionClass
     {
         public void NoExemption()
         {

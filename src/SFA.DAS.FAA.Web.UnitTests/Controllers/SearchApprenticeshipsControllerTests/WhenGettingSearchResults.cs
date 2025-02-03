@@ -1092,4 +1092,69 @@ public class WhenGettingSearchResults
                 : "Hide vacancies without a wage");
         }
     }
+
+    [Test, MoqAutoData]
+    public async Task Then_Sort_Is_Set_To_Distance_When_Location_Exist(
+        string location,
+        GetSearchResultsRequest request,
+        GetSearchResultsResult result,
+        string mapId,
+        List<string>? routeIds,
+        Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Frozen] Mock<IDateTimeService> dateTimeService,
+        [Frozen] Mock<GetSearchResultsRequestValidator> validator)
+    {
+        request.Location = location;
+        request.Sort = null;
+        request.LevelIds = [];
+        request.RouteIds = [];
+        request.DisabilityConfident = false;
+        result.PageNumber = 1;
+        result.Sort = VacancySort.DistanceAsc.ToString();
+        var mediator = new Mock<IMediator>();
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
+        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
+            .ReturnsAsync(
+                new ValidationResult()
+            );
+
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<SearchModelValidator>(),
+            validator.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>())
+        {
+            Url = mockUrlHelper.Object,
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
+                    }))
+
+                }
+            }
+        };
+        result.VacancyReference = null;
+
+        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c => c.Sort == VacancySort.DistanceAsc.ToString()), CancellationToken.None)).ReturnsAsync(result);
+
+        var actual = await controller.SearchResults(request) as ViewResult;
+
+        Assert.That(actual, Is.Not.Null);
+        var actualModel = actual!.Model as SearchResultsViewModel;
+        actualModel?.Sort.Should().Be(VacancySort.DistanceAsc.ToString());
+    }
 }

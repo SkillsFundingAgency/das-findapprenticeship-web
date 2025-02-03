@@ -25,27 +25,7 @@
                 </div>
             </div>
         }
-        @if (Model.ShowTransferDataBannerMessage)
-        {
-            <div class="govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title-important"
-                data-module="govuk-notification-banner">
-                <div class="govuk-notification-banner__header">
-                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title-important">
-                        Important
-                    </h2>
-                </div>
-                <div class="govuk-notification-banner__content">
-                    <p class="govuk-notification-banner__heading">
-                        If you’re missing applications
-                    </p>
-                    <p class="govuk-body">We’ve introduced a new version of Find an apprenticeship. If you had an account
-                        before 31 July 2024, you can
-                        <a class="govuk-notification-banner__link"
-                            href="@Url.RouteUrl(RouteNames.TransferYourData)">transfer your data</a>.
-                    </p>
-                </div>
-            </div>
-        }
+        
         @if(!string.IsNullOrEmpty(Model.ApplicationSubmittedBannerMessage))
         {
             <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">

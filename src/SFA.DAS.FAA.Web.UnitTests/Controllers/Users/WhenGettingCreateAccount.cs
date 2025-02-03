@@ -1,19 +1,12 @@
 ﻿
-using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.User.GetCreateAccountInform;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models.User;
-using SFA.DAS.Testing.AutoFixture;
+using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingCreateAccount
@@ -46,10 +39,6 @@ public class WhenGettingCreateAccount
         result.Should().NotBeNull();
         var viewResult = result as ViewResult;
         viewResult.Should().NotBeNull();
-        viewResult.Model.Should().NotBeNull();
-        var model = viewResult.Model as InformViewModel;
-        model.Should().NotBeNull();
-        model.ShowAccountRecoveryBanner.Should().Be(queryResult.ShowAccountRecoveryBanner);
     }
 
     [Test, MoqAutoData]

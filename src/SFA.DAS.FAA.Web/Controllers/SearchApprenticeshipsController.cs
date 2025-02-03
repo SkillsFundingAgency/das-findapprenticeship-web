@@ -1,11 +1,9 @@
-using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
-using SFA.DAS.FAA.Application.Constants;
 using SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy;
 using SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
@@ -66,7 +64,7 @@ public class SearchApprenticeshipsController(
         {
             ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
         }
-        else if (result.LocationSearched && result.Location != null)
+        else if (result is {LocationSearched: true, Location: not null})
         {
             return RedirectToRoute(RouteNames.SearchResults, new { location = result.Location.LocationName, distance = "10", searchTerm = model.WhatSearchTerm, sort = VacancySort.DistanceAsc });
         }
@@ -80,7 +78,6 @@ public class SearchApprenticeshipsController(
             ? result.SavedSearches.Select(c => SavedSearchViewModel.From(c, result.Routes!, Url)).ToList()
             : [];
         viewModel.ShowAccountCreatedBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
-        viewModel.ShowAccountFoundBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountFound}");
         viewModel.ShowApprenticeshipWeekBanner = dateTimeService.GetDateTime() < new DateTime(2025, 02, 17);
         var isAccountDeleted = TempData[CacheKeys.AccountDeleted] as string;
         if (isAccountDeleted is "true")
@@ -198,13 +195,17 @@ public class SearchApprenticeshipsController(
             request.PageNumber = 1;
         }
         
-        if (string.IsNullOrEmpty(request.SearchTerm) && request.LevelIds is { Count: 0 } && request.RouteIds is { Count: 0 })
+        if (string.IsNullOrEmpty(request.SearchTerm) && request is {LevelIds.Count: 0, RouteIds.Count: 0})
         {
             request.Sort = VacancySort.DistanceAsc.ToString();
         }
-        else if ( request.Sort == null && request.Location != null)
+        else if (!string.IsNullOrEmpty(request.Location))
         {
             request.Sort = VacancySort.DistanceAsc.ToString();
+        }
+        else if (string.IsNullOrEmpty(request.Sort))
+        {
+            request.Sort = VacancySort.AgeAsc.ToString();
         }
 
         var result = await mediator.Send(new GetSearchResultsQuery
@@ -378,7 +379,7 @@ public class SearchApprenticeshipsController(
                 SearchTerm = criteria.SearchTerm,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
                 DisabilityConfident = criteria.DisabilityConfident,
-                Distance = criteria.Distance,
+                Distance = string.IsNullOrEmpty(criteria.Location) ? null : criteria.Distance,
                 Location = criteria.Location,
                 SelectedLevelIds = criteria.LevelIds,
                 SelectedRouteIds = criteria.RouteIds,

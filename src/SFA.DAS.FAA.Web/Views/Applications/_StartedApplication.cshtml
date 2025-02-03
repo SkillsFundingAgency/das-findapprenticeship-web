@@ -21,15 +21,9 @@
             <li>
                 <a class="govuk-link govuk-link--no-visited-state"
                     href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id })">
-                    Continue application
+                    Continue application<span class="govuk-visually-hidden"> for @Model.Title</span>
                 </a>
             </li>
         }
-        @* <li>
-        <a href="#" class="govuk-link">
-        <!--#TODO: Application delete link has to be updated -->
-        Delete
-        </a>
-        </li> *@
     </ul>
 </li>
