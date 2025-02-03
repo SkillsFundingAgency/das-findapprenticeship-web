@@ -15,9 +15,6 @@ using System.Security.Claims;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -132,7 +129,7 @@ public class WhenGettingSearchResults
             actualModel?.SelectedLevelCount.Should().Be(levelIds.Count);
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.PageNumber.Should().Be(pageNumber);
-            actualModel?.Vacancies.Should().NotBeNullOrEmpty();
+            actualModel?.VacancyAdverts.Should().NotBeNullOrEmpty();
             actualModel?.MapData.Should().NotBeNullOrEmpty();
             actualModel?.Sort.Should().Be(sort.ToString());
             actualModel?.SelectedRoutes.Should()
@@ -801,7 +798,7 @@ public class WhenGettingSearchResults
             actualModel?.SelectedLevelCount.Should().Be(levelIds!.Count);
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.PageNumber.Should().Be(pageNumber);
-            actualModel?.Vacancies.Should().BeNullOrEmpty();
+            actualModel?.VacancyAdverts.Should().BeNullOrEmpty();
             actualModel?.Sort.Should().Be(sort.ToString());
             actualModel?.SelectedRoutes.Should()
                 .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)
@@ -916,7 +913,7 @@ public class WhenGettingSearchResults
             actualModel?.SelectedLevelCount.Should().Be(levelIds!.Count);
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.PageNumber.Should().Be(pageNumber);
-            actualModel?.Vacancies.Should().BeNullOrEmpty();
+            actualModel?.VacancyAdverts.Should().BeNullOrEmpty();
             actualModel?.Sort.Should().Be(sort.ToString());
             actualModel?.SelectedRoutes.Should()
                 .BeEquivalentTo(result.Routes.Where(c => c.Id.ToString() == routeIds.First()).Select(x => x.Name)
@@ -1040,7 +1037,7 @@ public class WhenGettingSearchResults
             actualModel?.SelectedLevelCount.Should().Be(levelIds.Count);
             actualModel?.Location.Should().BeEquivalentTo(location);
             actualModel?.PageNumber.Should().Be(pageNumber);
-            actualModel?.Vacancies.Should().NotBeNullOrEmpty();
+            actualModel?.VacancyAdverts.Should().NotBeNullOrEmpty();
             actualModel?.MapData.Should().NotBeNullOrEmpty();
             actualModel?.Sort.Should().Be(sort.ToString());
             actualModel?.SelectedRoutes.Should()

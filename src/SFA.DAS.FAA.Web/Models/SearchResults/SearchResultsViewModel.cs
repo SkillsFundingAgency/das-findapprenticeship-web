@@ -17,7 +17,7 @@ public class SearchResultsViewModel : ViewModelBase
     public int? Distance { get; set; }
     public string? SearchTerm { get; set; }
 
-    public List<VacanciesViewModel> Vacancies { get; set; } = [];
+    public List<VacancyAdvertViewModel> VacancyAdverts { get; set; } = [];
     public int PageNumber { get; set; }
     public int TotalPages { get; set; }
     public string Sort { get; set; }
