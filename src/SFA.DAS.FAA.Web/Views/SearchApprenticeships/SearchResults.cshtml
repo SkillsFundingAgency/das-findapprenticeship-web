@@ -282,7 +282,7 @@
                                 <p class="govuk-body das-!-color-dark-grey">
                                     @vacancy.VacancyLocation
                                 </p>
-                                @if (Model.NationalSearch == false)
+                                @if (Model.NationalSearch is false && vacancy.IsRecruitingNationally is false)
                                 {
                                     <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.Distance miles</p>
                                 }

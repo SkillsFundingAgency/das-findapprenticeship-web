@@ -727,7 +727,7 @@ public class WhenGettingSearchResults
         result.PageNumber = pageNumber;
         result.Sort = sort.ToString();
         result.VacancyReference = null;
-        result.Vacancies = [];
+        result.VacancyAdverts = [];
         result.Total = 0;
         distance = 3;
         var mediator = new Mock<IMediator>();
@@ -841,7 +841,7 @@ public class WhenGettingSearchResults
         result.PageNumber = pageNumber;
         result.Sort = sort.ToString();
         result.VacancyReference = null;
-        result.Vacancies = [];
+        result.VacancyAdverts = [];
         result.Location = null;
         result.Total = 0;
         distance = 3;

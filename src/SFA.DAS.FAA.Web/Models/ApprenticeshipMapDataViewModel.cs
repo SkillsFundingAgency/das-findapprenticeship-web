@@ -9,7 +9,7 @@ public class ApprenticeshipMapData
     public MapPosition Position { get; set; }
     public ApprenticeshipMapJob Job { get; set; }
 
-    public ApprenticeshipMapData MapToViewModel(IDateTimeService dateTimeService,Vacancies source)
+    public static ApprenticeshipMapData MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert source)
     {
         return new ApprenticeshipMapData
         {
