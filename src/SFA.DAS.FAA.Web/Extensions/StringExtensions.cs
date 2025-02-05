@@ -27,5 +27,10 @@
 
             return wordCount;
         }
+
+        public static string ToDelimitedString<T>(this IEnumerable<T>? items, string delimiter)
+        {
+            return items == null ? string.Empty : string.Join(delimiter, items);
+        }
     }
 }

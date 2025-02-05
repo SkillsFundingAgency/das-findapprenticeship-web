@@ -76,7 +76,7 @@
     <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
     <p class="govuk-body-l faa-vacancy__location">
         <span itemprop="jobLocation">
-            @Model.WorkLocation.City, @Model.WorkLocation.Postcode
+            @Model.City, @Model.WorkLocation.Postcode
         </span>
     </p>
     <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
@@ -256,11 +256,28 @@
                 <h3 class="govuk-heading-s">What you’ll do at work</h3>
                 <p>@Html.Raw(Model.WorkDescription)</p>
                 <h3 class="govuk-heading-s">Where you’ll work</h3>
+                @if(Model.IsAnonymousEmployer | Model.IsEmploymentLocationsInSamePlace)
+                {
+                    <div class="govuk-inset-text">
+                        You can select which locations you want to apply for in your application on Find an apprenticeship.
+                    </div>
+                }
+
+                <p class="govuk-body">This apprenticeship is available in these locations:</p>
+
+                @if(Model.EmploymentLocationOption is AvailableWhere.MultipleLocations)
+                {
+                    @foreach (var address in Model.Addresses)
+                    {
+                        <address value="@address" anonymised="@Model.IsAnonymousEmployer" class="" flat="true"></address>
+                    }
+                }
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine1</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine2</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine3</p>
                 <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine4</p>
                 <p class="govuk-body">@Model.WorkLocation.Postcode</p>
+
                 @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&
                 Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven) &&
                 bool.TryParse(isConsentGiven, out var consentResult) && consentResult)

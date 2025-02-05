@@ -2,6 +2,8 @@ using System.Globalization;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -32,10 +34,15 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? Duration { get; init; }
         public int? PositionsAvailable { get; init; }
         public Address WorkLocation { get; init; } = new();
-        public List<AddressApiResponse>? OtherAddresses { get; init; } = [];
+        public List<Address> Addresses { get; init; } = [];
+
+        public bool IsEmploymentLocationsInSamePlace => Addresses.Count > 0 &&
+                                                        Addresses.GroupBy(add => add.AddressLine4).Any(grp =>
+                                                            grp.Count() == Addresses.Count);
         public bool IsPrimaryLocation { get; set; }
         public string? EmploymentLocationInformation { get; set; }
         public AvailableWhere? EmploymentLocationOption { get; set; }
+        public bool IsAnonymousEmployer { get; set; } = false;
         public string? WorkDescription { get; init; }
         public string? TrainingProviderName { get; init; }
         public List<string>? Skills { get; init; } = [];
@@ -66,7 +73,13 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool IsSavedVacancy { get; set; } = false;
         public string? ApplicationInstructions { get; set; }
         public VacancyDataSource VacancySource { get; set; }
-        
+        public string City =>
+            !string.IsNullOrEmpty(WorkLocation.AddressLine4) ? WorkLocation.AddressLine4 :
+            !string.IsNullOrEmpty(WorkLocation.AddressLine3) ? WorkLocation.AddressLine3 :
+            !string.IsNullOrEmpty(WorkLocation.AddressLine2) ? WorkLocation.AddressLine2 :
+            !string.IsNullOrEmpty(WorkLocation.AddressLine1) ? WorkLocation.AddressLine1 :
+            string.Empty;
+
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
             {
@@ -130,39 +143,12 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                     !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine1) ? $"{source.Vacancy?.Address?.AddressLine1}, {source.Vacancy?.Address?.Postcode}" :
                     source.Vacancy?.Address?.Postcode,
                 IsPrimaryLocation = source.Vacancy is { IsPrimaryLocation: false },
-                OtherAddresses = source.Vacancy?.OtherAddresses,
+                Addresses = source.Vacancy?.OtherAddresses,
                 EmploymentLocationOption = source.Vacancy?.EmploymentLocationOption,
                 EmploymentLocationInformation = source.Vacancy?.EmploymentLocationInformation,
+                IsAnonymousEmployer = source.Vacancy?.IsEmployerAnonymous ?? false,
             };
 
-    }
-
-    public class Address
-    {
-        public string? AddressLine1 { get; private init; }
-        public string? AddressLine2 { get; private init; }
-        public string? AddressLine3 { get; private init; }
-        public string? AddressLine4 { get; private init; }
-        public string? Postcode { get; private init; }
-
-        public static implicit operator Address(AddressApiResponse source)
-        {
-            return new Address
-            {
-                AddressLine1 = source.AddressLine1,
-                AddressLine2 = source.AddressLine2,
-                AddressLine3 = source.AddressLine3,
-                AddressLine4 = source.AddressLine4,
-                Postcode = source.Postcode,
-            };
-        }
-
-        public string City =>
-            !string.IsNullOrEmpty(AddressLine4) ? AddressLine4 :
-            !string.IsNullOrEmpty(AddressLine3) ? AddressLine3 :
-            !string.IsNullOrEmpty(AddressLine2) ? AddressLine2 :
-            !string.IsNullOrEmpty(AddressLine1) ? AddressLine1 :
-            string.Empty;
     }
 
     public class Qualification
