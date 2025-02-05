@@ -14,13 +14,13 @@
     <p class="govuk-hint">@Model.ClosingDate</p>
     <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
         <li>
-            <a class="govuk-link govuk-link--no-visited-state"
+            <a id="@($"{Model.VacancyReference}-view")" class="govuk-link govuk-link--no-visited-state"
                 href="@Url.RouteUrl(RouteNames.Applications.ViewApplication, new { applicationId = Model.Id })">View
                 application<span class="govuk-visually-hidden"> for
                     @Model.Title</span></a>
         </li>
         <li>
-            <a class="govuk-link" asp-route="@RouteNames.Applications.WithdrawApplicationGet"
+            <a id="@($"{Model.VacancyReference}-withdraw")" class="govuk-link" asp-route="@RouteNames.Applications.WithdrawApplicationGet"
                 asp-route-applicationId="@Model.Id">Withdraw application<span class="govuk-visually-hidden"> for
                     @Model.Title</span></a>
         </li>

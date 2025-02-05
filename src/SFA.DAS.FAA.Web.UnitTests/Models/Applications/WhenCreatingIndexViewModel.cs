@@ -10,7 +10,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Applications
     [TestFixture]
     public class WhenCreatingIndexViewModel
     {
-        [TestCase("2024-04-18", "2024-03-17T23:59:59", "Closes on Thursday 18 April")]
+        [TestCase("2024-04-18", "2024-03-17T23:59:59", "Closes on Thursday 18 April 2024")]
         [TestCase("2024-04-18", "2024-03-18T00:00:01", "Closes in 31 days (Thursday 18 April at 11:59pm)")]
         [TestCase("2024-04-18", "2024-04-03T08:30", "Closes in 15 days (Thursday 18 April at 11:59pm)")]
         [TestCase("2024-04-18", "2024-04-17T19:41", "Closes tomorrow (Thursday 18 April at 11:59pm)")]
