@@ -76,6 +76,10 @@ public class GetApprenticeshipVacancyApiResponse
 
     public IEnumerable<VacancyQualificationApiResponse>? Qualifications { get; init; }
     public AddressApiResponse? Address { get; init; }
+    public List<AddressApiResponse>? OtherAddresses { get; init; } = [];
+    public bool IsPrimaryLocation { get; set; }
+    public string? EmploymentLocationInformation { get; set; }
+    public AvailableWhere? EmploymentLocationOption { get; set; }
     public List<string>? CourseSkills { get; init; }
     public List<string>? CourseCoreDuties { get; init; }
     public string? CourseOverviewOfRole { get; init; }

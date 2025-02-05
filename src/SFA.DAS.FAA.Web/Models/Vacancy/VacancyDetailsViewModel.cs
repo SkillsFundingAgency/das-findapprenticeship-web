@@ -32,6 +32,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? Duration { get; init; }
         public int? PositionsAvailable { get; init; }
         public Address WorkLocation { get; init; } = new();
+        public List<AddressApiResponse>? OtherAddresses { get; init; } = [];
+        public bool IsPrimaryLocation { get; set; }
+        public string? EmploymentLocationInformation { get; set; }
+        public AvailableWhere? EmploymentLocationOption { get; set; }
         public string? WorkDescription { get; init; }
         public string? TrainingProviderName { get; init; }
         public List<string>? Skills { get; init; } = [];
@@ -125,6 +129,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                     !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine2) ? $"{source.Vacancy?.Address?.AddressLine2}, {source.Vacancy?.Address?.Postcode}" :
                     !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine1) ? $"{source.Vacancy?.Address?.AddressLine1}, {source.Vacancy?.Address?.Postcode}" :
                     source.Vacancy?.Address?.Postcode,
+                IsPrimaryLocation = source.Vacancy is { IsPrimaryLocation: false },
+                OtherAddresses = source.Vacancy?.OtherAddresses,
+                EmploymentLocationOption = source.Vacancy?.EmploymentLocationOption,
+                EmploymentLocationInformation = source.Vacancy?.EmploymentLocationInformation,
             };
 
     }
