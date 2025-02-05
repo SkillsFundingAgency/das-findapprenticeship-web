@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Web.Extensions
                 .Join(", ", addressArray.Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim()));
         }
 
-        private static string GetLastNonEmptyField(this Address address)
+        public static string? GetLastNonEmptyField(this Address address)
         {
             return new[]
             {

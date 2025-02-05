@@ -73,13 +73,12 @@ public class GetApprenticeshipVacancyApiResponse
     public string? ProviderContactEmail { get; init; }
     public string? ProviderContactName { get; init; }
     public string? AnonymousEmployerName { get; init; }
-    public bool IsEmployerAnonymous { get; init; }
+    public bool IsEmployerAnonymous { get; set; }
     public bool IsClosed { get; set; }
 
     public IEnumerable<VacancyQualificationApiResponse>? Qualifications { get; init; }
     public Address? Address { get; init; }
     public List<Address> OtherAddresses { get; init; } = [];
-    public bool IsPrimaryLocation { get; set; }
     public string? EmploymentLocationInformation { get; set; }
     public AvailableWhere? EmploymentLocationOption { get; set; }
     public List<string>? CourseSkills { get; init; }
