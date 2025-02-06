@@ -1,8 +1,6 @@
-﻿using SFA.DAS.FAA.Domain.Interfaces;
-
-namespace SFA.DAS.FAA.Domain.Models
+﻿namespace SFA.DAS.FAA.Domain.Models
 {
-    public record Address : IAddress
+    public record Address
     {
         public string? AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
