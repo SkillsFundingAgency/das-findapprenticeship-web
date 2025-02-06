@@ -8,21 +8,7 @@ namespace SFA.DAS.FAA.Web.Extensions
         private const int PostcodeMinLength = 5;
         private const int InCodeLength = 3;
 
-        public static string ToAddressString(this IAddress address)
-        {
-            var addressArray = new[]
-            {
-                address.AddressLine1,
-                address.AddressLine2,
-                address.AddressLine3,
-                address.AddressLine4,
-                address.Postcode
-            };
-            return string
-                .Join(", ", addressArray.Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim()));
-        }
-
-        public static string? GetLastNonEmptyField(this Address address)
+        public static string? GetLastNonEmptyField(this IAddress address)
         {
             return new[]
             {
@@ -33,18 +19,18 @@ namespace SFA.DAS.FAA.Web.Extensions
             }.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x));
         }
 
-        public static string ToSingleLineFullAddress(this Address address)
+        public static string ToSingleLineFullAddress(this IAddress address)
         {
             string[] addressArray = [address.AddressLine1, address.AddressLine2, address.AddressLine3, address.AddressLine4, address.Postcode];
             return string.Join(", ", addressArray.Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim()));
         }
 
-        public static string ToSingleLineAbridgedAddress(this Address address)
+        public static string ToSingleLineAbridgedAddress(this IAddress address)
         {
             return $"{address.GetLastNonEmptyField()} ({address.Postcode})";
         }
 
-        public static string ToSingleLineAnonymousAddress(this Address address)
+        public static string ToSingleLineAnonymousAddress(this IAddress address)
         {
             return $"{address.GetLastNonEmptyField()} ({address.PostcodeAsOutCode()})";
         }
@@ -54,7 +40,7 @@ namespace SFA.DAS.FAA.Web.Extensions
             return addresses.OrderBy(x => x.GetLastNonEmptyField());
         }
 
-        public static IEnumerable<string?> GetPopulatedAddressLines(this Address address)
+        public static IEnumerable<string?> GetPopulatedAddressLines(this IAddress address)
         {
             return new[]
             {
@@ -66,23 +52,11 @@ namespace SFA.DAS.FAA.Web.Extensions
             }.Where(x => !string.IsNullOrEmpty(x?.Trim()));
         }
 
-        private static string? PostcodeAsOutCode(this Address address)
+        private static string? PostcodeAsOutCode(this IAddress address)
         {
             var postcode = address.Postcode?.Replace(" ", "");
 
             return postcode is {Length: < PostcodeMinLength} ? null : postcode?[..^InCodeLength];
-        }
-
-        public static string Flatten(this Address address)
-        {
-            return new[]
-            {
-                address.AddressLine1,
-                address.AddressLine2,
-                address.AddressLine3,
-                address.AddressLine4,
-                address.Postcode
-            }.Where(x => !string.IsNullOrWhiteSpace(x)).ToDelimitedString(", ");
         }
     }
 }

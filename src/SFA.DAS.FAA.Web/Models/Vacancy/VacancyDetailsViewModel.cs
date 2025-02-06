@@ -2,6 +2,7 @@ using System.Globalization;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Extensions;
@@ -76,9 +77,9 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
             string.Empty;
         public string EmploymentWorkLocation => EmploymentLocationOption switch
         {
-            AvailableWhere.MultipleLocations => GetEmploymentLocationCityNames(Addresses),
+            AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(Addresses),
             AvailableWhere.AcrossEngland => "Recruiting nationally",
-            _ => $"{City}, {WorkLocation.Postcode}"
+            _ => string.IsNullOrWhiteSpace(City) ? WorkLocation.Postcode! : $"{City}, {WorkLocation.Postcode}"
         };
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
@@ -153,35 +154,14 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
                 IsSavedVacancy = source.Vacancy.IsSavedVacancy,
                 VacancySource = source.Vacancy.VacancySource,
-                Address = !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine4)
-                    ? $"{source.Vacancy?.Address?.AddressLine4}, {source.Vacancy?.Address?.Postcode}"
-                    : !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine3)
-                        ? $"{source.Vacancy?.Address?.AddressLine3}, {source.Vacancy?.Address?.Postcode}"
-                        : !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine2)
-                            ? $"{source.Vacancy?.Address?.AddressLine2}, {source.Vacancy?.Address?.Postcode}"
-                            : !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine1)
-                                ? $"{source.Vacancy?.Address?.AddressLine1}, {source.Vacancy?.Address?.Postcode}"
-                                : source.Vacancy?.Address?.Postcode,
+                Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
                 Addresses = addresses.OrderByCity().ToList(),
                 EmploymentLocationOption = source.Vacancy?.EmploymentLocationOption,
                 EmploymentLocationInformation = source.Vacancy?.EmploymentLocationInformation,
                 IsAnonymousEmployer = source.Vacancy?.IsEmployerAnonymous ?? false,
             };
         }
-
-        private static string GetEmploymentLocationCityNames(List<Address> addresses)
-        {
-            var cityNames = addresses
-                .Select(address => address.GetLastNonEmptyField())
-                .OfType<string>()
-                .Distinct()
-                .OrderBy(city => city)
-                .ToList();
-
-            return cityNames.Count == 1 && addresses.Count > 1
-                ? $"{cityNames.First()} ({addresses.Count} available locations)"
-                : string.Join(", ", cityNames);
-        }
+        
     }
 
     public class Qualification

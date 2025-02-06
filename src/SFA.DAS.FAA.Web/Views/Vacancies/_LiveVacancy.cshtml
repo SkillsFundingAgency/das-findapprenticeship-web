@@ -265,7 +265,7 @@
                         foreach (var address in Model.Addresses)
                         {
                             <ul class="govuk-list govuk-list--bullet">
-                                <address value="@address" anonymised="Model.IsAnonymousEmployer" class="" flat="true"></address>
+                                <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
                             </ul>
                         }
                         break;
@@ -274,12 +274,9 @@
                         <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerDescription</p>
                         break;
                     case AvailableWhere.OneLocation:
+                    case null:
                     default:
-                        <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine1</p>
-                        <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine2</p>
-                        <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine3</p>
-                        <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine4</p>
-                        <p class="govuk-body">@Model.WorkLocation.Postcode</p>
+                        <address class="govuk-body" value="Model.WorkLocation"></address>
                         break;
                 }
                 @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&

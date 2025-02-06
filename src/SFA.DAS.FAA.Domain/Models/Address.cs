@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.FAA.Domain.Models
 {
-    public class Address : IAddress
+    public record Address : IAddress
     {
         public string? AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
