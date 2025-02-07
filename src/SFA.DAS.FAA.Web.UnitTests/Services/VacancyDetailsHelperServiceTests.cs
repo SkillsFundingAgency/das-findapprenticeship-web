@@ -200,8 +200,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             // Arrange
             var addresses = new List<Address>
             {
-                new() { AddressLine1 = "123 Main St", AddressLine2 = "Suite 1", AddressLine3 = "CityA", AddressLine4 = "Region", Postcode = "12345" },
-                new() { AddressLine1 = "456 Main St", AddressLine2 = "Suite 2", AddressLine3 = "CityA", AddressLine4 = "Region", Postcode = "12345" }
+                new("123 Main St", "Suite 1", "CityA", "Region", "12345"),
+                new("456 Main St", "Suite 2", "CityB", "Region", "12345"),
             };
 
             // Act
@@ -217,8 +217,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             // Arrange
             var addresses = new List<Address>
             {
-                new() { AddressLine1 = "123 Main St", AddressLine2 = "Suite 1", AddressLine3 = "CityA", AddressLine4 = "Region", Postcode = "12345" },
-                new() { AddressLine1 = "456 Main St", AddressLine2 = "Suite 2", AddressLine3 = "CityB", AddressLine4 = "Region", Postcode = "12345" }
+                new("123 Main St", "Suite 1", "CityA", "Region", "12345"),
+                new("456 Main St", "Suite 2", "CityB", "Region", "12345"),
             };
 
             // Act

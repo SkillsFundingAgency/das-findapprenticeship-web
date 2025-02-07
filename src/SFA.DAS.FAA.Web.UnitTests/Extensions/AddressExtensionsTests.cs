@@ -1,7 +1,7 @@
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Extensions;
 
-namespace SFA.DAS.FAA.Web.Tests.Extensions
+namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 {
     [TestFixture]
     public class AddressExtensionsTests
@@ -9,13 +9,7 @@ namespace SFA.DAS.FAA.Web.Tests.Extensions
         [Test]
         public void GetLastNonEmptyField_ShouldReturnLastNonEmptyField()
         {
-            var address = new Address
-            {
-                AddressLine1 = "Line1",
-                AddressLine2 = "Line2",
-                AddressLine3 = "Line3",
-                AddressLine4 = null
-            };
+            var address = new Address("Line1", "Line2", "Line3", null, null);
 
             var result = address.GetLastNonEmptyField();
 
@@ -25,14 +19,7 @@ namespace SFA.DAS.FAA.Web.Tests.Extensions
         [Test]
         public void ToSingleLineFullAddress_ShouldReturnFormattedAddress()
         {
-            var address = new Address
-            {
-                AddressLine1 = "Line1",
-                AddressLine2 = "Line2",
-                AddressLine3 = "Line3",
-                AddressLine4 = "Line4",
-                Postcode = "Postcode"
-            };
+            var address = new Address("Line1", "Line2", "Line3", "Line4", "Postcode");
 
             var result = address.ToSingleLineFullAddress();
 
@@ -42,14 +29,7 @@ namespace SFA.DAS.FAA.Web.Tests.Extensions
         [Test]
         public void ToSingleLineAnonymousAddress_ShouldReturnFormattedAddress()
         {
-            var address = new Address
-            {
-                AddressLine1 = "Line1",
-                AddressLine2 = "Line2",
-                AddressLine3 = "Line3",
-                AddressLine4 = "Line4",
-                Postcode = "AB12 3CD"
-            };
+            var address = new Address("Line1", "Line2", "Line3", "Line4", "AB12 3CD");
 
             var result = address.ToSingleLineAnonymousAddress();
 
@@ -61,8 +41,8 @@ namespace SFA.DAS.FAA.Web.Tests.Extensions
         {
             var addresses = new List<Address>
             {
-                new Address { AddressLine1 = "Line1", AddressLine4 = "CityB" },
-                new Address { AddressLine1 = "Line1", AddressLine4 = "CityA" }
+                new Address("Line1", null, null, "CityB", null),
+                new Address("Line1", null, null, "CityA", null),
             };
 
             var result = addresses.OrderByCity().ToList();
@@ -74,14 +54,7 @@ namespace SFA.DAS.FAA.Web.Tests.Extensions
         [Test]
         public void GetPopulatedAddressLines_ShouldReturnNonEmptyAddressLines()
         {
-            var address = new Address
-            {
-                AddressLine1 = "Line1",
-                AddressLine2 = null,
-                AddressLine3 = "Line3",
-                AddressLine4 = "Line4",
-                Postcode = "Postcode"
-            };
+            var address = new Address("Line1", null, "Line3", "Line4", "Postcode");
 
             var result = address.GetPopulatedAddressLines().ToList();
 
