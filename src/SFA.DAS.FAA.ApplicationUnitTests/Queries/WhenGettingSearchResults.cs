@@ -17,7 +17,19 @@ public class WhenGettingSearchResults
         query.Sort = vacancySort.ToString();
         
         // Mock the response from the API client
-        var expectedGetUrl = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, vacancySort, query.SkipWageType, query.DisabilityConfident, query.CandidateId);
+        var expectedGetUrl = new GetSearchResultsApiRequest(
+            query.Location,
+            query.SelectedRouteIds,
+            query.SelectedLevelIds,
+            query.Distance,
+            query.SearchTerm,
+            query.PageNumber,
+            query.PageSize,
+            vacancySort,
+            query.SkipWageType,
+            query.DisabilityConfident,
+            query.CandidateId,
+            query.ExcludeNational);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
@@ -48,7 +60,19 @@ public class WhenGettingSearchResults
         GetSearchResultsQueryHandler handler)
     {
         // Mock the response from the API client
-        var expectedGetUrl = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, VacancySort.DistanceAsc, query.SkipWageType, query.DisabilityConfident, query.CandidateId);
+        var expectedGetUrl = new GetSearchResultsApiRequest(
+            query.Location,
+            query.SelectedRouteIds,
+            query.SelectedLevelIds,
+            query.Distance,
+            query.SearchTerm,
+            query.PageNumber, 
+            query.PageSize, 
+            VacancySort.DistanceAsc,
+            query.SkipWageType, 
+            query.DisabilityConfident,
+            query.CandidateId,
+            query.ExcludeNational);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
@@ -81,7 +105,19 @@ public class WhenGettingSearchResults
     {
         // Mock the response from the API client
         query.Sort = string.Empty;
-        var expectedGetUrl = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, VacancySort.DistanceAsc, query.SkipWageType, query.DisabilityConfident, query.CandidateId);
+        var expectedGetUrl = new GetSearchResultsApiRequest(
+            query.Location, 
+            query.SelectedRouteIds, 
+            query.SelectedLevelIds, 
+            query.Distance, 
+            query.SearchTerm, 
+            query.PageNumber, 
+            query.PageSize, 
+            VacancySort.DistanceAsc,
+            query.SkipWageType,
+            query.DisabilityConfident,
+            query.CandidateId,
+            query.ExcludeNational);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 

@@ -2,6 +2,7 @@ using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models;
 public class ApprenticeshipMapData
@@ -18,11 +19,7 @@ public class ApprenticeshipMapData
                 Id = source.Id,
                 Title = source.Title,
                 Company = source.EmployerName,
-                VacancyLocation = !string.IsNullOrEmpty(source.AddressLine4) ? $"{source.AddressLine4}, {source.Postcode}" :
-                    !string.IsNullOrEmpty(source.AddressLine3) ? $"{source.AddressLine3}, {source.Postcode}" :
-                    !string.IsNullOrEmpty(source.AddressLine2) ? $"{source.AddressLine2}, {source.Postcode}" :
-                    !string.IsNullOrEmpty(source.AddressLine1) ? $"{source.AddressLine1}, {source.Postcode}" :
-                    source.Postcode,
+                VacancyLocation = source.GetLocationDescription(),
                 Distance = source.Distance.HasValue ? Math.Round(source.Distance.Value, 1) : null,
                 Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
                 Wage = source.WageText,

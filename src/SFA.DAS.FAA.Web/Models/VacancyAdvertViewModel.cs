@@ -3,6 +3,7 @@ using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
+using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models;
 
@@ -40,49 +41,18 @@ public class VacancyAdvertViewModel
             IsClosingSoon = vacancyAdvert.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
             IsDisabilityConfident = vacancyAdvert.IsDisabilityConfident,
             IsNew = vacancyAdvert.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
-            IsRecruitingNationally = IsVacancyRecruitingNationally(vacancyAdvert),
+            IsRecruitingNationally = vacancyAdvert.IsRecruitingNationally(),
             IsSavedVacancy = vacancyAdvert.IsSavedVacancy,
             PostedDate = FormatPostDate(vacancyAdvert.PostedDate),
             Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
-            VacancyLocation = GetVacancyLocation(vacancyAdvert),
+            VacancyLocation = vacancyAdvert.GetLocationDescription(),
             VacancyReference = vacancyAdvert.VacancyReference,
             VacancySource = vacancyAdvert.VacancySource,
             WageText = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? VacancyDetailsHelperService.GetWageText(vacancyAdvert.WageText) : vacancyAdvert.WageText,
             WageType = (WageType)vacancyAdvert.WageType,
         };
     }
-
-    private static bool IsVacancyRecruitingNationally(VacancyAdvert vacancyAdvert) =>
-        string.IsNullOrWhiteSpace(vacancyAdvert.Postcode) &&
-        !string.IsNullOrWhiteSpace(vacancyAdvert.EmploymentLocationInformation);
-
-    private static string GetVacancyLocation(VacancyAdvert vacancyAdvert)
-    {
-        if (IsVacancyRecruitingNationally(vacancyAdvert))
-        {
-            return "Recruiting nationally";
-        }
-
-        List<string?> lines = [
-            vacancyAdvert.AddressLine4,
-            vacancyAdvert.AddressLine3,
-            vacancyAdvert.AddressLine2,
-            vacancyAdvert.AddressLine1,
-        ];
-
-        var city = lines.FirstOrDefault(x => !string.IsNullOrEmpty(x));
-        var location = string.IsNullOrEmpty(city)
-            ? $"{vacancyAdvert.Postcode}"
-            : $"{city} ({vacancyAdvert.Postcode})";
-        
-        return vacancyAdvert.OtherAddresses switch
-        {
-            { Count: 1 } => $"{location} and 1 other location",
-            { Count: >1 } => $"{location} and {vacancyAdvert.OtherAddresses.Count} other locations",
-            _ => location,
-        };
-    }
-
+    
     public static int? CalculateDaysUntilClosing(IDateTimeService dateTimeService, DateTime? closingDate)
     {
         if (!closingDate.HasValue) return null;

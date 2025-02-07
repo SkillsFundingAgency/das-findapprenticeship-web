@@ -16,6 +16,7 @@ public class GetSearchResultsApiRequest : IGetApiRequest
     private readonly WageType? _skipWageType;
     private readonly bool _disabilityConfident;
     private readonly string? _candidateId;
+    private readonly bool? _excludeNational;
 
     public GetSearchResultsApiRequest(string? location,
         IReadOnlyCollection<string>? routes,
@@ -27,7 +28,8 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         VacancySort sort,
         WageType? skipWageType,
         bool disabilityConfident,
-        string? candidateId)
+        string? candidateId,
+        bool? excludeNational)
     {
         _location = location;
         _routes = routes != null ? string.Join("&routeIds=", routes) : null;
@@ -40,6 +42,7 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         _skipWageType = skipWageType;
         _disabilityConfident = disabilityConfident;
         _candidateId = candidateId;
+        _excludeNational = excludeNational;
     }
 
     public string GetUrl =>
@@ -53,5 +56,6 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         $"&candidateId={_candidateId}" +
         $"&skipWageType={_skipWageType}" +
         (_routes is not null ? $"&routeIds={_routes}" : null) +
-        (_levels is not null ? $"&levelIds={_levels}" : null);
+        (_levels is not null ? $"&levelIds={_levels}" : null) +
+        $"&excludeNational={_excludeNational}";
 }

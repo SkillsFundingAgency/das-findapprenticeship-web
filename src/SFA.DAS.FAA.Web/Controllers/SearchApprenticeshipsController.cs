@@ -210,18 +210,18 @@ public class SearchApprenticeshipsController(
 
         var result = await mediator.Send(new GetSearchResultsQuery
         {
-            Location = request.Location,
-            SelectedRouteIds = request.RouteIds,
-            SelectedLevelIds = request.LevelIds,
+            CandidateId = User.Claims.CandidateId().Equals(null) ? null : User.Claims.CandidateId()!.ToString(),
+            DisabilityConfident = request.DisabilityConfident,
             Distance = request.Distance,
-            SearchTerm = request.SearchTerm,
+            ExcludeNational = request.ExcludeNational,
+            Location = request.Location,
             PageNumber = request.PageNumber,
             PageSize = 10,
-            Sort = request.Sort,
+            SearchTerm = request.SearchTerm,
+            SelectedLevelIds = request.LevelIds,
+            SelectedRouteIds = request.RouteIds,
             SkipWageType = request.IncludeCompetitiveSalaryVacancies ? null : WageType.CompetitiveSalary,
-            DisabilityConfident = request.DisabilityConfident,
-            CandidateId = User.Claims.CandidateId().Equals(null) ? null
-                : User.Claims.CandidateId()!.ToString()
+            Sort = request.Sort,
         });
 
         if (result.VacancyReference != null)
@@ -297,17 +297,17 @@ public class SearchApprenticeshipsController(
 
         var result = await mediator.Send(new GetSearchResultsQuery
         {
-            Location = request.Location,
-            SelectedRouteIds = request.RouteIds,
-            SelectedLevelIds = request.LevelIds,
+            CandidateId = User.Claims.CandidateId().Equals(null) ? null : User.Claims.CandidateId()!.ToString(),
+            DisabilityConfident = request.DisabilityConfident,
             Distance = request.Distance,
-            SearchTerm = request.SearchTerm,
+            ExcludeNational = request.ExcludeNational,
+            Location = request.Location,
             PageNumber = 1,
             PageSize = 300,
+            SearchTerm = request.SearchTerm,
+            SelectedLevelIds = request.LevelIds,
+            SelectedRouteIds = request.RouteIds,
             Sort = request.Sort,
-            DisabilityConfident = request.DisabilityConfident,
-            CandidateId = User.Claims.CandidateId().Equals(null) ? null
-                : User.Claims.CandidateId()!.ToString()
         });
 
         var model = new MapSearchResultsViewModel
@@ -317,6 +317,8 @@ public class SearchApprenticeshipsController(
                 : [],
             SearchedLocation = result.Location
         };
+
+        model.ApprenticeshipMapData = model.ApprenticeshipMapData.Where(x => x.Job.VacancyLocation is not "Recruiting nationally").ToList();
         
         return Json(model);
     }
