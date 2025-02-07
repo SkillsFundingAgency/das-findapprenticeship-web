@@ -2,7 +2,6 @@ using System.Globalization;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
-using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Extensions;
@@ -70,7 +69,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool IsSavedVacancy { get; set; } = false;
         public string? ApplicationInstructions { get; set; }
         public VacancyDataSource VacancySource { get; set; }
-        public string City => !string.IsNullOrEmpty(WorkLocation.AddressLine4) ? WorkLocation.AddressLine4 :
+        private string City => !string.IsNullOrEmpty(WorkLocation.AddressLine4) ? WorkLocation.AddressLine4 :
             !string.IsNullOrEmpty(WorkLocation.AddressLine3) ? WorkLocation.AddressLine3 :
             !string.IsNullOrEmpty(WorkLocation.AddressLine2) ? WorkLocation.AddressLine2 :
             !string.IsNullOrEmpty(WorkLocation.AddressLine1) ? WorkLocation.AddressLine1 :

@@ -56,8 +56,9 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             }
         }
 
-        private static void AddCssClasses(TagHelperOutput output, string cssClasses)
+        private static void AddCssClasses(TagHelperOutput output, string? cssClasses)
         {
+            if (string.IsNullOrEmpty(cssClasses)) return;
             var classes = cssClasses.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
             foreach (var cssClass in classes)
             {
