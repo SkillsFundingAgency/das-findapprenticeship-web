@@ -7,7 +7,7 @@ public class GetSearchResultsResult
 {
     public long Total { get; set; }
     public long TotalCompetitiveVacanciesCount { get; set; }
-    public List<Vacancies> Vacancies { get; set; }
+    public List<VacancyAdvert> VacancyAdverts { get; set; }
     public List<RouteResponse> Routes { get; set; }
     public Location? Location { get; set; }
     public int PageNumber { get; set; }

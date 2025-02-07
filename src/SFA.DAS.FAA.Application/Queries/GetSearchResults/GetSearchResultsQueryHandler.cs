@@ -36,7 +36,7 @@ public class GetSearchResultsQueryHandler(IApiClient apiClient)
             Total = response.TotalFound,
             TotalCompetitiveVacanciesCount = response.TotalCompetitiveVacanciesCount,
             Location = response.Location,
-            Vacancies = response.Vacancies,
+            VacancyAdverts = response.VacancyAdverts,
             Routes = response.Routes,
             PageNumber = response.PageNumber,
             TotalPages = response.TotalPages,

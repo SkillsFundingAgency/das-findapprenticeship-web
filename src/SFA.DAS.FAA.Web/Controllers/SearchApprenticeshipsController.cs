@@ -237,11 +237,11 @@ public class SearchApprenticeshipsController(
         viewmodel.Location = request.Location;
         viewmodel.Distance = request.Distance;
         viewmodel.SearchTerm = request.SearchTerm;
-        viewmodel.Vacancies = result.Vacancies.Count != 0
-            ? result.Vacancies.Select(c => new VacanciesViewModel().MapToViewModel(dateTimeService, c)).ToList()
+        viewmodel.VacancyAdverts = result.VacancyAdverts.Count != 0
+            ? result.VacancyAdverts.Select(c => VacancyAdvertViewModel.MapToViewModel(dateTimeService, c)).ToList()
             : [];
-        viewmodel.MapData = result.Vacancies.Count != 0
-            ? result.Vacancies.Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService, c)).ToList()
+        viewmodel.MapData = result.VacancyAdverts.Count != 0
+            ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c)).ToList()
             : [];
         viewmodel.MapId = faaConfiguration.Value.GoogleMapsId;
         viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
@@ -312,8 +312,8 @@ public class SearchApprenticeshipsController(
 
         var model = new MapSearchResultsViewModel
         {
-            ApprenticeshipMapData = result.Vacancies.Count != 0
-                ? result.Vacancies.Select(c => new ApprenticeshipMapData().MapToViewModel(dateTimeService, c)).ToList()
+            ApprenticeshipMapData = result.VacancyAdverts.Count != 0
+                ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c)).ToList()
                 : [],
             SearchedLocation = result.Location
         };
