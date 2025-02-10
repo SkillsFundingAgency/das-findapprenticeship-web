@@ -55,7 +55,9 @@ namespace SFA.DAS.FAA.Web.Extensions
         {
             var postcode = address.Postcode?.Replace(" ", "");
 
-            return postcode is {Length: < PostcodeMinLength} ? null : postcode?[..^InCodeLength];
+            return postcode is {Length: < PostcodeMinLength}
+                ? postcode // If the length is less than InCodeLength it's already an outcode or empty/null
+                : postcode?[..^InCodeLength];
         }
     }
 }

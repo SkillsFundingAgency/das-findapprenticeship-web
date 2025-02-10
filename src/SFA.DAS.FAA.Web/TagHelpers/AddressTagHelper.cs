@@ -13,7 +13,7 @@ namespace SFA.DAS.FAA.Web.TagHelpers
         public bool Anonymised { get; set; } = false;
         public required Address Value { get; set; }
         public bool Flat { get; set; } = false;
-        public required string Class { get; set; }
+        public string? Class { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -56,8 +56,13 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             }
         }
 
-        private static void AddCssClasses(TagHelperOutput output, string cssClasses)
+        private static void AddCssClasses(TagHelperOutput output, string? cssClasses)
         {
+            if (cssClasses is null)
+            {
+                return;
+            }
+
             var classes = cssClasses.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
             foreach (var cssClass in classes)
             {
