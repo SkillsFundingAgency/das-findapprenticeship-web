@@ -27,9 +27,9 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
+            Assert.That(result, Is.Not.Null);
+            expectedResponse.TotalFound.Should().Be(result.Total);
+            expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
@@ -58,9 +58,9 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
+            Assert.That(result, Is.Not.Null);
+            expectedResponse.TotalFound.Should().Be(result.Total);
+            expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
@@ -91,9 +91,9 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
+            Assert.That(result, Is.Not.Null);
+            expectedResponse.TotalFound.Should().Be(result.Total);
+            expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);

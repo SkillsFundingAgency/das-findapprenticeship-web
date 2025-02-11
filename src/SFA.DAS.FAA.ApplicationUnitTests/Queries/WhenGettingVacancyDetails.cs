@@ -25,7 +25,7 @@ public class WhenGettingVacancyDetails
         // Assert
         using (new AssertionScope())
         {
-            Assert.NotNull(result);
+            Assert.That(result, Is.Not.Null);
             result.Vacancy.LongDescription.Should().Be(expectedResponse.LongDescription);
             result.Vacancy.OutcomeDescription.Should().Be(expectedResponse.OutcomeDescription);
 
