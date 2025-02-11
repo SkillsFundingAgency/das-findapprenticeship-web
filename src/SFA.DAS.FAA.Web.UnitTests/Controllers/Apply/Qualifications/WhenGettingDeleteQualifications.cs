@@ -71,6 +71,6 @@ public class WhenGettingDeleteQualifications
         var actual = await controller.DeleteQualifications(applicationId, qualificationType) as RedirectToRouteResult;
 
         actual.Should().NotBeNull();
-        actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.Qualifications);
+        actual!.RouteName.Should().Be(RouteNames.Apply);
     }
 }
