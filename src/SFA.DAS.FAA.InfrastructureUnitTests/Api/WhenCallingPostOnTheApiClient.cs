@@ -20,7 +20,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             FindAnApprenticeshipOuterApi config)
         {
             //Arrange
-            config.BaseUrl = $"https://{config.BaseUrl}";
+            var baseUrl = $"https://{config.BaseUrl}";
             var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
             configMock.Setup(x => x.Value).Returns(config);
             var postTestRequest = new PostTestRequest();
@@ -30,8 +30,9 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
                 Content = new StringContent(JsonConvert.SerializeObject(testObject)),
                 StatusCode = HttpStatusCode.Accepted
             };
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + postTestRequest.PostUrl), config.Key, HttpMethod.Post);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(baseUrl + postTestRequest.PostUrl), config.Key, HttpMethod.Post);
             var client = new HttpClient(httpMessageHandler.Object);
+            client.BaseAddress = new Uri(baseUrl);
             var apiClient = new ApiClient(client, configMock.Object);
 
             //Act
@@ -46,7 +47,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             FindAnApprenticeshipOuterApi config)
         {
             //Arrange
-            config.BaseUrl = $"https://{config.BaseUrl}";
+            var baseUrl = $"https://{config.BaseUrl}";
             var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
             configMock.Setup(x => x.Value).Returns(config);
             var postTestRequest = new PostTestRequest();
@@ -56,8 +57,9 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
                 StatusCode = HttpStatusCode.BadRequest
             };
 
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + postTestRequest.PostUrl), config.Key, HttpMethod.Post);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(baseUrl + postTestRequest.PostUrl), config.Key, HttpMethod.Post);
             var client = new HttpClient(httpMessageHandler.Object);
+            client.BaseAddress = new Uri(baseUrl);
             var apiClient = new ApiClient(client, configMock.Object);
 
             //Act Assert
@@ -69,7 +71,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             FindAnApprenticeshipOuterApi config)
         {
             //Arrange
-            config.BaseUrl = $"https://{config.BaseUrl}";
+            var baseUrl = $"https://{config.BaseUrl}";
             var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
             configMock.Setup(x => x.Value).Returns(config);
             var postTestRequest = new PostTestRequest();
@@ -79,8 +81,9 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
                 StatusCode = HttpStatusCode.NotFound
             };
 
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + postTestRequest.PostUrl), config.Key, HttpMethod.Post);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(baseUrl + postTestRequest.PostUrl), config.Key, HttpMethod.Post);
             var client = new HttpClient(httpMessageHandler.Object);
+            client.BaseAddress = new Uri(baseUrl);
             var apiClient = new ApiClient(client, configMock.Object);
 
             //Act Assert
