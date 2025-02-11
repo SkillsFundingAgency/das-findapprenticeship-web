@@ -1,17 +1,12 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
+using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
-using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
 {
@@ -52,11 +47,13 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
             actualModel.SubmittedApplications.Should().BeEquivalentTo(response.SubmittedApplications, options => options
                 .Excluding(x => x.SubmittedDate)
                 .Excluding(x => x.VacancyReference)
-                .Excluding(x => x.City)
-                .Excluding(x => x.Postcode)
+                .Excluding(x => x.WorkLocation)
                 .Excluding(x => x.ClosingDate)
                 .Excluding(x => x.Status)
                 .Excluding(x => x.CreatedDate)
+                .Excluding(x => x.Addresses)
+                .Excluding(x => x.EmploymentLocationOption)
+                .Excluding(x => x.EmploymentLocationInformation)
             );
         }
 

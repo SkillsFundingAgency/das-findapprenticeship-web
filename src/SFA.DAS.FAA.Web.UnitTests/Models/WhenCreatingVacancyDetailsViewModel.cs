@@ -181,7 +181,7 @@ public class WhenCreatingVacancyDetailsViewModel
         switch (availableWhere)
         {
             case AvailableWhere.OneLocation:
-                actual.EmploymentWorkLocation.Should().Be($"{actual.City}, {actual.WorkLocation.Postcode}");
+                actual.EmploymentWorkLocation.Should().Be(VacancyDetailsHelperService.GetOneLocationCityName(result.Vacancy?.Address));
                 break;
             case AvailableWhere.AcrossEngland:
                 actual.EmploymentWorkLocation.Should().Be("Recruiting nationally");
