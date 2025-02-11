@@ -1,4 +1,6 @@
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SearchResults;
 
 namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
@@ -71,11 +73,14 @@ public class GetApprenticeshipVacancyApiResponse
     public string? ProviderContactEmail { get; init; }
     public string? ProviderContactName { get; init; }
     public string? AnonymousEmployerName { get; init; }
-    public bool IsEmployerAnonymous { get; init; }
+    public bool IsEmployerAnonymous { get; set; }
     public bool IsClosed { get; set; }
 
     public IEnumerable<VacancyQualificationApiResponse>? Qualifications { get; init; }
-    public AddressApiResponse? Address { get; init; }
+    public Address? Address { get; init; }
+    public List<Address> OtherAddresses { get; init; } = [];
+    public string? EmploymentLocationInformation { get; set; }
+    public AvailableWhere? EmploymentLocationOption { get; set; }
     public List<string>? CourseSkills { get; init; }
     public List<string>? CourseCoreDuties { get; init; }
     public string? CourseOverviewOfRole { get; init; }
@@ -100,15 +105,6 @@ public class VacancyQualificationApiResponse
     public string? Subject { get; init; }
     public string? Grade { get; init; }
     public Weighting Weighting { get; init; }
-}
-
-public class AddressApiResponse
-{
-    public string? AddressLine1 { get; init; }
-    public string? AddressLine2 { get; init; }
-    public string? AddressLine3 { get; init; }
-    public string? AddressLine4 { get; init; }
-    public string? Postcode { get; init; }
 }
 
 public class Location

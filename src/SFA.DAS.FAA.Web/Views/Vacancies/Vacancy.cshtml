@@ -2,8 +2,10 @@
 @using SFA.DAS.FAA.Domain.Enums
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 
-@section BackLink {
-    <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
+@if(Model is {IsClosed: false}){
+    @section BackLink {
+        <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
+    }    
 }
 
 @if(Model.VacancySource == VacancyDataSource.Raa){
