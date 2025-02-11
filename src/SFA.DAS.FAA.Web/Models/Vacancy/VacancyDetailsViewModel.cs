@@ -2,7 +2,10 @@ using System.Globalization;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -32,6 +35,11 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? Duration { get; init; }
         public int? PositionsAvailable { get; init; }
         public Address WorkLocation { get; init; } = new();
+        public List<Address> Addresses { get; init; } = [];
+
+        public string? EmploymentLocationInformation { get; set; }
+        public AvailableWhere? EmploymentLocationOption { get; set; }
+        public bool IsAnonymousEmployer { get; set; } = false;
         public string? WorkDescription { get; init; }
         public string? TrainingProviderName { get; init; }
         public List<string>? Skills { get; init; } = [];
@@ -62,9 +70,26 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool IsSavedVacancy { get; set; } = false;
         public string? ApplicationInstructions { get; set; }
         public VacancyDataSource VacancySource { get; set; }
-        
+        public string City => !string.IsNullOrEmpty(WorkLocation.AddressLine4) ? WorkLocation.AddressLine4 :
+            !string.IsNullOrEmpty(WorkLocation.AddressLine3) ? WorkLocation.AddressLine3 :
+            !string.IsNullOrEmpty(WorkLocation.AddressLine2) ? WorkLocation.AddressLine2 :
+            !string.IsNullOrEmpty(WorkLocation.AddressLine1) ? WorkLocation.AddressLine1 :
+            string.Empty;
+        public string EmploymentWorkLocation => EmploymentLocationOption switch
+        {
+            AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(Addresses),
+            AvailableWhere.AcrossEngland => "Recruiting nationally",
+            _ => string.IsNullOrWhiteSpace(City) ? WorkLocation.Postcode! : $"{City}, {WorkLocation.Postcode}"
+        };
+
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
-            GetApprenticeshipVacancyQueryResult source, string? googleMapsId) => new VacancyDetailsViewModel
+            GetApprenticeshipVacancyQueryResult source, string? googleMapsId)
+        {
+            var addresses = new List<Address>();
+            if (source.Vacancy?.Address != null) addresses.Add(source.Vacancy.Address);
+            if (source.Vacancy?.OtherAddresses != null) addresses.AddRange(source.Vacancy.OtherAddresses);
+
+            return new VacancyDetailsViewModel
             {
                 Title = source.Vacancy?.Title,
                 VacancyReference = source.Vacancy?.VacancyReference,
@@ -75,7 +100,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
                 WorkDescription = source.Vacancy?.LongDescription,
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
-                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate,!string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
+                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate,
+                    !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
                 PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
                 StartDate = source.Vacancy.StartDate.GetStartDate(),
                 WorkLocation = source.Vacancy.Address,
@@ -88,28 +114,36 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                     VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
                 EmployerDescription = source.Vacancy?.EmployerDescription,
                 EmployerName = source.Vacancy?.EmployerName,
-                ContactOrganisationName = string.IsNullOrWhiteSpace(source.Vacancy?.EmployerContactName) ? source.Vacancy!.ProviderName : source.Vacancy!.EmployerName,
+                ContactOrganisationName = string.IsNullOrWhiteSpace(source.Vacancy?.EmployerContactName)
+                    ? source.Vacancy!.ProviderName
+                    : source.Vacancy!.EmployerName,
                 ContactName = source.Vacancy?.EmployerContactName ?? source.Vacancy?.ProviderContactName,
                 ContactEmail = source.Vacancy?.EmployerContactEmail ?? source.Vacancy?.ProviderContactEmail,
                 ContactPhone = source.Vacancy?.EmployerContactPhone ?? source.Vacancy?.ProviderContactPhone,
                 CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
                 EssentialQualifications = source.Vacancy?.Qualifications?
-                .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification)l).ToList(),
+                    .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification) l).ToList(),
                 DesiredQualifications = source.Vacancy?.Qualifications?.Where(fil => fil.Weighting == Weighting.Desired)
-                .Select(l => (Qualification)l).ToList(),
+                    .Select(l => (Qualification) l).ToList(),
                 CourseSkills = source.Vacancy?.CourseSkills,
                 CourseCoreDuties = source.Vacancy?.CourseCoreDuties,
                 CourseOverviewOfRole = source.Vacancy?.CourseOverviewOfRole,
                 StandardPageUrl = source.Vacancy?.StandardPageUrl,
-                IsDisabilityConfident = source.Vacancy is { IsDisabilityConfident: true },
+                IsDisabilityConfident = source.Vacancy is {IsDisabilityConfident: true},
                 CourseLevels = source.Vacancy?.Levels,
                 CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0
-                    ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
+                    ? source.Vacancy?.Levels
+                        .FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
                     : string.Empty,
                 ApplicationDetails = source.Vacancy?.Application,
                 IsClosed = source.Vacancy?.IsClosed ?? false,
-                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
-                ApplicationUrl = !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
+                ClosedDate =
+                    $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+                ApplicationUrl =
+                    !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) &&
+                    !source.Vacancy.ApplicationUrl.StartsWith("http")
+                        ? $"https://{source.Vacancy.ApplicationUrl}"
+                        : source.Vacancy.ApplicationUrl,
                 ApplicationInstructions = source.Vacancy.ApplicationInstructions,
                 GoogleMapsId = googleMapsId,
                 CandidatePostcode = source.Vacancy?.CandidatePostcode,
@@ -120,41 +154,14 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
                 IsSavedVacancy = source.Vacancy.IsSavedVacancy,
                 VacancySource = source.Vacancy.VacancySource,
-                Address = !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine4) ? $"{source.Vacancy?.Address?.AddressLine4}, {source.Vacancy?.Address?.Postcode}" :
-                    !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine3) ? $"{source.Vacancy?.Address?.AddressLine3}, {source.Vacancy?.Address?.Postcode}" :
-                    !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine2) ? $"{source.Vacancy?.Address?.AddressLine2}, {source.Vacancy?.Address?.Postcode}" :
-                    !string.IsNullOrEmpty(source.Vacancy?.Address?.AddressLine1) ? $"{source.Vacancy?.Address?.AddressLine1}, {source.Vacancy?.Address?.Postcode}" :
-                    source.Vacancy?.Address?.Postcode,
-            };
-
-    }
-
-    public class Address
-    {
-        public string? AddressLine1 { get; private init; }
-        public string? AddressLine2 { get; private init; }
-        public string? AddressLine3 { get; private init; }
-        public string? AddressLine4 { get; private init; }
-        public string? Postcode { get; private init; }
-
-        public static implicit operator Address(AddressApiResponse source)
-        {
-            return new Address
-            {
-                AddressLine1 = source.AddressLine1,
-                AddressLine2 = source.AddressLine2,
-                AddressLine3 = source.AddressLine3,
-                AddressLine4 = source.AddressLine4,
-                Postcode = source.Postcode,
+                Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
+                Addresses = addresses.OrderByCity().ToList(),
+                EmploymentLocationOption = source.Vacancy?.EmploymentLocationOption,
+                EmploymentLocationInformation = source.Vacancy?.EmploymentLocationInformation,
+                IsAnonymousEmployer = source.Vacancy?.IsEmployerAnonymous ?? false,
             };
         }
-
-        public string City =>
-            !string.IsNullOrEmpty(AddressLine4) ? AddressLine4 :
-            !string.IsNullOrEmpty(AddressLine3) ? AddressLine3 :
-            !string.IsNullOrEmpty(AddressLine2) ? AddressLine2 :
-            !string.IsNullOrEmpty(AddressLine1) ? AddressLine1 :
-            string.Empty;
+        
     }
 
     public class Qualification
