@@ -35,7 +35,6 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public int? PositionsAvailable { get; init; }
         public Address WorkLocation { get; init; } = Domain.Models.Address.Empty;
         public List<Address> Addresses { get; init; } = [];
-
         public string? EmploymentLocationInformation { get; set; }
         public AvailableWhere? EmploymentLocationOption { get; set; }
         public bool IsAnonymousEmployer { get; set; } = false;

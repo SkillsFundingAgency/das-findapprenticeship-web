@@ -158,7 +158,8 @@ public class WhenCreatingVacancyAdvertsViewModel
         string? addressLine4,
         string postcode,
         string expected,
-        VacancyAdvert vacancyAdvert, [Frozen] Mock<IDateTimeService> dateTimeService
+        VacancyAdvert vacancyAdvert,
+        [Frozen] Mock<IDateTimeService> dateTimeService
     )
     {
         vacancyAdvert.OtherAddresses = [];
@@ -186,7 +187,8 @@ public class WhenCreatingVacancyAdvertsViewModel
         string? addressLine4,
         string postcode,
         string expected,
-        VacancyAdvert vacancyAdvert, [Frozen] Mock<IDateTimeService> dateTimeService
+        VacancyAdvert vacancyAdvert,
+        [Frozen] Mock<IDateTimeService> dateTimeService
     )
     {
         // arrange
