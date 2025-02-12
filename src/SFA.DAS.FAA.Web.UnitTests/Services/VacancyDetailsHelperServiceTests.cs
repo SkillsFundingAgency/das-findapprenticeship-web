@@ -201,7 +201,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var addresses = new List<Address>
             {
                 new("123 Main St", "Suite 1", "CityA", "Region", "12345"),
-                new("456 Main St", "Suite 2", "CityB", "Region", "12345"),
+                new("456 Main St", "Suite 2", "CityA", "Region", "12345"),
             };
 
             // Act

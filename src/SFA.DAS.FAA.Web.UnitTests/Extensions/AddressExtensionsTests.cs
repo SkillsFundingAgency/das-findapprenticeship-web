@@ -41,8 +41,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
         {
             var addresses = new List<Address>
             {
-                new Address("Line1", null, null, "CityB", null),
-                new Address("Line1", null, null, "CityA", null),
+                new ("Line1", null, null, "CityB", null),
+                new ("Line1", null, null, "CityA", null),
             };
 
             var result = addresses.OrderByCity().ToList();
