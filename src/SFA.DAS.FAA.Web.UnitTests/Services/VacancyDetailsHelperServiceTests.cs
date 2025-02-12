@@ -245,14 +245,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetOneLocationCityName_ShouldReturnCityWithPostcode_WhenCityIsNotEmpty()
         {
             // Arrange
-            var address = new Address
-            {
-                AddressLine1 = "Line1",
-                AddressLine2 = "Line2",
-                AddressLine3 = "Line3",
-                AddressLine4 = "City",
-                Postcode = "12345"
-            };
+            var address = new Address("Line1", "Line2", "Line3", "City", "12345");
 
             // Act
             var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
@@ -265,10 +258,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetOneLocationCityName_ShouldReturnPostcode_WhenCityIsEmpty()
         {
             // Arrange
-            var address = new Address
-            {
-                Postcode = "12345"
-            };
+            var address = new Address(null, null, null, null, "12345");
 
             // Act
             var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
@@ -281,13 +271,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetOneLocationCityName_ShouldReturnFirstNonEmptyAddressLineWithPostcode_WhenCityIsEmpty()
         {
             // Arrange
-            var address = new Address
-            {
-                AddressLine1 = "Line1",
-                AddressLine2 = "Line2",
-                AddressLine3 = "Line3",
-                Postcode = "12345"
-            };
+            var address = new Address("Line1", "Line2", "Line3", null, "12345");
 
             // Act
             var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
