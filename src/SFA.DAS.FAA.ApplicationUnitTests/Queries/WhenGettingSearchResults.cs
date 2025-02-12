@@ -27,7 +27,7 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.That(result, Is.Not.Null);
+            result.Should().NotBeNull();
             expectedResponse.TotalFound.Should().Be(result.Total);
             expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
@@ -58,7 +58,7 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.That(result, Is.Not.Null);
+            result.Should().NotBeNull();
             expectedResponse.TotalFound.Should().Be(result.Total);
             expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
@@ -91,7 +91,7 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.That(result, Is.Not.Null);
+            result.Should().NotBeNull();
             expectedResponse.TotalFound.Should().Be(result.Total);
             expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
