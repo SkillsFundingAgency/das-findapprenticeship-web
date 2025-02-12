@@ -32,18 +32,30 @@ public static class AddServiceRegistrationExtension
             .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
             {
                 var findAnApprenticeshipOuterApiConfiguration = serviceProvider.GetService<IOptions<FindAnApprenticeshipOuterApi>>()!.Value;
-
+                var logger = serviceProvider.GetService<ILogger<FindAnApprenticeshipOuterApi>>();
                 if (string.IsNullOrEmpty(findAnApprenticeshipOuterApiConfiguration.SecretClientUrl))
                 {
+                    logger.LogInformation("No client cert configuration to add");
                     return new HttpClientHandler();
                 }
-                var credential = new DefaultAzureCredential();
-                var secretClient = new SecretClient(new Uri(findAnApprenticeshipOuterApiConfiguration.SecretClientUrl!), credential);
+
+                try
+                {
+                    var credential = new DefaultAzureCredential();
+                    var secretClient = new SecretClient(new Uri(findAnApprenticeshipOuterApiConfiguration.SecretClientUrl!), credential);
                 
-                KeyVaultSecret secret = secretClient.GetSecret(findAnApprenticeshipOuterApiConfiguration.SecretName!);
-                var handler = new HttpClientHandler();
-                handler.ClientCertificates.Add(new X509Certificate2(Convert.FromBase64String(secret.Value)));
-                return handler;
+                    KeyVaultSecret secret = secretClient.GetSecret(findAnApprenticeshipOuterApiConfiguration.SecretName!);
+                    var handler = new HttpClientHandler();
+                    handler.ClientCertificates.Add(new X509Certificate2(Convert.FromBase64String(secret.Value)));
+                    logger.LogInformation("Added client cert configuration");
+                    return handler;
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e,"Unable to add client cert configuration");
+                    Console.WriteLine(e);
+                }
+                return new HttpClientHandler();
             });
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
