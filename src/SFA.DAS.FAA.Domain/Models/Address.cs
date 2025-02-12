@@ -1,11 +1,11 @@
-﻿namespace SFA.DAS.FAA.Domain.Models
+﻿namespace SFA.DAS.FAA.Domain.Models;
+
+public record Address(
+    string? AddressLine1,
+    string? AddressLine2,
+    string? AddressLine3,
+    string? AddressLine4,
+    string? Postcode)
 {
-    public record Address
-    {
-        public string? AddressLine1 { get; set; }
-        public string? AddressLine2 { get; set; }
-        public string? AddressLine3 { get; set; }
-        public string? AddressLine4 { get; set; }
-        public string? Postcode { get; set; }
-    }
-}
+    public static readonly Address Empty = new (null, null, null, null, null);
+};

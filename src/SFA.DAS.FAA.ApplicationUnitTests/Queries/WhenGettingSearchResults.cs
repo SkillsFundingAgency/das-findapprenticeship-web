@@ -29,7 +29,7 @@ public class WhenGettingSearchResults
         {
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
+            Assert.AreEqual(expectedResponse.VacancyAdverts, result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
@@ -60,7 +60,7 @@ public class WhenGettingSearchResults
         {
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
+            Assert.AreEqual(expectedResponse.VacancyAdverts, result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
@@ -93,7 +93,7 @@ public class WhenGettingSearchResults
         {
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.Vacancies, result.Vacancies);
+            Assert.AreEqual(expectedResponse.VacancyAdverts, result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);

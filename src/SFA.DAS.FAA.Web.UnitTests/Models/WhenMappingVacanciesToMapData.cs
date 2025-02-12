@@ -14,13 +14,13 @@ public class WhenMappingVacanciesToMapData
 {
     [Test, MoqAutoData]
     public void Then_The_Fields_Are_Mapped(
-        Vacancies source, 
+        VacancyAdvert source, 
         [Frozen]Mock<IDateTimeService> dateTimeService)
     {
         source.ApplicationUrl = string.Empty;
         dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow);
         
-        var actual = new ApprenticeshipMapData().MapToViewModel(dateTimeService.Object, source);
+        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, source);
 
         actual.Position.Lat.Should().Be(source.Lat);
         actual.Position.Lng.Should().Be(source.Lon);
@@ -39,16 +39,16 @@ public class WhenMappingVacanciesToMapData
     [MoqInlineAutoData("", null, null, null, "EC1", "EC1")]
 
     public void Then_The_Address_Is_Shown_Correctly(string addressLine1, string? addressLine2, string? addressLine3, string? addressLine4, string postcode, string expected,
-        Vacancies vacancies, [Frozen] Mock<IDateTimeService> dateTimeService
+        VacancyAdvert vacancyAdvert, [Frozen] Mock<IDateTimeService> dateTimeService
     )
     {
-        vacancies.AddressLine1 = addressLine1;
-        vacancies.AddressLine2 = addressLine2;
-        vacancies.AddressLine3 = addressLine3;
-        vacancies.AddressLine4 = addressLine4;
-        vacancies.Postcode = postcode;
+        vacancyAdvert.AddressLine1 = addressLine1;
+        vacancyAdvert.AddressLine2 = addressLine2;
+        vacancyAdvert.AddressLine3 = addressLine3;
+        vacancyAdvert.AddressLine4 = addressLine4;
+        vacancyAdvert.Postcode = postcode;
 
-        var actual = new ApprenticeshipMapData().MapToViewModel(dateTimeService.Object, vacancies);
+        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, vacancyAdvert);
 
         Assert.That(actual.Job.VacancyLocation, Is.EqualTo(expected));
     }
