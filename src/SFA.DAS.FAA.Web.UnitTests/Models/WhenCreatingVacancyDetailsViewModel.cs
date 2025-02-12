@@ -172,11 +172,11 @@ public class WhenCreatingVacancyDetailsViewModel
         GetApprenticeshipVacancyQueryResult result,
         [Frozen] Mock<IDateTimeService> dateTimeService)
     {
-        result.Vacancy.EmploymentLocationOption = availableWhere;
+        result.Vacancy.EmployerLocationOption = availableWhere;
 
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
 
-        actual.EmploymentLocationOption.Should().Be(availableWhere);
+        actual.EmployerLocationOption.Should().Be(availableWhere);
 
         switch (availableWhere)
         {

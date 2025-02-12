@@ -80,7 +80,7 @@ public class GetApprenticeshipVacancyApiResponse
     public Address? Address { get; init; }
     public List<Address> OtherAddresses { get; init; } = [];
     public string? EmploymentLocationInformation { get; set; }
-    public AvailableWhere? EmploymentLocationOption { get; set; }
+    public AvailableWhere? EmployerLocationOption { get; set; }
     public List<string>? CourseSkills { get; init; }
     public List<string>? CourseCoreDuties { get; init; }
     public string? CourseOverviewOfRole { get; init; }

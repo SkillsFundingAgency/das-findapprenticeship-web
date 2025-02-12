@@ -28,8 +28,8 @@ namespace SFA.DAS.FAA.Domain.User
             public List<Address> OtherAddresses { get; set; } = [];
             [JsonProperty("employmentLocationInformation")]
             public string? EmploymentLocationInformation { get; set; }
-            [JsonProperty("employmentLocationOption")]
-            public AvailableWhere? EmploymentLocationOption { get; set; }
+            [JsonProperty("employerLocationOption")]
+            public AvailableWhere? EmployerLocationOption { get; set; }
 
             [JsonProperty("createdDate")]
             public DateTime CreatedDate { get; set; }
