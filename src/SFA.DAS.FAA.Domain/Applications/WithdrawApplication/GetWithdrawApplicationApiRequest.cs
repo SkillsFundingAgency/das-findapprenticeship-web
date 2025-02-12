@@ -25,5 +25,5 @@ public class GetWithdrawApplicationApiResponse
     public Address Address { get; set; } = null!;
     public List<Address>? OtherAddresses { get; set; } = [];
     public string? EmploymentLocationInformation { get; set; }
-    public AvailableWhere? EmploymentLocationOption { get; set; }
+    public AvailableWhere? EmployerLocationOption { get; set; }
 }

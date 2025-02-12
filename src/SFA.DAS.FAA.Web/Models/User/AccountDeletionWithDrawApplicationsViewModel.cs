@@ -34,7 +34,7 @@ namespace SFA.DAS.FAA.Web.Models.User
                     EmployerName = source.EmployerName,
                     SubmittedDate = $"Submitted on {source.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     Title = source.Title,
-                    EmploymentWorkLocation = source.EmploymentLocationOption switch
+                    EmploymentWorkLocation = source.EmployerLocationOption switch
                     {
                         AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(source.Addresses),
                         AvailableWhere.AcrossEngland => "Recruiting nationally",

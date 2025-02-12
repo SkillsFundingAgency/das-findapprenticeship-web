@@ -25,7 +25,7 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
             public Address WorkLocation { get; set; } = null!;
             public List<Address> Addresses { get; set; } = [];
             public string? EmploymentLocationInformation { get; set; }
-            public AvailableWhere? EmploymentLocationOption { get; set; }
+            public AvailableWhere? EmployerLocationOption { get; set; }
             public DateTime CreatedDate { get; set; }
             public DateTime? SubmittedDate { get; set; }
             public DateTime ClosingDate { get; set; }
@@ -48,7 +48,7 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
                     Status = (ApplicationStatus)source.Status,
                     WorkLocation = source.Address,
                     Addresses = addresses,
-                    EmploymentLocationOption = source.EmploymentLocationOption,
+                    EmployerLocationOption = source.EmployerLocationOption,
                     EmploymentLocationInformation = source.EmploymentLocationInformation,
                 };
             }

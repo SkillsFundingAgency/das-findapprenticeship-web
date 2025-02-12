@@ -32,15 +32,18 @@
         }
     }
 
-    @section AfterJSScripts {
-        <script>
-        const directionsForm = document.getElementById('faa-directions-form')
-        const directionsMap = document.getElementById('faa-directions-map')
+    if (@Model.EmployerLocationOption is not AvailableWhere.AcrossEngland)
+    {
+        @section AfterJSScripts {
+            <script>
+            const directionsForm = document.getElementById('faa-directions-form')
+            const directionsMap = document.getElementById('faa-directions-map')
 
-        if (directionsForm && directionsMap) {
-            new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", directionsForm, directionsMap).init()
+            if (directionsForm && directionsMap) {
+                new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", directionsForm, directionsMap).init()
+            }
+        </script>
         }
-    </script>
     }
 }
 else{

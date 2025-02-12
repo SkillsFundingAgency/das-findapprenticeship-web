@@ -52,7 +52,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
                 .Excluding(x => x.Status)
                 .Excluding(x => x.CreatedDate)
                 .Excluding(x => x.Addresses)
-                .Excluding(x => x.EmploymentLocationOption)
+                .Excluding(x => x.EmployerLocationOption)
                 .Excluding(x => x.EmploymentLocationInformation)
             );
         }

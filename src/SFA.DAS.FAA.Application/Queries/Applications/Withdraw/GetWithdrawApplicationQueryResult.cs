@@ -19,5 +19,5 @@ public class GetWithdrawApplicationQueryResult
     public Address WorkLocation { get; set; } = null!;
     public List<Address> Addresses { get; set; } = [];
     public string? EmploymentLocationInformation { get; set; }
-    public AvailableWhere? EmploymentLocationOption { get; set; }
+    public AvailableWhere? EmployerLocationOption { get; set; }
 }

@@ -36,7 +36,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public Address WorkLocation { get; init; } = Domain.Models.Address.Empty;
         public List<Address> Addresses { get; init; } = [];
         public string? EmploymentLocationInformation { get; set; }
-        public AvailableWhere? EmploymentLocationOption { get; set; }
+        public AvailableWhere? EmployerLocationOption { get; set; }
         public bool IsAnonymousEmployer { get; set; } = false;
         public string? WorkDescription { get; init; }
         public string? TrainingProviderName { get; init; }
@@ -68,7 +68,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool IsSavedVacancy { get; set; } = false;
         public string? ApplicationInstructions { get; set; }
         public VacancyDataSource VacancySource { get; set; }
-        public string EmploymentWorkLocation => EmploymentLocationOption switch
+        public string? EmploymentWorkLocation => EmployerLocationOption switch
         {
             AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(Addresses),
             AvailableWhere.AcrossEngland => "Recruiting nationally",
@@ -149,7 +149,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 VacancySource = source.Vacancy.VacancySource,
                 Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
                 Addresses = addresses.OrderByCity().ToList(),
-                EmploymentLocationOption = source.Vacancy?.EmploymentLocationOption,
+                EmployerLocationOption = source.Vacancy?.EmployerLocationOption,
                 EmploymentLocationInformation = source.Vacancy?.EmploymentLocationInformation,
                 IsAnonymousEmployer = source.Vacancy?.IsEmployerAnonymous ?? false,
             };

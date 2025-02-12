@@ -30,9 +30,9 @@ public class WithdrawApplicationViewModel(IDateTimeService dateTimeService, GetW
     public bool ClosesTomorrow { get; set; } = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 1;
     
     private List<Address> Addresses { get; } = source.Addresses;
-    private AvailableWhere? EmploymentLocationOption { get; } = source.EmploymentLocationOption;
+    private AvailableWhere? EmployerLocationOption { get; } = source.EmployerLocationOption;
 
-    public string EmploymentWorkLocation => EmploymentLocationOption switch
+    public string? EmploymentWorkLocation => EmployerLocationOption switch
     {
         AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(Addresses),
         AvailableWhere.AcrossEngland => "Recruiting nationally",
