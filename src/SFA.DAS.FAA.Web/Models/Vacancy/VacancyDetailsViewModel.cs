@@ -68,16 +68,11 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool IsSavedVacancy { get; set; } = false;
         public string? ApplicationInstructions { get; set; }
         public VacancyDataSource VacancySource { get; set; }
-        public string City => !string.IsNullOrEmpty(WorkLocation.AddressLine4) ? WorkLocation.AddressLine4 :
-            !string.IsNullOrEmpty(WorkLocation.AddressLine3) ? WorkLocation.AddressLine3 :
-            !string.IsNullOrEmpty(WorkLocation.AddressLine2) ? WorkLocation.AddressLine2 :
-            !string.IsNullOrEmpty(WorkLocation.AddressLine1) ? WorkLocation.AddressLine1 :
-            string.Empty;
         public string EmploymentWorkLocation => EmploymentLocationOption switch
         {
             AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(Addresses),
             AvailableWhere.AcrossEngland => "Recruiting nationally",
-            _ => string.IsNullOrWhiteSpace(City) ? WorkLocation.Postcode! : $"{City}, {WorkLocation.Postcode}"
+            _ => VacancyDetailsHelperService.GetOneLocationCityName(WorkLocation)
         };
 
         public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,

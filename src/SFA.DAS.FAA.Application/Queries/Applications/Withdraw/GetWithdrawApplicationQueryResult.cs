@@ -1,3 +1,6 @@
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
+
 namespace SFA.DAS.FAA.Application.Queries.Applications.Withdraw;
 
 public class GetWithdrawApplicationQueryResult
@@ -13,4 +16,8 @@ public class GetWithdrawApplicationQueryResult
     public DateTime ClosingDate { get; set; }
     
     public DateTime? ClosedDate { get; set; }
+    public Address WorkLocation { get; set; } = null!;
+    public List<Address> Addresses { get; set; } = [];
+    public string? EmploymentLocationInformation { get; set; }
+    public AvailableWhere? EmploymentLocationOption { get; set; }
 }

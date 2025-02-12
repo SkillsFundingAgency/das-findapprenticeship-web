@@ -22,7 +22,10 @@ public class WhenHandlingGetWithdrawApplicationQuery
 
         var actual = await handler.Handle(query, CancellationToken.None);
 
-        actual.Should().BeEquivalentTo(apiResponse);
+        actual.Should().BeEquivalentTo(apiResponse, options => options
+            .Excluding(x => x.Address)
+            .Excluding(x => x.OtherAddresses)
+        );
     }
 
     [Test, MoqAutoData]

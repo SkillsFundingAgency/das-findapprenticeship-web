@@ -135,5 +135,16 @@ namespace SFA.DAS.FAA.Web.Services
                 ? $"{cityNames.First()} ({addresses.Count} available locations)"
                 : string.Join(", ", cityNames);
         }
+
+        public static string GetOneLocationCityName(Address address)
+        {
+            var city = !string.IsNullOrEmpty(address.AddressLine4) ? address.AddressLine4 :
+                !string.IsNullOrEmpty(address.AddressLine3) ? address.AddressLine3 :
+                !string.IsNullOrEmpty(address.AddressLine2) ? address.AddressLine2 :
+                !string.IsNullOrEmpty(address.AddressLine1) ? address.AddressLine1 :
+                string.Empty;
+
+            return string.IsNullOrWhiteSpace(city) ? address.Postcode! : $"{city} ({address.Postcode})";
+        }
     }
 }

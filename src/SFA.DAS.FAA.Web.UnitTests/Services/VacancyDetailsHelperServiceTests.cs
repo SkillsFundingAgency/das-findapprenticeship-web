@@ -240,5 +240,60 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             // Assert
             Assert.AreEqual(string.Empty, result);
         }
+
+        [Test]
+        public void GetOneLocationCityName_ShouldReturnCityWithPostcode_WhenCityIsNotEmpty()
+        {
+            // Arrange
+            var address = new Address
+            {
+                AddressLine1 = "Line1",
+                AddressLine2 = "Line2",
+                AddressLine3 = "Line3",
+                AddressLine4 = "City",
+                Postcode = "12345"
+            };
+
+            // Act
+            var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
+
+            // Assert
+            Assert.AreEqual("City (12345)", result);
+        }
+
+        [Test]
+        public void GetOneLocationCityName_ShouldReturnPostcode_WhenCityIsEmpty()
+        {
+            // Arrange
+            var address = new Address
+            {
+                Postcode = "12345"
+            };
+
+            // Act
+            var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
+
+            // Assert
+            Assert.AreEqual("12345", result);
+        }
+
+        [Test]
+        public void GetOneLocationCityName_ShouldReturnFirstNonEmptyAddressLineWithPostcode_WhenCityIsEmpty()
+        {
+            // Arrange
+            var address = new Address
+            {
+                AddressLine1 = "Line1",
+                AddressLine2 = "Line2",
+                AddressLine3 = "Line3",
+                Postcode = "12345"
+            };
+
+            // Act
+            var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
+
+            // Assert
+            Assert.AreEqual("Line3 (12345)", result);
+        }
     }
 }

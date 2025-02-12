@@ -1,8 +1,8 @@
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.FAA.Domain.Applications.WithdrawApplication;
 using SFA.DAS.FAA.Domain.Exceptions;
 using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Application.Queries.Applications.Withdraw;
 
@@ -17,6 +17,9 @@ public class GetWithdrawApplicationQueryHandler(IApiClient apiClient) : IRequest
         if (response == null)
             throw new ResourceNotFoundException();
 
+        var addresses = new List<Address> { response.Address };
+        if (response.OtherAddresses is { Count: > 0 }) addresses.AddRange(response.OtherAddresses);
+
         return new GetWithdrawApplicationQueryResult
         {
             ApplicationId = response.ApplicationId,
@@ -24,7 +27,11 @@ public class GetWithdrawApplicationQueryHandler(IApiClient apiClient) : IRequest
             ClosedDate = response.ClosedDate,
             EmployerName = response.EmployerName,
             SubmittedDate = response.SubmittedDate,
-            AdvertTitle = response.AdvertTitle
+            AdvertTitle = response.AdvertTitle,
+            WorkLocation = response.Address,
+            Addresses = addresses,
+            EmploymentLocationInformation = response.EmploymentLocationInformation,
+            EmploymentLocationOption = response.EmploymentLocationOption,
         };
     }
 }

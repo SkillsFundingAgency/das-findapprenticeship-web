@@ -1,4 +1,6 @@
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Domain.Applications.WithdrawApplication;
 
@@ -20,4 +22,8 @@ public class GetWithdrawApplicationApiResponse
     public DateTime ClosingDate { get; set; }
     
     public DateTime? ClosedDate { get; set; }
+    public Address Address { get; set; } = null!;
+    public List<Address>? OtherAddresses { get; set; } = [];
+    public string? EmploymentLocationInformation { get; set; }
+    public AvailableWhere? EmploymentLocationOption { get; set; }
 }
