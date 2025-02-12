@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteTrainingCourse;
+using SFA.DAS.FAA.Domain.Apply.DeleteTrainingCourse;
 using SFA.DAS.FAA.Domain.Apply.GetTrainingCourse;
 using SFA.DAS.FAA.Domain.Interfaces;
 

@@ -195,19 +195,6 @@ public class SearchApprenticeshipsController(
             request.PageNumber = 1;
         }
         
-        if (string.IsNullOrEmpty(request.SearchTerm) && request is {LevelIds.Count: 0, RouteIds.Count: 0})
-        {
-            request.Sort = VacancySort.DistanceAsc.ToString();
-        }
-        else if (!string.IsNullOrEmpty(request.Location))
-        {
-            request.Sort = VacancySort.DistanceAsc.ToString();
-        }
-        else if (string.IsNullOrEmpty(request.Sort))
-        {
-            request.Sort = VacancySort.AgeAsc.ToString();
-        }
-
         var result = await mediator.Send(new GetSearchResultsQuery
         {
             CandidateId = User.Claims.CandidateId().Equals(null) ? null : User.Claims.CandidateId()!.ToString(),
