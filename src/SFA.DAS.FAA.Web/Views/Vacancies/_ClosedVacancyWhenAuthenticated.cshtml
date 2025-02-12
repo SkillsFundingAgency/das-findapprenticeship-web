@@ -54,7 +54,7 @@
     <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
     <p class="govuk-body-l faa-vacancy__location">
         <span itemprop="jobLocation">
-            @Model.City, @Model.WorkLocation.Postcode
+            @Model.EmploymentWorkLocation
         </span>
     </p>
     <p class="govuk-body faa-vacancy__closing-date">@Model.ClosedDate</p>
@@ -192,13 +192,28 @@
                     work alongside experienced staff.
                 </p>
                 <h3 class="govuk-heading-s">What you’ll do at work</h3>
-                <p>@Html.Raw(Model.WorkDescription)</p>
-                <h3 class="govuk-heading-s">Where you’ll work</h3>
-                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine1</p>
-                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine2</p>
-                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine3</p>
-                <p class="govuk-body govuk-!-margin-bottom-0">@Model.WorkLocation.AddressLine4</p>
-                <p class="govuk-body">@Model.WorkLocation.Postcode</p>
+                <p class="govuk-body">This apprenticeship is available in these locations:</p>
+                @switch (Model.EmploymentLocationOption)
+                {
+                    case AvailableWhere.MultipleLocations:
+                        {
+                            foreach (var address in Model.Addresses)
+                            {
+                                <ul class="govuk-list govuk-list--bullet">
+                                    <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
+                                </ul>
+                            }
+                            break;
+                        }
+                    case AvailableWhere.AcrossEngland:
+                        <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerDescription</p>
+                        break;
+                    case AvailableWhere.OneLocation:
+                    case null:
+                    default:
+                        <address class="govuk-body" value="Model.WorkLocation"></address>
+                        break;
+                }
                 @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&
                 Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven) &&
                 bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
