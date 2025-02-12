@@ -4,9 +4,9 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetDeleteQualifications;
 
 public class GetDeleteQualificationsQueryResult
 {
-    public string QualificationReference { get; set; }
+    public string? QualificationReference { get; set; }
 
-    public List<Qualification> Qualifications { get; set; }
+    public List<Qualification> Qualifications { get; set; } = [];
 
     public class Qualification
     {
@@ -19,7 +19,9 @@ public class GetDeleteQualificationsQueryResult
 
     public static implicit operator GetDeleteQualificationsQueryResult(GetDeleteQualificationsApiResponse source)
     {
-        return new GetDeleteQualificationsQueryResult
+        return source is null 
+            ? null 
+            : new GetDeleteQualificationsQueryResult
         {
             QualificationReference = source.QualificationReference,
             Qualifications = source.Qualifications.Select(x => new Qualification
