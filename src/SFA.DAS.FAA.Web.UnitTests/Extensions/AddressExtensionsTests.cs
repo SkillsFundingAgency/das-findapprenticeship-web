@@ -35,6 +35,26 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 
             Assert.AreEqual("Line4 (AB12)", result);
         }
+        
+        [Test]
+        public void ToSingleLineAnonymousAddress_With_No_City_Should_Return_Postcode_Only()
+        {
+            var address = new Address(null, null, null, null, "AB12 3CD");
+
+            var result = address.ToSingleLineAnonymousAddress();
+
+            Assert.AreEqual("AB12", result);
+        }
+        
+        [Test]
+        public void ToSingleLineAnonymousAddress_Should_Work_With_Outcode_Only()
+        {
+            var address = new Address(null, null, null, null, "B1");
+
+            var result = address.ToSingleLineAnonymousAddress();
+
+            Assert.AreEqual("B1", result);
+        }
 
         [Test]
         public void OrderByCity_ShouldReturnAddressesOrderedByCity()

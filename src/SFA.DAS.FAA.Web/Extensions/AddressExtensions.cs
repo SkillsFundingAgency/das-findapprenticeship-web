@@ -31,7 +31,11 @@ namespace SFA.DAS.FAA.Web.Extensions
 
         public static string ToSingleLineAnonymousAddress(this Address address)
         {
-            return $"{address.GetLastNonEmptyField()} ({address.PostcodeAsOutCode()})";
+            var city = address.GetLastNonEmptyField();
+            var postcode = address.PostcodeAsOutCode() ?? string.Empty;
+            return string.IsNullOrWhiteSpace(city) 
+                ? postcode 
+                : $"{city} ({postcode})";
         }
 
         public static IEnumerable<Address> OrderByCity(this IEnumerable<Address> addresses)
