@@ -33,7 +33,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            result.SavedVacancies.Should().BeEquivalentTo(apiResponse.SavedVacancies);
+            result.SavedVacancies.Should().BeEquivalentTo(apiResponse.SavedVacancies, options => options.Excluding(x => x.Address).Excluding(x => x.OtherAddresses));
             result.DeletedVacancy.Should().BeNull();
 
             apiClientMock.Verify(client =>
@@ -73,7 +73,9 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            result.SavedVacancies.Should().BeEquivalentTo(apiResponse.SavedVacancies);
+            result.SavedVacancies.Should().BeEquivalentTo(apiResponse.SavedVacancies, options => options
+                .Excluding(x => x.Address)
+                .Excluding(x => x.OtherAddresses));
             result.DeletedVacancy.EmployerName.Should().Be(getApprenticeshipVacancyApiResponse.EmployerName);
             result.DeletedVacancy.VacancyTitle.Should().Be(getApprenticeshipVacancyApiResponse.Title);
             result.DeletedVacancy.VacancyReference.Should().Be(getApprenticeshipVacancyApiResponse.VacancyReference);

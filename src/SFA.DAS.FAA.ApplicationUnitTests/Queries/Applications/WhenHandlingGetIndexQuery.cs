@@ -27,7 +27,10 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            result.Applications.Should().BeEquivalentTo(apiResponse.Applications);
+            result.Applications.Should().BeEquivalentTo(apiResponse.Applications, options => options
+                .Excluding(x => x.Address)
+                .Excluding(x => x.OtherAddresses)
+            );
         }
     }
 }

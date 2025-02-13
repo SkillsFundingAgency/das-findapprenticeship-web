@@ -33,9 +33,6 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
 
             public static implicit operator Application(GetAccountDeletionApplicationsToWithdrawApiResponse.SubmittedApplication source)
             {
-                var addresses = new List<Address> { source.Address };
-                if (source.OtherAddresses is { Count: > 0 }) addresses.AddRange(source.OtherAddresses);
-
                 return new Application
                 {
                     Id = source.Id,
@@ -47,7 +44,10 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
                     SubmittedDate = source.SubmittedDate,
                     Status = (ApplicationStatus)source.Status,
                     WorkLocation = source.Address,
-                    Addresses = addresses,
+                    Addresses = source.OtherAddresses is { Count: > 0 } ? new List<Address> { source.Address }.Concat(source.OtherAddresses).ToList() :
+                    [
+                        source.Address
+                    ],
                     EmployerLocationOption = source.EmployerLocationOption,
                     EmploymentLocationInformation = source.EmploymentLocationInformation,
                 };

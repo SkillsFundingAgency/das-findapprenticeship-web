@@ -4,6 +4,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Web.Models.SavedVacancies
 {
@@ -42,7 +43,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
             public string ClosingDateLabel { get; set; }
             public DateTime ClosingDate { get; set; }
             public bool IsClosingSoon { get; set; }
-            public string Location { get; set; }
+            public string? EmploymentWorkLocation { get; set; }
             public bool IsExternalVacancy { get; set; }
             public string ExternalVacancyUrl { get; set; }
             public bool ShowApplyButton { get; set; }
@@ -94,7 +95,12 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                     VacancyReference = vacancy.VacancyReference,
                     Title = vacancy.Title,
                     EmployerName = vacancy.EmployerName,
-                    Location = $"{vacancy.City}, {vacancy.Postcode}",
+                    EmploymentWorkLocation = vacancy.EmployerLocationOption switch
+                    {
+                        AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(vacancy.Addresses),
+                        AvailableWhere.AcrossEngland => "Recruiting nationally",
+                        _ => VacancyDetailsHelperService.GetOneLocationCityName(vacancy.WorkLocation)
+                    },
                     IsExternalVacancy = vacancy.IsExternalVacancy,
                     ExternalVacancyUrl = !string.IsNullOrEmpty(vacancy.ExternalVacancyUrl) && !vacancy.ExternalVacancyUrl.StartsWith("http") ? $"https://{vacancy.ExternalVacancyUrl}" : vacancy.ExternalVacancyUrl,
                     CreatedOn = 

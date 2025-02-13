@@ -7,9 +7,9 @@
     {
         <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
     }
-    <partial name="_VacancyTitle" model=@ValueTuple.Create(Model.Title, Model.VacancyReference,
-        ApplicationsTab.Submitted) />
-    <p class="govuk-hint">@Model.EmployerName</p>
+    <partial name="_VacancyTitle" model="@ValueTuple.Create(Model.Title, Model.VacancyReference, ApplicationsTab.Submitted)" />
+    <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerName</p>
+    <p class="govuk-hint">@Model.EmploymentWorkLocation</p>
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.SubmittedDate</p>
     <p class="govuk-hint">@Model.ClosingDate</p>
     <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
