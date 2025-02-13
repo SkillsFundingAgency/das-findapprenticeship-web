@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Domain.SavedVacancies
 {
@@ -21,8 +22,10 @@ namespace SFA.DAS.FAA.Domain.SavedVacancies
             public string EmployerName { get; set; } = string.Empty;
             public DateTime CreatedDate { get; set; }
             public DateTime ClosingDate { get; set; }
-            public string City { get; set; }
-            public string Postcode { get; set; }
+            public Address Address { get; set; }
+            public List<Address> OtherAddresses { get; set; } = [];
+            public string? EmploymentLocationInformation { get; set; }
+            public AvailableWhere? EmployerLocationOption { get; set; }
             public bool IsExternalVacancy { get; set; }
             public string ExternalVacancyUrl { get; set; }
             [JsonProperty("applicationStatus")]

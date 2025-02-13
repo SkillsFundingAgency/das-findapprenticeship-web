@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.Applications.GetApplications;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 
@@ -21,6 +22,10 @@ public class GetIndexQueryResult
         public DateTime? ResponseDate { get; set; }
         public ApplicationStatus Status { get; set; }
         public string ResponseNotes { get; set; }
+        public Address WorkLocation { get; set; } = null!;
+        public List<Address> Addresses { get; set; } = [];
+        public string? EmploymentLocationInformation { get; set; }
+        public AvailableWhere? EmployerLocationOption { get; set; }
     }
 
     public static implicit operator GetIndexQueryResult(GetApplicationsApiResponse source)
@@ -40,7 +45,11 @@ public class GetIndexQueryResult
                 ResponseDate = x.ResponseDate,
                 Status = x.Status,
                 ResponseNotes = x.ResponseNotes,
-                WithdrawnDate = x.WithdrawnDate
+                WithdrawnDate = x.WithdrawnDate,
+                WorkLocation = x.Address,
+                Addresses = new List<Address> { x.Address }.Concat(x.OtherAddresses).ToList(),
+                EmployerLocationOption = x.EmployerLocationOption,
+                EmploymentLocationInformation = x.EmploymentLocationInformation,
             }).ToList()
         };
     }

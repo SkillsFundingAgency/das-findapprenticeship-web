@@ -2,6 +2,7 @@
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Interfaces;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SavedVacancies;
 
 namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
@@ -25,10 +26,12 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
             public string EmployerName { get; set; } = string.Empty;
             public DateTime CreatedDate { get; set; }
             public DateTime ClosingDate { get; set; }
-            public string City { get; set; }
-            public string Postcode { get; set; }
+            public Address WorkLocation { get; set; }
+            public List<Address> Addresses { get; set; } = [];
+            public string? EmploymentLocationInformation { get; set; }
+            public AvailableWhere? EmployerLocationOption { get; set; }
             public bool IsExternalVacancy { get; set; }
-            public string ExternalVacancyUrl { get; set; }
+            public string? ExternalVacancyUrl { get; set; }
             public ApplicationStatus? Status { get; set; }
         }
 
@@ -51,8 +54,10 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
                     VacancyReference = x.VacancyReference,
                     ClosingDate = x.ClosingDate,
                     CreatedDate = x.CreatedDate,
-                    City = x.City,
-                    Postcode = x.Postcode,
+                    WorkLocation = x.Address,
+                    Addresses = new List<Address> { x.Address }.Concat(x.OtherAddresses).ToList(),
+                    EmployerLocationOption = x.EmployerLocationOption,
+                    EmploymentLocationInformation = x.EmploymentLocationInformation,
                     IsExternalVacancy = x.IsExternalVacancy,
                     ExternalVacancyUrl = x.ExternalVacancyUrl,
                     Status = x.Status,
