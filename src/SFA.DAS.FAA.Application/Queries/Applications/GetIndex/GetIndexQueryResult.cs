@@ -47,7 +47,10 @@ public class GetIndexQueryResult
                 ResponseNotes = x.ResponseNotes,
                 WithdrawnDate = x.WithdrawnDate,
                 WorkLocation = x.Address,
-                Addresses = new List<Address> { x.Address }.Concat(x.OtherAddresses).ToList(),
+                Addresses = x.OtherAddresses is { Count: > 0 } ? new List<Address> { x.Address }.Concat(x.OtherAddresses).ToList() :
+                [
+                    x.Address
+                ],
                 EmployerLocationOption = x.EmployerLocationOption,
                 EmploymentLocationInformation = x.EmploymentLocationInformation,
             }).ToList()
