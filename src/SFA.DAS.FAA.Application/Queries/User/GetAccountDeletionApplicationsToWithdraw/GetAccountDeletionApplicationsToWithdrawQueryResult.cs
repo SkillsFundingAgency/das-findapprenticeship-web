@@ -44,7 +44,10 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
                     SubmittedDate = source.SubmittedDate,
                     Status = (ApplicationStatus)source.Status,
                     WorkLocation = source.Address,
-                    Addresses = new List<Address> { source.Address }.Concat(source.OtherAddresses).ToList(),
+                    Addresses = source.OtherAddresses is { Count: > 0 } ? new List<Address> { source.Address }.Concat(source.OtherAddresses).ToList() :
+                    [
+                        source.Address
+                    ],
                     EmployerLocationOption = source.EmployerLocationOption,
                     EmploymentLocationInformation = source.EmploymentLocationInformation,
                 };

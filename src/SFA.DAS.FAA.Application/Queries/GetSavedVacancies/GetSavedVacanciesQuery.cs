@@ -55,7 +55,10 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
                     ClosingDate = x.ClosingDate,
                     CreatedDate = x.CreatedDate,
                     WorkLocation = x.Address,
-                    Addresses = new List<Address> { x.Address }.Concat(x.OtherAddresses).ToList(),
+                    Addresses = x.OtherAddresses is {Count: > 0} ? new List<Address> { x.Address }.Concat(x.OtherAddresses).ToList() :
+                    [
+                        x.Address
+                    ],
                     EmployerLocationOption = x.EmployerLocationOption,
                     EmploymentLocationInformation = x.EmploymentLocationInformation,
                     IsExternalVacancy = x.IsExternalVacancy,
