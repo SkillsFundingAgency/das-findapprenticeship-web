@@ -576,133 +576,6 @@ public class WhenGettingSearchResults
 
         actualModel?.PageNumber.Should().Be(result.PageNumber);
     }
-
-    
-    [Test, MoqAutoData]
-    public async Task Then_Sort_Is_Set_To_Distance_When_Location_And_No_Sort_Is_Set(
-        GetSearchResultsRequest request,
-        GetSearchResultsResult result,
-        string mapId,
-        List<string>? routeIds,
-        Guid candidateId,
-        [Frozen] Mock<ICacheStorageService> cacheStorageService,
-        [Frozen] Mock<IDateTimeService> dateTimeService,
-        [Frozen] Mock<GetSearchResultsRequestValidator> validator)
-    {
-        request.Sort = null;
-        result.PageNumber = 1;
-        var mediator = new Mock<IMediator>();
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
-        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
-            .ReturnsAsync(
-                new ValidationResult()
-            );
-        
-        var controller = new SearchApprenticeshipsController(
-            mediator.Object,
-            dateTimeService.Object,
-            faaConfig.Object,
-            cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
-            validator.Object,
-            Mock.Of<IDataProtectorService>(),
-            Mock.Of<ILogger<SearchApprenticeshipsController>>())
-        {
-            Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-                }
-            }
-        };
-        result.VacancyReference = null;
-
-        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c=>c.Sort == VacancySort.DistanceAsc.ToString()), CancellationToken.None)).ReturnsAsync(result);
-
-        var actual = await controller.SearchResults(request) as ViewResult;
-
-        Assert.That(actual, Is.Not.Null);
-        var actualModel = actual!.Model as SearchResultsViewModel;
-        actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
-
-        actualModel?.PageNumber.Should().Be(result.PageNumber);
-    }
-    
-    [Test, MoqAutoData]
-    public async Task Then_Sort_Is_Set_To_Distance_When_Location_And_Sort_Is_Set_But_No_Other_Filters(
-        GetSearchResultsRequest request,
-        GetSearchResultsResult result,
-        string mapId,
-        List<string>? routeIds,
-        Guid candidateId,
-        [Frozen] Mock<ICacheStorageService> cacheStorageService,
-        [Frozen] Mock<IDateTimeService> dateTimeService,
-        [Frozen] Mock<GetSearchResultsRequestValidator> validator)
-    {
-        request.Sort = VacancySort.AgeDesc.ToString();
-        request.LevelIds = [];
-        request.RouteIds = [];
-        request.DisabilityConfident = false;
-        request.SearchTerm = string.Empty;
-        result.PageNumber = 1;
-        var mediator = new Mock<IMediator>();
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
-        validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
-            .ReturnsAsync(
-                new ValidationResult()
-            );
-        
-        var controller = new SearchApprenticeshipsController(
-            mediator.Object,
-            dateTimeService.Object,
-            faaConfig.Object,
-            cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
-            validator.Object,
-            Mock.Of<IDataProtectorService>(),
-            Mock.Of<ILogger<SearchApprenticeshipsController>>())
-        {
-            Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-                }
-            }
-        };
-        result.VacancyReference = null;
-
-        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c=>c.Sort == VacancySort.DistanceAsc.ToString()), CancellationToken.None)).ReturnsAsync(result);
-
-        var actual = await controller.SearchResults(request) as ViewResult;
-
-        Assert.That(actual, Is.Not.Null);
-        var actualModel = actual!.Model as SearchResultsViewModel;
-        actualModel?.Total.Should().Be(((SearchResultsViewModel)result).Total);
-
-        actualModel?.PageNumber.Should().Be(result.PageNumber);
-    }
     
     [Test, MoqAutoData]
     public async Task Then_The_Mediator_Query_Is_Called_And_No_Search_Results_Found_View_Returned(
@@ -1093,9 +966,20 @@ public class WhenGettingSearchResults
         }
     }
 
-    [Test, MoqAutoData]
-    public async Task Then_Sort_Is_Set_To_Distance_When_Location_Exist(
+    [Test]
+    [MoqInlineAutoData("A place","Some search","1","Category",true, VacancySort.ClosingAsc)]
+    [MoqInlineAutoData("A place",null,"1","Category",false, VacancySort.ClosingAsc)]
+    [MoqInlineAutoData("A place","Some search",null,"Category",false, VacancySort.ClosingAsc)]
+    [MoqInlineAutoData("A place","Some search","1",null,false, VacancySort.ClosingAsc)]
+    [MoqInlineAutoData("A place","Some search","1","Category",false, VacancySort.ClosingAsc)]
+    [MoqInlineAutoData("A place",null,null,null,false, VacancySort.DistanceAsc)]
+    public async Task Then_Sort_Is_Not_Set_To_Distance_When_Location_Exist_But_Has_Other_Filters(
         string location,
+        string searchTem,
+        string? level,
+        string? route,
+        bool? disabilityConfident,
+        VacancySort expectedSort,
         GetSearchResultsRequest request,
         GetSearchResultsResult result,
         string mapId,
@@ -1106,12 +990,12 @@ public class WhenGettingSearchResults
         [Frozen] Mock<GetSearchResultsRequestValidator> validator)
     {
         request.Location = location;
-        request.Sort = null;
-        request.LevelIds = [];
-        request.RouteIds = [];
-        request.DisabilityConfident = false;
+        request.SearchTerm = searchTem;
+        request.Sort = expectedSort.ToString();
+        request.LevelIds = !string.IsNullOrEmpty(level) ? [level] : [];
+        request.RouteIds = !string.IsNullOrEmpty(route) ? [route] : [];
+        request.DisabilityConfident = disabilityConfident ?? false;
         result.PageNumber = 1;
-        result.Sort = VacancySort.DistanceAsc.ToString();
         var mediator = new Mock<IMediator>();
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
@@ -1149,12 +1033,12 @@ public class WhenGettingSearchResults
         };
         result.VacancyReference = null;
 
-        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c => c.Sort == VacancySort.DistanceAsc.ToString()), CancellationToken.None)).ReturnsAsync(result);
+        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c => c.Sort == expectedSort.ToString()), CancellationToken.None)).ReturnsAsync(result);
 
         var actual = await controller.SearchResults(request) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;
-        actualModel?.Sort.Should().Be(VacancySort.DistanceAsc.ToString());
+        actualModel?.Sort.Should().Be(result.Sort);
     }
 }

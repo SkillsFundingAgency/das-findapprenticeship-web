@@ -9,6 +9,7 @@ using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteQualifications;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
+using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -45,5 +46,31 @@ public class WhenGettingDeleteQualifications
         var actualModel = actual.Model as DeleteQualificationsViewModel;
         actualModel!.ApplicationId.Should().Be(applicationId);
         actualModel!.Qualifications.Should().BeEquivalentTo(queryResult.Qualifications);
+    }
+
+    [Test, MoqAutoData]
+    public async Task Then_Response_Is_Null_Returned_Redirect(
+        Guid applicationId,
+        Guid candidateId,
+        Guid qualificationType,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] QualificationsController controller)
+    {
+        mediator.Setup(x => x.Send(It.Is<GetDeleteQualificationsQuery>(c => c.ApplicationId == applicationId && c.QualificationType == qualificationType && c.CandidateId == candidateId), CancellationToken.None))
+            .ReturnsAsync((GetDeleteQualificationsQueryResult)null!);
+
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                    { new(CustomClaims.CandidateId, candidateId.ToString()) }))
+            }
+        };
+
+        var actual = await controller.DeleteQualifications(applicationId, qualificationType) as RedirectToRouteResult;
+
+        actual.Should().NotBeNull();
+        actual!.RouteName.Should().Be(RouteNames.Apply);
     }
 }
