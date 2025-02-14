@@ -192,26 +192,22 @@
                     work alongside experienced staff.
                 </p>
                 <h3 class="govuk-heading-s">What you’ll do at work</h3>
-                <p class="govuk-body">This apprenticeship is available in these locations:</p>
                 @switch (Model.EmployerLocationOption)
                 {
                     case AvailableWhere.MultipleLocations:
+                        <p class="govuk-body">This apprenticeship is available in these locations:</p>
+                        foreach (var address in Model.Addresses)
                         {
-                            foreach (var address in Model.Addresses)
-                            {
-                                <ul class="govuk-list govuk-list--bullet">
-                                    <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
-                                </ul>
-                            }
-                            break;
+                            <ul class="govuk-list govuk-list--bullet">
+                                <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
+                            </ul>
                         }
+                        break;
                     case AvailableWhere.AcrossEngland:
                         <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerDescription</p>
                         break;
-                    case AvailableWhere.OneLocation:
-                    case null:
                     default:
-                        <address class="govuk-body" value="Model.WorkLocation"></address>
+                        <address class="govuk-body" value="Model.WorkLocation" anonymised="Model.IsAnonymousEmployer"></address>
                         break;
                 }
                 @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&
