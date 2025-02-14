@@ -68,6 +68,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool IsSavedVacancy { get; set; } = false;
         public string? ApplicationInstructions { get; set; }
         public VacancyDataSource VacancySource { get; set; }
+        public MapLocation[] MapLocations { get; init; } = [];
+        
         public string? EmploymentWorkLocation => EmployerLocationOption switch
         {
             AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(Addresses),
@@ -82,80 +84,79 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
             if (source.Vacancy?.Address != null) addresses.Add(source.Vacancy.Address);
             if (source.Vacancy?.OtherAddresses != null) addresses.AddRange(source.Vacancy.OtherAddresses);
 
+            var mapLocations = addresses
+                .Where(x => x is { Latitude: not null and not 0, Longitude: not null and not 0 })
+                .Select(x =>
+                    new MapLocation(
+                        source.Vacancy!.IsEmployerAnonymous
+                            ? x.ToSingleLineAnonymousFullAddress()
+                            : x.ToSingleLineFullAddress(),
+                        x.Latitude!.Value.ToGeoDecimalWithMetreAccuracy(),
+                        x.Longitude!.Value.ToGeoDecimalWithMetreAccuracy()))
+                .ToArray();
+
             return new VacancyDetailsViewModel
             {
-                Title = source.Vacancy?.Title,
-                VacancyReference = source.Vacancy?.VacancyReference,
-                VacancySummary = source.Vacancy?.Description,
-                AnnualWage = source.Vacancy?.WageText,
-                HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
-                Duration = source.Vacancy?.ExpectedDuration?.ToLower(),
-                PositionsAvailable = source.Vacancy?.NumberOfPositions,
-                WorkDescription = source.Vacancy?.LongDescription,
-                ThingsToConsider = source.Vacancy?.ThingsToConsider,
-                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate,
-                    !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
-                PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
-                StartDate = source.Vacancy.StartDate.GetStartDate(),
-                WorkLocation = source.Vacancy.Address,
-                WorkingPattern = source.Vacancy?.WorkingWeek,
-                TrainingProviderName = source.Vacancy?.ProviderName,
-                TrainingPlan = source.Vacancy?.TrainingDescription,
-                OutcomeDescription = source.Vacancy?.OutcomeDescription,
-                Skills = source.Vacancy?.Skills?.ToList(),
-                EmployerWebsite =
-                    VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
-                EmployerDescription = source.Vacancy?.EmployerDescription,
-                EmployerName = source.Vacancy?.EmployerName,
-                ContactOrganisationName = string.IsNullOrWhiteSpace(source.Vacancy?.EmployerContactName)
-                    ? source.Vacancy!.ProviderName
-                    : source.Vacancy!.EmployerName,
-                ContactName = source.Vacancy?.EmployerContactName ?? source.Vacancy?.ProviderContactName,
-                ContactEmail = source.Vacancy?.EmployerContactEmail ?? source.Vacancy?.ProviderContactEmail,
-                ContactPhone = source.Vacancy?.EmployerContactPhone ?? source.Vacancy?.ProviderContactPhone,
-                CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
-                EssentialQualifications = source.Vacancy?.Qualifications?
-                    .Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification) l).ToList(),
-                DesiredQualifications = source.Vacancy?.Qualifications?.Where(fil => fil.Weighting == Weighting.Desired)
-                    .Select(l => (Qualification) l).ToList(),
-                CourseSkills = source.Vacancy?.CourseSkills,
-                CourseCoreDuties = source.Vacancy?.CourseCoreDuties,
-                CourseOverviewOfRole = source.Vacancy?.CourseOverviewOfRole,
-                StandardPageUrl = source.Vacancy?.StandardPageUrl,
-                IsDisabilityConfident = source.Vacancy is {IsDisabilityConfident: true},
-                CourseLevels = source.Vacancy?.Levels,
-                CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0
-                    ? source.Vacancy?.Levels
-                        .FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
-                    : string.Empty,
-                ApplicationDetails = source.Vacancy?.Application,
-                IsClosed = source.Vacancy?.IsClosed ?? false,
-                ClosedDate =
-                    $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
-                ApplicationUrl =
-                    !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) &&
-                    !source.Vacancy.ApplicationUrl.StartsWith("http")
-                        ? $"https://{source.Vacancy.ApplicationUrl}"
-                        : source.Vacancy.ApplicationUrl,
-                ApplicationInstructions = source.Vacancy.ApplicationInstructions,
-                GoogleMapsId = googleMapsId,
-                CandidatePostcode = source.Vacancy?.CandidatePostcode,
-                Latitude = source.Vacancy?.Location?.Lat,
-                Longitude = source.Vacancy?.Location?.Lon,
-                CompanyBenefits = source.Vacancy?.CompanyBenefitsInformation,
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription,
-                WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
-                IsSavedVacancy = source.Vacancy.IsSavedVacancy,
-                VacancySource = source.Vacancy.VacancySource,
                 Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
                 Addresses = addresses.OrderByCity().ToList(),
+                AnnualWage = source.Vacancy?.WageText,
+                ApplicationDetails = source.Vacancy?.Application,
+                ApplicationInstructions = source.Vacancy.ApplicationInstructions,
+                ApplicationUrl = !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
+                CandidatePostcode = source.Vacancy?.CandidatePostcode,
+                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+                ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate, !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
+                CompanyBenefits = source.Vacancy?.CompanyBenefitsInformation,
+                ContactEmail = source.Vacancy?.EmployerContactEmail ?? source.Vacancy?.ProviderContactEmail,
+                ContactName = source.Vacancy?.EmployerContactName ?? source.Vacancy?.ProviderContactName,
+                ContactOrganisationName = string.IsNullOrWhiteSpace(source.Vacancy?.EmployerContactName) ? source.Vacancy!.ProviderName : source.Vacancy!.EmployerName,
+                ContactPhone = source.Vacancy?.EmployerContactPhone ?? source.Vacancy?.ProviderContactPhone,
+                CourseCoreDuties = source.Vacancy?.CourseCoreDuties,
+                CourseLevelMapper = int.TryParse(source.Vacancy?.CourseLevel, out _) && source.Vacancy.Levels?.Count > 0 ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name : string.Empty,
+                CourseLevels = source.Vacancy?.Levels,
+                CourseOverviewOfRole = source.Vacancy?.CourseOverviewOfRole,
+                CourseSkills = source.Vacancy?.CourseSkills,
+                CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
+                DesiredQualifications = source.Vacancy?.Qualifications?.Where(fil => fil.Weighting == Weighting.Desired).Select(l => (Qualification) l).ToList(),
+                Duration = source.Vacancy?.ExpectedDuration?.ToLower(),
+                EmployerDescription = source.Vacancy?.EmployerDescription,
                 EmployerLocationOption = source.Vacancy?.EmployerLocationOption,
+                EmployerName = source.Vacancy?.EmployerName,
+                EmployerWebsite = VacancyDetailsHelperService.FormatEmployerWebsiteUrl(source.Vacancy?.EmployerWebsiteUrl),
                 EmploymentLocationInformation = source.Vacancy?.EmploymentLocationInformation,
+                EssentialQualifications = source.Vacancy?.Qualifications?.Where(fil => fil.Weighting == Weighting.Essential).Select(l => (Qualification) l).ToList(),
+                GoogleMapsId = googleMapsId,
+                HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
                 IsAnonymousEmployer = source.Vacancy?.IsEmployerAnonymous ?? false,
+                IsClosed = source.Vacancy?.IsClosed ?? false,
+                IsDisabilityConfident = source.Vacancy is {IsDisabilityConfident: true},
+                IsSavedVacancy = source.Vacancy.IsSavedVacancy,
+                Latitude = source.Vacancy?.Location?.Lat,
+                Longitude = source.Vacancy?.Location?.Lon,
+                MapLocations = mapLocations,
+                OutcomeDescription = source.Vacancy?.OutcomeDescription,
+                PositionsAvailable = source.Vacancy?.NumberOfPositions,
+                PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
+                Skills = source.Vacancy?.Skills?.ToList(),
+                StandardPageUrl = source.Vacancy?.StandardPageUrl,
+                StartDate = source.Vacancy.StartDate.GetStartDate(),
+                ThingsToConsider = source.Vacancy?.ThingsToConsider,
+                Title = source.Vacancy?.Title,
+                TrainingPlan = source.Vacancy?.TrainingDescription,
+                TrainingProviderName = source.Vacancy?.ProviderName,
+                VacancyReference = source.Vacancy?.VacancyReference,
+                VacancySource = source.Vacancy.VacancySource,
+                VacancySummary = source.Vacancy?.Description,
+                WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
+                WorkDescription = source.Vacancy?.LongDescription,
+                WorkLocation = source.Vacancy.Address,
+                WorkingPattern = source.Vacancy?.WorkingWeek,
             };
         }
-        
     }
+
+    public record MapLocation(string Address, decimal Lat, decimal Lon);
 
     public class Qualification
     {

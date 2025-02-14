@@ -38,8 +38,8 @@
             <script>
             const directionsForm = document.getElementById('faa-directions-form')
             const directionsMap = document.getElementById('faa-directions-map')
-
             if (directionsForm && directionsMap) {
+                const mapLocations = @Html.Raw(Json.Serialize(Model.MapLocations));
                 new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", directionsForm, directionsMap).init()
             }
         </script>
