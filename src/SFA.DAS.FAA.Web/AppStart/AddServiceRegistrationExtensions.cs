@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using Azure;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using FluentValidation.AspNetCore;
@@ -44,9 +45,15 @@ public static class AddServiceRegistrationExtension
                     var credential = new DefaultAzureCredential();
                     var secretClient = new SecretClient(new Uri(findAnApprenticeshipOuterApiConfiguration.SecretClientUrl!), credential);
                 
-                    KeyVaultSecret secret = secretClient.GetSecret(findAnApprenticeshipOuterApiConfiguration.SecretName!);
+                    var secret = secretClient.GetSecret(findAnApprenticeshipOuterApiConfiguration.SecretName!);
+
+                    if (!secret.HasValue)
+                    {
+                        throw new Exception($"Has errored - {secret.GetRawResponse().Content.ToDynamicFromJson()}");
+                    }
+                    
                     var handler = new HttpClientHandler();
-                    handler.ClientCertificates.Add(new X509Certificate2(Convert.FromBase64String(secret.Value)));
+                    handler.ClientCertificates.Add(new X509Certificate2(Convert.FromBase64String(secret.Value.Value)));
                     logger.LogInformation("Added client cert configuration");
                     return handler;
                 }
