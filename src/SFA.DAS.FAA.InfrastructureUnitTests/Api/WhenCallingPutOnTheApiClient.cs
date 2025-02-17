@@ -20,7 +20,7 @@ public class WhenCallingPutOnTheApiClient
         List<string> testObject,
         FindAnApprenticeshipOuterApi config)
     {
-        config.BaseUrl = $"https://{config.BaseUrl}";
+        var baseUrl = $"https://{config.BaseUrl}";
         var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
         configMock.Setup(x => x.Value).Returns(config);
         var putTestRequest = new PutTestRequest(request);
@@ -30,8 +30,9 @@ public class WhenCallingPutOnTheApiClient
             Content = new StringContent(JsonConvert.SerializeObject(testObject)),
             StatusCode = HttpStatusCode.Accepted
         };
-        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + putTestRequest.PutUrl), config.Key, HttpMethod.Put);
+        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(baseUrl + putTestRequest.PutUrl), config.Key, HttpMethod.Put);
         var client = new HttpClient(httpMessageHandler.Object);
+        client.BaseAddress = new Uri(baseUrl);
         var apiClient = new ApiClient(client, configMock.Object);
 
         var actual = await apiClient.Put<List<string>>(putTestRequest);
@@ -44,7 +45,7 @@ public class WhenCallingPutOnTheApiClient
         PutCandidateApiRequest request,
         FindAnApprenticeshipOuterApi config)
     {
-        config.BaseUrl = $"https://{config.BaseUrl}";
+        var baseUrl = $"https://{config.BaseUrl}";
         var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
         configMock.Setup(x => x.Value).Returns(config);
         var putTestRequest = new PutTestRequest(request);
@@ -54,8 +55,9 @@ public class WhenCallingPutOnTheApiClient
             StatusCode = HttpStatusCode.BadRequest
         };
 
-        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + putTestRequest.PutUrl), config.Key, HttpMethod.Put);
+        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(baseUrl + putTestRequest.PutUrl), config.Key, HttpMethod.Put);
         var client = new HttpClient(httpMessageHandler.Object);
+        client.BaseAddress = new Uri(baseUrl);
         var apiClient = new ApiClient(client, configMock.Object);
 
         Func<Task> actual = () => apiClient.Put<List<string>>(putTestRequest);
@@ -68,7 +70,7 @@ public class WhenCallingPutOnTheApiClient
         PutCandidateApiRequest request,
         FindAnApprenticeshipOuterApi config)
     {
-        config.BaseUrl = $"https://{config.BaseUrl}";
+        var baseUrl = $"https://{config.BaseUrl}";
         var configMock = new Mock<IOptions<FindAnApprenticeshipOuterApi>>();
         configMock.Setup(x => x.Value).Returns(config);
         var putTestRequest = new PutTestRequest(request);
@@ -78,8 +80,9 @@ public class WhenCallingPutOnTheApiClient
             StatusCode = HttpStatusCode.NotFound
         };
 
-        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(config.BaseUrl + putTestRequest.PutUrl), config.Key, HttpMethod.Put);
+        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, new Uri(baseUrl + putTestRequest.PutUrl), config.Key, HttpMethod.Put);
         var client = new HttpClient(httpMessageHandler.Object);
+        client.BaseAddress = new Uri(baseUrl);
         var apiClient = new ApiClient(client, configMock.Object);
 
         var actual = await apiClient.Put<List<string>>(putTestRequest);
