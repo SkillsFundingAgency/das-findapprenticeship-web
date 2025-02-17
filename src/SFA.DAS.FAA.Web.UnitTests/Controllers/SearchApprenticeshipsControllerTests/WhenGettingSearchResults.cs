@@ -1041,4 +1041,36 @@ public class WhenGettingSearchResults
         var actualModel = actual!.Model as SearchResultsViewModel;
         actualModel?.Sort.Should().Be(result.Sort);
     }
+    
+    [Test]
+    [MoqInlineAutoData(-1, VacancySort.ClosingAsc, false)]
+    [MoqInlineAutoData(-1, VacancySort.SalaryAsc, false)]
+    [MoqInlineAutoData(-1, VacancySort.SalaryDesc, false)]
+    [MoqInlineAutoData(-1, VacancySort.AgeAsc, false)]
+    [MoqInlineAutoData(-1, VacancySort.AgeDesc, false)]
+    [MoqInlineAutoData(-1, VacancySort.DistanceAsc, false)]
+    [MoqInlineAutoData(-1, VacancySort.ClosingDesc, false)]
+    [MoqInlineAutoData(0, VacancySort.ClosingAsc, false)]
+    [MoqInlineAutoData(0, VacancySort.SalaryAsc, false)]
+    [MoqInlineAutoData(0, VacancySort.SalaryDesc, false)]
+    [MoqInlineAutoData(0, VacancySort.AgeAsc, false)]
+    [MoqInlineAutoData(0, VacancySort.AgeDesc, false)]
+    [MoqInlineAutoData(0, VacancySort.DistanceAsc, false)]
+    [MoqInlineAutoData(0, VacancySort.ClosingDesc, false)]
+    [MoqInlineAutoData(1, VacancySort.ClosingAsc, false)]
+    [MoqInlineAutoData(1, VacancySort.SalaryAsc, true)]
+    [MoqInlineAutoData(1, VacancySort.SalaryDesc, true)]
+    [MoqInlineAutoData(1, VacancySort.AgeAsc, false)]
+    [MoqInlineAutoData(1, VacancySort.AgeDesc, false)]
+    [MoqInlineAutoData(1, VacancySort.DistanceAsc, false)]
+    [MoqInlineAutoData(1, VacancySort.ClosingDesc, false)]
+    public void Then_ShowCompetitiveSalaryBanner_Is_Set_Based_On_TotalCompetitiveVacanciesCount_And_The_Sort_Method(int count, VacancySort sortMethod, bool expected, SearchResultsViewModel viewModel)
+    {
+        // arrange
+        viewModel.TotalCompetitiveVacanciesCount = count;
+        viewModel.Sort = sortMethod.ToString();
+
+        // assert
+        viewModel.ShowCompetitiveSalaryBanner.Should().Be(expected);
+    }
 }
