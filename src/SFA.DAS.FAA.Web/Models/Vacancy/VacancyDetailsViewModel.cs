@@ -93,6 +93,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                             : x.ToSingleLineFullAddress(),
                         x.Latitude!.Value.ToGeoDecimalWithMetreAccuracy(),
                         x.Longitude!.Value.ToGeoDecimalWithMetreAccuracy()))
+                .OrderBy(x => x.Address)
                 .ToArray();
 
             return new VacancyDetailsViewModel
