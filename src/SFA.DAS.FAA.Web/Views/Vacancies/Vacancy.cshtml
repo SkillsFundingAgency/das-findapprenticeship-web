@@ -38,9 +38,9 @@
             <script>
             const directionsForm = document.getElementById('faa-directions-form')
             const directionsMap = document.getElementById('faa-directions-map')
-
             if (directionsForm && directionsMap) {
-                new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", directionsForm, directionsMap).init()
+                const mapLocations = @Html.Raw(Json.Serialize(Model.MapLocations));
+                new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", mapLocations,  directionsForm, directionsMap).init()
             }
         </script>
         }

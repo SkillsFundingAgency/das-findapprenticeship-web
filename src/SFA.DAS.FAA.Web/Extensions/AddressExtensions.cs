@@ -20,8 +20,8 @@ namespace SFA.DAS.FAA.Web.Extensions
 
         public static string ToSingleLineFullAddress(this Address address)
         {
-            string[] addressArray = [address.AddressLine1, address.AddressLine2, address.AddressLine3, address.AddressLine4, address.Postcode];
-            return string.Join(", ", addressArray.Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim()));
+            string?[] addressArray = [address.AddressLine1, address.AddressLine2, address.AddressLine3, address.AddressLine4, address.Postcode];
+            return string.Join(", ", addressArray.Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a?.Trim()));
         }
 
         public static string ToSingleLineAbridgedAddress(this Address address)
@@ -36,6 +36,15 @@ namespace SFA.DAS.FAA.Web.Extensions
             return string.IsNullOrWhiteSpace(city) 
                 ? postcode 
                 : $"{city} ({postcode})";
+        }
+        
+        public static string ToSingleLineAnonymousFullAddress(this Address address)
+        {
+            var city = address.GetLastNonEmptyField();
+            var postcode = address.PostcodeAsOutCode() ?? string.Empty;
+            return string.IsNullOrWhiteSpace(city) 
+                ? postcode 
+                : $"{city}, {postcode}";
         }
 
         public static IEnumerable<Address> OrderByCity(this IEnumerable<Address> addresses)
