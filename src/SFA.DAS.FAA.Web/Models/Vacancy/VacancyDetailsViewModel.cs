@@ -37,6 +37,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public List<Address> Addresses { get; init; } = [];
         public string? EmploymentLocationInformation { get; set; }
         public AvailableWhere? EmployerLocationOption { get; set; }
+        public string? EmployerLocationInformation { get; init; }
         public bool IsAnonymousEmployer { get; set; } = false;
         public string? WorkDescription { get; init; }
         public string? TrainingProviderName { get; init; }
@@ -150,6 +151,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
                 Addresses = addresses.OrderByCity().ToList(),
                 EmployerLocationOption = source.Vacancy?.EmployerLocationOption,
+                EmployerLocationInformation = source.Vacancy?.EmploymentLocationInformation,
                 EmploymentLocationInformation = source.Vacancy?.EmploymentLocationInformation,
                 IsAnonymousEmployer = source.Vacancy?.IsEmployerAnonymous ?? false,
             };
