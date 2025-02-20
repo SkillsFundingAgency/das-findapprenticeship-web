@@ -53,9 +53,9 @@ public class SearchResultsViewModel : ViewModelBase
     public bool SearchAlreadySaved { get; set; }
     public bool SavedSearchLimitReached  { get; set; }
 
-    public bool ShowCompetitiveSalaryBanner =>
-        string.Equals(Sort, VacancySort.SalaryAsc.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-        string.Equals(Sort, VacancySort.SalaryDesc.ToString(), StringComparison.CurrentCultureIgnoreCase);
+    public bool ShowCompetitiveSalaryBanner => TotalCompetitiveVacanciesCount > 0 
+        && (string.Equals(Sort, VacancySort.SalaryAsc.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
+            string.Equals(Sort, VacancySort.SalaryDesc.ToString(), StringComparison.CurrentCultureIgnoreCase));
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
