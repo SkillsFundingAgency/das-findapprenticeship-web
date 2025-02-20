@@ -63,6 +63,7 @@ public class WhenCreatingVacancyDetailsViewModel
             ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
             ApplicationUrl = $"https://{source.Vacancy.ApplicationUrl}",
             GoogleMapsId = mapsId,
+            EmploymentLocationInformation = source.Vacancy.EmploymentLocationInformation
         };
 
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, source, mapsId);
