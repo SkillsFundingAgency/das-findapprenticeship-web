@@ -271,7 +271,7 @@
                         break;
                     }
                     case AvailableWhere.AcrossEngland:
-                        <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerDescription</p>
+                        <p class="govuk-body">@Model.EmployerDescription</p>
                         break;
                     default:
                         <address class="govuk-body" value="Model.WorkLocation" anonymised="Model.IsAnonymousEmployer"></address>
@@ -279,7 +279,7 @@
                 }
                 @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&
                 Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven) &&
-                bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
+                bool.TryParse(isConsentGiven, out var consentResult) && consentResult && Model.EmployerLocationOption is not AvailableWhere.AcrossEngland)
                 {
                     <details class="govuk-details govuk-!-margin-bottom-0">
                         <summary class="govuk-details__summary">
