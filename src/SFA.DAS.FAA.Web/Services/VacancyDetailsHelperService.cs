@@ -1,7 +1,9 @@
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Services
 {
@@ -119,5 +121,29 @@ namespace SFA.DAS.FAA.Web.Services
                 _ => wageAmountText
             };
          }
+
+        public static string GetEmploymentLocationCityNames(List<Address> addresses)
+        {
+            var cityNames = addresses
+                .Select(address => address.GetLastNonEmptyField())
+                .OfType<string>()
+                .Distinct()
+                .OrderBy(city => city)
+                .ToList();
+
+            return cityNames.Count == 1 && addresses.Count > 1
+                ? $"{cityNames.First()} ({addresses.Count} available locations)"
+                : string.Join(", ", cityNames);
+        }
+
+        public static string? GetOneLocationCityName(Address? address)
+        {
+            if (address is null)
+            {
+                return null;
+            }
+            var city = address.GetLastNonEmptyField();
+            return string.IsNullOrWhiteSpace(city) ? address.Postcode! : $"{city} ({address.Postcode})";
+        }
     }
 }

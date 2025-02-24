@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Applications.Withdraw;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -16,26 +18,24 @@ public class PostWithdrawApplicationViewModel
     public string? EmployerName { get; set; }
 }
 
-public class WithdrawApplicationViewModel
+public class WithdrawApplicationViewModel(IDateTimeService dateTimeService, GetWithdrawApplicationQueryResult source)
 {
-    public WithdrawApplicationViewModel(IDateTimeService dateTimeService, GetWithdrawApplicationQueryResult source)
-    {
-        ApplicationId = source.ApplicationId;
-        AdvertTitle = source.AdvertTitle;
-        EmployerName = source.EmployerName;
-        ClosesOnDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosedDate ?? source.ClosingDate);
-        SubmittedDate = source.SubmittedDate!.Value.GetStartDate();
-        ClosesToday = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 0;
-        ClosesTomorrow = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 1;
-    }
-    public Guid ApplicationId { get; set; }
-    
+    public Guid ApplicationId { get; set; } = source.ApplicationId;
     public bool? WithdrawApplication { get; set; }
+    public string? AdvertTitle { get; set; } = source.AdvertTitle;
+    public string? EmployerName { get; set; } = source.EmployerName;
+    public string? SubmittedDate { get; set; } = source.SubmittedDate?.GetStartDate();
+    public string? ClosesOnDate { get; set; } = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosedDate ?? source.ClosingDate);
+    public bool ClosesToday { get; set; } = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 0;
+    public bool ClosesTomorrow { get; set; } = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 1;
+    
+    private List<Address> Addresses { get; } = source.Addresses;
+    private AvailableWhere? EmployerLocationOption { get; } = source.EmployerLocationOption;
 
-    public string? AdvertTitle { get; set; }
-    public string? EmployerName { get; set; }
-    public string? SubmittedDate { get; set; }
-    public string? ClosesOnDate { get; set; }
-    public bool ClosesToday { get; set; }
-    public bool ClosesTomorrow { get; set; }
+    public string? EmploymentWorkLocation => EmployerLocationOption switch
+    {
+        AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(Addresses),
+        AvailableWhere.AcrossEngland => "Recruiting nationally",
+        _ => VacancyDetailsHelperService.GetOneLocationCityName(source.WorkLocation)
+    };
 }

@@ -40,6 +40,7 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public ApplicationStatus Status { get; set; }
             public string ResponseNotes { get; set; } = null!;
             public DateTime CloseDateTime { get; set; }
+            public string? EmploymentWorkLocation { get; set; }
 
             public static Application From(GetIndexQueryResult.Application source, IDateTimeService dateTimeService)
             {
@@ -70,7 +71,13 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     },
                     ResponseNotes = source.Status is ApplicationStatus.Unsuccessful
                         ? source.ResponseNotes
-                        : string.Empty
+                        : string.Empty,
+                    EmploymentWorkLocation = source.EmployerLocationOption switch
+                    {
+                        AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(source.Addresses),
+                        AvailableWhere.AcrossEngland => "Recruiting nationally",
+                        _ => VacancyDetailsHelperService.GetOneLocationCityName(source.WorkLocation)
+                    }
                 };
             }
         }

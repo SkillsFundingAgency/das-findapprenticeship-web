@@ -28,7 +28,8 @@ public class GetSearchResultsQueryHandler(IApiClient apiClient)
             vacancySort,
             query.SkipWageType,
             query.DisabilityConfident,
-            query.CandidateId);
+            query.CandidateId,
+            query.ExcludeNational);
         var response = await apiClient.Get<GetSearchResultsApiResponse>(request);
 
         return new GetSearchResultsResult
@@ -36,7 +37,7 @@ public class GetSearchResultsQueryHandler(IApiClient apiClient)
             Total = response.TotalFound,
             TotalCompetitiveVacanciesCount = response.TotalCompetitiveVacanciesCount,
             Location = response.Location,
-            Vacancies = response.Vacancies,
+            VacancyAdverts = response.VacancyAdverts,
             Routes = response.Routes,
             PageNumber = response.PageNumber,
             TotalPages = response.TotalPages,

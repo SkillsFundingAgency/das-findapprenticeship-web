@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.User;
 
 namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw
@@ -21,8 +22,10 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
             public string? Title { get; set; }
             public string? VacancyReference { get; set; }
             public string? EmployerName { get; set; }
-            public string? City { get; set; }
-            public string? Postcode { get; set; }
+            public Address WorkLocation { get; set; } = null!;
+            public List<Address> Addresses { get; set; } = [];
+            public string? EmploymentLocationInformation { get; set; }
+            public AvailableWhere? EmployerLocationOption { get; set; }
             public DateTime CreatedDate { get; set; }
             public DateTime? SubmittedDate { get; set; }
             public DateTime ClosingDate { get; set; }
@@ -40,8 +43,13 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
                     ClosingDate = source.ClosingDate,
                     SubmittedDate = source.SubmittedDate,
                     Status = (ApplicationStatus)source.Status,
-                    City = source.City,
-                    Postcode = source.Postcode,
+                    WorkLocation = source.Address,
+                    Addresses = source.OtherAddresses is { Count: > 0 } ? new List<Address> { source.Address }.Concat(source.OtherAddresses).ToList() :
+                    [
+                        source.Address
+                    ],
+                    EmployerLocationOption = source.EmployerLocationOption,
+                    EmploymentLocationInformation = source.EmploymentLocationInformation,
                 };
             }
         }

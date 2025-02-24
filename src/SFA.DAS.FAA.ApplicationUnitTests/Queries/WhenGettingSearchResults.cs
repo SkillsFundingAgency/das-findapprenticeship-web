@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchResults;
 
@@ -17,7 +17,19 @@ public class WhenGettingSearchResults
         query.Sort = vacancySort.ToString();
         
         // Mock the response from the API client
-        var expectedGetUrl = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, vacancySort, query.SkipWageType, query.DisabilityConfident, query.CandidateId);
+        var expectedGetUrl = new GetSearchResultsApiRequest(
+            query.Location,
+            query.SelectedRouteIds,
+            query.SelectedLevelIds,
+            query.Distance,
+            query.SearchTerm,
+            query.PageNumber,
+            query.PageSize,
+            vacancySort,
+            query.SkipWageType,
+            query.DisabilityConfident,
+            query.CandidateId,
+            query.ExcludeNational);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
@@ -29,7 +41,7 @@ public class WhenGettingSearchResults
         {
             result.Should().NotBeNull();
             expectedResponse.TotalFound.Should().Be(result.Total);
-            expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
+            expectedResponse.VacancyAdverts.Should().BeEquivalentTo(result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
@@ -48,7 +60,19 @@ public class WhenGettingSearchResults
         GetSearchResultsQueryHandler handler)
     {
         // Mock the response from the API client
-        var expectedGetUrl = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, VacancySort.DistanceAsc, query.SkipWageType, query.DisabilityConfident, query.CandidateId);
+        var expectedGetUrl = new GetSearchResultsApiRequest(
+            query.Location,
+            query.SelectedRouteIds,
+            query.SelectedLevelIds,
+            query.Distance,
+            query.SearchTerm,
+            query.PageNumber, 
+            query.PageSize, 
+            VacancySort.DistanceAsc,
+            query.SkipWageType, 
+            query.DisabilityConfident,
+            query.CandidateId,
+            query.ExcludeNational);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
@@ -60,7 +84,7 @@ public class WhenGettingSearchResults
         {
             result.Should().NotBeNull();
             expectedResponse.TotalFound.Should().Be(result.Total);
-            expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
+            expectedResponse.VacancyAdverts.Should().BeEquivalentTo(result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
@@ -81,7 +105,19 @@ public class WhenGettingSearchResults
     {
         // Mock the response from the API client
         query.Sort = string.Empty;
-        var expectedGetUrl = new GetSearchResultsApiRequest(query.Location, query.SelectedRouteIds, query.SelectedLevelIds, query.Distance, query.SearchTerm, query.PageNumber, query.PageSize, VacancySort.DistanceAsc, query.SkipWageType, query.DisabilityConfident, query.CandidateId);
+        var expectedGetUrl = new GetSearchResultsApiRequest(
+            query.Location, 
+            query.SelectedRouteIds, 
+            query.SelectedLevelIds, 
+            query.Distance, 
+            query.SearchTerm, 
+            query.PageNumber, 
+            query.PageSize, 
+            VacancySort.DistanceAsc,
+            query.SkipWageType,
+            query.DisabilityConfident,
+            query.CandidateId,
+            query.ExcludeNational);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
@@ -93,7 +129,7 @@ public class WhenGettingSearchResults
         {
             result.Should().NotBeNull();
             expectedResponse.TotalFound.Should().Be(result.Total);
-            expectedResponse.Vacancies.Should().BeEquivalentTo(result.Vacancies);
+            expectedResponse.VacancyAdverts.Should().BeEquivalentTo(result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);

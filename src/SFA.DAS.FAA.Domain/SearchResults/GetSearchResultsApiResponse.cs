@@ -16,7 +16,7 @@ public class GetSearchResultsApiResponse
     public long TotalFound { get; set; }
     
     [JsonProperty("vacancies")]
-    public List<Vacancies> Vacancies { get; set; }
+    public List<VacancyAdvert> VacancyAdverts { get; set; } = [];
 
     [JsonProperty("location")]
     public Location? Location { get; set; }

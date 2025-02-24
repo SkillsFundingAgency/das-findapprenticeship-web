@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
 using SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToWithdraw;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.Services;
 
 namespace SFA.DAS.FAA.Web.Models.User
 {
@@ -21,9 +23,9 @@ namespace SFA.DAS.FAA.Web.Models.User
             public Guid Id { get; set; }
             public string? Title { get; set; }
             public string? EmployerName { get; set; }
-            public string? Address { get; set; }
             public string? SubmittedDate { get; set; }
-
+            public string? EmploymentWorkLocation { get; set; }
+            
             public static implicit operator Application(GetAccountDeletionApplicationsToWithdrawQueryResult.Application source)
             {
                 return new Application
@@ -32,7 +34,12 @@ namespace SFA.DAS.FAA.Web.Models.User
                     EmployerName = source.EmployerName,
                     SubmittedDate = $"Submitted on {source.SubmittedDate?.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
                     Title = source.Title,
-                    Address = $"{source.City}, {source.Postcode}"
+                    EmploymentWorkLocation = source.EmployerLocationOption switch
+                    {
+                        AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(source.Addresses),
+                        AvailableWhere.AcrossEngland => "Recruiting nationally",
+                        _ => VacancyDetailsHelperService.GetOneLocationCityName(source.WorkLocation)
+                    }
                 };
             }
         }

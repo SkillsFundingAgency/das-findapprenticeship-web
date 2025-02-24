@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Domain.Applications.GetApplications;
 
@@ -20,5 +21,9 @@ public class GetApplicationsApiResponse
         public DateTime? ResponseDate { get; set; }
         public ApplicationStatus Status { get; set; }
         public string ResponseNotes { get; set; }
+        public Address Address { get; set; }
+        public List<Address> OtherAddresses { get; set; } = [];
+        public string? EmploymentLocationInformation { get; set; }
+        public AvailableWhere? EmployerLocationOption { get; set; }
     }
 }

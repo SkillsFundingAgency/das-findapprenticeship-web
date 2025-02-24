@@ -14,5 +14,6 @@ namespace SFA.DAS.FAA.Web.Models.SearchResults
         [FromQuery] public bool DisabilityConfident { get; set; }
         [FromQuery] public string? RoutePath { get; set; }
         [FromQuery] public bool IncludeCompetitiveSalaryVacancies { get; set; } = false;
+        [FromQuery] public bool? ExcludeNational { get; set; }
     }
 }
