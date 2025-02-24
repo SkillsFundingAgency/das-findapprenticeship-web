@@ -7,4 +7,5 @@ public class FindAnApprenticeshipOuterApi
     public string? BaseUrlSecure { get; set; }
     public string? SecretClientUrl { get; set; }
     public string? SecretName { get; set; }
+    public bool UseSecureGateway { get; set; }
 }

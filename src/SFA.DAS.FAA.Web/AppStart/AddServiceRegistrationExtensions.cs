@@ -27,7 +27,7 @@ public static class AddServiceRegistrationExtension
             .ConfigureHttpClient((serviceProvider,client) =>
             {
                 var findAnApprenticeshipOuterApiConfiguration = serviceProvider.GetService<IOptions<FindAnApprenticeshipOuterApi>>()!.Value;
-                client.BaseAddress = !string.IsNullOrEmpty(findAnApprenticeshipOuterApiConfiguration.BaseUrlSecure) 
+                client.BaseAddress = !string.IsNullOrEmpty(findAnApprenticeshipOuterApiConfiguration.BaseUrlSecure) && findAnApprenticeshipOuterApiConfiguration.UseSecureGateway 
                     ? new Uri(findAnApprenticeshipOuterApiConfiguration!.BaseUrlSecure!) : new Uri(findAnApprenticeshipOuterApiConfiguration!.BaseUrl!);
             })
             .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
