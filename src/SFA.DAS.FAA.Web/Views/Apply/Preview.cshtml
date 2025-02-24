@@ -184,7 +184,7 @@
                                     Responsibilities
                                 </dt>
                                 <dd class="govuk-summary-list__value">
-                                    <pre class="govuk-body">@job.Description</pre>
+                                    <div class="faa-user-content">@job.Description</div>
                                 </dd>
                             </div>
                             <div class="govuk-summary-list__row">
@@ -228,7 +228,7 @@
                                     What you did
                                 </dt>
                                 <dd class="govuk-summary-list__value">
-                                    <pre class="govuk-body">@experience.Description</pre>
+                                    <div class="faa-user-content">@experience.Description</div>
                                 </dd>
                             </div>
                             <div class="govuk-summary-list__row">
@@ -258,9 +258,9 @@
                 </a>
             </p>
         </div>
-        <p class="govuk-body govuk-!-margin-bottom-3">
-            <pre class="govuk-body">@Model.AboutYou.SkillsAndStrengths</pre>
-        </p>
+        <div class="govuk-body govuk-!-margin-bottom-3">
+            <div class="faa-user-content">@Model.AboutYou.SkillsAndStrengths</div>
+        </div>
         <div class="faa-flex-row">
             <h3 class="govuk-heading-s">What interests you about this apprenticeship?</h3>
             <p class="govuk-body">
@@ -270,7 +270,7 @@
             </p>
         </div>
         <div class="govuk-body govuk-!-margin-bottom-3">
-            <pre class="govuk-body">@Model.WhatIsYourInterest.WhatIsYourInterest</pre>
+            <div class="faa-user-content">@Model.WhatIsYourInterest.WhatIsYourInterest</div>
         </div>
         @if (Model.ApplicationQuestions.AdditionalQuestion1 != null)
         {
@@ -286,9 +286,9 @@
                     </a>
                 </p>
             </div>
-            <p class="govuk-body govuk-!-margin-bottom-3">
-                <pre class="govuk-body">@Model.ApplicationQuestions.AdditionalQuestion1.Answer</pre>
-            </p>
+            <div class="govuk-body govuk-!-margin-bottom-3">
+                <div class="faa-user-content">@Model.ApplicationQuestions.AdditionalQuestion1.Answer</div>
+            </div>
         }
         @if (Model.ApplicationQuestions.AdditionalQuestion2 != null)
         {
@@ -304,9 +304,9 @@
                     </a>
                 </p>
             </div>
-            <p class="govuk-body govuk-!-margin-bottom-3">
-                <pre class="govuk-body">@Model.ApplicationQuestions.AdditionalQuestion2.Answer</pre>
-            </p>
+            <div class="govuk-body govuk-!-margin-bottom-3">
+                <div class="faa-user-content">@Model.ApplicationQuestions.AdditionalQuestion2.Answer</div>
+            </div>
         }
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <div class="faa-flex-row">
@@ -334,7 +334,7 @@
                             Interview support request
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            <pre class="govuk-body">@Model.InterviewAdjustments.InterviewAdjustmentsDescription</pre>
+                            <div class="faa-user-content">@Model.InterviewAdjustments.InterviewAdjustmentsDescription</div>
                         </dd>
                     </div>
                 }
