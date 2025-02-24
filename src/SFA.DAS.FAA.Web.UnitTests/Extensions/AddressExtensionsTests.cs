@@ -12,8 +12,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
             var address = new Address("Line1", "Line2", "Line3", null, null);
 
             var result = address.GetLastNonEmptyField();
-
-            Assert.AreEqual("Line3", result);
+            result.Should().Be("Line3");
         }
 
         [Test]
@@ -23,7 +22,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 
             var result = address.ToSingleLineFullAddress();
 
-            Assert.AreEqual("Line1, Line2, Line3, Line4, Postcode", result);
+            result.Should().Be("Line1, Line2, Line3, Line4, Postcode");
         }
 
         [Test]
@@ -33,7 +32,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 
             var result = address.ToSingleLineAnonymousAddress();
 
-            Assert.AreEqual("Line4 (AB12)", result);
+            result.Should().Be("Line4 (AB12)");
         }
         
         [Test]
@@ -43,7 +42,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 
             var result = address.ToSingleLineAnonymousAddress();
 
-            Assert.AreEqual("AB12", result);
+            result.Should().Be("AB12");
         }
         
         [Test]
@@ -53,7 +52,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 
             var result = address.ToSingleLineAnonymousAddress();
 
-            Assert.AreEqual("B1", result);
+            result.Should().Be("B1");
         }
 
         [Test]
@@ -67,8 +66,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 
             var result = addresses.OrderByCity().ToList();
 
-            Assert.AreEqual("CityA", result[0].AddressLine4);
-            Assert.AreEqual("CityB", result[1].AddressLine4);
+            result[0].AddressLine4.Should().Be("CityA");
+            result[1].AddressLine4.Should().Be("CityB");
         }
 
         [Test]
@@ -78,11 +77,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 
             var result = address.GetPopulatedAddressLines().ToList();
 
-            Assert.AreEqual(4, result.Count);
-            Assert.Contains("Line1", result);
-            Assert.Contains("Line3", result);
-            Assert.Contains("Line4", result);
-            Assert.Contains("Postcode", result);
+            result.Should().Contain("Line1");
+            result.Should().Contain("Line3");
+            result.Should().Contain("Line4");
+            result.Should().Contain("Postcode");
+            result.Count.Should().Be(4);
         }        
     }
 }
