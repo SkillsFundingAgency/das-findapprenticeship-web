@@ -9,6 +9,7 @@ using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 using System.Globalization;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
@@ -61,7 +62,8 @@ public class WhenCreatingVacancyDetailsViewModel
             IsClosed = source.Vacancy?.IsClosed ?? false,
             ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
             ApplicationUrl = $"https://{source.Vacancy.ApplicationUrl}",
-            GoogleMapsId = mapsId
+            GoogleMapsId = mapsId,
+            EmployerLocationInformation = source.Vacancy.EmploymentLocationInformation
         };
 
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, source, mapsId);
@@ -159,5 +161,37 @@ public class WhenCreatingVacancyDetailsViewModel
 
         actual.ApplicationUrl.Should().Be(expectedUrl);
         actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM} at 11:59pm)");
+    }
+
+    [Test]
+    [MoqInlineAutoData(AvailableWhere.MultipleLocations)]
+    [MoqInlineAutoData(AvailableWhere.AcrossEngland)]
+    [MoqInlineAutoData(AvailableWhere.OneLocation)]
+    public void Then_If_EmploymentLocation_Multiple_Locations_Is_Returned_As_Expected(
+        AvailableWhere availableWhere,
+        string expectedResult,
+        GetApprenticeshipVacancyQueryResult result,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        result.Vacancy.EmployerLocationOption = availableWhere;
+
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
+
+        actual.EmployerLocationOption.Should().Be(availableWhere);
+
+        switch (availableWhere)
+        {
+            case AvailableWhere.OneLocation:
+                actual.EmploymentWorkLocation.Should().Be(VacancyDetailsHelperService.GetOneLocationCityName(result.Vacancy?.Address));
+                break;
+            case AvailableWhere.AcrossEngland:
+                actual.EmploymentWorkLocation.Should().Be("Recruiting nationally");
+                break;
+            case AvailableWhere.MultipleLocations:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(availableWhere), availableWhere, null);
+        }
+        
     }
 }

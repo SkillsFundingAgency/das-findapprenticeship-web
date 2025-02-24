@@ -210,47 +210,47 @@
                             </div>
                         </li>
                     }
-                    @foreach (var vacancy in Model.Vacancies)
+                    @foreach (var vacancyAdvert in Model.VacancyAdverts)
                     {
-                        <li class="das-search-results__list-item govuk-!-padding-top-6 @(Model.ShowCompetitiveSalaryBanner && vacancy.ShowInsertTextCssClass ? "faa-search-listing--highlight" : string.Empty)">
+                        <li class="das-search-results__list-item govuk-!-padding-top-6 @(Model.ShowCompetitiveSalaryBanner && vacancyAdvert.ShowInsertTextCssClass ? "faa-search-listing--highlight" : string.Empty)">
 
                             <div class="faa-search-result-header">
                                 <div>
-                                    @if (vacancy.IsClosingSoon)
+                                    @if (vacancyAdvert.IsClosingSoon)
                                     {
                                         <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
                                             Closing soon
                                         </strong>
                                     }
-                                    @if (vacancy.IsNew)
+                                    @if (vacancyAdvert.IsNew)
                                     {
                                         <strong class="govuk-tag govuk-!-margin-bottom-2">
                                             New
                                         </strong>
                                     }
-                                    @if (vacancy.ApplicationStatus != null)
+                                    @if (vacancyAdvert.ApplicationStatus != null)
                                     {
-                                        <application-status-badge status="@vacancy.ApplicationStatus"></application-status-badge>
+                                        <application-status-badge status="@vacancyAdvert.ApplicationStatus"></application-status-badge>
                                     }
                                     <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
                                         <a asp-route="@RouteNames.Vacancies"
-                                           asp-route-vacancyReference="@vacancy.VacancyReference"
+                                           asp-route-vacancyReference="@vacancyAdvert.VacancyReference"
                                            class="das-search-results__link">
-                                            <span id="@vacancy.VacancyReference-vacancy-title">@vacancy.Title</span>
+                                            <span id="@vacancyAdvert.VacancyReference-vacancy-title">@vacancyAdvert.Title</span>
                                         </a>
                                     </h2>
                                 </div>
-                                @if (User.Identity is { IsAuthenticated: true } && vacancy.VacancySource == VacancyDataSource.Raa)
+                                @if (User.Identity is { IsAuthenticated: true } && vacancyAdvert.VacancySource == VacancyDataSource.Raa)
                                 {
                                     <div data-favourite="true"
-                                         class="faa-save-vacancy @(vacancy.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
+                                         class="faa-save-vacancy @(vacancyAdvert.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                                         <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromSearchResultsPage"
-                                              asp-route-vacancyReference="@vacancy.VacancyReference">
+                                              asp-route-vacancyReference="@vacancyAdvert.VacancyReference">
                                             <button type="submit"
                                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-save-vacancy__link--delete"
                                                     data-delete-favourite="true"
                                                     aria-pressed="true"
-                                                    aria-describedby="@vacancy.VacancyReference-vacancy-title">
+                                                    aria-describedby="@vacancyAdvert.VacancyReference-vacancy-title">
                                                 
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                      class="faa-vacancy-actions__icon">
@@ -261,11 +261,11 @@
                                             </button>
                                         </form>
                                         <form method="post" asp-route="@RouteNames.SaveVacancyFromSearchResultsPage"
-                                              asp-route-vacancyReference="@vacancy.VacancyReference">
+                                              asp-route-vacancyReference="@vacancyAdvert.VacancyReference">
                                             <button type="submit"
                                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link  faa-save-vacancy__link--save"
                                                     aria-pressed="false"
-                                                    aria-describedby="@vacancy.VacancyReference-vacancy-title"
+                                                    aria-describedby="@vacancyAdvert.VacancyReference-vacancy-title"
                                                     data-add-favourite="true">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                      class="faa-vacancy-actions__icon">
@@ -278,23 +278,23 @@
                                     </div>
                                 }
                                 </div>
-                                <p class="govuk-body govuk-!-margin-bottom-0">@vacancy.EmployerName</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0">@vacancyAdvert.EmployerName</p>
                                 <p class="govuk-body das-!-color-dark-grey">
-                                    @vacancy.VacancyLocation
+                                    @vacancyAdvert.VacancyLocation
                                 </p>
-                                @if (Model.NationalSearch == false)
+                                @if (Model.NationalSearch is false && vacancyAdvert.IsRecruitingNationally is false)
                                 {
-                                    <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancy.Distance miles</p>
+                                    <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancyAdvert.Distance miles</p>
                                 }
-                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancy.CourseTitle</p>
-                                <p class="govuk-body"><b>Wage</b> @vacancy.WageText</p>
+                                <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancyAdvert.CourseTitle</p>
+                                <p class="govuk-body"><b>Wage</b> @vacancyAdvert.WageText</p>
                                 <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">
-                                    @vacancy.ClosingDateDescription
+                                    @vacancyAdvert.ClosingDateDescription
                                 </p>
                                 <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">
-                                    Posted @vacancy.PostedDate
+                                    Posted @vacancyAdvert.PostedDate
                                 </p>
-                                @if (@vacancy.IsDisabilityConfident)
+                                @if (vacancyAdvert.IsDisabilityConfident)
                                 {
                                     <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
                                          alt="Disability Confident" no-cdn />

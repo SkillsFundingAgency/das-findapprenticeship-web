@@ -783,6 +783,7 @@ FaaMap.prototype.checkIfMapIsCachedOrGetData = async function () {
 FaaMap.prototype.getMapData = async function () {
   let params = "";
   const urlParams = new URLSearchParams(window.location.search);
+  urlParams.append("excludeNational", "true");
   if (urlParams.size > 0) {
     params = `?${urlParams.toString()}`;
   }

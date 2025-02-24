@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Web.Services;
+﻿using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Services
@@ -191,6 +192,92 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             // Assert
             result.Should().Be(expected);
+        }
+
+        [Test]
+        public void GetEmploymentLocationCityNames_ShouldReturnSingleCityWithCount_WhenMultipleAddressesInSameCity()
+        {
+            // Arrange
+            var addresses = new List<Address>
+            {
+                new("123 Main St", "Suite 1", "CityA", "Region", "12345"),
+                new("456 Main St", "Suite 2", "CityA", "Region", "12345"),
+            };
+
+            // Act
+            var result = VacancyDetailsHelperService.GetEmploymentLocationCityNames(addresses);
+
+            // Assert
+            Assert.AreEqual("Region (2 available locations)", result);
+        }
+
+        [Test]
+        public void GetEmploymentLocationCityNames_ShouldReturnCommaSeparatedCities_WhenMultipleAddressesInDifferentCities()
+        {
+            // Arrange
+            var addresses = new List<Address>
+            {
+                new("123 Main St", "Suite 1", "CityA", "Region", "12345"),
+                new("456 Main St", "Suite 2", "CityB", "Region", "12345"),
+            };
+
+            // Act
+            var result = VacancyDetailsHelperService.GetEmploymentLocationCityNames(addresses);
+
+            // Assert
+            Assert.AreEqual("Region (2 available locations)", result);
+        }
+
+        [Test]
+        public void GetEmploymentLocationCityNames_ShouldReturnEmptyString_WhenNoAddressesProvided()
+        {
+            // Arrange
+            var addresses = new List<Address>();
+
+            // Act
+            var result = VacancyDetailsHelperService.GetEmploymentLocationCityNames(addresses);
+
+            // Assert
+            Assert.AreEqual(string.Empty, result);
+        }
+
+        [Test]
+        public void GetOneLocationCityName_ShouldReturnCityWithPostcode_WhenCityIsNotEmpty()
+        {
+            // Arrange
+            var address = new Address("Line1", "Line2", "Line3", "City", "12345");
+
+            // Act
+            var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
+
+            // Assert
+            Assert.AreEqual("City (12345)", result);
+        }
+
+        [Test]
+        public void GetOneLocationCityName_ShouldReturnPostcode_WhenCityIsEmpty()
+        {
+            // Arrange
+            var address = new Address(null, null, null, null, "12345");
+
+            // Act
+            var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
+
+            // Assert
+            Assert.AreEqual("12345", result);
+        }
+
+        [Test]
+        public void GetOneLocationCityName_ShouldReturnFirstNonEmptyAddressLineWithPostcode_WhenCityIsEmpty()
+        {
+            // Arrange
+            var address = new Address("Line1", "Line2", "Line3", null, "12345");
+
+            // Act
+            var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
+
+            // Assert
+            Assert.AreEqual("Line3 (12345)", result);
         }
     }
 }

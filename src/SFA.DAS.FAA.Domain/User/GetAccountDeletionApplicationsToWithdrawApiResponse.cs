@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Domain.User
 {
@@ -20,12 +22,14 @@ namespace SFA.DAS.FAA.Domain.User
 
             [JsonProperty("employerName")]
             public string? EmployerName { get; set; }
-
-            [JsonProperty("city")]
-            public string? City { get; set; }
-
-            [JsonProperty("postcode")]
-            public string? Postcode { get; set; }
+            [JsonProperty("address")]
+            public Address Address { get; set; }
+            [JsonProperty("otherAddresses")]
+            public List<Address> OtherAddresses { get; set; } = [];
+            [JsonProperty("employmentLocationInformation")]
+            public string? EmploymentLocationInformation { get; set; }
+            [JsonProperty("employerLocationOption")]
+            public AvailableWhere? EmployerLocationOption { get; set; }
 
             [JsonProperty("createdDate")]
             public DateTime CreatedDate { get; set; }

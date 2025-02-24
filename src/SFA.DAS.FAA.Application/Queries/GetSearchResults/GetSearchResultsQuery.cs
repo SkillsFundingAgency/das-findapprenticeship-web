@@ -16,4 +16,5 @@ public class GetSearchResultsQuery : IRequest<GetSearchResultsResult>
     public bool DisabilityConfident { get; set; }
     public string? CandidateId { get; set; }
     public WageType? SkipWageType { get; set; }
+    public bool? ExcludeNational { get; set; }
 }
