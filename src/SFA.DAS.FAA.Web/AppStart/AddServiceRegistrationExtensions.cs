@@ -36,7 +36,7 @@ public static class AddServiceRegistrationExtension
                 var logger = serviceProvider.GetService<ILogger<FindAnApprenticeshipOuterApi>>();
                 if (string.IsNullOrEmpty(findAnApprenticeshipOuterApiConfiguration.SecretClientUrl))
                 {
-                    logger.LogInformation("No client cert configuration to add");
+                    logger!.LogInformation("No client cert configuration to add");
                     return new HttpClientHandler();
                 }
 
@@ -54,13 +54,12 @@ public static class AddServiceRegistrationExtension
                     
                     var handler = new HttpClientHandler();
                     handler.ClientCertificates.Add(new X509Certificate2(Convert.FromBase64String(secret.Value.Value)));
-                    logger.LogInformation("Added client cert configuration");
+                    logger!.LogInformation("Added client cert configuration");
                     return handler;
                 }
                 catch (Exception e)
                 {
-                    logger.LogError(e,"Unable to add client cert configuration");
-                    Console.WriteLine(e);
+                    logger!.LogError(e,"Unable to add client cert configuration");
                 }
                 return new HttpClientHandler();
             });

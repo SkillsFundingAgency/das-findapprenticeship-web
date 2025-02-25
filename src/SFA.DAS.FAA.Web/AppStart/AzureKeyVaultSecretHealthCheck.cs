@@ -25,8 +25,7 @@ public class AzureKeyVaultSecretHealthCheck(IOptions<FindAnApprenticeshipOuterAp
                 return HealthCheckResult.Degraded($"Has errored - {secret.GetRawResponse().Content.ToDynamicFromJson()}");
             }
                 
-            var cert = new X509Certificate2(Convert.FromBase64String(secret.Value.Value));
-            
+            _ = new X509Certificate2(Convert.FromBase64String(secret.Value.Value));
             
             return secret.Value != null 
                 ? HealthCheckResult.Healthy("Key Vault Secret Client is healthy") 
