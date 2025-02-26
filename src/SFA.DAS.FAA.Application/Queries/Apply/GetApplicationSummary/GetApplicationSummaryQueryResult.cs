@@ -99,7 +99,7 @@ public class GetApplicationSummaryQueryResult
                 QualificationsStatus = source.QualificationsStatus,
                 TrainingCoursesStatus = source.TrainingCoursesStatus,
                 TrainingCourses = source.TrainingCourses.Select(x => (TrainingCourse)x).ToList(),
-                Qualifications = source.Qualifications.Select(x => (Qualification)x).ToList(),
+                Qualifications = source.Qualifications.Select(x => (Qualification)x).OrderBy(ord => ord?.QualificationOrder).ToList(),
                 QualificationTypes = source.QualificationTypes.Select(x => (QualificationReference)x).ToList()
             };
         }
@@ -131,6 +131,7 @@ public class GetApplicationSummaryQueryResult
             public string? Grade { get; set; }
             public string? AdditionalInformation { get; set; }
             public bool? IsPredicted { get; set; }
+            public short? QualificationOrder { get; set; }
             public QualificationReference? QualificationReference { get; set; }
 
             public static implicit operator Qualification?(GetApplicationSummaryApiResponse.EducationHistorySection.Qualification? source)
@@ -144,6 +145,7 @@ public class GetApplicationSummaryQueryResult
                     Grade = source.Grade,
                     AdditionalInformation = source.AdditionalInformation,
                     IsPredicted = source.IsPredicted,
+                    QualificationOrder = source.QualificationOrder,
                     QualificationReferenceId = source.QualificationReferenceId,
                     QualificationReference = source.QualificationReference
                 };

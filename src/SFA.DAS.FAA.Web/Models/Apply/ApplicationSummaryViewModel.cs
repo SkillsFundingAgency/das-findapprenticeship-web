@@ -148,6 +148,7 @@ public class ApplicationSummaryViewModel
                 public string? Subject { get; set; }
                 internal string? Grade { get; set; }
                 public string? AdditionalInformation { get; set; }
+                public short? QualificationOrder { get; set; }
                 internal bool? IsPredicted { get; set; }
                 public string? GradeLabel => IsPredicted is true ? $"{Grade} (predicted)" : Grade;
             }
@@ -202,9 +203,10 @@ public class ApplicationSummaryViewModel
                             Id = x.Id,
                             Subject = x.Subject != null && x.Subject.Contains('|') ? x.Subject.Split('|')[1] : x.Subject,
                             Grade = x.Grade,
+                            QualificationOrder = x.QualificationOrder,
                             AdditionalInformation = x.AdditionalInformation,
                             IsPredicted = x.IsPredicted
-                        }).ToList()
+                        }).OrderBy(ord => ord.QualificationOrder).ToList()
                 };
 
                 return result;

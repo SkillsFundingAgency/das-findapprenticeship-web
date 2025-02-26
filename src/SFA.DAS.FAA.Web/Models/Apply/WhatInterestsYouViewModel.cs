@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace SFA.DAS.FAA.Web.Models.Apply
 {
@@ -9,7 +10,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
         public string? StandardName { get; set; }
         public string? EmployerName { get; set; }
-
+        [DataType(DataType.MultilineText)]
         public string? AnswerText { get; set; }
         public bool? IsSectionCompleted { get; set; }
     }
