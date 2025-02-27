@@ -635,6 +635,10 @@ FaaMapDirections.prototype.multiLocationsDropdown = function () {
     option.text = location.address;
     select.add(option);
   }
+
+  this.location = { lat: this.multiLocations[0].lat, lng: this.multiLocations[0].lon };
+  this.destination = new google.maps.LatLng(this.location);
+  
   select.addEventListener("change", (e) => {
     const selectedLocation = this.multiLocations.find(
       (location) => location.address === e.target.value

@@ -39,7 +39,8 @@
             const directionsForm = document.getElementById('faa-directions-form')
             const directionsMap = document.getElementById('faa-directions-map')
             if (directionsForm && directionsMap) {
-                const mapLocations = @Html.Raw(Json.Serialize(Model.MapLocations));
+                let mapLocations = @Html.Raw(Json.Serialize(Model.MapLocations)) ?? [];
+                mapLocations = mapLocations.length > 1 ? mapLocations : [];
                 new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", mapLocations,  directionsForm, directionsMap).init()
             }
         </script>
