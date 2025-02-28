@@ -35,6 +35,10 @@ namespace SFA.DAS.FAA.Web.Services
             {
                 filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Disability Confident", "Only show Disability Confident companies", [$"DisabilityConfident={request.DisabilityConfident}"]);
             }
+            if(request.ExcludeNational.HasValue && request.ExcludeNational.Value)
+            {
+                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Companies recruiting nationally", "Hide companies recruiting nationally", [$"ExcludeNational={request.ExcludeNational}"]);
+            }
 
             return filters;
         }
@@ -66,6 +70,10 @@ namespace SFA.DAS.FAA.Web.Services
             if(request.DisabilityConfident)
             {
                 queryParameters.Add($"DisabilityConfident={request.DisabilityConfident}");
+            }
+            if(request.ExcludeNational.HasValue && request.ExcludeNational.Value)
+            {
+                queryParameters.Add($"ExcludeNational={request.ExcludeNational}");
             }
 
             if (request.IncludeCompetitiveSalaryVacancies)
