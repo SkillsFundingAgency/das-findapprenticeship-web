@@ -199,7 +199,9 @@
                         <ul class="govuk-list govuk-list--bullet">
                             @foreach (var address in Model.Addresses)
                             {
-                                <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
+                                <li>
+                                    <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
+                                </li>
                             }
                         </ul>
                         break;
