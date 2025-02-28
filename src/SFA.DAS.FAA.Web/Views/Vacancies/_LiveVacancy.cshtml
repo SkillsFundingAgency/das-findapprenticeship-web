@@ -262,12 +262,12 @@
                     case AvailableWhere.MultipleLocations:
                     {
                         <p class="govuk-body">This apprenticeship is available in these locations:</p>
-                        foreach (var address in Model.Addresses)
-                        {
-                            <ul class="govuk-list govuk-list--bullet">
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var address in Model.Addresses)
+                            {
                                 <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
-                            </ul>
-                        }
+                            }
+                        </ul>
                         break;
                     }
                     case AvailableWhere.AcrossEngland:
