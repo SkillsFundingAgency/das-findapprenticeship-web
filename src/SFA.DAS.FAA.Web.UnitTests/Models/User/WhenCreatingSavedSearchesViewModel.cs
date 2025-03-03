@@ -16,20 +16,20 @@ public class WhenCreatingSavedSearchViewModel
     
     private static readonly object[] TitleTestCases =
     [
-        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, "Foo in all of England" },
-        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, "Hull", true, "Foo in Hull" },
-        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, "Foo in all of England" },
-        new object?[] { null, new [] {1, 2, 3}, new [] {1, 2}, null, true, "3 categories in all of England" },
-        new object?[] { null, new [] { 2 }, new [] {1, 2}, null, true, "Route Two in all of England" },
-        new object?[] { null, null, new [] {1, 2, 3, 4}, null, true, "4 apprenticeship levels in all of England" },
-        new object?[] { null, null, new [] { 4 }, null, true, "Level 4 in all of England" },
-        new object?[] { null, null, null, null, true, "Disability Confident in all of England" },
-        new object?[] { null, null, null, null, false, "All apprenticeships in all of England" },
-        new object?[] { null, null, null, "Hull", false, "All apprenticeships in Hull" },
+        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, "Foo in all of England" },
+        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, "Hull", true, true, "Foo in Hull" },
+        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, "Foo in all of England" },
+        new object?[] { null, new [] {1, 2, 3}, new [] {1, 2}, null, true, true, "3 categories in all of England" },
+        new object?[] { null, new [] { 2 }, new [] {1, 2}, null, true, true, "Route Two in all of England" },
+        new object?[] { null, null, new [] {1, 2, 3, 4}, null, true, true, "4 apprenticeship levels in all of England" },
+        new object?[] { null, null, new [] { 4 }, null, true, true, "Level 4 in all of England" },
+        new object?[] { null, null, null, null, true, true, "Disability Confident in all of England" },
+        new object?[] { null, null, null, null, false, false, "All apprenticeships in all of England" },
+        new object?[] { null, null, null, "Hull", false, false, "All apprenticeships in Hull" },
     ];
     
     [TestCaseSource(nameof(TitleTestCases))]
-    public void Then_The_Title_Is_Constructed_Correctly(string? searchTerm, int[]? routes, int[]? levels, string? location, bool disabilityConfident, string? expectedTitle)
+    public void Then_The_Title_Is_Constructed_Correctly(string? searchTerm, int[]? routes, int[]? levels, string? location, bool disabilityConfident, bool excludeNational, string? expectedTitle)
     {
         // arrange
         var savedSearch = new SavedSearch(
@@ -41,6 +41,7 @@ public class WhenCreatingSavedSearchViewModel
                 routes?.ToList(),
                 10,
                 disabilityConfident,
+                excludeNational,
                 levels?.ToList(),
                 location
             )
@@ -53,17 +54,18 @@ public class WhenCreatingSavedSearchViewModel
         result.Title.Should().Be(expectedTitle);
     }
     
-    [TestCase(null, "All of England")]
-    [TestCase("", "All of England")]
-    [TestCase("Hull", "Hull")]
-    public void Then_The_Location_Is_Set_Correctly(string? location, string? expectedLocation)
+    [TestCase(null, null, "All of England")]
+    [TestCase("", null, "All of England")]
+    [TestCase("Hull", null, "Hull (across England)")]
+    [TestCase("Hull", 10, "Hull (within 10 miles)")]
+    public void Then_The_Location_Is_Set_Correctly(string? location, int? distance, string? expectedLocation)
     {
         // arrange
         var savedSearch = new SavedSearch(
             Guid.NewGuid(),
             DateTime.UtcNow,
             null, null,
-            new SearchParameters("Foo", [1, 2], 10, true, [1, 2], location)
+            new SearchParameters("Foo", [1, 2], distance, true, true,[1, 2], location)
         );
         
         // act

@@ -12,6 +12,7 @@ public class SaveSearchCommandHandler(IApiClient apiClient) : IRequestHandler<Sa
             new PostSaveSearchApiRequest.PostSaveSearchApiRequestData(
                 request.DisabilityConfident,
                 request.Distance,
+                request.ExcludeNational,
                 request.Location,
                 request.SearchTerm,
                 request.SelectedLevelIds,

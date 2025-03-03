@@ -10,6 +10,7 @@ public class PostSaveSearchApiRequest(Guid candidateId, Guid id, PostSaveSearchA
     public record PostSaveSearchApiRequestData(
         bool DisabilityConfident,
         int? Distance,
+        bool? ExcludeNational,
         string? Location,
         string? SearchTerm,
         List<string>? SelectedLevelIds,
