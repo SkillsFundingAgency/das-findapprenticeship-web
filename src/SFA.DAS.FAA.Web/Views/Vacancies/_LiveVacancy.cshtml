@@ -280,9 +280,9 @@
 
                 @if (Model.EmployerLocationOption != AvailableWhere.AcrossEngland)
                 {
-                   @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&
-                   Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven) &&
-                   bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
+                   if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent)
+                       && Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven)
+                       && bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
                     {
                         <details class="govuk-details govuk-!-margin-bottom-0">
                             <summary class="govuk-details__summary">
@@ -332,19 +332,12 @@
                                     </fieldset>
                                     <button type="submit" class="govuk-button govuk-button--secondary">Show route</button>
                                 </form>
-                                @if (Model.EmployerLocationOption is AvailableWhere.MultipleLocations)
-                                {
-                                    <div id="faa-directions-map" class="faa-directions-map"></div>
-                                }
                                 <p class="govuk-body govuk-!-font-size-16 govuk-!-padding-top-2" id="faa-journey-info"></p>
                             </div>
                         </details>
-                        @if (Model.EmployerLocationOption is null or AvailableWhere.OneLocation)
-                        {
-                            <div class="govuk-details govuk-!-margin-top-5">
-                                <div id="faa-directions-map" class="faa-directions-map"></div>
-                            </div>
-                        }
+                        <div class="govuk-details govuk-!-margin-top-5">
+                            <div id="faa-directions-map" class="faa-directions-map"></div>
+                        </div>
                     }
                 }
             </section>
