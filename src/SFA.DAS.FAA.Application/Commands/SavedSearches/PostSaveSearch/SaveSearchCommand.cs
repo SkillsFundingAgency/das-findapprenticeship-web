@@ -15,4 +15,5 @@ public class SaveSearchCommand : IRequest<Unit>
     public List<string>? SelectedRouteIds { get; set; }
     public string? SortOrder { get; set; }
     public string UnSubscribeToken { get; set; } = null!;
+    public bool? ExcludeNational { get; set; }
 }

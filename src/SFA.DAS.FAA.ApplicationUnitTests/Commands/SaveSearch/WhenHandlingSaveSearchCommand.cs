@@ -15,6 +15,7 @@ public class WhenHandlingSaveSearchCommand
         [Greedy] SaveSearchCommandHandler sut)
     {
         // arrange
+        command.ExcludeNational = true;
         PostSaveSearchApiRequest? request = null;
         apiClient
             .Setup(client => client.PostWithResponseCode(It.IsAny<PostSaveSearchApiRequest>()))

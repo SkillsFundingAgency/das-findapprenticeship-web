@@ -18,7 +18,8 @@ public class SaveSearchCommandHandler(IApiClient apiClient) : IRequestHandler<Sa
                 request.SelectedLevelIds,
                 request.SelectedRouteIds,
                 request.SortOrder,
-                request.UnSubscribeToken
+                request.UnSubscribeToken,
+                request.ExcludeNational.HasValue && request.ExcludeNational.Value
             )
         );
 

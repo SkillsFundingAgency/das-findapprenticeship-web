@@ -374,8 +374,8 @@ public class SearchApprenticeshipsController(
                 SelectedLevelIds = criteria.LevelIds,
                 SelectedRouteIds = criteria.RouteIds,
                 SortOrder = criteria.Sort,
-                ExcludeNational = criteria.ExcludeNational,
-                UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString())
+                UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString()),
+                ExcludeNational = criteria.ExcludeNational
             });
         }
         catch (Exception e)
