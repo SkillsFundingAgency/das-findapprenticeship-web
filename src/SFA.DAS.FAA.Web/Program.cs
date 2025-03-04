@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.ModelBinding;
 using SFA.DAS.FAA.Web.Filters;
@@ -33,7 +34,11 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 builder.Services.AddServiceRegistration(isIntegrationTest);
 builder.Services.AddAuthenticationServices(rootConfiguration);
 builder.Services.AddCacheServices(rootConfiguration);
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks()
+    .AddCheck<AzureKeyVaultSecretHealthCheck>(
+    "KeyVaultSecret", 
+    failureStatus: HealthStatus.Unhealthy);
+
 builder.Services.AddControllersWithViews()
     .AddSessionStateTempDataProvider();
 builder.Services.AddSession(options =>
@@ -78,7 +83,7 @@ else
 }
 
 
-app.UseHealthChecks("/ping");
+app.UseHealthChecks();
 
 app.UseAuthentication();
 app.UseRouting();
