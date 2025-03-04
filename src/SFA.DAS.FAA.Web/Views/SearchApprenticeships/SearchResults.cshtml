@@ -60,7 +60,9 @@
                             </select>
                             <div class="govuk-checkboxes govuk-checkboxes--small govuk-!-margin-top-5">
                                 <div class="govuk-checkboxes__item">
-                                    <input asp-for="ExcludeNational" class="govuk-checkboxes__input" id="excludeNational" type="checkbox" value="true"/>
+                                    <input class="govuk-checkboxes__input" id="ExcludeNational"
+                                           name="ExcludeNational" type="checkbox" value="true"
+                                           checked="@Model.ExcludeNational" />
                                     <label class="govuk-label govuk-checkboxes__label" asp-for="ExcludeNational">
                                         Hide companies recruiting nationally
                                     </label>
