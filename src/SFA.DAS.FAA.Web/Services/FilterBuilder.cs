@@ -37,7 +37,7 @@ namespace SFA.DAS.FAA.Web.Services
             }
             if(request.ExcludeNational.HasValue && request.ExcludeNational.Value)
             {
-                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Companies recruiting nationally", "Hide companies recruiting nationally", [$"ExcludeNational={request.ExcludeNational}"]);
+                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Recruiting nationally", "Hide companies recruiting nationally", [$"ExcludeNational={request.ExcludeNational}"]);
             }
 
             return filters;

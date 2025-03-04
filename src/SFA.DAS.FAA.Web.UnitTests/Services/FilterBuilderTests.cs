@@ -361,8 +361,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
         }
         
-        [TestCase(true, "Companies recruiting nationally", "Hide companies recruiting nationally")]
-        [TestCase(false, "Companies recruiting nationally", null)]
+        [TestCase(true, "Recruiting nationally", "Hide companies recruiting nationally")]
+        [TestCase(false, "Recruiting nationally", null)]
         public void Then_Exclude_National_Filter_Is_Added_To_Filter_List(bool excludeNational, string expectedFieldName, string expectedFilterValue)
         {
             // Arrange
