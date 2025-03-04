@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Queries.SavedSearches;
 using SFA.DAS.FAA.Application.Queries.SavedSearches.GetConfirmUnsubscribe;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -25,7 +24,7 @@ public class WhenGettingUnsubscribeFromSavedSearch
         
         dataProtectorService.Setup(x=>x.DecodeData(id)).Returns(savedSearchId.ToString());
         
-        var actual = await savedSearchesController.Index(id) as ViewResult;
+        var actual = await savedSearchesController.Unsubscribe(id) as ViewResult;
 
         actual.Should().NotBeNull();
         var actualModel = actual!.Model as UnsubscribeSavedSearchesViewModel;
@@ -43,7 +42,7 @@ public class WhenGettingUnsubscribeFromSavedSearch
     {
         dataProtectorService.Setup(x=>x.DecodeData(id)).Returns((string?)null);
         
-        var actual = await savedSearchesController.Index(id) as RedirectToRouteResult;
+        var actual = await savedSearchesController.Unsubscribe(id) as RedirectToRouteResult;
 
         actual.Should().NotBeNull();
         actual!.RouteName.Should().Be(RouteNames.ServiceStartDefault);
@@ -59,7 +58,7 @@ public class WhenGettingUnsubscribeFromSavedSearch
     {
         dataProtectorService.Setup(x=>x.DecodeData(id)).Returns(someOtherId);
         
-        var actual = await savedSearchesController.Index(id) as RedirectToRouteResult;
+        var actual = await savedSearchesController.Unsubscribe(id) as RedirectToRouteResult;
 
         actual.Should().NotBeNull();
         actual!.RouteName.Should().Be(RouteNames.ServiceStartDefault);
@@ -77,7 +76,7 @@ public class WhenGettingUnsubscribeFromSavedSearch
             It.IsAny<CancellationToken>())).ReturnsAsync(new GetConfirmUnsubscribeResult());
         dataProtectorService.Setup(x=>x.DecodeData(id)).Returns(savedSearchId.ToString());
         
-        var actual = await savedSearchesController.Index(id) as RedirectToRouteResult;
+        var actual = await savedSearchesController.Unsubscribe(id) as RedirectToRouteResult;
 
         actual.Should().NotBeNull();
         actual!.RouteName.Should().Be(RouteNames.ServiceStartDefault);
