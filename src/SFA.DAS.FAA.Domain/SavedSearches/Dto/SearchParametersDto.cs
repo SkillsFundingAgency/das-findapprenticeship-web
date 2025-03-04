@@ -5,6 +5,7 @@ public record SearchParametersDto(
     List<int>? SelectedRouteIds,
     int? Distance,
     bool DisabilityConfident,
+    bool? ExcludeNational,
     List<int>? SelectedLevelIds,
     string? Location
 );

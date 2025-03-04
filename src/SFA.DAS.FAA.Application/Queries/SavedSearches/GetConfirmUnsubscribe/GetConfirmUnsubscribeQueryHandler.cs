@@ -36,6 +36,7 @@ public class GetConfirmUnsubscribeQueryHandler : IRequestHandler<GetConfirmUnsub
                     response.SavedSearch.SearchParameters.SelectedRouteIds,
                     response.SavedSearch.SearchParameters.Distance,
                     response.SavedSearch.SearchParameters.DisabilityConfident,
+                    response.SavedSearch.SearchParameters.ExcludeNational,
                     response.SavedSearch.SearchParameters.SelectedLevelIds,
                     response.SavedSearch.SearchParameters.Location
                 ))

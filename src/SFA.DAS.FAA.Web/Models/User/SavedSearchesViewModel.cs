@@ -13,6 +13,7 @@ public record SavedSearchViewModel(
     List<string>? SelectedRoutes,
     List<int>? SelectedLevelIds,
     bool DisabilityConfident,
+    bool? ExcludeNational,
     string? Location,
     string? SearchUrl,
     bool ReadOnly = false)
@@ -26,7 +27,8 @@ public record SavedSearchViewModel(
             { SelectedRouteIds: { Count: > 1 } } => $"{source.SearchParameters.SelectedRouteIds.Count} categories",
             { SelectedLevelIds.Count: 1 } => $"Level {source.SearchParameters.SelectedLevelIds.First()}",
             { SelectedLevelIds.Count: > 1 } => $"{source.SearchParameters.SelectedLevelIds.Count} apprenticeship levels",
-            { DisabilityConfident: true } => $"Disability Confident",
+            { DisabilityConfident: true } => "Disability Confident",
+            { ExcludeNational: true } => "Exclude National",
             _ => "All apprenticeships"
         };
 
@@ -34,9 +36,10 @@ public record SavedSearchViewModel(
         var location = "All of England";
         if (source.SearchParameters.Location?.Trim() is not null and not "")
         {
-            location = locationForTitle = source.SearchParameters.Location;
+            locationForTitle = source.SearchParameters.Location;
+            location = source.SearchParameters.Distance is not null ? $"{source.SearchParameters.Location} (within {source.SearchParameters.Distance} miles)" : $"{source.SearchParameters.Location} (across England)";
         }
-        
+
         var title = $"{definingCharacteristic} in {locationForTitle}";
         var url = urlHelper == null
             ? string.Empty
@@ -46,6 +49,7 @@ public record SavedSearchViewModel(
                 SearchTerm = source.SearchParameters.SearchTerm,
                 Distance = source.SearchParameters.Distance,
                 DisabilityConfident = source.SearchParameters.DisabilityConfident,
+                ExcludeNational = source.SearchParameters.ExcludeNational,
                 LevelIds = source.SearchParameters.SelectedLevelIds != null ? source.SearchParameters.SelectedLevelIds.Select(x=>x.ToString()).ToList() : [],
                 RouteIds = source.SearchParameters.SelectedRouteIds != null ? source.SearchParameters.SelectedRouteIds.Select(x=>x.ToString()).ToList() : [],
             }, urlHelper);
@@ -58,6 +62,7 @@ public record SavedSearchViewModel(
             source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id == category)?.Name ?? string.Empty).ToList(),
             source.SearchParameters.SelectedLevelIds,
             source.SearchParameters.DisabilityConfident,
+            source.SearchParameters.ExcludeNational ?? false,
             location,
             url,
             readOnly

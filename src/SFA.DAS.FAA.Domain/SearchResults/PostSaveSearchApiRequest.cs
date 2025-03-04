@@ -15,6 +15,7 @@ public class PostSaveSearchApiRequest(Guid candidateId, Guid id, PostSaveSearchA
         List<string>? SelectedLevelIds,
         List<string>? SelectedRouteIds,
         string? SortOrder,
-        string UnSubscribeToken
+        string UnSubscribeToken,
+        bool ExcludeNational
     );
 }
