@@ -16,7 +16,7 @@ public class WhenPostingUnsubscribeFromSavedSearch
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SavedSearchesController savedSearchesController)
     {
-        var actual = await savedSearchesController.Index(postModel) as RedirectToRouteResult;
+        var actual = await savedSearchesController.Unsubscribe(postModel) as RedirectToRouteResult;
 
         actual.Should().NotBeNull();
         actual!.RouteName.Should().Be(RouteNames.UnsubscribeSavedSearchComplete);
