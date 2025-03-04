@@ -10,7 +10,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
-                data-module="govuk-notification-banner">
+            data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
                     <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                         Important
@@ -22,7 +22,7 @@
                     </p>
                     <p class="govuk-body">Check its status in your
                         <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications"
-                            asp-route-tab="@ApplicationsTab.Submitted">submitted applications</a>.
+                        asp-route-tab="@ApplicationsTab.Submitted">submitted applications</a>.
                     </p>
                 </div>
             </div>
@@ -34,7 +34,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
-                data-module="govuk-notification-banner">
+            data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
                     <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                         Important
@@ -61,10 +61,10 @@
     <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">@Model.PostedDate</p>
     <div class="faa-vacancy-actions">
         <a href="#print"
-            class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
+        class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
                 <path fill="currentColor"
-                    d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
             </svg>Print
         </a>
     </div>
@@ -127,7 +127,7 @@
                             @Model.AnnualWage
                             <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">
                                 <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
-                                   rel="noreferrer noopener" target="_blank">
+                                rel="noreferrer noopener" target="_blank">
                                     Minimum wage rates (opens in new
                                     tab)
                                 </a>
@@ -210,52 +210,66 @@
                         <address class="govuk-body" value="Model.WorkLocation" anonymised="Model.IsAnonymousEmployer"></address>
                         break;
                 }
-                @if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent) &&
-                Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven) &&
-                bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
+                @if (Model.EmployerLocationOption != AvailableWhere.AcrossEngland)
                 {
-                    <details class="govuk-details govuk-!-margin-bottom-0">
-                        <summary class="govuk-details__summary">
-                            <span class="govuk-details__summary-text">
-                                Check your travel to work
-                            </span>
-                        </summary>
-                        <div class="govuk-details__text">
-                            <form id="faa-directions-form" class="faa-do-not-disable">
-                                <fieldset class="govuk-fieldset">
-                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Check your travel to
-                                        work</legend>
-                                    <div class="govuk-form-group">
-                                        <label class="govuk-label" for="directions-postcode">
-                                            Postcode
-                                        </label>
-                                        <div id="directions-postcode-hint" class="govuk-hint">
-                                            For example SW1A 2AA <span id="faa-navigator-link"></span>
+                    if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent)
+                    && Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven)
+                    && bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
+                    {
+                        <details class="govuk-details govuk-!-margin-bottom-0">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">
+                                    Check your travel to work
+                                </span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                <form id="faa-directions-form" class="faa-do-not-disable">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                            Check your travel to
+                                            work
+                                        </legend>
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="directions-postcode">
+                                                Postcode
+                                            </label>
+                                            <div id="directions-postcode-hint" class="govuk-hint">
+                                                For example SW1A 2AA <span id="faa-navigator-link"></span>
+                                            </div>
+                                            <p class="govuk-error-message"></p>
+                                            <input class="govuk-input govuk-input--width-10" id="directions-postcode"
+                                                   name="directions-postcode" type="text" autocomplete="postal-code"
+                                                   aria-describedby="directions-postcode-hint" value="@Model.CandidatePostcode">
                                         </div>
-                                        <p class="govuk-error-message"></p>
-                                        <input class="govuk-input govuk-input--width-10" id="directions-postcode"
-                                            name="directions-postcode" type="text" autocomplete="postal-code"
-                                            aria-describedby="directions-postcode-hint" value="@Model.CandidatePostcode">
-                                    </div>
-                                    <div class="govuk-form-group">
-                                        <label class="govuk-label" for="directions-travelMode">
-                                            Select a method of travelling
-                                        </label>
-                                        <select class="govuk-select" id="directions-travelMode"
-                                            name="directions-travelMode">
-                                            <option value="DRIVING" selected>Car</option>
-                                            <option value="BICYCLING">Cycling</option>
-                                            <option value="WALKING">Walking</option>
-                                            <option value="TRANSIT">Public transport</option>
-                                        </select>
-                                    </div>
-                                </fieldset>
-                                <button type="submit" class="govuk-button govuk-button--secondary">Show route</button>
-                            </form>
+                                        <div class="govuk-form-group govuk-visually-hidden" id="directions-locations" aria-hidden="true">
+                                            <label class="govuk-label" for="directions-location">
+                                                Select location
+                                            </label>
+                                            <select class="govuk-select" id="directions-location" name="directions-location">
+                                            </select>
+                                        </div>
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="directions-travelMode">
+                                                Select a method of travelling
+                                            </label>
+                                            <select class="govuk-select" id="directions-travelMode"
+                                                    name="directions-travelMode">
+                                                <option value="DRIVING" selected>Car</option>
+                                                <option value="BICYCLING">Cycling</option>
+                                                <option value="WALKING">Walking</option>
+                                                <option value="TRANSIT">Public transport</option>
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                    <button type="submit" class="govuk-button govuk-button--secondary">Show route</button>
+                                </form>
+                                <p class="govuk-body govuk-!-font-size-16 govuk-!-padding-top-2" id="faa-journey-info"></p>
+                            </div>
+                        </details>
+                        <div class="govuk-details govuk-!-margin-top-5">
                             <div id="faa-directions-map" class="faa-directions-map"></div>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-padding-top-2" id="faa-journey-info"></p>
                         </div>
-                    </details>
+                    }
                 }
             </section>
             <section class="faa-vacancy__section" id="training">
