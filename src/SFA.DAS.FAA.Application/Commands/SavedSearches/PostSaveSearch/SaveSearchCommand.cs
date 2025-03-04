@@ -8,7 +8,6 @@ public class SaveSearchCommand : IRequest<Unit>
     public required Guid CandidateId { get; set; }
     public bool DisabilityConfident { get; set; }
     public int? Distance { get; set; }
-    public bool? ExcludeNational { get; set; }
     public string? Location { get; set; }
     public string? SearchTerm { get; set; }
     public List<string>? SelectedLevelIds { get; set; }
