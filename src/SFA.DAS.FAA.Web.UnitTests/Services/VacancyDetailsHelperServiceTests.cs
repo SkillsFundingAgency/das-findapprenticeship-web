@@ -208,7 +208,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var result = VacancyDetailsHelperService.GetEmploymentLocationCityNames(addresses);
 
             // Assert
-            Assert.AreEqual("Region (2 available locations)", result);
+            result.Should().Be("Region (2 available locations)");
         }
 
         [Test]
@@ -225,7 +225,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var result = VacancyDetailsHelperService.GetEmploymentLocationCityNames(addresses);
 
             // Assert
-            Assert.AreEqual("Region (2 available locations)", result);
+            result.Should().Be("Region (2 available locations)");
         }
 
         [Test]
@@ -238,7 +238,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var result = VacancyDetailsHelperService.GetEmploymentLocationCityNames(addresses);
 
             // Assert
-            Assert.AreEqual(string.Empty, result);
+            result.Should().BeEmpty();
         }
 
         [Test]
@@ -251,7 +251,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
 
             // Assert
-            Assert.AreEqual("City (12345)", result);
+            result.Should().Be("City (12345)");
         }
 
         [Test]
@@ -264,7 +264,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
 
             // Assert
-            Assert.AreEqual("12345", result);
+            result.Should().Be("12345");
         }
 
         [Test]
@@ -277,7 +277,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var result = VacancyDetailsHelperService.GetOneLocationCityName(address);
 
             // Assert
-            Assert.AreEqual("Line3 (12345)", result);
+            result.Should().Be("Line3 (12345)");
         }
     }
 }
