@@ -5,19 +5,13 @@ using SFA.DAS.FAA.Domain.SavedSearches;
 
 namespace SFA.DAS.FAA.Application.Queries.SavedSearches.GetConfirmUnsubscribe;
 
-public class GetConfirmUnsubscribeQueryHandler : IRequestHandler<GetConfirmUnsubscribeQuery, GetConfirmUnsubscribeResult>
+public class GetConfirmUnsubscribeQueryHandler(IApiClient apiClient)
+    : IRequestHandler<GetConfirmUnsubscribeQuery, GetConfirmUnsubscribeResult>
 {
-    private readonly IApiClient _apiClient;
-
-    public GetConfirmUnsubscribeQueryHandler(IApiClient apiClient)
-    {
-        _apiClient = apiClient;
-    }
-
     public async Task<GetConfirmUnsubscribeResult> Handle(GetConfirmUnsubscribeQuery query, CancellationToken cancellationToken)
     {
         var request = new GetConfirmSavedSearchUnsubscribeApiRequest(query.SavedSearchId);
-        var response = await _apiClient.Get<ConfirmSavedSearchUnsubscribeApiResponse?>(request);
+        var response = await apiClient.Get<ConfirmSavedSearchUnsubscribeApiResponse?>(request);
         if (response?.SavedSearch == null)
         {
             return new GetConfirmUnsubscribeResult();
