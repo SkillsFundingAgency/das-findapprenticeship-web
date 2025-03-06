@@ -196,12 +196,14 @@
                 {
                     case AvailableWhere.MultipleLocations:
                         <p class="govuk-body">This apprenticeship is available in these locations:</p>
-                        foreach (var address in Model.Addresses)
-                        {
-                            <ul class="govuk-list govuk-list--bullet">
-                                <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
-                            </ul>
-                        }
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var address in Model.Addresses)
+                            {
+                                <li>
+                                    <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
+                                </li>
+                            }
+                        </ul>
                         break;
                     case AvailableWhere.AcrossEngland:
                         <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerDescription</p>
