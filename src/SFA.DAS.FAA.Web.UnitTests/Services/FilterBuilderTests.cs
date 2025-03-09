@@ -361,6 +361,45 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
         }
         
+        [TestCase(true, "Recruiting nationally", "Hide companies recruiting nationally")]
+        [TestCase(false, "Recruiting nationally", null)]
+        public void Then_Exclude_National_Filter_Is_Added_To_Filter_List(bool excludeNational, string expectedFieldName, string expectedFilterValue)
+        {
+            // Arrange
+            var request = new GetSearchResultsRequest { ExcludeNational = excludeNational };
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(SearchResultsUrl);
+
+            // Act
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+                new SearchApprenticeshipFilterChoices
+                {
+                    JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() }
+                });
+
+            // Assert
+            if (excludeNational)
+            {
+                actual.Should().ContainSingle();
+                var excludeNationalFilter = actual.Single();
+
+                excludeNationalFilter.FieldName.Should().Be(expectedFieldName);
+                actual.Should().ContainSingle();
+
+                excludeNationalFilter.FieldName.Should().Be(expectedFieldName);
+                excludeNationalFilter.Filters.Should().HaveCount(1);
+                var filter = excludeNationalFilter.Filters.Single();
+                filter.Value.Should().Be(expectedFilterValue);
+                filter.ClearFilterLink.Should().Be("searchResults");
+            }
+            else
+            {
+                actual.Should().BeEmpty();
+            }
+        }
+        
         [Test]
         public void Then_What_Search_Term_Is_Added_To_Filter_List_With_Sort()
         {

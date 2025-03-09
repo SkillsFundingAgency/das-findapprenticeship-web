@@ -103,6 +103,7 @@ public class WhenGettingSearchResults
                 && c.PageNumber!.Equals(pageNumber)
                 && c.PageSize!.Equals(10)
                 && c.DisabilityConfident!.Equals(disabilityConfident)
+                && c.ExcludeNational!.Value == true 
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
@@ -116,7 +117,8 @@ public class WhenGettingSearchResults
             LevelIds = levelIds,
             DisabilityConfident = disabilityConfident,
             RoutePath = routhPath,
-            IncludeCompetitiveSalaryVacancies = true
+            IncludeCompetitiveSalaryVacancies = true,
+            ExcludeNational = true
         }) as ViewResult;
 
         using (new AssertionScope())

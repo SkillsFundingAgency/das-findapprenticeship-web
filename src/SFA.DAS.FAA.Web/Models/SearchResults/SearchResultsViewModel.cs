@@ -35,6 +35,7 @@ public class SearchResultsViewModel : ViewModelBase
     public List<ApprenticeshipMapData> MapData { get; set; }
     public string? MapId { get; set; }
     public long TotalCompetitiveVacanciesCount { get; set; }
+    public bool ExcludeNational { get; set; }
 
     public string CompetitiveSalaryBannerHeaderText => TotalCompetitiveVacanciesCount > 1
         ? $"{TotalCompetitiveVacanciesCount} results"

@@ -33,6 +33,7 @@ public class GetSearchApprenticeshipsIndexQueryHandler : IRequestHandler<GetSear
                     x.SearchParameters.SelectedRouteIds,
                     x.SearchParameters.Distance,
                     x.SearchParameters.DisabilityConfident,
+                    x.SearchParameters.ExcludeNational,
                     x.SearchParameters.SelectedLevelIds,
                     x.SearchParameters.Location
                 )
