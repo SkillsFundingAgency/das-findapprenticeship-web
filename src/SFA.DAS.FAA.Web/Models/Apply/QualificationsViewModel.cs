@@ -36,6 +36,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
             public string Grade { get; set; }
             public string AdditionalInformation { get; set; }
             public bool? IsPredicted { get; set; }
+            public short? QualificationOrder { get; set; }
 
             public string GradeLabel => IsPredicted is true ? $"{Grade} (predicted)" : Grade;
         }
@@ -95,8 +96,9 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                         Subject = x.Subject.Contains('|') ? x.Subject.Split('|')[1] : x.Subject,
                         Grade = x.Grade,
                         AdditionalInformation = x.AdditionalInformation,
-                        IsPredicted = x.IsPredicted
-                    }).ToList()
+                        IsPredicted = x.IsPredicted,
+                        QualificationOrder = x.QualificationOrder
+                    }).OrderBy(ord => ord.QualificationOrder).ToList()
             };
 
             return result;
