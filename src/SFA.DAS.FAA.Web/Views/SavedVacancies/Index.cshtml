@@ -84,26 +84,29 @@
                         <p class="govuk-body">@vacancy.ClosingDateLabel</p>
 
 
-                        <ul class="faa-inline-list faa-inline-list--bar govuk-!-margin-bottom-4">
-                            <li class="govuk-summary-list__actions-list-item">
-                                @if (vacancy.IsExternalVacancy)
-                                {
+                        <ul class="govuk-summary-list__actions-list govuk-!-margin-bottom-4">
+                            @if (vacancy.IsExternalVacancy)
+                            {
+                                <li class="govuk-summary-list__actions-list-item">
                                     <a class="govuk-link govuk-link--no-visited-state" target="_blank"
                                         href="@vacancy.ExternalVacancyUrl">
                                         Apply<span class="govuk-visually-hidden"> for @vacancy.Title</span> on company's website
                                         (opens in new tab)
                                     </a>
-                                }
-                                else if (vacancy.ShowApplyButton)
-                                {
+                                </li>
+                            }
+                            else if (vacancy.ShowApplyButton)
+                            {
+                                <li class="govuk-summary-list__actions-list-item">
                                     <form method="post" asp-route="@RouteNames.Vacancies"
                                         asp-route-vacancyreference="@vacancy.VacancyReference">
                                         <button type="submit" class="das-button--inline-link">
                                             Apply now<span class="govuk-visually-hidden"> for @vacancy.Title</span>
                                         </button>
                                     </form>
-                                }
-
+                                </li>
+                            }
+                            <li class="govuk-summary-list__actions-list-item">
                                 <form aria-describeby="Remove-@vacancy.VacancyReference" aria-pressed="True"
                                     asp-route="@RouteNames.DeleteSavedVacancy"
                                     asp-route-vacancyreference="@vacancy.VacancyReference" method="post">
