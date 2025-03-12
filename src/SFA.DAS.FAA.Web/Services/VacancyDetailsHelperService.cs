@@ -3,11 +3,13 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Services
 {
-    public static partial class VacancyDetailsHelperService
+    public static class VacancyDetailsHelperService
     {
         private const decimal NhsLowerWageAmountLimit = 100.00M;
         private const decimal NhsUpperWageAmountLimit = 5000.00M;
@@ -75,7 +77,7 @@ namespace SFA.DAS.FAA.Web.Services
             return $"Posted on {postedDate.ToString("d MMMM", CultureInfo.InvariantCulture)}";
         }
 
-        public static string GetWageText(string wageAmountText)
+        public static string GetNhsWageText(string wageAmountText)
         {
             if (string.IsNullOrEmpty(wageAmountText)) return $"{wageAmountText}";
 
@@ -122,6 +124,35 @@ namespace SFA.DAS.FAA.Web.Services
             };
          }
 
+        public static string GetVacancyAdvertWageText(VacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth = null)
+        {
+            if(!candidateDateOfBirth.HasValue)
+                return vacancyAdvert.WageText;
+
+            switch ((WageType)vacancyAdvert.WageType)
+            {
+                case WageType.Unknown:
+                case WageType.FixedWage:
+                case WageType.CompetitiveSalary:
+                    return vacancyAdvert.WageText;
+                case WageType.NationalMinimumWageForApprentices:
+                    return vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
+            }
+
+            var ageAtStart = vacancyAdvert.StartDate.Year - candidateDateOfBirth.Value.Year;
+            switch (ageAtStart)
+            {
+                case < 18:
+                    return vacancyAdvert.Under18NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
+                case < 21:
+                    return vacancyAdvert.Between18AndUnder21NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
+                case < 25:
+                    return vacancyAdvert.Between21AndUnder25NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
+                case >= 25:
+                    return vacancyAdvert.Over25NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
+            }
+        }
+        
         public static string GetEmploymentLocationCityNames(List<Address> addresses)
         {
             var cityNames = addresses

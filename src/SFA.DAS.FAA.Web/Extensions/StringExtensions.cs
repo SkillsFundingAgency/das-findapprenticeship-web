@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.FAA.Web.Extensions
+﻿using System.Globalization;
+
+namespace SFA.DAS.FAA.Web.Extensions
 {
     public static class StringExtensions
     {
@@ -26,6 +28,11 @@
             }
 
             return wordCount;
+        }
+
+        public static string? ToDisplayWage(this decimal? text)
+        {
+            return text.HasValue ? $"{text.Value.ToString("C", new CultureInfo("en-GB")).Replace(".00", "")}" : null;
         }
     }
 }
