@@ -538,12 +538,12 @@ if (autocompleteSelects) {
 
 // Maps
 
-function FaaMapDirections(mapId, lng, lat, ptcd, form, container) {
+function FaaMapDirections(mapId, lng, lat, ptcd, mapLocations, form, container) {
   this.mapId = mapId;
   this.container = container;
   this.form = form;
-  this.centerLat = lat;
-  this.centerLng = lng;
+  this.multiLocations = mapLocations;
+  this.location = { lat, lng }
   this.ptcd = ptcd;
 }
 
@@ -554,6 +554,12 @@ FaaMapDirections.prototype.init = async function () {
   );
   const directionsService = new google.maps.DirectionsService();
   const directionsRenderer = new google.maps.DirectionsRenderer();
+
+  console.log(this.location)
+
+  if (this.multiLocations.length > 0) {
+    this.multiLocationsDropdown();
+  }
 
   if ("geolocation" in navigator) {
     const useLocationLink = document.createElement("a");
@@ -572,30 +578,45 @@ FaaMapDirections.prototype.init = async function () {
     await this.updateLonLatFromPostcode();
   }
 
-  this.destination = new google.maps.LatLng(this.centerLat, this.centerLng);
+  this.destination = new google.maps.LatLng(this.location);
 
   this.map = new google.maps.Map(this.container, {
     zoom: 10,
-    center: { lat: this.centerLat, lng: this.centerLng },
+    center: this.location,
     mapId: this.mapId,
   });
 
   this.map.markers = [];
 
-  const vacancyLocationPin = new google.maps.marker.AdvancedMarkerElement({
-    map: this.map,
-    position: { lat: this.centerLat, lng: this.centerLng },
-    content: this.markerHtml(),
-  });
-
-  this.map.markers.push(vacancyLocationPin);
+  if (this.multiLocations.length === 0) {
+    const vacancyLocationPin = new google.maps.marker.AdvancedMarkerElement({
+      map: this.map,
+      position: this.location,
+      content: this.markerHtml(),
+    });
+    this.map.markers.push(vacancyLocationPin);
+  } else {
+    const bounds = new google.maps.LatLngBounds();
+    for (const location of this.multiLocations) {
+      const vacancyLocationPin = new google.maps.marker.AdvancedMarkerElement({
+        map: this.map,
+        position: {lat: location.lat, lng: location.lon},
+        content: this.markerHtml(),
+      });
+      this.map.markers.push(vacancyLocationPin);
+      bounds.extend(vacancyLocationPin.position);
+    }
+    this.map.fitBounds(bounds);
+  }
 
   directionsRenderer.setMap(this.map);
   this.calculateAndDisplayRoute(directionsRenderer, directionsService);
 
   this.form.addEventListener("submit", (e) => {
     e.preventDefault();
-    this.map.markers[0].setMap(null);
+    this.map.markers.forEach((marker) => {
+        marker.setMap(null);
+    });
     this.origin = document.getElementById("directions-postcode").value;
     this.travelMode = document.getElementById("directions-travelMode").value;
     if (this.isPostcodeValid()) {
@@ -603,6 +624,30 @@ FaaMapDirections.prototype.init = async function () {
     }
   });
 };
+
+FaaMapDirections.prototype.multiLocationsDropdown = function () {
+  const formRow = document.getElementById("directions-locations");
+  formRow.classList.remove("govuk-visually-hidden");
+  formRow.ariaHidden = false;
+  const select = document.getElementById("directions-location");
+  for (const location of this.multiLocations) {
+    const option = document.createElement("option");
+    option.text = location.address;
+    select.add(option);
+  }
+
+  this.location = { lat: this.multiLocations[0].lat, lng: this.multiLocations[0].lon };
+  this.destination = new google.maps.LatLng(this.location);
+  
+  select.addEventListener("change", (e) => {
+    const selectedLocation = this.multiLocations.find(
+      (location) => location.address === e.target.value
+    );
+    this.location = { lat: selectedLocation.lat, lng: selectedLocation.lon };
+    this.destination = new google.maps.LatLng(this.location);
+  })
+
+}
 
 FaaMapDirections.prototype.markerHtml = function () {
   const pinSvgString =
@@ -623,8 +668,7 @@ FaaMapDirections.prototype.updateLonLatFromPostcode = async function () {
         return response.json();
       })
       .then((data) => {
-        this.centerLng = data.result.longitude;
-        this.centerLat = data.result.latitude;
+        this.location = { lat: data.result.latitude, lng: data.result.longitude };
       });
   } catch (error) {
     console.error(error);
