@@ -225,7 +225,7 @@ public class SearchApprenticeshipsController(
         viewmodel.Distance = request.Distance;
         viewmodel.SearchTerm = request.SearchTerm;
         viewmodel.VacancyAdverts = result.VacancyAdverts.Count != 0
-            ? result.VacancyAdverts.Select(c => VacancyAdvertViewModel.MapToViewModel(dateTimeService, c)).ToList()
+            ? result.VacancyAdverts.Select(c => VacancyAdvertViewModel.MapToViewModel(dateTimeService, c, result.CandidateDateOfBirth)).ToList()
             : [];
         viewmodel.MapData = result.VacancyAdverts.Count != 0
             ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c)).ToList()
