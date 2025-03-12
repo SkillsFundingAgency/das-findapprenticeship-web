@@ -2,6 +2,7 @@
   "totalApprenticeshipCount": 339,
   "totalFound": 339,
   "totalCompetitiveVacanciesCount": 12,
+  "candidateDateOfBirth": "2002-03-03T00:00:00",
   "location": {
     "lat": 52.629399,
     "lon": -1.12505,

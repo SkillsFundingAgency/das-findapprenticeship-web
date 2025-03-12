@@ -137,7 +137,10 @@
     <Content Include="SavedSearches\get-saved-searches.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="search-nhs-vacancy-details.json">
+    <Content Include="search-nhs-vacancy-details.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="search-apprenticeships-results-signed-in.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 
