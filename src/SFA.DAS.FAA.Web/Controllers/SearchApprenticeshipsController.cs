@@ -264,6 +264,7 @@ public class SearchApprenticeshipsController(
 
         viewmodel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
         viewmodel.SearchAlreadySaved = result.SearchAlreadySaved;
+        viewmodel.ExcludeNational = request.ExcludeNational ?? false;
         
         return View(viewmodel);
     }
