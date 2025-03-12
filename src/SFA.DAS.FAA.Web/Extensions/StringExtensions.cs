@@ -32,7 +32,7 @@ namespace SFA.DAS.FAA.Web.Extensions
 
         public static string? ToDisplayWage(this decimal? text)
         {
-            return text.HasValue ? $"{text.Value.ToString("C", new CultureInfo("en-GB")).Replace(".00", "")}" : null;
+            return text.HasValue ? $"{text.Value.ToString("C", new CultureInfo("en-GB")).Replace(".00", "")} a year" : null;
         }
     }
 }
