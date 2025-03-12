@@ -13,6 +13,7 @@ public class VacancyAdvertViewModel
     public string EmployerName { get; private set; }
     public string CourseTitle { get;  private set; }
     public string? PostedDate { get; private set; }
+    public string? StartDate { get; private set; }
     private WageType WageType { get; set; }
     public string VacancyLocation { get; private set; }
     public decimal? Distance { get; private set; }
@@ -44,6 +45,7 @@ public class VacancyAdvertViewModel
             IsRecruitingNationally = vacancyAdvert.IsRecruitingNationally(),
             IsSavedVacancy = vacancyAdvert.IsSavedVacancy,
             PostedDate = FormatPostDate(vacancyAdvert.PostedDate),
+            StartDate = vacancyAdvert.StartDate,
             Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
             VacancyLocation = vacancyAdvert.GetLocationDescription(),
             VacancyReference = vacancyAdvert.VacancyReference,
