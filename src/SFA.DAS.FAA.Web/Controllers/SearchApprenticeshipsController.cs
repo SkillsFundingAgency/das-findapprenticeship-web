@@ -228,7 +228,7 @@ public class SearchApprenticeshipsController(
             ? result.VacancyAdverts.Select(c => VacancyAdvertViewModel.MapToViewModel(dateTimeService, c, result.CandidateDateOfBirth)).ToList()
             : [];
         viewmodel.MapData = result.VacancyAdverts.Count != 0
-            ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c)).ToList()
+            ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c, result.CandidateDateOfBirth)).ToList()
             : [];
         viewmodel.MapId = faaConfiguration.Value.GoogleMapsId;
         viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
@@ -301,7 +301,7 @@ public class SearchApprenticeshipsController(
         var model = new MapSearchResultsViewModel
         {
             ApprenticeshipMapData = result.VacancyAdverts.Count != 0
-                ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c)).ToList()
+                ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c, result.CandidateDateOfBirth)).ToList()
                 : [],
             SearchedLocation = result.Location
         };
