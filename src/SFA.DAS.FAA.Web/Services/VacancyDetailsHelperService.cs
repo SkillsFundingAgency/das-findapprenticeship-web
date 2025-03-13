@@ -72,7 +72,7 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string ToFullDateTimeString(this DateTime datetime)
         {
-            return datetime.ToString("d MMMM yyy");
+            return datetime.ToString("d MMMM yyyy");
         }
 
         public static string GetMapsPostedDate(this DateTime postedDate)
