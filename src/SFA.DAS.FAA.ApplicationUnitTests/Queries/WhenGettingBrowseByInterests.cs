@@ -27,7 +27,7 @@ public class WhenGettingBrowseByInterests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        Assert.IsNotNull(result);
+        result.Should().NotBeNull();
         apiResponse.Routes.Should().BeEquivalentTo(result.Routes);
 
     }

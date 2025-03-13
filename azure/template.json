@@ -111,6 +111,12 @@
             "metadata": {
                 "description": "Enables alerting on app insights failed requests"
             }
+        },
+        "apimKeyVaultName": {
+            "type": "string"
+        },
+        "apimKeyVaultResourceGroup": {
+            "type": "string"
         }
     },
     "variables": {
@@ -280,6 +286,14 @@
                                 {
                                     "name": "StubAuth",
                                     "value": "[parameters('stubAuth')]"
+                                },
+                                {
+                                    "name": "WEBSITE_LOAD_CERTIFICATES",
+                                    "value": 1
+                                },
+                                {
+                                    "name": "WEBSITE_LOAD_USER_PROFILE",
+                                    "value": 1
                                 }
                             ]
                         }
@@ -348,6 +362,33 @@
                     }
                 }
             }
+        },
+        {
+            "apiVersion": "2022-09-01",
+            "name": "[concat('role-assignment-', variables('appServiceName'),'-', parameters('apimKeyVaultName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('apimKeyVaultResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[uri(variables('deploymentUrlBase'),'role-assignments/role-assignment-key-vault.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "principalId": {
+                        "value": "[reference(concat(variables('appServiceName'), '-', parameters('utcValue'))).outputs.managedServiceIdentityId.value]"
+                    },
+                    "assignmentType": {
+                        "value": "Key Vault Certificate User"
+                    },
+                    "resourceName": {
+                        "value": "[parameters('apimKeyVaultName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('appServiceName'), '-', parameters('utcValue'))]"
+            ]
         }
     ],
     "outputs": {
@@ -358,6 +399,10 @@
         "AppServiceName": {
             "type": "string",
             "value": "[variables('appServiceName')]"
+        },
+        "SubnetResourceId": {
+            "type": "string",
+            "value": "[reference(concat(parameters('subnetObject').name, '-', parameters('utcValue'))).outputs.SubnetResourceId.value]"
         }
     }
 }

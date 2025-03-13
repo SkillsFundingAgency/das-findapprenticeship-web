@@ -264,6 +264,7 @@ public class SearchApprenticeshipsController(
 
         viewmodel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
         viewmodel.SearchAlreadySaved = result.SearchAlreadySaved;
+        viewmodel.ExcludeNational = request.ExcludeNational ?? false;
         
         return View(viewmodel);
     }
@@ -373,7 +374,8 @@ public class SearchApprenticeshipsController(
                 SelectedLevelIds = criteria.LevelIds,
                 SelectedRouteIds = criteria.RouteIds,
                 SortOrder = criteria.Sort,
-                UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString())
+                UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString()),
+                ExcludeNational = criteria.ExcludeNational
             });
         }
         catch (Exception e)

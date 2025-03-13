@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchResults;
 
@@ -39,9 +39,9 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.VacancyAdverts, result.VacancyAdverts);
+            result.Should().NotBeNull();
+            expectedResponse.TotalFound.Should().Be(result.Total);
+            expectedResponse.VacancyAdverts.Should().BeEquivalentTo(result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
@@ -82,9 +82,9 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.VacancyAdverts, result.VacancyAdverts);
+            result.Should().NotBeNull();
+            expectedResponse.TotalFound.Should().Be(result.Total);
+            expectedResponse.VacancyAdverts.Should().BeEquivalentTo(result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
@@ -127,9 +127,9 @@ public class WhenGettingSearchResults
         // Assert
         using (new AssertionScope())
         {
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedResponse.TotalFound, result.Total);
-            Assert.AreEqual(expectedResponse.VacancyAdverts, result.VacancyAdverts);
+            result.Should().NotBeNull();
+            expectedResponse.TotalFound.Should().Be(result.Total);
+            expectedResponse.VacancyAdverts.Should().BeEquivalentTo(result.VacancyAdverts);
             result.Routes.Should().BeEquivalentTo(expectedResponse.Routes);
             result.Levels.Should().BeEquivalentTo(expectedResponse.Levels);
             result.Location.Should().BeEquivalentTo(expectedResponse.Location);
