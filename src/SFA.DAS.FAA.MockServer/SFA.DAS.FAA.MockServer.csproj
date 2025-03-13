@@ -143,6 +143,9 @@
     <Content Include="search-apprenticeships-results-signed-in.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="search-vacancy-detail-authenticated.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
 
   </ItemGroup>
   <ItemGroup>

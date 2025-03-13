@@ -122,6 +122,16 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithStatusCode(404)
                         .WithHeader("Content-Type", "application/json"));
             
+            
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/VAC\\d{10}$", RegexOptions.None, regexMaxTimeOut))
+                    .WithParam(MatchCandidateIdCompleteProfile)
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile("search-vacancy-detail-authenticated.json"));
+            
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/VAC\\d{10}$", RegexOptions.None, regexMaxTimeOut))
                     .UsingGet())
                 .RespondWith(
