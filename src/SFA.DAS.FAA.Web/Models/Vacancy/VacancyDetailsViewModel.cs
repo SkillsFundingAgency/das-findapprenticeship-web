@@ -101,7 +101,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription,
                 Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
                 Addresses = addresses.OrderByCity().ToList(),
-                AnnualWage = source.Vacancy?.WageText,
+                AnnualWage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source.Vacancy, source.Vacancy.CandidateDateOfBirth),
                 ApplicationDetails = source.Vacancy?.Application,
                 ApplicationInstructions = source.Vacancy.ApplicationInstructions,
                 ApplicationUrl = !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,

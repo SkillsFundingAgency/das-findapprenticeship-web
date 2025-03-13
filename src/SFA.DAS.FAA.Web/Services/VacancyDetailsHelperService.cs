@@ -3,6 +3,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using SFA.DAS.FAA.Domain;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Extensions;
@@ -124,7 +125,7 @@ namespace SFA.DAS.FAA.Web.Services
             };
          }
 
-        public static string GetVacancyAdvertWageText(VacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth = null)
+        public static string GetVacancyAdvertWageText(IVacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth = null)
         {
             if(!candidateDateOfBirth.HasValue)
                 return vacancyAdvert.WageText;

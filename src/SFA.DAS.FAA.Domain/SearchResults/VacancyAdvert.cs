@@ -5,7 +5,7 @@ using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
-public class VacancyAdvert
+public class VacancyAdvert : IVacancyAdvert
 {
     [JsonPropertyName("id")]
     public string Id { get; set; }
