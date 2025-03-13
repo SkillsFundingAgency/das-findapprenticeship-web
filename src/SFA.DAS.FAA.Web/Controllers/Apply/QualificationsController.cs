@@ -186,25 +186,25 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 model.Courses = result.Courses.Select(c => (CourseDataListItem)c).ToList();
                 return View(AddQualificationViewName, model);
             }
-            
+
             await mediator.Send(new UpsertQualificationCommand
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
                 ApplicationId = model.ApplicationId,
                 QualificationReferenceId = model.QualificationReferenceId,
                 Subjects = model.Subjects
-                    .Where(c=>!string.IsNullOrEmpty(c.Name) 
-                              || (model.IsApprenticeship && !string.IsNullOrEmpty(c.Name))
-                              || c is { IsDeleted: true, Id: not null })
-                    .Select(c => new PostUpsertQualificationsApiRequest.Subject
-                {
-                    Grade = c.Grade,
-                    Name = c.Name,
-                    Id = c.Id ?? Guid.NewGuid(),
-                    AdditionalInformation = c.Level ?? c.AdditionalInformation,
-                    IsPredicted = c.IsPredicted.HasValue && c.IsPredicted.Value,
-                    IsDeleted = c.IsDeleted
-                }).ToList()
+                    .Where(c => !string.IsNullOrEmpty(c.Name) || (model.IsApprenticeship && !string.IsNullOrEmpty(c.Name)) || c is { IsDeleted: true, Id: not null })
+                    .Select((subjectViewModel, index) => new PostUpsertQualificationsApiRequest.Subject
+                    {
+                        Grade = subjectViewModel.Grade,
+                        Name = subjectViewModel.Name,
+                        Id = subjectViewModel.Id ?? Guid.NewGuid(),
+                        AdditionalInformation = subjectViewModel.Level ?? subjectViewModel.AdditionalInformation,
+                        IsPredicted = subjectViewModel.IsPredicted.GetValueOrDefault(),
+                        QualificationOrder = (short)(index + 1),
+                        IsDeleted = subjectViewModel.IsDeleted
+                    })
+                    .ToList()
             });
             
             return RedirectToRoute(RouteNames.ApplyApprenticeship.Qualifications,

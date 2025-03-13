@@ -18,6 +18,7 @@ namespace SFA.DAS.FAA.Domain.Apply.Qualifications
             public string Level { get; set; }
             public string Grade { get; set; }
             public string AdditionalInformation { get; set; }
+            public short? QualificationOrder { get; set; }
             public bool? IsPredicted { get; set; }
         }
     }
