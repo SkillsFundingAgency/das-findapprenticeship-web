@@ -10,7 +10,7 @@ public class ApprenticeshipMapData
     public MapPosition Position { get; set; }
     public ApprenticeshipMapJob Job { get; set; }
 
-    public static ApprenticeshipMapData MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert source)
+    public static ApprenticeshipMapData MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert source, DateTime? candidateDateOfBirth)
     {
         return new ApprenticeshipMapData
         {
@@ -22,7 +22,7 @@ public class ApprenticeshipMapData
                 VacancyLocation = source.GetLocationDescription(),
                 Distance = source.Distance.HasValue ? Math.Round(source.Distance.Value, 1) : null,
                 Apprenticeship = $"{source.CourseTitle} (level {source.CourseLevel})",
-                Wage = source.WageText,
+                Wage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source, candidateDateOfBirth),
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate, !string.IsNullOrEmpty(source.ApplicationUrl)),
                 PostedDate = source.PostedDate.GetMapsPostedDate(),
                 ApplicationStatus = source.CandidateApplicationDetails?.Status,

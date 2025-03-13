@@ -47,6 +47,9 @@ public class GetSearchResultsApiResponse
 
     public int SavedSearchesCount { get; set; }
     public bool SearchAlreadySaved { get; set; }
+    
+    [JsonProperty("candidateDateOfBirth")]
+    public DateTime? CandidateDateOfBirth { get; set; }
 }
 
 public class Location
