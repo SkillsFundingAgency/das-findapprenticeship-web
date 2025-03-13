@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using SFA.DAS.FAA.Application.Queries.User.GetSavedSearches;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SavedSearches;
@@ -24,6 +23,7 @@ public class GetSavedSearchQueryHandler(IApiClient apiClient) : IRequestHandler<
                         result.SavedSearch.SearchParameters.SelectedRouteIds,
                         result.SavedSearch.SearchParameters.Distance,
                         result.SavedSearch.SearchParameters.DisabilityConfident,
+                        result.SavedSearch.SearchParameters.ExcludeNational,
                         result.SavedSearch.SearchParameters.SelectedLevelIds,
                         result.SavedSearch.SearchParameters.Location
                     )
