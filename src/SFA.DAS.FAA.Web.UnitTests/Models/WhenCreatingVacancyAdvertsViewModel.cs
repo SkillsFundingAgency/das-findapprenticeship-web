@@ -40,6 +40,7 @@ public class WhenCreatingVacancyAdvertsViewModel
             .Excluding(c => c.AddressLine4)
             .Excluding(c => c.Postcode)
             .Excluding(c => c.EmploymentLocationInformation)
+            .Excluding(c => c.StartDate)
         );
         actual.CourseTitle.Should().Be($"{vacancyAdvert.CourseTitle} (level {vacancyAdvert.CourseLevel})");
     }
@@ -280,6 +281,7 @@ public class WhenCreatingVacancyAdvertsViewModel
             .Excluding(c => c.AddressLine4)
             .Excluding(c => c.Postcode)
             .Excluding(c => c.EmploymentLocationInformation)
+            .Excluding(c => c.StartDate)
         );
         actual.CourseTitle.Should().Be("See more details on NHS Jobs");
         actual.Title.Should().Be($"{vacancyAdvert.Title} (from NHS Jobs)");

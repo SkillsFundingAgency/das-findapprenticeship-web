@@ -8,5 +8,7 @@ public enum VacancySort
     SalaryDesc,
     SalaryAsc,
     ClosingDesc,
-    ClosingAsc
+    ClosingAsc,
+    ExpectedStartDateDesc,
+    ExpectedStartDateAsc,
 }
