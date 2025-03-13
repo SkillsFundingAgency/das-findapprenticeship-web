@@ -104,8 +104,8 @@
   "vacancySource": 0,
   "apprenticeMinimumWage": 15704,
   "over25NationalMinimumWage": 25396.8,
-  "between21AndUnder25NationalMinimumWage": 25396.8,
-  "between18AndUnder21NationalMinimumWage": 20800,
+  "between21AndUnder25NationalMinimumWage": 22,
+  "between18AndUnder21NationalMinimumWage": 20,
   "under18NationalMinimumWage": 15704,
   "candidateDateOfBirth": "2005-09-20T00:00:00Z"
 }
