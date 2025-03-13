@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Web.TagHelpers
                 return;
             }
 
-            output.TagName = Flat ? "li" : "p";
+            output.TagName = Flat ? "span" : "p";
             output.TagMode = TagMode.StartTagAndEndTag;
 
             AddCssClasses(output, Class);

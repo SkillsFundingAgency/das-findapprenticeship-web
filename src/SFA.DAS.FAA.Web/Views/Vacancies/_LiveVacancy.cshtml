@@ -250,8 +250,7 @@
             <section class="faa-vacancy__section" id="work">
                 <h2 class="govuk-heading-m">Work</h2>
                 <p class="govuk-hint">
-                    As an apprentice, you’ll work at a company and get hands-on experience. You’ll gain new skills and
-                    work alongside experienced staff.
+                    Most of your apprenticeship is spent working. You’ll learn on the job by getting hands-on experience.
                 </p>
                 <h3 class="govuk-heading-s">What you’ll do at work</h3>
                 <p>@Html.Raw(Model.WorkDescription)</p>
@@ -262,12 +261,14 @@
                     case AvailableWhere.MultipleLocations:
                     {
                         <p class="govuk-body">This apprenticeship is available in these locations:</p>
-                        foreach (var address in Model.Addresses)
-                        {
                             <ul class="govuk-list govuk-list--bullet">
-                                <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
+                                @foreach (var address in Model.Addresses)
+                                {
+                                    <li>
+                                        <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
+                                    </li>
+                                }
                             </ul>
-                        }
                         break;
                     }
                     case AvailableWhere.AcrossEngland:
@@ -344,8 +345,7 @@
             <section class="faa-vacancy__section" id="training">
                 <h2 class="govuk-heading-m">Training</h2>
                 <p class="govuk-body  das-!-color-dark-grey">
-                    An apprenticeship includes regular training with a college or
-                    other training organisation. At least 20% of your working hours will be spent training or studying.
+                    Apprenticeships include time away from working for specialist training. You’ll study to gain professional knowledge and skills.
                 </p>
                 <h3 class="govuk-heading-s">College or training organisation</h3>
                 <p>@Model.TrainingProviderName</p>
