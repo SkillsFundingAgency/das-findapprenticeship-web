@@ -106,6 +106,7 @@ public class WhenPostingSaveSearch
     {
         // arrange
         string? passedData = null;
+        getSearchResultsRequest.ExcludeNational = true;
         var json = JsonConvert.SerializeObject(getSearchResultsRequest);
         _dataProtectorService
             .Setup(x => x.DecodeData(It.IsAny<string>()))
@@ -135,7 +136,6 @@ public class WhenPostingSaveSearch
                 .Excluding(x => x.RoutePath)
                 .Excluding(x => x.PageNumber)
                 .Excluding(x => x.IncludeCompetitiveSalaryVacancies)
-                .Excluding(x => x.ExcludeNational)
         );
     }
     

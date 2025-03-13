@@ -37,17 +37,11 @@
                             </dt>
                             <dd class="govuk-summary-list__value">
                                 @Model.SavedSearch.Location
-                                @if (Model.SavedSearch.Distance is not null)
+                                @if (Model.SavedSearch.ExcludeNational != null && (bool)Model.SavedSearch.ExcludeNational)
                                 {
-                                    <div class="govuk-hint govuk-!-margin-top-1 faa-search-alert-hint">
-                                        Within @Model.SavedSearch.Distance miles
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="govuk-hint govuk-!-margin-top-1 faa-search-alert-hint">
-                                        Across England
-                                    </div>
+                                    <p class="govuk-hint govuk-!-font-size-16 govuk-!-margin-top-1 faa-search-alert-hint">
+                                        Hide companies recruiting nationally
+                                    </p>
                                 }
                             </dd>
                         </div>

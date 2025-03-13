@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using SFA.DAS.FAA.Domain.BrowseByInterests;
+﻿using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.SavedSearches.Dto;
 
 namespace SFA.DAS.FAA.Domain.SavedSearches
