@@ -64,9 +64,9 @@ public class WhenCreatingVacancyAdvertsViewModel
     }
 
     [Test]
-    [MoqInlineAutoData("30 Jan 2000", "30 January")]
-    [MoqInlineAutoData("01 Jan 2000", "1 January")]
-    [MoqInlineAutoData("04 Jun 2024", "4 June")]
+    [MoqInlineAutoData("30 Jan 2000", "30 January 2000")]
+    [MoqInlineAutoData("01 Jan 2000", "1 January 2000")]
+    [MoqInlineAutoData("04 Jun 2024", "4 June 2024")]
     public void Then_The_Posted_Date_Is_Shown_Correctly(
         string postedDate,
         string expectedResult,
@@ -91,7 +91,7 @@ public class WhenCreatingVacancyAdvertsViewModel
         
         var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
         actual.IsClosingSoon.Should().BeTrue();
-        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM} at 11:59pm)");
+        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM yyy} at 11:59pm)");
     }
     
     [Test, MoqAutoData]
@@ -105,7 +105,7 @@ public class WhenCreatingVacancyAdvertsViewModel
         
         var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
         actual.IsClosingSoon.Should().BeTrue();
-        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM})");
+        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM yyy})");
     }
     
     [Test, MoqAutoData]
