@@ -22,7 +22,7 @@
             @if (!ViewData.ModelState.IsValid)
             {
                 <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1"
-                    data-module="govuk-error-summary">
+                data-module="govuk-error-summary">
                     <h2 class="govuk-error-summary__title" id="error-summary-title">
                         There is a problem
                     </h2>
@@ -49,7 +49,7 @@
 
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div
-                        class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhatSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+                    class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhatSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
 
                         <label class="govuk-label govuk-label--m" for="WhatSearchTerm">
                             What
@@ -59,12 +59,12 @@
                             Enter a job or company
                         </div>
                         <input asp-for="WhatSearchTerm" type="text" aria-describedby="what-hint" class="govuk-input"
-                            id="WhatSearchTerm" autocomplete="off" />
+                        id="WhatSearchTerm" autocomplete="off" />
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
                     <div
-                        class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+                    class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
 
                         <label class="govuk-label govuk-label--m" for="WhereSearchTerm">
                             Where
@@ -74,8 +74,8 @@
                             Enter a city or postcode
                         </div>
                         <input asp-for="WhereSearchTerm" type="text" type="search" spellcheck="false"
-                            autocomplete="postal-code" aria-describedby="where-hint"
-                            class="govuk-input faa-location-autocomplete" id="WhereSearchTerm" />
+                        autocomplete="postal-code" aria-describedby="where-hint"
+                        class="govuk-input faa-location-autocomplete" id="WhereSearchTerm" />
                     </div>
                 </div>
             </div>
@@ -131,12 +131,19 @@
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Categories</dt>
                                 <dd class="govuk-summary-list__value">
-                                    <ul class="govuk-list govuk-list--bullet">
-                                        @foreach (var category in savedSearch.SelectedRoutes)
-                                        {
-                                            <li>@category</li>
-                                        }
-                                    </ul>
+                                    @if (savedSearch.SelectedRoutes?.Count == 1)
+                                    {
+                                        <span>@savedSearch.SelectedRoutes[0]</span>
+                                    }
+                                    else
+                                    {
+                                        <ul class="govuk-list govuk-list--bullet">
+                                            @foreach (var category in savedSearch.SelectedRoutes)
+                                            {
+                                                <li>@category</li>
+                                            }
+                                        </ul>
+                                    }
                                 </dd>
                             </div>
                         }
@@ -145,12 +152,19 @@
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Levels</dt>
                                 <dd class="govuk-summary-list__value">
-                                    <ul class="govuk-list govuk-list--bullet">
-                                        @foreach (var level in savedSearch.SelectedLevelIds)
-                                        {
-                                            <li>Level @level</li>
-                                        }
-                                    </ul>
+                                    @if(savedSearch.SelectedLevelIds?.Count == 1)
+                                    {
+                                        <span>Level @savedSearch.SelectedLevelIds[0]</span>
+                                    }
+                                    else
+                                    {
+                                        <ul class="govuk-list govuk-list--bullet">
+                                            @foreach (var level in savedSearch.SelectedLevelIds)
+                                            {
+                                                <li>Level @level</li>
+                                            }
+                                        </ul>
+                                    }
                                 </dd>
                             </div>
                         }
