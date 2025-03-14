@@ -54,12 +54,19 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Categories</dt>
                     <dd class="govuk-summary-list__value">
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var category in Model.SelectedRoutes)
-                            {
-                                <li>@category</li>
-                            }
-                        </ul>
+                        @if(Model.SelectedRoutes?.Count == 1)
+                        {
+                            <span>@Model.SelectedRoutes[0]</span>
+                        }
+                        else
+                        {
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var category in Model.SelectedRoutes)
+                                {
+                                    <li>@category</li>
+                                }
+                            </ul>
+                        }
                     </dd>
                 </div>
             }
@@ -68,12 +75,19 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Levels</dt>
                     <dd class="govuk-summary-list__value">
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var level in Model.SelectedLevelIds)
-                            {
-                                <li>Level @level</li>
-                            }
-                        </ul>
+                        @if (Model.SelectedLevelIds?.Count == 1)
+                        {
+                            <span>Level @Model.SelectedLevelIds[0]</span>
+                        }
+                        else
+                        {
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var level in Model.SelectedLevelIds)
+                                {
+                                    <li>Level @level</li>
+                                }
+                            </ul>
+                        }
                     </dd>
                 </div>
             }
