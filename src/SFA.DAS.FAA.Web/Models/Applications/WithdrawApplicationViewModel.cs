@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Applications.Withdraw;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -24,7 +25,7 @@ public class WithdrawApplicationViewModel(IDateTimeService dateTimeService, GetW
     public bool? WithdrawApplication { get; set; }
     public string? AdvertTitle { get; set; } = source.AdvertTitle;
     public string? EmployerName { get; set; } = source.EmployerName;
-    public string? SubmittedDate { get; set; } = source.SubmittedDate?.GetStartDate();
+    public string? SubmittedDate { get; set; } = source.SubmittedDate?.ToGdsDateString();
     public string? ClosesOnDate { get; set; } = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosedDate ?? source.ClosingDate);
     public bool ClosesToday { get; set; } = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 0;
     public bool ClosesTomorrow { get; set; } = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 1;

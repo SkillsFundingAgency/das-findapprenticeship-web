@@ -2,7 +2,7 @@
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Globalization;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models;
@@ -43,7 +43,7 @@ public class VacancyAdvertViewModel
             IsNew = vacancyAdvert.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsRecruitingNationally = vacancyAdvert.IsRecruitingNationally(),
             IsSavedVacancy = vacancyAdvert.IsSavedVacancy,
-            PostedDate = FormatPostDate(vacancyAdvert.PostedDate),
+            PostedDate = vacancyAdvert.PostedDate.ToGdsDateString(),
             Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
             VacancyLocation = vacancyAdvert.GetLocationDescription(),
             VacancyReference = vacancyAdvert.VacancyReference,
@@ -60,10 +60,5 @@ public class VacancyAdvertViewModel
         var currentDate = dateTimeService.GetDateTime();
         var timeUntilClosing = closingDate.Value.Date - currentDate;
         return (int)Math.Ceiling(timeUntilClosing.TotalDays);
-    }
-
-    private static string? FormatPostDate(DateTime? date)
-    {
-        return date?.ToString("d MMMM", CultureInfo.InvariantCulture);
     }
 }
