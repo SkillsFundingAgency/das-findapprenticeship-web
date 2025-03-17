@@ -68,9 +68,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
-        [TestCase("30 Jan 2000", "Sunday 30 January")]
-        [TestCase("01 Jan 2000", "Saturday 1 January")]
-        [TestCase("04 Jun 2024", "Tuesday 4 June")]
+        [TestCase("30 Jan 2000", "Sunday 30 January 2000")]
+        [TestCase("01 Jan 2000", "Saturday 1 January 2000")]
+        [TestCase("04 Jun 2024", "Tuesday 4 June 2024")]
         public void GetStartDate(string startDate, string? expectedResult)
         {
             //sut
@@ -387,6 +387,35 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, DateTime.Now.AddYears(age * -1));
             
             actual.Should().Be(vacancyAdvert.WageText);
+        }
+
+        [Test]
+        [InlineAutoData(WageType.NationalMinimumWageForApprentices,16,"National Minimum Wage rate for apprentices")]
+        [InlineAutoData(WageType.FixedWage,16,"")]
+        [InlineAutoData(WageType.CompetitiveSalary,16,"Competitive wage offered")]
+        [InlineAutoData(WageType.NationalMinimumWage,16,"National Minimum Wage for an under 18 year old")]
+        [InlineAutoData(WageType.NationalMinimumWage,23,"National Minimum Wage for a 24 year old")]
+        [InlineAutoData(WageType.NationalMinimumWage,null,"National Minimum Wage")]
+        public void GetVacancyAdvertDetailWageDescriptionText_Then_Gets_Wage_Text_For_Age_And_Wage_Type(
+            WageType wageType,
+            int? age,
+            string expectedWageText)
+        {
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertDetailWageDescriptionText(wageType,DateTime.Now.AddYears(1), age != null ? DateTime.Now.AddYears(age.Value * -1) : null);
+            
+            actual.Should().Be(expectedWageText);
+        }
+
+        [Test]
+        [InlineAutoData("2000-01-30", "2020-01-29", 19)]
+        [InlineAutoData("2000-01-30", "2020-01-31", 20)]
+        [InlineAutoData("2000-01-30", "2020-12-31", 20)]
+        [InlineAutoData("2000-01-30", "2021-01-01", 20)]
+        public void GetCandidatesAgeAtStartDateOfVacancy_Then_Calculates_Candidate_Age_Based_On_Advert_Start_Date(string dateOfBirth, string startDate, int expectedAge)
+        {
+            var actualAge = VacancyDetailsHelperService.GetCandidatesAgeAtStartDateOfVacancy(DateTime.Parse(dateOfBirth), DateTime.Parse(startDate));
+
+            actualAge.Should().Be(expectedAge);
         }
     }
 }

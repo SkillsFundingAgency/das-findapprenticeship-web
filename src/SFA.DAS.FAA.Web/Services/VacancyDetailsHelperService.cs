@@ -70,7 +70,7 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string GetStartDate(this DateTime startDate)
         {
-            return startDate.ToString("dddd d MMMM", CultureInfo.InvariantCulture);
+            return startDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture);
         }
 
         public static string GetMapsPostedDate(this DateTime postedDate)
@@ -140,18 +140,49 @@ namespace SFA.DAS.FAA.Web.Services
                     return vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
             }
 
-            var ageAtStart = vacancyAdvert.StartDate.Year - candidateDateOfBirth.Value.Year;
-            switch (ageAtStart)
+            var ageAtStart = GetCandidatesAgeAtStartDateOfVacancy(candidateDateOfBirth.Value, vacancyAdvert.StartDate);
+            return ageAtStart switch
             {
-                case < 18:
-                    return vacancyAdvert.Under18NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
-                case < 21:
-                    return vacancyAdvert.Between18AndUnder21NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
-                case < 25:
-                    return vacancyAdvert.Between21AndUnder25NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
-                case >= 25:
-                    return vacancyAdvert.Over25NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
+                < 18 => vacancyAdvert.Under18NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText,
+                < 21 => vacancyAdvert.Between18AndUnder21NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText,
+                < 25 => vacancyAdvert.Between21AndUnder25NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText,
+                >= 25 => vacancyAdvert.Over25NationalMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText
+            };
+        }
+
+        public static string GetVacancyAdvertDetailWageDescriptionText(WageType wageType, DateTime startDate, DateTime? candidateDateOfBirth = null)
+        {
+            switch (wageType)
+            {
+                case WageType.Unknown:
+                case WageType.FixedWage:
+                    return "";
+                case WageType.CompetitiveSalary:
+                    return "Competitive wage offered";
+                case WageType.NationalMinimumWageForApprentices:
+                    return "National Minimum Wage rate for apprentices";
             }
+
+            if (!candidateDateOfBirth.HasValue)
+            {
+                return "National Minimum Wage";
+            }
+            
+            var candidateAge = GetCandidatesAgeAtStartDateOfVacancy(candidateDateOfBirth.Value, startDate);
+
+            if (candidateAge <= 18)
+            {
+                return "National Minimum Wage for an under 18 year old";
+            }
+            
+            return $"National Minimum Wage for a {candidateAge} year old";
+        }
+
+        public static int GetCandidatesAgeAtStartDateOfVacancy(DateTime candidateDateOfBirth, DateTime startDate)
+        {
+            var ageAtStart = (int.Parse(startDate.ToString("yyyyMMdd")) -
+                              int.Parse(candidateDateOfBirth.ToString("yyyyMMdd"))) / 10000;
+            return ageAtStart;
         }
         
         public static string GetEmploymentLocationCityNames(List<Address> addresses)
