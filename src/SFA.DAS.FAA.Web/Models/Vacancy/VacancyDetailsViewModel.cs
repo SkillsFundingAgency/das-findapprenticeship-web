@@ -24,6 +24,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? VacancyReference { get; init; }
         public string? VacancySummary { get; init; }
         public string? AnnualWage { get; init; }
+        public string? WageDetailText { get; init; }
         public string? Levels { get; init; }
         public string? WorkingPattern { get; init; }
         public string? HoursPerWeek { get; init; }
@@ -101,7 +102,8 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription,
                 Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
                 Addresses = addresses.OrderByCity().ToList(),
-                AnnualWage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source.Vacancy, source.Vacancy.CandidateDateOfBirth),
+                AnnualWage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source.Vacancy, source.Vacancy.CandidateDateOfBirth, true),
+                WageDetailText = VacancyDetailsHelperService.GetVacancyAdvertDetailWageDescriptionText((WageType)source.Vacancy.WageType,source.Vacancy.StartDate, source.Vacancy.CandidateDateOfBirth),
                 ApplicationDetails = source.Vacancy?.Application,
                 ApplicationInstructions = source.Vacancy.ApplicationInstructions,
                 ApplicationUrl = !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,

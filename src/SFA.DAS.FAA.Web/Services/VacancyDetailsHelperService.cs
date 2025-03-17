@@ -125,7 +125,7 @@ namespace SFA.DAS.FAA.Web.Services
             };
          }
 
-        public static string GetVacancyAdvertWageText(IVacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth = null)
+        public static string GetVacancyAdvertWageText(IVacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth = null, bool detailsPage = false)
         {
             if(!candidateDateOfBirth.HasValue)
                 return vacancyAdvert.WageText;
@@ -137,7 +137,7 @@ namespace SFA.DAS.FAA.Web.Services
                 case WageType.CompetitiveSalary:
                     return vacancyAdvert.WageText;
                 case WageType.NationalMinimumWageForApprentices:
-                    return vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage() ?? vacancyAdvert.WageText;
+                    return vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage(detailsPage ? " for your first year, then could increase depending on your age" : null) ?? vacancyAdvert.WageText;
             }
 
             var ageAtStart = GetCandidatesAgeAtStartDateOfVacancy(candidateDateOfBirth.Value, vacancyAdvert.StartDate);

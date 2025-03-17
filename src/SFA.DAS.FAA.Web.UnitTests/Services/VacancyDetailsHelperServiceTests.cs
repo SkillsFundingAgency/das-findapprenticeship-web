@@ -348,6 +348,17 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage());
             
         }
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_Candidates_Date_Of_Birth_And_Advert_Start_Date_For_ApprenticeMinimumWageType_For_Detail(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWageForApprentices;
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, new DateTime(), true);
+            
+            actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage(" for your first year, then could increase depending on your age"));
+            
+        }
+
         [Test]
         [InlineAutoData(WageType.FixedWage)]
         [InlineAutoData(WageType.CompetitiveSalary)]
@@ -397,6 +408,23 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         [InlineAutoData(WageType.NationalMinimumWage,23,"National Minimum Wage for a 24 year old")]
         [InlineAutoData(WageType.NationalMinimumWage,null,"National Minimum Wage")]
         public void GetVacancyAdvertDetailWageDescriptionText_Then_Gets_Wage_Text_For_Age_And_Wage_Type(
+            WageType wageType,
+            int? age,
+            string expectedWageText)
+        {
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertDetailWageDescriptionText(wageType,DateTime.Now.AddYears(1), age != null ? DateTime.Now.AddYears(age.Value * -1) : null);
+            
+            actual.Should().Be(expectedWageText);
+        }
+        
+        [Test]
+        [InlineAutoData(WageType.NationalMinimumWageForApprentices,16,"National Minimum Wage rate for apprentices")]
+        [InlineAutoData(WageType.FixedWage,16,"")]
+        [InlineAutoData(WageType.CompetitiveSalary,16,"Competitive wage offered")]
+        [InlineAutoData(WageType.NationalMinimumWage,16,"National Minimum Wage for an under 18 year old")]
+        [InlineAutoData(WageType.NationalMinimumWage,23,"National Minimum Wage for a 24 year old")]
+        [InlineAutoData(WageType.NationalMinimumWage,null,"National Minimum Wage")]
+        public void GetVacancyAdvertDetailWageText_Then_Gets_Wage_Text_For_Age_And_Wage_Type(
             WageType wageType,
             int? age,
             string expectedWageText)
