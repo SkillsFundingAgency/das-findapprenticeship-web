@@ -153,7 +153,8 @@ Scenario: Navigate to vacancy details page with vacancy found authenticated user
 	When I navigate to the following url: /apprenticeship/VAC1000012484
 	Then the page is successfully returned
 	And the page content includes the following: Summary
-	And the page content includes the following: 20 a year
+	And the page content includes the following: 15,704 for your first year, then could increase depending on your age
+	And the page content includes the following: National Minimum Wage rate for apprentices
 
 @WireMockServer @RunOnEnvironment
 Scenario: Navigate to vacancy details page with invalid vacancy reference format

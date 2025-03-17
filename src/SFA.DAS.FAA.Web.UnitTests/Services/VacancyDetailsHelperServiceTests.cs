@@ -355,7 +355,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 
             var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, new DateTime(), true);
             
-            actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage(" for your first year, then could increase depending on your age"));
+            actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage("for your first year, then could increase depending on your age"));
             
         }
 

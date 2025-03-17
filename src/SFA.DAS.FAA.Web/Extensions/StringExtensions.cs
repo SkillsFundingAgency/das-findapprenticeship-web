@@ -30,7 +30,7 @@ namespace SFA.DAS.FAA.Web.Extensions
             return wordCount;
         }
 
-        public static string? ToDisplayWage(this decimal? wage, string? wageText = "a year")
+        public static string? ToDisplayWage(this decimal? wage, string wageText = "a year")
         {
             return wage.HasValue ? $"{wage.Value.ToString("C", new CultureInfo("en-GB")).Replace(".00", "")} {wageText}" : null;
         }

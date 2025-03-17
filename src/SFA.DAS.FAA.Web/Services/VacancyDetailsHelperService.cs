@@ -137,7 +137,7 @@ namespace SFA.DAS.FAA.Web.Services
                 case WageType.CompetitiveSalary:
                     return vacancyAdvert.WageText;
                 case WageType.NationalMinimumWageForApprentices:
-                    return vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage(detailsPage ? " for your first year, then could increase depending on your age" : null) ?? vacancyAdvert.WageText;
+                    return vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage(detailsPage ? "for your first year, then could increase depending on your age" : "a year") ?? vacancyAdvert.WageText;
             }
 
             var ageAtStart = GetCandidatesAgeAtStartDateOfVacancy(candidateDateOfBirth.Value, vacancyAdvert.StartDate);
