@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Domain.Extensions
 @model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
 
 @{
@@ -48,7 +49,7 @@
                         this application.</p>
                     <p class="govuk-body">Answers from your application for <b>@Model.PreviousApplication.VacancyTitle</b>
                         at <b>@Model.PreviousApplication.EmployerName</b> (submitted
-                        @Model.PreviousApplication.SubmissionDate.ToString("d MMMM yyyy")).</p>
+                        @Model.PreviousApplication.SubmissionDate.ToGdsDateString()).</p>
                 </div>
             </div>
         }
