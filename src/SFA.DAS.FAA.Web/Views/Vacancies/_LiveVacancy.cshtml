@@ -520,8 +520,7 @@
                             <p>@Model.ApplicationInstructions</p>
                         }
                     }
-                    <form class="form" method="post">
-
+                    <form class="form" method="post" asp-route="@RouteNames.Vacancies" asp-route-VacancyReference="@Model.VacancyReference">
                         <div class="govuk-button-group">
                             <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
                                 Sign in to apply
@@ -562,7 +561,7 @@
                         }
                         else
                         {
-                            <form class="form" method="post">
+                            <form class="form" method="post" asp-route="@RouteNames.Vacancies" asp-route-VacancyReference="@Model.VacancyReference">
                                 <div class="govuk-button-group">
                                     <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
                                         @(Model.ApplicationDetails is { Status: ApplicationStatus.Draft } ? "Continue your application" : " Apply for apprenticeship")
