@@ -1,6 +1,7 @@
 using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -24,8 +25,6 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         public bool ShowEqualityQuestionsBannerMessage { get; set; }
         public class Application
         {
-            private const string DateFormat = "d MMMM yyyy";
-            
             public Guid Id { get; set; }
             public string? VacancyReference { get; set; }
             public string? Title { get; set; }
@@ -54,19 +53,19 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                     Title = source.Title,
                     EmployerName = source.EmployerName,
                     CloseDateTime = source.ClosingDate,
-                    StartedOn = $"Started on {source.CreatedDate.ToString(DateFormat, CultureInfo.InvariantCulture)}",
+                    StartedOn = $"Started on {source.CreatedDate.ToGdsDateString()}",
                     ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate, source.ClosedDate),
                     IsClosingSoon = !source.ClosedDate.HasValue && (daysToExpiry is >= 0 and <= 7),
                     IsClosed = source.ClosedDate.HasValue,
                     Status = source.Status,
                     SubmittedDate = source.Status is (ApplicationStatus.Submitted)
-                        ? $"Submitted on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}" 
+                        ? $"Submitted on {source.SubmittedDate?.ToGdsDateString()}" 
                         : string.Empty,
-                    WithdrawnDate = $"Withdrawn application on {source.WithdrawnDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
+                    WithdrawnDate = $"Withdrawn application on {source.WithdrawnDate?.ToGdsDateString()}",
                     ResponseDate = source.Status switch
                     {
-                        (ApplicationStatus.Successful) => $"Offered on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
-                        ApplicationStatus.Unsuccessful => $"Feedback received on {source.SubmittedDate?.ToString(DateFormat, CultureInfo.InvariantCulture)}",
+                        (ApplicationStatus.Successful) => $"Offered on {source.SubmittedDate?.ToGdsDateString()}",
+                        ApplicationStatus.Unsuccessful => $"Feedback received on {source.SubmittedDate?.ToGdsDateString()}",
                         _ => string.Empty
                     },
                     ResponseNotes = source.Status is ApplicationStatus.Unsuccessful
