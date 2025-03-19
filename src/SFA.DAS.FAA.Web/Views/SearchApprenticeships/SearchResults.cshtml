@@ -58,6 +58,16 @@
                                 <option value="40" selected="@(Model.Distance == 40)">40 miles</option>
                                 <option value="all" selected="@(Model.Distance == null)">across England</option>
                             </select>
+                            <div class="govuk-checkboxes govuk-checkboxes--small govuk-!-margin-top-5">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="ExcludeNational"
+                                           name="ExcludeNational" type="checkbox" value="true"
+                                           checked="@Model.ExcludeNational" />
+                                    <label class="govuk-label govuk-checkboxes__label" asp-for="ExcludeNational">
+                                        Hide companies recruiting nationally
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
                             <div class="govuk-accordion__section">

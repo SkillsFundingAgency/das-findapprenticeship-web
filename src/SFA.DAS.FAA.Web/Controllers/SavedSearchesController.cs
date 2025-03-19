@@ -15,7 +15,7 @@ namespace SFA.DAS.FAA.Web.Controllers
     {
         [HttpGet]
         [Route("unsubscribe", Name = RouteNames.GetSavedSearchesUnsubscribe)]
-        public async Task<IActionResult> Index([FromQuery]string id)
+        public async Task<IActionResult> Unsubscribe([FromQuery]string id)
         {            
             var savedSearchId = dataProtectorService.DecodeData(id);
             if (!Guid.TryParse(savedSearchId, out var searchId)) 
@@ -43,7 +43,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("unsubscribe", Name = RouteNames.PostSavedSearchesUnsubscribe)]
-        public async Task<IActionResult> Index(UnsubscribeSavedSearchesModel model)
+        public async Task<IActionResult> Unsubscribe(UnsubscribeSavedSearchesModel model)
         {
             await mediator.Send(new UnsubscribeSavedSearchCommand
             {

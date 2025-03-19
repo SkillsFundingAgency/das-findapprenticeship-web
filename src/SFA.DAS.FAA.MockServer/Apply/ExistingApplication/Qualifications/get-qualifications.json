@@ -43,118 +43,132 @@
         }
     ],
     "Qualifications": [
-        {
-            "QualificationReferenceId": "20d1923f-25b4-4a37-8580-d04643cf1fba",
-            "Subject": "Linguistics MA (Hons)",
-            "Grade": "2:1",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": "University of Edinburgh"
-        },
-        {
-            "QualificationReferenceId": "20d1923f-25b4-4a37-8580-d04643cf1fba",
-            "QualificationType": "Apprenticeship",
-            "Subject": "Business admin (level 3)",
-            "Grade": "",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
-            "Subject": "English",
-            "Grade": "B",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
-            "Subject": "French",
-            "Grade": "A",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
-            "Subject": "History",
-            "Grade": "A",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "2cb6af9b-77f9-4f47-af64-253a8bcc87bb",
-            "Subject": "Art",
-            "Grade": "B",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "f5cd9f3f-472a-4eae-a666-2b5702bacafb",
-            "Subject": "Education and Early Years",
-            "Grade": "Distinction*",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "7e709598-c0c8-42c1-9588-b9ce61b167f8",
-            "Subject": "Physical education (Level 3)",
-            "Grade": "Merit",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
-            "Subject": "Maths",
-            "Grade": "C",
-            "Level": "",
-            "IsPredicted": true,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
-            "Subject": "Science",
-            "Grade": "B",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
-            "Subject": "English",
-            "Grade": "A",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
-            "Subject": "History",
-            "Grade": "A",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "9bf1de56-c38b-4b90-b2a3-1ad165120381",
-            "Subject": "Geography",
-            "Grade": "D",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        },
-        {
-            "QualificationReferenceId": "e57b417e-2953-4af7-8b60-87508b199ce9",
-            "Subject": "Business management NVQ",
-            "Grade": "Pass",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        }
+      {
+        "QualificationReferenceId": "20d1923f-25b4-4a37-8580-d04643cf1fba",
+        "Subject": "Linguistics MA (Hons)",
+        "Grade": "2:1",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 1,
+        "AdditionalInformation": "University of Edinburgh"
+      },
+      {
+        "QualificationReferenceId": "20d1923f-25b4-4a37-8580-d04643cf1fba",
+        "QualificationType": "Apprenticeship",
+        "Subject": "Business admin (level 3)",
+        "Grade": "",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 2,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
+        "Subject": "English",
+        "Grade": "B",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 3,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
+        "Subject": "French",
+        "Grade": "A",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 4,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "8b1bd375-fd5c-428e-bbaa-f174d6a0b436",
+        "Subject": "History",
+        "Grade": "A",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 5,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "2cb6af9b-77f9-4f47-af64-253a8bcc87bb",
+        "Subject": "Art",
+        "Grade": "B",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 6,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "f5cd9f3f-472a-4eae-a666-2b5702bacafb",
+        "Subject": "Education and Early Years",
+        "Grade": "Distinction*",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 7,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "7e709598-c0c8-42c1-9588-b9ce61b167f8",
+        "Subject": "Physical education (Level 3)",
+        "Grade": "Merit",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 8,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+        "Subject": "Maths",
+        "Grade": "C",
+        "Level": "",
+        "IsPredicted": true,
+        "QualificationOrder": 9,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+        "Subject": "Science",
+        "Grade": "B",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 10,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+        "Subject": "English",
+        "Grade": "A",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 11,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "f0dd327d-8888-4a00-a529-ea8e35d38bb5",
+        "Subject": "History",
+        "Grade": "A",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 12,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "9bf1de56-c38b-4b90-b2a3-1ad165120381",
+        "Subject": "Geography",
+        "Grade": "D",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 13,
+        "AdditionalInformation": ""
+      },
+      {
+        "QualificationReferenceId": "e57b417e-2953-4af7-8b60-87508b199ce9",
+        "Subject": "Business management NVQ",
+        "Grade": "Pass",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 14,
+        "AdditionalInformation": ""
+      }
     ]
 }

@@ -1,8 +1,8 @@
-﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Globalization;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models;
@@ -63,10 +63,5 @@ public class VacancyAdvertViewModel
         var currentDate = dateTimeService.GetDateTime();
         var timeUntilClosing = closingDate.Value.Date - currentDate;
         return (int)Math.Ceiling(timeUntilClosing.TotalDays);
-    }
-
-    private static string? FormatPostDate(DateTime? date)
-    {
-        return date?.ToString("d MMMM", CultureInfo.InvariantCulture);
     }
 }
