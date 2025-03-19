@@ -59,6 +59,7 @@ public record GetApplicationSummaryApiResponse
             public string? Grade { get; set; }
             public string? AdditionalInformation { get; set; }
             public bool? IsPredicted { get; set; }
+            public short? QualificationOrder { get; set; }
             public QualificationReference QualificationReference { get; set; }
         }
 

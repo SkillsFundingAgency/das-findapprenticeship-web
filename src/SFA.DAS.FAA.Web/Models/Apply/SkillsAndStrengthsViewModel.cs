@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
+using System.ComponentModel.DataAnnotations;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
@@ -8,6 +9,7 @@ public class SkillsAndStrengthsViewModel
     [FromRoute]
     public Guid ApplicationId { get; init; }
     public bool? IsSectionComplete { get; set; }
+    [DataType(DataType.MultilineText)]
     public string? SkillsAndStrengths { get; set; }
 
     public string? Employer { get; set; }

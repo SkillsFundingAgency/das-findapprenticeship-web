@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
             return new GetQualificationsQueryResult
             {
                 IsSectionCompleted = source.IsSectionCompleted,
-                Qualifications = source.Qualifications.Select(x => (Qualification)x).ToList(),
+                Qualifications = source.Qualifications.Select(x => (Qualification)x).OrderBy(fil => fil.QualificationOrder).ToList(),
                 QualificationTypes = source.QualificationTypes.Select(x => (QualificationType)x).ToList()
             };
         }
@@ -53,6 +53,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
             public string Grade { get; set; }
             public string AdditionalInformation { get; set; }
             public bool? IsPredicted { get; set; }
+            public short? QualificationOrder { get; set; }
             public Guid? Id { get; set; }
 
             public static implicit operator Qualification(GetQualificationsApiResponse.Qualification source)
@@ -64,6 +65,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetQualifications
                     IsPredicted = source.IsPredicted,
                     Grade = source.Grade,
                     Subject = source.Subject,
+                    QualificationOrder = source.QualificationOrder,
                     Id = source.Id
                 };
             }
