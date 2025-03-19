@@ -66,6 +66,11 @@ namespace SFA.DAS.FAA.Web.Services
             return $"Posted on {postedDate.ToGdsDateString()}";
         }
 
+        public static string ToFullDateString(this DateTime datetime)
+        {
+            return datetime.ToString("d MMMM yyyy", CultureInfo.InvariantCulture);
+        }
+
         public static string GetMapsPostedDate(this DateTime postedDate)
         {
             return $"Posted on {postedDate.ToGdsDateString()}";

@@ -267,5 +267,22 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             // Assert
             result.Should().Be("Line3 (12345)");
         }
+
+        [Test]
+        [MoqInlineAutoData("5-Oct-2023", "5 October 2023")]
+        [MoqInlineAutoData("05-Oct-2023", "5 October 2023")]
+        [MoqInlineAutoData("10-Oct-2023", "10 October 2023")]
+        [MoqInlineAutoData("0001-01-01", "1 January 0001")]
+        public void ToFullDateString_ShouldReturnFormattedDate(string startDate, string expected)
+        {
+            // Arrange
+            var date = Convert.ToDateTime(startDate);
+
+            // Act
+            var result = date.ToFullDateString();
+
+            // Assert
+            result.Should().Be(expected);
+        }
     }
 }
