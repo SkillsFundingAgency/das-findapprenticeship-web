@@ -15,7 +15,7 @@ public class WhenMappingVacanciesToMapData
         source.ApplicationUrl = string.Empty;
         dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow);
         
-        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, source);
+        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, source, null);
     
         actual.Position.Lat.Should().Be(source.Lat);
         actual.Position.Lng.Should().Be(source.Lon);
@@ -53,7 +53,7 @@ public class WhenMappingVacanciesToMapData
         vacancyAdvert.Postcode = postcode;
 
         // act
-        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
 
         // assert
         actual.Job.VacancyLocation.Should().Be(expected);
@@ -84,7 +84,7 @@ public class WhenMappingVacanciesToMapData
         vacancyAdvert.Postcode = postcode;
 
         // act
-        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
 
         // assert
         actual.Job.VacancyLocation.Should().Be($"{expected} and {vacancyAdvert.OtherAddresses!.Count} other locations");
@@ -99,7 +99,7 @@ public class WhenMappingVacanciesToMapData
         vacancyAdvert.Postcode = string.Empty;
         
         // act
-        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
         
         // assert
         actual.Job.VacancyLocation.Should().Be("Recruiting nationally");

@@ -1,0 +1,111 @@
+{
+  "id": "1000012484",
+  "title": "Scrum Master Apprenticeship",
+  "vacancyReference": "VAC1000012484",
+  "longDescription": "<ul>\r\n<li>Ensure that Agile events are positive, productive, and timeboxed</li>\r\n<li>Encourage the Squads understanding of the Agile framework and enable them to improve their practices</li>\r\n<li>Help the team focus on creating high-value increments that meet the Definition of Done</li>\r\n<li>Coach the Squad to self-manage and use data to support continuous improvement in delivering change and value safely</li>\r\n<li>Liaise with Leads for individual development where appropriate</li>\r\n<li>Facilitate impediment resolution</li>\r\n<li>Manage and track impediments, risks and dependencies</li>\r\n<li>Facilitate stakeholder collaboration as requested or needed</li>\r\n<li>Remove barriers between stakeholders and Squads</li>\r\n<li>Help find techniques for effective Product Goal definition and Product Backlog management</li>\r\n<li>Help the Squad understand the need for clear and concise Product Backlog items</li>\r\n<li>Actively participate, share ideas, and drive improvement in the Scrum Master Chapter</li>\r\n<li>Lead, train, and coach the organisation in its Agile adoption</li>\r\n<li>Present on progress of sprint and quarter in terms of performance and flow metrics</li>\r\n</ul>",
+  "outcomeDescription": "<ul>\r\n<li>Help find techniques for effective Product Goal definition and Product Backlog managemen</li>\r\n<li>Help the Squad understand the need for clear and concise Product Backlog items</li>\r\n<li>Actively participate, share ideas, and drive improvement in the Scrum Master Chapter</li>\r\n<li>Lead, train, and coach the organisation in its Agile adoption<br>Present on progress of sprint and quarter in terms of performance and flow metrics</li>\r\n</ul>",
+  "trainingDescription": "<ul>\r\n<li>Experience of working on workflow and CRM solution deliveries is desirable.</li>\r\n<li>Highly motivated self-starter, comfortable offering mentorship, coaching, and leadership both individually and at squad levels.</li>\r\n<li>Hands-on experience as a Scrum Master using Agile frameworks such as Scrum and Kanban</li>\r\n<li>Use of PowerBI/ADO/Jira work management or similar tools to support agile ways of working</li>\r\n<li>Experience of collecting and using data to drive team improvement</li>\r\n<li>Confident delivering formal and informal training</li>\r\n<li>A flexible, resilient facilitator, able to explain why</li>\r\n<li>Able to facilitate sessions to help the team break down complex solutions into smaller, achievable chunks of work</li>\r\n<li>Adept at influencing behaviour cross-team and cross-discipline without having formal organisational hierarchy</li>\r\n<li>Listens to the team and empowers them to tackle challenge</li>\r\n</ul>",
+  "skills": [
+    "Communication skills",
+    "Attention to detail",
+    "Organisation skills"
+  ],
+  "startDate": "2025-09-20T00:00:00Z",
+  "closingDate": "2024-09-20T00:00:00Z",
+  "postedDate": "2023-12-20T10:46:52.576Z",
+  "wageType": 2,
+  "wageText": "£24,000 a year",
+  "wageUnit": 4,
+  "distance": 0,
+  "courseTitle": "Associate project manager",
+  "courseLevel": "4",
+  "courseId": 128,
+  "apprenticeshipLevel": "Higher",
+  "category": "Associate project manager",
+  "categoryCode": "SSAT1.UNKNOWN",
+  "subCategory": "Associate project manager",
+  "subCategoryCode": "Associate project manager",
+  "description": "Pension \r\nPrivate medical and dental and eye care vouchers\r\nBonus\r\nDeath in service - 4x salary\r\nIncome protection\r\nSmart working week. Flexibility around core hours (10-4)\r\n27 days leave + bank holidays rising to 30 days after 5 years of service\r\nSeason ticket loan\r\nTraining and qualifications",
+  "hoursPerWeek": 40,
+  "isDisabilityConfident": false,
+  "isPositiveAboutDisability": false,
+  "isRecruitVacancy": true,
+  "location": {
+    "latitude": 0,
+    "longitude": 0
+  },
+  "numberOfPositions": 2,
+  "providerName": "BARKING AND DAGENHAM COLLEGE",
+  "standardLarsCode": 128,
+  "vacancyLocationType": 1,
+  "workingWeek": "Monday to Friday 9am to 5pm",
+  "expectedDuration": "24 Months",
+  "score": 0,
+  "ukprn": "10000528",
+  "employerName": "BOARD & COMPASS LIMITED LIABILITY PARTNERSHIP",
+  "employerDescription": "Investment Management company",
+  "isEmployerAnonymous": false,
+  "qualifications": [
+    {
+      "qualificationType": "GCSE or equivalent",
+      "subject": "Maths",
+      "grade": "1",
+      "weighting": 0
+    }
+  ],
+  "address": {
+    "addressLine1": "5 Pine Court",
+    "addressLine2": "Bristol",
+    "addressLine3": "Avon",
+    "postcode": "BS31 2RA"
+  },
+  "courseSkills": [
+    "Project governance - Project monitoring and reporting cycle to track, assess and interpret performance by the application of monitoring techniques to analyse status and manage information.",
+    "Stakeholder and communications management - Manage stakeholders, taking account of their levels of influence and particular interests. Manage conflicts and negotiations. Communicate to a variety of different audiences. Contribute to negotiations relating to project objectives.",
+    "Budgeting and cost control - Develop and agree project budgets, monitor forecast and actual costs against them and control changes. Support funding submissions. Tracking systems for actual costs, accruals and committed costs; structures for alternative cost breakdowns.",
+    "Business case - Contribute to the preparation or maintenance of a business case including achieving required outcomes.",
+    "Scope management - Determine, control and manage changes to the scope of a project, including assumptions, dependencies and constraints.",
+    "Consolidated planning - Consolidate and document the fundamental components of projects. Monitor progress against the consolidated plan and refine as appropriate, implementing the change control process where relevant.",
+    "Schedule management - Prepare and maintain schedules for activities aligned to project delivery.",
+    "Risk, and issue management - Identify and monitor project risk or opportunity, plan and implement responses to them, contribute to a risk management plan. Respond to and manage issues within a defined governance structure.",
+    "Contract management and procurement - Facilitate a procurement process, contribute to the definition of contractual agreements and contribute to managing a contract.",
+    "Quality management - Develop a quality management plan, manage project assurance, and contribute to peer reviews. Utilise an organisation’s continual improvement process including lessons learned.",
+    "Resource management - Develop resource management plans for project activities, acquire and manage resources including commitment acceptance, monitor progress against plans."
+  ],
+  "courseCoreDuties": [],
+  "courseOverviewOfRole": "Managing project work and teams for businesses and other organisations.",
+  "standardPageUrl": "https://instituteforapprenticeships.org/apprenticeship-standards/associate-project-manager-v1-3",
+  "levels": [
+    {
+      "code": 2,
+      "name": "GCSE"
+    },
+    {
+      "code": 3,
+      "name": "A level"
+    },
+    {
+      "code": 4,
+      "name": "higher national certificate (HNC)"
+    },
+    {
+      "code": 5,
+      "name": "higher national diploma (HND)"
+    },
+    {
+      "code": 6,
+      "name": "degree"
+    },
+    {
+      "code": 7,
+      "name": "master’s degree"
+    }
+  ],
+  "vacancySource": 0,
+  "apprenticeMinimumWage": 15704,
+  "over25NationalMinimumWage": 25396.8,
+  "between21AndUnder25NationalMinimumWage": 22,
+  "between18AndUnder21NationalMinimumWage": 20,
+  "under18NationalMinimumWage": 15704,
+  "candidateDateOfBirth": "2005-09-20T00:00:00Z"
+}

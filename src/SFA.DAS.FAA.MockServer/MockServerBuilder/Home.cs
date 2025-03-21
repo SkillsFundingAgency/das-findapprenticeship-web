@@ -14,16 +14,16 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
         {
             var regexMaxTimeOut = TimeSpan.FromSeconds(3);
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
-            .UsingGet()
-            .WithParam(MatchSearchLocationManchester)
-        ).RespondWith(
-            Response.Create()
-                .WithStatusCode(200)
-                .WithHeader("Content-Type", "application/json")
-                .WithBodyFromFile("search-apprentices-index-location.json"));
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships$", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet()
+                .WithParam(MatchSearchLocationManchester)
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("search-apprentices-index-location.json"));
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships$", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet()
                 .WithParam(MatchSearchLocationCoventry)
             ).RespondWith(
@@ -32,15 +32,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("search-apprentices-index-no-location-found.json"));
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
-                .UsingGet()
-            ).RespondWith(
-                Response.Create()
-                    .WithStatusCode(200)
-                    .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("search-apprentices-index.json"));
-
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships", RegexOptions.None, regexMaxTimeOut))
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships$", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet()
                 .WithParam(MatchCandidateId)
             ).RespondWith(
@@ -48,6 +40,16 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("search-apprentices-authenticated-index.json"));
+            
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships$", RegexOptions.None, regexMaxTimeOut))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("search-apprentices-index.json"));
+
+            
             
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, @"/locations", RegexOptions.None, regexMaxTimeOut))
                 .UsingGet())
@@ -96,6 +98,16 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                     .WithBodyFromFile("search-apprenticeships-no-results.json"));
 
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults", RegexOptions.None, regexMaxTimeOut))
+                    .WithParam(MatchCandidateIdCompleteProfile)
+                    .WithParam(MatchLocationParamCoventry)
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile("search-apprenticeships-results-signed-in.json"));
+            
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/searchapprenticeships/searchResults", RegexOptions.None, regexMaxTimeOut))
                     .UsingGet())
                 .RespondWith(
                     Response.Create()
@@ -109,6 +121,16 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                     Response.Create()
                         .WithStatusCode(404)
                         .WithHeader("Content-Type", "application/json"));
+            
+            
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/VAC\\d{10}$", RegexOptions.None, regexMaxTimeOut))
+                    .WithParam(MatchCandidateIdCompleteProfile)
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBodyFromFile("search-vacancy-detail-authenticated.json"));
             
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/vacancies/VAC\\d{10}$", RegexOptions.None, regexMaxTimeOut))
                     .UsingGet())
@@ -254,11 +276,19 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
         {
             return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Equals("Manchester", StringComparison.CurrentCultureIgnoreCase);
         }
+        private static bool MatchLocationParamCoventry(IDictionary<string, WireMockList<string>> arg)
+        {
+            return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Equals("Coventry", StringComparison.CurrentCultureIgnoreCase);
+        }
 
         private static bool MatchCandidateId(IDictionary<string, WireMockList<string>> arg)
         {
             return arg.ContainsKey("candidateId") && arg["candidateId"].Count != 0 && Guid.TryParse(arg["candidateId"][0], out _);
         }
 
+        private static bool MatchCandidateIdCompleteProfile(IDictionary<string, WireMockList<string>> arg)
+        {
+            return arg.ContainsKey("candidateId") && arg["candidateId"].Count != 0 && arg["candidateId"][0].Equals(Constants.CandidateIdWithApplications, StringComparison.CurrentCultureIgnoreCase);
+        }
     }
 }

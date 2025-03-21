@@ -103,6 +103,15 @@ Scenario: Navigate to search results page with no results found
 	Then the page is successfully returned
 	And the page content includes the following: No results found
 
+@WireMockServer @AuthenticatedUser
+Scenario: Navigate to search results page with signed in with age based wage
+	When I navigate to the following url: /apprenticeships?location=Coventry
+	Then the page is successfully returned
+	And the page content includes the following: 18 a year
+	And the page content includes the following: 16 a year
+	And the page content includes the following: 21 a year
+	And the page content includes the following: 25 a year
+	
 @WireMockServer @RunOnEnvironment
 Scenario: Navigate to search results page with NHS search results found
 	When I navigate to the following url: /apprenticeships?sort=AgeAsc&searchTerm=NHS
@@ -138,6 +147,14 @@ Scenario: Navigate to vacancy details page with vacancy found
 	When I navigate to the following url: /apprenticeship/VAC1000012484
 	Then the page is successfully returned
 	And the page content includes the following: Summary
+	
+@WireMockServer @AuthenticatedUser
+Scenario: Navigate to vacancy details page with vacancy found authenticated user
+	When I navigate to the following url: /apprenticeship/VAC1000012484
+	Then the page is successfully returned
+	And the page content includes the following: Summary
+	And the page content includes the following: 15,704 for your first year, then could increase depending on your age
+	And the page content includes the following: National Minimum Wage rate for apprentices
 
 @WireMockServer @RunOnEnvironment
 Scenario: Navigate to vacancy details page with invalid vacancy reference format

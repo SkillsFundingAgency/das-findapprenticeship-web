@@ -84,6 +84,12 @@ public class WhenGettingVacancyDetails
             result.Vacancy.CourseRoute.Should().Be(expectedResponse.CourseRoute);
             result.Vacancy.CourseLevel.Should().Be(expectedResponse.CourseLevel);
             result.Vacancy.VacancySource.Should().Be(expectedResponse.VacancySource);
+            result.Vacancy.CandidateDateOfBirth.Should().Be(expectedResponse.CandidateDateOfBirth);
+            result.Vacancy.Under18NationalMinimumWage.Should().Be(expectedResponse.Under18NationalMinimumWage);
+            result.Vacancy.Between18AndUnder21NationalMinimumWage.Should().Be(expectedResponse.Between18AndUnder21NationalMinimumWage);
+            result.Vacancy.Between21AndUnder25NationalMinimumWage.Should().Be(expectedResponse.Between21AndUnder25NationalMinimumWage);
+            result.Vacancy.Over25NationalMinimumWage.Should().Be(expectedResponse.Over25NationalMinimumWage);
+            result.Vacancy.ApprenticeMinimumWage.Should().Be(expectedResponse.ApprenticeMinimumWage);
         }
     }
 }

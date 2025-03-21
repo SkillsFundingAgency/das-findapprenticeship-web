@@ -6,7 +6,7 @@ using SFA.DAS.FAA.Domain.SearchResults;
 namespace SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 
 [ApiType("GetApprenticeshipVacancyApiResponse")]
-public class GetApprenticeshipVacancyApiResponse
+public class GetApprenticeshipVacancyApiResponse : IVacancyAdvert
 {
     public string? Id { get; init; }
     public string? Title { get; init; }
@@ -17,17 +17,17 @@ public class GetApprenticeshipVacancyApiResponse
     public string? ThingsToConsider { get; init; }
     public IEnumerable<string>? Skills { get; init; }
 
-    public DateTime StartDate { get; init; }
+    public DateTime StartDate { get; set; }
     public DateTime ClosingDate { get; set; }
     public DateTime PostedDate { get; init; }
     public DateTime? WithdrawnDate { get; init; }
 
 
     public string? WageAmount { get; init; }
-    public int WageType { get; init; }
+    public int WageType { get; set; }
     public decimal? WageAmountLowerBound { get; init; }
     public decimal? WageAmountUpperBound { get; init; }
-    public string? WageText { get; init; }
+    public string? WageText { get; set; }
     public int WageUnit { get; init; }
     public string WageAdditionalInformation { get; set; }
 
@@ -96,6 +96,12 @@ public class GetApprenticeshipVacancyApiResponse
     public string? CandidatePostcode { get; set; }
     public bool IsSavedVacancy { get; set; } = false;
     public VacancyDataSource VacancySource { get; set; }
+    public decimal? Over25NationalMinimumWage { get; set; }
+    public decimal? Between21AndUnder25NationalMinimumWage { get; set; }
+    public decimal? Between18AndUnder21NationalMinimumWage { get; set; }
+    public decimal? Under18NationalMinimumWage { get; set; }
+    public decimal? ApprenticeMinimumWage { get; set; }
+    public DateTime? CandidateDateOfBirth { get; set; }
 }
 
 [ApiType("VacancyQualificationApiResponse")]

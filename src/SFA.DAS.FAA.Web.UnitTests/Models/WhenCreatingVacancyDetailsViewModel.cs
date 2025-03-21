@@ -18,7 +18,7 @@ public class WhenCreatingVacancyDetailsViewModel
             Title = source.Vacancy!.Title,
             VacancyReference = source.Vacancy?.VacancyReference,
             VacancySummary = source.Vacancy?.Description,
-            AnnualWage = source.Vacancy?.WageText,
+            AnnualWage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source.Vacancy, source.Vacancy.CandidateDateOfBirth),
             HoursPerWeek = source.Vacancy?.HoursPerWeek.ToString().GetWorkingHours(),
             Duration = source.Vacancy?.ExpectedDuration!.ToLower(),
             PositionsAvailable = source.Vacancy?.NumberOfPositions,
