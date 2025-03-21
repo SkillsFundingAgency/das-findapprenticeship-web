@@ -78,7 +78,7 @@
   ],
   "vacancies": [
     {
-      "id": "VAC1000012741",
+      "id": 1000012741,
       "closingDate": "2024-01-31T00:00:00Z",
       "employerName": "COSTCO WHOLESALE UK LIMITED",
       "postedDate": "2023-11-28T13:27:11.014Z",
@@ -101,7 +101,7 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000012739",
+      "id": 1000012739,
       "closingDate": "2024-01-31T00:00:00Z",
       "employerName": "QwqlQxKKkP_EmployerName",
       "postedDate": "2023-11-28T13:23:46.763Z",
@@ -123,7 +123,7 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000006993",
+      "id": 1000006993,
       "closingDate": "2020-10-23T00:00:00Z",
       "employerName": "ESFA LTD",
       "postedDate": "2023-11-28T13:22:35.224Z",
@@ -132,11 +132,12 @@
       "courseTitle": "Abattoir worker",
       "wageText": "£9,464.00 to £18,137.60",
       "wageType": 3,
+      "startDate": "2017-03-04T00:00:00Z",
       "over25NationalMinimumWage": 25396.8,
       "between21AndUnder25NationalMinimumWage": 25396.8,
       "between18AndUnder21NationalMinimumWage": 20800,
-      "under18NationalMinimumWage": 15704,
-      "apprenticeMinimumWage": 15704,
+      "under18NationalMinimumWage": 16,
+      "apprenticeMinimumWage": 16,
       "addressLine1": "43 Duke Street",
       "addressLine2": "Edinburgh",
       "postCode": "EH6 8HH",
@@ -148,8 +149,9 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000012735",
+      "id": 1000012735,
       "closingDate": "2024-01-31T00:00:00Z",
+      "startDate": "2020-03-04T00:00:00Z",
       "employerName": "SPECIALIZED APPLIANCE SERVICE LTD",
       "postedDate": "2023-11-28T13:17:31.019Z",
       "title": "SygGvKpIPY_28Nov2023_13082928738 apprenticeship",
@@ -159,7 +161,7 @@
       "wageType": 3,
       "over25NationalMinimumWage": 21673.6,
       "between21AndUnder25NationalMinimumWage": 22396.8,
-      "between18AndUnder21NationalMinimumWage": 19800,
+      "between18AndUnder21NationalMinimumWage": 18,
       "under18NationalMinimumWage": 15704,
       "apprenticeMinimumWage": 10982.4,
       "addressLine1": "45",
@@ -175,17 +177,18 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000012737",
+      "id": 1000012737,
       "closingDate": "2024-01-31T00:00:00Z",
       "employerName": "SPECIALIZED APPLIANCE SERVICE LTD",
       "postedDate": "2023-11-28T13:17:29.625Z",
+      "startDate": "2023-03-04T00:00:00Z",
       "title": "ZlvpXOaRXU_28Nov2023_13082962967 apprenticeship",
       "vacancyReference": "VAC1000012737",
       "courseTitle": "Abattoir worker",
       "wageText": "£10,982.40 to £21,673.60",
       "wageType": 3,
       "over25NationalMinimumWage": 21673.6,
-      "between21AndUnder25NationalMinimumWage": 22396.8,
+      "between21AndUnder25NationalMinimumWage": 21,
       "between18AndUnder21NationalMinimumWage": 19800,
       "under18NationalMinimumWage": 15704,
       "apprenticeMinimumWage": 10982.4,
@@ -202,7 +205,7 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000012722",
+      "id": 1000012722,
       "closingDate": "2024-01-31T00:00:00Z",
       "employerName": "SPECIALIZED APPLIANCE SERVICE LTD",
       "postedDate": "2023-11-28T08:49:31.043Z",
@@ -211,7 +214,8 @@
       "courseTitle": "Abattoir worker",
       "wageText": "£10,982.40 to £21,673.60",
       "wageType": 3,
-      "over25NationalMinimumWage": 21673.6,
+      "startDate": "2027-03-04T00:00:00Z",
+      "over25NationalMinimumWage": 25,
       "between21AndUnder25NationalMinimumWage": 22396.8,
       "between18AndUnder21NationalMinimumWage": 19800,
       "under18NationalMinimumWage": 15704,
@@ -229,7 +233,7 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000012718",
+      "id": 1000012718,
       "closingDate": "2024-01-31T00:00:00Z",
       "employerName": "eqxsGHfsvu_EmployerName",
       "postedDate": "2023-11-28T08:44:20.844Z",
@@ -256,7 +260,7 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000006990",
+      "id": 1000006990,
       "closingDate": "2020-10-23T00:00:00Z",
       "employerName": "ESFA LTD",
       "postedDate": "2023-11-28T08:44:20.633Z",
@@ -281,7 +285,7 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000012715",
+      "id": 1000012715,
       "closingDate": "2024-01-31T00:00:00Z",
       "employerName": "SPECIALIZED APPLIANCE SERVICE LTD",
       "postedDate": "2023-11-28T08:43:47.862Z",
@@ -308,7 +312,7 @@
       "applicationUrl": null
     },
     {
-      "id": "VAC1000012713",
+      "id": 1000012713,
       "closingDate": "2024-01-31T00:00:00Z",
       "employerName": "UTuxQrsHtB_EmployerName",
       "postedDate": "2023-11-28T08:37:36.631Z",
@@ -342,6 +346,7 @@
       "title": "AHP IMSK Services - Business & Administration Apprentice",
       "vacancyReference": "VACVACC9262-24-1846",
       "courseTitle": null,
+      "wageText": null,
       "wageType": 4,
       "addressLine1": null,
       "addressLine2": null,
@@ -372,6 +377,7 @@
       "title": "Administrative Assistant (Apprenticeship)",
       "vacancyReference": "VACVACC9335-24-0218",
       "courseTitle": null,
+      "wageText": null,
       "wageType": 4,
       "addressLine1": null,
       "addressLine2": null,
