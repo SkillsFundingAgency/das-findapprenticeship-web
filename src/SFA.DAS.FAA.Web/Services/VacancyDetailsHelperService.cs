@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using SFA.DAS.FAA.Domain;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Services
@@ -33,18 +34,18 @@ namespace SFA.DAS.FAA.Web.Services
 
             return daysToExpiry switch
             {
-                < 0 => $"Closed on {closingDate:dddd d MMMM}",
+                < 0 => $"Closed on {closingDate.ToGdsDateStringWithDayOfWeek()}",
                 0 => $"Closes today{timeSuffix}",
-                1 => $"Closes tomorrow ({closingDate:dddd d MMMM}{timeSuffix})",
-                <= 31 => $"Closes in {daysToExpiry} days ({closingDate:dddd d MMMM}{timeSuffix})",
-                _ => $"Closes on {closingDate:dddd d MMMM yyyy}"
+                1 => $"Closes tomorrow ({closingDate.ToGdsDateStringWithDayOfWeek()}{timeSuffix})",
+                <= 31 => $"Closes in {daysToExpiry} days ({closingDate.ToGdsDateStringWithDayOfWeek()}{timeSuffix})",
+                _ => $"Closes on {closingDate.ToGdsDateStringWithDayOfWeek()}"
             };
         }
         
         public static string GetClosingDate(IDateTimeService dateTimeService, DateTime closingDate, DateTime? closedDate, bool isExternalVacancy = false)
         {
             return closedDate.HasValue
-                ? $"Closed on {closedDate:dddd d MMMM}"
+                ? $"Closed on {closedDate?.ToGdsDateStringWithDayOfWeek()}"
                 : GetClosingDate(dateTimeService, closingDate, isExternalVacancy);    
         }
 
@@ -65,7 +66,7 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string GetPostedDate(this DateTime postedDate)
         {
-            return $"Posted on {postedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}";
+            return $"Posted on {postedDate.ToGdsDateString()}";
         }
 
         public static string GetStartDate(this DateTime startDate)
@@ -75,7 +76,7 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string GetMapsPostedDate(this DateTime postedDate)
         {
-            return $"Posted on {postedDate.ToString("d MMMM", CultureInfo.InvariantCulture)}";
+            return $"Posted on {postedDate.ToGdsDateString()}";
         }
 
         public static string GetNhsWageText(string wageAmountText)
@@ -89,7 +90,7 @@ namespace SFA.DAS.FAA.Web.Services
                 .Replace("�", string.Empty) // Application env & Pipeline doesn't recognise the Pound Sign
                 .Replace("£", string.Empty) 
                 .Replace("\u00A3", string.Empty) // Unicode for Pound Sign
-            .Replace("u+00A3", string.Empty);
+                .Replace("u+00A3", string.Empty);
 
             var wageTextRegex = new Regex(@"\d+\.\d{2}", RegexOptions.None, TimeSpan.FromSeconds(3));
             var matches = wageTextRegex.Matches(wageAmountText);

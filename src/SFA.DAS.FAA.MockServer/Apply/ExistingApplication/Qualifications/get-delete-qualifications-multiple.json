@@ -6,15 +6,17 @@
             "Grade": "2:1",
             "Level": "",
             "IsPredicted": false,
+            "QualificationOrder": 1,
             "AdditionalInformation": "University of Edinburgh"
         },
         {
-            "QualificationType": "Apprenticeship",
-            "Subject": "Business admin (level 3)",
-            "Grade": "",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
+          "QualificationType": "Apprenticeship",
+          "Subject": "Business admin (level 3)",
+          "Grade": "",
+          "Level": "",
+          "IsPredicted": false,
+          "QualificationOrder": 2,
+          "AdditionalInformation": ""
         }
     ]
 }

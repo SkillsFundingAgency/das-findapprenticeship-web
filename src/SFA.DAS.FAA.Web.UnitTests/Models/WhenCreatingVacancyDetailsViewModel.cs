@@ -1,15 +1,11 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
+﻿using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Extensions;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
@@ -30,7 +26,7 @@ public class WhenCreatingVacancyDetailsViewModel
             ThingsToConsider = source.Vacancy?.ThingsToConsider,
             ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.Vacancy.ClosingDate, !string.IsNullOrEmpty(source.Vacancy.ApplicationUrl)),
             PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
-            StartDate = source.Vacancy.StartDate.GetStartDate(),
+            StartDate = source.Vacancy.StartDate.ToGdsDateStringWithDayOfWeek(),
             WorkLocation = source.Vacancy.Address,
             WorkingPattern = source.Vacancy?.WorkingWeek,
             TrainingProviderName = source.Vacancy?.ProviderName,
@@ -60,7 +56,7 @@ public class WhenCreatingVacancyDetailsViewModel
                     ? source.Vacancy?.Levels.FirstOrDefault(le => le.Code == Convert.ToInt16(source.Vacancy?.CourseLevel))?.Name
                     : string.Empty,
             IsClosed = source.Vacancy?.IsClosed ?? false,
-            ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+            ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("dddd d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
             ApplicationUrl = $"https://{source.Vacancy.ApplicationUrl}",
             GoogleMapsId = mapsId,
             EmploymentLocationInformation = source.Vacancy.EmploymentLocationInformation
@@ -69,7 +65,6 @@ public class WhenCreatingVacancyDetailsViewModel
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, source, mapsId);
 
         actual.Should().BeEquivalentTo(expected);
-        
     }
 
     [Test]
@@ -142,7 +137,7 @@ public class WhenCreatingVacancyDetailsViewModel
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
 
         actual.ApplicationUrl.Should().Be(expectedUrl);
-        actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM})");
+        actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM yyy})");
     }
     [Test]
     [MoqInlineAutoData("","")]
@@ -160,7 +155,7 @@ public class WhenCreatingVacancyDetailsViewModel
         var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
 
         actual.ApplicationUrl.Should().Be(expectedUrl);
-        actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM} at 11:59pm)");
+        actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM yyy} at 11:59pm)");
     }
 
     [Test]

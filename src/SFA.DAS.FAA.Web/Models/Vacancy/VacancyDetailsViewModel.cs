@@ -1,6 +1,7 @@
 using System.Globalization;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Domain.SearchResults;
@@ -108,7 +109,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 ApplicationInstructions = source.Vacancy.ApplicationInstructions,
                 ApplicationUrl = !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
                 CandidatePostcode = source.Vacancy?.CandidatePostcode,
-                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty}.",
+                ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToGdsDateStringWithDayOfWeek() ?? string.Empty}.",
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate, !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
                 CompanyBenefits = source.Vacancy?.CompanyBenefitsInformation,
                 ContactEmail = source.Vacancy?.EmployerContactEmail ?? source.Vacancy?.ProviderContactEmail,
@@ -140,10 +141,10 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 MapLocations = mapLocations,
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
-                PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
+                PostedDate = source.Vacancy?.PostedDate.GetPostedDate(),
                 Skills = source.Vacancy?.Skills?.ToList(),
                 StandardPageUrl = source.Vacancy?.StandardPageUrl,
-                StartDate = source.Vacancy.StartDate.GetStartDate(),
+                StartDate = source.Vacancy?.StartDate.ToGdsDateStringWithDayOfWeek(),
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
                 Title = source.Vacancy?.Title,
                 TrainingPlan = source.Vacancy?.TrainingDescription,

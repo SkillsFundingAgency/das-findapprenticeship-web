@@ -15,6 +15,7 @@ public class GetDeleteQualificationsQueryResult
         public string Grade { get; set; }
         public string AdditionalInformation { get; set; }
         public bool? IsPredicted { get; set; }
+        public short? QualificationOrder { get; set; }
     }
 
     public static implicit operator GetDeleteQualificationsQueryResult(GetDeleteQualificationsApiResponse source)
@@ -30,8 +31,9 @@ public class GetDeleteQualificationsQueryResult
                 Level = x.Level,
                 Grade = x.Grade,
                 AdditionalInformation = x.AdditionalInformation,
-                IsPredicted = x.IsPredicted
-            }).ToList()
+                IsPredicted = x.IsPredicted,
+                QualificationOrder = x.QualificationOrder
+            }).OrderBy(fil => fil.QualificationOrder).ToList()
         };
     }
 }

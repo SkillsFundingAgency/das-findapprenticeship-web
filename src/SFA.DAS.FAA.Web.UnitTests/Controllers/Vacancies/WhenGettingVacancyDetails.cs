@@ -1,24 +1,20 @@
 using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 using System.Net;
 using FluentValidation.Results;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Web.Models.Applications;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Primitives;
+using SFA.DAS.FAA.Web.Controllers;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
 
@@ -42,7 +38,7 @@ public class WhenGettingVacancyDetails
         [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
-        [Greedy] Web.Controllers.VacanciesController controller)
+        [Greedy] VacanciesController controller)
     {
         request.VacancyReference = vacancyReference;
         mediator.Setup(x => x.Send(It.Is<GetApprenticeshipVacancyQuery>(c=>c.VacancyReference == queryVal), It.IsAny<CancellationToken>()))
@@ -98,7 +94,7 @@ public class WhenGettingVacancyDetails
         ValidationResult result,
         [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
-        [Greedy] Web.Controllers.VacanciesController controller)
+        [Greedy] VacanciesController controller)
     {
         var request = new GetVacancyDetailsRequest
         {
@@ -124,7 +120,7 @@ public class WhenGettingVacancyDetails
         [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
-        [Greedy] Web.Controllers.VacanciesController controller)
+        [Greedy] VacanciesController controller)
     {
         result.Vacancy = null;
         controller.ControllerContext = new ControllerContext
@@ -172,7 +168,7 @@ public class WhenGettingVacancyDetails
         [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
-        [Greedy] Web.Controllers.VacanciesController controller)
+        [Greedy] VacanciesController controller)
     {
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
@@ -214,5 +210,23 @@ public class WhenGettingVacancyDetails
 
         actualModel.Should().NotBeNull();
         actualModel?.BackLinkUrl.Should().Be(expectedUrl);
+    }
+
+    [Test]
+    public void Vacancy_Route_Order_Should_Be_Correct()
+    {
+        // Arrange
+        var methodInfo = typeof(VacanciesController).GetMethod("Vacancy");
+        var routeAttributes = methodInfo?.GetCustomAttributes(typeof(RouteAttribute), false).Cast<RouteAttribute>().ToList();
+
+        // Act
+        var routeOrder1 = routeAttributes?.FirstOrDefault(r => r.Template == "apprenticeship/{vacancyReference}")?.Order;
+        var routeOrder2 = routeAttributes?.FirstOrDefault(r => r.Template == "apprenticeship/reference/{vacancyReference}")?.Order;
+        var routeOrder3 = routeAttributes?.FirstOrDefault(r => r.Template == "apprenticeship/nhs/{vacancyReference}")?.Order;
+
+        // Assert
+        routeOrder1.Should().Be(1);
+        routeOrder2.Should().Be(2);
+        routeOrder3.Should().Be(3);
     }
 }
