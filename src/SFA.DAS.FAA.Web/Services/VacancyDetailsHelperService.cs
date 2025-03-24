@@ -128,9 +128,6 @@ namespace SFA.DAS.FAA.Web.Services
 
         public static string GetVacancyAdvertWageText(IVacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth = null, bool detailsPage = false)
         {
-            if(!candidateDateOfBirth.HasValue)
-                return vacancyAdvert.WageText;
-
             switch ((WageType)vacancyAdvert.WageType)
             {
                 case WageType.Unknown:
@@ -140,7 +137,10 @@ namespace SFA.DAS.FAA.Web.Services
                 case WageType.NationalMinimumWageForApprentices:
                     return vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage(detailsPage ? "for your first year, then could increase depending on your age" : "a year") ?? vacancyAdvert.WageText;
             }
-
+            
+            if(!candidateDateOfBirth.HasValue)
+                return vacancyAdvert.WageText;
+            
             var ageAtStart = GetCandidatesAgeAtStartDateOfVacancy(candidateDateOfBirth.Value, vacancyAdvert.StartDate);
             return ageAtStart switch
             {

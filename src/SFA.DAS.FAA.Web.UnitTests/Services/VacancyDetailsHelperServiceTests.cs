@@ -283,9 +283,15 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be("Line3 (12345)");
         }
 
-        [Test, AutoData]
-        public void GetVacancyAdvertWageText_Returns_Wage_Text_When_No_Candidate_Date_Of_Birth(VacancyAdvert vacancyAdvert)
+        [Test]
+        [InlineAutoData(WageType.Unknown)]
+        [InlineAutoData(WageType.FixedWage)]
+        [InlineAutoData(WageType.CompetitiveSalary)]
+        [InlineAutoData(WageType.NationalMinimumWage)]
+        public void GetVacancyAdvertWageText_Returns_Wage_Text_When_No_Candidate_Date_Of_Birth(WageType wageType, VacancyAdvert vacancyAdvert)
         {
+            vacancyAdvert.WageType = (int)wageType;
+            
             var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert);
             
             actual.Should().Be(vacancyAdvert.WageText);
@@ -348,6 +354,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage());
             
         }
+        
         [Test, AutoData]
         public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_Candidates_Date_Of_Birth_And_Advert_Start_Date_For_ApprenticeMinimumWageType_For_Detail(VacancyAdvert vacancyAdvert)
         {
@@ -356,7 +363,16 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, new DateTime(), true);
             
             actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage("for your first year, then could increase depending on your age"));
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_No_Date_Of_Birth_And_Advert_Start_Date_For_ApprenticeMinimumWageType_For_Detail(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWageForApprentices;
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, true);
             
+            actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage("for your first year, then could increase depending on your age"));
         }
 
         [Test]
