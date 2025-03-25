@@ -356,6 +356,18 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         }
         
         [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Empty_String_If_No_Wage_Text(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageText = null;
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, true);
+            
+            actual.Should().BeNull();
+            
+        }
+        
+        [Test, AutoData]
         public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_Candidates_Date_Of_Birth_And_Advert_Start_Date_For_ApprenticeMinimumWageType_For_Detail(VacancyAdvert vacancyAdvert)
         {
             vacancyAdvert.WageType = (int)WageType.NationalMinimumWageForApprentices;
@@ -373,6 +385,28 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, true);
             
             actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage("for your first year, then could increase depending on your age"));
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_No_Date_Of_Birth_And_Advert_Start_Date_For_MinimumWageType_For_Detail(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+            vacancyAdvert.WageText = "£15,704 to £25,396.80 a year";
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, true);
+            
+            actual.Should().Be("£15,704 to £25,396.80, depending on your age");
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_No_Date_Of_Birth_And_Advert_Start_Date_For_MinimumWageType_For_Search(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+            vacancyAdvert.WageText = "£15,704 to £25,396.80 a year";
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, false);
+            
+            actual.Should().Be("£15,704 to £25,396.80 a year");
         }
 
         [Test]
