@@ -297,12 +297,16 @@ public class SearchApprenticeshipsController(
             SelectedRouteIds = request.RouteIds,
             Sort = request.Sort,
         });
-
+        
+        var results = result
+            .VacancyAdverts
+            .Where(x => x is { Lat: not null and not 0, Lon: not null and not 0 })
+            .Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c))
+            .ToList();
+        
         var model = new MapSearchResultsViewModel
         {
-            ApprenticeshipMapData = result.VacancyAdverts.Count != 0
-                ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c)).ToList()
-                : [],
+            ApprenticeshipMapData = results,
             SearchedLocation = result.Location
         };
 

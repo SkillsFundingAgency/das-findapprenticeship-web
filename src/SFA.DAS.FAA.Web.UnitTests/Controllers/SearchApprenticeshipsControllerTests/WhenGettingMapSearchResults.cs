@@ -35,14 +35,8 @@ public class WhenGettingMapSearchResults
     {
         int? distance = 10;
         dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow);
-        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
-                c.SearchTerm!.Equals(searchTerm)
-                && c.Location!.Equals(location)
-                && c.SelectedRouteIds!.Equals(routeIds)
-                && c.PageSize!.Value == 300
-                && c.DisabilityConfident!.Equals(disabilityConfident)
-                && c.Distance.Equals(distance)
-            ), It.IsAny<CancellationToken>()))
+        mediator
+            .Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         
         var controller = new SearchApprenticeshipsController(
@@ -79,11 +73,48 @@ public class WhenGettingMapSearchResults
             DisabilityConfident = disabilityConfident
         }) as JsonResult;
 
+        // assert
+        mediator.Verify(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
+            c.SearchTerm!.Equals(searchTerm)
+            && c.Location!.Equals(location)
+            && c.SelectedRouteIds!.Equals(routeIds)
+            && c.PageSize!.Value == 300
+            && c.DisabilityConfident!.Equals(disabilityConfident)
+            && c.Distance.Equals(distance)), CancellationToken.None), Times.Once);
+        
         actual.Should().NotBeNull();
         var actualValue = actual!.Value as MapSearchResultsViewModel;
         actualValue.Should().NotBeNull();
         actualValue.ApprenticeshipMapData.Should().BeEquivalentTo(result.VacancyAdverts
             .Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, c)).ToList());
         actualValue.SearchedLocation.Should().BeEquivalentTo(result.Location);
+    }
+    
+    [Test, MoqAutoData]
+    public async Task Then_Vacancies_With_No_Lat_Lon_Are_Removed(
+        GetSearchResultsResult getSearchResultsResult,
+        GetSearchResultsRequest getSearchResultsRequest,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] SearchApprenticeshipsController sut)
+    {
+        // arrange
+        sut.AddControllerContext().WithUser(Guid.NewGuid());
+        mediator
+            .Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(getSearchResultsResult);
+        getSearchResultsResult.VacancyAdverts.First().Lat = 0;
+        getSearchResultsResult.VacancyAdverts.First().Lon = 0;
+        getSearchResultsResult.VacancyAdverts.Skip(1).First().Lat = null;
+        getSearchResultsResult.VacancyAdverts.Skip(1).First().Lon = null;
+
+        // act
+        var results = await sut.MapSearchResults(getSearchResultsRequest) as JsonResult;
+        var payload = results?.Value as MapSearchResultsViewModel;
+
+        // assert
+        payload.Should().NotBeNull();
+        payload!.ApprenticeshipMapData.Should().HaveCount(1);
+        payload.ApprenticeshipMapData[0].Position.Lat.Should().Be(getSearchResultsResult.VacancyAdverts.Last().Lat);
+        payload.ApprenticeshipMapData[0].Position.Lng.Should().Be(getSearchResultsResult.VacancyAdverts.Last().Lon);
     }
 }
