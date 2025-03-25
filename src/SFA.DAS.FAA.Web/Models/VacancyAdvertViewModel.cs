@@ -45,7 +45,7 @@ public class VacancyAdvertViewModel
             IsNew = vacancyAdvert.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsRecruitingNationally = vacancyAdvert.IsRecruitingNationally(),
             IsSavedVacancy = vacancyAdvert.IsSavedVacancy,
-            PostedDate = FormatPostDate(vacancyAdvert.PostedDate),
+            PostedDate = vacancyAdvert.PostedDate.GetPostedDate(),
             StartDate = vacancyAdvert.StartDate.ToFullDateString(),
             Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
             VacancyLocation = vacancyAdvert.GetLocationDescription(),
