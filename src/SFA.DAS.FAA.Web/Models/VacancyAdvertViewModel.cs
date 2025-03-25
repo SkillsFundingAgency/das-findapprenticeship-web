@@ -1,9 +1,8 @@
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAA.Domain.Extensions;
-using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models;
 
@@ -45,7 +44,7 @@ public class VacancyAdvertViewModel
             IsNew = vacancyAdvert.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsRecruitingNationally = vacancyAdvert.IsRecruitingNationally(),
             IsSavedVacancy = vacancyAdvert.IsSavedVacancy,
-            PostedDate = vacancyAdvert.PostedDate.GetPostedDate(),
+            PostedDate = vacancyAdvert.PostedDate.GetSearchResultsPostedDate(),
             StartDate = vacancyAdvert.StartDate.ToFullDateString(),
             Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
             VacancyLocation = vacancyAdvert.GetLocationDescription(),

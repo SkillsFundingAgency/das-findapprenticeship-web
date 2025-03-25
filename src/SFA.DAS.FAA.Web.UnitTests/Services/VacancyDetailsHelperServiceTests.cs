@@ -65,6 +65,18 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             result.Should().Be(expectedResult);
         }
 
+        [TestCase("30 Jan 2000", "Posted 30 January 2000")]
+        [TestCase("01 Jan 2000", "Posted 1 January 2000")]
+        [TestCase("04 Jun 2024", "Posted 4 June 2024")]
+        public void GetSearchResultsPostedDate(string postedDate, string? expectedResult)
+        {
+            //sut
+            var result = Convert.ToDateTime(postedDate).GetSearchResultsPostedDate();
+
+            //assert
+            result.Should().Be(expectedResult);
+        }
+
         [TestCase("30 Jan 2000", "Posted on 30 January 2000")]
         [TestCase("01 Jan 2000", "Posted on 1 January 2000")]
         [TestCase("04 Jun 2024", "Posted on 4 June 2024")]
