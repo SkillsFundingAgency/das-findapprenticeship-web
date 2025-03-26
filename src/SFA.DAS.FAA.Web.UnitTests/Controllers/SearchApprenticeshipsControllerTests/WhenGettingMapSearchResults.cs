@@ -83,7 +83,7 @@ public class WhenGettingMapSearchResults
         var actualValue = actual!.Value as MapSearchResultsViewModel;
         actualValue.Should().NotBeNull();
         actualValue.ApprenticeshipMapData.Should().BeEquivalentTo(result.VacancyAdverts
-            .Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, c)).ToList());
+            .Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, c, result.CandidateDateOfBirth)).ToList());
         actualValue.SearchedLocation.Should().BeEquivalentTo(result.Location);
     }
 }
