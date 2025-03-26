@@ -51,19 +51,7 @@
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Categories</dt>
                             <dd class="govuk-summary-list__value">
-                                @if(Model.SavedSearch.SelectedRoutes.Count == 1)
-                                {
-                                    <span>@Model.SavedSearch.SelectedRoutes[0]</span>
-                                }
-                                else
-                                {                                
-                                    <ul class="govuk-list govuk-list--bullet">
-                                        @foreach (var category in Model.SavedSearch.SelectedRoutes)
-                                        {
-                                            <li>@category</li>
-                                        }
-                                    </ul>
-                                }
+                                <accessible-list items="@(Model.SavedSearch.SelectedRoutes.Select(category => $"{category}").ToList())"></accessible-list>
                             </dd>
                         </div>
                     }
@@ -72,19 +60,7 @@
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Levels</dt>
                             <dd class="govuk-summary-list__value">
-                                @if (Model.SavedSearch.SelectedLevelIds?.Count == 1)
-                                {
-                                    <span>Level @Model.SavedSearch.SelectedLevelIds[0]</span>
-                                }
-                                else
-                                {
-                                    <ul class="govuk-list govuk-list--bullet">
-                                        @foreach (var level in Model.SavedSearch.SelectedLevelIds)
-                                        {
-                                            <li>Level @level</li>
-                                        }
-                                    </ul>
-                                }
+                                <accessible-list items="@(Model.SavedSearch.SelectedLevelIds.Select(id => $"Level {id}").ToList())"></accessible-list>
                             </dd>
                         </div>
                     }
