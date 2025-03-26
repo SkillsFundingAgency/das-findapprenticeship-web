@@ -4,6 +4,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Web.Models.SavedVacancies
@@ -104,7 +105,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                     IsExternalVacancy = vacancy.IsExternalVacancy,
                     ExternalVacancyUrl = !string.IsNullOrEmpty(vacancy.ExternalVacancyUrl) && !vacancy.ExternalVacancyUrl.StartsWith("http") ? $"https://{vacancy.ExternalVacancyUrl}" : vacancy.ExternalVacancyUrl,
                     CreatedOn = 
-                        $"Saved on {vacancy.CreatedDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)}",
+                        $"Saved on {vacancy.CreatedDate.ToGdsDateString()}",
                     ClosingDate = vacancy.ClosingDate,
                     ClosingDateLabel = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancy.ClosingDate, vacancy.IsExternalVacancy),
                     IsClosingSoon = daysToExpiry is >= 0 and <= 7,

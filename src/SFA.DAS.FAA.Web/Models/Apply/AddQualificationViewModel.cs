@@ -44,6 +44,7 @@ public class SubjectViewModel
             Name = source.Subject,
             AdditionalInformation = source.AdditionalInformation,
             IsPredicted = source.IsPredicted.HasValue && source.IsPredicted.Value,
+            QualificationOrder = source.QualificationOrder,
             Id = source.Id,
             Level = source.AdditionalInformation
         };
@@ -57,7 +58,7 @@ public class SubjectViewModel
     public string? AdditionalInformation { get; set; }
     public string? Grade { get; set; }
     public bool? IsPredicted { get; set; }
-    
+    public short? QualificationOrder { get; set; }
     public bool? IsDeleted { get; set; }
 }
 

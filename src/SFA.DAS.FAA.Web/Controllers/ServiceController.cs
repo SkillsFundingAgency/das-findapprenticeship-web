@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Web.Controllers;
 public class ServiceController(IStubAuthenticationService stubAuthenticationService, IConfiguration configuration, IDataProtectorService dataProtectorService) : Controller
 {
     [Route("signout", Name = RouteNames.SignOut, Order = 1)]
-    [Route("service/signout", Name = RouteNames.ServiceSignOut, Order = 1)]
+    [Route("service/signout", Name = RouteNames.ServiceSignOut, Order = 2)]
     [SkipNewFaaUserAccountFilter]
     public async Task<IActionResult> SignOut()
     {

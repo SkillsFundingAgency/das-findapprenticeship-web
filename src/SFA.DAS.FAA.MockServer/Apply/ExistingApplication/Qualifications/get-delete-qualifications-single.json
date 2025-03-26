@@ -1,12 +1,13 @@
 ﻿{
     "QualificationReference": "A Levels",
     "Qualifications": [
-        {
-            "Subject": "Art",
-            "Grade": "B",
-            "Level": "",
-            "IsPredicted": false,
-            "AdditionalInformation": ""
-        }
+      {
+        "Subject": "Art",
+        "Grade": "B",
+        "Level": "",
+        "IsPredicted": false,
+        "QualificationOrder": 1,
+        "AdditionalInformation": ""
+      }
     ]
 }

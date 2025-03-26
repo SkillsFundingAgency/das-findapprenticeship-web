@@ -13,7 +13,7 @@ public class WhenCreatingVacancyAdvertsViewModel
     {
         vacancyAdvert.VacancySource = VacancyDataSource.Raa;
 
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
 
         actual.Should().BeEquivalentTo(vacancyAdvert, options=> options
             .Excluding(c=>c.ClosingDate)
@@ -40,6 +40,12 @@ public class WhenCreatingVacancyAdvertsViewModel
             .Excluding(c => c.AddressLine4)
             .Excluding(c => c.Postcode)
             .Excluding(c => c.EmploymentLocationInformation)
+            .Excluding(c => c.StartDate)
+            .Excluding(c => c.Over25NationalMinimumWage)
+            .Excluding(c => c.Under18NationalMinimumWage)
+            .Excluding(c => c.Between18AndUnder21NationalMinimumWage)
+            .Excluding(c => c.Between21AndUnder25NationalMinimumWage)
+            .Excluding(c => c.ApprenticeMinimumWage)
         );
         actual.CourseTitle.Should().Be($"{vacancyAdvert.CourseTitle} (level {vacancyAdvert.CourseLevel})");
     }
@@ -58,15 +64,15 @@ public class WhenCreatingVacancyAdvertsViewModel
         vacancyAdvert.ClosingDate = closingDate;
         vacancyAdvert.ApplicationUrl = null;
 
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert); 
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null); 
 
         actual.ClosingDateDescription.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, closingDate, false));
     }
 
     [Test]
-    [MoqInlineAutoData("30 Jan 2000", "30 January")]
-    [MoqInlineAutoData("01 Jan 2000", "1 January")]
-    [MoqInlineAutoData("04 Jun 2024", "4 June")]
+    [MoqInlineAutoData("30 Jan 2000", "30 January 2000")]
+    [MoqInlineAutoData("01 Jan 2000", "1 January 2000")]
+    [MoqInlineAutoData("04 Jun 2024", "4 June 2024")]
     public void Then_The_Posted_Date_Is_Shown_Correctly(
         string postedDate,
         string expectedResult,
@@ -75,7 +81,7 @@ public class WhenCreatingVacancyAdvertsViewModel
     {
         vacancyAdvert.PostedDate = Convert.ToDateTime(postedDate);
 
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
 
         Assert.That(actual.PostedDate, Is.EqualTo(expectedResult));
     }
@@ -89,9 +95,9 @@ public class WhenCreatingVacancyAdvertsViewModel
         
         vacancyAdvert.ClosingDate = closingDate;
         
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
         actual.IsClosingSoon.Should().BeTrue();
-        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM} at 11:59pm)");
+        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM yyy} at 11:59pm)");
     }
     
     [Test, MoqAutoData]
@@ -103,9 +109,9 @@ public class WhenCreatingVacancyAdvertsViewModel
         
         vacancyAdvert.ClosingDate = closingDate;
         
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
         actual.IsClosingSoon.Should().BeTrue();
-        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM})");
+        actual.ClosingDateDescription.Should().Be($"Closes in 7 days ({closingDate:dddd d MMMM yyy})");
     }
     
     [Test, MoqAutoData]
@@ -116,7 +122,7 @@ public class WhenCreatingVacancyAdvertsViewModel
         
         vacancyAdvert.ClosingDate = closingDate;
         
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
         actual.IsClosingSoon.Should().BeFalse();
     }
     
@@ -128,7 +134,7 @@ public class WhenCreatingVacancyAdvertsViewModel
         
         vacancyAdvert.PostedDate = postedDate;
         
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
         actual.IsNew.Should().BeTrue();
     }
     
@@ -140,7 +146,7 @@ public class WhenCreatingVacancyAdvertsViewModel
         
         vacancyAdvert.PostedDate = postedDate;
         
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
         actual.IsNew.Should().BeFalse();
     }
 
@@ -169,7 +175,7 @@ public class WhenCreatingVacancyAdvertsViewModel
         vacancyAdvert.AddressLine4 = addressLine4;
         vacancyAdvert.Postcode = postcode;
 
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
 
         Assert.That(actual.VacancyLocation, Is.EqualTo(expected));
     }
@@ -199,7 +205,7 @@ public class WhenCreatingVacancyAdvertsViewModel
         vacancyAdvert.Postcode = postcode;
 
         // act
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
 
         // assert
         actual.VacancyLocation.Should().Be($"{expected} and {vacancyAdvert.OtherAddresses!.Count} other locations");
@@ -214,7 +220,7 @@ public class WhenCreatingVacancyAdvertsViewModel
         vacancyAdvert.Postcode = string.Empty;
         
         // act
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
         
         // assert
         actual.VacancyLocation.Should().Be("Recruiting nationally");
@@ -228,7 +234,7 @@ public class WhenCreatingVacancyAdvertsViewModel
 
         vacancyAdvert.Distance = distance;
 
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
 
         Assert.That(actual.Distance, Is.EqualTo(expectedDistance));
     }
@@ -252,7 +258,7 @@ public class WhenCreatingVacancyAdvertsViewModel
     public void Then_The_Nhs_Vacancies_Fields_Are_Mapped_Returned_As_Expected(VacancyAdvert vacancyAdvert, [Frozen] Mock<IDateTimeService> dateTimeService)
     {
         vacancyAdvert.VacancySource = VacancyDataSource.Nhs;
-        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert);
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
 
         actual.Should().BeEquivalentTo(vacancyAdvert, options => options
             .Excluding(c => c.ClosingDate)
@@ -280,6 +286,12 @@ public class WhenCreatingVacancyAdvertsViewModel
             .Excluding(c => c.AddressLine4)
             .Excluding(c => c.Postcode)
             .Excluding(c => c.EmploymentLocationInformation)
+            .Excluding(c => c.StartDate)
+            .Excluding(c => c.Over25NationalMinimumWage)
+            .Excluding(c => c.Under18NationalMinimumWage)
+            .Excluding(c => c.Between18AndUnder21NationalMinimumWage)
+            .Excluding(c => c.Between21AndUnder25NationalMinimumWage)
+            .Excluding(c => c.ApprenticeMinimumWage)
         );
         actual.CourseTitle.Should().Be("See more details on NHS Jobs");
         actual.Title.Should().Be($"{vacancyAdvert.Title} (from NHS Jobs)");

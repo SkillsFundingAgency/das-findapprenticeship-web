@@ -2,7 +2,7 @@
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Globalization;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models;
@@ -29,7 +29,7 @@ public class VacancyAdvertViewModel
 
     public bool IsRecruitingNationally { get; private set; }
 
-    public static VacancyAdvertViewModel MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert vacancyAdvert)
+    public static VacancyAdvertViewModel MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth)
     {
         return new VacancyAdvertViewModel
         {
@@ -43,12 +43,13 @@ public class VacancyAdvertViewModel
             IsNew = vacancyAdvert.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsRecruitingNationally = vacancyAdvert.IsRecruitingNationally(),
             IsSavedVacancy = vacancyAdvert.IsSavedVacancy,
-            PostedDate = FormatPostDate(vacancyAdvert.PostedDate),
+            PostedDate = vacancyAdvert.PostedDate.ToGdsDateString(),
             Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
             VacancyLocation = vacancyAdvert.GetLocationDescription(),
             VacancyReference = vacancyAdvert.VacancyReference,
             VacancySource = vacancyAdvert.VacancySource,
-            WageText = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? VacancyDetailsHelperService.GetWageText(vacancyAdvert.WageText) : vacancyAdvert.WageText,
+            WageText = vacancyAdvert.VacancySource == VacancyDataSource.Nhs 
+                ? VacancyDetailsHelperService.GetNhsWageText(vacancyAdvert.WageText) : VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, candidateDateOfBirth),
             WageType = (WageType)vacancyAdvert.WageType,
         };
     }
@@ -60,10 +61,5 @@ public class VacancyAdvertViewModel
         var currentDate = dateTimeService.GetDateTime();
         var timeUntilClosing = closingDate.Value.Date - currentDate;
         return (int)Math.Ceiling(timeUntilClosing.TotalDays);
-    }
-
-    private static string? FormatPostDate(DateTime? date)
-    {
-        return date?.ToString("d MMMM", CultureInfo.InvariantCulture);
     }
 }

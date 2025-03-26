@@ -47,7 +47,8 @@ public class GetSearchResultsQueryHandler(IApiClient apiClient)
             Levels = response.Levels,
             DisabilityConfident = response.DisabilityConfident,
             SavedSearchesCount = response.SavedSearchesCount,
-            SearchAlreadySaved = response.SearchAlreadySaved
+            SearchAlreadySaved = response.SearchAlreadySaved,
+            CandidateDateOfBirth = response.CandidateDateOfBirth
         };
     }
 }
