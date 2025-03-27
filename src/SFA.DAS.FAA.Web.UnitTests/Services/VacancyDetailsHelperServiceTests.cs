@@ -1,4 +1,7 @@
-﻿using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -132,7 +135,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleNullOrEmptyInput(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetWageText(input);
+            var result = VacancyDetailsHelperService.GetNhsWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -145,7 +148,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleHourlyWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetWageText(input);
+            var result = VacancyDetailsHelperService.GetNhsWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -157,7 +160,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleAnnualWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetWageText(input);
+            var result = VacancyDetailsHelperService.GetNhsWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -174,7 +177,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void Then_WageAmount_With_Lower_Higher_Limit_GetWageText_ShouldHandleAnnualWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetWageText(input);
+            var result = VacancyDetailsHelperService.GetNhsWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -188,7 +191,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldReturnOriginalTextForOtherCases(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetWageText(input);
+            var result = VacancyDetailsHelperService.GetNhsWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -295,6 +298,219 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             // Assert
             result.Should().Be(expected);
+        }
+
+        [Test]
+        [InlineAutoData(WageType.Unknown)]
+        [InlineAutoData(WageType.FixedWage)]
+        [InlineAutoData(WageType.CompetitiveSalary)]
+        [InlineAutoData(WageType.NationalMinimumWage)]
+        public void GetVacancyAdvertWageText_Returns_Wage_Text_When_No_Candidate_Date_Of_Birth(WageType wageType, VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)wageType;
+            
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert);
+            
+            actual.Should().Be(vacancyAdvert.WageText);
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_Under_18_Candidates_For_MinimumWageType(VacancyAdvert vacancyAdvert)
+        {
+            
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+            vacancyAdvert.StartDate = DateTime.Now.AddYears(1);
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, DateTime.Now.AddYears(-16));
+            
+            actual.Should().Be(vacancyAdvert.Under18NationalMinimumWage.ToDisplayWage());
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_18_to_Under_21_Candidate_For_MinimumWageType(VacancyAdvert vacancyAdvert)
+        {
+            
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+            vacancyAdvert.StartDate = DateTime.Now.AddYears(1);
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, DateTime.Now.AddYears(-19));
+            
+            actual.Should().Be(vacancyAdvert.Between18AndUnder21NationalMinimumWage.ToDisplayWage());
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_21_to_Under_25_Candidate_For_MinimumWageType(VacancyAdvert vacancyAdvert)
+        {
+            
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+            vacancyAdvert.StartDate = DateTime.Now.AddYears(1);
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, DateTime.Now.AddYears(-23));
+            
+            actual.Should().Be(vacancyAdvert.Between21AndUnder25NationalMinimumWage.ToDisplayWage());
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_Over_25_Candidate_For_MinimumWageType(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+            vacancyAdvert.StartDate = DateTime.Now.AddYears(1);
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, DateTime.Now.AddYears(-25));
+            
+            actual.Should().Be(vacancyAdvert.Over25NationalMinimumWage.ToDisplayWage());
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_Candidates_Date_Of_Birth_And_Advert_Start_Date_For_ApprenticeMinimumWageType(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWageForApprentices;
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, new DateTime());
+            
+            actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage());
+            
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Empty_String_If_No_Wage_Text(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageText = null;
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, true);
+            
+            actual.Should().BeNull();
+            
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_Candidates_Date_Of_Birth_And_Advert_Start_Date_For_ApprenticeMinimumWageType_For_Detail(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWageForApprentices;
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, new DateTime(), true);
+            
+            actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage("for your first year, then could increase depending on your age"));
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_No_Date_Of_Birth_And_Advert_Start_Date_For_ApprenticeMinimumWageType_For_Detail(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWageForApprentices;
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, true);
+            
+            actual.Should().Be(vacancyAdvert.ApprenticeMinimumWage.ToDisplayWage("for your first year, then could increase depending on your age"));
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_No_Date_Of_Birth_And_Advert_Start_Date_For_MinimumWageType_For_Detail(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+            vacancyAdvert.WageText = "£15,704 to £25,396.80 a year";
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, true);
+            
+            actual.Should().Be("£15,704 to £25,396.80, depending on your age");
+        }
+        
+        [Test, AutoData]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_No_Date_Of_Birth_And_Advert_Start_Date_For_MinimumWageType_For_Search(VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)WageType.NationalMinimumWage;
+            vacancyAdvert.WageText = "£15,704 to £25,396.80 a year";
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, null, false);
+            
+            actual.Should().Be("£15,704 to £25,396.80 a year");
+        }
+
+        [Test]
+        [InlineAutoData(WageType.FixedWage)]
+        [InlineAutoData(WageType.CompetitiveSalary)]
+        [InlineAutoData(WageType.Unknown)]
+        public void GetVacancyAdvertWageText_Returns_Correct_Wage_For_Candidates_Date_Of_Birth_And_Advert_Start_Date_For_Fixed_And_Custom_WageType(
+            WageType wageType,
+            DateTime candidateDateOfBirth,
+            VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)wageType;
+                
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, candidateDateOfBirth);
+            
+            actual.Should().Be(vacancyAdvert.WageText);
+            
+        }
+        
+        [Test]
+        [InlineAutoData(16, WageType.NationalMinimumWageForApprentices)]
+        [InlineAutoData(16, WageType.NationalMinimumWage)]
+        [InlineAutoData(19, WageType.NationalMinimumWage)]
+        [InlineAutoData(23, WageType.NationalMinimumWage)]
+        [InlineAutoData(25, WageType.NationalMinimumWage)]
+        public void GetVacancyAdvertWageText_Returns_Correct_WageText_If_Null_For_Age_Based_Salaries_With_Candidates_Date_Of_Birth(
+            int age,
+            WageType wageType,
+            VacancyAdvert vacancyAdvert)
+        {
+            vacancyAdvert.WageType = (int)wageType;
+            vacancyAdvert.StartDate = DateTime.Now.AddYears(1);
+            vacancyAdvert.ApprenticeMinimumWage = null;
+            vacancyAdvert.Over25NationalMinimumWage = null;
+            vacancyAdvert.Under18NationalMinimumWage = null;
+            vacancyAdvert.Between18AndUnder21NationalMinimumWage = null;
+            vacancyAdvert.Between21AndUnder25NationalMinimumWage = null;
+            
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, DateTime.Now.AddYears(age * -1));
+            
+            actual.Should().Be(vacancyAdvert.WageText);
+        }
+
+        [Test]
+        [InlineAutoData(WageType.NationalMinimumWageForApprentices,16,"National Minimum Wage rate for apprentices")]
+        [InlineAutoData(WageType.FixedWage,16,"")]
+        [InlineAutoData(WageType.CompetitiveSalary,16,"Competitive wage offered")]
+        [InlineAutoData(WageType.NationalMinimumWage,16,"National Minimum Wage for an under 18 year old")]
+        [InlineAutoData(WageType.NationalMinimumWage,23,"National Minimum Wage for a 24 year old")]
+        [InlineAutoData(WageType.NationalMinimumWage,null,"National Minimum Wage")]
+        public void GetVacancyAdvertDetailWageDescriptionText_Then_Gets_Wage_Text_For_Age_And_Wage_Type(
+            WageType wageType,
+            int? age,
+            string expectedWageText)
+        {
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertDetailWageDescriptionText(wageType,DateTime.Now.AddYears(1), age != null ? DateTime.Now.AddYears(age.Value * -1) : null);
+            
+            actual.Should().Be(expectedWageText);
+        }
+        
+        [Test]
+        [InlineAutoData(WageType.NationalMinimumWageForApprentices,16,"National Minimum Wage rate for apprentices")]
+        [InlineAutoData(WageType.FixedWage,16,"")]
+        [InlineAutoData(WageType.CompetitiveSalary,16,"Competitive wage offered")]
+        [InlineAutoData(WageType.NationalMinimumWage,16,"National Minimum Wage for an under 18 year old")]
+        [InlineAutoData(WageType.NationalMinimumWage,23,"National Minimum Wage for a 24 year old")]
+        [InlineAutoData(WageType.NationalMinimumWage,null,"National Minimum Wage")]
+        public void GetVacancyAdvertDetailWageText_Then_Gets_Wage_Text_For_Age_And_Wage_Type(
+            WageType wageType,
+            int? age,
+            string expectedWageText)
+        {
+            var actual = VacancyDetailsHelperService.GetVacancyAdvertDetailWageDescriptionText(wageType,DateTime.Now.AddYears(1), age != null ? DateTime.Now.AddYears(age.Value * -1) : null);
+            
+            actual.Should().Be(expectedWageText);
+        }
+
+        [Test]
+        [InlineAutoData("2000-01-30", "2020-01-29", 19)]
+        [InlineAutoData("2000-01-30", "2020-01-31", 20)]
+        [InlineAutoData("2000-01-30", "2020-12-31", 20)]
+        [InlineAutoData("2000-01-30", "2021-01-01", 20)]
+        public void GetCandidatesAgeAtStartDateOfVacancy_Then_Calculates_Candidate_Age_Based_On_Advert_Start_Date(string dateOfBirth, string startDate, int expectedAge)
+        {
+            var actualAge = VacancyDetailsHelperService.GetCandidatesAgeAtStartDateOfVacancy(DateTime.Parse(dateOfBirth), DateTime.Parse(startDate));
+
+            actualAge.Should().Be(expectedAge);
         }
     }
 }

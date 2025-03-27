@@ -30,7 +30,7 @@ public class VacancyAdvertViewModel
 
     public bool IsRecruitingNationally { get; private set; }
 
-    public static VacancyAdvertViewModel MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert vacancyAdvert)
+    public static VacancyAdvertViewModel MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth)
     {
         return new VacancyAdvertViewModel
         {
@@ -50,7 +50,8 @@ public class VacancyAdvertViewModel
             VacancyLocation = vacancyAdvert.GetLocationDescription(),
             VacancyReference = vacancyAdvert.VacancyReference,
             VacancySource = vacancyAdvert.VacancySource,
-            WageText = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? VacancyDetailsHelperService.GetWageText(vacancyAdvert.WageText) : vacancyAdvert.WageText,
+            WageText = vacancyAdvert.VacancySource == VacancyDataSource.Nhs 
+                ? VacancyDetailsHelperService.GetNhsWageText(vacancyAdvert.WageText) : VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, candidateDateOfBirth),
             WageType = (WageType)vacancyAdvert.WageType,
         };
     }

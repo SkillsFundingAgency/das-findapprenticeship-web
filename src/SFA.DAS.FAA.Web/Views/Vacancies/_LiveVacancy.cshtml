@@ -186,12 +186,12 @@
                             Wage
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            @Model.AnnualWage
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">
+                            <p class="govuk-!-margin-bottom-1">@Model.AnnualWage</p>
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">@Model.WageDetailText</p>
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-1">
                                 <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
                                    rel="noreferrer noopener" target="_blank">
-                                    Minimum wage rates (opens in new
-                                    tab)
+                                    Check minimum wage rates (opens in new tab)
                                 </a>
                             </p>
                             @if (!string.IsNullOrWhiteSpace(Model.WageAdditionalInformation))
@@ -335,10 +335,10 @@
                                 </form>
                                 <p class="govuk-body govuk-!-font-size-16 govuk-!-padding-top-2" id="faa-journey-info"></p>
                             </div>
+                            <div class="govuk-details govuk-!-margin-top-5">
+                                <div id="faa-directions-map" class="faa-directions-map"></div>
+                            </div>
                         </details>
-                        <div class="govuk-details govuk-!-margin-top-5">
-                            <div id="faa-directions-map" class="faa-directions-map"></div>
-                        </div>
                     }
                 }
             </section>

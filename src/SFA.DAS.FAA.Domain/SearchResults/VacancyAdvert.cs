@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
-public class VacancyAdvert
+public class VacancyAdvert : IVacancyAdvert
 {
     [JsonPropertyName("id")]
     public string Id { get; set; }
@@ -15,16 +15,16 @@ public class VacancyAdvert
 
     [JsonPropertyName("closingDate")]
     public DateTime ClosingDate { get; set; }
+    
+    [JsonPropertyName("startDate")]
+    public DateTime StartDate { get; set; }
 
     [JsonPropertyName("employerName")]
     public string EmployerName { get; set; }
 
     [JsonPropertyName("postedDate")]
     public DateTime PostedDate { get; set; }
-
-    [JsonPropertyName("startDate")]
-    public DateTime StartDate { get; set; }
-
+    
     [JsonPropertyName("title")]
     public string Title { get; set; }
 
@@ -36,6 +36,16 @@ public class VacancyAdvert
     public string WageAmount { get; set; }
     [JsonPropertyName("wageType")]
     public int WageType { get; set; }
+    [JsonPropertyName("over25NationalMinimumWage")]
+    public decimal? Over25NationalMinimumWage { get; set; }
+    [JsonPropertyName("between21AndUnder25NationalMinimumWage")]
+    public decimal? Between21AndUnder25NationalMinimumWage { get; set; }
+    [JsonPropertyName("between18AndUnder21NationalMinimumWage")]
+    public decimal? Between18AndUnder21NationalMinimumWage { get; set; }
+    [JsonPropertyName("under18NationalMinimumWage")]
+    public decimal? Under18NationalMinimumWage { get; set; }
+    [JsonPropertyName("apprenticeMinimumWage")]
+    public decimal? ApprenticeMinimumWage { get; set; }
 
     [JsonPropertyName("addressLine1")]
     public string? AddressLine1 { get; set; }
