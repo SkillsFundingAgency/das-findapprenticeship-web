@@ -24,7 +24,7 @@ public class VacancyAdvert : IVacancyAdvert
 
     [JsonPropertyName("postedDate")]
     public DateTime PostedDate { get; set; }
-
+    
     [JsonPropertyName("title")]
     public string Title { get; set; }
 

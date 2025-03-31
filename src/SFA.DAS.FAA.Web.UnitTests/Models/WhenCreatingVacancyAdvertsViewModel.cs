@@ -70,9 +70,9 @@ public class WhenCreatingVacancyAdvertsViewModel
     }
 
     [Test]
-    [MoqInlineAutoData("30 Jan 2000", "30 January 2000")]
-    [MoqInlineAutoData("01 Jan 2000", "1 January 2000")]
-    [MoqInlineAutoData("04 Jun 2024", "4 June 2024")]
+    [MoqInlineAutoData("30 Jan 2000", "Posted 30 January 2000")]
+    [MoqInlineAutoData("01 Jan 2000", "Posted 1 January 2000")]
+    [MoqInlineAutoData("04 Jun 2024", "Posted 4 June 2024")]
     public void Then_The_Posted_Date_Is_Shown_Correctly(
         string postedDate,
         string expectedResult,
