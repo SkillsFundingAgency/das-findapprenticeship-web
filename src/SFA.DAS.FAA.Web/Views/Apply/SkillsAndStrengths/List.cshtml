@@ -18,7 +18,14 @@
 
         <div class="govuk-inset-text">
             <p class="govuk-body"><b>@Model.Employer</b> is looking for people with:</p>
-            <accessible-list items="@(Model.ExpectedSkillsAndStrengths?.Select(skillOrStrength => $"{skillOrStrength}").ToList())"></accessible-list>
+            <ul class="govuk-list govuk-list--bullet">
+
+                @foreach(var skillOrStrength in Model.ExpectedSkillsAndStrengths)
+                {
+                    <li>@skillOrStrength</li>
+                }
+
+            </ul>
             <p class="govuk-body">Give examples of when you've used these skills to make your application stronger.</p>
         </div>
 
