@@ -352,15 +352,15 @@
                 <h3 class="govuk-heading-s">Your training course</h3>
                 <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
                 <p class="gov-body das-!-color-dark-grey">Equal to @Model.CourseLevelMapper</p>
-                <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Course contents
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        @if (Model.CourseSkills is { Count: > 0 } || Model.CourseSkills is { Count: > 0 })
-                        {
+                @if (Model.CourseSkills is { Count: > 0 } or { Count: > 0 })
+                {
+                    <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Course contents
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
                             <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
                                 @if (Model.CourseSkills is { Count: > 0 })
                                 {
@@ -376,10 +376,10 @@
                                         <li>@skills</li>
                                     }
                                 }
-                        </ul>
-                        }
-                    </div>
-                </details>
+                            </ul>
+                        </div>
+                    </details>
+                }
                 <h3 class="govuk-heading-s">Your training plan</h3>
                 @if (string.IsNullOrEmpty(Model.TrainingPlan))
                 {
