@@ -97,7 +97,6 @@ app.UseSession();
 
 app.UseEndpoints(endpointBuilder =>
 {
-    endpointBuilder?.MapSessionKeepAliveEndpoint();
     endpointBuilder?.MapControllerRoute(
         name: "default",
         pattern: "{controller=SearchApprenticeshipsController}/{action=Index}/{id?}");
