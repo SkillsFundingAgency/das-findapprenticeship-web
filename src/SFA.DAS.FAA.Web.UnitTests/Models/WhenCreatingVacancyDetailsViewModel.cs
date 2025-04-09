@@ -1,4 +1,4 @@
-﻿using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
+using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAA.Web.Services;
@@ -6,6 +6,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Extensions;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
@@ -187,6 +188,34 @@ public class WhenCreatingVacancyDetailsViewModel
             default:
                 throw new ArgumentOutOfRangeException(nameof(availableWhere), availableWhere, null);
         }
-        
+    }
+    
+    [Test]
+    [MoqInlineAutoData(0.00,0.00,false, false)]
+    [MoqInlineAutoData(null,null, false,false)]
+    [MoqInlineAutoData(null,1.00, false,false)]
+    [MoqInlineAutoData(1.00,null, false,false)]
+    [MoqInlineAutoData(1.00,1.00,false,true)]
+    [MoqInlineAutoData(1.00,1.00,true,true)]
+    [MoqInlineAutoData(null,null,true,true)]
+    public void Then_If_No_Lat_Lon_Then_ShowMap_Is_False(
+        double? lat,
+        double? lon,
+        bool hasMultipleLocations,
+        bool expectedResult,
+        GetApprenticeshipVacancyQueryResult result,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow.AddDays(-30));
+        result.Vacancy!.ClosingDate = DateTime.UtcNow.AddDays(-20);
+        result.Vacancy.Address = result.Vacancy!.Address! with { Latitude = lat, Longitude = lon};
+        if (!hasMultipleLocations)
+        {
+            result.Vacancy.OtherAddresses = [];
+        }
+
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
+
+        actual.ShowMap.Should().Be(expectedResult);
     }
 }

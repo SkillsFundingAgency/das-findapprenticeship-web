@@ -71,6 +71,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? ApplicationInstructions { get; set; }
         public VacancyDataSource VacancySource { get; set; }
         public MapLocation[] MapLocations { get; init; } = [];
+        public bool ShowMap { get; set; }
         
         public string? EmploymentWorkLocation => EmployerLocationOption switch
         {
@@ -142,6 +143,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
                 PostedDate = source.Vacancy?.PostedDate.GetPostedDate(),
+                ShowMap = mapLocations.Length > 0,
                 Skills = source.Vacancy?.Skills?.ToList(),
                 StandardPageUrl = source.Vacancy?.StandardPageUrl,
                 StartDate = source.Vacancy?.StartDate.ToGdsDateStringWithDayOfWeek(),

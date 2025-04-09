@@ -283,7 +283,7 @@
                 {
                    if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent)
                        && Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven)
-                       && bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
+                       && bool.TryParse(isConsentGiven, out var consentResult) && consentResult && Model.ShowMap)
                     {
                         <details class="govuk-details govuk-!-margin-bottom-0">
                             <summary class="govuk-details__summary">
@@ -295,8 +295,7 @@
                                 <form id="faa-directions-form" class="faa-do-not-disable">
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                            Check your travel to
-                                            work
+                                            Check your travel to work
                                         </legend>
                                         <div class="govuk-form-group">
                                             <label class="govuk-label" for="directions-postcode">
@@ -352,15 +351,15 @@
                 <h3 class="govuk-heading-s">Your training course</h3>
                 <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
                 <p class="gov-body das-!-color-dark-grey">Equal to @Model.CourseLevelMapper</p>
-                <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Course contents
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        @if (Model.CourseSkills is { Count: > 0 } || Model.CourseSkills is { Count: > 0 })
-                        {
+                @if (Model.CourseSkills is { Count: > 0 } || Model.CourseCoreDuties is { Count: > 0 })
+                {
+                    <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Course contents
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
                             <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
                                 @if (Model.CourseSkills is { Count: > 0 })
                                 {
@@ -376,10 +375,10 @@
                                         <li>@skills</li>
                                     }
                                 }
-                        </ul>
-                        }
-                    </div>
-                </details>
+                            </ul>
+                        </div>
+                    </details>
+                }
                 <h3 class="govuk-heading-s">Your training plan</h3>
                 @if (string.IsNullOrEmpty(Model.TrainingPlan))
                 {
