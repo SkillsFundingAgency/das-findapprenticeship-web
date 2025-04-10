@@ -1,0 +1,45 @@
+@using SFA.DAS.FAA.Web.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.FAA.Web.Models.Apply.AddEmploymentLocationsViewModel
+@{
+    ViewData["Title"] = "Where do you want to apply for? – Find an apprenticeship – GOV.UK";
+}
+
+@section BackLink {
+    <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Locations</span>
+        <form class="form" action="application-summary-location-preference" method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="location-preference">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Where do you want to apply for?
+                        </h1>
+                    </legend>
+                    <div id="waste-hint" class="govuk-hint">
+                        Select all that apply
+                    </div>
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                        @foreach (var address in Model.Addresses)
+                        {
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="address" name="address" type="checkbox" value="@address.FullAddress">
+                                <label class="govuk-label govuk-checkboxes__label" for="address">
+                                    @address.FullAddress
+                                </label>
+                            </div>    
+                        }
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group" href="#">
+                <button class="govuk-button" data-module="govuk-button">
+                    Save and continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
