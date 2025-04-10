@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
 using SFA.DAS.FAA.Domain.Models;
 
-namespace SFA.DAS.FAA.Domain.Apply.GetEmploymentLocation;
+namespace SFA.DAS.FAA.Domain.Apply.GetEmploymentLocations;
 
-public record GetEmploymentLocationApiResponse
+public record GetEmploymentLocationsApiResponse
 {
     [JsonProperty("employmentLocation")] public LocationDto EmploymentLocation { get; private init; } = new();
 }

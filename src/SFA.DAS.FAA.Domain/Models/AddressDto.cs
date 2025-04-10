@@ -4,6 +4,8 @@ namespace SFA.DAS.FAA.Domain.Models;
 
 public record AddressDto
 {
+    [JsonProperty("id")]
+    public Guid Id { get; set; }
     [JsonProperty("fullAddress")]
     public string FullAddress { get; set; } = null!;
     [JsonProperty("isSelected")]

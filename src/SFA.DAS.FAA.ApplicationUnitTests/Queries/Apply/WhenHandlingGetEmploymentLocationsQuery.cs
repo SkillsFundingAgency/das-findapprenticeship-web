@@ -1,5 +1,5 @@
-using SFA.DAS.FAA.Application.Queries.Apply.GetEmploymentLocation;
-using SFA.DAS.FAA.Domain.Apply.GetEmploymentLocation;
+using SFA.DAS.FAA.Application.Queries.Apply.GetEmploymentLocations;
+using SFA.DAS.FAA.Domain.Apply.GetEmploymentLocations;
 using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply;
@@ -9,17 +9,17 @@ public class WhenHandlingGetEmploymentLocationsQuery
 {
     [Test, MoqAutoData]
     public async Task Then_Result_Is_Returned(
-        GetEmploymentLocationQuery query,
-        GetEmploymentLocationApiResponse apiResponse,
+        GetEmploymentLocationsQuery query,
+        GetEmploymentLocationsApiResponse apiResponse,
         [Frozen] Mock<IApiClient> apiClientMock,
-        GetEmploymentLocationQueryHandler handler)
+        GetEmploymentLocationsQueryHandler handler)
     {
         // Arrange
-        var apiRequestUri = new GetEmploymentLocationApiRequest(query.ApplicationId, query.CandidateId);
+        var apiRequestUri = new GetEmploymentLocationsApiRequest(query.ApplicationId, query.CandidateId);
 
         apiClientMock.Setup(client =>
-                client.Get<GetEmploymentLocationApiResponse>(
-                    It.Is<GetEmploymentLocationApiRequest>(c =>
+                client.Get<GetEmploymentLocationsApiResponse>(
+                    It.Is<GetEmploymentLocationsApiRequest>(c =>
                         c.GetUrl == apiRequestUri.GetUrl)))
             .ReturnsAsync(apiResponse);
 

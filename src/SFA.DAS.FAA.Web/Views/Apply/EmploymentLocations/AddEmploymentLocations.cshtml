@@ -11,7 +11,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Locations</span>
-        <form class="form" action="application-summary-location-preference" method="post">
+        <form class="form" action="#" method="post">
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset" aria-describedby="location-preference">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -26,8 +26,8 @@
                         @foreach (var address in Model.Addresses)
                         {
                             <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="address" name="address" type="checkbox" value="@address.FullAddress">
-                                <label class="govuk-label govuk-checkboxes__label" for="address">
+                                <input class="govuk-checkboxes__input" id="address-@address.Id" name="address" type="checkbox" value="@address.FullAddress">
+                                <label class="govuk-label govuk-checkboxes__label" for="address-@address.Id">
                                     @address.FullAddress
                                 </label>
                             </div>    

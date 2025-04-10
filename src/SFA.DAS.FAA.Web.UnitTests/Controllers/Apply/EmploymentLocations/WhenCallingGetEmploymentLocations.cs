@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using SFA.DAS.FAA.Application.Queries.Apply.GetEmploymentLocation;
+using SFA.DAS.FAA.Application.Queries.Apply.GetEmploymentLocations;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -18,7 +18,7 @@ public class WhenCallingGetEmploymentLocations
     public async Task Then_View_Is_Returned(
         Guid applicationId,
         Guid candidateId,
-        GetEmploymentLocationQueryResult queryResult,
+        GetEmploymentLocationsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
         var mockUrlHelper = new Mock<IUrlHelper>();
@@ -26,7 +26,7 @@ public class WhenCallingGetEmploymentLocations
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
 
-        mediator.Setup(x => x.Send(It.Is<GetEmploymentLocationQuery>(q => q.ApplicationId == applicationId && q.CandidateId == candidateId),
+        mediator.Setup(x => x.Send(It.Is<GetEmploymentLocationsQuery>(q => q.ApplicationId == applicationId && q.CandidateId == candidateId),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
