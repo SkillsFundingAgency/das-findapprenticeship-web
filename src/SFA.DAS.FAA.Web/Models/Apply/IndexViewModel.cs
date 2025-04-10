@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -19,6 +20,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 IsDisabilityConfident = source.IsDisabilityConfident,
                 IsApplicationComplete = source.IsApplicationComplete,
                 EducationHistory = source.EducationHistory,
+                EmploymentLocation = source.EmploymentLocation,
                 WorkHistory = source.WorkHistory,
                 ApplicationQuestions = source.ApplicationQuestions,
                 InterviewAdjustments = source.InterviewAdjustments,
@@ -48,8 +50,10 @@ namespace SFA.DAS.FAA.Web.Models.Apply
 
 
         public bool IsApplicationComplete { get; set; }
+        public bool ShowLocationSection => EmploymentLocation.EmployerLocationOption == AvailableWhere.MultipleLocations;
 
         public EducationHistorySection EducationHistory { get; set; } = new();
+        public EmploymentLocationSection EmploymentLocation { get; set; } = new();
         public WorkHistorySection WorkHistory { get; set; } = new();
         public ApplicationQuestionsSection ApplicationQuestions { get; set; } = new();
         public InterviewAdjustmentsSection InterviewAdjustments { get; set; } = new();
@@ -68,6 +72,21 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 {
                     Qualifications = source.Qualifications,
                     TrainingCourses = source.TrainingCourses
+                };
+            }
+        }
+        
+        public record EmploymentLocationSection : LocationDto
+        {
+            public SectionStatus EmploymentLocationStatus { get; set; }
+            public static implicit operator EmploymentLocationSection(GetIndexQueryResult.EmploymentLocationSection source)
+            {
+                return new EmploymentLocationSection
+                {
+                    Addresses = source.Addresses,
+                    EmploymentLocationInformation = source.EmploymentLocationInformation,
+                    EmployerLocationOption = source.EmployerLocationOption,
+                    EmploymentLocationStatus = source.EmploymentLocationStatus
                 };
             }
         }

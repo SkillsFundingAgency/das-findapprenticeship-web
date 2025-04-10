@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.Apply.GetIndex;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetIndex;
 
@@ -18,6 +19,7 @@ public class GetIndexQueryResult
     public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
     public PreviousApplicationDetails? PreviousApplication { get; set; }
+    public EmploymentLocationSection EmploymentLocation { get; set; }
 
     public class EducationHistorySection
     {
@@ -30,6 +32,22 @@ public class GetIndexQueryResult
             {
                 Qualifications = source.Qualifications,
                 TrainingCourses = source.TrainingCourses
+            };
+        }
+    }
+    
+    public record EmploymentLocationSection : LocationDto
+    {
+        public SectionStatus EmploymentLocationStatus { get; set; }
+
+        public static implicit operator EmploymentLocationSection(GetIndexApiResponse.EmploymentLocationSection source)
+        {
+            return new EmploymentLocationSection
+            {
+                Addresses = source.Addresses,
+                EmploymentLocationInformation = source.EmploymentLocationInformation,
+                EmployerLocationOption = source.EmployerLocationOption,
+                EmploymentLocationStatus = source.EmploymentLocationStatus
             };
         }
     }
@@ -132,6 +150,7 @@ public class GetIndexQueryResult
             IsDisabilityConfident = source.IsDisabilityConfident,
             IsApplicationComplete = source.IsApplicationComplete,
             EducationHistory = source.EducationHistory,
+            EmploymentLocation = source.EmploymentLocation,
             WorkHistory = source.WorkHistory,
             ApplicationQuestions = source.ApplicationQuestions,
             InterviewAdjustments = source.InterviewAdjustments,
