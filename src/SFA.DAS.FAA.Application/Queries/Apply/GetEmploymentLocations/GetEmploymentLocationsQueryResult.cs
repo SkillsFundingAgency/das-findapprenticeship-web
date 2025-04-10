@@ -5,7 +5,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetEmploymentLocations;
 
 public record GetEmploymentLocationsQueryResult
 {
-    public LocationDto EmploymentLocation { get; private init; } = new();
+    public LocationDto EmploymentLocation { get; init; } = new();
     
     public static implicit operator GetEmploymentLocationsQueryResult(GetEmploymentLocationsApiResponse source)
     {
