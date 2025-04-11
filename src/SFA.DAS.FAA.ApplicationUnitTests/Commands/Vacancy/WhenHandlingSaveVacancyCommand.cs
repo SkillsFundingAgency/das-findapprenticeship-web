@@ -20,12 +20,12 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Vacancy
             [Greedy] SaveVacancyCommandHandler handler)
         {
             var expectedApiRequest =
-                new PostSaveVacancyApiRequest(command.CandidateId, new PostSaveVacancyApiRequestData{ VacancyReference = command.VacancyReference });
+                new PostSaveVacancyApiRequest(command.CandidateId, new PostSaveVacancyApiRequestData{ VacancyId = command.VacancyId});
 
             apiClient.Setup(x =>
                     x.PostWithResponseCode<PostSaveVacancyApiResponse>(
                         It.Is<PostSaveVacancyApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
-                                                              && ((PostSaveVacancyApiRequestData)r.Data).VacancyReference == command.VacancyReference
+                                                              && ((PostSaveVacancyApiRequestData)r.Data).VacancyId == command.VacancyId
                         )))
                 .ReturnsAsync(apiResponse);
 
@@ -41,12 +41,12 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Vacancy
             [Greedy] SaveVacancyCommandHandler handler)
         {
             var expectedApiRequest =
-                new PostSaveVacancyApiRequest(command.CandidateId, new PostSaveVacancyApiRequestData { VacancyReference = command.VacancyReference });
+                new PostSaveVacancyApiRequest(command.CandidateId, new PostSaveVacancyApiRequestData { VacancyId = command.VacancyId });
 
             apiClient.Setup(x =>
                     x.PostWithResponseCode<PostSaveVacancyApiResponse>(
                         It.Is<PostSaveVacancyApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
-                                                              && ((PostSaveVacancyApiRequestData)r.Data).VacancyReference == command.VacancyReference
+                                                              && ((PostSaveVacancyApiRequestData)r.Data).VacancyId == command.VacancyId 
                         )))
                 .ReturnsAsync(() => null);
 

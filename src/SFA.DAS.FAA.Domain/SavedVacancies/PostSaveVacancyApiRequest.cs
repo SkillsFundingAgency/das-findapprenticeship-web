@@ -12,6 +12,7 @@ namespace SFA.DAS.FAA.Domain.SavedVacancies
     public record PostSaveVacancyApiRequestData
     {
         public required string VacancyReference { get; set; }
+        public required string VacancyId { get; set; }
     }
 
     public record PostSaveVacancyApiResponse

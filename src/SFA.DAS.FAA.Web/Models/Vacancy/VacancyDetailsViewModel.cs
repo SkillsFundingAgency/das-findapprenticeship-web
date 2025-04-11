@@ -22,6 +22,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public string? ContactPhone { get; init; }
         public string? EmployerDescription { get; init; }
         public string? EmployerWebsite { get; init; }
+        public string? VacancyId { get; init; }
         public string? VacancyReference { get; init; }
         public string? VacancySummary { get; init; }
         public string? AnnualWage { get; init; }
@@ -149,6 +150,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 Title = source.Vacancy?.Title,
                 TrainingPlan = source.Vacancy?.TrainingDescription,
                 TrainingProviderName = source.Vacancy?.ProviderName,
+                VacancyId = source.Vacancy?.Id,
                 VacancyReference = source.Vacancy?.VacancyReference,
                 VacancySource = source.Vacancy.VacancySource,
                 VacancySummary = source.Vacancy?.Description,

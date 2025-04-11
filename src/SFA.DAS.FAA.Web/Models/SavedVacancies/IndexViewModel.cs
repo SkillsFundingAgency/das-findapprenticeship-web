@@ -52,7 +52,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
 
         public class DeletedSavedVacancy
         {
-            public string? VacancyReference { get; set; }
+            public string? VacancyId { get; set; }
             public string? VacancyTitle { get; set; }
             public string? EmployerName { get; set; }
 
@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                 return new DeletedSavedVacancy
                 {
                     EmployerName = source.EmployerName,
-                    VacancyReference = source.VacancyReference,
+                    VacancyId = source.VacancyId,
                     VacancyTitle = source.VacancyTitle
                 };
             }
@@ -76,7 +76,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                 SortOrder = sortOrder,
                 DeletedVacancy = source.DeletedVacancy != null ? new DeletedSavedVacancy
                 {
-                    VacancyReference = source.DeletedVacancy?.VacancyReference,
+                    VacancyId = source.DeletedVacancy?.VacancyId,
                     VacancyTitle = source.DeletedVacancy?.VacancyTitle,
                     EmployerName = source.DeletedVacancy?.EmployerName,
                 } : null

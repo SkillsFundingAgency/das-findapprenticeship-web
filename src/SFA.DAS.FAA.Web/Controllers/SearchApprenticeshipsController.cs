@@ -313,11 +313,12 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("search-results/save/{vacancyReference}", Name = RouteNames.SaveVacancyFromSearchResultsPage)]
-    public async Task<IActionResult> SearchResultsSaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    [Route("search-results/save/{vacancyId}", Name = RouteNames.SaveVacancyFromSearchResultsPage)]
+    public async Task<IActionResult> SearchResultsSaveVacancy([FromRoute] string vacancyId, [FromQuery] string vacancyReference, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new SaveVacancyCommand
         {
+            VacancyId = vacancyId,
             VacancyReference = vacancyReference,
             CandidateId = (Guid)User.Claims.CandidateId()!
         });
@@ -331,12 +332,12 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("search-results/delete/{vacancyReference}", Name = RouteNames.DeleteSavedVacancyFromSearchResultsPage)]
-    public async Task<IActionResult> SearchResultsDeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    [Route("search-results/delete/{vacancyId}", Name = RouteNames.DeleteSavedVacancyFromSearchResultsPage)]
+    public async Task<IActionResult> SearchResultsDeleteSavedVacancy([FromRoute] string vacancyId, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new DeleteSavedVacancyCommand
         {
-            VacancyReference = vacancyReference,
+            VacancyId = vacancyId,
             CandidateId = (Guid)User.Claims.CandidateId()!
         });
 

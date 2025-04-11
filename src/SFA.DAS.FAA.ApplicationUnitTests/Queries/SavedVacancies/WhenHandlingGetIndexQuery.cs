@@ -20,7 +20,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
             GetSavedVacanciesQueryHandler handler)
         {
             // Arrange
-            query.DeleteVacancyReference = null;
+            query.DeleteVacancyId = null;
             var apiRequestUri = new GetSavedVacanciesApiRequest(query.CandidateId);
 
             apiClientMock.Setup(client =>
@@ -51,7 +51,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
             GetSavedVacanciesQueryHandler handler)
         {
             // Arrange
-            query.DeleteVacancyReference = getApprenticeshipVacancyApiResponse.VacancyReference;
+            query.DeleteVacancyId = getApprenticeshipVacancyApiResponse.VacancyReference;
             var apiRequestUri = new GetSavedVacanciesApiRequest(query.CandidateId);
 
             apiClientMock.Setup(client =>
@@ -61,7 +61,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
                 .ReturnsAsync(apiResponse);
 
 
-            var getApprenticeshipVacancyApiRequest = new GetApprenticeshipVacancyApiRequest(query.DeleteVacancyReference, null);
+            var getApprenticeshipVacancyApiRequest = new GetApprenticeshipVacancyApiRequest(query.DeleteVacancyId, null);
 
             apiClientMock.Setup(client =>
                     client.Get<GetApprenticeshipVacancyApiResponse>(
@@ -78,7 +78,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
                 .Excluding(x => x.OtherAddresses));
             result.DeletedVacancy.EmployerName.Should().Be(getApprenticeshipVacancyApiResponse.EmployerName);
             result.DeletedVacancy.VacancyTitle.Should().Be(getApprenticeshipVacancyApiResponse.Title);
-            result.DeletedVacancy.VacancyReference.Should().Be(getApprenticeshipVacancyApiResponse.VacancyReference);
+            result.DeletedVacancy.VacancyId.Should().Be(getApprenticeshipVacancyApiResponse.VacancyReference);
         }
     }
 }

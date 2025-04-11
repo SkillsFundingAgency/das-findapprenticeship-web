@@ -10,7 +10,7 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
     public class GetSavedVacanciesQuery : IRequest<GetSavedVacanciesQueryResult>
     {
         public Guid CandidateId { get; set; }
-        public string? DeleteVacancyReference { get; set; }
+        public string? DeleteVacancyId { get; set; }
     }
 
     public class GetSavedVacanciesQueryResult
@@ -37,7 +37,7 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
 
         public class DeletedSavedVacancy
         {
-            public string? VacancyReference { get; set; }
+            public string? VacancyId { get; set; }
             public string? VacancyTitle { get; set; }
             public string? EmployerName { get; set; }
         }
@@ -76,12 +76,12 @@ namespace SFA.DAS.FAA.Application.Queries.GetSavedVacancies
             var response = await apiClient.Get<GetSavedVacanciesApiResponse>(
                 new GetSavedVacanciesApiRequest(request.CandidateId)) ?? new GetSavedVacanciesQueryResult();
 
-            if (string.IsNullOrEmpty(request.DeleteVacancyReference)) return response;
+            if (string.IsNullOrEmpty(request.DeleteVacancyId)) return response;
 
-            var getApprenticeshipVacancyApiResponse = await apiClient.Get<GetApprenticeshipVacancyApiResponse>(new GetApprenticeshipVacancyApiRequest(request.DeleteVacancyReference, null));
+            var getApprenticeshipVacancyApiResponse = await apiClient.Get<GetApprenticeshipVacancyApiResponse>(new GetApprenticeshipVacancyApiRequest(request.DeleteVacancyId, null));
             response.DeletedVacancy = new GetSavedVacanciesQueryResult.DeletedSavedVacancy
             {
-                VacancyReference = getApprenticeshipVacancyApiResponse.VacancyReference,
+                VacancyId = getApprenticeshipVacancyApiResponse.Id,
                 EmployerName = getApprenticeshipVacancyApiResponse.EmployerName,
                 VacancyTitle = getApprenticeshipVacancyApiResponse.Title,
             };

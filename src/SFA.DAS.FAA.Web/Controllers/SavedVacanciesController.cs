@@ -18,13 +18,13 @@ namespace SFA.DAS.FAA.Web.Controllers
         [Route("", Name = RouteNames.SavedVacancies)]
         [HttpGet]
         public async Task<IActionResult> Index(
-            [FromQuery] string? vacancyReference = null,
+            [FromQuery] string? vacancyId = null,
             SortOrder sortOrder = SortOrder.RecentlySaved)
         {
             var result = await mediator.Send(new GetSavedVacanciesQuery
             {
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                DeleteVacancyReference = vacancyReference
+                DeleteVacancyId = vacancyId
             });
 
             var viewModel = IndexViewModel.Map(result, dateTimeService, sortOrder);
@@ -32,18 +32,18 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpPost]
-        [Route("{vacancyReference}/delete", Name = RouteNames.DeleteSavedVacancy)]
-        public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyReference)
+        [Route("{vacancyId}/delete", Name = RouteNames.DeleteSavedVacancy)]
+        public async Task<IActionResult> DeleteSavedVacancy([FromRoute] string vacancyId)
         {
             await mediator.Send(new DeleteSavedVacancyCommand
             {
-                VacancyReference = vacancyReference,
+                VacancyId = vacancyId,
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
             return RedirectToRoute(RouteNames.SavedVacancies, new
             {
-                VacancyReference = vacancyReference
+                VacancyId = vacancyId
             });
         }
     }

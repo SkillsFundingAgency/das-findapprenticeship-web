@@ -24,8 +24,8 @@ public class VacanciesController(
     IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration,
     IValidator<GetVacancyDetailsRequest> validator) : Controller
 {
-    [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
-    [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 2)]
+    [Route("apprenticeship/{vacancyReference}/{vacancyId}", Name = RouteNames.Vacancies, Order = 1)]
+    [Route("apprenticeship/reference/{vacancyReference}/{vacancyId}", Name = RouteNames.VacanciesReference, Order = 2)]
     [Route("apprenticeship/nhs/{vacancyReference}", Name = RouteNames.NhsVacanciesReference, Order = 3)]
     public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request, NavigationSource source = NavigationSource.None, ApplicationsTab tab = ApplicationsTab.None)
     {
@@ -85,6 +85,7 @@ public class VacanciesController(
     {
         await mediator.Send(new SaveVacancyCommand
         {
+            VacancyId = null,
             VacancyReference = vacancyReference,
             CandidateId = (Guid)User.Claims.CandidateId()!
         });
@@ -101,6 +102,7 @@ public class VacanciesController(
     {
         await mediator.Send(new DeleteSavedVacancyCommand
         {
+            VacancyId = null,
             VacancyReference = vacancyReference,
             CandidateId = (Guid)User.Claims.CandidateId()!
         });

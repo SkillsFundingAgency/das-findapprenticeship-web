@@ -245,6 +245,7 @@
                                     <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-1">
                                         <a asp-route="@RouteNames.Vacancies"
                                            asp-route-vacancyReference="@vacancyAdvert.VacancyReference"
+                                           asp-route-vacancyId="@(vacancyAdvert.VacancySource == VacancyDataSource.Raa ? vacancyAdvert.VacancyId : null)"
                                            class="das-search-results__link">
                                             <span id="@vacancyAdvert.VacancyReference-vacancy-title">@vacancyAdvert.Title</span>
                                         </a>
@@ -255,7 +256,8 @@
                                     <div data-favourite="true"
                                          class="faa-save-vacancy @(vacancyAdvert.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                                         <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromSearchResultsPage"
-                                              asp-route-vacancyReference="@vacancyAdvert.VacancyReference">
+                                              asp-route-vacancyReference="@vacancyAdvert.VacancyReference"
+                                              asp-route-vacancyId="@vacancyAdvert.VacancyId">
                                             <button type="submit"
                                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-save-vacancy__link--delete"
                                                     data-delete-favourite="true"
@@ -271,7 +273,8 @@
                                             </button>
                                         </form>
                                         <form method="post" asp-route="@RouteNames.SaveVacancyFromSearchResultsPage"
-                                              asp-route-vacancyReference="@vacancyAdvert.VacancyReference">
+                                              asp-route-vacancyReference="@vacancyAdvert.VacancyReference"
+                                              asp-route-vacancyId="@vacancyAdvert.VacancyId">
                                             <button type="submit"
                                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link  faa-save-vacancy__link--save"
                                                     aria-pressed="false"
