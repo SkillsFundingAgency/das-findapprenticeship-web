@@ -5,5 +5,8 @@ namespace SFA.DAS.FAA.Domain.Apply.GetEmploymentLocations;
 
 public record GetEmploymentLocationsApiResponse
 {
-    [JsonProperty("employmentLocation")] public LocationDto EmploymentLocation { get; private init; } = new();
+    [JsonProperty("employmentLocation")] 
+    public LocationDto EmploymentLocation { get; private init; } = new();
+
+    public bool? IsSectionCompleted { get; set; }
 }

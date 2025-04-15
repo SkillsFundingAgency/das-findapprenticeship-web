@@ -53,7 +53,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public bool ShowLocationSection => EmploymentLocation.EmployerLocationOption == AvailableWhere.MultipleLocations;
 
         public EducationHistorySection EducationHistory { get; set; } = new();
-        public EmploymentLocationSection EmploymentLocation { get; set; } = new();
+        public EmploymentLocationSection? EmploymentLocation { get; set; }
         public WorkHistorySection WorkHistory { get; set; } = new();
         public ApplicationQuestionsSection ApplicationQuestions { get; set; } = new();
         public InterviewAdjustmentsSection InterviewAdjustments { get; set; } = new();
@@ -78,9 +78,16 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         
         public record EmploymentLocationSection : LocationDto
         {
-            public SectionStatus EmploymentLocationStatus { get; set; }
-            public static implicit operator EmploymentLocationSection(GetIndexQueryResult.EmploymentLocationSection source)
+            public SectionStatus EmploymentLocationStatus { get; set; } = SectionStatus.NotRequired;
+
+            public static implicit operator EmploymentLocationSection?(GetIndexQueryResult.EmploymentLocationSection? source)
             {
+                if (source == null)
+                    return new EmploymentLocationSection
+                    {
+                        EmploymentLocationStatus = SectionStatus.NotRequired
+                    };
+
                 return new EmploymentLocationSection
                 {
                     Addresses = source.Addresses,

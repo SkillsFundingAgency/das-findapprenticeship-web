@@ -20,7 +20,7 @@ public class GetIndexApiResponse
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
     public PreviousApplicationDetails? PreviousApplication { get; set; }
     
-    public EmploymentLocationSection EmploymentLocation { get; set; }
+    public EmploymentLocationSection? EmploymentLocation { get; set; }
 
     public class EducationHistorySection
     {

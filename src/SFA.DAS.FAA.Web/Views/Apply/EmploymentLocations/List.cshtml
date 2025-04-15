@@ -11,8 +11,9 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">Locations</span>
-        <form class="form" action="#" method="post">
-            <div class="govuk-form-group">
+        <partial name="_ValidationSummary" />
+        <form class="form" method="post">
+            <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.SelectedAddressIds)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="location-preference">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
@@ -22,12 +23,13 @@
                     <div id="waste-hint" class="govuk-hint">
                         Select all that apply
                     </div>
+                    <span asp-validation-for="SelectedAddressIds" class="govuk-error-message"></span>
                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                         @foreach (var address in Model.Addresses)
                         {
                             <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="address-@address.Id" name="address" type="checkbox" value="@address.FullAddress">
-                                <label class="govuk-label govuk-checkboxes__label" for="address-@address.Id">
+                                <input class="govuk-checkboxes__input" id="@address.Id" name="SelectedAddressIds" checked="@address.IsSelected" type="checkbox" value="@address.Id">
+                                <label class="govuk-label govuk-checkboxes__label" for="@address.Id">
                                     @address.FullAddress
                                 </label>
                             </div>    
