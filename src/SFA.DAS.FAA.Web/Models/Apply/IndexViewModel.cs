@@ -46,11 +46,12 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                                              ApplicationQuestions.AdditionalQuestion1 == SectionStatus.PreviousAnswer ||
                                              ApplicationQuestions.AdditionalQuestion2 == SectionStatus.PreviousAnswer ||
                                              InterviewAdjustments.RequestAdjustments == SectionStatus.PreviousAnswer ||
-                                             DisabilityConfidence.InterviewUnderDisabilityConfident == SectionStatus.PreviousAnswer;
+                                             DisabilityConfidence.InterviewUnderDisabilityConfident == SectionStatus.PreviousAnswer ||
+                                             EmploymentLocation?.EmploymentLocationStatus == SectionStatus.PreviousAnswer;
 
 
         public bool IsApplicationComplete { get; set; }
-        public bool ShowLocationSection => EmploymentLocation.EmployerLocationOption == AvailableWhere.MultipleLocations;
+        public bool ShowLocationSection => EmploymentLocation?.EmployerLocationOption == AvailableWhere.MultipleLocations;
 
         public EducationHistorySection EducationHistory { get; set; } = new();
         public EmploymentLocationSection? EmploymentLocation { get; set; }
@@ -80,7 +81,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         {
             public SectionStatus EmploymentLocationStatus { get; set; } = SectionStatus.NotRequired;
 
-            public static implicit operator EmploymentLocationSection?(GetIndexQueryResult.EmploymentLocationSection? source)
+            public static implicit operator EmploymentLocationSection(GetIndexQueryResult.EmploymentLocationSection? source)
             {
                 if (source == null)
                     return new EmploymentLocationSection
