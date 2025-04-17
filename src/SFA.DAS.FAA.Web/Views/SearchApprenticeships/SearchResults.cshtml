@@ -88,17 +88,17 @@
                                 <div class="govuk-accordion__section-content">
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-visually-hidden">Apprenticeship level</legend>
-                                        <p class="govuk-hint">Select the level you want to apply for</p>
+                                        <p class="govuk-body govuk-!-font-size-16">
+                                            <a class="govuk-link govuk-link--no-visited-state"
+                                               href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships#UnderstandingApprenticeshiplevelsandqualifications"
+                                               target="_blank" rel="external">
+                                                Understanding apprenticeship levels (opens in new tab)
+                                            </a>
+                                        </p>
                                         <partial name="_FilterDetails"
                                                  Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
                                     </fieldset>
-                                    <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3">
-                                        <a class="govuk-link govuk-link--no-visited-state"
-                                           href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels"
-                                           target="_blank" rel="external">
-                                            What qualification levels mean (opens in new tab)
-                                        </a>
-                                    </p>
+                                   
                                 </div>
                             </div>
                             <div class="govuk-accordion__section">
