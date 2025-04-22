@@ -22,15 +22,17 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
 
         public List<SelectListItem> SortOrderOptions =>
         [
-            new SelectListItem
+            new()
             {
-                Value = SortOrder.RecentlySaved.ToString(), Text = "Recently saved",
-                Selected = SortOrder == SortOrder.RecentlySaved
+                Value = SortOrder.DateSaved.ToString(),
+                Text = "Date saved",
+                Selected = SortOrder == SortOrder.DateSaved
             },
-            new SelectListItem
+            new()
             {
-                Value = SortOrder.ClosingSoonest.ToString(), Text = "Closing soonest",
-                Selected = SortOrder == SortOrder.ClosingSoonest
+                Value = SortOrder.ClosingSoon.ToString(),
+                Text = "Closing soon",
+                Selected = SortOrder == SortOrder.ClosingSoon
             }
         ];
 
@@ -121,7 +123,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                     savedVacancies.Add(savedVacancy);
                 }
 
-                result.SavedVacancies = sortOrder == SortOrder.ClosingSoonest
+                result.SavedVacancies = sortOrder == SortOrder.ClosingSoon
                     ? savedVacancies.OrderBy(x => x.ClosingDate).ToList()
                     : savedVacancies.OrderByDescending(x => x.CreatedOn).ToList();
                 
