@@ -1,20 +1,13 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Equivalency;
+﻿using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSavedVacancies;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models.SavedVacancies;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SavedVacancies
 {
@@ -45,7 +38,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SavedVacancies
             var actual = await controller.Index() as ViewResult;
 
             actual.Should().NotBeNull();
-            var expected = IndexViewModel.Map(result, dateTimeService.Object, SortOrder.ClosingSoonest);
+            var expected = IndexViewModel.Map(result, dateTimeService.Object, SortOrder.ClosingSoon);
             var actualModel = actual.Model as IndexViewModel;
             actualModel.Should()
                 .BeEquivalentTo(expected,
@@ -78,7 +71,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SavedVacancies
             var actual = await controller.Index(vacancyReference) as ViewResult;
 
             actual.Should().NotBeNull();
-            var expected = IndexViewModel.Map(result, dateTimeService.Object, SortOrder.ClosingSoonest);
+            var expected = IndexViewModel.Map(result, dateTimeService.Object, SortOrder.ClosingSoon);
             var actualModel = actual.Model as IndexViewModel;
             actualModel.Should()
                 .BeEquivalentTo(expected,

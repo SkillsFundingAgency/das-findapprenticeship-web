@@ -350,9 +350,16 @@
                 <p>@Model.TrainingProviderName</p>
                 <h3 class="govuk-heading-s">Your training course</h3>
                 <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
-                <p class="gov-body das-!-color-dark-grey">Equal to @Model.CourseLevelMapper</p>
+                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-5">
+                    <a class="govuk-link govuk-link--no-visited-state"
+                       href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships#UnderstandingApprenticeshiplevelsandqualifications"
+                       target="_blank" rel="external">
+                        Understanding apprenticeship levels (opens in new tab)
+                    </a>
+                </p>
                 @if (Model.CourseSkills is { Count: > 0 } || Model.CourseCoreDuties is { Count: > 0 })
                 {
+                    <h3 class="govuk-heading-s">What you'll learn</h3>
                     <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
                         <summary class="govuk-details__summary">
                             <span class="govuk-details__summary-text">
