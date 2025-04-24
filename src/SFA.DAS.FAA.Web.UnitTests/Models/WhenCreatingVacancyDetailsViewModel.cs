@@ -218,4 +218,58 @@ public class WhenCreatingVacancyDetailsViewModel
 
         actual.ShowMap.Should().Be(expectedResult);
     }
+    
+    [Test, MoqAutoData]
+    public void Then_WorkDescription_Is_Made_Accessible(
+        GetApprenticeshipVacancyQueryResult result,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        // arrange
+        result.Vacancy = new GetApprenticeshipVacancyApiResponse
+        {
+            LongDescription = "<ul><li>Item 1</li></ul>"
+        };
+        
+        // act
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, null);
+
+        // assert
+        actual.WorkDescription.Should().Contain("<p>Item 1</p>");
+    }
+    
+    [Test, MoqAutoData]
+    public void Then_AdditionalTrainingInformation_Is_Made_Accessible(
+        GetApprenticeshipVacancyQueryResult result,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        // arrange
+        result.Vacancy = new GetApprenticeshipVacancyApiResponse
+        {
+            AdditionalTrainingDescription = "<ul><li>Item 1</li></ul>"
+        };
+        
+        // act
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, null);
+
+        // assert
+        actual.AdditionalTrainingInformation.Should().Contain("<p>Item 1</p>");
+    }
+    
+    [Test, MoqAutoData]
+    public void Then_TrainingPlan_Is_Made_Accessible(
+        GetApprenticeshipVacancyQueryResult result,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        // arrange
+        result.Vacancy = new GetApprenticeshipVacancyApiResponse
+        {
+            TrainingDescription = "<ul><li>Item 1</li></ul>"
+        };
+        
+        // act
+        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, null);
+
+        // assert
+        actual.TrainingPlan.Should().Contain("<p>Item 1</p>");
+    }
 }
