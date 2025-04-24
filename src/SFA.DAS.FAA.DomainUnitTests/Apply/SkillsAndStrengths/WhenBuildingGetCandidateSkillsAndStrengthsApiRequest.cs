@@ -7,7 +7,7 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Apply.SkillsAndStrengths;
 public class WhenBuildingGetCandidateSkillsAndStrengthsApiRequest
 {
     [Test, MoqAutoData]
-    public void Then_GetUrl_Is_Built_Corectly(Guid applicationId, Guid candidateId)
+    public void Then_GetUrl_Is_Built_Correctly(Guid applicationId, Guid candidateId)
     {
         var request = new GetCandidateSkillsAndStrengthsApiRequest(candidateId, applicationId);
 
