@@ -24,7 +24,7 @@
                         Select all that apply
                     </div>
                     <span asp-validation-for="SelectedAddressIds" class="govuk-error-message"></span>
-                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes" id="SelectedAddressIds">
                         @foreach (var address in Model.Addresses)
                         {
                             <div class="govuk-checkboxes__item">

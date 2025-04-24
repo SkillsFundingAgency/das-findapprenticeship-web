@@ -45,6 +45,9 @@ public class EmploymentLocationsController(IMediator mediator) : Controller
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetEmploymentLocationsQuery(applicationId, (Guid)User.Claims.CandidateId()!));
+            // Reset the selection for all addresses in one step
+            result.EmploymentLocation.Addresses.ForEach(address => address.IsSelected = false);
+
             return View(ListViewPath, new AddEmploymentLocationsViewModel
             {
                 Addresses = result.EmploymentLocation.Addresses
