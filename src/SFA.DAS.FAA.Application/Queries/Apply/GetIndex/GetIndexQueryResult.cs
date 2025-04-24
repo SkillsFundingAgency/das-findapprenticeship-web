@@ -19,7 +19,7 @@ public class GetIndexQueryResult
     public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
     public PreviousApplicationDetails? PreviousApplication { get; set; }
-    public EmploymentLocationSection EmploymentLocation { get; set; }
+    public EmploymentLocationSection? EmploymentLocation { get; set; }
 
     public class EducationHistorySection
     {
@@ -40,10 +40,13 @@ public class GetIndexQueryResult
     {
         public SectionStatus EmploymentLocationStatus { get; set; }
 
-        public static implicit operator EmploymentLocationSection(GetIndexApiResponse.EmploymentLocationSection source)
+        public static implicit operator EmploymentLocationSection?(GetIndexApiResponse.EmploymentLocationSection? source)
         {
+            if (source is null) return null;
+
             return new EmploymentLocationSection
             {
+                Id = source.Id,
                 Addresses = source.Addresses,
                 EmploymentLocationInformation = source.EmploymentLocationInformation,
                 EmployerLocationOption = source.EmployerLocationOption,
