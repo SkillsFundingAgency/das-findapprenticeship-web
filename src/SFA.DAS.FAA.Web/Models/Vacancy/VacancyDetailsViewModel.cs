@@ -101,7 +101,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
 
             return new VacancyDetailsViewModel
             {
-                AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription,
+                AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription.MakeSingleItemListsAccessible(),
                 Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
                 Addresses = addresses.OrderByCity().ToList(),
                 AnnualWage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source.Vacancy, source.Vacancy.CandidateDateOfBirth, true),
@@ -149,13 +149,13 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 StartDate = source.Vacancy?.StartDate.ToGdsDateStringWithDayOfWeek(),
                 ThingsToConsider = source.Vacancy?.ThingsToConsider,
                 Title = source.Vacancy?.Title,
-                TrainingPlan = source.Vacancy?.TrainingDescription,
+                TrainingPlan = source.Vacancy?.TrainingDescription.MakeSingleItemListsAccessible(),
                 TrainingProviderName = source.Vacancy?.ProviderName,
                 VacancyReference = source.Vacancy?.VacancyReference,
                 VacancySource = source.Vacancy.VacancySource,
                 VacancySummary = source.Vacancy?.Description,
                 WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
-                WorkDescription = source.Vacancy?.LongDescription,
+                WorkDescription = source.Vacancy?.LongDescription.MakeSingleItemListsAccessible(),
                 WorkLocation = source.Vacancy.Address,
                 WorkingPattern = source.Vacancy?.WorkingWeek,
             };

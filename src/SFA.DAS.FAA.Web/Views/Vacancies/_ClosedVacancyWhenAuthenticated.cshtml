@@ -214,8 +214,8 @@
                 @if (Model.EmployerLocationOption != AvailableWhere.AcrossEngland)
                 {
                     if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent)
-                    && Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven)
-                    && bool.TryParse(isConsentGiven, out var consentResult) && consentResult)
+                        && Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven)
+                        && bool.TryParse(isConsentGiven, out var consentResult) && consentResult && Model.ShowMap)
                     {
                         <details class="govuk-details govuk-!-margin-bottom-0">
                             <summary class="govuk-details__summary">
@@ -266,10 +266,10 @@
                                 </form>
                                 <p class="govuk-body govuk-!-font-size-16 govuk-!-padding-top-2" id="faa-journey-info"></p>
                             </div>
+                            <div class="govuk-details govuk-!-margin-top-5">
+                                <div id="faa-directions-map" class="faa-directions-map"></div>
+                            </div>
                         </details>
-                        <div class="govuk-details govuk-!-margin-top-5">
-                            <div id="faa-directions-map" class="faa-directions-map"></div>
-                        </div>
                     }
                 }
             </section>
@@ -283,34 +283,32 @@
                 <h3 class="govuk-heading-s">Your training course</h3>
                 <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
                 <p class="gov-body das-!-color-dark-grey">Equal to @Model.CourseLevelMapper</p>
-                <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Course contents
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        @if (Model.CourseSkills is { Count: > 0 } || Model.CourseSkills is { Count: > 0 })
-                        {
-                            <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
-                                @if (Model.CourseSkills is { Count: > 0 })
+            
+                @if (Model.CourseSkills is { Count: > 0 } || Model.CourseSkills is { Count: > 0 })
+                {
+                    <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Course contents
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            @{
+                                var courseItems = new List<string>();
+                                if (Model.CourseSkills is { Count: > 0 })
                                 {
-                                    @foreach (var skills in Model.CourseSkills)
-                                    {
-                                        <li>@skills</li>
-                                    }
+                                    courseItems.AddRange(Model.CourseSkills);
                                 }
-                                @if (Model.CourseCoreDuties is { Count: > 0 })
+
+                                if (Model.CourseCoreDuties is { Count: > 0 })
                                 {
-                                    @foreach (var skills in Model.CourseCoreDuties)
-                                    {
-                                        <li>@skills</li>
-                                    }
+                                    courseItems.AddRange(Model.CourseCoreDuties);
                                 }
-                        </ul>
-                        }
-                    </div>
-                </details>
+                            }
+                            <accessible-list class="govuk-list--spaced" items="@courseItems"/>
+                        </div>
+                    </details>
+                }
                 <h3 class="govuk-heading-s">Your training plan</h3>
                 @if (string.IsNullOrEmpty(Model.TrainingPlan))
                 {
@@ -338,12 +336,7 @@
                     foreach (var group in Model.EssentialQualifications.GroupBy(x => x.QualificationType))
                     {
                         <p>@group.Key in:</p>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var qualification in group)
-                            {
-                                <li>@qualification.Subject (grade @qualification.Grade)</li>
-                            }
-                        </ul>
+                        <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()" />
                     }
                 }
                 @if (Model.DesiredQualifications is { Count: > 0 })
@@ -352,12 +345,7 @@
                     foreach (var group in Model.DesiredQualifications.GroupBy(x => x.QualificationType))
                     {
                         <p>@group.Key in:</p>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var qualification in group)
-                            {
-                                <li>@qualification.Subject (grade @qualification.Grade)</li>
-                            }
-                        </ul>
+                        <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()" />
                     }
                 }
                 <p class="govuk-body">
@@ -365,12 +353,7 @@
                     adjust the apprenticeship to reflect what you already know.
                 </p>
                 <h3 class="govuk-heading-s">Skills</h3>
-                <ul class="govuk-list govuk-list--bullet">
-                        @foreach (var skills in Model.Skills)
-                        {
-                        <li>@skills</li>
-                        }
-                </ul>
+                <accessible-list items="@Model.Skills"></accessible-list>
                 
                 @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
                 {
