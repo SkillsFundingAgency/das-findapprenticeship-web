@@ -20,12 +20,12 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Vacancy
             [Greedy] DeleteSavedVacancyCommandHandler handler)
         {
             var expectedApiRequest =
-                new PostDeleteSavedVacancyApiRequest(command.CandidateId, new PostDeleteSavedVacancyApiRequestData { VacancyReference = command.VacancyId });
+                new PostDeleteSavedVacancyApiRequest(command.CandidateId, new PostDeleteSavedVacancyApiRequestData { VacancyId = command.VacancyId });
 
             apiClient.Setup(x =>
                     x.PostWithResponseCode(
                         It.Is<PostDeleteSavedVacancyApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
-                                                                     && ((PostDeleteSavedVacancyApiRequestData)r.Data).VacancyReference == command.VacancyId
+                                                                     && ((PostDeleteSavedVacancyApiRequestData)r.Data).VacancyId == command.VacancyId
                         )));
 
             var result = await handler.Handle(command, It.IsAny<CancellationToken>());

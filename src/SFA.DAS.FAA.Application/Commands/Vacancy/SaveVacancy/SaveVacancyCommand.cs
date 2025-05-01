@@ -6,6 +6,5 @@ namespace SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy
     {
         public Guid CandidateId { get; init; }
         public required string VacancyId { get; init; }
-        public required string VacancyReference { get; init; }
     }
 }

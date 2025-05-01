@@ -17,8 +17,7 @@ namespace SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy
         {
             var data = new PostSaveVacancyApiRequestData
             {
-                VacancyId = request.VacancyId,
-                VacancyReference = request.VacancyReference
+                VacancyId = request.VacancyId
             };
 
             var apiRequest = new PostSaveVacancyApiRequest(request.CandidateId, data);

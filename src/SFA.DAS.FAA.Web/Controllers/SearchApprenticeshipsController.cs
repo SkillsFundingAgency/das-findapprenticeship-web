@@ -314,12 +314,11 @@ public class SearchApprenticeshipsController(
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
     [Route("search-results/save/{vacancyId}", Name = RouteNames.SaveVacancyFromSearchResultsPage)]
-    public async Task<IActionResult> SearchResultsSaveVacancy([FromRoute] string vacancyId, [FromQuery] string vacancyReference, [FromQuery] bool redirect = true)
+    public async Task<IActionResult> SearchResultsSaveVacancy([FromRoute] string vacancyId, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new SaveVacancyCommand
         {
             VacancyId = vacancyId,
-            VacancyReference = vacancyReference,
             CandidateId = (Guid)User.Claims.CandidateId()!
         });
 

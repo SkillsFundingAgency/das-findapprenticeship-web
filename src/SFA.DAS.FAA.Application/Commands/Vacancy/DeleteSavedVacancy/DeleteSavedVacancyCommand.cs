@@ -6,6 +6,6 @@ namespace SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy
     {
         public Guid CandidateId { get; init; }
         public required string VacancyId { get; set; }
-        public required string VacancyReference { get; set; }
+        public bool DeleteAllByVacancyReference { get; set; }
     }
 }

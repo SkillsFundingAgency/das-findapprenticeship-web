@@ -256,7 +256,6 @@
                                     <div data-favourite="true"
                                          class="faa-save-vacancy @(vacancyAdvert.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                                         <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromSearchResultsPage"
-                                              asp-route-vacancyReference="@vacancyAdvert.VacancyReference"
                                               asp-route-vacancyId="@vacancyAdvert.VacancyId">
                                             <button type="submit"
                                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-save-vacancy__link--delete"

@@ -43,7 +43,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
 
             actual!.RouteName.Should().Be(RouteNames.Vacancies);
             actual.RouteValues.Should().NotBeEmpty();
-            actual.RouteValues!["VacancyReference"].Should().Be(vacancyReference);
+            actual.RouteValues!["VacancyReference"].Should().Be(vacancyReference.Split('-')[0]);
 
             mediator.Verify(x => x.Send(It.IsAny<DeleteSavedVacancyCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }

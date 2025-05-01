@@ -19,7 +19,7 @@
                 <div class="govuk-notification-banner__content">
                     <h3 class="govuk-notification-banner__heading">
                         Removed <a class="govuk-notification-banner__link"
-                            href="@Url.RouteUrl(RouteNames.Vacancies, new { vacancyId = @Model.DeletedVacancy.VacancyId})">@Model.DeletedVacancy.VacancyTitle</a>
+                            href="@Url.RouteUrl(RouteNames.Vacancies, new { vacancyReference = @Model.DeletedVacancy.VacancyReference})">@Model.DeletedVacancy.VacancyTitle</a>
                         at @Model.DeletedVacancy.EmployerName.
                     </h3>
                 </div>
