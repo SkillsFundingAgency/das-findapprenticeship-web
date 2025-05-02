@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Web;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models.SearchResults;
@@ -345,7 +346,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         [Test]
         public void Then_What_Search_Term_Is_Added_To_Filter_List()
         {
-            var request = new GetSearchResultsRequest { RouteIds = [], SearchTerm = "Software Developer"};
+            var request = new GetSearchResultsRequest { RouteIds = [], SearchTerm = "Software & Developer"};
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper
                 .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -356,7 +357,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                     { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
 
             actual.First().FieldName.Should().Be("What");
-            actual.First().Filters.First().Value.Should().Be("Software Developer");
+            actual.First().Filters.First().Value.Should().Be("Software & Developer");
             actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
 
         }
@@ -416,6 +417,25 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             actual.First().FieldName.Should().Be("What");
             actual.First().Filters.First().Value.Should().Be("Software Developer");
             actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults?sort=AgeAsc");
+
+        }
+        
+        [Test]
+        public void Then_What_Search_Term_Is_Added_To_Filter_List_With_Sort_And_Location_Encoded()
+        {
+            var request = new GetSearchResultsRequest { RouteIds = [], Location = "Coventry & Coventry", SearchTerm = "Software & Developer", Sort = VacancySort.AgeAsc.ToString()};
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(SearchResultsUrl);
+            
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+                new SearchApprenticeshipFilterChoices
+                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
+
+            actual.First().FieldName.Should().Be("What");
+            actual.First().Filters.First().Value.Should().Be("Software & Developer");
+            actual.First().Filters.First().ClearFilterLink.Should().Be($"searchResults?location={HttpUtility.UrlEncode("Coventry & Coventry")}&distance=all&sort=AgeAsc");
 
         }
 
