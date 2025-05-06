@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
         [Test, MoqAutoData]
         public async Task Then_If_Command_Returns_Redirect_Returned(
             Guid candidateId,
-            string vacancyReference,
+            string vacancyId,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] Web.Controllers.VacanciesController controller)
@@ -38,20 +38,22 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
 
                 }
             };
+            var vacancyReference = vacancyId.Split('-')[0];
 
-            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyReference, true) as RedirectToRouteResult;
+            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyId, true) as RedirectToRouteResult;
 
             actual!.RouteName.Should().Be(RouteNames.Vacancies);
             actual.RouteValues.Should().NotBeEmpty();
-            actual.RouteValues!["VacancyReference"].Should().Be(vacancyReference.Split('-')[0]);
+            actual.RouteValues!["VacancyReference"].Should().Be(vacancyReference);
 
-            mediator.Verify(x => x.Send(It.IsAny<DeleteSavedVacancyCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediator.Verify(x => x.Send(It.Is<DeleteSavedVacancyCommand>(c =>
+                c.VacancyId == vacancyId && c.CandidateId == candidateId), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Test, MoqAutoData]
         public async Task Then_If_Command_Returns_JsonOk_Returned(
             Guid candidateId,
-            string vacancyReference,
+            string vacancyId,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] Web.Controllers.VacanciesController controller)
@@ -68,12 +70,13 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
 
                 }
             };
+            var vacancyReference = vacancyId.Split('-')[0];
 
-            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyReference, false) as JsonResult;
+            var actual = await controller.VacancyDetailsDeleteSavedVacancy(vacancyId, false) as JsonResult;
 
             actual!.Value.Should().Be(StatusCodes.Status200OK);
 
-            mediator.Verify(x => x.Send(It.IsAny<DeleteSavedVacancyCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediator.Verify(x => x.Send(It.Is<DeleteSavedVacancyCommand>(c => c.VacancyId == vacancyId && c.CandidateId == candidateId), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

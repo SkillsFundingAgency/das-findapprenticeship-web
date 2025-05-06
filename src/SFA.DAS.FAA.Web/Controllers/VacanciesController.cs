@@ -104,7 +104,8 @@ public class VacanciesController(
         await mediator.Send(new DeleteSavedVacancyCommand
         {
             VacancyId = vacancyId,
-            CandidateId = (Guid)User.Claims.CandidateId()!
+            CandidateId = (Guid)User.Claims.CandidateId()!,
+            DeleteAllByVacancyReference = true
         });
 
         var vacancyReference = vacancyId.Split('-')[0];
