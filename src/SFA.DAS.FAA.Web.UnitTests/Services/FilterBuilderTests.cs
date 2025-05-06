@@ -436,7 +436,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             actual.First().FieldName.Should().Be("What");
             actual.First().Filters.First().Value.Should().Be("Software & Developer");
             actual.First().Filters.First().ClearFilterLink.Should().Be($"searchResults?location={HttpUtility.UrlEncode("Coventry & Coventry")}&distance=all&sort=AgeAsc");
-
+            actual.Skip(1).First().FieldName.Should().Be("Where");
+            actual.Skip(1).First().Filters.First().Value.Should().Be("Coventry & Coventry (across England)");
+            actual.Skip(1).First().Filters.First().ClearFilterLink.Should().Be($"searchResults?searchTerm={HttpUtility.UrlEncode("Software & Developer")}&sort=AgeAsc");
         }
 
         [TestCase(null, VacancySort.AgeAsc,"Coventry (across England)","searchResults?sort=AgeAsc")]

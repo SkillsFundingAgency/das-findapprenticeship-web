@@ -26,7 +26,7 @@ namespace SFA.DAS.FAA.Web.Services
                 request.SearchTerm,[$"searchTerm={HttpUtility.UrlEncode(request.SearchTerm)}"]);
             filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Where",
                 string.IsNullOrEmpty(request.Location) ? "" : $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "across England")})",
-                [$"location={request.Location}", $"distance={(request.Distance == null ? "all" : request.Distance)}", $"sort={VacancySort.DistanceAsc}"]);
+                [$"location={HttpUtility.UrlEncode(request.Location)}", $"distance={(request.Distance == null ? "all" : request.Distance)}", $"sort={VacancySort.DistanceAsc}"]);
             
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
