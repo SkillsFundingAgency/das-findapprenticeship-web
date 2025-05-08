@@ -1,0 +1,17 @@
+.faa-badge {
+  position: relative;
+  color: #fff;
+  background: govuk-colour(red);
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 1.3em;
+  padding: 0 .3em;
+  margin-left: .3em;
+  min-width: .7em;
+  a:focus & {
+    color: $govuk-focus-colour;
+    background: govuk-colour(black);
+  }
+}
