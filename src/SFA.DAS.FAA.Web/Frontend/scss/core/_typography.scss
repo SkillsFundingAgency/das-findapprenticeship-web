@@ -18,10 +18,6 @@
   }
 }
 
-.faa-inline-list:empty {
-  background-color: red;
-}
-
 .faa-inline-list--bar {
   & > li {
     border-right: 1px solid $govuk-border-colour;

@@ -122,6 +122,10 @@
   color: inherit;
 }
 
+.faa-vacancy__section > span:not([class]) {
+  @include govuk-font(19);
+}
+
 .faa-vacancy__section > p:empty {
   display: none;
 }
