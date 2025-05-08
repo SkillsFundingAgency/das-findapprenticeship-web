@@ -7,7 +7,7 @@ namespace SFA.DAS.FAA.Domain.Applications.GetApplicationsCount
     public record GetApplicationsCountApiRequest(Guid CandidateId, GetApplicationsCountApiRequestData Payload) : IPostApiRequest
     {
         public object Data { get; set; } = Payload.Statuses;
-        public string PostUrl => $"api/application/count?candidateId={CandidateId}";
+        public string PostUrl => $"applications/count?candidateId={CandidateId}";
 
         public record GetApplicationsCountApiRequestData(List<ApplicationStatus> Statuses)
         {

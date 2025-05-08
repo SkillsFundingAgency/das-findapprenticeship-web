@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.FAA.Domain.Candidates;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Attributes;
@@ -47,6 +48,17 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
             };
         }
 
+        if (!skipNewFaaUserAccountCheck && identity != null && identity.HasClaim(c => c.Type == CustomClaims.CandidateId) && identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
+        {
+            var response = await GetCandidateApplicationsCount(context, identity);
+            ((Controller) context.Controller).ViewData["ApplicationsCount"] = response switch
+            {
+                > 0 and < 99 => response,
+                > 99 => "99+",
+                _ => 0
+            };
+        }
+
         await next();
     }
 
@@ -57,5 +69,13 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
         var userId = identity.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
         var result = await service!.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId!, new PutCandidateApiRequestData { Email = email! }));
         return result;
+    }
+
+    private static async Task<int> GetCandidateApplicationsCount(ActionContext context, ClaimsIdentity identity)
+    {
+        var service = context.HttpContext.RequestServices.GetService<INotificationCountService>();
+        var candidateId = identity.Claims.FirstOrDefault(c => c.Type.Equals(CustomClaims.CandidateId))?.Value;
+        var result = await service!.GetTotalApplicationsStatusCount(Guid.Parse(candidateId!), [ApplicationStatus.Successful, ApplicationStatus.Unsuccessful]);
+        return result.Sum(x => x.Count);
     }
 }

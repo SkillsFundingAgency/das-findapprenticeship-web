@@ -1,33 +1,24 @@
 ﻿using SFA.DAS.FAA.Domain.Applications.GetApplicationsCount;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Application.Queries.Applications.GetApplicationsCount
 {
     public record GetApplicationsCountQueryResult
     {
-        public List<ApplicationStats> Stats { get; init; } = [];
+        public List<ApplicationStatusCount> Stats { get; init; } = [];
 
         public static implicit operator GetApplicationsCountQueryResult(GetApplicationsCountApiResponse source)
         {
             return new GetApplicationsCountQueryResult
             {
-                Stats = source.Stats.Select(x => (ApplicationStats)x).ToList()
+                Stats = source.Stats.Count > 0 
+                    ? source.Stats.Select(x => new ApplicationStatusCount(
+                    x.ApplicationIds,
+                    x.Count,
+                    (ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), x.Status, ignoreCase: true))).ToList()
+                    : [],
             };
-        }
-
-        public record ApplicationStats
-        {
-            public ApplicationStatus Status { get; set; }
-            public int Count { get; set; }
-
-            public static implicit operator ApplicationStats(GetApplicationsCountApiResponse.ApplicationStats source)
-            {
-                return new ApplicationStats
-                {
-                    Status = (ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), source.Status, ignoreCase: true),
-                    Count = source.Count
-                };
-            }
         }
     }
 }
