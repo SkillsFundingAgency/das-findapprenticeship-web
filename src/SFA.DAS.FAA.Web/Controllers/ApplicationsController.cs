@@ -5,6 +5,8 @@ using SFA.DAS.FAA.Application.Commands.Applications.Withdraw;
 using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Application.Queries.Applications.Withdraw;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -14,7 +16,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 namespace SFA.DAS.FAA.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    public class ApplicationsController(IMediator mediator, IDateTimeService dateTimeService, ICacheStorageService cacheStorageService) : Controller
+    public class ApplicationsController(IMediator mediator, IDateTimeService dateTimeService, ICacheStorageService cacheStorageService, INotificationCountService notificationCountService) : Controller
     {
         private const string ApplicationPreviewViewPath = "~/Views/applications/ViewApplication.cshtml";
 
@@ -43,6 +45,27 @@ namespace SFA.DAS.FAA.Web.Controllers
             viewModel.WithdrawnBannerMessage = bannerMessage;
             viewModel.ApplicationSubmittedBannerMessage = applicationSubmittedBannerMessage;
             viewModel.ShowEqualityQuestionsBannerMessage = showEqualityQuestionsBanner;
+            viewModel.NewSuccessfulApplicationsCount = await notificationCountService.GetUnreadApplicationCount((Guid)User.Claims.CandidateId()!,
+                    ApplicationStatus.Successful);
+            viewModel.NewUnsuccessfulApplicationsCount = await notificationCountService.GetUnreadApplicationCount((Guid)User.Claims.CandidateId()!,
+                    ApplicationStatus.Unsuccessful);
+
+            switch (tab)
+            {
+                case ApplicationsTab.Successful or ApplicationsTab.Unsuccessful:
+                    switch (tab)
+                    {
+                        case ApplicationsTab.Successful:
+                            await notificationCountService.MarkAllNotificationsAsRead((Guid)User.Claims.CandidateId()!, ApplicationStatus.Successful);
+                            break;
+                        case ApplicationsTab.Unsuccessful:
+                            await notificationCountService.MarkAllNotificationsAsRead((Guid)User.Claims.CandidateId()!, ApplicationStatus.Unsuccessful);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+            }
             return View(viewModel);
         }
 

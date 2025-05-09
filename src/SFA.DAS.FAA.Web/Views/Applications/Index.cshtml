@@ -12,7 +12,7 @@
         @if (!string.IsNullOrEmpty(Model.WithdrawnBannerMessage))
         {
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
-                aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
                     <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                         Success
@@ -25,7 +25,7 @@
                 </div>
             </div>
         }
-        
+
         @if(!string.IsNullOrEmpty(Model.ApplicationSubmittedBannerMessage))
         {
             <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
@@ -61,27 +61,35 @@
             <ul class="faa-tab-nav__list">
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started })"
-                        class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
+                    class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Started ? "faa-tab-nav__link--active" : "")">
                         Started
                     </a>
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Submitted })"
-                        class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
+                    class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Submitted ? "faa-tab-nav__link--active" : "")">
                         Submitted
                     </a>
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Successful })"
-                        class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
+                    class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
                         Successful
                     </a>
+                    @if(Model.NewSuccessfulApplicationsCount > 0)
+                    {
+                        <span>(@Model.NewSuccessfulApplicationsCount)</span>
+                    }
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Unsuccessful })"
                         class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
                         Unsuccessful
                     </a>
+                    @if (Model.NewUnsuccessfulApplicationsCount > 0)
+                    {
+                        <span>(@Model.NewUnsuccessfulApplicationsCount)</span>
+                    }
                 </li>
             </ul>
         </nav>
@@ -135,6 +143,7 @@
                 </div>
             </details>
         }
+
         @if (Model.ExpiredApplications.Any())
         {
             <hr class="govuk-section-break govuk-section-break--visible" />
@@ -158,5 +167,6 @@
                 </div>
             </details>
         }
+    
     </div>
 </div>

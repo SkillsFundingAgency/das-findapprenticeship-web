@@ -11,6 +11,7 @@ using SFA.DAS.FAA.Web.Filters;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.UnitTests.Customisations;
 using System.Security.Claims;
+using SFA.DAS.FAA.Domain.Enums;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Filters;
@@ -90,6 +91,71 @@ public class WhenFilteringNewAccountUsers
         await filter.OnActionExecutionAsync(context, nextMethod.Object);
         ((Controller) context.Controller).ViewData["IsAccountStatusCompleted"].Should().NotBeNull();
         ((Controller) context.Controller).ViewData["IsAccountStatusCompleted"].Should().Be(expectedViewData);
+    }
+
+
+    [Test]
+    [MoqInlineAutoData(10, 20, "30")]
+    [MoqInlineAutoData(0, 0, "0")]
+    [MoqInlineAutoData(99, 1, "99+")]
+    [MoqInlineAutoData(100, 0, "99+")]
+    public async Task And_Has_Application_Notification_Count_Returns_ViewData(
+        int successCount,
+        int unSuccessCount,
+        string expectedViewData,
+        UserStatus status,
+        string email,
+        string userId,
+        Guid candidateId,
+        PutCandidateApiResponse response,
+        [ArrangeActionContext<SearchApprenticeshipsController>] ActionExecutingContext context,
+        [Frozen] Mock<ActionExecutionDelegate> nextMethod,
+        [Frozen] Mock<IApiClient> apiClient,
+        [Frozen] Mock<INotificationCountService> notificationCountService,
+        NewFaaUserAccountFilter filter)
+    {
+        //Arrange
+        response.Status = status;
+        var httpContext = new Mock<HttpContext>();
+        context.ActionDescriptor = new ControllerActionDescriptor
+        {
+            MethodInfo = typeof(DummyExemptionClass).GetMethod(nameof(DummyExemptionClass.NoExemption))!
+        };
+
+        httpContext.Setup(x => x.RequestServices.GetService(typeof(IApiClient)))
+            .Returns(apiClient.Object);
+        httpContext.Setup(x => x.RequestServices.GetService(typeof(INotificationCountService)))
+            .Returns(notificationCountService.Object);
+
+        httpContext.Setup(x => x.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.NameIdentifier, userId),
+            new Claim(CustomClaims.CandidateId, candidateId.ToString()),
+            new Claim(CustomClaims.AccountSetupCompleted, "true"),
+        })));
+
+        var request = new PutCandidateApiRequest(userId, new PutCandidateApiRequestData
+        {
+            Email = email
+        });
+        apiClient.Setup(x =>
+                x.Put<PutCandidateApiResponse>(
+                    It.Is<PutCandidateApiRequest>(c => c.PutUrl.Equals(request.PutUrl)
+                                                       && ((PutCandidateApiRequestData)c.Data).Email == email
+        ))).ReturnsAsync(response);
+
+        notificationCountService.Setup(x => x.GetUnreadApplicationCount(candidateId, ApplicationStatus.Successful))
+            .ReturnsAsync(successCount);
+        notificationCountService.Setup(x => x.GetUnreadApplicationCount(candidateId, ApplicationStatus.Unsuccessful))
+            .ReturnsAsync(unSuccessCount);
+
+        context.HttpContext = httpContext.Object;
+
+        //Act
+        await filter.OnActionExecutionAsync(context, nextMethod.Object);
+        ((Controller)context.Controller).ViewData[ViewDataKeys.ApplicationsCount].Should().NotBeNull();
+        ((Controller)context.Controller).ViewData[ViewDataKeys.ApplicationsCount].Should().Be(expectedViewData);
     }
 
     [Test, MoqAutoData]
