@@ -19,6 +19,7 @@ public class VacancyAdvertViewModel
     public decimal? Distance { get; private set; }
     public string ClosingDateDescription { get; private set; }
     public string VacancyReference { get; private set; }
+    public string VacancyId { get; set; }
     public string WageText { get; set; }
     public ApplicationStatus? ApplicationStatus { get; set; }
     public bool IsClosingSoon { get; set; }
@@ -49,6 +50,7 @@ public class VacancyAdvertViewModel
             Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
             VacancyLocation = vacancyAdvert.GetLocationDescription(),
             VacancyReference = vacancyAdvert.VacancyReference,
+            VacancyId = vacancyAdvert.Id,
             VacancySource = vacancyAdvert.VacancySource,
             WageText = vacancyAdvert.VacancySource == VacancyDataSource.Nhs 
                 ? VacancyDetailsHelperService.GetNhsWageText(vacancyAdvert.WageText) : VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, candidateDateOfBirth),

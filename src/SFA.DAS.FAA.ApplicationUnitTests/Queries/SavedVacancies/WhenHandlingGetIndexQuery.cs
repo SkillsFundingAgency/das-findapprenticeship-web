@@ -61,7 +61,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
                 .ReturnsAsync(apiResponse);
 
 
-            var getApprenticeshipVacancyApiRequest = new GetApprenticeshipVacancyApiRequest(query.DeleteVacancyReference, null);
+            var getApprenticeshipVacancyApiRequest = new GetApprenticeshipVacancyApiRequest(query.DeleteVacancyReference!, null);
 
             apiClientMock.Setup(client =>
                     client.Get<GetApprenticeshipVacancyApiResponse>(
@@ -76,7 +76,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.SavedVacancies
             result.SavedVacancies.Should().BeEquivalentTo(apiResponse.SavedVacancies, options => options
                 .Excluding(x => x.Address)
                 .Excluding(x => x.OtherAddresses));
-            result.DeletedVacancy.EmployerName.Should().Be(getApprenticeshipVacancyApiResponse.EmployerName);
+            result.DeletedVacancy!.EmployerName.Should().Be(getApprenticeshipVacancyApiResponse.EmployerName);
             result.DeletedVacancy.VacancyTitle.Should().Be(getApprenticeshipVacancyApiResponse.Title);
             result.DeletedVacancy.VacancyReference.Should().Be(getApprenticeshipVacancyApiResponse.VacancyReference);
         }

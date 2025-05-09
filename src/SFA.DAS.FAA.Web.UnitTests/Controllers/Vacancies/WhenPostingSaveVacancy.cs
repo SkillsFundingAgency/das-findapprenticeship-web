@@ -20,7 +20,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
         [Test, MoqAutoData]
         public async Task Then_If_Command_Returns_Redirect_Returned(
             Guid candidateId,
-            string vacancyReference,
+            string vacancyId,
             SaveVacancyCommandResult mediatorResult,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
@@ -38,10 +38,12 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
 
                 }
             };
-            mediator.Setup(x => x.Send(It.IsAny<SaveVacancyCommand>(), It.IsAny<CancellationToken>()))
+            mediator.Setup(x => x.Send(It.Is<SaveVacancyCommand>(c =>
+                c.VacancyId == vacancyId && c.CandidateId == candidateId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
+            var vacancyReference = vacancyId.Split('-')[0];
 
-            var actual = await controller.VacancyDetailsSaveVacancy(vacancyReference) as RedirectToRouteResult;
+            var actual = await controller.VacancyDetailsSaveVacancy(vacancyId) as RedirectToRouteResult;
 
             actual!.RouteName.Should().Be(RouteNames.Vacancies);
             actual.RouteValues.Should().NotBeEmpty();
@@ -51,7 +53,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
         [Test, MoqAutoData]
         public async Task Then_If_Query_With_Redirect_Command_Returns_JsonOk_Returned(
             Guid candidateId,
-            string vacancyReference,
+            string vacancyId,
             SaveVacancyCommandResult mediatorResult,
             IDateTimeService dateTimeService,
             [Frozen] Mock<IMediator> mediator,
@@ -69,10 +71,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies
 
                 }
             };
-            mediator.Setup(x => x.Send(It.IsAny<SaveVacancyCommand>(), It.IsAny<CancellationToken>()))
+            mediator.Setup(x => x.Send(It.Is<SaveVacancyCommand>(c =>
+                c.VacancyId == vacancyId && c.CandidateId == candidateId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
 
-            var actual = await controller.VacancyDetailsSaveVacancy(vacancyReference, false) as JsonResult;
+            var actual = await controller.VacancyDetailsSaveVacancy(vacancyId, false) as JsonResult;
 
             actual!.Value.Should().Be(StatusCodes.Status200OK);
         }

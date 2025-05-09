@@ -11,11 +11,11 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Vacancy
         [Test, AutoData]
         public void Then_Then_Request_Is_Built(
             Guid candidateId,
-            string vacancyReference)
+            string vacancyId)
         {
             var data = new PostSaveVacancyApiRequestData
             {
-                VacancyReference = vacancyReference
+                VacancyId = vacancyId
             };
             var actual = new PostSaveVacancyApiRequest(candidateId, data);
 

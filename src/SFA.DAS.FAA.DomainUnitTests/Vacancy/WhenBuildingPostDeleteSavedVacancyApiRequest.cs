@@ -11,11 +11,13 @@ namespace SFA.DAS.FAA.Domain.UnitTests.Vacancy
         [Test, AutoData]
         public void Then_Then_Request_Is_Built(
             Guid candidateId,
-            string vacancyReference)
+            string vacancyId,
+            bool deleteAllByVacancyReference)
         {
             var data = new PostDeleteSavedVacancyApiRequestData
             {
-                VacancyReference = vacancyReference
+                VacancyId = vacancyId,
+                DeleteAllByVacancyReference = deleteAllByVacancyReference
             };
             var actual = new PostDeleteSavedVacancyApiRequest(candidateId, data);
 
