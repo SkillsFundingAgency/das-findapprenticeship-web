@@ -48,14 +48,16 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
             };
         }
 
-        if (!skipNewFaaUserAccountCheck && identity != null && identity.HasClaim(c => c.Type == CustomClaims.CandidateId) && identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
+        if (!skipNewFaaUserAccountCheck && identity is not null &&
+            identity.HasClaim(c => c.Type == CustomClaims.CandidateId) &&
+            identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
         {
             var response = await GetCandidateApplicationsCount(context, identity);
-            ((Controller) context.Controller).ViewData["ApplicationsCount"] = response switch
+            ((Controller)context.Controller).ViewData[ViewDataKeys.ApplicationsCount] = response switch
             {
-                > 0 and < 99 => response,
                 > 99 => "99+",
-                _ => 0
+                > 0 => response.ToString(),
+                _ => "0"
             };
         }
 
@@ -75,7 +77,12 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
     {
         var service = context.HttpContext.RequestServices.GetService<INotificationCountService>();
         var candidateId = identity.Claims.FirstOrDefault(c => c.Type.Equals(CustomClaims.CandidateId))?.Value;
-        var result = await service!.GetTotalApplicationsStatusCount(Guid.Parse(candidateId!), [ApplicationStatus.Successful, ApplicationStatus.Unsuccessful]);
-        return result.Sum(x => x.Count);
+        
+        var successNotificationsCountTask = service!.GetUnreadApplicationCount(Guid.Parse(candidateId!), ApplicationStatus.Successful);
+        var unSuccessNotificationsCountTask = service!.GetUnreadApplicationCount(Guid.Parse(candidateId!), ApplicationStatus.Unsuccessful);
+
+        await Task.WhenAll(successNotificationsCountTask, unSuccessNotificationsCountTask);
+        
+        return successNotificationsCountTask.Result + unSuccessNotificationsCountTask.Result;
     }
 }

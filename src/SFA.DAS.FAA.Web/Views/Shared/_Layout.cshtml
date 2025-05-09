@@ -197,15 +197,10 @@
                                                    ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
                                         <a class="service-header__nav-list-item-link"
                                         asp-route="@RouteNames.Applications.ViewApplications">
-                                            Your applications
-                                            @if (ViewData["ApplicationsCount"] != null && (int)(ViewData["ApplicationsCount"] ?? 0) != 0)
-                                            {
-                                                <span class="faa-badge">@ViewData["ApplicationsCount"]</span>
-                                            }
+                                            Your applications <notification-badge class="faa-badge" count="@ViewData[ViewDataKeys.ApplicationsCount]"></notification-badge>
                                         </a>
                                     </li>
-                                    <li
-                                        class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
+                                    <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "service-header__nav-list-item--active":"") service-header__nav-list-item ">
                                         <a class="service-header__nav-list-item-link" asp-route="@RouteNames.Settings">
                                             Settings
                                         </a>

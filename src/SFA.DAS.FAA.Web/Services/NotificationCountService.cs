@@ -2,38 +2,46 @@
 using SFA.DAS.FAA.Application.Queries.Applications.GetApplicationsCount;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.Services
 {
     public class NotificationCountService(
-            IMediator mediator,
-            ICacheStorageService cacheStorageService) : INotificationCountService
+                IMediator mediator,
+                ICacheStorageService cacheStorageService) : INotificationCountService
     {
         private const int SlidingExpirationMinutes = 30;
         private const int AbsoluteExpirationMinutes = 60;
 
-        public async Task<List<ApplicationStatusCount>> GetTotalApplicationsStatusCount(Guid candidateId, List<ApplicationStatus> statuses)
+        public async Task<int> GetUnreadApplicationCount(Guid candidateId, ApplicationStatus status)
         {
-            var cacheKey = $"{candidateId}-{CacheKeys.TotalApplicationsNotificationCount}";
-            var cachedResult = await cacheStorageService.Get<List<ApplicationStatusCount>>(cacheKey);
-            if (cachedResult != null) return cachedResult;
+            await cacheStorageService.Remove(GenerateCacheKey(candidateId, status));
+            var allNotifications = await mediator.Send(new GetApplicationsCountQuery(candidateId, status));
+            var readIds = await GetCachedReadNotificationIdsAsync(candidateId, status);
 
-            var result = await mediator.Send(new GetApplicationsCountQuery(candidateId, statuses));
-            await cacheStorageService.Set(cacheKey, result.Stats, SlidingExpirationMinutes, AbsoluteExpirationMinutes);
-            return result.Stats;
+            return allNotifications.Stats.ApplicationIds
+                .Count(n => !readIds.Contains(n));
         }
 
-        public async Task<ApplicationStatusCount> GetApplicationsStatusCount(Guid candidateId, ApplicationStatus status)
+        public async Task MarkAllNotificationsAsRead(Guid candidateId, ApplicationStatus status)
         {
-            var cacheKey = $"{candidateId}-{status}-{CacheKeys.ApplicationStatusCount}";
-            var cachedResult = await cacheStorageService.Get<ApplicationStatusCount>(cacheKey);
-            if (cachedResult != null) return cachedResult;
+            var result = await mediator.Send(new GetApplicationsCountQuery(candidateId, status));
+            if (result.Stats.Count == 0) return;
 
-            var result = await mediator.Send(new GetApplicationsCountQuery(candidateId, [status]));
-            await cacheStorageService.Set(cacheKey, result, SlidingExpirationMinutes, AbsoluteExpirationMinutes);
-            return result.Stats.FirstOrDefault(x => x.Status == status) ?? new ApplicationStatusCount([], 0, status);
+            var cacheKey = GenerateCacheKey(candidateId, status);
+            var readIds = result.Stats.ApplicationIds.ToList();
+            await cacheStorageService.Set(cacheKey, readIds, SlidingExpirationMinutes, AbsoluteExpirationMinutes);
+        }
+
+        private async Task<List<Guid>> GetCachedReadNotificationIdsAsync(Guid candidateId, ApplicationStatus status)
+        {
+            var cacheKey = GenerateCacheKey(candidateId, status);
+            return await cacheStorageService.Get<List<Guid>>(cacheKey) ?? [];
+        }
+
+        private static string GenerateCacheKey(Guid candidateId, ApplicationStatus status)
+        {
+            return $"{candidateId}-{status}-{CacheKeys.ApplicationNotificationsMarkAsRead}";
         }
     }
 }

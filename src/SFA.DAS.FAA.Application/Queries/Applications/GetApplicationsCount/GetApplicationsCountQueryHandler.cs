@@ -9,10 +9,10 @@ namespace SFA.DAS.FAA.Application.Queries.Applications.GetApplicationsCount
     {
         public async Task<GetApplicationsCountQueryResult> Handle(GetApplicationsCountQuery request, CancellationToken cancellationToken)
         {
-            var response = await apiClient.PostWithResponseCode<GetApplicationsCountApiResponse>(
-                new GetApplicationsCountApiRequest(request.CandidateId, new GetApplicationsCountApiRequest.GetApplicationsCountApiRequestData(request.Statuses)));
+            var response = await apiClient.Get<GetApplicationsCountApiResponse>(
+                new GetApplicationsCountApiRequest(request.CandidateId, request.Status));
 
-            return response ?? new GetApplicationsCountQueryResult();
+            return response;
         }
     }
 }
