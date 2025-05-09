@@ -23,10 +23,10 @@ namespace SFA.DAS.FAA.Web.Services
             var fullQueryParameters = BuildQueryParameters(request);
             
             filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "What",
-                request.SearchTerm,[$"searchTerm={request.SearchTerm}"]);
+                request.SearchTerm,[$"searchTerm={HttpUtility.UrlEncode(request.SearchTerm)}"]);
             filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Where",
                 string.IsNullOrEmpty(request.Location) ? "" : $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "across England")})",
-                [$"location={request.Location}", $"distance={(request.Distance == null ? "all" : request.Distance)}", $"sort={VacancySort.DistanceAsc}"]);
+                [$"location={HttpUtility.UrlEncode(request.Location)}", $"distance={(request.Distance == null ? "all" : request.Distance)}", $"sort={VacancySort.DistanceAsc}"]);
             
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
@@ -48,11 +48,11 @@ namespace SFA.DAS.FAA.Web.Services
         {
             var queryParameters = new List<string>();
             if (!string.IsNullOrEmpty(request.SearchTerm))
-                queryParameters.Add($"searchTerm={request.SearchTerm}");
+                queryParameters.Add($"searchTerm={HttpUtility.UrlEncode(request.SearchTerm)}");
             
             if (!string.IsNullOrEmpty(request.Location))
             {
-                queryParameters.Add($"location={request.Location}");
+                queryParameters.Add($"location={HttpUtility.UrlEncode(request.Location)}");
                 if (request.Distance is not null)
                     queryParameters.Add($"distance={request.Distance}");
                 else
@@ -77,7 +77,7 @@ namespace SFA.DAS.FAA.Web.Services
             }
 
             if (request.IncludeCompetitiveSalaryVacancies)
-                queryParameters.Add($"IncludeCompetitiveSalaryVacancies=true");
+                queryParameters.Add("IncludeCompetitiveSalaryVacancies=true");
             else
                 queryParameters.Remove("IncludeCompetitiveSalaryVacancies=false");
 

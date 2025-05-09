@@ -1,3 +1,4 @@
+using System.Web;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
 
@@ -46,9 +47,9 @@ public class GetSearchResultsApiRequest : IGetApiRequest
     }
 
     public string GetUrl =>
-        $"searchapprenticeships/searchResults?location={_location}" +
+        $"searchapprenticeships/searchResults?location={HttpUtility.UrlEncode(_location)}" +
         $"&distance={_distance}" +
-        $"&searchTerm={_searchTerm}" +
+        $"&searchTerm={HttpUtility.UrlEncode(_searchTerm)}" +
         $"&pageNumber={_pageNumber}" +
         $"&pageSize={_pageSize}" +
         $"&sort={_sort}" +

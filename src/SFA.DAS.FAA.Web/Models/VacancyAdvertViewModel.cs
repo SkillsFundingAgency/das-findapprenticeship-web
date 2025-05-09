@@ -1,9 +1,8 @@
-﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.FAA.Domain.Extensions;
-using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models;
 
@@ -13,6 +12,8 @@ public class VacancyAdvertViewModel
     public string EmployerName { get; private set; }
     public string CourseTitle { get;  private set; }
     public string? PostedDate { get; private set; }
+    public string? StartDate { get; private set; }
+    public bool ShowStartDate => VacancySource == VacancyDataSource.Raa;
     private WageType WageType { get; set; }
     public string VacancyLocation { get; private set; }
     public decimal? Distance { get; private set; }
@@ -44,7 +45,8 @@ public class VacancyAdvertViewModel
             IsNew = vacancyAdvert.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
             IsRecruitingNationally = vacancyAdvert.IsRecruitingNationally(),
             IsSavedVacancy = vacancyAdvert.IsSavedVacancy,
-            PostedDate = vacancyAdvert.PostedDate.ToGdsDateString(),
+            PostedDate = vacancyAdvert.PostedDate.GetSearchResultsPostedDate(),
+            StartDate = vacancyAdvert.StartDate.ToFullDateString(),
             Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
             VacancyLocation = vacancyAdvert.GetLocationDescription(),
             VacancyReference = vacancyAdvert.VacancyReference,

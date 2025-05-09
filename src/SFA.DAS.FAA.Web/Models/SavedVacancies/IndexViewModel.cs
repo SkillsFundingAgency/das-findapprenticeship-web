@@ -1,11 +1,9 @@
 ﻿using SFA.DAS.FAA.Application.Queries.GetSavedVacancies;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Extensions;
-using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Web.Models.SavedVacancies
 {
@@ -22,15 +20,17 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
 
         public List<SelectListItem> SortOrderOptions =>
         [
-            new SelectListItem
+            new()
             {
-                Value = SortOrder.RecentlySaved.ToString(), Text = "Recently saved",
-                Selected = SortOrder == SortOrder.RecentlySaved
+                Value = SortOrder.DateSaved.ToString(),
+                Text = "Date saved",
+                Selected = SortOrder == SortOrder.DateSaved
             },
-            new SelectListItem
+            new()
             {
-                Value = SortOrder.ClosingSoonest.ToString(), Text = "Closing soonest",
-                Selected = SortOrder == SortOrder.ClosingSoonest
+                Value = SortOrder.ClosingSoon.ToString(),
+                Text = "Closing soon",
+                Selected = SortOrder == SortOrder.ClosingSoon
             }
         ];
 
@@ -40,6 +40,7 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
             public string? VacancyReference { get; set; }
             public string? Title { get; set; }
             public string? EmployerName { get; set; }
+            public DateTime CreatedOnDate { get; set; }
             public string? CreatedOn { get; set; }
             public string ClosingDateLabel { get; set; }
             public DateTime ClosingDate { get; set; }
@@ -104,8 +105,8 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                     },
                     IsExternalVacancy = vacancy.IsExternalVacancy,
                     ExternalVacancyUrl = !string.IsNullOrEmpty(vacancy.ExternalVacancyUrl) && !vacancy.ExternalVacancyUrl.StartsWith("http") ? $"https://{vacancy.ExternalVacancyUrl}" : vacancy.ExternalVacancyUrl,
-                    CreatedOn = 
-                        $"Saved on {vacancy.CreatedDate.ToGdsDateString()}",
+                    CreatedOn = $"Saved on {vacancy.CreatedDate.ToGdsDateString()}",
+                    CreatedOnDate = vacancy.CreatedDate,
                     ClosingDate = vacancy.ClosingDate,
                     ClosingDateLabel = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancy.ClosingDate, vacancy.IsExternalVacancy),
                     IsClosingSoon = daysToExpiry is >= 0 and <= 7,
@@ -120,13 +121,13 @@ namespace SFA.DAS.FAA.Web.Models.SavedVacancies
                 {
                     savedVacancies.Add(savedVacancy);
                 }
-
-                result.SavedVacancies = sortOrder == SortOrder.ClosingSoonest
-                    ? savedVacancies.OrderBy(x => x.ClosingDate).ToList()
-                    : savedVacancies.OrderByDescending(x => x.CreatedOn).ToList();
-                
-                result.ExpiredSavedVacancies = expired.OrderByDescending(x => x.CreatedOn).ToList();
             }
+            
+            result.SavedVacancies = sortOrder == SortOrder.ClosingSoon
+                ? savedVacancies.OrderBy(x => x.ClosingDate).ToList()
+                : savedVacancies.OrderByDescending(x => x.CreatedOnDate).ToList();
+                
+            result.ExpiredSavedVacancies = expired.OrderByDescending(x => x.CreatedOn).ToList();
 
             return result;
         }

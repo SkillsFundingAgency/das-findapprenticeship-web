@@ -22,7 +22,7 @@ public class WhenMappingVacanciesToMapData
         actual.Job.Title.Should().Be(source.Title);
         actual.Job.Apprenticeship.Should().Be($"{source.CourseTitle} (level {source.CourseLevel})");
         actual.Job.Company.Should().Be(source.EmployerName);
-        actual.Job.Wage.Should().Be(source.WageText);
+        actual.Job.Wage.Should().Be(VacancyDetailsHelperService.GetVacancyAdvertWageText(source, null));
         actual.Job.ClosingDate.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.ClosingDate));
     }
     

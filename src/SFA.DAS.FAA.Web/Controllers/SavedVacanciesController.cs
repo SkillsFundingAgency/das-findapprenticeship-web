@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(
             [FromQuery] string? vacancyReference = null,
-            SortOrder sortOrder = SortOrder.RecentlySaved)
+            SortOrder sortOrder = SortOrder.DateSaved)
         {
             var result = await mediator.Send(new GetSavedVacanciesQuery
             {

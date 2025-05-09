@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Web.TagHelpers
 @model SFA.DAS.FAA.Web.Models.User.SavedSearchViewModel
 
 <div class="govuk-summary-card">
@@ -54,12 +55,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Categories</dt>
                     <dd class="govuk-summary-list__value">
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var category in Model.SelectedRoutes)
-                            {
-                                <li>@category</li>
-                            }
-                        </ul>
+                        <accessible-list items="@Model.SelectedRoutes"></accessible-list>
                     </dd>
                 </div>
             }
@@ -68,12 +64,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Levels</dt>
                     <dd class="govuk-summary-list__value">
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var level in Model.SelectedLevelIds)
-                            {
-                                <li>Level @level</li>
-                            }
-                        </ul>
+                        <accessible-list items="@Model.SelectedLevelIds.Select(id => $"Level {id}").ToList()"></accessible-list>
                     </dd>
                 </div>
             }

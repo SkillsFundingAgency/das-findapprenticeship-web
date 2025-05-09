@@ -2,7 +2,7 @@
 {
     public enum SortOrder
     {
-        RecentlySaved,
-        ClosingSoonest
+        DateSaved,
+        ClosingSoon
     }
 }
