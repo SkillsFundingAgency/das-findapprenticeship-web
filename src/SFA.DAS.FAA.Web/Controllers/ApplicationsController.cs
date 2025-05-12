@@ -45,10 +45,10 @@ namespace SFA.DAS.FAA.Web.Controllers
             viewModel.WithdrawnBannerMessage = bannerMessage;
             viewModel.ApplicationSubmittedBannerMessage = applicationSubmittedBannerMessage;
             viewModel.ShowEqualityQuestionsBannerMessage = showEqualityQuestionsBanner;
-            viewModel.NewSuccessfulApplicationsCount = await notificationCountService.GetUnreadApplicationCount((Guid)User.Claims.CandidateId()!,
-                    ApplicationStatus.Successful);
-            viewModel.NewUnsuccessfulApplicationsCount = await notificationCountService.GetUnreadApplicationCount((Guid)User.Claims.CandidateId()!,
-                    ApplicationStatus.Unsuccessful);
+            viewModel.NewSuccessfulApplicationsCount = (await notificationCountService.GetUnreadApplicationCount((Guid)User.Claims.CandidateId()!,
+                ApplicationStatus.Successful)).ToString();
+            viewModel.NewUnsuccessfulApplicationsCount = (await notificationCountService.GetUnreadApplicationCount((Guid)User.Claims.CandidateId()!,
+                ApplicationStatus.Unsuccessful)).ToString();
 
             switch (tab)
             {
@@ -60,8 +60,6 @@ namespace SFA.DAS.FAA.Web.Controllers
                             break;
                         case ApplicationsTab.Unsuccessful:
                             await notificationCountService.MarkAllNotificationsAsRead((Guid)User.Claims.CandidateId()!, ApplicationStatus.Unsuccessful);
-                            break;
-                        default:
                             break;
                     }
                     break;

@@ -17,11 +17,14 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Applications
     public class WhenGettingIndex
     {
         [Test]
-        [MoqInlineAutoData(ApplicationsTab.Started)]
+        [MoqInlineAutoData(ApplicationsTab.Started, 0, 0, "")]
+        [MoqInlineAutoData(ApplicationsTab.Started, 10, 10, "10")]
+        [MoqInlineAutoData(ApplicationsTab.Started, 100, 100, "99+")]
         public async Task Then_The_Mediator_Query_Is_Called_And_Index_Returned(
             ApplicationsTab tab,
             int successCount,
             int unSuccessCount,
+            string expectedCount,
             Guid candidateId,
             GetIndexQueryResult result,
             string bannerMessage,
@@ -71,8 +74,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Applications
             actualModel!.WithdrawnBannerMessage.Should().Be(bannerMessage);
             actualModel!.ApplicationSubmittedBannerMessage.Should().Be(applicationSubmittedBannerMessage);
             actualModel!.ShowEqualityQuestionsBannerMessage.Should().Be(showEqualityQuestionsBanner);
-            actualModel.NewUnsuccessfulApplicationsCount.Should().Be(unSuccessCount);
-            actualModel.NewSuccessfulApplicationsCount.Should().Be(successCount);
+            actualModel.NewUnsuccessfulApplicationsCount.Should().Be(expectedCount);
+            actualModel.NewSuccessfulApplicationsCount.Should().Be(expectedCount);
 
             cacheStorageService.Verify(x=>x.Remove($"{govIdentifier}-VacancyWithdrawn"), Times.Once);
             cacheStorageService.Verify(x => x.Remove($"{govIdentifier}-ApplicationSubmitted"), Times.Once);

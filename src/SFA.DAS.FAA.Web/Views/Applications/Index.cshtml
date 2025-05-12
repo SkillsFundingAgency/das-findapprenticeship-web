@@ -76,7 +76,7 @@
                     class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
                         Successful
                     </a>
-                    @if(Model.NewSuccessfulApplicationsCount > 0)
+                    @if(!string.IsNullOrEmpty(Model.NewSuccessfulApplicationsCount))
                     {
                         <span>(@Model.NewSuccessfulApplicationsCount)</span>
                     }
@@ -86,7 +86,7 @@
                         class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
                         Unsuccessful
                     </a>
-                    @if (Model.NewUnsuccessfulApplicationsCount > 0)
+                    @if (!string.IsNullOrEmpty(Model.NewUnsuccessfulApplicationsCount))
                     {
                         <span>(@Model.NewUnsuccessfulApplicationsCount)</span>
                     }

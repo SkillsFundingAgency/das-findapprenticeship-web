@@ -11,7 +11,7 @@ namespace SFA.DAS.FAA.Web.Services
                 ICacheStorageService cacheStorageService) : INotificationCountService
     {
         private const int SlidingExpirationMinutes = 30;
-        private const int AbsoluteExpirationMinutes = 60;
+        private const int AbsoluteExpirationMinutes = 262800; //six months in minutes
 
         public async Task<int> GetUnreadApplicationCount(Guid candidateId, ApplicationStatus status)
         {
