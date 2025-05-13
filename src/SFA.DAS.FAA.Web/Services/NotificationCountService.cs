@@ -15,7 +15,6 @@ namespace SFA.DAS.FAA.Web.Services
 
         public async Task<int> GetUnreadApplicationCount(Guid candidateId, ApplicationStatus status)
         {
-            await cacheStorageService.Remove(GenerateCacheKey(candidateId, status));
             var allNotifications = await mediator.Send(new GetApplicationsCountQuery(candidateId, status));
             var readIds = await GetCachedReadNotificationIdsAsync(candidateId, status);
 

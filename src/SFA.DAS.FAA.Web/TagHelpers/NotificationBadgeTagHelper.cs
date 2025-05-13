@@ -13,7 +13,7 @@ namespace SFA.DAS.FAA.Web.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (!Count.Equals("0"))
+            if (!string.IsNullOrEmpty(Count))
             {
                 output.TagName = "span";
                 output.Attributes.SetAttribute("class", Class);

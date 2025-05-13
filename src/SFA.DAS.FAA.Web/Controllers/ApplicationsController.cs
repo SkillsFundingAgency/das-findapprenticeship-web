@@ -41,14 +41,26 @@ namespace SFA.DAS.FAA.Web.Controllers
                 Status = tab.ToApplicationStatus()
             });
 
+
+            var newSuccessfulApplicationsCountTask = notificationCountService.GetUnreadApplicationCount(
+                (Guid) User.Claims.CandidateId()!,
+                ApplicationStatus.Successful);
+
+            var newUnsuccessfulApplicationsCountTask = notificationCountService.GetUnreadApplicationCount(
+                (Guid)User.Claims.CandidateId()!,
+                ApplicationStatus.Unsuccessful);
+
+            await Task.WhenAll(newSuccessfulApplicationsCountTask, newUnsuccessfulApplicationsCountTask);
+
+            var newSuccessfulApplicationsCount = newSuccessfulApplicationsCountTask.Result;
+            var newUnsuccessfulApplicationsCount = newUnsuccessfulApplicationsCountTask.Result;
+
             var viewModel = IndexViewModel.Map(tab, result, dateTimeService);
             viewModel.WithdrawnBannerMessage = bannerMessage;
             viewModel.ApplicationSubmittedBannerMessage = applicationSubmittedBannerMessage;
             viewModel.ShowEqualityQuestionsBannerMessage = showEqualityQuestionsBanner;
-            viewModel.NewSuccessfulApplicationsCount = (await notificationCountService.GetUnreadApplicationCount((Guid)User.Claims.CandidateId()!,
-                ApplicationStatus.Successful)).ToString();
-            viewModel.NewUnsuccessfulApplicationsCount = (await notificationCountService.GetUnreadApplicationCount((Guid)User.Claims.CandidateId()!,
-                ApplicationStatus.Unsuccessful)).ToString();
+            viewModel.NewSuccessfulApplicationsCount = newSuccessfulApplicationsCount.GetCountLabel();
+            viewModel.NewUnsuccessfulApplicationsCount = newUnsuccessfulApplicationsCount.GetCountLabel();
 
             switch (tab)
             {

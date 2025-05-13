@@ -53,12 +53,7 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
             identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
         {
             var response = await GetCandidateApplicationsCount(context, identity);
-            ((Controller)context.Controller).ViewData[ViewDataKeys.ApplicationsCount] = response switch
-            {
-                > 99 => "99+",
-                > 0 => response.ToString(),
-                _ => "0"
-            };
+            ((Controller) context.Controller).ViewData[ViewDataKeys.ApplicationsCount] = response.GetCountLabel();
         }
 
         await next();
@@ -77,7 +72,7 @@ public class NewFaaUserAccountFilter : ActionFilterAttribute
     {
         var service = context.HttpContext.RequestServices.GetService<INotificationCountService>();
         var candidateId = identity.Claims.FirstOrDefault(c => c.Type.Equals(CustomClaims.CandidateId))?.Value;
-        
+
         var successNotificationsCountTask = service!.GetUnreadApplicationCount(Guid.Parse(candidateId!), ApplicationStatus.Successful);
         var unSuccessNotificationsCountTask = service!.GetUnreadApplicationCount(Guid.Parse(candidateId!), ApplicationStatus.Unsuccessful);
 

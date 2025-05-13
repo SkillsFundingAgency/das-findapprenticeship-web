@@ -96,7 +96,7 @@ public class WhenFilteringNewAccountUsers
 
     [Test]
     [MoqInlineAutoData(10, 20, "30")]
-    [MoqInlineAutoData(0, 0, "0")]
+    [MoqInlineAutoData(0, 0, "")]
     [MoqInlineAutoData(99, 1, "99+")]
     [MoqInlineAutoData(100, 0, "99+")]
     public async Task And_Has_Application_Notification_Count_Returns_ViewData(

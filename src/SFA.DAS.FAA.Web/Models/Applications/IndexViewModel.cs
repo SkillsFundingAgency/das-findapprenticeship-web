@@ -9,8 +9,6 @@ namespace SFA.DAS.FAA.Web.Models.Applications
 {
     public class IndexViewModel
     {
-        private int _newSuccessfulApplicationsCount = 0;
-        private int _newUnsuccessfulApplicationsCount = 0;
         public ApplicationsTab SelectedTab { get; set; }
         public string? PageTitle { get; set; }
         public string? TabTitle { get; set; }
@@ -25,27 +23,9 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         public string? ApplicationSubmittedBannerMessage { get; set; }
         public bool ShowEqualityQuestionsBannerMessage { get; set; }
 
-        public string NewSuccessfulApplicationsCount
-        {
-            get => _newSuccessfulApplicationsCount switch
-            {
-                > 99 => "99+",
-                > 0 => _newSuccessfulApplicationsCount.ToString(),
-                _ => string.Empty
-            };
-            set => _newSuccessfulApplicationsCount = Convert.ToInt32(value);
-        }
+        public string? NewSuccessfulApplicationsCount { get; set; }
 
-        public string NewUnsuccessfulApplicationsCount
-        {
-            get => _newSuccessfulApplicationsCount switch
-            {
-                > 99 => "99+",
-                > 0 => _newUnsuccessfulApplicationsCount.ToString(),
-                _ => string.Empty
-            };
-            set => _newUnsuccessfulApplicationsCount = Convert.ToInt32(value);
-        }
+        public string? NewUnsuccessfulApplicationsCount { get; set; }
 
         public class Application
         {
