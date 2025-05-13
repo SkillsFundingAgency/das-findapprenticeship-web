@@ -10,6 +10,7 @@ namespace SFA.DAS.FAA.Domain.SavedVacancies
 
     public record PostDeleteSavedVacancyApiRequestData
     {
-        public required string VacancyReference { get; set; }
+        public required string VacancyId { get; set; }
+        public bool DeleteAllByVacancyReference { get; set; }
     }
 }

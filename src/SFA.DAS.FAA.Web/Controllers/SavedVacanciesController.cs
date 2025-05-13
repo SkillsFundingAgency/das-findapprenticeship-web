@@ -37,8 +37,9 @@ namespace SFA.DAS.FAA.Web.Controllers
         {
             await mediator.Send(new DeleteSavedVacancyCommand
             {
-                VacancyReference = vacancyReference,
-                CandidateId = (Guid)User.Claims.CandidateId()!
+                VacancyId = vacancyReference,
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                DeleteAllByVacancyReference = true
             });
 
             return RedirectToRoute(RouteNames.SavedVacancies, new
