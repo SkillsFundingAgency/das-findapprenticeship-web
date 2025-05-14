@@ -20,6 +20,9 @@
     <None Remove="SavedVacancies\EmptyState\get-saved-vacancies.json" />
     <None Remove="SavedVacancies\PopulatedState\get-saved-vacancies.json" />
     <None Remove="search-nhs-vacancy-details.json" />
+    <None Update="Applications\get-applications-count.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Applications\EmptyState\get-applications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -149,9 +152,7 @@
 
   </ItemGroup>
   <ItemGroup>
-	  <None Update="Applications\get-applications-count.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+	 
 	  <None Update="Apply\ExistingApplication\DisabilityConfident\get-disabilityconfident.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
