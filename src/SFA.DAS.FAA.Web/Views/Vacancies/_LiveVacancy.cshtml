@@ -86,7 +86,7 @@
         {
             <div data-favourite="true" class="faa-save-vacancy @(Model.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                 <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromDetailsPage"
-                      asp-route-vacancyreference="@Model.VacancyReference">
+                      asp-route-vacancyId="@Model.VacancyId">
                     <button aria-describeby="Remove-@Model.VacancyReference"
                         aria-pressed="true" 
                         aria-describedby="vacancy-title"
@@ -100,7 +100,7 @@
                     </button>
                 </form>
                 <form method="post" asp-route="@RouteNames.SaveVacancyFromDetailsPage"
-                      asp-route-vacancyreference="@Model.VacancyReference">
+                      asp-route-vacancyId="@Model.VacancyId">
                     <button aria-describeby="Save-@Model.VacancyReference"
                         aria-pressed="false"
                         aria-describedby="vacancy-title"
