@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -149,7 +149,10 @@
 
   </ItemGroup>
   <ItemGroup>
-    <None Update="Apply\ExistingApplication\DisabilityConfident\get-disabilityconfident.json">
+	  <None Update="Applications\get-applications-count.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Apply\ExistingApplication\DisabilityConfident\get-disabilityconfident.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Apply\ExistingApplication\Jobs\get-delete-job.json">

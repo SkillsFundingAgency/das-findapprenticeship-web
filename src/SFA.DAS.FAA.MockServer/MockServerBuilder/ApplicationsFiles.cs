@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.NetworkInformation;
-using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -23,8 +20,8 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
 
         private static WireMockServer WithExistingApplicationsFiles(this WireMockServer server)
         {
-            server.Given(Request.Create().WithPath(s =>
-                        Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
+            server.Given(Request.Create()
+                    .WithPath($"{BaseRoute}")
                     .WithParam("candidateId", Constants.CandidateIdWithApplications)
                     .WithParam("status", "Draft")
                     .UsingGet())
@@ -34,8 +31,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile($"{PopulatedStateBaseFilePath}/get-applications.json"));
 
-            server.Given(Request.Create().WithPath(s =>
-                        Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
+            server.Given(Request.Create().WithPath($"{BaseRoute}")
                     .WithParam("candidateId", Constants.CandidateIdWithApplications)
                     .WithParam("status", "Submitted")
                     .UsingGet())
@@ -45,8 +41,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile($"{PopulatedStateBaseFilePath}/get-applications-submitted.json"));
 
-            server.Given(Request.Create().WithPath(s =>
-                        Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
+            server.Given(Request.Create().WithPath($"{BaseRoute}")
                     .WithParam("candidateId", Constants.CandidateIdWithApplications)
                     .WithParam("status", "Successful")
                     .UsingGet())
@@ -56,8 +51,8 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile($"{PopulatedStateBaseFilePath}/get-applications-successful.json"));
 
-            server.Given(Request.Create().WithPath(s =>
-                        Regex.IsMatch(s, $"{BaseRoute}", RegexOptions.None, RegexMaxTimeOut))
+            server.Given(Request.Create()
+                    .WithPath($"{BaseRoute}")
                     .WithParam("candidateId", Constants.CandidateIdWithApplications)
                     .WithParam("status", "Unsuccessful")
                     .UsingGet())
