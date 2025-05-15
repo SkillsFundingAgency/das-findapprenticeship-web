@@ -78,7 +78,7 @@
                     </a>
                     @if(!string.IsNullOrEmpty(Model.NewSuccessfulApplicationsCount))
                     {
-                        <span>(@Model.NewSuccessfulApplicationsCount)</span>
+                        <span class="govuk-!-font-weight-bold">(@Model.NewSuccessfulApplicationsCount)</span>
                     }
                 </li>
                 <li class="faa-tab-nav__list-item">
@@ -88,7 +88,7 @@
                     </a>
                     @if (!string.IsNullOrEmpty(Model.NewUnsuccessfulApplicationsCount))
                     {
-                        <span>(@Model.NewUnsuccessfulApplicationsCount)</span>
+                        <span class="govuk-!-font-weight-bold">(@Model.NewUnsuccessfulApplicationsCount)</span>
                     }
                 </li>
             </ul>
