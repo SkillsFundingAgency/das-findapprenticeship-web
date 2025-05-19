@@ -75,25 +75,25 @@
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Successful })"
                     class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Successful ? "faa-tab-nav__link--active" : "")">
                         Successful
+                        @if(!string.IsNullOrEmpty(Model.NewSuccessfulApplicationsCount))
+                        {
+                            <span>
+                                (<span class="govuk-!-font-weight-bold">@Model.NewSuccessfulApplicationsCount</span>)
+                            </span>
+                        }
                     </a>
-                    @if(!string.IsNullOrEmpty(Model.NewSuccessfulApplicationsCount))
-                    {
-                        <span>
-                            (<span class="govuk-!-font-weight-bold">@Model.NewSuccessfulApplicationsCount</span>)
-                        </span>
-                    }
                 </li>
                 <li class="faa-tab-nav__list-item">
                     <a href="@Url.RouteUrl(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Unsuccessful })"
                         class="faa-tab-nav__link @(Model.SelectedTab == ApplicationsTab.Unsuccessful ? "faa-tab-nav__link--active" : "")">
                         Unsuccessful
+                        @if (!string.IsNullOrEmpty(Model.NewUnsuccessfulApplicationsCount))
+                        {
+                            <span>
+                                (<span class="govuk-!-font-weight-bold">@Model.NewUnsuccessfulApplicationsCount</span>)
+                            </span>
+                        }
                     </a>
-                    @if (!string.IsNullOrEmpty(Model.NewUnsuccessfulApplicationsCount))
-                    {
-                        <span>
-                            (<span class="govuk-!-font-weight-bold">@Model.NewUnsuccessfulApplicationsCount</span>)
-                        </span>
-                    }
                 </li>
             </ul>
         </nav>
