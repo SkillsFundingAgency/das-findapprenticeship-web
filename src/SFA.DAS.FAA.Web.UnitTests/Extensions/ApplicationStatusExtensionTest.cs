@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Enums;
+﻿using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Extensions
@@ -26,6 +24,20 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
         public void GetCss_Returns_Expected_Value(ApplicationStatus status, string expected)
         {
             status.GetCssClass().Should().Be(expected);
+        }
+
+        [TestCase(0, "")]
+        [TestCase(-1, "")]
+        [TestCase(1, "1")]
+        [TestCase(5, "5")]
+        [TestCase(98, "98")]
+        [TestCase(99, "99")]
+        [TestCase(100, "99+")]
+        [TestCase(150, "99+")]
+        public void GetCountLabel_ReturnsExpectedResult(int count, string expected)
+        {
+            var result = count.GetCountLabel();
+            result.Should().Be(expected);
         }
     }
 }

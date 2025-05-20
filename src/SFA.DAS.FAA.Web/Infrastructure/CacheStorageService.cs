@@ -1,6 +1,5 @@
-using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
+using System.Text.Json;
 
 namespace SFA.DAS.FAA.Web.Infrastructure
 {
@@ -38,7 +37,7 @@ namespace SFA.DAS.FAA.Web.Infrastructure
         public async Task<T?> Get<T>(string key)
         {
             var json = await distributedCache.GetStringAsync(key);
-            return json == null ? default : JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions{});
+            return json == null ? default : JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions());
         }
 
         ///<inheritdoc/>
@@ -58,7 +57,7 @@ namespace SFA.DAS.FAA.Web.Infrastructure
         {
             if (await distributedCache.GetAsync(key) != null)
             {
-                distributedCache.Remove(key);
+                await distributedCache.RemoveAsync(key);
             }
         }
     }

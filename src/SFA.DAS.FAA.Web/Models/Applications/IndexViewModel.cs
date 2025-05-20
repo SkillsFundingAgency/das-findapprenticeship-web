@@ -1,5 +1,4 @@
 using SFA.DAS.FAA.Application.Queries.Applications.GetIndex;
-using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Web.Extensions;
@@ -23,6 +22,11 @@ namespace SFA.DAS.FAA.Web.Models.Applications
         public string? WithdrawnBannerMessage { get; set; }
         public string? ApplicationSubmittedBannerMessage { get; set; }
         public bool ShowEqualityQuestionsBannerMessage { get; set; }
+
+        public string? NewSuccessfulApplicationsCount { get; set; }
+
+        public string? NewUnsuccessfulApplicationsCount { get; set; }
+
         public class Application
         {
             public Guid Id { get; set; }
@@ -81,13 +85,15 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             }
         }
 
-        public static IndexViewModel Map(ApplicationsTab tab, GetIndexQueryResult source, IDateTimeService dateTimeService)
+        public static IndexViewModel Map(ApplicationsTab tab,
+            GetIndexQueryResult source,
+            IDateTimeService dateTimeService)
         {
             var expiredApplications = new List<Application>();
             var result = new IndexViewModel
             {
                 SelectedTab = tab,
-                PageTitle = $"{tab.GetTabTitle()} applications"
+                PageTitle = $"{tab.GetTabTitle()} applications",
             };
 
             var applications = source.Applications.OrderByDescending(
