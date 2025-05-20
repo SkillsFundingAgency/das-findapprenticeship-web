@@ -234,10 +234,10 @@ public class SearchApprenticeshipsController(
         viewModel.Location = request.Location;
         viewModel.Distance = request.Distance;
         viewModel.SearchTerm = request.SearchTerm;
-        viewModel.VacancyAdverts = result.VacancyAdverts?.Any() == true
+        viewModel.VacancyAdverts = result.VacancyAdverts.Count > 0
             ? result.VacancyAdverts.Select(c => VacancyAdvertViewModel.MapToViewModel(dateTimeService, c, result.CandidateDateOfBirth)).ToList()
             : [];
-        viewModel.MapData = result.VacancyAdverts?.Any() == true
+        viewModel.MapData = result.VacancyAdverts.Count > 0
             ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c, result.CandidateDateOfBirth)).ToList()
             : [];
         viewModel.MapId = faaConfiguration.Value.GoogleMapsId;
