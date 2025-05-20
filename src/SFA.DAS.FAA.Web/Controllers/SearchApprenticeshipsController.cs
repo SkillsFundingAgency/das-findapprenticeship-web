@@ -36,6 +36,8 @@ public class SearchApprenticeshipsController(
     IDataProtectorService dataProtectorService,
     ILogger<SearchApprenticeshipsController> logger) : Controller
 {
+    private const int PageSize = 10;
+
     [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
     public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
@@ -166,6 +168,7 @@ public class SearchApprenticeshipsController(
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
     public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
     {
+        // Validate the incoming request
         var validationResult = await searchRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
@@ -179,94 +182,112 @@ public class SearchApprenticeshipsController(
                 Location = request.Location
             });
         }
-        
-        var validDistanceValues = new List<int> { 2, 5, 10, 15, 20, 30, 40 };
+
+        // Normalize distance and page number
+        var validDistances = new HashSet<int> { 2, 5, 10, 15, 20, 30, 40 };
         if (request.Distance <= 0)
         {
             request.Distance = null;
         }
-        else if (request.Distance.HasValue && !validDistanceValues.Contains((int)request.Distance))
+        else if (request.Distance.HasValue && !validDistances.Contains(request.Distance.Value))
         {
             request.Distance = 10;
         }
-        
+
         if (request.PageNumber <= 0)
         {
             request.PageNumber = 1;
         }
-        
-        var result = await mediator.Send(new GetSearchResultsQuery
+
+        // Prepare and send the query
+        var candidateId = User.Claims.CandidateId();
+        var getSearchResultsQuery = new GetSearchResultsQuery
         {
-            CandidateId = User.Claims.CandidateId().Equals(null) ? null : User.Claims.CandidateId()!.ToString(),
+            CandidateId = candidateId == null ? null : candidateId.ToString(),
             DisabilityConfident = request.DisabilityConfident,
             Distance = request.Distance,
             ExcludeNational = request.ExcludeNational,
             Location = request.Location,
             PageNumber = request.PageNumber,
-            PageSize = 10,
+            PageSize = PageSize,
             SearchTerm = request.SearchTerm,
             SelectedLevelIds = request.LevelIds,
             SelectedRouteIds = request.RouteIds,
             SkipWageType = request.IncludeCompetitiveSalaryVacancies ? null : WageType.CompetitiveSalary,
             Sort = request.Sort,
-        });
+        };
 
-        if (result.VacancyReference != null)
+        var result = await mediator.Send(getSearchResultsQuery);
+
+        // Redirect if a single vacancy reference is found
+        if (!string.IsNullOrEmpty(result.VacancyReference))
         {
             return RedirectToRoute(RouteNames.Vacancies, new { result.VacancyReference });
         }
 
+        // Build filter URL and map results to view model
         var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
+        var viewModel = (SearchResultsViewModel)result;
 
-        var viewmodel = (SearchResultsViewModel)result;
-        viewmodel.SelectedRouteIds = request.RouteIds;
-        viewmodel.NationalSearch = request.Location == null;
-        viewmodel.Location = request.Location;
-        viewmodel.Distance = request.Distance;
-        viewmodel.SearchTerm = request.SearchTerm;
-        viewmodel.VacancyAdverts = result.VacancyAdverts.Count != 0
+        viewModel.SelectedRouteIds = request.RouteIds;
+        viewModel.NationalSearch = string.IsNullOrEmpty(request.Location);
+        viewModel.Location = request.Location;
+        viewModel.Distance = request.Distance;
+        viewModel.SearchTerm = request.SearchTerm;
+        viewModel.VacancyAdverts = result.VacancyAdverts?.Any() == true
             ? result.VacancyAdverts.Select(c => VacancyAdvertViewModel.MapToViewModel(dateTimeService, c, result.CandidateDateOfBirth)).ToList()
             : [];
-        viewmodel.MapData = result.VacancyAdverts.Count != 0
+        viewModel.MapData = result.VacancyAdverts?.Any() == true
             ? result.VacancyAdverts.Select(c => ApprenticeshipMapData.MapToViewModel(dateTimeService, c, result.CandidateDateOfBirth)).ToList()
             : [];
-        viewmodel.MapId = faaConfiguration.Value.GoogleMapsId;
-        viewmodel.SelectedRoutes = request.RouteIds != null ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList() : [];
-        viewmodel.DisabilityConfident = request.DisabilityConfident;
-        viewmodel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.TotalPages, filterUrl);
-        foreach (var route in viewmodel.Routes.Where(route => request.RouteIds != null && request.RouteIds!.Contains(route.Id.ToString())))
+        viewModel.MapId = faaConfiguration.Value.GoogleMapsId;
+        viewModel.SelectedRoutes = request.RouteIds != null
+            ? result.Routes.Where(c => request.RouteIds.Contains(c.Id.ToString())).Select(c => c.Name).ToList()
+            : [];
+        viewModel.DisabilityConfident = request.DisabilityConfident;
+        viewModel.PaginationViewModel = new PaginationViewModel(result.PageNumber, result.TotalPages, filterUrl);
+
+        // Mark selected routes and levels
+        if (request.RouteIds != null)
         {
-            route.Selected = true;
+            foreach (var route in viewModel.Routes.Where(r => request.RouteIds.Contains(r.Id.ToString())))
+            {
+                route.Selected = true;
+            }
         }
-        foreach (var level in viewmodel.Levels.Where(level => request.LevelIds != null && request.LevelIds!.Contains(level.Id.ToString())))
+        if (request.LevelIds != null)
         {
-            level.Selected = true;
+            foreach (var level in viewModel.Levels.Where(l => request.LevelIds.Contains(l.Id.ToString())))
+            {
+                level.Selected = true;
+            }
         }
-        var filterChoices = PopulateFilterChoices(viewmodel.Routes, viewmodel.Levels);
-        viewmodel.FilterChoices = filterChoices;
-        viewmodel.SelectedLevelCount = request.LevelIds?.Count ?? 0;
-        viewmodel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
-        viewmodel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
-        viewmodel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults, new{sort = VacancySort.AgeAsc} )!;
-        viewmodel.ShowAccountCreatedBanner =
-            await NotificationBannerService.ShowAccountBanner(cacheStorageService,
-                $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
-        viewmodel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
-        viewmodel.PageTitle = GetPageTitle(viewmodel);
 
-        viewmodel.PageBackLinkRoutePath = request.RoutePath;
-        
-        viewmodel.CompetitiveSalaryRoutePath = request.IncludeCompetitiveSalaryVacancies
-            ? FilterBuilder.ReplaceQueryStringParam(filterUrl, "IncludeCompetitiveSalaryVacancies", "false")
-            : FilterBuilder.ReplaceQueryStringParam(filterUrl, "IncludeCompetitiveSalaryVacancies", "true");
+        // Populate filter choices and selected filters
+        var filterChoices = PopulateFilterChoices(viewModel.Routes, viewModel.Levels);
+        viewModel.FilterChoices = filterChoices;
+        viewModel.SelectedLevelCount = request.LevelIds?.Count ?? 0;
+        viewModel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
+        viewModel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
+        viewModel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults, new { sort = VacancySort.AgeAsc })!;
 
-        viewmodel.PageBackLinkRoutePath = request.RoutePath;
+        // Banner and page title logic
+        viewModel.ShowAccountCreatedBanner = await NotificationBannerService.ShowAccountBanner(
+            cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
+        viewModel.NoSearchResultsByUnknownLocation = !string.IsNullOrEmpty(request.Location) && result.Location == null;
+        viewModel.PageTitle = GetPageTitle(viewModel);
 
-        viewmodel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
-        viewmodel.SearchAlreadySaved = result.SearchAlreadySaved;
-        viewmodel.ExcludeNational = request.ExcludeNational ?? false;
-        
-        return View(viewmodel);
+        // Back link and competitive salary toggle
+        viewModel.PageBackLinkRoutePath = request.RoutePath;
+        viewModel.CompetitiveSalaryRoutePath = FilterBuilder.ReplaceQueryStringParam(
+            filterUrl, "IncludeCompetitiveSalaryVacancies", (!request.IncludeCompetitiveSalaryVacancies).ToString().ToLowerInvariant());
+
+        // Encoded request data and other flags
+        viewModel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
+        viewModel.SearchAlreadySaved = result.SearchAlreadySaved;
+        viewModel.ExcludeNational = request.ExcludeNational ?? false;
+
+        return View(viewModel);
     }
 
     [HttpGet]
