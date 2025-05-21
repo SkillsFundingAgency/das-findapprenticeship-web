@@ -80,14 +80,16 @@ public class VacanciesController(
 
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("vacancy/save/{vacancyReference}", Name = RouteNames.SaveVacancyFromDetailsPage)]
-    public async Task<IActionResult> VacancyDetailsSaveVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    [Route("vacancy/save/{vacancyId}", Name = RouteNames.SaveVacancyFromDetailsPage)]
+    public async Task<IActionResult> VacancyDetailsSaveVacancy([FromRoute] string vacancyId, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new SaveVacancyCommand
         {
-            VacancyReference = vacancyReference,
+            VacancyId = vacancyId,
             CandidateId = (Guid)User.Claims.CandidateId()!
         });
+
+        var vacancyReference = vacancyId.Split('-')[0];
 
         return redirect
             ? RedirectToRoute(RouteNames.Vacancies, new { vacancyReference })
@@ -96,14 +98,17 @@ public class VacanciesController(
 
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    [Route("vacancy/delete/{vacancyReference}", Name = RouteNames.DeleteSavedVacancyFromDetailsPage)]
-    public async Task<IActionResult> VacancyDetailsDeleteSavedVacancy([FromRoute] string vacancyReference, [FromQuery] bool redirect = true)
+    [Route("vacancy/delete/{vacancyId}", Name = RouteNames.DeleteSavedVacancyFromDetailsPage)]
+    public async Task<IActionResult> VacancyDetailsDeleteSavedVacancy([FromRoute] string vacancyId, [FromQuery] bool redirect = true)
     {
         await mediator.Send(new DeleteSavedVacancyCommand
         {
-            VacancyReference = vacancyReference,
-            CandidateId = (Guid)User.Claims.CandidateId()!
+            VacancyId = vacancyId,
+            CandidateId = (Guid)User.Claims.CandidateId()!,
+            DeleteAllByVacancyReference = true
         });
+
+        var vacancyReference = vacancyId.Split('-')[0];
 
         return redirect
             ? RedirectToRoute(RouteNames.Vacancies, new { vacancyReference })

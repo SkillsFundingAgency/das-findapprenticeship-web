@@ -1,12 +1,12 @@
 ﻿namespace SFA.DAS.FAA.Domain.Enums
 {
-    public enum ApplicationStatus
+    public enum ApplicationStatus : short
     {
         Draft = 0,
         Submitted = 1,
         Withdrawn = 2,
-        Successful,
-        Unsuccessful,
-        Expired
+        Successful = 3,
+        Unsuccessful = 4,
+        Expired = 5
     }
 }

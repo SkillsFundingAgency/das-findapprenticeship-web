@@ -86,7 +86,7 @@
         {
             <div data-favourite="true" class="faa-save-vacancy @(Model.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                 <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromDetailsPage"
-                      asp-route-vacancyreference="@Model.VacancyReference">
+                      asp-route-vacancyId="@Model.VacancyId">
                     <button aria-describeby="Remove-@Model.VacancyReference"
                         aria-pressed="true" 
                         aria-describedby="vacancy-title"
@@ -100,7 +100,7 @@
                     </button>
                 </form>
                 <form method="post" asp-route="@RouteNames.SaveVacancyFromDetailsPage"
-                      asp-route-vacancyreference="@Model.VacancyReference">
+                      asp-route-vacancyId="@Model.VacancyId">
                     <button aria-describeby="Save-@Model.VacancyReference"
                         aria-pressed="false"
                         aria-describedby="vacancy-title"
@@ -252,9 +252,9 @@
                 <p class="govuk-hint">
                     Most of your apprenticeship is spent working. You’ll learn on the job by getting hands-on experience.
                 </p>
-                <h3 class="govuk-heading-s">What you’ll do at work</h3>
+                <h3 class="govuk-heading-s">What you'll do at work</h3>
                 <p>@Html.Raw(Model.WorkDescription)</p>
-                <h3 class="govuk-heading-s">Where you’ll work</h3>
+                <h3 class="govuk-heading-s">Where you'll work</h3>
 
                 @switch (Model.EmployerLocationOption)
                 {
@@ -284,7 +284,7 @@
                    if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent)
                        && Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven)
                        && bool.TryParse(isConsentGiven, out var consentResult) && consentResult && Model.ShowMap)
-                    {
+                   {
                         <details class="govuk-details govuk-!-margin-bottom-0">
                             <summary class="govuk-details__summary">
                                 <span class="govuk-details__summary-text">
@@ -367,22 +367,19 @@
                             </span>
                         </summary>
                         <div class="govuk-details__text">
-                            <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
-                                @if (Model.CourseSkills is { Count: > 0 })
+                            @{
+                                var courseItems = new List<string>();
+                                if (Model.CourseSkills is { Count: > 0 })
                                 {
-                                    @foreach (var skills in Model.CourseSkills)
-                                    {
-                                        <li>@skills</li>
-                                    }
+                                    courseItems.AddRange(Model.CourseSkills);
                                 }
-                                @if (Model.CourseCoreDuties is { Count: > 0 })
+
+                                if (Model.CourseCoreDuties is { Count: > 0 })
                                 {
-                                    @foreach (var skills in Model.CourseCoreDuties)
-                                    {
-                                        <li>@skills</li>
-                                    }
+                                    courseItems.AddRange(Model.CourseCoreDuties);
                                 }
-                            </ul>
+                            }
+                            <accessible-list class="govuk-list--spaced" items="@courseItems" />
                         </div>
                     </details>
                 }
@@ -414,12 +411,7 @@
                     foreach (var group in Model.EssentialQualifications.GroupBy(x => x.QualificationType))
                     {
                         <p>@group.Key in:</p>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var qualification in group)
-                            {
-                                <li>@qualification.Subject (grade @qualification.Grade)</li>
-                            }
-                        </ul>
+                        <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()" />
                     }
                 }
                 @if (Model.DesiredQualifications is { Count: > 0 })
@@ -428,12 +420,7 @@
                     foreach (var group in Model.DesiredQualifications.GroupBy(x => x.QualificationType))
                     {
                         <p>@group.Key in:</p>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var qualification in group)
-                            {
-                                <li>@qualification.Subject (grade @qualification.Grade)</li>
-                            }
-                        </ul>
+                        <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()" />
                     }
                 }
                 <p class="govuk-body">
@@ -441,12 +428,7 @@
                     adjust the apprenticeship to reflect what you already know.
                 </p>
                 <h3 class="govuk-heading-s">Skills</h3>
-                <ul class="govuk-list govuk-list--bullet">
-                    @foreach (var skills in Model.Skills)
-                    {
-                        <li>@skills</li>
-                    }
-                </ul>
+                <accessible-list items="@Model.Skills"></accessible-list>
 
                 @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
                 {

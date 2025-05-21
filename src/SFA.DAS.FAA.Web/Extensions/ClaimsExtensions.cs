@@ -1,6 +1,5 @@
-using System.Security.Claims;
-using System.Security.Principal;
 using SFA.DAS.FAA.Web.AppStart;
+using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.Extensions;
 

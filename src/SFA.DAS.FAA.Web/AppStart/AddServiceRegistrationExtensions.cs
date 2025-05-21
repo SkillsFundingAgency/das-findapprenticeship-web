@@ -65,8 +65,8 @@ public static class AddServiceRegistrationExtension
             });
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(GetSearchApprenticeshipsIndexQuery).Assembly));
         services.AddTransient<IDateTimeService, DateTimeService>();
-        
-       
+        services.AddTransient<INotificationCountService, NotificationCountService>();
+
         services.AddFluentValidationAutoValidation();
         if (devDecrypt)
         {
@@ -76,6 +76,7 @@ public static class AddServiceRegistrationExtension
         {
             services.AddTransient<IDataProtectorService, DataProtectorService>();
         }
+
     }
 
     public static void AddCacheServices(this IServiceCollection services,  IConfiguration configuration)

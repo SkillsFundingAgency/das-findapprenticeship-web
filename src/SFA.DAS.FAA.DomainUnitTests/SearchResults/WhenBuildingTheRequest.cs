@@ -1,3 +1,4 @@
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
@@ -13,9 +14,9 @@ public class WhenBuildingTheRequest
     {
         // arrange
         var expectedUrl = $"searchapprenticeships/searchResults?" +
-                          $"location={location}" +
+                          $"location={HttpUtility.UrlEncode(location + "&" + location)}" +
                           $"&distance={distance}" +
-                          $"&searchTerm={searchTerm}" +
+                          $"&searchTerm={HttpUtility.UrlEncode(searchTerm + "&" + searchTerm)}" +
                           $"&pageNumber={pageNumber}" +
                           $"&pageSize={pageSize}" +
                           $"&sort={sort}" +
@@ -26,7 +27,7 @@ public class WhenBuildingTheRequest
                           $"&levelIds={string.Join("&levelIds=", levels)}" +
                           $"&excludeNational={excludeNational}";
         
-        var actual = new GetSearchResultsApiRequest(location, routes, levels, distance, searchTerm, pageNumber, pageSize, sort, skipWageType, disabilityConfident, candidateId, excludeNational);
+        var actual = new GetSearchResultsApiRequest(location + "&" + location, routes, levels, distance, searchTerm + "&" + searchTerm, pageNumber, pageSize, sort, skipWageType, disabilityConfident, candidateId, excludeNational);
 
         actual.GetUrl.Should().Be(expectedUrl);
     }
