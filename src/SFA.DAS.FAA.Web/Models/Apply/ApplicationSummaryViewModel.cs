@@ -32,7 +32,7 @@ public class ApplicationSummaryViewModel
 
     public bool IsDisabilityConfident { get; init; }
     public bool IsApplicationComplete {get;init;}
-    public bool ShowLocationSection => EmploymentLocation is {EmployerLocationOption: AvailableWhere.MultipleLocations};
+    public bool ShowLocationSection => EmploymentLocation is {EmployerLocationOption: AvailableWhere.MultipleLocations, Addresses.Count: > 0};
     public CandidateDetailsSection Candidate { get; init; } = new();
     public EducationHistorySection EducationHistory { get; init; } = new();
     public WorkHistorySection WorkHistory { get; init; } = new();

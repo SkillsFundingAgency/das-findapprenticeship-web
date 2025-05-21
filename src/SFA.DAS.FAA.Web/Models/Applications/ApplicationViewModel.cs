@@ -32,7 +32,7 @@ public class ApplicationViewModel
     }
 
     public string? BannerMessage => GetBannerMessage();
-    public bool ShowLocationSection => EmploymentLocation is { EmployerLocationOption: AvailableWhere.MultipleLocations };
+    public bool ShowLocationSection => EmploymentLocation is { EmployerLocationOption: AvailableWhere.MultipleLocations, Addresses.Count: > 0 };
     public ApplicationStatus ApplicationStatus { get; set; }
     public DateTime? WithdrawnDate { get; set; }
     public DateTime? MigrationDate { get; set; }

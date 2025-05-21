@@ -385,12 +385,9 @@
                         </dt>
                         <dd class="govuk-summary-list__value">
                             <ul class="govuk-list govuk-list--bullet">
-                                @if (Model.EmploymentLocation?.Addresses != null)
+                                @foreach (var locationAddress in Model.EmploymentLocation!.Addresses!)
                                 {
-                                    foreach (var locationAddress in Model.EmploymentLocation.Addresses)
-                                    {
-                                        <li>@locationAddress.FullAddress</li>
-                                    }
+                                    <li>@locationAddress.FullAddress</li>
                                 }
                             </ul>
                         </dd>
