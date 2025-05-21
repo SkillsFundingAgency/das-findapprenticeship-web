@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Models.Apply;
 using System.Globalization;
 
@@ -17,6 +18,7 @@ public class ApplicationViewModel
             ApplicationQuestions = source.ApplicationQuestions,
             DisabilityConfidence = source.DisabilityConfidence,
             EducationHistory = source.EducationHistory,
+            EmploymentLocation = source.EmploymentLocation,
             InterviewAdjustments = source.InterviewAdjustments,
             WorkHistory = source.WorkHistory,
             IsDisabilityConfident = source.IsDisabilityConfident,
@@ -30,6 +32,7 @@ public class ApplicationViewModel
     }
 
     public string? BannerMessage => GetBannerMessage();
+    public bool ShowLocationSection => EmploymentLocation is { EmployerLocationOption: AvailableWhere.MultipleLocations };
     public ApplicationStatus ApplicationStatus { get; set; }
     public DateTime? WithdrawnDate { get; set; }
     public DateTime? MigrationDate { get; set; }
@@ -44,6 +47,7 @@ public class ApplicationViewModel
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
     public AboutYouSection AboutYou { get; init; } = new();
     public VacancyDetailsSection VacancyDetails { get; init; } = new();
+    public EmploymentLocationSection? EmploymentLocation { get; init; } = new();
 
     public record VacancyDetailsSection
     {
@@ -56,6 +60,21 @@ public class ApplicationViewModel
             {
                 EmployerName = source.EmployerName,
                 Title = source.Title
+            };
+        }
+    }
+
+    public record EmploymentLocationSection : LocationDto
+    {
+        public static implicit operator EmploymentLocationSection?(GetApplicationViewQueryResult.EmploymentLocationSection? source)
+        {
+            if (source is null) return null;
+            return new EmploymentLocationSection
+            {
+                Id = source.Id,
+                Addresses = source.Addresses.Where(x => x.IsSelected).OrderBy(x => x.AddressOrder).ToList(),
+                EmploymentLocationInformation = source.EmploymentLocationInformation,
+                EmployerLocationOption = source.EmployerLocationOption,
             };
         }
     }

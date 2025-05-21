@@ -329,5 +329,32 @@
                 </dl>
             </div>
         }
+        @if (Model.ShowLocationSection)
+        {
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">Locations</h2>
+            </div>
+            <div class="faa-flex-row">
+                <dl class="govuk-summary-list govuk-summary-list--no-border">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Where do you want to apply for?
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul class="govuk-list govuk-list--bullet">
+                                @if (Model.EmploymentLocation?.Addresses != null)
+                                {
+                                    foreach (var locationAddress in Model.EmploymentLocation.Addresses)
+                                    {
+                                        <li>@locationAddress.FullAddress</li>
+                                    }
+                                }
+                            </ul>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        }
     </div>
 </div>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
@@ -23,6 +24,7 @@ public class ApplicationSummaryViewModel
             WorkHistory = source.WorkHistory,
             IsDisabilityConfident = source.IsDisabilityConfident,
             WhatIsYourInterest = source.WhatIsYourInterest,
+            EmploymentLocation = source.EmploymentLocation,
             AboutYou = source.AboutYou,
             IsApplicationComplete = source.IsApplicationComplete
         };
@@ -30,6 +32,7 @@ public class ApplicationSummaryViewModel
 
     public bool IsDisabilityConfident { get; init; }
     public bool IsApplicationComplete {get;init;}
+    public bool ShowLocationSection => EmploymentLocation is {EmployerLocationOption: AvailableWhere.MultipleLocations};
     public CandidateDetailsSection Candidate { get; init; } = new();
     public EducationHistorySection EducationHistory { get; init; } = new();
     public WorkHistorySection WorkHistory { get; init; } = new();
@@ -37,6 +40,7 @@ public class ApplicationSummaryViewModel
     public InterviewAdjustmentsSection InterviewAdjustments { get; init; } = new();
     public DisabilityConfidenceSection DisabilityConfidence { get; init; } = new();
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
+    public EmploymentLocationSection? EmploymentLocation { get; init; } = new();
     public AboutYouSection AboutYou { get; init; } = new();
 
 
@@ -212,6 +216,23 @@ public class ApplicationSummaryViewModel
                 return result;
             }
 
+        }
+    }
+
+    public record EmploymentLocationSection : LocationDto
+    {
+        public SectionStatus EmploymentLocationStatus { get; private init; }
+        public static implicit operator EmploymentLocationSection?(GetApplicationSummaryQueryResult.EmploymentLocationSection? source)
+        {
+            if (source is null) return null;
+            return new EmploymentLocationSection
+            {
+                Id = source.Id,
+                Addresses = source.Addresses.Where(x => x.IsSelected).OrderBy(x => x.AddressOrder).ToList(),
+                EmploymentLocationInformation = source.EmploymentLocationInformation,
+                EmployerLocationOption = source.EmployerLocationOption,
+                EmploymentLocationStatus = source.EmploymentLocationStatus
+            };
         }
     }
 

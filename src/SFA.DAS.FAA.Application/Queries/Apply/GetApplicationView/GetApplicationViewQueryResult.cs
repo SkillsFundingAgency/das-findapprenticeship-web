@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
 {
@@ -15,6 +16,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
         public InterviewAdjustmentsSection InterviewAdjustments { get; init; }
         public DisabilityConfidenceSection DisabilityConfidence { get; init; }
         public WhatIsYourInterestSection WhatIsYourInterest { get; init; }
+        public EmploymentLocationSection? EmploymentLocation { get; init; }
         public ApplicationStatus ApplicationStatus { get; set; }
         public DateTime? WithdrawnDate { get; set; }
         public DateTime? MigrationDate { get; set; }
@@ -33,6 +35,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
                 IsDisabilityConfident = source.IsDisabilityConfident,
                 AboutYou = source.AboutYou,
                 WhatIsYourInterest = source.WhatIsYourInterest,
+                EmploymentLocation = source.EmploymentLocation,
                 VacancyDetails = source.VacancyDetails,
                 ApplicationStatus = applicationStatus,
                 WithdrawnDate = source.WithdrawnDate,
@@ -51,6 +54,22 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
                 {
                     EmployerName = source.EmployerName,
                     Title = source.Title
+                };
+            }
+        }
+
+        public record EmploymentLocationSection : LocationDto
+        {
+            public static implicit operator EmploymentLocationSection?(GetApplicationViewApiResponse.EmploymentLocationSection? source)
+            {
+                if (source is null) return null;
+
+                return new EmploymentLocationSection
+                {
+                    Id = source.Id,
+                    Addresses = source.Addresses,
+                    EmploymentLocationInformation = source.EmploymentLocationInformation,
+                    EmployerLocationOption = source.EmployerLocationOption,
                 };
             }
         }
