@@ -9,7 +9,7 @@ namespace SFA.DAS.FAA.Web.Validators;
 public class GetSearchResultsRequestValidator : AbstractValidator<GetSearchResultsRequest>
 {
     private static readonly int[] AllowedDistances = [2, 5, 10, 15, 20, 30, 40];
-    private static readonly Regex NumericRegex = new(@"^\d+$", RegexOptions.Compiled, TimeSpan.FromSeconds(5));
+    private static readonly Regex NumericRegex = new(@"^\d+$", RegexOptions.Compiled, TimeSpan.FromSeconds(2.0));
 
     public GetSearchResultsRequestValidator()
     {
