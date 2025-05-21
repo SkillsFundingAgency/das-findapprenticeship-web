@@ -10,7 +10,6 @@ public class GetSearchResultsRequestValidator : AbstractValidator<GetSearchResul
 {
     private static readonly int[] AllowedDistances = [2, 5, 10, 15, 20, 30, 40];
     private static readonly Regex NumericRegex = new(@"^\d+$", RegexOptions.Compiled, TimeSpan.FromSeconds(5));
-    private static readonly Regex ValidFreeTextCharactersRegex = new(@"^[a-zA-Z0-9\s,'-]*$", RegexOptions.Compiled, TimeSpan.FromSeconds(5));
 
     public GetSearchResultsRequestValidator()
     {
@@ -28,11 +27,6 @@ public class GetSearchResultsRequestValidator : AbstractValidator<GetSearchResul
             .Must(id => NumericRegex.IsMatch(id)).WithMessage("Each LevelId must be numeric.")
             .MaximumLength(10).WithMessage("LevelId must be at most 10 digits.")
             .When(x => x.LevelIds is { Count: > 0 });
-
-        RuleFor(x => x.Location)
-            .MaximumLength(100)
-            .Must(id => ValidFreeTextCharactersRegex.IsMatch(id)).WithMessage("Location contains invalid characters.")
-            .When(x => !string.IsNullOrEmpty(x.Location));
 
         RuleFor(x => x.Distance)
             .Must(value => value != null && AllowedDistances.Contains(value.Value))

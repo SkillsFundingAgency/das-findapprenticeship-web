@@ -451,8 +451,8 @@ public class SearchApprenticeshipsController(
 
         return model.Total switch
         {
-            1 => $"{model.Total} results found",
-            <= 10 => $"{model.Total} results found",
+            1 => $"{model.Total} result found",
+            > 1 and <= 10 => $"{model.Total} results found",
             _ =>
                 $"{model.Total} results found (page {model.PaginationViewModel.CurrentPage} of {model.PaginationViewModel.TotalPages})"
         };

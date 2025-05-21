@@ -91,18 +91,6 @@ public class WhenValidatingSearchRequest
     }
 
     [Test, MoqAutoData]
-    public void Location_Too_Long_Should_Have_Error(
-        GetSearchResultsRequest model,
-        [Greedy] GetSearchResultsRequestValidator validator)
-    {
-        model.Location = new string('a', 101);
-
-        var result = validator.TestValidate(model);
-
-        result.ShouldHaveValidationErrorFor(x => x.Location);
-    }
-
-    [Test, MoqAutoData]
     public void Distance_Invalid_Should_Have_Error(
         GetSearchResultsRequest model,
         [Greedy] GetSearchResultsRequestValidator validator)
