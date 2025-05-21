@@ -29,5 +29,15 @@ namespace SFA.DAS.FAA.Web.Extensions
                 _ => string.Empty
             };
         }
+
+        public static string GetCountLabel(this int count)
+        {
+            return count switch
+            {
+                > 0 and <= 99 => count.ToString(),
+                > 99 => "99+",
+                _ => string.Empty
+            };
+        }
     }
 }
