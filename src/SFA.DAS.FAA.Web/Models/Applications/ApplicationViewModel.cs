@@ -1,6 +1,8 @@
-﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
+﻿using Newtonsoft.Json;
+using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
 using System.Globalization;
 
@@ -32,7 +34,7 @@ public class ApplicationViewModel
     }
 
     public string? BannerMessage => GetBannerMessage();
-    public bool ShowLocationSection => EmploymentLocation is { EmployerLocationOption: AvailableWhere.MultipleLocations, Addresses.Count: > 0 };
+    public bool ShowLocationSection => EmploymentLocation is { EmployerLocationOption: AvailableWhere.MultipleLocations, EmploymentAddress.Count: > 0 };
     public ApplicationStatus ApplicationStatus { get; set; }
     public DateTime? WithdrawnDate { get; set; }
     public DateTime? MigrationDate { get; set; }
@@ -64,18 +66,59 @@ public class ApplicationViewModel
         }
     }
 
-    public record EmploymentLocationSection : LocationDto
+    public record EmploymentLocationSection
     {
+        public List<AddressDto>? EmploymentAddress { get; init; }
+        public AvailableWhere? EmployerLocationOption { get; set; }
+
         public static implicit operator EmploymentLocationSection?(GetApplicationViewQueryResult.EmploymentLocationSection? source)
         {
             if (source is null) return null;
+
+            if (source?.Addresses == null)
+            {
+                return new EmploymentLocationSection();
+            }
+
+            var addresses = source.Addresses
+                .Select(x =>
+                {
+                    Address? employmentAddress;
+                    try
+                    {
+                        employmentAddress = !string.IsNullOrWhiteSpace(x.FullAddress)
+                            ? JsonConvert.DeserializeObject<Address>(x.FullAddress)
+                            : null;
+                    }
+                    catch (JsonException)
+                    {
+                        employmentAddress = null;
+                    }
+                    return new AddressDto
+                    {
+                        Id = x.Id,
+                        EmploymentAddress = employmentAddress,
+                        IsSelected = x.IsSelected,
+                        AddressOrder = x.AddressOrder
+                    };
+                })
+                .OrderBy(add => add.AddressOrder)
+                .ToList();
+
             return new EmploymentLocationSection
             {
-                Id = source.Id,
-                Addresses = source.Addresses.Where(x => x.IsSelected).OrderBy(x => x.AddressOrder).ToList(),
-                EmploymentLocationInformation = source.EmploymentLocationInformation,
+                EmploymentAddress = addresses,
                 EmployerLocationOption = source.EmployerLocationOption,
             };
+        }
+
+        public record AddressDto
+        {
+            public Guid Id { get; init; }
+            public Address? EmploymentAddress { get; init; }
+            public string? FullAddress => EmploymentAddress.ToSingleLineFullAddress();
+            public bool IsSelected { get; init; }
+            public short AddressOrder { get; init; }
         }
     }
 

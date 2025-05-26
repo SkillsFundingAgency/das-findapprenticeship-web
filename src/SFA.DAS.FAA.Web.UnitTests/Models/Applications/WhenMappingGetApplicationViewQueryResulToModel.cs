@@ -27,7 +27,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Applications
                 result.WhatIsYourInterest.Should().BeEquivalentTo(source.WhatIsYourInterest);
                 result.DisabilityConfidence.Should().BeEquivalentTo(source.DisabilityConfidence);
                 result.VacancyDetails.Should().BeEquivalentTo(source.VacancyDetails);
-                result.EmploymentLocation.Should().BeEquivalentTo(source.EmploymentLocation, options => options.Excluding(x => x.Addresses));
+                result.EmploymentLocation.Should().BeEquivalentTo(source.EmploymentLocation, options => options
+                    .Excluding(x => x.Addresses)
+                    .ExcludingMissingMembers());
             }
         }
 
@@ -60,7 +62,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Applications
                 result.WhatIsYourInterest.Should().BeEquivalentTo(source.WhatIsYourInterest);
                 result.DisabilityConfidence.Should().BeEquivalentTo(source.DisabilityConfidence);
                 result.VacancyDetails.Should().BeEquivalentTo(source.VacancyDetails);
-                result.EmploymentLocation.Should().BeEquivalentTo(source.EmploymentLocation, options => options.Excluding(x => x.Addresses));
+                result.EmploymentLocation.Should().BeEquivalentTo(source.EmploymentLocation, options => options
+                    .Excluding(x => x.Addresses)
+                    .ExcludingMissingMembers());
                 result.ShowLocationSection.Should().Be(expectedResult);
             }
         }

@@ -28,7 +28,9 @@ public class WhenMappingGetApplicationSummaryQueryResultToModel
             result.IsDisabilityConfident.Should().Be(source.IsDisabilityConfident);
             result.AboutYou.Should().BeEquivalentTo(source.AboutYou);
             result.WhatIsYourInterest.Should().BeEquivalentTo(source.WhatIsYourInterest);
-            result.EmploymentLocation.Should().BeEquivalentTo(source.EmploymentLocation, options => options.Excluding(x => x.Addresses));
+            result.EmploymentLocation.Should().BeEquivalentTo(source.EmploymentLocation, options => options
+                .Excluding(x => x.Addresses)
+                .ExcludingMissingMembers());
             result.DisabilityConfidence.Should().BeEquivalentTo(source.DisabilityConfidence);
         }
     }
@@ -62,7 +64,9 @@ public class WhenMappingGetApplicationSummaryQueryResultToModel
             result.IsDisabilityConfident.Should().Be(source.IsDisabilityConfident);
             result.AboutYou.Should().BeEquivalentTo(source.AboutYou);
             result.WhatIsYourInterest.Should().BeEquivalentTo(source.WhatIsYourInterest);
-            result.EmploymentLocation.Should().BeEquivalentTo(source.EmploymentLocation, options => options.Excluding(x => x.Addresses));
+            result.EmploymentLocation.Should().BeEquivalentTo(source.EmploymentLocation, options => options
+                .Excluding(x => x.Addresses)
+                .ExcludingMissingMembers());
             result.DisabilityConfidence.Should().BeEquivalentTo(source.DisabilityConfidence);
             result.ShowLocationSection.Should().Be(expectedResult);
         }
