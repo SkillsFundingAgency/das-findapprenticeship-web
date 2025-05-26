@@ -1,5 +1,8 @@
-﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
+﻿using Newtonsoft.Json;
+using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.Apply;
 using System.Globalization;
 
@@ -17,6 +20,7 @@ public class ApplicationViewModel
             ApplicationQuestions = source.ApplicationQuestions,
             DisabilityConfidence = source.DisabilityConfidence,
             EducationHistory = source.EducationHistory,
+            EmploymentLocation = source.EmploymentLocation,
             InterviewAdjustments = source.InterviewAdjustments,
             WorkHistory = source.WorkHistory,
             IsDisabilityConfident = source.IsDisabilityConfident,
@@ -30,6 +34,7 @@ public class ApplicationViewModel
     }
 
     public string? BannerMessage => GetBannerMessage();
+    public bool ShowLocationSection => EmploymentLocation is { EmployerLocationOption: AvailableWhere.MultipleLocations, EmploymentAddress.Count: > 0 };
     public ApplicationStatus ApplicationStatus { get; set; }
     public DateTime? WithdrawnDate { get; set; }
     public DateTime? MigrationDate { get; set; }
@@ -44,6 +49,7 @@ public class ApplicationViewModel
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
     public AboutYouSection AboutYou { get; init; } = new();
     public VacancyDetailsSection VacancyDetails { get; init; } = new();
+    public EmploymentLocationSection? EmploymentLocation { get; init; } = new();
 
     public record VacancyDetailsSection
     {
@@ -57,6 +63,62 @@ public class ApplicationViewModel
                 EmployerName = source.EmployerName,
                 Title = source.Title
             };
+        }
+    }
+
+    public record EmploymentLocationSection
+    {
+        public List<AddressDto>? EmploymentAddress { get; init; }
+        public AvailableWhere? EmployerLocationOption { get; set; }
+
+        public static implicit operator EmploymentLocationSection?(GetApplicationViewQueryResult.EmploymentLocationSection? source)
+        {
+            if (source is null) return null;
+
+            if (source?.Addresses == null)
+            {
+                return new EmploymentLocationSection();
+            }
+
+            var addresses = source.Addresses
+                .Select(x =>
+                {
+                    Address? employmentAddress;
+                    try
+                    {
+                        employmentAddress = !string.IsNullOrWhiteSpace(x.FullAddress)
+                            ? JsonConvert.DeserializeObject<Address>(x.FullAddress)
+                            : null;
+                    }
+                    catch (JsonException)
+                    {
+                        employmentAddress = null;
+                    }
+                    return new AddressDto
+                    {
+                        Id = x.Id,
+                        EmploymentAddress = employmentAddress,
+                        IsSelected = x.IsSelected,
+                        AddressOrder = x.AddressOrder
+                    };
+                })
+                .OrderBy(add => add.AddressOrder)
+                .ToList();
+
+            return new EmploymentLocationSection
+            {
+                EmploymentAddress = addresses,
+                EmployerLocationOption = source.EmployerLocationOption,
+            };
+        }
+
+        public record AddressDto
+        {
+            public Guid Id { get; init; }
+            public Address? EmploymentAddress { get; init; }
+            public string? FullAddress => EmploymentAddress.ToSingleLineFullAddress();
+            public bool IsSelected { get; init; }
+            public short AddressOrder { get; init; }
         }
     }
 

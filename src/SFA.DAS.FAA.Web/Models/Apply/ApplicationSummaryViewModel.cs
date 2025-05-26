@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
@@ -23,6 +26,7 @@ public class ApplicationSummaryViewModel
             WorkHistory = source.WorkHistory,
             IsDisabilityConfident = source.IsDisabilityConfident,
             WhatIsYourInterest = source.WhatIsYourInterest,
+            EmploymentLocation = source.EmploymentLocation,
             AboutYou = source.AboutYou,
             IsApplicationComplete = source.IsApplicationComplete
         };
@@ -30,6 +34,7 @@ public class ApplicationSummaryViewModel
 
     public bool IsDisabilityConfident { get; init; }
     public bool IsApplicationComplete {get;init;}
+    public bool ShowLocationSection => EmploymentLocation is {EmployerLocationOption: AvailableWhere.MultipleLocations, EmploymentAddress.Count: > 0};
     public CandidateDetailsSection Candidate { get; init; } = new();
     public EducationHistorySection EducationHistory { get; init; } = new();
     public WorkHistorySection WorkHistory { get; init; } = new();
@@ -37,6 +42,7 @@ public class ApplicationSummaryViewModel
     public InterviewAdjustmentsSection InterviewAdjustments { get; init; } = new();
     public DisabilityConfidenceSection DisabilityConfidence { get; init; } = new();
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
+    public EmploymentLocationSection? EmploymentLocation { get; init; } = new();
     public AboutYouSection AboutYou { get; init; } = new();
 
 
@@ -212,6 +218,64 @@ public class ApplicationSummaryViewModel
                 return result;
             }
 
+        }
+    }
+
+    public record EmploymentLocationSection
+    {
+        public List<AddressDto>? EmploymentAddress { get; init; }
+        public AvailableWhere? EmployerLocationOption { get; set; }
+        public SectionStatus EmploymentLocationStatus { get; private init; }
+
+        public static implicit operator EmploymentLocationSection?(GetApplicationSummaryQueryResult.EmploymentLocationSection? source)
+        {
+            if (source is null) return null;
+
+            if (source?.Addresses == null)
+            {
+                return new EmploymentLocationSection();
+            }
+
+            var addresses = source.Addresses
+                .Select(x =>
+                {
+                    Address? employmentAddress;
+                    try
+                    {
+                        employmentAddress = !string.IsNullOrWhiteSpace(x.FullAddress)
+                            ? JsonConvert.DeserializeObject<Address>(x.FullAddress)
+                            : null;
+                    }
+                    catch (JsonException)
+                    {
+                        employmentAddress = Address.Empty;
+                    }
+                    return new AddressDto
+                    {
+                        Id = x.Id,
+                        EmploymentAddress = employmentAddress,
+                        IsSelected = x.IsSelected,
+                        AddressOrder = x.AddressOrder
+                    };
+                })
+                .OrderBy(add => add.AddressOrder)
+                .ToList();
+
+            return new EmploymentLocationSection
+            {
+                EmploymentAddress = addresses,
+                EmployerLocationOption = source.EmployerLocationOption,
+                EmploymentLocationStatus = source.EmploymentLocationStatus
+            };
+        }
+
+        public record AddressDto
+        {
+            public Guid Id { get; init; }
+            public Address? EmploymentAddress { get; init; }
+            public string? FullAddress => EmploymentAddress?.ToSingleLineFullAddress();
+            public bool IsSelected { get; init; }
+            public short AddressOrder { get; init; }
         }
     }
 
