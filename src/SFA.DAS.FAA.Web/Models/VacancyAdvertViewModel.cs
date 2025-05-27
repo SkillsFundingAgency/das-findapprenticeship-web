@@ -30,12 +30,14 @@ public class VacancyAdvertViewModel
     public VacancyDataSource VacancySource { get; set; }
 
     public bool IsRecruitingNationally { get; private set; }
+    public ApprenticeshipTypes ApprenticeshipType { get; init; }
 
     public static VacancyAdvertViewModel MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth)
     {
         return new VacancyAdvertViewModel
         {
             ApplicationStatus = vacancyAdvert.CandidateApplicationDetails?.Status,
+            ApprenticeshipType = vacancyAdvert.ApprenticeshipType,
             ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancyAdvert.ClosingDate,!string.IsNullOrEmpty(vacancyAdvert.ApplicationUrl)),
             CourseTitle = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? "See more details on NHS Jobs" : $"{vacancyAdvert.CourseTitle} (level {vacancyAdvert.CourseLevel})",
             Distance = vacancyAdvert.Distance.HasValue ? Math.Round(vacancyAdvert.Distance.Value, 1) : null,
