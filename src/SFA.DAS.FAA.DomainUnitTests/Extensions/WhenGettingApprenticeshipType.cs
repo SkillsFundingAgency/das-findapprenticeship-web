@@ -10,7 +10,7 @@ public class WhenGettingApprenticeshipType
     public void Then_IsFoundation_Returns_Correct_Value(ApprenticeshipTypes apprenticeshipType, bool expectedValue)
     {
         // act
-        var result = ApprenticeshipTypes.Foundation.IsFoundation();
+        var result = apprenticeshipType.IsFoundation();
 
         // assert
         result.Should().Be(expectedValue);
