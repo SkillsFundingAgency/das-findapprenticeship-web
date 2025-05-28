@@ -73,7 +73,12 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public VacancyDataSource VacancySource { get; set; }
         public MapLocation[] MapLocations { get; init; } = [];
         public bool ShowMap { get; set; }
-        
+        public ApprenticeshipTypes ApprenticeshipType { get; init; }
+        public int? CandidateAgeAtStartOfVacancy { get; set; }
+        public bool CandidateIs21OrUnderAtStartOfVacancy => CandidateAgeAtStartOfVacancy <= 21;
+        public bool CandidateIs22To24AtStartOfVacancy => CandidateAgeAtStartOfVacancy is >= 22 and <= 24;
+        public bool CandidateIs25OrOverAtStartOfVacancy => CandidateAgeAtStartOfVacancy >= 25;
+
         public string? EmploymentWorkLocation => EmployerLocationOption switch
         {
             AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(Addresses),
@@ -100,16 +105,21 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 .OrderBy(x => x.Address)
                 .ToArray();
 
+            int? candidateAgeAtStartOfVacancy = source.Vacancy?.CandidateDateOfBirth.HasValue ?? false
+                ? VacancyDetailsHelperService.GetCandidatesAgeAtStartDateOfVacancy(source.Vacancy.CandidateDateOfBirth.Value, source.Vacancy.StartDate)
+                : null;
+            
             return new VacancyDetailsViewModel
             {
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription.MakeSingleItemListsAccessible(),
                 Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
                 Addresses = addresses.OrderByCity().ToList(),
                 AnnualWage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source.Vacancy, source.Vacancy.CandidateDateOfBirth, true),
-                WageDetailText = VacancyDetailsHelperService.GetVacancyAdvertDetailWageDescriptionText((WageType)source.Vacancy.WageType,source.Vacancy.StartDate, source.Vacancy.CandidateDateOfBirth),
                 ApplicationDetails = source.Vacancy?.Application,
                 ApplicationInstructions = source.Vacancy.ApplicationInstructions,
                 ApplicationUrl = !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl) && !source.Vacancy.ApplicationUrl.StartsWith("http") ? $"https://{source.Vacancy.ApplicationUrl}" : source.Vacancy.ApplicationUrl,
+                ApprenticeshipType = source.Vacancy.ApprenticeshipType,
+                CandidateAgeAtStartOfVacancy = candidateAgeAtStartOfVacancy,
                 CandidatePostcode = source.Vacancy?.CandidatePostcode,
                 ClosedDate = $"This apprenticeship closed on {source.Vacancy?.ClosingDate.ToGdsDateStringWithDayOfWeek() ?? string.Empty}.",
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.Vacancy.ClosingDate, !string.IsNullOrEmpty(source.Vacancy?.ApplicationUrl)),
@@ -157,6 +167,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 VacancySource = source.Vacancy.VacancySource,
                 VacancySummary = source.Vacancy?.Description,
                 WageAdditionalInformation = source.Vacancy?.WageAdditionalInformation,
+                WageDetailText = VacancyDetailsHelperService.GetVacancyAdvertDetailWageDescriptionText((WageType)source.Vacancy.WageType,source.Vacancy.StartDate, source.Vacancy.CandidateDateOfBirth),
                 WorkDescription = source.Vacancy?.LongDescription.MakeSingleItemListsAccessible(),
                 WorkLocation = source.Vacancy.Address,
                 WorkingPattern = source.Vacancy?.WorkingWeek,

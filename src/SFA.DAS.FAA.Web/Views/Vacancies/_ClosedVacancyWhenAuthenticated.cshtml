@@ -1,6 +1,6 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Domain.Enums
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.FAA.Domain.Extensions
 @using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 
@@ -50,6 +50,7 @@
     </div>
 }
 <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
+    <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-6" />
     <h1 class="govuk-heading-l faa-vacancy__title"><span itemprop="title">@Model.Title</span></h1>
     <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
     <p class="govuk-body-l faa-vacancy__location">
@@ -61,10 +62,10 @@
     <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">@Model.PostedDate</p>
     <div class="faa-vacancy-actions">
         <a href="#print"
-        class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
+           class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
                 <path fill="currentColor"
-                d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                      d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
             </svg>Print
         </a>
     </div>
@@ -115,6 +116,30 @@
         <div class="govuk-grid-column-two-thirds">
             <section class="faa-vacancy__section faa-vacancy__section--first" id="summary">
                 <h2 class="govuk-heading-m">Summary</h2>
+                <div asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text">
+                    @if (Model.CandidateIs21OrUnderAtStartOfVacancy)
+                    {
+                        <p>
+                            Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply.
+                        </p>
+                    }
+                    @if (Model.CandidateIs22To24AtStartOfVacancy)
+                    {
+                        <p>
+                            Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply.
+                        </p>
+                        <p>
+                            Only some people aged between 22 and 24 years old can apply for a foundation apprenticeship. Check <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                        </p>
+                    }
+                    @if (Model.CandidateIs25OrOverAtStartOfVacancy)
+                    {
+                        <p>
+                            People aged 25 years old or over cannot apply for foundation apprenticeships. See <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                        </p>
+                    }
+                </div>
+                
                 <p>
                     @Model.VacancySummary
                 </p>
@@ -127,7 +152,7 @@
                             @Model.AnnualWage
                             <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">
                                 <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
-                                rel="noreferrer noopener" target="_blank">
+                                   rel="noreferrer noopener" target="_blank">
                                     Minimum wage rates (opens in new
                                     tab)
                                 </a>
@@ -283,7 +308,7 @@
                 <h3 class="govuk-heading-s">Your training course</h3>
                 <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
                 <p class="gov-body das-!-color-dark-grey">Equal to @Model.CourseLevelMapper</p>
-            
+
                 @if (Model.CourseSkills is { Count: > 0 } || Model.CourseSkills is { Count: > 0 })
                 {
                     <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
@@ -330,31 +355,40 @@
             </section>
             <section class="faa-vacancy__section" id="requirements">
                 <h2 class="govuk-heading-m">Requirements</h2>
-                @if (Model.EssentialQualifications is { Count: > 0 })
-                {
-                    <h3 class="govuk-heading-s">Essential qualifications</h3>
-                    foreach (var group in Model.EssentialQualifications.GroupBy(x => x.QualificationType))
-                    {
-                        <p>@group.Key in:</p>
-                        <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()" />
-                    }
-                }
-                @if (Model.DesiredQualifications is { Count: > 0 })
-                {
-                    <h3 class="govuk-heading-s">Desirable qualifications</h3>
-                    foreach (var group in Model.DesiredQualifications.GroupBy(x => x.QualificationType))
-                    {
-                        <p>@group.Key in:</p>
-                        <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()" />
-                    }
-                }
-                <p class="govuk-body">
-                    Let the company know about other relevant qualifications and industry experience you have. They can
-                    adjust the apprenticeship to reflect what you already know.
-                </p>
-                <h3 class="govuk-heading-s">Skills</h3>
-                <accessible-list items="@Model.Skills"></accessible-list>
                 
+                <p asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-hint">
+                    You do not need any specific qualifications to apply for a foundation apprenticeship.
+                </p>
+                
+                @if (!Model.ApprenticeshipType.IsFoundation())
+                {
+                    if (Model.EssentialQualifications is { Count: > 0 })
+                    {
+                        <h3 class="govuk-heading-s">Essential qualifications</h3>
+                        foreach (var group in Model.EssentialQualifications.GroupBy(x => x.QualificationType))
+                        {
+                            <p>@group.Key in:</p>
+                            <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()"/>
+                        }
+                    }
+
+                    if (Model.DesiredQualifications is { Count: > 0 })
+                    {
+                        <h3 class="govuk-heading-s">Desirable qualifications</h3>
+                        foreach (var group in Model.DesiredQualifications.GroupBy(x => x.QualificationType))
+                        {
+                            <p>@group.Key in:</p>
+                            <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()"/>
+                        }
+                    }
+
+                    <p class="govuk-body">
+                        Let the company know about other relevant qualifications and industry experience you have. They can
+                        adjust the apprenticeship to reflect what you already know.
+                    </p>
+                    <h3 class="govuk-heading-s">Skills</h3>
+                    <accessible-list items="@Model.Skills"></accessible-list>
+                }
                 @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
                 {
                     <h3 class="govuk-heading-s">Other requirements</h3>
@@ -370,7 +404,7 @@
                 {
                     <p class="govuk-body">
                         <a href="@Model.EmployerWebsite" class="govuk-link" rel="noreferrer noopener"
-                            target="_blank">@Model.EmployerWebsite (opens in new tab)</a>
+                           target="_blank">@Model.EmployerWebsite (opens in new tab)</a>
                     </p>
                 }
                 @if (!string.IsNullOrEmpty(Model.CompanyBenefits))
@@ -385,18 +419,18 @@
                 {
                     <h3 class="govuk-heading-s">Disability Confident</h3>
                     <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
-                         alt="Disability Confident" width="150px" no-cdn />
+                         alt="Disability Confident" width="150px" no-cdn/>
 
                     <p class="govuk-body">
-                        A fair proportion of interviews for this apprenticeship will be offered to applicants with a disability or long-term health condition. 
+                        A fair proportion of interviews for this apprenticeship will be offered to applicants with a disability or long-term health condition.
                         This includes non-visible disabilities and conditions.
                     </p>
 
                     <p class="govuk-body">
-                        You can choose to be considered for an interview under the Disability Confident scheme. 
+                        You can choose to be considered for an interview under the Disability Confident scheme.
                         You’ll need to meet the essential requirements to be considered for an interview.
                     </p>
-                    
+
                 }
             </section>
             <section class="faa-vacancy__section" id="after">

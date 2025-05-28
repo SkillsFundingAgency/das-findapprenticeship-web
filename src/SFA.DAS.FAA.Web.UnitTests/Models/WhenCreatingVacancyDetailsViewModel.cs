@@ -272,4 +272,26 @@ public class WhenCreatingVacancyDetailsViewModel
         // assert
         actual.TrainingPlan.Should().Contain("<p>Item 1</p>");
     }
+
+    [TestCase(null, false, false, false)]
+    [TestCase(20, true, false, false)]
+    [TestCase(21, true, false, false)]
+    [TestCase(22, false, true, false)]
+    [TestCase(23, false, true, false)]
+    [TestCase(24, false, true, false)]
+    [TestCase(25, false, false, true)]
+    [TestCase(26, false, false, true)]
+    public void Then_Candidate_Age_Groups_Are_Calculated_Correctly(int? age, bool under21, bool between22And24, bool over25)
+    {
+        // arrange
+        var sut = new VacancyDetailsViewModel
+        {
+            CandidateAgeAtStartOfVacancy = age
+        };
+
+        // assert
+        sut.CandidateIs21OrUnderAtStartOfVacancy.Should().Be(under21);
+        sut.CandidateIs22To24AtStartOfVacancy.Should().Be(between22And24);
+        sut.CandidateIs25OrOverAtStartOfVacancy.Should().Be(over25);
+    }
 }
