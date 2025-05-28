@@ -182,7 +182,7 @@
                     @if (User.Identity is { IsAuthenticated: false })
                     {
                         <p>
-                            Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply. Check <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                            Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
                         </p>
                     }
                     @if (User.Identity is { IsAuthenticated: true })
@@ -199,13 +199,13 @@
                                 Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply.
                             </p>
                             <p>
-                                Only some people aged between 22 and 24 years old can apply for a foundation apprenticeship. Check <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                                Only some people aged between 22 and 24 years old can apply for a foundation apprenticeship. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
                             </p>
                         }
                         if (Model.CandidateIs25OrOverAtStartOfVacancy)
                         {
                             <p>
-                                People aged 25 years old or over cannot apply for foundation apprenticeships. See <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                                People aged 25 years old or over cannot apply for foundation apprenticeships. See <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
                             </p>
                         }
                     }
@@ -537,7 +537,7 @@
                     <h2 class="govuk-heading-m">Apply now</h2>
                     
                     <p asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text">
-                        Foundation apprenticeships help young people get into an industry. Check <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                        Foundation apprenticeships help young people get into an industry. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
                     </p>
                     
                     <p>@Model.ClosingDate</p>
@@ -587,13 +587,13 @@
                             @if (Model.CandidateIs22To24AtStartOfVacancy)
                             {
                                 <p>
-                                    Only some people aged between 22 and 24 years old can apply for a foundation apprenticeship. Check <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                                    Only some people aged between 22 and 24 years old can apply for a foundation apprenticeship. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
                                 </p>
                             }
                             @if (Model.CandidateIs25OrOverAtStartOfVacancy)
                             {
                                 <p>
-                                    People aged 25 years old or over cannot apply for foundation apprenticeships. See <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                                    People aged 25 years old or over cannot apply for foundation apprenticeships. See <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
                                 </p>
                             }
                         </div>

@@ -78,6 +78,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool CandidateIs21OrUnderAtStartOfVacancy => CandidateAgeAtStartOfVacancy <= 21;
         public bool CandidateIs22To24AtStartOfVacancy => CandidateAgeAtStartOfVacancy is >= 22 and <= 24;
         public bool CandidateIs25OrOverAtStartOfVacancy => CandidateAgeAtStartOfVacancy >= 25;
+        public string FoundationRequirementsUrl { get; set; } = string.Empty;
 
         public string? EmploymentWorkLocation => EmployerLocationOption switch
         {
@@ -86,7 +87,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
             _ => VacancyDetailsHelperService.GetOneLocationCityName(WorkLocation)
         };
 
-        public VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
+        public static VacancyDetailsViewModel MapToViewModel(IDateTimeService dateTimeService,
             GetApprenticeshipVacancyQueryResult source, string? googleMapsId)
         {
             var addresses = new List<Address>();

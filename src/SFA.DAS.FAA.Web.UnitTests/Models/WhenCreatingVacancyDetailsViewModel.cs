@@ -6,7 +6,6 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Extensions;
-using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
@@ -25,6 +24,7 @@ public class WhenCreatingVacancyDetailsViewModel
             PositionsAvailable = source.Vacancy?.NumberOfPositions,
             WorkDescription = source.Vacancy?.LongDescription,
             ThingsToConsider = source.Vacancy?.ThingsToConsider,
+            CandidateAgeAtStartOfVacancy = VacancyDetailsHelperService.GetCandidatesAgeAtStartDateOfVacancy(source.Vacancy.CandidateDateOfBirth.Value, source.Vacancy.StartDate),
             ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.Vacancy.ClosingDate, !string.IsNullOrEmpty(source.Vacancy.ApplicationUrl)),
             PostedDate = source.Vacancy.PostedDate.GetPostedDate(),
             StartDate = source.Vacancy.StartDate.ToGdsDateStringWithDayOfWeek(),
@@ -63,7 +63,7 @@ public class WhenCreatingVacancyDetailsViewModel
             EmploymentLocationInformation = source.Vacancy.EmploymentLocationInformation
         };
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, source, mapsId);
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, source, mapsId);
 
         actual.Should().BeEquivalentTo(expected);
     }
@@ -82,7 +82,7 @@ public class WhenCreatingVacancyDetailsViewModel
     {
         if (result.Vacancy != null) result.Vacancy.HoursPerWeek = Convert.ToDecimal(duration);
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, mapsId);
 
         actual.HoursPerWeek.Should().Be(workingHours);
         actual.GoogleMapsId.Should().Be(mapsId);
@@ -98,7 +98,7 @@ public class WhenCreatingVacancyDetailsViewModel
         var dateLessThan31Days = new DateTime(2000, 02, 01);
         if (result.Vacancy != null) result.Vacancy.ClosingDate = dateLessThan31Days;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, mapsId);
 
         Assert.That(actual.ClosingDate, Is.Not.Null);
         actual.ClosingDate.Should().Contain("Closes in");
@@ -115,7 +115,7 @@ public class WhenCreatingVacancyDetailsViewModel
         var dateMoreThan31Days = new DateTime(2000, 04, 01);
         if (result.Vacancy != null) result.Vacancy.ClosingDate = dateMoreThan31Days;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, mapsId);
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, mapsId);
 
         Assert.That(actual.ClosingDate, Is.Not.Null);
         actual.ClosingDate.Should().Contain("Closes on");
@@ -135,7 +135,7 @@ public class WhenCreatingVacancyDetailsViewModel
         result.Vacancy.ClosingDate = DateTime.UtcNow.AddDays(-20);
         result.Vacancy.ApplicationUrl = url;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, "");
 
         actual.ApplicationUrl.Should().Be(expectedUrl);
         actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM yyy})");
@@ -153,7 +153,7 @@ public class WhenCreatingVacancyDetailsViewModel
         result.Vacancy.ClosingDate = DateTime.UtcNow.AddDays(-20);
         result.Vacancy.ApplicationUrl = url;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, "");
 
         actual.ApplicationUrl.Should().Be(expectedUrl);
         actual.ClosingDate.Should().Be($"Closes in 10 days ({result.Vacancy.ClosingDate:dddd d MMMM yyy} at 11:59pm)");
@@ -171,7 +171,7 @@ public class WhenCreatingVacancyDetailsViewModel
     {
         result.Vacancy.EmployerLocationOption = availableWhere;
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, "");
 
         actual.EmployerLocationOption.Should().Be(availableWhere);
 
@@ -214,7 +214,7 @@ public class WhenCreatingVacancyDetailsViewModel
             result.Vacancy.OtherAddresses = [];
         }
 
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, "");
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, "");
 
         actual.ShowMap.Should().Be(expectedResult);
     }
@@ -231,7 +231,7 @@ public class WhenCreatingVacancyDetailsViewModel
         };
         
         // act
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, null);
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, null);
 
         // assert
         actual.WorkDescription.Should().Contain("<p>Item 1</p>");
@@ -249,7 +249,7 @@ public class WhenCreatingVacancyDetailsViewModel
         };
         
         // act
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, null);
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, null);
 
         // assert
         actual.AdditionalTrainingInformation.Should().Contain("<p>Item 1</p>");
@@ -267,7 +267,7 @@ public class WhenCreatingVacancyDetailsViewModel
         };
         
         // act
-        var actual = new VacancyDetailsViewModel().MapToViewModel(dateTimeService.Object, result, null);
+        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, null);
 
         // assert
         actual.TrainingPlan.Should().Contain("<p>Item 1</p>");
