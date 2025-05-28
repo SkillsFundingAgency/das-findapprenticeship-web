@@ -1,10 +1,12 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
+﻿@using SFA.DAS.FAA.Domain.Extensions
+@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
             <h1 class="govuk-heading-l faa-vacancy__title govuk-!-margin-bottom-9"><span itemprop="title">You can no longer apply for this apprenticeship</span></h1>
+            <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-6" />
             <h3 class="govuk-heading-m">@Model.Title</h3>
             <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
             <p class="govuk-body-l faa-vacancy__location">

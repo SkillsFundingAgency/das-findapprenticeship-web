@@ -70,17 +70,19 @@ public class WhenGettingVacancyDetails
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as VacancyDetailsViewModel;
 
-        var expected = new VacancyDetailsViewModel().MapToViewModel(dateTimeService, result, mapId);
+        var expected = VacancyDetailsViewModel.MapToViewModel(dateTimeService, result, mapId);
 
         actualModel.Should().BeEquivalentTo(expected, options => options
             .Excluding(x => x.BackLinkUrl)
             .Excluding(x => x.ClosingDate)
             .Excluding(x => x.CourseLevelMapper)
+            .Excluding(x => x.FoundationRequirementsUrl)
             .Excluding(x => x.ShowAccountCreatedBanner));
         actualModel!.ShowAccountCreatedBanner.Should().Be(showBanner);
         actualModel.GoogleMapsId.Should().Be(mapId);
         actualModel.Latitude.Should().Be(result.Vacancy!.Location.Lat);
         actualModel.Longitude.Should().Be(result.Vacancy!.Location.Lon);
+        actualModel.FoundationRequirementsUrl.Should().Be("#");
     }
 
     [Test]
