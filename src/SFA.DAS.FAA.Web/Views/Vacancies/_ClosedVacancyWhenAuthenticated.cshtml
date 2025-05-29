@@ -116,30 +116,6 @@
         <div class="govuk-grid-column-two-thirds">
             <section class="faa-vacancy__section faa-vacancy__section--first" id="summary">
                 <h2 class="govuk-heading-m">Summary</h2>
-                <div asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text">
-                    @if (Model.CandidateIs21OrUnderAtStartOfVacancy)
-                    {
-                        <p>
-                            Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply.
-                        </p>
-                    }
-                    @if (Model.CandidateIs22To24AtStartOfVacancy)
-                    {
-                        <p>
-                            Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply.
-                        </p>
-                        <p>
-                            Only some people aged between 22 and 24 years old can apply for a foundation apprenticeship. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
-                        </p>
-                    }
-                    @if (Model.CandidateIs25OrOverAtStartOfVacancy)
-                    {
-                        <p>
-                            People aged 25 years old or over cannot apply for foundation apprenticeships. See <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
-                        </p>
-                    }
-                </div>
-                
                 <p>
                     @Model.VacancySummary
                 </p>
