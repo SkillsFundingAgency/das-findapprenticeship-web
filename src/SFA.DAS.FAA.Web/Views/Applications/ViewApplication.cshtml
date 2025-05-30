@@ -6,9 +6,9 @@
     ViewData["Title"] = $"Your application to {@Model.VacancyDetails.EmployerName} – Find an apprenticeship – GOV.UK";
     var tagName = Model.ApplicationStatus switch
     {
-        ApplicationStatus.Successful => ApplicationsTab.Successful.ToString(),
-        ApplicationStatus.Unsuccessful => ApplicationsTab.Unsuccessful.ToString(),
-        _ => ApplicationsTab.Submitted.ToString()
+        ApplicationStatus.Successful => nameof(ApplicationsTab.Successful),
+        ApplicationStatus.Unsuccessful => nameof(ApplicationsTab.Unsuccessful),
+        _ => nameof(ApplicationsTab.Submitted)
     };
 }
 @section BackLink {
