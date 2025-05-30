@@ -10,7 +10,7 @@ namespace SFA.DAS.FAA.Web.Services
                 IMediator mediator,
                 ICacheStorageService cacheStorageService) : INotificationCountService
     {
-        private const int SlidingExpirationMinutes = 30;
+        private const int SlidingExpirationMinutes = 131400; // three months in minutes
         private const int AbsoluteExpirationMinutes = 262800; //six months in minutes
 
         public async Task<int> GetUnreadApplicationCount(Guid candidateId, ApplicationStatus status)
