@@ -607,8 +607,18 @@
                                 <h3>Company’s application instructions </h3>
                                 <p>@Model.ApplicationInstructions</p>
                             }
-
-                            <a href="@Model.ApplicationUrl" class="govuk-button">Apply on company’s website</a>
+                            
+                            if (Model.ApprenticeshipType.IsFoundation() && Model.CandidateIs25OrOverAtStartOfVacancy)
+                            {
+                                <div class="govuk-button-group">
+                                    <button disabled aria-disabled="true" class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">Apply on company’s website</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <a href="@Model.ApplicationUrl" class="govuk-button">Apply on company’s website</a>    
+                            }
+                            
                         }
                         else
                         {
