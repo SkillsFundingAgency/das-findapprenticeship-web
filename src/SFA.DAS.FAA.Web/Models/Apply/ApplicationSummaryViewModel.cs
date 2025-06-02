@@ -223,41 +223,16 @@ public class ApplicationSummaryViewModel
 
     public record EmploymentLocationSection
     {
-        public List<AddressDto>? EmploymentAddress { get; init; }
-        public AvailableWhere? EmployerLocationOption { get; set; }
+        public List<EmploymentLocationViewModel>? EmploymentAddress { get; init; }
+        public AvailableWhere? EmployerLocationOption { get; init; }
         public SectionStatus EmploymentLocationStatus { get; private init; }
 
         public static implicit operator EmploymentLocationSection?(GetApplicationSummaryQueryResult.EmploymentLocationSection? source)
         {
             if (source is null) return null;
 
-            if (source?.Addresses == null)
-            {
-                return new EmploymentLocationSection();
-            }
-
             var addresses = source.Addresses
-                .Select(x =>
-                {
-                    Address? employmentAddress;
-                    try
-                    {
-                        employmentAddress = !string.IsNullOrWhiteSpace(x.FullAddress)
-                            ? JsonConvert.DeserializeObject<Address>(x.FullAddress)
-                            : null;
-                    }
-                    catch (JsonException)
-                    {
-                        employmentAddress = Address.Empty;
-                    }
-                    return new AddressDto
-                    {
-                        Id = x.Id,
-                        EmploymentAddress = employmentAddress,
-                        IsSelected = x.IsSelected,
-                        AddressOrder = x.AddressOrder
-                    };
-                })
+                .Select(x => (EmploymentLocationViewModel)x)
                 .OrderBy(add => add.AddressOrder)
                 .ToList();
 
@@ -267,15 +242,6 @@ public class ApplicationSummaryViewModel
                 EmployerLocationOption = source.EmployerLocationOption,
                 EmploymentLocationStatus = source.EmploymentLocationStatus
             };
-        }
-
-        public record AddressDto
-        {
-            public Guid Id { get; init; }
-            public Address? EmploymentAddress { get; init; }
-            public string? FullAddress => EmploymentAddress?.ToSingleLineFullAddress();
-            public bool IsSelected { get; init; }
-            public short AddressOrder { get; init; }
         }
     }
 
