@@ -1,23 +1,26 @@
-﻿@using SFA.DAS.FAA.Web.Infrastructure
+﻿@using SFA.DAS.FAA.Domain.Extensions
+@using SFA.DAS.FAA.Web.Infrastructure
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
-            <h1 class="govuk-heading-l faa-vacancy__title govuk-!-margin-bottom-9"><span itemprop="title">You can no longer apply for this apprenticeship</span></h1>
-            <h3 class="govuk-heading-m">@Model.Title</h3>
-            <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
-            <p class="govuk-body-l faa-vacancy__location">
-                <span itemprop="jobLocation">
-                    @Model.EmploymentWorkLocation
-                </span>
-            </p>
-            <p class="govuk-body govuk-!-margin-bottom-6 faa-vacancy__closing-date">@Model.ClosedDate</p>
+            <h1 class="govuk-heading-xl faa-vacancy__title govuk-!-margin-bottom-9"><span itemprop="title">You can no longer apply for this apprenticeship</span></h1>
+            <div class="das-highlight govuk-!-margin-bottom-6 govuk-!-padding-6">
+                <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-4" />
+                <h3 class="govuk-heading-m">@Model.Title</h3>
+                <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
+                <p class="govuk-body-l faa-vacancy__location">
+                    <span itemprop="jobLocation">
+                        @Model.EmploymentWorkLocation
+                    </span>
+                </p>
+                <p class="govuk-body faa-vacancy__closing-date">@Model.ClosedDate</p>
+            </div>
 
             <p class="govuk-body">
                 <a href="@Url.RouteUrl(RouteNames.ServiceStartDefault)" class="govuk-link govuk-link--no-visited-state">Find more apprenticeships</a>
             </p>
-
         </div>
     </div>
 </div>

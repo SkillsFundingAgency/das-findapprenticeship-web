@@ -102,6 +102,7 @@ public class GetApprenticeshipVacancyApiResponse : IVacancyAdvert
     public decimal? Under18NationalMinimumWage { get; set; }
     public decimal? ApprenticeMinimumWage { get; set; }
     public DateTime? CandidateDateOfBirth { get; set; }
+    public ApprenticeshipTypes ApprenticeshipType { get; set; }
 }
 
 [ApiType("VacancyQualificationApiResponse")]
