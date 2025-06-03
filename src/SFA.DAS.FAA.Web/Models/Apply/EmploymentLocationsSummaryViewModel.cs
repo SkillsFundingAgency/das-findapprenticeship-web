@@ -15,6 +15,7 @@ public record EmploymentLocationsSummaryViewModel
     public static implicit operator EmploymentLocationsSummaryViewModel(GetEmploymentLocationsQueryResult result)
     {
         var addresses = result.EmploymentLocation.Addresses
+            .Where(x => x.IsSelected)
             .Select(x => (EmploymentLocationViewModel)x)
             .OrderBy(add => add.AddressOrder)
             .ToList();
