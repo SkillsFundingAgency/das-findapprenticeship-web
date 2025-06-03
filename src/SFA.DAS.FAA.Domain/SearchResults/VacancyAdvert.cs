@@ -12,6 +12,9 @@ public class VacancyAdvert : IVacancyAdvert
     
     [JsonPropertyName("apprenticeshipLevel")]
     public string ApprenticeshipLevel { get; set; }
+    
+    [JsonProperty("apprenticeshipType")]
+    public ApprenticeshipTypes ApprenticeshipType { get; set; }
 
     [JsonPropertyName("closingDate")]
     public DateTime ClosingDate { get; set; }
