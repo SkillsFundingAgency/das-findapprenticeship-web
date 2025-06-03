@@ -232,6 +232,7 @@ public class ApplicationSummaryViewModel
             if (source is null) return null;
 
             var addresses = source.Addresses
+                .Where(x => x.IsSelected)
                 .Select(x => (EmploymentLocationViewModel)x)
                 .OrderBy(add => add.AddressOrder)
                 .ToList();
