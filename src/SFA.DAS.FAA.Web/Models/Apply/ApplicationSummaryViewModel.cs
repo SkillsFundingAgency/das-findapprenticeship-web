@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Domain.Models;
-using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
@@ -229,7 +226,8 @@ public class ApplicationSummaryViewModel
 
         public static implicit operator EmploymentLocationSection?(GetApplicationSummaryQueryResult.EmploymentLocationSection? source)
         {
-            if (source is null) return null;
+            if (source?.Addresses == null || source.Addresses.All(x => !x.IsSelected))
+                return null;
 
             var addresses = source.Addresses
                 .Where(x => x.IsSelected)

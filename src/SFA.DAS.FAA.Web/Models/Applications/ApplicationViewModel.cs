@@ -70,13 +70,14 @@ public class ApplicationViewModel
 
         public static implicit operator EmploymentLocationSection?(GetApplicationViewQueryResult.EmploymentLocationSection? source)
         {
-            if (source is null) return null;
+            if (source?.Addresses == null || source.Addresses.All(x => !x.IsSelected))
+                return null;
 
             var addresses = source.Addresses
-                .Where(x => x.IsSelected)
-                .Select(x => (EmploymentLocationViewModel)x)
-                .OrderBy(add => add.AddressOrder)
-                .ToList();
+            .Where(x => x.IsSelected)
+            .Select(x => (EmploymentLocationViewModel)x)
+            .OrderBy(add => add.AddressOrder)
+            .ToList();
 
             return new EmploymentLocationSection
             {
