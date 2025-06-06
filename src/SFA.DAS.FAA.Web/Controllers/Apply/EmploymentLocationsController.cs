@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.EmploymentLocations.Update;
 using SFA.DAS.FAA.Application.Queries.Apply.GetEmploymentLocations;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -29,13 +30,9 @@ public class EmploymentLocationsController(IMediator mediator) : Controller
                 new { ApplicationId = applicationId, isEdit });
         }
 
-        return View(ListViewPath, new AddEmploymentLocationsViewModel
-        {
-            Addresses = result.EmploymentLocation.Addresses
-                .OrderBy(add => add.AddressOrder)
-                .ToList(),
-            ApplicationId = applicationId,
-        });
+        var viewModel = (AddEmploymentLocationsViewModel)result;
+        viewModel.ApplicationId = applicationId;
+        return View(ListViewPath, viewModel);
     }
 
     [HttpPost]
@@ -48,13 +45,9 @@ public class EmploymentLocationsController(IMediator mediator) : Controller
             // Reset the selection for all addresses in one step
             result.EmploymentLocation.Addresses.ForEach(address => address.IsSelected = false);
 
-            return View(ListViewPath, new AddEmploymentLocationsViewModel
-            {
-                Addresses = result.EmploymentLocation.Addresses
-                    .OrderBy(add => add.AddressOrder)
-                    .ToList(),
-                ApplicationId = applicationId,
-            });
+            viewModel = (AddEmploymentLocationsViewModel)result;
+            viewModel.ApplicationId = applicationId;
+            return View(ListViewPath, viewModel);
         }
         await mediator.Send(new UpdateEmploymentLocationsCommand
         {
@@ -73,18 +66,14 @@ public class EmploymentLocationsController(IMediator mediator) : Controller
     {
         var result = await mediator.Send(new GetEmploymentLocationsQuery(applicationId, (Guid)User.Claims.CandidateId()!));
 
-        return View(SummaryViewPath, new EmploymentLocationsSummaryViewModel
-        {
-            Addresses = result.EmploymentLocation.Addresses
-                .Where(add => add.IsSelected)
-                .OrderBy(add => add.AddressOrder)
-                .ToList(),
-            BackLinkUrl = isEdit
-                ? Url.RouteUrl(RouteNames.ApplyApprenticeship.AddEmploymentLocations, new { applicationId, isEdit })
-                : Url.RouteUrl(RouteNames.Apply, new { applicationId }),
-            ApplicationId = applicationId,
-            IsSectionCompleted = result.IsSectionCompleted
-        });
+        var viewModel = (EmploymentLocationsSummaryViewModel)result;
+        viewModel.BackLinkUrl = isEdit
+            ? Url.RouteUrl(RouteNames.ApplyApprenticeship.AddEmploymentLocations, new {applicationId, isEdit})
+            : Url.RouteUrl(RouteNames.Apply, new {applicationId});
+        viewModel.ApplicationId = applicationId;
+        viewModel.IsSectionCompleted = result.IsSectionCompleted;
+
+        return View(SummaryViewPath, viewModel);
     }
 
     [HttpPost]
@@ -95,18 +84,14 @@ public class EmploymentLocationsController(IMediator mediator) : Controller
         {
             var result = await mediator.Send(new GetEmploymentLocationsQuery(applicationId, (Guid)User.Claims.CandidateId()!));
 
-            return View(SummaryViewPath, new EmploymentLocationsSummaryViewModel
-            {
-                Addresses = result.EmploymentLocation.Addresses
-                    .Where(add => add.IsSelected)
-                    .OrderBy(add => add.AddressOrder)
-                    .ToList(),
-                ApplicationId = applicationId,
-                BackLinkUrl = isEdit
-                    ? Url.RouteUrl(RouteNames.ApplyApprenticeship.AddEmploymentLocations, new { applicationId, isEdit })
-                    : Url.RouteUrl(RouteNames.Apply, new { applicationId }),
-                IsSectionCompleted = result.IsSectionCompleted
-            });
+            viewModel = (EmploymentLocationsSummaryViewModel)result;
+            viewModel.BackLinkUrl = isEdit
+                ? Url.RouteUrl(RouteNames.ApplyApprenticeship.AddEmploymentLocations, new { applicationId, isEdit })
+                : Url.RouteUrl(RouteNames.Apply, new { applicationId });
+            viewModel.ApplicationId = applicationId;
+            viewModel.IsSectionCompleted = result.IsSectionCompleted;
+
+            return View(SummaryViewPath, viewModel);
         }
 
         await mediator.Send(new UpdateEmploymentLocationsCommand
