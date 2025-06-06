@@ -125,6 +125,8 @@ public class WhenMappingIndexViewModel
 
             // assert
             actual.ResponseDate.Should().Be(expected);
+            actual.ApprenticeshipType.Should().Be(application.ApprenticeshipType);
+            actual.ShowFoundationTag.Should().Be(application.ApprenticeshipType == ApprenticeshipTypes.Foundation);
         }
     }
     

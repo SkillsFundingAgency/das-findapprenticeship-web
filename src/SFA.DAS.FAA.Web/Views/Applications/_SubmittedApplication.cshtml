@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Web.Infrastructure
+﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Web.Models.Applications
 @model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel.Application
 <li class="das-search-results__list-item govuk-!-margin-bottom-4">
@@ -7,7 +6,7 @@
     {
         <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
     }
-    <partial name="_VacancyTitle" model="@ValueTuple.Create(Model.Title, Model.VacancyReference, ApplicationsTab.Submitted)" />
+    <partial name="_VacancyTitle" model="@ValueTuple.Create(Model.Title, Model.VacancyReference, ApplicationsTab.Submitted, Model.ShowFoundationTag)" />
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerName</p>
     <p class="govuk-hint">@Model.EmploymentWorkLocation</p>
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.SubmittedDate</p>

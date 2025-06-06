@@ -3,3 +3,10 @@
 .faa-foundation-inset-text {
   border-left: 10px solid $foundations-pink !important;
 }
+
+.faa-flex-title {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+  justify-content: space-between;
+}

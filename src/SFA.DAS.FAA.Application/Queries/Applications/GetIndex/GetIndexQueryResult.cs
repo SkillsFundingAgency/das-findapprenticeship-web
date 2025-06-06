@@ -26,6 +26,7 @@ public class GetIndexQueryResult
         public List<Address> Addresses { get; set; } = [];
         public string? EmploymentLocationInformation { get; set; }
         public AvailableWhere? EmployerLocationOption { get; set; }
+        public ApprenticeshipTypes ApprenticeshipType { get; set; }
     }
 
     public static implicit operator GetIndexQueryResult(GetApplicationsApiResponse source)
@@ -53,6 +54,7 @@ public class GetIndexQueryResult
                 ],
                 EmployerLocationOption = x.EmployerLocationOption,
                 EmploymentLocationInformation = x.EmploymentLocationInformation,
+                ApprenticeshipType = x.ApprenticeshipType
             }).ToList()
         };
     }
