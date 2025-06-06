@@ -3,11 +3,9 @@
 
 @model (string? Title, string? VacancyReference, ApplicationsTab Tab, bool IsFoundation)
 
-<h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+<h2 class="govuk-heading-m govuk-!-margin-bottom-1 faa-flex-title">
     <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference, source = "applications", tab = Model.Tab })">
         @Model.Title
     </a>
-    <span style="right:0px;">
-        <govuk-tag-foundation asp-show="@Model.IsFoundation" />
-    </span>
+    <govuk-tag-foundation asp-show="@Model.IsFoundation" />
 </h2>
