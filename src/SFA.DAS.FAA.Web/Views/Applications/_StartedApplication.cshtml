@@ -6,14 +6,12 @@
     {
         <strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">Closing soon</strong>
     }
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1 faa-flex-title">
         <a class="govuk-link govuk-link--no-visited-state"
             href="@Url.RouteUrl(RouteNames.Vacancies, new { Model.VacancyReference, source = "applications", tab = ApplicationsTab.Started })">
             @Model.Title
         </a>
-        <span style="right:0px;">
-            <govuk-tag-foundation asp-show="@Model.ShowFoundationTag" />
-        </span>
+        <govuk-tag-foundation asp-show="@Model.ShowFoundationTag" />
     </h2>
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerName</p>
     <p class="govuk-hint">@Model.EmploymentWorkLocation</p>
