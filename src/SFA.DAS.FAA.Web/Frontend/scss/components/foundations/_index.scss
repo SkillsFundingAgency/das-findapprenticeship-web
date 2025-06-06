@@ -1,0 +1,5 @@
+﻿$foundations-pink: govuk-tint(govuk-colour("pink"), 85%);
+
+.faa-foundation-inset-text {
+  border-left: 10px solid $foundations-pink !important;
+}

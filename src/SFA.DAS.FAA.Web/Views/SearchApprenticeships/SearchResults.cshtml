@@ -1,11 +1,12 @@
 @using SFA.DAS.FAA.Web.Infrastructure
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.FAA.Domain.Enums
-@using WebEssentials.AspNetCore.CdnTagHelpers
+@using SFA.DAS.FAA.Domain.Extensions
+
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @{
     ViewData["Title"] = $"{Model.PageTitle} - Find an apprenticeship - GOV.UK";
 }
+
 @section BackLink {
     @if (Model is { PageBackLinkRoutePath: not null, SelectedRouteIds: not null } && Model.SelectedRouteIds.Any())
     {
@@ -16,6 +17,7 @@
         <a class="govuk-back-link" asp-route="@RouteNames.ServiceStartDefault">Back</a>
     }
 }
+
 @if (Model.ShowAccountCreatedBanner)
 {
     <partial name="_AccountCreatedBanner" />
@@ -210,26 +212,26 @@
             </div>
             <div class="das-search-results">
                 <ol class="das-search-results__list">
-                    @if (Model.ShowCompetitiveSalaryBanner)
-                    {
-                        <li class="das-search-results__list-item govuk-!-padding-top-6 govuk-!-margin-bottom-6">
-                            <div class="faa-search-result-banner">
-                                <h3 class="govuk-heading-s das-search-results__heading">
-                                    @Model.CompetitiveSalaryBannerHeaderText cannot be shown in this list
-                                </h3>
-                                <p class="govuk-body">
-                                    We have not included vacancies where we do not know the wage.
-                                </p>
-                                <p class="govuk-body">
-                                    <a href="@Model.CompetitiveSalaryRoutePath" class="govuk-link govuk-link--no-visited-state">@Model.CompetitiveSalaryBannerLinkText</a>
-                                </p>
-                            </div>
-                        </li>
-                    }
-                    @foreach (var vacancyAdvert in Model.VacancyAdverts)
-                    {
-                        <li class="das-search-results__list-item govuk-!-padding-top-6 @(Model.ShowCompetitiveSalaryBanner && vacancyAdvert.ShowInsertTextCssClass ? "faa-search-listing--highlight" : string.Empty)">
-
+                @if (Model.ShowCompetitiveSalaryBanner)
+                {
+                    <li class="das-search-results__list-item govuk-!-padding-top-6 govuk-!-margin-bottom-6">
+                        <div class="faa-search-result-banner">
+                            <h3 class="govuk-heading-s das-search-results__heading">
+                                @Model.CompetitiveSalaryBannerHeaderText cannot be shown in this list
+                            </h3>
+                            <p class="govuk-body">
+                                We have not included vacancies where we do not know the wage.
+                            </p>
+                            <p class="govuk-body">
+                                <a href="@Model.CompetitiveSalaryRoutePath" class="govuk-link govuk-link--no-visited-state">@Model.CompetitiveSalaryBannerLinkText</a>
+                            </p>
+                        </div>
+                    </li>
+                }
+                @foreach (var vacancyAdvert in Model.VacancyAdverts)
+                {
+                    <li class="das-search-results__list-item govuk-!-padding-top-6 @(Model.ShowCompetitiveSalaryBanner && vacancyAdvert.ShowInsertTextCssClass ? "faa-search-listing--highlight" : string.Empty)">
+                        <div class="faa-search_results__content">
                             <div class="faa-search-result-header">
                                 <div>
                                     @if (vacancyAdvert.IsClosingSoon)
@@ -314,12 +316,13 @@
                             <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">
                                 @vacancyAdvert.PostedDate
                             </p>
-                            @if (vacancyAdvert.IsDisabilityConfident)
-                            {
-                                <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
-                                     alt="Disability Confident" no-cdn />
-                            }
-                        </li>
+                            
+                            <govuk-tag-foundation asp-show="@vacancyAdvert.ApprenticeshipType.IsFoundation()" />
+                            <div asp-show="@vacancyAdvert.IsDisabilityConfident" class="faa-search_results__disability-wrapper">
+                                <img src="/img/disability-confident.svg" class="faa-disability-confident--srp govuk-!-margin-bottom-0" alt="Disability Confident" no-cdn />
+                            </div>
+                        </div>
+                    </li>
                     }
                 </ol>
             </div>

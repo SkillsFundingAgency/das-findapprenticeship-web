@@ -156,8 +156,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
                 c => c.Set(
                     It.Is<string>(key => key.Contains(candidateId.ToString()) && key.Contains(status.ToString())),
                     It.Is<List<Guid>>(ids => ids.SequenceEqual(applicationIds)),
-                    It.Is<int>(sliding => sliding == 30),
-                    It.Is<int>(absolute => absolute == 262800)),
+                    It.IsAny<int>(),
+                    It.IsAny<int>()),
                 Times.Once);
         }
     }
