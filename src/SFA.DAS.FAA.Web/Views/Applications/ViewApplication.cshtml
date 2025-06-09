@@ -6,9 +6,9 @@
     ViewData["Title"] = $"Your application to {@Model.VacancyDetails.EmployerName} – Find an apprenticeship – GOV.UK";
     var tagName = Model.ApplicationStatus switch
     {
-        ApplicationStatus.Successful => ApplicationsTab.Successful.ToString(),
-        ApplicationStatus.Unsuccessful => ApplicationsTab.Unsuccessful.ToString(),
-        _ => ApplicationsTab.Submitted.ToString()
+        ApplicationStatus.Successful => nameof(ApplicationsTab.Successful),
+        ApplicationStatus.Unsuccessful => nameof(ApplicationsTab.Unsuccessful),
+        _ => nameof(ApplicationsTab.Submitted)
     };
 }
 @section BackLink {
@@ -324,6 +324,30 @@
                         </dt>
                         <dd class="govuk-summary-list__value">
                             @(Model.DisabilityConfidence.ApplyUnderDisabilityConfidentScheme ? "Yes" : "No")
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        }
+        @if (Model.ShowLocationSection)
+        {
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">Locations</h2>
+            </div>
+            <div class="faa-flex-row">
+                <dl class="govuk-summary-list govuk-summary-list--no-border">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Where do you want to apply for?
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var locationAddress in Model.EmploymentLocation?.EmploymentAddress!)
+                                {
+                                    <li>@locationAddress.FullAddress</li>
+                                }
+                            </ul>
                         </dd>
                     </div>
                 </dl>
