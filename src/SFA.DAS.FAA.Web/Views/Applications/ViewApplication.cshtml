@@ -41,10 +41,10 @@
             @Model.VacancyDetails.Title at @Model.VacancyDetails.EmployerName.
         </div>
         <a href="#"
-           class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
+        class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
                 <path fill="currentColor"
-                      d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
             </svg>Print your application
         </a>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
@@ -99,159 +99,173 @@
                 </div>
             </dl>
         </div>
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-        <div class="faa-flex-row">
-            <h2 class="govuk-heading-m">School, college and university qualifications</h2>
-        </div>
-        @if (Model.EducationHistory.Qualifications.ShowQualifications)
-        {
-            @foreach (var group in Model.EducationHistory.Qualifications.QualificationGroups)
+        
+        <div class="@Model.EducationHistory.Qualifications.PrintCssClass">
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">School, college and university qualifications</h2>
+            </div>
+            @if (Model.EducationHistory.Qualifications.ShowQualifications)
             {
-                <div class="govuk-summary-card">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">@group.DisplayName</h2>
+                @foreach (var group in Model.EducationHistory.Qualifications.QualificationGroups)
+                {
+                    <div class="govuk-summary-card">
+                        <div class="govuk-summary-card__title-wrapper">
+                            <h2 class="govuk-summary-card__title">@group.DisplayName</h2>
+                        </div>
+                        <div class="govuk-summary-card__content">
+                            <dl class="govuk-summary-list">
+                                @foreach (var qualification in group.Qualifications)
+                                {
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">
+                                            @qualification.Subject
+                                            @if (group.ShowAdditionalInformation)
+                                            {
+                                                <p class="govuk-body govuk-!-margin-top-1 govuk-hint">@qualification.AdditionalInformation</p>
+                                            }
+                                            @if (group.ShowLevel is true)
+                                            {
+                                                <p class="govuk-body govuk-!-margin-top-1 govuk-!-font-weight-bold">(Level @qualification.AdditionalInformation)</p>
+                                            }
+                                        </dt>
+                                        <dd class="govuk-summary-list__value">
+                                            @qualification.GradeLabel
+                                        </dd>
+                                    </div>
+                                }
+                            </dl>
+                        </div>
                     </div>
-                    <div class="govuk-summary-card__content">
-                        <dl class="govuk-summary-list">
-                            @foreach (var qualification in group.Qualifications)
-                            {
+                }
+            }
+            else
+            {
+                <div class="faa-flex-row">
+                    <p class="govuk-hint">You haven’t added any school, college or university qualifications.</p>
+                </div>
+            }
+        </div>
+        
+        <div class="@Model.EducationHistory.TrainingCoursesPrintCssClass">
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">Training courses</h2>
+            </div>
+            @if (Model.EducationHistory.TrainingCourses is { Count: > 0 })
+            {
+                foreach (var trainingCourse in Model.EducationHistory.TrainingCourses)
+                {
+                    <div class="govuk-summary-card">
+                        <div class="govuk-summary-card__title-wrapper">
+                            <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
+                        </div>
+                        <div class="govuk-summary-card__content">
+                            <dl class="govuk-summary-list">
                                 <div class="govuk-summary-list__row">
                                     <dt class="govuk-summary-list__key">
-                                        @qualification.Subject
-                                        @if (group.ShowAdditionalInformation)
-                                        {
-                                            <p class="govuk-body govuk-!-margin-top-1 govuk-hint">@qualification.AdditionalInformation</p>
-                                        }
-                                        @if (group.ShowLevel is true)
-                                        {
-                                            <p class="govuk-body govuk-!-margin-top-1 govuk-!-font-weight-bold">(Level @qualification.AdditionalInformation)</p>
-                                        }
+                                        Year
                                     </dt>
                                     <dd class="govuk-summary-list__value">
-                                        @qualification.GradeLabel
+                                        @trainingCourse.YearAchieved
                                     </dd>
                                 </div>
-                            }
-                        </dl>
+                            </dl>
+                        </div>
                     </div>
-                </div>
+                }
             }
-        }
-        else
-        {
-            <div class="faa-flex-row">
-                <p class="govuk-hint">You haven’t added any school, college or university qualifications.</p>
+            else
+            {
+                <p class="govuk-hint">You haven’t added any training courses.</p>
+            }
+        </div>
+        
+        <div class="@Model.WorkHistory.JobsPrintCssClass">
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row faa-no-print">
+                <h2 class="govuk-heading-m">Jobs</h2>
             </div>
-        }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-        <div class="faa-flex-row">
-            <h2 class="govuk-heading-m">Training courses</h2>
-        </div>
-        @if (Model.EducationHistory.TrainingCourses is { Count: > 0 })
-        {
-            foreach (var trainingCourse in Model.EducationHistory.TrainingCourses)
+            @if (Model.WorkHistory.Jobs is { Count: > 0 })
             {
-                <div class="govuk-summary-card">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
+                foreach (var job in Model.WorkHistory.Jobs)
+                {
+                    <div class="govuk-summary-card">
+                        <div class="govuk-summary-card__title-wrapper">
+                            <h2 class="govuk-summary-card__title">@job.JobHeader</h2>
+                        </div>
+                        <div class="govuk-summary-card__content">
+                            <dl class="govuk-summary-list">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Responsibilities
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <div class="faa-user-content">@job.Description</div>
+                                    </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Dates
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @job.JobDates
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
-                    <div class="govuk-summary-card__content">
-                        <dl class="govuk-summary-list">
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Year
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @trainingCourse.YearAchieved
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
+                }
             }
-        }
-        else
-        {
-            <p class="govuk-hint">You haven’t added any training courses.</p>
-        }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-        <div class="faa-flex-row">
-            <h2 class="govuk-heading-m">Jobs</h2>
-        </div>
-        @if (Model.WorkHistory.Jobs is { Count: > 0 })
-        {
-            foreach (var job in Model.WorkHistory.Jobs)
+            else
             {
-                <div class="govuk-summary-card">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">@job.JobHeader</h2>
-                    </div>
-                    <div class="govuk-summary-card__content">
-                        <dl class="govuk-summary-list">
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Responsibilities
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    <div class="faa-user-content">@job.Description</div>
-                                </dd>
-                            </div>
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Dates
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @job.JobDates
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
+                <p class="govuk-hint faa-no-print">You haven’t added any jobs.</p>
             }
-        }
-        else
-        {
-            <p class="govuk-hint">You haven’t added any jobs.</p>
-        }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-        <div class="faa-flex-row">
-            <h2 class="govuk-heading-m">Volunteering and work experience</h2>
+
         </div>
-        @if (Model.WorkHistory.VolunteeringAndWorkExperiences is { Count: > 0 })
-        {
-            foreach (var experience in Model.WorkHistory.VolunteeringAndWorkExperiences)
+
+        <div class="@Model.WorkHistory.VolunteeringAndWorkExperiencesPrintCssClass">
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">Volunteering and work experience</h2>
+            </div>
+            @if (Model.WorkHistory.VolunteeringAndWorkExperiences is { Count: > 0 })
             {
-                <div class="govuk-summary-card">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">@experience.Employer</h2>
+                foreach (var experience in Model.WorkHistory.VolunteeringAndWorkExperiences)
+                {
+                    <div class="govuk-summary-card">
+                        <div class="govuk-summary-card__title-wrapper">
+                            <h2 class="govuk-summary-card__title">@experience.Employer</h2>
+                        </div>
+                        <div class="govuk-summary-card__content">
+                            <dl class="govuk-summary-list">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        What you did
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <div class="faa-user-content">@experience.Description</div>
+                                    </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Dates
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @experience.JobDates
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
-                    <div class="govuk-summary-card__content">
-                        <dl class="govuk-summary-list">
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    What you did
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    <div class="faa-user-content">@experience.Description</div>
-                                </dd>
-                            </div>
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Dates
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @experience.JobDates
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
+                }
             }
-        }
-        else
-        {
-            <p class="govuk-hint">You haven’t added any volunteering or work experience.</p>
-        }
+            else
+            {
+                <p class="govuk-hint">You haven’t added any volunteering or work experience.</p>
+            }
+        </div>
+        
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <h2 class="govuk-heading-m">Application questions</h2>
         <div class="faa-flex-row">
@@ -284,6 +298,7 @@
                 <div class="faa-user-content">@Model.ApplicationQuestions.AdditionalQuestion2.Answer</div>
             </div>
         }
+
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <div class="faa-flex-row">
             <h2 class="govuk-heading-m">Get support at an interview</h2>

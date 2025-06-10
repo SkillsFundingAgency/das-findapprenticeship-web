@@ -118,6 +118,7 @@ public class ApplicationViewModel
 
     public class EducationHistorySection
     {
+        public string TrainingCoursesPrintCssClass => TrainingCourses.Count > 0 ? string.Empty : "faa-no-print";
         public List<TrainingCourse> TrainingCourses { get; set; } = [];
         public QualificationsViewModel Qualifications { get; set; } = new();
 
@@ -150,6 +151,8 @@ public class ApplicationViewModel
             public List<QualificationGroup> QualificationGroups { get; set; } = [];
 
             public bool ShowQualifications { get; set; }
+
+            public string PrintCssClass => ShowQualifications ? string.Empty : "faa-no-print";
 
             public class QualificationGroup
             {
@@ -237,6 +240,9 @@ public class ApplicationViewModel
     {
         public List<Job> Jobs { get; set; } = [];
         public List<VolunteeringAndWorkExperience> VolunteeringAndWorkExperiences { get; set; } = [];
+
+        public string JobsPrintCssClass => Jobs.Count > 0 ? string.Empty : "faa-no-print";
+        public string VolunteeringAndWorkExperiencesPrintCssClass => VolunteeringAndWorkExperiences.Count > 0 ? string.Empty : "faa-no-print";
 
         public static implicit operator WorkHistorySection(GetApplicationViewQueryResult.WorkHistorySection source)
         {
