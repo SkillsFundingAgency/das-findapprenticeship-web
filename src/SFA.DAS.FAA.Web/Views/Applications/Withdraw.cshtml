@@ -12,6 +12,7 @@
         <partial name="_ValidationSummary" />
         <h1 class="govuk-heading-l">Withdraw your application</h1>
         <div class="das-highlight">
+            <govuk-tag-foundation asp-show="@Model.ShowFoundationTag" class="govuk-!-margin-bottom-4"></govuk-tag-foundation>
             <h2 class="govuk-heading-m govuk-!-margin-bottom-1">@Model.AdvertTitle</h2>
             <p class="govuk-hint">@Model.EmployerName</p>
             <p class="govuk-body">@Model.EmploymentWorkLocation</p>

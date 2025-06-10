@@ -29,7 +29,8 @@ public class WithdrawApplicationViewModel(IDateTimeService dateTimeService, GetW
     public string? ClosesOnDate { get; set; } = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosedDate ?? source.ClosingDate);
     public bool ClosesToday { get; set; } = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 0;
     public bool ClosesTomorrow { get; set; } = VacancyDetailsHelperService.GetDaysUntilExpiry(dateTimeService, source.ClosingDate) == 1;
-    
+    public bool ShowFoundationTag => source.ApprenticeshipType == ApprenticeshipTypes.Foundation;
+
     private List<Address> Addresses { get; } = source.Addresses;
     private AvailableWhere? EmployerLocationOption { get; } = source.EmployerLocationOption;
 
