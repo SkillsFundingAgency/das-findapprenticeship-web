@@ -18,10 +18,7 @@
             const formEl = document.querySelector("form[data-autosave]");
             dasAutosaveForm(formEl, {
                 url: "what-interests-you",
-                intervalInSeconds: 300,
-                beforeSubmit: formData => {
-                    formData.append("AutoSave", "true")
-                }
+                beforeSubmit: formData => formData.append("AutoSave", "true")
             })
         });
     </script>

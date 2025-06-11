@@ -3,10 +3,16 @@
         console.error("dasAutosave: the form element is a required parameter")
         return;
     }
-
-    const saveInterval = Number(options?.intervalInSeconds)
-    const saveUrl = options?.url
-    if (Number.isNaN(saveInterval) || (saveUrl?.length ?? 0) === 0) {
+    
+    const defaults = {
+        intervalInSeconds: 300,
+        url: ""
+    }
+    
+    const config = Object.assign({}, defaults, options)
+    const saveInterval = Number(config.intervalInSeconds)
+    const saveUrl = config.url
+    if (Number.isNaN(saveInterval) || saveUrl.length === 0) {
         console.error(`dasAutosave: options are incomplete`)
         return
     }
