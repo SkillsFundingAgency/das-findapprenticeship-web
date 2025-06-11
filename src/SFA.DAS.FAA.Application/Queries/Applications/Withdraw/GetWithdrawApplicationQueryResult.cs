@@ -20,4 +20,5 @@ public class GetWithdrawApplicationQueryResult
     public List<Address> Addresses { get; set; } = [];
     public string? EmploymentLocationInformation { get; set; }
     public AvailableWhere? EmployerLocationOption { get; set; }
+    public ApprenticeshipTypes ApprenticeshipType { get; set; } = ApprenticeshipTypes.Standard;
 }

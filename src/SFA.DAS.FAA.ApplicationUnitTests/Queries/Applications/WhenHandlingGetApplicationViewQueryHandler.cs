@@ -1,12 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
+﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Apply.GetApplicationView;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
 {
@@ -33,10 +28,11 @@ namespace SFA.DAS.FAA.Application.UnitTests.Queries.Applications
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            result.Should().BeEquivalentTo(apiResponse, options=> options.Excluding(c=>c.ApplicationStatus));
+            result.Should().BeEquivalentTo(apiResponse, options => options.Excluding(c => c.ApplicationStatus));
             result.ApplicationStatus.Should().Be(ApplicationStatus.Withdrawn);
             result.WithdrawnDate.Should().Be(apiResponse.WithdrawnDate);
             result.MigrationDate.Should().Be(apiResponse.MigrationDate);
+            result.ApprenticeshipType.Should().Be(apiResponse.ApprenticeshipType);
         }
     }
 }
