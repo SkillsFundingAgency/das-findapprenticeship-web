@@ -19,29 +19,44 @@
             <p class="govuk-!-margin-bottom-0">Submitted on @Model.SubmittedDate</p>
             <p class="govuk-!-margin-bottom-0">@Model.ClosesOnDate</p>
         </div>
-        <p>Withdraw this application if:</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>you're no longer interested in this apprenticeship</li>
-            <li>you need to change something in your application</li>
-        </ul>
-        
-        @if (Model.ClosesToday)
+        @if (Model.IsClosed)
         {
-            <div class="govuk-inset-text">
-                You can submit another application after withdrawing. Submit your new application before this apprenticeship closes today at 11:59pm.
-            </div>    
-        }
-        @if (Model.ClosesTomorrow)
-        {
-            <div class="govuk-inset-text">
-                You can submit another application after withdrawing. Submit your new application before this apprenticeship closes tomorrow at 11:59pm.
-            </div>    
+            <p class="govuk-body">
+                Withdraw this application if you're no longer interested in this apprenticeship.
+            </p>
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-visually-hidden">Warning</span>
+                    This vacancy has closed. After withdrawing, you won't be able to submit another application for this apprenticeship.
+                </strong>
+            </div>
         }
         else
         {
-            <div class="govuk-inset-text">
-                You can submit another application after withdrawing. Submit your new application before this apprenticeship @(Model.ClosesOnDate!.Replace("C","c")).
-            </div>    
+            <p class="govuk-body">Withdraw this application if:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>you're no longer interested in this apprenticeship</li>
+                <li>you need to change something in your application</li>
+            </ul>
+            @if (Model.ClosesToday)
+            {
+                <div class="govuk-inset-text">
+                    You can submit another application after withdrawing. Submit your new application before this apprenticeship closes today at 11:59pm.
+                </div>    
+            }
+            @if (Model.ClosesTomorrow)
+            {
+                <div class="govuk-inset-text">
+                    You can submit another application after withdrawing. Submit your new application before this apprenticeship closes tomorrow at 11:59pm.
+                </div>    
+            }
+            else
+            {
+                <div class="govuk-inset-text">
+                    You can submit another application after withdrawing. Submit your new application before this apprenticeship @(Model.ClosesOnDate!.Replace("C","c")).
+                </div>    
+            }
         }
         
         <form class="form" method="post">
