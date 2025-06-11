@@ -40,8 +40,15 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [HttpPost]
         public async Task<IActionResult> Post([FromRoute] Guid applicationId, WhatInterestsYouViewModel model)
         {
+            var autoSaving = model.AutoSave is true;
             if (!ModelState.IsValid)
             {
+                if (autoSaving)
+                {
+                    Response.StatusCode = StatusCodes.Status400BadRequest;
+                    return new JsonResult(null);
+                }
+                
                 var result = await mediator.Send(new GetWhatInterestsYouQuery
                 {
                     ApplicationId = applicationId,
@@ -56,7 +63,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     AnswerText = result.AnswerText,
                     IsSectionCompleted = result.IsSectionCompleted
                 };
-
+                
                 return View(ViewName, viewModel);
             }
 
@@ -68,7 +75,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 IsComplete = model.IsSectionCompleted ?? false
             });
 
-            return RedirectToRoute(RouteNames.Apply, new { applicationId });
+            return autoSaving
+                ? new JsonResult(StatusCodes.Status200OK)
+                : RedirectToRoute(RouteNames.Apply, new { applicationId });
         }
     }
 }

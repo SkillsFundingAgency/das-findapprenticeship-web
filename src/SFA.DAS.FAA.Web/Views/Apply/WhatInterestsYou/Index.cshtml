@@ -1,12 +1,31 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+
 @model SFA.DAS.FAA.Web.Models.Apply.WhatInterestsYouViewModel
+
 @{
     ViewData["Title"] = "What interests you about this apprenticeship? - Find an apprenticeship - GOV.UK";
 }
 
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
+}
+
+@section AfterJSScripts
+{
+    <script src="~/js/das-autosave-form.js" no-cdn asp-append-version="true"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const formEl = document.querySelector("form[data-autosave]");
+            dasAutosaveForm(formEl, {
+                url: "what-interests-you",
+                intervalInSeconds: 300,
+                beforeSubmit: formData => {
+                    formData.append("AutoSave", "true")
+                    formData.append('IsSectionCompleted', 'true')
+                }
+            })
+        });
+    </script>
 }
 
 <div class="govuk-grid-row">
@@ -23,8 +42,7 @@
             <li>hobbies you have that are relevant to this apprenticeship</li>
         </ul>
 
-        <form class="form" method="post">
-
+        <form class="form" method="post" data-autosave>
             <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="300">
                 <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="AnswerText" error-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" for="AnswerText">
