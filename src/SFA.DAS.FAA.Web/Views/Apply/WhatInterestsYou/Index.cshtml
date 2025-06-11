@@ -12,15 +12,15 @@
 
 @section AfterJSScripts
 {
-    <script src="~/js/das-autosave-form.js" no-cdn asp-append-version="true"></script>
-    <script>
+    <script type="module">
+        import dasAutosaveForm from "/js/das-autosave-form.mjs"
         document.addEventListener("DOMContentLoaded", () => {
-            const formEl = document.querySelector("form[data-autosave]");
+            const formEl = document.querySelector("form[data-autosave]")
             dasAutosaveForm(formEl, {
                 url: "what-interests-you",
                 beforeSubmit: formData => formData.append("AutoSave", "true")
             })
-        });
+        })
     </script>
 }
 
