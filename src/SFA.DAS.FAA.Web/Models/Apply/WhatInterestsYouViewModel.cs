@@ -13,6 +13,6 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         [DataType(DataType.MultilineText)]
         public string? AnswerText { get; set; }
         public bool? IsSectionCompleted { get; set; }
-        public bool? AutoSave { get; set; }
+        public bool AutoSave { get; set; }
     }
 }

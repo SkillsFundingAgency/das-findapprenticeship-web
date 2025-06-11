@@ -24,6 +24,8 @@
                 headers: { "RequestVerificationToken": token },
                 body: formData
             })
-        } catch {}
+        } catch (error) {
+            console.error("dasAutosave: failed to save form", error)
+        }
     }
 }
