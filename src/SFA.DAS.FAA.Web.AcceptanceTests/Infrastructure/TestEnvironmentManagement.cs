@@ -31,12 +31,21 @@ public sealed class TestEnvironmentManagement
         _context = context;
         var environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
         _outerApi = Environment.GetEnvironmentVariable("OUTERAPI");
-        
-        _environment = !string.IsNullOrEmpty(environmentName) ? $"https://{DomainExtensions.GetDomain(environmentName)}" : null;
+
+        if (!string.IsNullOrEmpty(environmentName))
+        {
+            _environment = $"https://{DomainExtensions.GetDomain(environmentName)}";
+            _context.Set(environmentName, ContextKeys.EnvironmentName);
+        }
+        else
+        {
+            _environment = null;
+            _context.Set("Local", ContextKeys.EnvironmentName);
+        }
         Console.WriteLine($"Environment: {_environment}");
     }
 
-    [BeforeScenario("WireMockServer")]
+    [BeforeScenario("WireMockServer", Order = 0)]
     public void StartWebApp()
     {
         if (!string.IsNullOrEmpty(_environment))
@@ -54,14 +63,46 @@ public sealed class TestEnvironmentManagement
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
     }
     
-    [BeforeScenario("RunOnEnvironment")]
+    [BeforeScenario("RunOnEnvironment", Order = 1)]
     public void SetupRunOnEnvironment()
     {
         if (string.IsNullOrEmpty(_environment))
         {
             return;
         }
-        
+        _context.Get<string>(ContextKeys.EnvironmentName);
+        _context.Set(_environment, ContextKeys.CurrentEnvironment);
+
+        _testHttpClient = new AcceptanceTestHttpClient(_environment);
+
+        _context.Set<TestServer>(null!, ContextKeys.TestServer);
+        _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
+    }
+
+    [BeforeScenario("RunOnEnvironment:([A-Za-z]+)", Order = 1)]
+    public void SetupRunOnSpecificEnvironment(string requiredEnvironment)
+    {
+        if (string.IsNullOrEmpty(_environment))
+        {
+            return;
+        }
+        var environmentName = _context.Get<string>(ContextKeys.EnvironmentName);
+        Console.WriteLine($"Scenario requires environment: {requiredEnvironment}. Current configured environment: {environmentName ?? "N/A"}");
+
+        // Normalize the required environment for comparison (e.g., "AT" vs "at")
+        string normalizedRequiredEnv = requiredEnvironment.Trim().ToUpperInvariant();
+        string normalizedCurrentEnv = environmentName?.Trim().ToUpperInvariant() ?? "LOCAL";
+
+        if (!normalizedCurrentEnv.Equals(normalizedRequiredEnv, StringComparison.OrdinalIgnoreCase))
+        {
+            var skipReason = $"Skipping scenario: Requires environment '{requiredEnvironment}', but currently running on '{environmentName ?? "Local"}'.";
+            Console.WriteLine(skipReason);
+
+            throw new PendingStepException(skipReason);
+        }
+
+        _context.Set(_environment, ContextKeys.CurrentEnvironment);
+
         _testHttpClient = new AcceptanceTestHttpClient(_environment);
 
         _context.Set<TestServer>(null!, ContextKeys.TestServer);
@@ -113,33 +154,43 @@ public sealed class TestEnvironmentManagement
         _context.Set(Constants.ExistingApplicationId, ContextKeys.ApplicationId);
     }
 
-    [BeforeScenario("AuthenticatedUser")]
+    [BeforeScenario("AuthenticatedUser", Order = 2)]
     public async Task AuthenticatedUser()
     {
         var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
-        var formData = new Dictionary<string, string>
-        {
-            { "Id", MockServer.Constants.CandidateIdWithApplications },
-            { "Email", "test@test.com" },
-            { "MobilePhone", "12345 67890" }
-        };
+        Dictionary<string, string> formData;
 
-        await client.PostAsync("/account-details", formData);
-    }
-    
-    
-    [BeforeScenario("AuthenticatedUserATEnvironment")]
-    public async Task AuthenticatedUserATEnvironment()
-    {
-        var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
+        bool isRunOnEnvironmentPresent = _context.ScenarioInfo.Tags
+            .Any(t => t.Equals("RunOnEnvironment", StringComparison.OrdinalIgnoreCase));
 
-        var formData = new Dictionary<string, string>
+        string environmentName = "Local";
+        if(_context.TryGetValue(ContextKeys.EnvironmentName, out string storedEnvironmentName))
         {
-            { "Id", MockServer.Constants.CandidateOnAT },
-            { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" },
-            { "MobilePhone", "12345 67890" }
-        };
+            environmentName = storedEnvironmentName;
+        }
+
+        if (isRunOnEnvironmentPresent && environmentName.Equals("AT", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("AuthenticatedUser: Using AT environment-specific credentials.");
+            formData = new Dictionary<string, string>
+            {
+                { "Id", MockServer.Constants.CandidateOnAT },
+                { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" },
+                { "MobilePhone", "12345 67890" }
+            };
+        }
+        else
+        {
+            Console.WriteLine($"AuthenticatedUser: Using default credentials (Environment: {environmentName}).");
+            // Default user data for local/development or when RunOnEnvironment is not applied
+            formData = new Dictionary<string, string>
+            {
+                { "Id", MockServer.Constants.CandidateIdWithApplications },
+                { "Email", "test@test.com" },
+                { "MobilePhone", "12345 67890" }
+            };
+        }
 
         await client.PostAsync("/account-details", formData);
     }

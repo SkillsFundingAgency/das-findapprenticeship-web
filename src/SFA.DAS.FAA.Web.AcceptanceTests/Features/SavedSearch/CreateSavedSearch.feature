@@ -12,6 +12,7 @@ Feature: Create Saved Searches
     And the page content includes the following: Sign in to create an alert for this search
     
   @AuthenticatedUser
+  @RunOnEnvironment
   @WireMockServer
   Scenario: Can save a search
     When I navigate to the following url: /apprenticeships?location=manchester
@@ -20,6 +21,7 @@ Feature: Create Saved Searches
     And the page content includes the following: Create an alert for this search</button>
   
   @AuthenticatedUser
+  @RunOnEnvironment
   @WireMockServer
   Scenario: Save a search
     When I navigate to the following url: /apprenticeships?location=manchester

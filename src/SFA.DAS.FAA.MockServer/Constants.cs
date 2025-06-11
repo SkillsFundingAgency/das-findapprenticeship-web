@@ -12,5 +12,6 @@
         public const string CandidateIdIncomplete = "fbd1f8fd-2ad7-4658-a78a-a191726dccad";
 
         public const string CandidateOnAT = "C6BDD248-0B05-4877-BB1D-28183179FFF5";
+        public const string SavedSearchOnAT = "0ed701e0-b393-4731-a979-b635569e7b81";
     }
 }
