@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
+﻿using SFA.DAS.FAA.Domain.Enums;
+
+namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
 {
     public class GetApplicationViewApiResponse
     {
@@ -15,6 +17,7 @@
         public string ApplicationStatus { get; set; }
         public DateTime? WithdrawnDate { get; set; }
         public DateTime? MigrationDate { get; set; }
+        public ApprenticeshipTypes? ApprenticeshipType { get; set; } = ApprenticeshipTypes.Standard;
 
         public record VacancyDetailsSection
         {

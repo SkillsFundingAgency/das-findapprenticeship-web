@@ -30,6 +30,7 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
             public DateTime? SubmittedDate { get; set; }
             public DateTime ClosingDate { get; set; }
             public ApplicationStatus Status { get; set; }
+            public ApprenticeshipTypes ApprenticeshipType { get; set; } = ApprenticeshipTypes.Standard;
 
             public static implicit operator Application(GetAccountDeletionApplicationsToWithdrawApiResponse.SubmittedApplication source)
             {
@@ -50,6 +51,7 @@ namespace SFA.DAS.FAA.Application.Queries.User.GetAccountDeletionApplicationsToW
                     ],
                     EmployerLocationOption = source.EmployerLocationOption,
                     EmploymentLocationInformation = source.EmploymentLocationInformation,
+                    ApprenticeshipType = source.ApprenticeshipType
                 };
             }
         }

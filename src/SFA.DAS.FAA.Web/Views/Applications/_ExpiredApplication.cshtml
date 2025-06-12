@@ -1,7 +1,8 @@
 ﻿@model SFA.DAS.FAA.Web.Models.Applications.IndexViewModel.Application
 <li class="das-search-results__list-item">
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1 faa-flex-title">
         @Model.Title
+        <govuk-tag-foundation asp-show="@Model.ShowFoundationTag" />
     </h2>
     <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerName</p>
     <p class="govuk-hint">@Model.EmploymentWorkLocation</p>
