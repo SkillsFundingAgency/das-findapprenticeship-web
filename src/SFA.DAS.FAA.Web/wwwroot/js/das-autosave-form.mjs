@@ -22,7 +22,7 @@ function getConfig(options) {
 
     const config = Object.assign({}, defaults, options)
     config.intervalInSeconds = Number(config.intervalInSeconds)
-    config.isValid = () => !Number.isNaN(config.intervalInSeconds)
+    config.isValid = !Number.isNaN(config.intervalInSeconds)
         && config.intervalInSeconds > 0
         && config.url?.length > 0
         && config.method?.length > 0
@@ -36,7 +36,7 @@ export default function (formEl, options) {
     }
     
     const config = getConfig(options)
-    if (!config.isValid()) {
+    if (!config.isValid) {
         console.error(`dasAutosave: options are incomplete`)
         return
     }
