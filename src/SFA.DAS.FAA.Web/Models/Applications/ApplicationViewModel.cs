@@ -26,6 +26,8 @@ public class ApplicationViewModel
             ApplicationStatus = source.ApplicationStatus,
             WithdrawnDate = source.WithdrawnDate,
             MigrationDate = source.MigrationDate,
+            ApprenticeshipType = source.ApprenticeshipType,
+
         };
     }
 
@@ -44,6 +46,9 @@ public class ApplicationViewModel
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
     public AboutYouSection AboutYou { get; init; } = new();
     public VacancyDetailsSection VacancyDetails { get; init; } = new();
+
+    private ApprenticeshipTypes? ApprenticeshipType { get; init; } = ApprenticeshipTypes.Standard;
+    public bool ShowFoundationTag => ApprenticeshipType == ApprenticeshipTypes.Foundation;
 
     public record VacancyDetailsSection
     {

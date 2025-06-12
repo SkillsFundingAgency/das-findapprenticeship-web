@@ -18,6 +18,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
         public ApplicationStatus ApplicationStatus { get; set; }
         public DateTime? WithdrawnDate { get; set; }
         public DateTime? MigrationDate { get; set; }
+        public ApprenticeshipTypes? ApprenticeshipType { get; init; } = ApprenticeshipTypes.Standard;
 
         public static implicit operator GetApplicationViewQueryResult(GetApplicationViewApiResponse source)
         {
@@ -37,6 +38,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationView
                 ApplicationStatus = applicationStatus,
                 WithdrawnDate = source.WithdrawnDate,
                 MigrationDate = source.MigrationDate,
+                ApprenticeshipType = source.ApprenticeshipType,
             };
         }
 

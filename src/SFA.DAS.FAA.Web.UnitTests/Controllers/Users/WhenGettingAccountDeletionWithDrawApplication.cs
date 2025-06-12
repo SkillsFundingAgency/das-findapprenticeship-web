@@ -54,6 +54,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users
                 .Excluding(x => x.Addresses)
                 .Excluding(x => x.EmployerLocationOption)
                 .Excluding(x => x.EmploymentLocationInformation)
+                .Excluding(x => x.ApprenticeshipType)
             );
         }
 
