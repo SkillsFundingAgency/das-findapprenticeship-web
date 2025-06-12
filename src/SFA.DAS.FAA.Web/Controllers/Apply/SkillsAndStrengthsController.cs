@@ -36,6 +36,12 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
     {
         if (!ModelState.IsValid)
         {
+            if (viewModel.AutoSave)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                return new JsonResult(null);
+            }
+            
             var expectedResult = await mediator.Send(new GetExpectedSkillsAndStrengthsQuery
             {
                 ApplicationId = applicationId,
@@ -51,11 +57,13 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
             CandidateId = (Guid)User.Claims.CandidateId()!,
             ApplicationId = viewModel.ApplicationId,
             SkillsAndStrengths = viewModel.SkillsAndStrengths,
-            SkillsAndStrengthsSectionStatus = viewModel.IsSectionComplete.Value ? SectionStatus.Completed : SectionStatus.Incomplete
+            SkillsAndStrengthsSectionStatus = viewModel.IsSectionComplete is true ? SectionStatus.Completed : SectionStatus.Incomplete
         };
 
         await mediator.Send(updateCommand);
-
-        return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
+        
+        return viewModel.AutoSave
+            ? new JsonResult(StatusCodes.Status200OK)
+            : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
     }
 }

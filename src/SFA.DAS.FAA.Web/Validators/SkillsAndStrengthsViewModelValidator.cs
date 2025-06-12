@@ -12,8 +12,12 @@ public class SkillsAndStrengthsViewModelValidator : AbstractValidator<SkillsAndS
     private const string IsSectionCompleteNotSelectedErrorMessage = "Select if you have finished this section";
     public SkillsAndStrengthsViewModelValidator()
     {
-        RuleFor(x => x.IsSectionComplete)
-            .NotNull().WithMessage(IsSectionCompleteNotSelectedErrorMessage);
+        When(x => x.AutoSave is false, () =>
+            {
+                RuleFor(x => x.IsSectionComplete)
+                    .NotNull().WithMessage(IsSectionCompleteNotSelectedErrorMessage);
+            }
+        );
 
         RuleFor(x => x.SkillsAndStrengths).Cascade(CascadeMode.Stop)
             .NotEmpty()

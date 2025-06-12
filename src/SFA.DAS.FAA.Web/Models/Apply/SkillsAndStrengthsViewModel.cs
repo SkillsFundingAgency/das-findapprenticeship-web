@@ -14,6 +14,7 @@ public class SkillsAndStrengthsViewModel
 
     public string? Employer { get; set; }
     public List<string>? ExpectedSkillsAndStrengths { get; set; }
+    public bool AutoSave { get; set; }
 
     public SkillsAndStrengthsViewModel(GetExpectedSkillsAndStrengthsQueryResult expectedSkillsAndStrengths, Guid applicationId)
     {

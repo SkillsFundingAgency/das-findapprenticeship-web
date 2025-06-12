@@ -47,5 +47,36 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WhatInterestsYou
             actual?.RouteName.Should().Be(RouteNames.Apply);
             actual?.RouteValues.Should().NotBeEmpty();
         }
+        
+        [Test, MoqAutoData]
+        public async Task And_Autosaving_JsonResult_Is_Returned(
+            Guid candidateId,
+            Guid applicationId,
+            WhatInterestsYouViewModel request,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] WhatInterestsYouController controller)
+        {
+            //arrange
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                        { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
+                }
+            };
+
+            mediator
+                .Setup(x => x.Send(It.IsAny<UpdateWhatInterestsYouCommand>(), It.IsAny<CancellationToken>()))
+                .Returns(() => Task.CompletedTask);
+            
+            request.AutoSave = true;
+
+            // act
+            var actual = await controller.Post(applicationId, request) as JsonResult;
+
+            // assert
+            actual.Should().NotBeNull();
+        }
     }
 }
