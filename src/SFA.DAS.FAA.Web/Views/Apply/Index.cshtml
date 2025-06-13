@@ -54,9 +54,10 @@
             </div>
         }
 
-
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Apply for @Model.VacancyTitle</h1>
-        <p class="govuk-body-l faa-vacancy__location govuk-!-margin-bottom-4">@Model.EmployerName</p>
+        <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-4" />
+        <h1 class="govuk-heading-l">Apply for @Model.VacancyTitle</h1>
+        <p class="govuk-body-l govuk-!-margin-bottom-0">@Model.EmployerName</p>
+        <p class="govuk-body-l faa-vacancy__location govuk-!-margin-bottom-4">@Model.WorkLocation</p>
         <p class="govuk-body">@Model.ClosingDate</p>
         <p class="govuk-body">
             <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="govuk-link"
@@ -119,7 +120,7 @@
 
         <h2 class="govuk-heading-m govuk-!-margin-top-8">Application questions</h2>
         <ul class="govuk-task-list">
-            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <li asp-hide="@Model.ApprenticeshipType.IsFoundation()" class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
                     <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths"
                         asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
