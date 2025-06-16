@@ -42,6 +42,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         {
             if (!ModelState.IsValid)
             {
+                if (model.AutoSave)
+                {
+                    Response.StatusCode = StatusCodes.Status400BadRequest;
+                    return new JsonResult(null);
+                }
+                
                 var result = await mediator.Send(new GetWhatInterestsYouQuery
                 {
                     ApplicationId = applicationId,
@@ -56,7 +62,7 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                     AnswerText = result.AnswerText,
                     IsSectionCompleted = result.IsSectionCompleted
                 };
-
+                
                 return View(ViewName, viewModel);
             }
 
@@ -68,7 +74,9 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
                 IsComplete = model.IsSectionCompleted ?? false
             });
 
-            return RedirectToRoute(RouteNames.Apply, new { applicationId });
+            return model.AutoSave
+                ? new JsonResult(StatusCodes.Status200OK)
+                : RedirectToRoute(RouteNames.Apply, new { applicationId });
         }
     }
 }

@@ -9,9 +9,13 @@ namespace SFA.DAS.FAA.Web.Validators
     {
         public WhatInterestsYouViewModelValidator()
         {
-            RuleFor(x => x.IsSectionCompleted)
-                .NotEmpty()
-                .WithMessage("Select if you have finished this section");
+            When(x => x.AutoSave is false, () =>
+                {
+                    RuleFor(x => x.IsSectionCompleted)
+                        .NotEmpty()
+                        .WithMessage("Select if you have finished this section");
+                }
+            );
 
             RuleFor(x => x.AnswerText)
                 .Must((model, s) => !string.IsNullOrWhiteSpace(model.AnswerText))
