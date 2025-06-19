@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Moq;
+using NUnit.Framework;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
@@ -157,33 +158,69 @@ public sealed class TestEnvironmentManagement
     [BeforeScenario("AuthenticatedUser", Order = 2)]
     public async Task AuthenticatedUser()
     {
+        ////var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
+
+        ////Dictionary<string, string> formData;
+
+        ////bool isRunOnEnvironmentPresent = _context.ScenarioInfo.Tags
+        ////    .Any(t => t.Equals("RunOnEnvironment", StringComparison.OrdinalIgnoreCase));
+
+        ////string environmentName = "Local";
+        ////if(_context.TryGetValue(ContextKeys.EnvironmentName, out string storedEnvironmentName))
+        ////{
+        ////    environmentName = storedEnvironmentName;
+        ////}
+
+        ////if (isRunOnEnvironmentPresent && environmentName.Equals("AT", StringComparison.OrdinalIgnoreCase))
+        ////{
+        ////    Console.WriteLine("AuthenticatedUser: Using AT environment-specific credentials.");
+        ////    formData = new Dictionary<string, string>
+        ////    {
+        ////        { "Id", MockServer.Constants.CandidateOnAT },
+        ////        { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" },
+        ////        { "MobilePhone", "12345 67890" }
+        ////    };
+        ////}
+        ////else
+        ////{
+        ////    Console.WriteLine($"AuthenticatedUser: Using default credentials (Environment: {environmentName}).");
+        ////    // Default user data for local/development or when RunOnEnvironment is not applied
+        ////    formData = new Dictionary<string, string>
+        ////    {
+        ////        { "Id", MockServer.Constants.CandidateIdWithApplications },
+        ////        { "Email", "test@test.com" },
+        ////        { "MobilePhone", "12345 67890" }
+        ////    };
+        ////}
+
+        ////await client.PostAsync("/account-details", formData);
+
         var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
+        // Determine user data based on environment
         Dictionary<string, string> formData;
-
         bool isRunOnEnvironmentPresent = _context.ScenarioInfo.Tags
             .Any(t => t.Equals("RunOnEnvironment", StringComparison.OrdinalIgnoreCase));
 
         string environmentName = "Local";
-        if(_context.TryGetValue(ContextKeys.EnvironmentName, out string storedEnvironmentName))
+        if (_context.TryGetValue(ContextKeys.EnvironmentName, out string storedEnvironmentName))
         {
             environmentName = storedEnvironmentName;
         }
 
         if (isRunOnEnvironmentPresent && environmentName.Equals("AT", StringComparison.OrdinalIgnoreCase))
         {
-            Console.WriteLine("AuthenticatedUser: Using AT environment-specific credentials.");
+            Console.WriteLine("AuthenticatedUser: Using AT environment-specific credentials for pre-login setup.");
             formData = new Dictionary<string, string>
             {
                 { "Id", MockServer.Constants.CandidateOnAT },
-                { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" },
+                { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" }, // Ensure this email is a valid test user in AT
                 { "MobilePhone", "12345 67890" }
             };
         }
         else
         {
-            Console.WriteLine($"AuthenticatedUser: Using default credentials (Environment: {environmentName}).");
-            // Default user data for local/development or when RunOnEnvironment is not applied
+            Console.WriteLine($"AuthenticatedUser: Using default credentials (Environment: {environmentName}) for pre-login setup.");
             formData = new Dictionary<string, string>
             {
                 { "Id", MockServer.Constants.CandidateIdWithApplications },
@@ -192,7 +229,64 @@ public sealed class TestEnvironmentManagement
             };
         }
 
-        await client.PostAsync("/account-details", formData);
+        // --- Step 1: Trigger the generation of the signInValue (your existing POST to /account-details) ---
+        // The HAR file implies your previous POST to /account-details is the *first* step,
+        // which then redirects to /signin with the signInValue.
+        Console.WriteLine($"DEBUG: Performing initial POST to /account-details to trigger sign-in flow.");
+        HttpResponseMessage initialAccountDetailsResponse = await client.PostAsync("/account-details", formData);
+
+        if (initialAccountDetailsResponse.StatusCode != System.Net.HttpStatusCode.Found)
+        {
+            Console.WriteLine($"ERROR: Expected 302 Found after POST /account-details, but got {initialAccountDetailsResponse.StatusCode}");
+            string content = await initialAccountDetailsResponse.Content.ReadAsStringAsync();
+            Console.WriteLine($"Full Response Content (first 1000 chars): {content.Substring(0, Math.Min(content.Length, 1000))}"); // Log more content
+
+            // **IMPORTANT: Do not Assert.Fail immediately here during debugging.**
+            // This allows you to inspect the content before the test aborts.
+            // For now, let's keep it to allow further inspection.
+            // Assert.Fail($"Authentication failed: Did not get redirect after POST to /account-details. Status: {initialAccountDetailsResponse.StatusCode}");
+        }
+        ////Console.WriteLine($"DEBUG: Performing initial POST to /account-details to trigger sign-in flow.");
+        ////HttpResponseMessage initialAccountDetailsResponse = await client.PostAsync("/account-details", formData);
+
+        ////// Expect a redirect (Status 302) to the sign-in URL with the signInValue
+        ////if (initialAccountDetailsResponse.StatusCode != System.Net.HttpStatusCode.Found)
+        ////{
+        ////    Console.WriteLine($"ERROR: Expected 302 Found after POST /account-details, but got {initialAccountDetailsResponse.StatusCode}");
+        ////    string content = await initialAccountDetailsResponse.Content.ReadAsStringAsync();
+        ////    Console.WriteLine($"Response Content: {content.Substring(0, Math.Min(content.Length, 500))}");
+        ////    Assert.Fail($"Authentication failed: Did not get redirect after POST to /account-details. Status: {initialAccountDetailsResponse.StatusCode}");
+        ////}
+
+        // Get the Location header to find the signInValue URL
+        string signInRedirectUrl = initialAccountDetailsResponse.Headers.Location?.ToString();
+        if (string.IsNullOrEmpty(signInRedirectUrl))
+        {
+            Assert.Fail("Authentication failed: Redirect URL (Location header) missing after POST to /account-details.");
+        }
+        Console.WriteLine($"DEBUG: Redirected to sign-in URL: {signInRedirectUrl}");
+
+        // --- Step 2: Perform the GET request to the sign-in URL to complete authentication ---
+        Console.WriteLine($"DEBUG: Performing GET request to sign-in URL to complete authentication.");
+        HttpResponseMessage finalAuthResponse = await client.GetAsync(signInRedirectUrl);
+
+        // After this GET, the authentication cookies (like SFA.Apprenticeships.StubAuthCookie)
+        // should be set in the HttpClient's CookieContainer by AcceptanceTestHttpClient.
+        // The HAR shows this GET also results in a 200 OK to /account-details, meaning
+        // the client likely followed the redirect automatically if AllowAutoRedirect is true.
+        // If AllowAutoRedirect is false, you'd need another GET to the final /account-details URL.
+
+        if (finalAuthResponse.IsSuccessStatusCode)
+        {
+            Console.WriteLine($"DEBUG: Successfully completed sign-in GET. Status: {finalAuthResponse.StatusCode}");
+            // At this point, the user should be authenticated due to the cookies received.
+        }
+        else
+        {
+            string errorContent = await finalAuthResponse.Content.ReadAsStringAsync();
+            Console.WriteLine($"ERROR: Sign-in GET failed. Status: {finalAuthResponse.StatusCode}. Response: {errorContent.Substring(0, Math.Min(errorContent.Length, 500))}");
+            Assert.Fail($"Authentication failed: Sign-in GET to {signInRedirectUrl} failed. Status: {finalAuthResponse.StatusCode}");
+        }
     }
     
     [BeforeScenario("AuthenticatedUserWithIncompleteSetup")]
