@@ -11,7 +11,6 @@ Feature: Manage Saved Searches
     When I navigate to the following url: /saved-searches
     Then the page is successfully returned
     And the page content includes the following: every Monday
-    And the page content includes the following: All apprenticeships in Manchester, Greater Manchester
 
   @AuthenticatedUser
   @WireMockServer

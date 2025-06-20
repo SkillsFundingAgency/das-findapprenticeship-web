@@ -24,10 +24,13 @@ Feature: Create Saved Searches
   @AuthenticatedUser
   @WireMockServer
   @RunOnEnvironment
-  Scenario: Save a search
+  Scenario: Save a search and delete
     When I navigate to the following url: /apprenticeships?sort=DistanceAsc&location=Manchester%2C+Greater+Manchester&distance=10
     And I save my search
     When I navigate to the following url: /saved-searches
     Then the page is successfully returned
     And the page content includes the following: All apprenticeships in Manchester, Greater Manchester
-    
+    And I go to delete saved search page
+    And I delete the saved search
+    Then I am redirected to the following url: /saved-searches
+    And the page redirect content includes the following: Search alert ^for All apprenticeships in Manchester, Greater Manchester^ deleted
