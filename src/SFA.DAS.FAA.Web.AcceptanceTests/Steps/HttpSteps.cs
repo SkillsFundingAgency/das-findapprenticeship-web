@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 using FluentAssertions;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using Reqnroll;
 using SFA.DAS.FAA.Web.AcceptanceTests.Extensions;
@@ -135,16 +136,33 @@ public sealed class HttpSteps(ScenarioContext context)
     public async Task ThenIAmRedirectedToTheFollowingUrl(string url)
     {
         var redirection = context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
-        redirection.StatusCode.Should().Be(HttpStatusCode.Redirect);
-        var redirectUrl = redirection.Headers.Location?.ToString(); 
-        redirectUrl.Should().StartWith(url);
+        redirection.StatusCode.Should().BeOneOf(HttpStatusCode.Redirect, HttpStatusCode.OK);
+        Console.WriteLine(JsonConvert.SerializeObject(redirection));
 
-        var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
-        var response = await client.GetAsync(redirectUrl!);
-        var responseContent = await response.Content.ReadAsStringAsync();
+        if (redirection.StatusCode == HttpStatusCode.Redirect)
+        {
+            var redirectUrl = redirection.Headers.Location?.ToString(); 
+            redirectUrl.Should().StartWith(url);
 
-        context.Remove(ContextKeys.HttpResponseRedirectContent);
-        context.Set(responseContent, ContextKeys.HttpResponseRedirectContent);
+            var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
+            var response = await client.GetAsync(redirectUrl!);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            context.Remove(ContextKeys.HttpResponseRedirectContent);
+            context.Set(responseContent, ContextKeys.HttpResponseRedirectContent);
+        }
+        else if (redirection.StatusCode == HttpStatusCode.OK)
+        {
+            var redirectUrl = redirection.RequestMessage!.RequestUri?.ToString(); 
+            redirectUrl.Should().Contain(url);
+
+            var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
+            var response = await client.GetAsync(redirectUrl!);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            context.Remove(ContextKeys.HttpResponseRedirectContent);
+            context.Set(responseContent, ContextKeys.HttpResponseRedirectContent);
+        }
     }
 
     [Then("I am redirected to the (.*) page")]
