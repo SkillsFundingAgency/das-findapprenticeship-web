@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -118,12 +118,26 @@ public sealed class TestEnvironmentManagement
     {
         var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
-        var formData = new Dictionary<string, string>
+        var formData = new Dictionary<string, string>();
+        if (!string.IsNullOrEmpty(_environment))
         {
-            { "Id", MockServer.Constants.CandidateIdWithApplications },
-            { "Email", "test@test.com" },
-            { "MobilePhone", "12345 67890" }
-        };
+            formData = new Dictionary<string, string>
+            {
+                { "Id", MockServer.Constants.CandidateOnAT },
+                { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" },
+                { "MobilePhone", "12345 67890" }
+            };
+        }
+        else
+        {
+            formData = new Dictionary<string, string>
+            {
+                { "Id", MockServer.Constants.CandidateIdWithApplications },
+                { "Email", "test@test.com" },
+                { "MobilePhone", "12345 67890" }
+            };    
+        }
+        
 
         await client.PostAsync("/account-details", formData);
     }

@@ -6,10 +6,12 @@ Feature: Manage Saved Searches
 
   @AuthenticatedUser
   @WireMockServer
+  @RunOnEnvironment
   Scenario: View my saved searches
     When I navigate to the following url: /saved-searches
     Then the page is successfully returned
-    And the page content includes the following: 2 apprenticeship levels in all of England
+    And the page content includes the following: every Monday
+    And the page content includes the following: All apprenticeships in Manchester, Greater Manchester
 
   @AuthenticatedUser
   @WireMockServer

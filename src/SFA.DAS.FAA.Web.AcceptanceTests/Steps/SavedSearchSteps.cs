@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using System.Web;
 using NUnit.Framework;
+using Reqnroll;
 using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
-using TechTalk.SpecFlow;
 
 namespace SFA.DAS.FAA.Web.AcceptanceTests.Steps;
 
@@ -18,12 +18,9 @@ public sealed class SavedSearchSteps(ScenarioContext context)
         {
             var value = HttpUtility.HtmlDecode(data.Groups["val"].Value);
             var client = context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
-            var formData = new MultipartFormDataContent()
-            {
-                { new StringContent(value), "Data" },
-            };
+            var token = AcceptanceTestHttpClient.ExtractRequestVerificationToken(content);
             
-            var response = await client.PostAsync("apprenticeships/save-search", new Dictionary<string, string>{{"Data", value}});
+            var response = await client.PostAsync("apprenticeships/save-search", new Dictionary<string, string>{{"Data", value},{"__RequestVerificationToken",token}});
             var responseContent = await response.Content.ReadAsStringAsync();
             context.ClearResponseContext();
             context.Set(response, ContextKeys.HttpResponse);
@@ -33,4 +30,5 @@ public sealed class SavedSearchSteps(ScenarioContext context)
             Assert.Fail("The response does not contain the required encoded search data");
         }
     }
+    
 }
