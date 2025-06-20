@@ -52,6 +52,7 @@ public sealed class TestEnvironmentManagement
 
         _context.Set(_server, ContextKeys.TestServer);
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
+        _context.Set("", ContextKeys.Environment);
     }
     
     [BeforeScenario("RunOnEnvironment")]
@@ -66,6 +67,7 @@ public sealed class TestEnvironmentManagement
 
         _context.Set<TestServer>(null!, ContextKeys.TestServer);
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
+        _context.Set(_environment, ContextKeys.Environment);
     }
 
     [BeforeScenario("ApiContract")]

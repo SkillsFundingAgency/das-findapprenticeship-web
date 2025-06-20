@@ -10,4 +10,6 @@ public static class ContextKeys
     public const string ApplicationId = nameof(ApplicationId);
     public const string VacancyReference = nameof(VacancyReference);
     public const string ApiSpecUrl = nameof(ApiSpecUrl);
+    public const string SavedSearchId = nameof(SavedSearchId);
+    public const string Environment = nameof(Environment);
 }
