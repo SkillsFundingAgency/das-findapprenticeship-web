@@ -137,7 +137,6 @@ public sealed class HttpSteps(ScenarioContext context)
     {
         var redirection = context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
         redirection.StatusCode.Should().BeOneOf(HttpStatusCode.Redirect, HttpStatusCode.OK);
-        Console.WriteLine(JsonConvert.SerializeObject(redirection));
 
         if (redirection.StatusCode == HttpStatusCode.Redirect)
         {
