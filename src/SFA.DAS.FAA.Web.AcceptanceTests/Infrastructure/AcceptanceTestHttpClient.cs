@@ -57,9 +57,13 @@ public class AcceptanceTestHttpClient(string baseAddress) : ITestHttpClient
         var getResponse = await GetAsync(url);
             
         var html = await getResponse.Content.ReadAsStringAsync();
-        var token = ExtractRequestVerificationToken(html);
-        content.Add("__RequestVerificationToken", token);
-            
+
+        if (!content.ContainsKey("__RequestVerificationToken"))
+        {
+            var token = ExtractRequestVerificationToken(html);
+            content.Add("__RequestVerificationToken", token);
+        }
+
         var response = await _httpClient.SendAsync(BuildRequest(url, HttpMethod.Post, new FormUrlEncodedContent(content)));
         UpdateCookies(url, response);
         return response;
@@ -69,7 +73,7 @@ public class AcceptanceTestHttpClient(string baseAddress) : ITestHttpClient
     {
     }
         
-    private static string ExtractRequestVerificationToken(string html)
+    public static string ExtractRequestVerificationToken(string html)
     {
         const string tokenFieldName = "\"__RequestVerificationToken\" type=\"hidden\" value=\"";
         var startIndex = html.IndexOf($"{tokenFieldName}", StringComparison.CurrentCultureIgnoreCase) + tokenFieldName.Length;
