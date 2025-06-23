@@ -1,21 +1,15 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.FAA.Web.Models.Applications;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
@@ -45,10 +39,9 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
                     c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(queryResult);
 
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new(CustomClaims.CandidateId, candidateId.ToString()),
-            }));
+            var user = new ClaimsPrincipal(new ClaimsIdentity([
+                new(CustomClaims.CandidateId, candidateId.ToString())
+            ]));
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext { User = user }
@@ -61,6 +54,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
                 actual!.Model.Should().NotBeNull();
                 var actualModel = actual.Model as ApplicationSummaryViewModel;
                 actualModel!.ApplicationId.Should().Be(applicationId);
+                actualModel.VacancyTitle.Should().Be(queryResult.VacancyTitle);
+                actualModel.EmployerName.Should().Be(queryResult.EmployerName);
+                actualModel.IsVacancyClosed.Should().Be(queryResult.ClosedDate.HasValue);
+                actualModel.IsVacancyClosedEarly.Should().Be(queryResult.ClosedDate.HasValue || queryResult.ClosingDate < DateTime.UtcNow);
+                actualModel.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(queryResult.ClosedDate));
             }
         }
 

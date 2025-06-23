@@ -9,6 +9,7 @@ public class GetIndexQueryResult
     public string VacancyTitle { get; set; }
     public string EmployerName { get; set; }
     public DateTime ClosingDate { get; set; }
+    public DateTime? ClosedDate { get; set; }
     public bool IsMigrated { get; set; }
     public bool IsDisabilityConfident { get; set; }
     public bool IsApplicationComplete { get; set; }
@@ -128,6 +129,7 @@ public class GetIndexQueryResult
             VacancyTitle = source.VacancyTitle,
             EmployerName = source.EmployerName,
             ClosingDate = source.ClosingDate,
+            ClosedDate = source.ClosedDate,
             IsMigrated = source.IsMigrated,
             IsDisabilityConfident = source.IsDisabilityConfident,
             IsApplicationComplete = source.IsApplicationComplete,

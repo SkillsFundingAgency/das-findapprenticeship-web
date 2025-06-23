@@ -13,4 +13,17 @@ public static class DateTimeExtensions
     {
         return dateTime.ToString("dddd d MMMM yyy", CultureInfo.InvariantCulture);
     }
+
+    /// <summary>
+    /// Formats a DateTime to a GDS date string with time.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static string ToGdsDateStringWithTime(this DateTime dateTime)
+    {
+        string formatted = dateTime.ToString("h:mmtt 'on' dddd d MMMM yyy", CultureInfo.InvariantCulture);
+        return formatted
+            .Replace("AM", "am")
+            .Replace("PM", "pm");
+    }
 }

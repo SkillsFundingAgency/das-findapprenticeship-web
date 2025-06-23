@@ -512,5 +512,30 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             actualAge.Should().Be(expectedAge);
         }
+
+        [Test]
+        [InlineAutoData("2024-06-01T15:30:00", "closed at 3:30pm on Saturday 1 June 2024")]
+        [InlineAutoData("2024-12-25T00:00:00", "closed at 12:00am on Wednesday 25 December 2024")]
+        public void GetClosedDate_ReturnsFormattedString_WhenClosedDateHasValue(string dateString, string expected)
+        {
+            // Arrange
+            DateTime closedDate = DateTime.Parse(dateString);
+
+            // Act
+            var result = VacancyDetailsHelperService.GetClosedDate(closedDate);
+
+            // Assert
+            result.Should().Be(expected);
+        }
+
+        [Test]
+        public void GetClosedDate_ReturnsEmptyString_WhenClosedDateIsNull()
+        {
+            // Act
+            var result = VacancyDetailsHelperService.GetClosedDate(null);
+
+            // Assert
+            result.Should().Be(string.Empty);
+        }
     }
 }

@@ -12,6 +12,7 @@ using SFA.DAS.FAA.Web.Models.Applications;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAT.Domain.Interfaces;
 using IndexViewModel = SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
+using SFA.DAS.FAA.Web.Services;
 
 namespace SFA.DAS.FAA.Web.Controllers
 {
@@ -106,7 +107,9 @@ namespace SFA.DAS.FAA.Web.Controllers
             var model = new ApplicationSubmittedViewModel
             {
                 VacancyInfo = result,
-                ApplicationId = applicationId
+                ApplicationId = applicationId,
+                ClosedDate = VacancyDetailsHelperService.GetClosedDate(result.ClosedDate),
+                IsVacancyClosedEarly = result.ClosedDate.HasValue || result.ClosingDate < DateTime.UtcNow,
             };
 
             return View(model);

@@ -16,6 +16,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 VacancyTitle = source.VacancyTitle,
                 EmployerName = source.EmployerName,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
+                ClosedDate = VacancyDetailsHelperService.GetClosedDate(source.ClosedDate),
+                IsVacancyClosedEarly = source.ClosedDate.HasValue || source.ClosingDate < DateTime.UtcNow,
                 IsDisabilityConfident = source.IsDisabilityConfident,
                 IsApplicationComplete = source.IsApplicationComplete,
                 EducationHistory = source.EducationHistory,
@@ -35,6 +37,9 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public string VacancyTitle { get; set; }
         public string EmployerName { get; set; }
         public string ClosingDate { get; set; }
+        public bool IsVacancyClosed => !string.IsNullOrEmpty(ClosedDate);
+        public bool IsVacancyClosedEarly { get; set; }
+        public string? ClosedDate { get; set; }
         public bool IsDisabilityConfident { get; set; }
 
         public bool HasAnyPreviousAnswers => EducationHistory.TrainingCourses == SectionStatus.PreviousAnswer ||

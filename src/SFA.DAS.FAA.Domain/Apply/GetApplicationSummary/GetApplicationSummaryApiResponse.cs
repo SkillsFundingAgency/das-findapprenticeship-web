@@ -7,6 +7,10 @@ public record GetApplicationSummaryApiResponse
     public bool IsDisabilityConfident { get; set; }
     public bool IsApplicationComplete { get; set; }
     public CandidateDetailsSection Candidate { get; set; }
+    public DateTime ClosingDate { get; set; }
+    public DateTime? ClosedDate { get; set; }
+    public string? VacancyTitle { get; set; }
+    public string? EmployerName { get; set; }
     public AboutYouSection AboutYou { get; set; }
     public EducationHistorySection EducationHistory { get; set; }
     public WorkHistorySection WorkHistory { get; set; }
