@@ -8,6 +8,20 @@
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
 
+@section AfterJSScripts
+{
+    <script type="module">
+        import dasAutosaveForm from "/js/das-autosave-form.mjs"
+        document.addEventListener("DOMContentLoaded", () => {
+            const formEl = document.querySelector("form[data-autosave]")
+            dasAutosaveForm(formEl, {
+                url: "skillsandstrengths",
+                beforeSubmit: formData => formData.append("AutoSave", "true")
+            })
+        })
+    </script>
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
@@ -31,7 +45,7 @@
 
         <div class="govuk-!-padding-bottom-5"></div>
 
-        <form class="form" method="post">
+        <form class="form" method="post" data-autosave>
 
             <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="300">
                 <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="SkillsAndStrengths"
