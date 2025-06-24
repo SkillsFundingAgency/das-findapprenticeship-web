@@ -17,7 +17,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 EmployerName = source.EmployerName,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
                 ClosedDate = VacancyDetailsHelperService.GetClosedDate(source.ClosedDate),
-                IsVacancyClosedEarly = source.ClosedDate.HasValue || source.ClosingDate < DateTime.UtcNow,
+                IsVacancyClosedEarly = source.ClosedDate.HasValue && source.ClosedDate < source.ClosingDate,
                 IsDisabilityConfident = source.IsDisabilityConfident,
                 IsApplicationComplete = source.IsApplicationComplete,
                 EducationHistory = source.EducationHistory,

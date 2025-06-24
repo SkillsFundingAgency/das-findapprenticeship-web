@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             result.EmployerName.Should().Be(source.EmployerName);
             result.ClosingDate.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.ClosingDate));
             result.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(source.ClosedDate));
-            result.IsVacancyClosedEarly.Should().Be(source.ClosedDate.HasValue || source.ClosingDate < DateTime.UtcNow);
+            result.IsVacancyClosedEarly.Should().Be(source.ClosedDate.HasValue && source.ClosedDate < source.ClosingDate);
             result.IsVacancyClosed.Should().BeTrue();
             result.IsDisabilityConfident.Should().Be(source.IsDisabilityConfident);
             result.EducationHistory.Qualifications.Should().Be(source.EducationHistory.Qualifications);

@@ -109,7 +109,7 @@ namespace SFA.DAS.FAA.Web.Controllers
                 VacancyInfo = result,
                 ApplicationId = applicationId,
                 ClosedDate = VacancyDetailsHelperService.GetClosedDate(result.ClosedDate),
-                IsVacancyClosedEarly = result.ClosedDate.HasValue || result.ClosingDate < DateTime.UtcNow,
+                IsVacancyClosedEarly = result.ClosedDate.HasValue && result.ClosedDate < result.ClosingDate,
             };
 
             return View(model);

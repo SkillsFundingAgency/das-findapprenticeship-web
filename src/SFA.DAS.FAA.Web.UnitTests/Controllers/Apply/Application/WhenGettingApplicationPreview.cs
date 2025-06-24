@@ -57,7 +57,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
                 actualModel.VacancyTitle.Should().Be(queryResult.VacancyTitle);
                 actualModel.EmployerName.Should().Be(queryResult.EmployerName);
                 actualModel.IsVacancyClosed.Should().Be(queryResult.ClosedDate.HasValue);
-                actualModel.IsVacancyClosedEarly.Should().Be(queryResult.ClosedDate.HasValue || queryResult.ClosingDate < DateTime.UtcNow);
+                actualModel.IsVacancyClosedEarly.Should().Be(queryResult.ClosedDate.HasValue && queryResult.ClosedDate < queryResult.ClosingDate);
                 actualModel.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(queryResult.ClosedDate));
             }
         }

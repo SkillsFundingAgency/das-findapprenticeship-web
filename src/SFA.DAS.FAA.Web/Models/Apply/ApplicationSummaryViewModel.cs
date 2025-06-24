@@ -29,7 +29,7 @@ public class ApplicationSummaryViewModel
             EmployerName = source.EmployerName,
             VacancyTitle = source.VacancyTitle,
             ClosedDate = VacancyDetailsHelperService.GetClosedDate(source.ClosedDate),
-            IsVacancyClosedEarly = source.ClosedDate.HasValue || source.ClosingDate < DateTime.UtcNow,
+            IsVacancyClosedEarly = source.ClosedDate.HasValue && source.ClosedDate < source.ClosingDate,
         };
     }
 
