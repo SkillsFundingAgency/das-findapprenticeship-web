@@ -98,7 +98,7 @@
                 </li>
                 <li class="faa-contents__list-item">
                     <a class="govuk-link faa-contents__link" href="#company">
-                        About this company
+                        About this employer
                     </a>
                 </li>
                 <li class="faa-contents__list-item">
@@ -191,7 +191,9 @@
                 <p class="govuk-hint">
                     Most of your apprenticeship is spent working. You’ll learn on the job by getting hands-on experience.
                 </p>
-                <h3 class="govuk-heading-s">What you’ll do at work</h3>
+                <h3 class="govuk-heading-s">What you'll do at work</h3>
+                <p>@Html.Raw(Model.WorkDescription)</p>
+                <h3 class="govuk-heading-s">Where you'll work</h3>
                 @switch (Model.EmployerLocationOption)
                 {
                     case AvailableWhere.MultipleLocations:
@@ -206,7 +208,7 @@
                         </ul>
                         break;
                     case AvailableWhere.AcrossEngland:
-                        <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmployerDescription</p>
+                        <p class="govuk-body govuk-!-margin-bottom-0">@Model.EmploymentLocationInformation</p>
                         break;
                     default:
                         <address class="govuk-body" value="Model.WorkLocation" anonymised="Model.IsAnonymousEmployer"></address>
@@ -279,9 +281,9 @@
                 <p class="govuk-body  das-!-color-dark-grey">
                     Apprenticeships include time away from working for specialist training. You’ll study to gain professional knowledge and skills.
                 </p>
-                <h3 class="govuk-heading-s">College or training organisation</h3>
+                <h3 class="govuk-heading-s">Training provider</h3>
                 <p>@Model.TrainingProviderName</p>
-                <h3 class="govuk-heading-s">Your training course</h3>
+                <h3 class="govuk-heading-s">Training course</h3>
                 <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
                 <p class="gov-body das-!-color-dark-grey">Equal to @Model.CourseLevelMapper</p>
 
@@ -310,14 +312,12 @@
                         </div>
                     </details>
                 }
-                <h3 class="govuk-heading-s">Your training plan</h3>
+                <h3 class="govuk-heading-s">Training schedule</h3>
                 @if (string.IsNullOrEmpty(Model.TrainingPlan))
                 {
                     <div class="govuk-inset-text">
-                        This training plan has not been finalised. Check with this employer if you’ll need to travel to a
-                        college or
-                        training
-                        location for this apprenticeship. </div>
+                        This training schedule has not been finalised. Check with this employer if you’ll need to travel to a college or training location for this apprenticeship. 
+                    </div>
                 }
                 else
                 {
@@ -359,8 +359,7 @@
                     }
 
                     <p class="govuk-body">
-                        Let the company know about other relevant qualifications and industry experience you have. They can
-                        adjust the apprenticeship to reflect what you already know.
+                        Share if you have other relevant qualifications and industry experience. The apprenticeship can be adjusted to reflect what you already know.
                     </p>
                     <h3 class="govuk-heading-s">Skills</h3>
                     <accessible-list items="@Model.Skills"></accessible-list>
@@ -372,7 +371,7 @@
                 }
             </section>
             <section class="faa-vacancy__section" id="company">
-                <h2 class="govuk-heading-m">About this company</h2>
+                <h2 class="govuk-heading-m">About this employer</h2>
                 <p>
                     @Html.Raw(Model.EmployerDescription)
                 </p>

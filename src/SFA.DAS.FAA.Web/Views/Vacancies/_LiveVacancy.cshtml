@@ -155,7 +155,7 @@
                 </li>
                 <li class="faa-contents__list-item">
                     <a class="govuk-link faa-contents__link" href="#company">
-                        About this company
+                        About this employer
                     </a>
                 </li>
                 <li class="faa-contents__list-item">
@@ -379,9 +379,9 @@
                 <p class="govuk-body  das-!-color-dark-grey">
                     Apprenticeships include time away from working for specialist training. You’ll study to gain professional knowledge and skills.
                 </p>
-                <h3 class="govuk-heading-s">College or training organisation</h3>
+                <h3 class="govuk-heading-s">Training provider</h3>
                 <p>@Model.TrainingProviderName</p>
-                <h3 class="govuk-heading-s">Your training course</h3>
+                <h3 class="govuk-heading-s">Training course</h3>
                 <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
                 <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-5">
                     <a class="govuk-link govuk-link--no-visited-state"
@@ -416,14 +416,11 @@
                         </div>
                     </details>
                 }
-                <h3 class="govuk-heading-s">Your training plan</h3>
+                <h3 class="govuk-heading-s">Training schedule</h3>
                 @if (string.IsNullOrEmpty(Model.TrainingPlan))
                 {
                     <div class="govuk-inset-text">
-                        This training plan has not been finalised. Check with this employer if you’ll need to travel to a
-                        college or
-                        training
-                        location for this apprenticeship.
+                        This training schedule has not been finalised. Check with this employer if you’ll need to travel to a college or training location for this apprenticeship. 
                     </div>
                 }
                 else
@@ -451,7 +448,7 @@
                         foreach (var group in Model.EssentialQualifications.GroupBy(x => x.QualificationType))
                         {
                             <p>@group.Key in:</p>
-                            <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()"/>
+                            <accessible-list class="govuk-body govuk-!-margin-bottom-6" items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()"/>
                         }
                     }
                     if (Model.DesiredQualifications is { Count: > 0 })
@@ -460,15 +457,14 @@
                         foreach (var group in Model.DesiredQualifications.GroupBy(x => x.QualificationType))
                         {
                             <p>@group.Key in:</p>
-                            <accessible-list items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()"/>
+                            <accessible-list class="govuk-body govuk-!-margin-bottom-6" items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()"/>
                         }
                     }
                     <p class="govuk-body">
-                        Let the company know about other relevant qualifications and industry experience you have. They can
-                        adjust the apprenticeship to reflect what you already know.
+                        Share if you have other relevant qualifications and industry experience. The apprenticeship can be adjusted to reflect what you already know.
                     </p>
                     <h3 class="govuk-heading-s">Skills</h3>
-                    <accessible-list items="@Model.Skills"></accessible-list>
+                    <accessible-list class="govuk-body govuk-!-margin-bottom-6" items="@Model.Skills"></accessible-list>
                 }
 
                 @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
@@ -478,7 +474,7 @@
                 }
             </section>
             <section class="faa-vacancy__section" id="company">
-                <h2 class="govuk-heading-m">About this company</h2>
+                <h2 class="govuk-heading-m">About this employer</h2>
                 <p>
                     @Html.Raw(Model.EmployerDescription)
                 </p>
@@ -542,15 +538,14 @@
                     
                     <p>@Model.ClosingDate</p>
                     <p class="govuk-body">
-                        When you apply, you’ll be asked to sign in with a GOV.UK One Login. You can
-                        create one at the same time as applying for this apprenticeship.
+                        Sign in with your GOV.UK One Login to apply.
                     </p>
                     if (!string.IsNullOrEmpty(Model.ApplicationUrl))
                     {
                         <p class="govuk-body">After signing in, you’ll apply for this apprenticeship on the company's website.</p>
                         if (!string.IsNullOrEmpty(Model.ApplicationInstructions))
                         {
-                            <h3>Company’s application instructions </h3>
+                            <h3>How to apply for this apprenticeship</h3>
                             <p>@Model.ApplicationInstructions</p>
                         }
                     }
@@ -604,7 +599,7 @@
                         {
                             if (!string.IsNullOrEmpty(Model.ApplicationInstructions))
                             {
-                                <h3>Company’s application instructions </h3>
+                                <h3>How to apply for this apprenticeship</h3>
                                 <p>@Model.ApplicationInstructions</p>
                             }
                             
@@ -616,9 +611,8 @@
                             }
                             else
                             {
-                                <a href="@Model.ApplicationUrl" class="govuk-button">Apply on company’s website</a>    
+                                <a href="@Model.ApplicationUrl" class="govuk-button">Go to application website</a>    
                             }
-                            
                         }
                         else
                         {
@@ -639,7 +633,6 @@
                                 </form>    
                             }
                         }
-
                     }
                 }
             </section>

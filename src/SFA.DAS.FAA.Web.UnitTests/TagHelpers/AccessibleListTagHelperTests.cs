@@ -72,7 +72,7 @@ public class AccessibleListTagHelperTests
     }
     
     [Test]
-    public async Task Renders_Span_For_Single_Item()
+    public async Task Renders_Div_For_Single_Item()
     {
         // arrange
         var sut = new AccessibleListTagHelper
@@ -84,7 +84,7 @@ public class AccessibleListTagHelperTests
         await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
 
         // assert
-        _tagHelperOutput.AsString().Should().Be("<span>HtmlEncode[[item 1]]</span>");
+        _tagHelperOutput.AsString().Should().Be("<div>HtmlEncode[[item 1]]</div>");
     }
     
     [Test]

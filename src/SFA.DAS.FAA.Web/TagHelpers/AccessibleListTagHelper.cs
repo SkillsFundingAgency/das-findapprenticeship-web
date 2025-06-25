@@ -31,7 +31,7 @@ public class AccessibleListTagHelper : TagHelper
 
     private void RenderSpan(TagHelperOutput output)
     {
-        output.TagName = "span";
+        output.TagName = "div";
         output.Content.Append(Items![0]);
         AddCssClasses(output);
     }
