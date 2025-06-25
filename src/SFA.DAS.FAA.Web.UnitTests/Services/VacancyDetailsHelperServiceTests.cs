@@ -512,5 +512,45 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             actualAge.Should().Be(expectedAge);
         }
+
+        [Test, MoqAutoData]
+        public void GetWorkLocation_Formats_Primary_Location(Address primaryAddress)
+        {
+            // act
+            var result = VacancyDetailsHelperService.GetWorkLocation(primaryAddress, []);
+
+            // assert
+            result.Should().Be($"{primaryAddress.AddressLine4} ({primaryAddress.Postcode!.ToUpperInvariant()})");
+        }
+        
+        [Test, MoqAutoData]
+        public void GetWorkLocation_Handles_Null_OtherAddresses(Address primaryAddress)
+        {
+            // act
+            var result = VacancyDetailsHelperService.GetWorkLocation(primaryAddress, null);
+
+            // assert
+            result.Should().Be($"{primaryAddress.AddressLine4} ({primaryAddress.Postcode!.ToUpperInvariant()})");
+        }
+        
+        [Test, MoqAutoData]
+        public void GetWorkLocation_Formats_Anonymous_Primary_Location(string postCode)
+        {
+            // act
+            var result = VacancyDetailsHelperService.GetWorkLocation(new Address(null, null, null, null, postCode), []);
+
+            // assert
+            result.Should().Be($"{postCode.ToUpperInvariant()}");
+        }
+        
+        [Test, MoqAutoData]
+        public void GetWorkLocation_Formats_Multiple_Locations(Address primaryAddress, List<Address> otherAddress)
+        {
+            // act
+            var result = VacancyDetailsHelperService.GetWorkLocation(primaryAddress, otherAddress);
+
+            // assert
+            result.Should().Be($"{primaryAddress.AddressLine4} ({primaryAddress.Postcode!.ToUpperInvariant()}) and {otherAddress.Count} other locations");
+        }
     }
 }

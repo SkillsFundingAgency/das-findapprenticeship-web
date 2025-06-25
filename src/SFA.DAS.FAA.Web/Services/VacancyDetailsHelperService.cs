@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using SFA.DAS.FAA.Domain;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Web.Extensions;
 
@@ -208,6 +207,16 @@ namespace SFA.DAS.FAA.Web.Services
             return cityNames.Count == 1 && addresses.Count > 1
                 ? $"{cityNames.First()} ({addresses.Count} available locations)"
                 : string.Join(", ", cityNames);
+        }
+        
+        public static string GetWorkLocation(Address primaryAddress, List<Address>? otherAddresses)
+        {
+            var primaryCity = primaryAddress.GetLastNonEmptyField();
+            var primaryLocation = string.IsNullOrWhiteSpace(primaryCity) ? primaryAddress.Postcode!.ToUpperInvariant() : $"{primaryCity} ({primaryAddress.Postcode!.ToUpperInvariant()})";
+
+            return (otherAddresses ?? []).Count == 0
+                ? primaryLocation
+                : $"{primaryLocation} and {otherAddresses!.Count} other locations";
         }
 
         public static string? GetOneLocationCityName(Address? address)
