@@ -11,7 +11,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         {
             var workLocationText = source.EmployerLocationOption switch
             {
-                AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetWorkLocation(source.Address!, source.OtherAddresses ?? []),
+                AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(source.OtherAddresses!.Concat([source.Address!]).ToList()),
                 AvailableWhere.AcrossEngland => "Recruiting nationally",
                 _ => VacancyDetailsHelperService.GetOneLocationCityName(source.Address),
             };
