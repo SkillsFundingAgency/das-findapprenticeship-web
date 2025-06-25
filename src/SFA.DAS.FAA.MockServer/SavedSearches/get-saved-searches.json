@@ -19,6 +19,24 @@
         "latitude": null,
         "longitude": null
       }
+    },
+    {
+      "id": "c55838a5-f274-4340-be91-697447032414",
+      "userReference": "0209c8a8-4f24-415c-819a-8a043a1a175e",
+      "dateCreated": "2024-11-13T19:09:00.14",
+      "lastRunDate": null,
+      "emailLastSendDate": null,
+      "searchParameters": {
+        "searchTerm": null,
+        "selectedRouteIds": null,
+        "distance": 10,
+        "disabilityConfident": false,
+        "selectedLevelIds": [
+        ],
+        "location": "Manchester, Greater Manchester",
+        "latitude": null,
+        "longitude": null
+      }
     }
   ],
   "routes": [
