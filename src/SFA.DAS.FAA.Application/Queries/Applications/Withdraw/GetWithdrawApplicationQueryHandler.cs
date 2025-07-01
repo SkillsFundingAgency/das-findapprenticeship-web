@@ -32,6 +32,7 @@ public class GetWithdrawApplicationQueryHandler(IApiClient apiClient) : IRequest
             Addresses = addresses,
             EmploymentLocationInformation = response.EmploymentLocationInformation,
             EmployerLocationOption = response.EmployerLocationOption,
+            ApprenticeshipType = response.ApprenticeshipType
         };
     }
 }

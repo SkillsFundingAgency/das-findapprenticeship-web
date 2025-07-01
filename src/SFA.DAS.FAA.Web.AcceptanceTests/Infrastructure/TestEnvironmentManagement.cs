@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Moq;
+using Reqnroll;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.MockServer.MockServerBuilder;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
-using TechTalk.SpecFlow;
 using WireMock.Server;
 using Constants = SFA.DAS.FAA.Web.AcceptanceTests.Data.Constants;
 
@@ -52,6 +52,7 @@ public sealed class TestEnvironmentManagement
 
         _context.Set(_server, ContextKeys.TestServer);
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
+        _context.Set("", ContextKeys.Environment);
     }
     
     [BeforeScenario("RunOnEnvironment")]
@@ -66,6 +67,7 @@ public sealed class TestEnvironmentManagement
 
         _context.Set<TestServer>(null!, ContextKeys.TestServer);
         _context.Set(_testHttpClient, ContextKeys.TestHttpClient);
+        _context.Set(_environment, ContextKeys.Environment);
     }
 
     [BeforeScenario("ApiContract")]
@@ -118,12 +120,26 @@ public sealed class TestEnvironmentManagement
     {
         var client = _context.Get<ITestHttpClient>(ContextKeys.TestHttpClient);
 
-        var formData = new Dictionary<string, string>
+        var formData = new Dictionary<string, string>();
+        if (!string.IsNullOrEmpty(_environment))
         {
-            { "Id", MockServer.Constants.CandidateIdWithApplications },
-            { "Email", "test@test.com" },
-            { "MobilePhone", "12345 67890" }
-        };
+            formData = new Dictionary<string, string>
+            {
+                { "Id", MockServer.Constants.CandidateOnAT },
+                { "Email", "gfshjeadgsfdbshjkcx@mailinator.com" },
+                { "MobilePhone", "12345 67890" }
+            };
+        }
+        else
+        {
+            formData = new Dictionary<string, string>
+            {
+                { "Id", MockServer.Constants.CandidateIdWithApplications },
+                { "Email", "test@test.com" },
+                { "MobilePhone", "12345 67890" }
+            };    
+        }
+        
 
         await client.PostAsync("/account-details", formData);
     }

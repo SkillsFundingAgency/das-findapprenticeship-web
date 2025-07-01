@@ -14,7 +14,7 @@
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.Applications.ViewApplications" asp-route-tab="@tagName">Back</a>
 }
-@if(!string.IsNullOrEmpty(Model.BannerMessage))
+@if (!string.IsNullOrEmpty(Model.BannerMessage))
 {
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -31,10 +31,11 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <govuk-tag-foundation asp-show="@Model.ShowFoundationTag" class="govuk-!-margin-bottom-4"></govuk-tag-foundation>
         <h1 class="govuk-heading-l">Your application</h1>
         <div class="govuk-body">
             @Model.VacancyDetails.Title at @Model.VacancyDetails.EmployerName.
@@ -98,12 +99,13 @@
                 </div>
             </dl>
         </div>
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-        <div class="faa-flex-row">
-            <h2 class="govuk-heading-m">School, college and university qualifications</h2>
-        </div>
+
         @if (Model.EducationHistory.Qualifications.ShowQualifications)
         {
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">School, college and university qualifications</h2>
+            </div>
             @foreach (var group in Model.EducationHistory.Qualifications.QualificationGroups)
             {
                 <div class="govuk-summary-card">
@@ -136,19 +138,14 @@
                 </div>
             }
         }
-        else
-        {
-            <div class="faa-flex-row">
-                <p class="govuk-hint">You haven’t added any school, college or university qualifications.</p>
-            </div>
-        }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-        <div class="faa-flex-row">
-            <h2 class="govuk-heading-m">Training courses</h2>
-        </div>
+
         @if (Model.EducationHistory.TrainingCourses is { Count: > 0 })
         {
-            foreach (var trainingCourse in Model.EducationHistory.TrainingCourses)
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">Training courses</h2>
+            </div>
+            @foreach (var trainingCourse in Model.EducationHistory.TrainingCourses)
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
@@ -169,17 +166,16 @@
                 </div>
             }
         }
-        else
-        {
-            <p class="govuk-hint">You haven’t added any training courses.</p>
-        }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-        <div class="faa-flex-row">
-            <h2 class="govuk-heading-m">Jobs</h2>
-        </div>
+
+
         @if (Model.WorkHistory.Jobs is { Count: > 0 })
         {
-            foreach (var job in Model.WorkHistory.Jobs)
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row faa-no-print">
+                <h2 class="govuk-heading-m">Jobs</h2>
+            </div>
+
+            @foreach (var job in Model.WorkHistory.Jobs)
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
@@ -208,17 +204,16 @@
                 </div>
             }
         }
-        else
-        {
-            <p class="govuk-hint">You haven’t added any jobs.</p>
-        }
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-        <div class="faa-flex-row">
-            <h2 class="govuk-heading-m">Volunteering and work experience</h2>
-        </div>
+
+
+
         @if (Model.WorkHistory.VolunteeringAndWorkExperiences is { Count: > 0 })
         {
-            foreach (var experience in Model.WorkHistory.VolunteeringAndWorkExperiences)
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+            <div class="faa-flex-row">
+                <h2 class="govuk-heading-m">Volunteering and work experience</h2>
+            </div>
+            @foreach (var experience in Model.WorkHistory.VolunteeringAndWorkExperiences)
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
@@ -247,10 +242,9 @@
                 </div>
             }
         }
-        else
-        {
-            <p class="govuk-hint">You haven’t added any volunteering or work experience.</p>
-        }
+
+
+
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <h2 class="govuk-heading-m">Application questions</h2>
         <div class="faa-flex-row">
@@ -283,6 +277,7 @@
                 <div class="faa-user-content">@Model.ApplicationQuestions.AdditionalQuestion2.Answer</div>
             </div>
         }
+
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <div class="faa-flex-row">
             <h2 class="govuk-heading-m">Get support at an interview</h2>
