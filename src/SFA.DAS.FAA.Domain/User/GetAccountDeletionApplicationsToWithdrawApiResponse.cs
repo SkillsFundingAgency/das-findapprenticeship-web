@@ -42,6 +42,9 @@ namespace SFA.DAS.FAA.Domain.User
 
             [JsonProperty("status")]
             public int Status { get; set; }
+
+            [JsonProperty("apprenticeshipType")]
+            public ApprenticeshipTypes ApprenticeshipType { get; set; } = ApprenticeshipTypes.Standard;
         }
     }
 }

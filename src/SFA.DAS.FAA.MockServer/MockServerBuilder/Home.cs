@@ -274,7 +274,7 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
 
         private static bool MatchLocationParamManchester(IDictionary<string, WireMockList<string>> arg)
         {
-            return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Equals("Manchester", StringComparison.CurrentCultureIgnoreCase);
+            return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"][0].Contains("Manchester", StringComparison.CurrentCultureIgnoreCase);
         }
         private static bool MatchLocationParamCoventry(IDictionary<string, WireMockList<string>> arg)
         {

@@ -10,9 +10,17 @@ namespace SFA.DAS.FAA.Web.Models.Apply
     {
         public static IndexViewModel Map(IDateTimeService dateTimeService, GetIndexRequest request, GetIndexQueryResult source)
         {
+            var workLocationText = source.EmployerLocationOption switch
+            {
+                AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(source.OtherAddresses!.Concat([source.Address!]).ToList()),
+                AvailableWhere.AcrossEngland => "Recruiting nationally",
+                _ => VacancyDetailsHelperService.GetOneLocationCityName(source.Address),
+            };
+            
             return new IndexViewModel
             {
                 VacancyReference = source.VacancyReference,
+                ApprenticeshipType = source.ApprenticeshipType,
                 ShowAccountCreatedBanner = false,
                 VacancyTitle = source.VacancyTitle,
                 EmployerName = source.EmployerName,
@@ -27,14 +35,17 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 DisabilityConfidence = source.DisabilityConfidence,
                 PreviousApplication = source.PreviousApplication,
                 ApplicationId = request.ApplicationId,
+                WorkLocation = workLocationText
             };
         }
 
+        public string? WorkLocation { get; set; }
         public string? PageBackLink { get; set; }
 		public Guid ApplicationId { get; set; }
         public string VacancyReference { get; set; }
         public bool ShowAccountCreatedBanner { get; set; }
         public string VacancyTitle { get; set; }
+        public ApprenticeshipTypes ApprenticeshipType { get; set; }
         public string EmployerName { get; set; }
         public string ClosingDate { get; set; }
         public bool IsDisabilityConfident { get; set; }

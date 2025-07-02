@@ -5,7 +5,8 @@
 .faa-vacancy-actions,
 .faa-vacancy-actions__link,
 .faa-contents,
-.govuk-footer {
+.govuk-footer,
+.faa-no-print {
   display: none;
 }
 

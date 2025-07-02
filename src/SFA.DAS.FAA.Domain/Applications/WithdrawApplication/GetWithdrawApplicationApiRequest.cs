@@ -26,4 +26,5 @@ public class GetWithdrawApplicationApiResponse
     public List<Address>? OtherAddresses { get; set; } = [];
     public string? EmploymentLocationInformation { get; set; }
     public AvailableWhere? EmployerLocationOption { get; set; }
+    public ApprenticeshipTypes ApprenticeshipType { get; set; } = ApprenticeshipTypes.Standard;
 }

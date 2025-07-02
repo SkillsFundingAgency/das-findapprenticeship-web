@@ -44,13 +44,15 @@ namespace SFA.DAS.FAA.Web.Models.Applications
             public string ResponseNotes { get; set; } = null!;
             public DateTime CloseDateTime { get; set; }
             public string? EmploymentWorkLocation { get; set; }
+            public ApprenticeshipTypes ApprenticeshipType { get; init; }
+            public bool ShowFoundationTag => ApprenticeshipType == ApprenticeshipTypes.Foundation;
 
             public static Application From(GetIndexQueryResult.Application source, IDateTimeService dateTimeService)
             {
                 var timeUntilClosing = (source.ClosedDate ?? source.ClosingDate).Date - dateTimeService.GetDateTime();
                 var daysToExpiry = (int)Math.Ceiling(timeUntilClosing.TotalDays);
                 
-                return new Application()
+                return new Application
                 {
                     Id = source.Id,
                     VacancyReference = source.VacancyReference,
@@ -80,7 +82,8 @@ namespace SFA.DAS.FAA.Web.Models.Applications
                         AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(source.Addresses),
                         AvailableWhere.AcrossEngland => "Recruiting nationally",
                         _ => VacancyDetailsHelperService.GetOneLocationCityName(source.WorkLocation)
-                    }
+                    },
+                    ApprenticeshipType = source.ApprenticeshipType,
                 };
             }
         }

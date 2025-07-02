@@ -25,7 +25,9 @@ namespace SFA.DAS.FAA.Web.Models.User
             public string? EmployerName { get; set; }
             public string? SubmittedDate { get; set; }
             public string? EmploymentWorkLocation { get; set; }
-            
+            private ApprenticeshipTypes ApprenticeshipType { get; init; } = ApprenticeshipTypes.Standard;
+            public bool ShowFoundationTag => ApprenticeshipType == ApprenticeshipTypes.Foundation;
+
             public static implicit operator Application(GetAccountDeletionApplicationsToWithdrawQueryResult.Application source)
             {
                 return new Application
@@ -39,7 +41,8 @@ namespace SFA.DAS.FAA.Web.Models.User
                         AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNames(source.Addresses),
                         AvailableWhere.AcrossEngland => "Recruiting nationally",
                         _ => VacancyDetailsHelperService.GetOneLocationCityName(source.WorkLocation)
-                    }
+                    },
+                    ApprenticeshipType = source.ApprenticeshipType,
                 };
             }
         }

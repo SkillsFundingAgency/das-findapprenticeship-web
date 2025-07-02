@@ -8,6 +8,7 @@ public class GetIndexQueryResult
 {
     public string VacancyReference { get; set; }
     public string VacancyTitle { get; set; }
+    public ApprenticeshipTypes ApprenticeshipType { get; set; }
     public string EmployerName { get; set; }
     public DateTime ClosingDate { get; set; }
     public bool IsMigrated { get; set; }
@@ -20,6 +21,9 @@ public class GetIndexQueryResult
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
     public PreviousApplicationDetails? PreviousApplication { get; set; }
     public EmploymentLocationSection? EmploymentLocation { get; set; }
+    public AvailableWhere? EmployerLocationOption { get; set; }
+    public Address? Address { get; set; }
+    public List<Address>? OtherAddresses { get; set; }
 
     public class EducationHistorySection
     {
@@ -147,6 +151,7 @@ public class GetIndexQueryResult
         {
             VacancyReference = source.VacancyReference,
             VacancyTitle = source.VacancyTitle,
+            ApprenticeshipType = source.ApprenticeshipType,
             EmployerName = source.EmployerName,
             ClosingDate = source.ClosingDate,
             IsMigrated = source.IsMigrated,
@@ -158,7 +163,10 @@ public class GetIndexQueryResult
             ApplicationQuestions = source.ApplicationQuestions,
             InterviewAdjustments = source.InterviewAdjustments,
             DisabilityConfidence = source.DisabilityConfidence,
-            PreviousApplication = source.PreviousApplication
+            PreviousApplication = source.PreviousApplication,
+            EmployerLocationOption = source.EmployerLocationOption,
+            Address = source.Address,
+            OtherAddresses = source.OtherAddresses,
         };
     }
 }
