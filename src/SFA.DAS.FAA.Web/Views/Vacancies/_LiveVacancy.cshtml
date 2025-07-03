@@ -543,11 +543,6 @@
                     if (!string.IsNullOrEmpty(Model.ApplicationUrl))
                     {
                         <p class="govuk-body">After signing in, you’ll apply for this apprenticeship on the company's website.</p>
-                        if (!string.IsNullOrEmpty(Model.ApplicationInstructions))
-                        {
-                            <h3>How to apply for this apprenticeship</h3>
-                            <p>@Model.ApplicationInstructions</p>
-                        }
                     }
 
                     <form class="form" method="post" asp-route="@RouteNames.Vacancies" asp-route-VacancyReference="@Model.VacancyReference">
