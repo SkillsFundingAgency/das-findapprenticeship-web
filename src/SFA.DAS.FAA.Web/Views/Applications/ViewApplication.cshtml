@@ -247,12 +247,15 @@
 
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <h2 class="govuk-heading-m">Application questions</h2>
-        <div class="faa-flex-row">
-            <h3 class="govuk-heading-s">What are your skills and strengths?</h3>
-        </div>
-        <div class="govuk-body govuk-!-margin-bottom-3">
-            <div class="faa-user-content">@Model.AboutYou.SkillsAndStrengths</div>
-        </div>
+        @if(Model.ApprenticeshipType != ApprenticeshipTypes.Foundation)
+        {
+            <div class="faa-flex-row">
+                <h3 class="govuk-heading-s">What are your skills and strengths?</h3>
+            </div>
+            <div class="govuk-body govuk-!-margin-bottom-3">
+                <div class="faa-user-content">@Model.AboutYou.SkillsAndStrengths</div>
+            </div>
+        }
         <div class="faa-flex-row">
             <h3 class="govuk-heading-s">What interests you about this apprenticeship?</h3>
         </div>
