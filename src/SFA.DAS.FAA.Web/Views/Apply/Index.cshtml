@@ -60,16 +60,17 @@ else
                 </div>
             }
 
-
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Apply for @Model.VacancyTitle</h1>
-            <p class="govuk-body-l faa-vacancy__location govuk-!-margin-bottom-4">@Model.EmployerName</p>
-            <p class="govuk-body">@Model.ClosingDate</p>
-            <p class="govuk-body">
-                <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="govuk-link"
-                   target="_blank">
-                    View vacancy (opens in new tab)
-                </a>
-            </p>
+        <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-4" />
+        <h1 class="govuk-heading-l">Apply for @Model.VacancyTitle</h1>
+        <p class="govuk-body-l govuk-!-margin-bottom-0">@Model.EmployerName</p>
+        <p class="govuk-body-l faa-vacancy__location govuk-!-margin-bottom-4">@Model.WorkLocation</p>
+        <p class="govuk-body">@Model.ClosingDate</p>
+        <p class="govuk-body">
+            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="govuk-link"
+                target="_blank">
+                View vacancy (opens in new tab)
+            </a>
+        </p>
 
             <h2 class="govuk-heading-m">Education history</h2>
             <ul class="govuk-task-list">
@@ -123,63 +124,63 @@ else
                 </li>
             </ul>
 
-            <h2 class="govuk-heading-m govuk-!-margin-top-8">Application questions</h2>
-            <ul class="govuk-task-list">
+        <h2 class="govuk-heading-m govuk-!-margin-top-8">Application questions</h2>
+        <ul class="govuk-task-list">
+            <li asp-hide="@Model.ApprenticeshipType.IsFoundation()" class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths"
+                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                        What are your skills and strengths?
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.ApplicationQuestions.SkillsAndStrengths" />
+                </div>
+            </li>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a asp-route="@RouteNames.ApplyApprenticeship.WhatInterestsYou"
+                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                        What interests you about this apprenticeship?
+                    </a>
+                </div>
+                <div class="govuk-task-list__status">
+                    <gov-uk-tag status="@Model.ApplicationQuestions.WhatInterestsYou" />
+                </div>
+            </li>
+            @if (Model.ApplicationQuestions.ShowAdditionalQuestion1)
+            {
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">
-                        <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths"
-                           asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                            What are your skills and strengths?
+                        <a id="additionalquestion1" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
+                            asp-route-applicationId="@Model.ApplicationId"
+                            asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1Id"
+                            asp-route-additionalQuestion="1" class="govuk-link govuk-task-list__link">
+                            @Model.ApplicationQuestions.AdditionalQuestion1Label
                         </a>
                     </div>
                     <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.ApplicationQuestions.SkillsAndStrengths" />
+                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1" />
                     </div>
                 </li>
+            }
+            @if (Model.ApplicationQuestions.ShowAdditionalQuestion2)
+            {
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">
-                        <a asp-route="@RouteNames.ApplyApprenticeship.WhatInterestsYou"
-                           asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                            What interests you about this apprenticeship?
+                        <a id="additionalquestion2" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
+                            asp-route-applicationId="@Model.ApplicationId"
+                            asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2Id"
+                            asp-route-additionalQuestion="2" class="govuk-link govuk-task-list__link">
+                            @Model.ApplicationQuestions.AdditionalQuestion2Label
                         </a>
                     </div>
                     <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.ApplicationQuestions.WhatInterestsYou" />
+                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion2" />
                     </div>
                 </li>
-                @if (Model.ApplicationQuestions.ShowAdditionalQuestion1)
-                {
-                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                        <div class="govuk-task-list__name-and-hint">
-                            <a id="additionalquestion1" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
-                               asp-route-applicationId="@Model.ApplicationId"
-                               asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1Id"
-                               asp-route-additionalQuestion="1" class="govuk-link govuk-task-list__link">
-                                @Model.ApplicationQuestions.AdditionalQuestion1Label
-                            </a>
-                        </div>
-                        <div class="govuk-task-list__status">
-                            <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1" />
-                        </div>
-                    </li>
-                }
-                @if (Model.ApplicationQuestions.ShowAdditionalQuestion2)
-                {
-                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                        <div class="govuk-task-list__name-and-hint">
-                            <a id="additionalquestion2" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
-                               asp-route-applicationId="@Model.ApplicationId"
-                               asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2Id"
-                               asp-route-additionalQuestion="2" class="govuk-link govuk-task-list__link">
-                                @Model.ApplicationQuestions.AdditionalQuestion2Label
-                            </a>
-                        </div>
-                        <div class="govuk-task-list__status">
-                            <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion2" />
-                        </div>
-                    </li>
-                }
-            </ul>
+            }
+        </ul>
 
             <h2 class="govuk-heading-m govuk-!-margin-top-8">Interview adjustments</h2>
             <ul class="govuk-task-list">
