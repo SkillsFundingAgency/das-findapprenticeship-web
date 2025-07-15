@@ -11,8 +11,8 @@
     "build": "sass --no-source-map --quiet-deps --style=compressed --load-path=node_modules/govuk-frontend/dist Frontend/scss/:wwwroot/css"
   },
   "dependencies": {
-    "govuk-frontend": "^5.8.0",
-    "sass": "^1.83.1",
+    "govuk-frontend": "^5.11.0",
+    "sass": "^1.89.2",
     "watch": "^1.0.2"
   }
 }
