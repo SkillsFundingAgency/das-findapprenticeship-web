@@ -46,6 +46,7 @@ public class ApplicationSummaryViewModel
     public bool IsVacancyClosed => !string.IsNullOrEmpty(ClosedDate);
     public bool IsVacancyClosedEarly { get; set; }
     public string? ClosedDate { get; set; }
+    public string? ClosedBannerHeaderText => "Sorry, you cannot continue this application";
     public string? VacancyTitle { get; set; }
     public string? EmployerName { get; set; }
 

@@ -3,7 +3,11 @@
 @if (Model.IsVacancyClosed)
 {
     ViewData["Title"] = "You cannot continue this application";
-    <partial name="_VacancyClosed" model="@ValueTuple.Create(Model.VacancyTitle, Model.EmployerName, Model.ClosedDate, Model.IsVacancyClosedEarly)" />
+    <partial name="_VacancyClosed" model="@ValueTuple.Create(Model.VacancyTitle,
+                                                                Model.EmployerName,
+                                                                Model.ClosedBannerHeaderText,
+                                                                Model.ClosedDate,
+                                                                Model.IsVacancyClosedEarly)" />
 }
 else
 {

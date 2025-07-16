@@ -11,4 +11,5 @@ public record ApplicationSubmittedViewModel
     public bool IsVacancyClosed => !string.IsNullOrEmpty(ClosedDate);
     public bool IsVacancyClosedEarly { get; set; }
     public string? ClosedDate { get; set; }
+    public string ClosedBannerHeaderText => "Sorry, we could not submit your application";
 }

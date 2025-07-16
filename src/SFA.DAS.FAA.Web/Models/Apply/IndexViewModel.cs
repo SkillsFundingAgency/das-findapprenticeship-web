@@ -52,6 +52,7 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public bool IsVacancyClosedEarly { get; set; }
         public string? ClosedDate { get; set; }
         public bool IsDisabilityConfident { get; set; }
+        public string ClosedBannerHeaderText => "Sorry, you cannot continue this application";
 
         public bool HasAnyPreviousAnswers => EducationHistory.TrainingCourses == SectionStatus.PreviousAnswer ||
                                              EducationHistory.Qualifications == SectionStatus.PreviousAnswer ||

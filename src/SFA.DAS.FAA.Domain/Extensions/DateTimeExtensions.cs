@@ -15,15 +15,21 @@ public static class DateTimeExtensions
     }
 
     /// <summary>
-    /// Formats a DateTime to a GDS date string with time.
+    /// Formats a DateTime to a UK time string with DST label.
     /// </summary>
     /// <param name="dateTime"></param>
     /// <returns></returns>
-    public static string ToGdsDateStringWithTime(this DateTime dateTime)
+    public static string ToUkTimeWithDstLabel(this DateTime dateTime)
     {
-        string formatted = dateTime.ToString("h:mmtt 'on' dddd d MMMM yyy", CultureInfo.InvariantCulture);
+        TimeZoneInfo ukTimeZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+        DateTime ukTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime.ToUniversalTime(), ukTimeZone);
+
+        string suffix = ukTimeZone.IsDaylightSavingTime(ukTime) ? "BST" : "GMT";
+
+        string formatted = ukTime.ToString("h:mmtt 'on' dddd d MMMM yyy", CultureInfo.InvariantCulture);
+
         return formatted
-            .Replace("AM", "am")
-            .Replace("PM", "pm");
+                .Replace("AM", "am")
+                .Replace("PM", "pm") + $" {suffix}";
     }
 }

@@ -1,15 +1,15 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@model (string Title, string EmployerName, string ClosedText, bool IsClosedEarly)
+@model (string Title, string EmployerName, string headerText, string ClosedText, bool IsClosedEarly)
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds govuk-!-margin-bottom-2">
         <h2 class="govuk-heading-l govuk-!-margin-bottom-5 faa-flex-title">
-            Sorry, you cannot continue this application
+            @Model.headerText
         </h2>
         <div class="govuk-warning-text govuk-!-margin-bottom-4">
             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
             <strong class="govuk-warning-text__text">
                 <span>
-                    @(Model.IsClosedEarly ? "This vacancy has now closed early." : "This vacancy has now closed.")
+                    @(Model.IsClosedEarly ? "This vacancy has been closed early." : "This vacancy has now closed.")
                 </span>
             </strong>
         </div>

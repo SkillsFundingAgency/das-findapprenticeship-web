@@ -52,7 +52,7 @@ namespace SFA.DAS.FAA.Web.Services
         public static string GetClosedDate(DateTime? closedDate)
         {
             return closedDate.HasValue
-                ? $"closed at {closedDate?.ToGdsDateStringWithTime()}"
+                ? $"closed at {closedDate?.ToUkTimeWithDstLabel()}"
                 : string.Empty;
         }
 
