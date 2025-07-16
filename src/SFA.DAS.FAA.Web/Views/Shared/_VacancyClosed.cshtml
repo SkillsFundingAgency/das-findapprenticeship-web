@@ -9,14 +9,14 @@
             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
             <strong class="govuk-warning-text__text">
                 <span>
-                    @(Model.IsClosedEarly ? "This vacancy has now closed." : "This vacancy has now closed early.")
+                    @(Model.IsClosedEarly ? "This vacancy has now closed early." : "This vacancy has now closed.")
                 </span>
             </strong>
         </div>
         <p class="govuk-body govuk-!-margin-bottom-2">
             <span>
                 @Model.Title at @Model.EmployerName
-                @(Model.IsClosedEarly ? Model.ClosedText : $"was {Model.ClosedText}")
+                @(Model.IsClosedEarly ? $"was {Model.ClosedText}" : Model.ClosedText)
             </span>
         </p>
         <p class="govuk-body govuk-!-margin-bottom-2">
