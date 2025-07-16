@@ -21,7 +21,6 @@ public class ApiClient : IApiClient
 
     public async Task<TResponse> Get<TResponse>(IGetApiRequest request)
     {
-
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, request.GetUrl);
         AddAuthenticationHeader(requestMessage);
 
@@ -41,6 +40,17 @@ public class ApiClient : IApiClient
         response.EnsureSuccessStatusCode();
 
         return default;
+    }
+
+    public async Task<ApiResponse<TResponse>> GetWithResponseCode<TResponse>(IGetApiRequest request)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, request.GetUrl);
+        AddAuthenticationHeader(requestMessage);
+        var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        return response.IsSuccessStatusCode
+            ? new ApiResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(responseContent), response.StatusCode, null)
+            : new ApiResponse<TResponse>(default, response.StatusCode, responseContent); 
     }
 
     public async Task<TResponse> Put<TResponse>(IPutApiRequest request)
