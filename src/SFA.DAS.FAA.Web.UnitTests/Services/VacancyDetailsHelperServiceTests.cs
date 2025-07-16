@@ -522,7 +522,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             DateTime closedDate = DateTime.Parse(dateString);
 
             // Act
-            var result = VacancyDetailsHelperService.GetClosedDate(closedDate);
+            var result = VacancyDetailsHelperService.GetClosedDate(closedDate.ToUniversalTime());
 
             // Assert
             result.Should().Be(expected);
