@@ -514,8 +514,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         }
 
         [Test]
-        [InlineAutoData("2024-06-01T15:30:00", "closed at 3:30pm on Saturday 1 June 2024")]
-        [InlineAutoData("2024-12-25T00:00:00", "closed at 12:00am on Wednesday 25 December 2024")]
+        [InlineAutoData("2024-06-01T15:30:00", "closed at 3:30pm on Saturday 1 June 2024 BST")]
+        [InlineAutoData("2024-12-25T00:00:00", "closed at 12:00am on Wednesday 25 December 2024 GMT")]
         public void GetClosedDate_ReturnsFormattedString_WhenClosedDateHasValue(string dateString, string expected)
         {
             // Arrange
