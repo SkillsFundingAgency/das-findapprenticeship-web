@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.WorkHistory
                 new PostJobApiRequest(command.ApplicationId, new PostJobApiRequest.PostJobApiRequestData());
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode<PostJobApiResponse>(
+                    x.Post<PostJobApiResponse>(
                         It.Is<PostJobApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                         && ((PostJobApiRequest.PostJobApiRequestData) r.Data).CandidateId == command.CandidateId
                                         && ((PostJobApiRequest.PostJobApiRequestData) r.Data).JobDescription == command.JobDescription

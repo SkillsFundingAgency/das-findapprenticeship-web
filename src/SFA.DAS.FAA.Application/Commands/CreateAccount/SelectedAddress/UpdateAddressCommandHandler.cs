@@ -30,7 +30,7 @@ public class UpdateAddressCommandHandler(IApiClient apiClient)
             Postcode = request.Postcode
         });
 
-        await apiClient.PostWithResponseCode<NullResponse>(postRequest);
+        await apiClient.Post<NullResponse>(postRequest);
 
         return Unit.Value;
     }

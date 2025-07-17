@@ -20,7 +20,7 @@ public class WhenHandlingUpsertCandidatePreferencesCommand
         var expectedApiRequest = new UpsertCandidatePreferencesApiRequest(command.CandidateId, new UpsertCandidatePreferencesData());
 
         apiClient.Setup(x =>
-                x.PostWithResponseCode(It.Is<UpsertCandidatePreferencesApiRequest>(c =>
+                x.Post(It.Is<UpsertCandidatePreferencesApiRequest>(c =>
                 c.PostUrl.Equals(expectedApiRequest.PostUrl))))
                 .Returns(() => Task.CompletedTask);
 

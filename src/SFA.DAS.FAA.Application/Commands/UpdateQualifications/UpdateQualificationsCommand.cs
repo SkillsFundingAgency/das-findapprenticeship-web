@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Application.Commands.UpdateQualifications
             };
             var apiRequest = new PostQualificationsApiRequest(request.ApplicationId, data);
 
-            await apiClient.PostWithResponseCode(apiRequest);
+            await apiClient.Post(apiRequest);
         }
     }
 }

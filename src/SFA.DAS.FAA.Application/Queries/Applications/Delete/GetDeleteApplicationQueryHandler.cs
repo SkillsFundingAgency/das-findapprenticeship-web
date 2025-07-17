@@ -1,6 +1,6 @@
-﻿using System.Net;
-using MediatR;
+﻿using MediatR;
 using SFA.DAS.FAA.Domain.Applications.DeleteApplication;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.Models;
 
@@ -10,11 +10,12 @@ public class GetDeleteApplicationQueryHandler(IApiClient apiClient) : IRequestHa
 {
     public async Task<GetDeleteApplicationQueryResult> Handle(GetDeleteApplicationQuery request, CancellationToken cancellationToken)
     {
-        var response = await apiClient.GetWithResponseCode<GetConfirmDeleteApplicationApiResponse?>(
-            new GetConfirmDeleteApplicationApiRequest(request.ApplicationId, request.CandidateId)
+        var response = await apiClient.GetWithResponseCodeAsync<GetConfirmDeleteApplicationApiResponse>(
+            new GetConfirmDeleteApplicationApiRequest(request.ApplicationId, request.CandidateId),
+            cancellationToken
         );
 
-        if (response.StatusCode is not HttpStatusCode.OK)
+        if (!response.StatusCode.IsSuccessCode())
         {
             return GetDeleteApplicationQueryResult.None;
         }

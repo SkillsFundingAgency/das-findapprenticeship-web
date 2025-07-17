@@ -10,7 +10,7 @@ namespace SFA.DAS.FAA.Application.Commands.User.PostAccountDeletion
         {
             var apiRequest = new PostUserAccountDeletionApiRequest(command.CandidateId);
 
-            await ApiClient.PostWithResponseCode(apiRequest);
+            await ApiClient.Post(apiRequest);
         }
     }
 }

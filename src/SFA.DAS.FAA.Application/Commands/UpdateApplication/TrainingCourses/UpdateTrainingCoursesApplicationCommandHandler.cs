@@ -15,7 +15,7 @@ public class UpdateTrainingCoursesApplicationCommandHandler(IApiClient apiClient
                 TrainingCoursesSectionStatus = request.TrainingCoursesSectionStatus
             });
 
-        var response = await apiClient.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(postRequest);
+        var response = await apiClient.Post<Domain.Apply.UpdateApplication.Application>(postRequest);
 
         return new UpdateTrainingCoursesApplicationCommandResult
         {

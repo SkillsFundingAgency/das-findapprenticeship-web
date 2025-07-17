@@ -17,7 +17,7 @@ public class WhenHandlingDeleteSavedSearch
         // arrange
         PostDeleteSavedSearchRequest? passedRequest = null;
         apiClient
-            .Setup(x => x.PostWithResponseCode(It.IsAny<PostDeleteSavedSearchRequest>()))
+            .Setup(x => x.Post(It.IsAny<PostDeleteSavedSearchRequest>()))
             .Callback<IPostApiRequest>(x => passedRequest = x as PostDeleteSavedSearchRequest);
         
         // act

@@ -16,7 +16,7 @@ public class UpdateSkillsAndStrengthsCommandHandler(IApiClient apiClient) : IReq
                         SkillsAndStrengthsSectionStatus = request.SkillsAndStrengthsSectionStatus
                     });
 
-        var updateApplicationResponse = await apiClient.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(postUpdateApplicationRequest);
+        var updateApplicationResponse = await apiClient.Post<Domain.Apply.UpdateApplication.Application>(postUpdateApplicationRequest);
 
         return new UpdateSkillsAndStrengthsCommandResult
         {

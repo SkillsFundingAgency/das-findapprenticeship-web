@@ -24,13 +24,13 @@ public class WhenHandlingUpdateSkillsAndStrengthsCommand
             SkillsAndStrengthsSectionStatus = command.SkillsAndStrengthsSectionStatus
         });
 
-        apiClient.Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostUpdateApplicationRequest)).ReturnsAsync(apiResponse);
+        apiClient.Setup(client => client.Post<Domain.Apply.UpdateApplication.Application>(expectedPostUpdateApplicationRequest)).ReturnsAsync(apiResponse);
 
         var expectedPostSkillsAndStrengthsApiRequest =
             new Domain.Apply.CreateSkillsAndStrengths.PostSkillsAndStrengthsApiRequest(command.ApplicationId, new Domain.Apply.CreateSkillsAndStrengths.PostSkillsAndStrengthsApiRequest.PostCreateSkillsAndStrengthsRequestData());
 
         apiClient.Setup(x =>
-                x.PostWithResponseCode(
+                x.Post(
                     It.Is<Domain.Apply.CreateSkillsAndStrengths.PostSkillsAndStrengthsApiRequest>(r => r.PostUrl == expectedPostSkillsAndStrengthsApiRequest.PostUrl)
                     ))
             .Returns(() => Task.CompletedTask);

@@ -1,6 +1,3 @@
-﻿namespace SFA.DAS.FAA.Infrastructure.Api
-{
-    public class NullResponse
-    {
-    }
-}
+﻿namespace SFA.DAS.FAA.Infrastructure.Api;
+
+public record NullResponse;

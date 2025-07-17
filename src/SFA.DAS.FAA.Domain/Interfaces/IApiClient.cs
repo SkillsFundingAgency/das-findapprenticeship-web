@@ -1,12 +1,12 @@
-namespace SFA.DAS.FAA.Domain.Interfaces
+namespace SFA.DAS.FAA.Domain.Interfaces;
+
+public interface IApiClient
 {
-    public interface IApiClient
-    {
-        Task<TResponse> Get<TResponse>(IGetApiRequest request);
-        Task<ApiResponse<TResponse>> GetWithResponseCode<TResponse>(IGetApiRequest request);
-        Task<TResponse> Put<TResponse>(IPutApiRequest request);
-        Task<TResponse?> PostWithResponseCode<TResponse>(IPostApiRequest request);
-        Task<ApiResponse<TResponse>> PutWithResponseCode<TResponse>(IPutApiRequest request);
-        Task PostWithResponseCode(IPostApiRequest request);
-    }
+    Task<TResponse> Get<TResponse>(IGetApiRequest request);
+    Task<ApiResponse<TResponse>> GetWithResponseCodeAsync<TResponse>(IGetApiRequest request, CancellationToken cancellationToken = default);
+    Task<TResponse> Put<TResponse>(IPutApiRequest request);
+    Task<ApiResponse<TResponse>> PostWithResponseCodeAsync<TResponse>(IPostApiRequest request, CancellationToken cancellationToken = default);
+    Task<ApiResponse<TResponse>> PutWithResponseCode<TResponse>(IPutApiRequest request);
+    Task Post(IPostApiRequest request);
+    Task<TResponse?> Post<TResponse>(IPostApiRequest request);
 }

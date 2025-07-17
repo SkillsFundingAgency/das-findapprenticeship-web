@@ -12,7 +12,7 @@ namespace SFA.DAS.FAA.Application.Commands.CreateAccount.CandidateStatus
 
             if (candidateResponse.Status == UserStatus.InProgress)
             {
-                await apiClient.PostWithResponseCode(new UpdateCandidateStatusApiRequest(request.GovIdentifier, new UpdateCandidateStatusApiRequest.UpdateCandidateStatusApiRequestData
+                await apiClient.Post(new UpdateCandidateStatusApiRequest(request.GovIdentifier, new UpdateCandidateStatusApiRequest.UpdateCandidateStatusApiRequestData
                 {
                     Email = request.CandidateEmail,
                     Status = UserStatus.Completed

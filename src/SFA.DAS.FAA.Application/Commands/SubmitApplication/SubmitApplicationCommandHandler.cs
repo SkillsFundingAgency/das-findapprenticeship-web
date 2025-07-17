@@ -9,7 +9,7 @@ public class SubmitApplicationCommandHandler(IApiClient apiClient) : IRequestHan
     public async Task<Unit> Handle(SubmitApplicationCommand request, CancellationToken cancellationToken)
     {
         var apiRequest = new SubmitPreviewApplicationRequest(request.CandidateId, request.ApplicationId);
-        await apiClient.PostWithResponseCode(apiRequest);
+        await apiClient.Post(apiRequest);
         return new Unit();
     }
 }

@@ -18,7 +18,7 @@ public record UpdateDisabilityConfidenceApplicationCommandHandler(IApiClient Api
                 IsSectionCompleted = request.IsSectionCompleted
             });
 
-        var response = await ApiClient.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(postRequest);
+        var response = await ApiClient.Post<Domain.Apply.UpdateApplication.Application>(postRequest);
 
         return new UpdateDisabilityConfidenceApplicationCommandResult
         {

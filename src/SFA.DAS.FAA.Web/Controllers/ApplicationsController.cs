@@ -23,8 +23,8 @@ namespace SFA.DAS.FAA.Web.Controllers;
 public class ApplicationsController(IMediator mediator, IDateTimeService dateTimeService, ICacheStorageService cacheStorageService, INotificationCountService notificationCountService) : Controller
 {
     private const string ApplicationPreviewViewPath = "~/Views/applications/ViewApplication.cshtml";
-
-
+    private string ApplicationDeletedCacheKey => $"{User.Claims.GovIdentifier()}-application-deleted";
+    
     private async Task<string?> GetAndRemoveCachedMessage(string key)
     {
         var result = await cacheStorageService.Get<string>(key);
@@ -36,13 +36,12 @@ public class ApplicationsController(IMediator mediator, IDateTimeService dateTim
         return result;
     }
 
-
     [Route("applications", Name = RouteNames.Applications.ViewApplications)]
     public async Task<IActionResult> Index(ApplicationsTab tab = ApplicationsTab.Started, bool showEqualityQuestionsBanner = false)
     {
         var bannerMessage = await GetAndRemoveCachedMessage($"{User.Claims.GovIdentifier()}-VacancyWithdrawn"); 
         var applicationSubmittedBannerMessage = await GetAndRemoveCachedMessage($"{User.Claims.GovIdentifier()}-ApplicationSubmitted"); 
-        var deletedApplicationMessage = await GetAndRemoveCachedMessage($"{User.Claims.GovIdentifier()}-application-deleted"); 
+        var deletedApplicationMessage = await GetAndRemoveCachedMessage(ApplicationDeletedCacheKey); 
 
         var result = await mediator.Send(new GetIndexQuery
         {
@@ -148,9 +147,9 @@ public class ApplicationsController(IMediator mediator, IDateTimeService dateTim
     }
         
     [HttpGet, Route("applications/{applicationId}/delete", Name = RouteNames.Applications.DeleteApplicationGet)]
-    public async Task<IActionResult> ConfirmDelete([FromRoute]Guid applicationId)
+    public async Task<IActionResult> ConfirmDelete([FromRoute]Guid applicationId, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new GetDeleteApplicationQuery(User.Claims.CandidateId()!.Value, applicationId));
+        var result = await mediator.Send(new GetDeleteApplicationQuery(User.Claims.CandidateId()!.Value, applicationId), cancellationToken);
         if (result == GetDeleteApplicationQueryResult.None)
         {
             return RedirectToRoute(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started });
@@ -176,18 +175,18 @@ public class ApplicationsController(IMediator mediator, IDateTimeService dateTim
     }
         
     [HttpPost, Route("applications/{applicationId:guid}/delete", Name = RouteNames.Applications.DeleteApplicationPost)]
-    public async Task<IActionResult> Delete([FromRoute]Guid applicationId)
+    public async Task<IActionResult> Delete([FromRoute]Guid applicationId, CancellationToken cancellationToken)
     {
         if (applicationId == Guid.Empty)
         {
             return RedirectToRoute(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started });
         }
             
-        var result = await mediator.Send(new DeleteApplicationCommand(User.Claims.CandidateId()!.Value, applicationId));
+        var result = await mediator.Send(new DeleteApplicationCommand(User.Claims.CandidateId()!.Value, applicationId), cancellationToken);
         if (result.Success)
         {
             var message = $"Application deleted for {result.VacancyTitle} at {result.EmployerName}";
-            await cacheStorageService.Set<string?>($"{(Guid)User.Claims.CandidateId()!}-application-deleted", message);
+            await cacheStorageService.Set(ApplicationDeletedCacheKey, message);
         }
             
         return RedirectToRoute(RouteNames.Applications.ViewApplications, new { tab = ApplicationsTab.Started });

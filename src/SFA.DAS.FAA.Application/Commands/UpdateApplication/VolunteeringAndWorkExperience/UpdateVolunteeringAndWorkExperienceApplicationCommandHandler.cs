@@ -17,7 +17,7 @@ public class UpdateVolunteeringAndWorkExperienceApplicationCommandHandler(IApiCl
                 VolunteeringAndWorkExperienceSectionStatus = request.VolunteeringAndWorkExperienceSectionStatus
             });
 
-        var response = await apiClient.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(postRequest);
+        var response = await apiClient.Post<Domain.Apply.UpdateApplication.Application>(postRequest);
 
         return new UpdateVolunteeringAndWorkExperienceApplicationCommandResult
         {

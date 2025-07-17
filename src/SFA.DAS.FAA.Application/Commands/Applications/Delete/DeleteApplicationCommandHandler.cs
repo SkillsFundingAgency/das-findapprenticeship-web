@@ -1,7 +1,8 @@
-﻿using MediatR;
+﻿using System.Net;
+using MediatR;
 using SFA.DAS.FAA.Domain.Applications.DeleteApplication;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.FAA.Infrastructure.Api;
 
 namespace SFA.DAS.FAA.Application.Commands.Applications.Delete;
 
@@ -9,10 +10,18 @@ public class DeleteApplicationCommandHandler(IApiClient apiClient): IRequestHand
 {
     public async Task<DeleteApplicationCommandResult> Handle(DeleteApplicationCommand request, CancellationToken cancellationToken)
     {
-        var response = await apiClient.PostWithResponseCode<NullResponse>(
-            new PostDeleteApplicationApiRequest(request.ApplicationId, request.CandidateId)
+        var response = await apiClient.PostWithResponseCodeAsync<PostDeleteApplicationApiResponse>(
+            new PostDeleteApplicationApiRequest(request.ApplicationId, request.CandidateId),
+            cancellationToken
         );
-        
-        return new DeleteApplicationCommandResult { Success = false };
+
+        return response.StatusCode.IsSuccessCode()
+            ? new DeleteApplicationCommandResult
+                {
+                    Success = true,
+                    EmployerName = response.Body.EmployerName,
+                    VacancyTitle = response.Body.VacancyTitle,
+                }
+            : new DeleteApplicationCommandResult { Success = false };
     }
 }

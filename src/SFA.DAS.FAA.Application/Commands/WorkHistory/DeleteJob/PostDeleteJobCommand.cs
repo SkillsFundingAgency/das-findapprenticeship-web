@@ -1,11 +1,10 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob
+namespace SFA.DAS.FAA.Application.Commands.WorkHistory.DeleteJob;
+
+public class PostDeleteJobCommand : IRequest<Unit>
 {
-    public class PostDeleteJobCommand : IRequest<Unit>
-    {
-        public Guid JobId { get; set; }
-        public Guid ApplicationId { get; set; }
-        public Guid CandidateId { get; set; }
-    }
+    public Guid JobId { get; set; }
+    public Guid ApplicationId { get; set; }
+    public Guid CandidateId { get; set; }
 }

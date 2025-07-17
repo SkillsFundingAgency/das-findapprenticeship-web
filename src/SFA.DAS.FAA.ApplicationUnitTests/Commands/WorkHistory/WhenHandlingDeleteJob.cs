@@ -1,9 +1,9 @@
 ﻿using AutoFixture.NUnit3;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.DeleteJob;
 using SFA.DAS.FAA.Domain.Apply.WorkHistory;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 using SFA.DAS.Testing.AutoFixture;
 
 
@@ -22,11 +22,11 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.WorkHistory
                 CandidateId = command.CandidateId,
             });
 
-            apiClient.Setup(client => client.PostWithResponseCode(It.Is<PostDeleteJobApiRequest>(r => r.PostUrl == expectedRequest.PostUrl)));
+            apiClient.Setup(client => client.Post(It.Is<PostDeleteJobApiRequest>(r => r.PostUrl == expectedRequest.PostUrl)));
 
             await handler.Handle(command, CancellationToken.None);
 
-            apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<PostDeleteJobApiRequest>()), Times.Once);
+            apiClient.Verify(x => x.Post(It.IsAny<PostDeleteJobApiRequest>()), Times.Once);
         }
     }
 }

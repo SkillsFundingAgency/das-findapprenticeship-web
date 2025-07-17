@@ -27,7 +27,7 @@ public class WhenHandlingCreateUserAddressEnteredManuallyCommand
             Postcode = command.Postcode
         });
         apiClientMock.Setup(x =>
-                x.PostWithResponseCode(It.Is<CreateUserManuallyEnteredAddressApiRequest>(c =>
+                x.Post(It.Is<CreateUserManuallyEnteredAddressApiRequest>(c =>
                 c.PostUrl.Equals(request.PostUrl)
                     && ((CreateUserAddressApiRequestData)c.Data).Email.Equals(command.Email)
                 )))

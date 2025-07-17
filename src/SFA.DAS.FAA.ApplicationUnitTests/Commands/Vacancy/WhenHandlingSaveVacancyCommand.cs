@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Vacancy
                 new PostSaveVacancyApiRequest(command.CandidateId, new PostSaveVacancyApiRequestData{ VacancyId = command.VacancyId});
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode<PostSaveVacancyApiResponse>(
+                    x.Post<PostSaveVacancyApiResponse>(
                         It.Is<PostSaveVacancyApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                                               && ((PostSaveVacancyApiRequestData)r.Data).VacancyId == command.VacancyId
                         )))
@@ -44,7 +44,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Vacancy
                 new PostSaveVacancyApiRequest(command.CandidateId, new PostSaveVacancyApiRequestData { VacancyId = command.VacancyId });
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode<PostSaveVacancyApiResponse>(
+                    x.Post<PostSaveVacancyApiResponse>(
                         It.Is<PostSaveVacancyApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                                               && ((PostSaveVacancyApiRequestData)r.Data).VacancyId == command.VacancyId 
                         )))

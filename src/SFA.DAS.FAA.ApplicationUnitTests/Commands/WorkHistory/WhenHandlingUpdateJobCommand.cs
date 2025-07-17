@@ -21,7 +21,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.WorkHistory
                 new PostUpdateJobApiRequest(command.ApplicationId, command.JobId, new PostUpdateJobApiRequest.PostUpdateJobApiRequestData());
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode(
+                    x.Post(
                         It.Is<PostJobApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                         && ((PostJobApiRequest.PostJobApiRequestData)r.Data).CandidateId == command.CandidateId
                                         && ((PostJobApiRequest.PostJobApiRequestData)r.Data).JobDescription == command.JobDescription
@@ -34,7 +34,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.WorkHistory
 
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
-            apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<IPostApiRequest>()), Times.Once);
+            apiClient.Verify(x => x.Post(It.IsAny<IPostApiRequest>()), Times.Once);
         }
     }
 }

@@ -26,7 +26,7 @@ public class WhenHandlingUpdateInterviewAdjustmentsCommand
                 InterviewAdjustmentsSectionStatus = command.InterviewAdjustmentsSectionStatus
             });
 
-        apiClient.Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostUpdateApplicationRequest)).ReturnsAsync(apiResponse);
+        apiClient.Setup(client => client.Post<Domain.Apply.UpdateApplication.Application>(expectedPostUpdateApplicationRequest)).ReturnsAsync(apiResponse);
 
         var result = await handler.Handle(command, It.IsAny<CancellationToken>());
 

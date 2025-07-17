@@ -36,7 +36,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             var apiClient = new ApiClient(client, configMock.Object);
 
             //Act
-            var actual = await apiClient.PostWithResponseCode<List<string>>(postTestRequest);
+            var actual = await apiClient.Post<List<string>>(postTestRequest);
 
             //Assert
             actual.Should().BeEquivalentTo(testObject);
@@ -63,7 +63,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             var apiClient = new ApiClient(client, configMock.Object);
 
             //Act Assert
-            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.PostWithResponseCode<List<string>>(postTestRequest));
+            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Post<List<string>>(postTestRequest));
         }
 
         [Test, AutoData]
@@ -87,7 +87,7 @@ namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api
             var apiClient = new ApiClient(client, configMock.Object);
 
             //Act Assert
-            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.PostWithResponseCode<List<string>>(postTestRequest));
+            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Post<List<string>>(postTestRequest));
         }
     }
 
