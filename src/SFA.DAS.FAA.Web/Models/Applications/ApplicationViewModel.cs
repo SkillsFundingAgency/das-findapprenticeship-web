@@ -17,6 +17,7 @@ public class ApplicationViewModel
             ApplicationQuestions = source.ApplicationQuestions,
             DisabilityConfidence = source.DisabilityConfidence,
             EducationHistory = source.EducationHistory,
+            EmploymentLocation = source.EmploymentLocation,
             InterviewAdjustments = source.InterviewAdjustments,
             WorkHistory = source.WorkHistory,
             IsDisabilityConfident = source.IsDisabilityConfident,
@@ -32,6 +33,7 @@ public class ApplicationViewModel
     }
 
     public string? BannerMessage => GetBannerMessage();
+    public bool ShowLocationSection => EmploymentLocation is { EmployerLocationOption: AvailableWhere.MultipleLocations, EmploymentAddress.Count: > 0 };
     public ApplicationStatus ApplicationStatus { get; set; }
     public DateTime? WithdrawnDate { get; set; }
     public DateTime? MigrationDate { get; set; }
@@ -46,6 +48,7 @@ public class ApplicationViewModel
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
     public AboutYouSection AboutYou { get; init; } = new();
     public VacancyDetailsSection VacancyDetails { get; init; } = new();
+    public EmploymentLocationSection? EmploymentLocation { get; init; } = new();
 
     private ApprenticeshipTypes? ApprenticeshipType { get; init; } = ApprenticeshipTypes.Standard;
     public bool ShowFoundationTag => ApprenticeshipType == ApprenticeshipTypes.Foundation;
@@ -61,6 +64,30 @@ public class ApplicationViewModel
             {
                 EmployerName = source.EmployerName,
                 Title = source.Title
+            };
+        }
+    }
+
+    public record EmploymentLocationSection
+    {
+        public List<EmploymentLocationViewModel>? EmploymentAddress { get; init; }
+        public AvailableWhere? EmployerLocationOption { get; set; }
+
+        public static implicit operator EmploymentLocationSection?(GetApplicationViewQueryResult.EmploymentLocationSection? source)
+        {
+            if (source?.Addresses == null || source.Addresses.All(x => !x.IsSelected))
+                return null;
+
+            var addresses = source.Addresses
+            .Where(x => x.IsSelected)
+            .Select(x => (EmploymentLocationViewModel)x)
+            .OrderBy(add => add.AddressOrder)
+            .ToList();
+
+            return new EmploymentLocationSection
+            {
+                EmploymentAddress = addresses,
+                EmployerLocationOption = source.EmployerLocationOption,
             };
         }
     }
