@@ -26,7 +26,7 @@ public record AddVolunteeringAndWorkExperienceCommandHandler : IRequestHandler<A
 
         var apiRequest = new PostVolunteeringAndWorkExperienceRequest(request.ApplicationId, data);
 
-        var apiResponse = await _apiClient.PostWithResponseCode<PostVolunteeringAndWorkExperienceResponse>(apiRequest);
+        var apiResponse = await _apiClient.Post<PostVolunteeringAndWorkExperienceResponse>(apiRequest);
 
         if (apiResponse != null)
             return new AddVolunteeringAndWorkExperienceCommandResult

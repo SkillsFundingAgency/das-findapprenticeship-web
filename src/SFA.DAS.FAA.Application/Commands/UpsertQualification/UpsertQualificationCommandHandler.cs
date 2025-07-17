@@ -8,7 +8,7 @@ public class UpsertQualificationCommandHandler(IApiClient apiClient) : IRequestH
 {
     public async Task<Unit> Handle(UpsertQualificationCommand request, CancellationToken cancellationToken)
     {
-        await apiClient.PostWithResponseCode(new PostUpsertQualificationsApiRequest(request.ApplicationId,
+        await apiClient.Post(new PostUpsertQualificationsApiRequest(request.ApplicationId,
             request.QualificationReferenceId,
             new PostUpsertQualificationsApiRequest.PostUpsertQualificationsApiRequestData
             {

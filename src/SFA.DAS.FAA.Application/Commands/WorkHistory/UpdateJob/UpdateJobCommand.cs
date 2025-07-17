@@ -39,7 +39,7 @@ namespace SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob
 
             var apiRequest = new PostUpdateJobApiRequest(request.ApplicationId, request.JobId, data);
 
-            await _apiClient.PostWithResponseCode(apiRequest);
+            await _apiClient.Post(apiRequest);
         }
     }
 }

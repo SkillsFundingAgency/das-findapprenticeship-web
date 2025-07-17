@@ -10,6 +10,6 @@ public class DeleteSavedSearchCommandHandler(IApiClient apiClient) : IRequestHan
     public async Task Handle(DeleteSavedSearchCommand request, CancellationToken cancellationToken)
     {
         var apiRequest = new PostDeleteSavedSearchRequest(request.CandidateId, request.Id);
-        await apiClient.PostWithResponseCode(apiRequest);
+        await apiClient.Post(apiRequest);
     }
 }

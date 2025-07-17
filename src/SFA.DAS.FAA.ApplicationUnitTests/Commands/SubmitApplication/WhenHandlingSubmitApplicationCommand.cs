@@ -21,7 +21,7 @@ public class WhenHandlingSubmitApplicationCommand
         await handler.Handle(command, CancellationToken.None);
 
         apiClient.Verify(
-            x => x.PostWithResponseCode(It.Is<SubmitPreviewApplicationRequest>(c => c.PostUrl == expectedRequest.PostUrl)),
+            x => x.Post(It.Is<SubmitPreviewApplicationRequest>(c => c.PostUrl == expectedRequest.PostUrl)),
             Times.Once);
     }
 }
