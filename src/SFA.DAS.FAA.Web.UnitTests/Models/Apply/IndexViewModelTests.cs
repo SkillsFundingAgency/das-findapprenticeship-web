@@ -15,14 +15,15 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
             GetIndexQueryResult source)
         {
             var result = IndexViewModel.Map(dateTimeService.Object, request, source);
+            var isVacancyClosedEarly = source.ClosedDate.HasValue && source.ClosedDate < source.ClosingDate;
 
             using var scope = new AssertionScope();
             result.VacancyReference.Should().Be(source.VacancyReference);
             result.VacancyTitle.Should().Be(source.VacancyTitle);
             result.EmployerName.Should().Be(source.EmployerName);
             result.ClosingDate.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.ClosingDate));
-            result.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(source.ClosedDate));
-            result.IsVacancyClosedEarly.Should().Be(source.ClosedDate.HasValue && source.ClosedDate < source.ClosingDate);
+            result.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(source.ClosedDate, isVacancyClosedEarly));
+            result.IsVacancyClosedEarly.Should().Be(isVacancyClosedEarly);
             result.IsVacancyClosed.Should().BeTrue();
             result.IsDisabilityConfident.Should().Be(source.IsDisabilityConfident);
             result.EducationHistory.Qualifications.Should().Be(source.EducationHistory.Qualifications);

@@ -37,6 +37,7 @@ public class WhenGettingApplicationSubmitted
         };
 
         var actual = await controller.ApplicationSubmitted(applicationId) as ViewResult;
+        var isVacancyClosedEarly = result.ClosedDate.HasValue && result.ClosedDate < result.ClosingDate;
 
         actual?.Should().NotBeNull();
         var actualModel = actual!.Model as ApplicationSubmittedViewModel;
@@ -45,8 +46,8 @@ public class WhenGettingApplicationSubmitted
         actualModel.VacancyInfo.Should().NotBeNull();
         actualModel.VacancyInfo!.HasAnsweredEqualityQuestions.Should().Be(hasAnsweredEqualityQuestions);
         actualModel.IsVacancyClosed.Should().Be(result.ClosedDate.HasValue || result.ClosingDate < DateTime.UtcNow);
-        actualModel.IsVacancyClosedEarly.Should().Be(result.ClosedDate.HasValue && result.ClosedDate < result.ClosingDate);
-        actualModel.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(result.ClosedDate));
+        actualModel.IsVacancyClosedEarly.Should().Be(isVacancyClosedEarly);
+        actualModel.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(result.ClosedDate, isVacancyClosedEarly));
         mediator.Verify(x => x.Send(It.IsAny<GetApplicationSubmittedQuery>(), It.IsAny<CancellationToken>()), Times.Once);
         mediator.VerifyNoOtherCalls();
     }

@@ -28,8 +28,8 @@ public class ApplicationSummaryViewModel
             IsApplicationComplete = source.IsApplicationComplete,
             EmployerName = source.EmployerName,
             VacancyTitle = source.VacancyTitle,
-            ClosedDate = VacancyDetailsHelperService.GetClosedDate(source.ClosedDate),
-            IsVacancyClosedEarly = source.ClosedDate.HasValue && source.ClosedDate < source.ClosingDate,
+            ClosedDate = VacancyDetailsHelperService.GetClosedDate(source.ClosedDate, source.IsVacancyClosedEarly),
+            IsVacancyClosedEarly = source.IsVacancyClosedEarly,
         };
     }
 
@@ -47,6 +47,9 @@ public class ApplicationSummaryViewModel
     public bool IsVacancyClosedEarly { get; set; }
     public string? ClosedDate { get; set; }
     public string? ClosedBannerHeaderText => "Sorry, you cannot continue this application";
+    public string? ClosedBannerText => IsVacancyClosedEarly
+        ? "This vacancy has been closed early."
+        : "This vacancy has now closed.";
     public string? VacancyTitle { get; set; }
     public string? EmployerName { get; set; }
 

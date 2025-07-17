@@ -49,11 +49,12 @@ namespace SFA.DAS.FAA.Web.Services
                 : GetClosingDate(dateTimeService, closingDate, isExternalVacancy);    
         }
 
-        public static string GetClosedDate(DateTime? closedDate)
+        public static string GetClosedDate(DateTime? closedDate, bool isClosedEarly)
         {
-            return closedDate.HasValue
-                ? $"closed at {closedDate?.ToUkTimeWithDstLabel()}"
-                : string.Empty;
+            if(!closedDate.HasValue) return string.Empty;
+            return isClosedEarly 
+                ? $"was closed at {closedDate?.ToGdsDateStringWithTimeZone()}" 
+                : $"closed at {closedDate?.ToGdsDateStringWithTime()}";
         }
 
         public static int GetDaysUntilExpiry(IDateTimeService dateTimeService, DateTime closingDate)

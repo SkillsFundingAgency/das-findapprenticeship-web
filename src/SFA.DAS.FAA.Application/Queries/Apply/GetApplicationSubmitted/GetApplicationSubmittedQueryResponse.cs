@@ -8,6 +8,7 @@ public class GetApplicationSubmittedQueryResponse
     public bool HasAnsweredEqualityQuestions { get; set; }
     public DateTime ClosingDate { get; set; }
     public DateTime? ClosedDate { get; set; }
+    public bool IsVacancyClosedEarly => ClosedDate < ClosingDate;
 
     public static implicit operator GetApplicationSubmittedQueryResponse(GetApplicationSubmittedApiResponse source)
     {

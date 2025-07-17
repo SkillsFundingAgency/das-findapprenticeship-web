@@ -12,6 +12,7 @@ public class GetIndexQueryResult
     public string EmployerName { get; set; }
     public DateTime ClosingDate { get; set; }
     public DateTime? ClosedDate { get; set; }
+    public bool IsVacancyClosedEarly => ClosedDate < ClosingDate;
     public bool IsMigrated { get; set; }
     public bool IsDisabilityConfident { get; set; }
     public bool IsApplicationComplete { get; set; }

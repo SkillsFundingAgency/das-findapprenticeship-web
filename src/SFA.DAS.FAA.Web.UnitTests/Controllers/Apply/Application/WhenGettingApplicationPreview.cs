@@ -48,6 +48,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
             };
 
             var actual = await controller.Preview(applicationId) as ViewResult;
+            var isVacancyClosedEarly = queryResult.ClosedDate.HasValue && queryResult.ClosedDate < queryResult.ClosingDate;
             using (new AssertionScope())
             {
                 actual.Should().NotBeNull();
@@ -57,8 +58,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Application
                 actualModel.VacancyTitle.Should().Be(queryResult.VacancyTitle);
                 actualModel.EmployerName.Should().Be(queryResult.EmployerName);
                 actualModel.IsVacancyClosed.Should().Be(queryResult.ClosedDate.HasValue);
-                actualModel.IsVacancyClosedEarly.Should().Be(queryResult.ClosedDate.HasValue && queryResult.ClosedDate < queryResult.ClosingDate);
-                actualModel.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(queryResult.ClosedDate));
+                actualModel.IsVacancyClosedEarly.Should().Be(isVacancyClosedEarly);
+                actualModel.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(queryResult.ClosedDate, queryResult.IsVacancyClosedEarly));
             }
         }
 

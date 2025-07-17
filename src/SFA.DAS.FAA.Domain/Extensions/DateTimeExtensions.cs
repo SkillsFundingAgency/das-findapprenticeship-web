@@ -15,21 +15,28 @@ public static class DateTimeExtensions
     }
 
     /// <summary>
-    /// Formats a DateTime to a UK time string with DST label.
+    /// Formats a DateTime to a GDS date string with time.
     /// </summary>
     /// <param name="dateTime"></param>
     /// <returns></returns>
-    public static string ToUkTimeWithDstLabel(this DateTime dateTime)
+    public static string ToGdsDateStringWithTime(this DateTime dateTime)
     {
-        TimeZoneInfo ukTimeZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-        DateTime ukTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime.ToUniversalTime(), ukTimeZone);
-
-        string suffix = ukTimeZone.IsDaylightSavingTime(ukTime) ? "BST" : "GMT";
-
-        string formatted = ukTime.ToString("h:mmtt 'on' dddd d MMMM yyy", CultureInfo.InvariantCulture);
-
+        string formatted = dateTime.ToString("h:mmtt 'on' dddd d MMMM yyy", CultureInfo.InvariantCulture);
         return formatted
-                .Replace("AM", "am")
-                .Replace("PM", "pm") + $" {suffix}";
+            .Replace("AM", "am")
+            .Replace("PM", "pm");
+    }
+
+    /// <summary>
+    /// Formats a DateTime to a GDS date string with time and timezone.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static string ToGdsDateStringWithTimeZone(this DateTime dateTime)
+    {
+        string formatted = dateTime.ToString("h:mmtt '(GMT)' 'on' dddd d MMMM yyy", CultureInfo.InvariantCulture);
+        return formatted
+            .Replace("AM", "am")
+            .Replace("PM", "pm");
     }
 }

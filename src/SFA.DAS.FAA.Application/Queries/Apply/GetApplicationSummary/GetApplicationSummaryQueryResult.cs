@@ -10,6 +10,7 @@ public class GetApplicationSummaryQueryResult
     public CandidateDetailsSection Candidate { get; init; }
     public DateTime ClosingDate { get; set; }
     public DateTime? ClosedDate { get; set; }
+    public bool IsVacancyClosedEarly => ClosedDate < ClosingDate;
     public string? VacancyTitle { get; set; }
     public string? EmployerName { get; set; }
     public AboutYouSection AboutYou { get; init; }
