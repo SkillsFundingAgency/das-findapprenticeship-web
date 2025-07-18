@@ -5,6 +5,7 @@ using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models.Apply;
+using SFA.DAS.FAA.Web.Services;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply;
@@ -36,10 +37,18 @@ public class WhenGettingApplicationSubmitted
         };
 
         var actual = await controller.ApplicationSubmitted(applicationId) as ViewResult;
+        var isVacancyClosedEarly = result.ClosedDate.HasValue && result.ClosedDate < result.ClosingDate;
 
         actual?.Should().NotBeNull();
         var actualModel = actual!.Model as ApplicationSubmittedViewModel;
         actualModel?.ApplicationId.Should().Be(applicationId);
         actualModel!.PageTitle.Should().Be(expectedPageTitle);
+        actualModel.VacancyInfo.Should().NotBeNull();
+        actualModel.VacancyInfo!.HasAnsweredEqualityQuestions.Should().Be(hasAnsweredEqualityQuestions);
+        actualModel.IsVacancyClosed.Should().Be(result.ClosedDate.HasValue || result.ClosingDate < DateTime.UtcNow);
+        actualModel.IsVacancyClosedEarly.Should().Be(isVacancyClosedEarly);
+        actualModel.ClosedDate.Should().Be(VacancyDetailsHelperService.GetClosedDate(result.ClosedDate, isVacancyClosedEarly));
+        mediator.Verify(x => x.Send(It.IsAny<GetApplicationSubmittedQuery>(), It.IsAny<CancellationToken>()), Times.Once);
+        mediator.VerifyNoOtherCalls();
     }
 }

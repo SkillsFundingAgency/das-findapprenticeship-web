@@ -1,0 +1,25 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@model (string Title, string EmployerName, string headerText, string bodyText, string ClosedText)
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds govuk-!-margin-bottom-2">
+        <h2 class="govuk-heading-l govuk-!-margin-bottom-5 faa-flex-title">
+            @Model.headerText
+        </h2>
+        <div class="govuk-warning-text govuk-!-margin-bottom-4">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span>
+                    @(Model.bodyText)
+                </span>
+            </strong>
+        </div>
+        <p class="govuk-body govuk-!-margin-bottom-2">
+            <span>
+                @Model.Title at @Model.EmployerName @Model.ClosedText
+            </span>
+        </p>
+        <p class="govuk-body govuk-!-margin-bottom-2">
+            <a class="govuk-link govuk-link--no-visited-state" href="@Url.RouteUrl(RouteNames.ServiceStartDefault)">Search for apprenticeships</a>
+        </p>
+    </div>
+</div>

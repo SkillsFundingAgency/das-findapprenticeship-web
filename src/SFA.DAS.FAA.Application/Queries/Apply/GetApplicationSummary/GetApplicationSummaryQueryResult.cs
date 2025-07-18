@@ -8,6 +8,11 @@ public class GetApplicationSummaryQueryResult
     public bool IsDisabilityConfident { get; set; }
     public bool IsApplicationComplete { get; set; }
     public CandidateDetailsSection Candidate { get; init; }
+    public DateTime ClosingDate { get; set; }
+    public DateTime? ClosedDate { get; set; }
+    public bool IsVacancyClosedEarly => ClosedDate < ClosingDate;
+    public string? VacancyTitle { get; set; }
+    public string? EmployerName { get; set; }
     public AboutYouSection AboutYou { get; init; }
     public EducationHistorySection EducationHistory { get; init; }
     public WorkHistorySection WorkHistory { get; init; } 
@@ -30,7 +35,11 @@ public class GetApplicationSummaryQueryResult
             IsDisabilityConfident = source.IsDisabilityConfident,
             AboutYou = source.AboutYou,
             WhatIsYourInterest = source.WhatIsYourInterest,
-            IsApplicationComplete = source.IsApplicationComplete
+            IsApplicationComplete = source.IsApplicationComplete,
+            ClosedDate = source.ClosedDate,
+            ClosingDate = source.ClosingDate,
+            EmployerName = source.EmployerName,
+            VacancyTitle = source.VacancyTitle,
         };
     }
 
