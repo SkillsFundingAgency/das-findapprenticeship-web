@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Domain.Enums;
+﻿using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
 {
@@ -14,6 +15,7 @@ namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
         public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
         public DisabilityConfidenceSection DisabilityConfidence { get; set; }
         public WhatIsYourInterestSection WhatIsYourInterest { get; set; }
+        public EmploymentLocationSection? EmploymentLocation { get; set; }
         public string ApplicationStatus { get; set; }
         public DateTime? WithdrawnDate { get; set; }
         public DateTime? MigrationDate { get; set; }
@@ -76,6 +78,8 @@ namespace SFA.DAS.FAA.Domain.Apply.GetApplicationView
                 public string Name { get; set; }
             }
         }
+
+        public record EmploymentLocationSection : LocationDto;
 
         public record WorkHistorySection
         {
