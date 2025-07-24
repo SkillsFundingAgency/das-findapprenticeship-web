@@ -1,243 +1,252 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.FAA.Domain.Extensions
 @model SFA.DAS.FAA.Web.Models.Apply.IndexViewModel;
-
-@{
+@if (Model.IsVacancyClosed)
+{
+    ViewData["Title"] = "You cannot continue this application";
+    <partial name="_VacancyClosed" model="@ValueTuple.Create(Model.VacancyTitle, Model.EmployerName, Model.ClosedBannerHeaderText, Model.ClosedBannerText, Model.ClosedDate)" />
+}
+else
+{
     ViewData["Title"] = $"Apply for {Model.VacancyTitle} – Find an apprenticeship – GOV.UK";
-}
-
-@section BackLink {
+    @section BackLink {
     <a class="govuk-back-link" href="@Model.PageBackLink">Back</a>
-}
+    }
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-
-        @if (Model.ShowAccountCreatedBanner)
-        {
-            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
-                aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-                <div class="govuk-notification-banner__header">
-                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                        Success
-                    </h2>
-                </div>
-                <div class="govuk-notification-banner__content">
-                    <h3 class="govuk-notification-banner__heading">
-                        Account created. You can now start your application for this apprenticeship.
-                    </h3>
-                    <p class="govuk-body">You can change your account details at any point in
-                        <a class="govuk-notification-banner__link" asp-route="@RouteNames.Settings">Settings</a>.
-                    </p>
-                </div>
-            </div>
-        }
-
-        @if (Model.ShowPreviousAnswersBanner)
-        {
-            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-import"
-                data-module="govuk-notification-banner">
-                <div class="govuk-notification-banner__header">
-                    <h2 class="govuk-notification-banner__title" id="govuk-notification-import">
-                        Important
-                    </h2>
-                </div>
-                <div class="govuk-notification-banner__content">
-                    <p class="govuk-notification-banner__heading">We’ve imported your previous answers. Check they’re
-                        suitable for
-                        this application.</p>
-                    <p class="govuk-body">Answers from your application for <b>@Model.PreviousApplication.VacancyTitle</b>
-                        at <b>@Model.PreviousApplication.EmployerName</b> (submitted
-                        @Model.PreviousApplication.SubmissionDate.ToGdsDateString()).</p>
-                </div>
-            </div>
-        }
-
-        <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-4" />
-        <h1 class="govuk-heading-l">Apply for @Model.VacancyTitle</h1>
-        <p class="govuk-body-l govuk-!-margin-bottom-0">@Model.EmployerName</p>
-        <p class="govuk-body-l faa-vacancy__location govuk-!-margin-bottom-4">@Model.WorkLocation</p>
-        <p class="govuk-body">@Model.ClosingDate</p>
-        <p class="govuk-body">
-            <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="govuk-link"
-                target="_blank">
-                View vacancy (opens in new tab)
-            </a>
-        </p>
-
-        <h2 class="govuk-heading-m">Education history</h2>
-        <ul class="govuk-task-list">
-            <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.Qualifications"
-                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                        School, college and university qualifications
-                    </a>
-                </div>
-                <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.EducationHistory.Qualifications" />
-                </div>
-            </li>
-            <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.TrainingCourses"
-                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                        Training courses
-                    </a>
-                </div>
-                <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.EducationHistory.TrainingCourses" />
-                </div>
-            </li>
-        </ul>
-
-        <h2 class="govuk-heading-m govuk-!-margin-top-8">Work history</h2>
-        <ul class="govuk-task-list">
-            <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.Jobs" asp-route-applicationId="@Model.ApplicationId"
-                        class="govuk-link govuk-task-list__link">
-                        Jobs
-                    </a>
-                </div>
-                <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.WorkHistory.Jobs" />
-                </div>
-            </li>
-            <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience"
-                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                        Volunteering and work experience
-                    </a>
-                </div>
-                <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.WorkHistory.VolunteeringAndWorkExperience" />
-                </div>
-            </li>
-        </ul>
-
-        <h2 class="govuk-heading-m govuk-!-margin-top-8">Application questions</h2>
-        <ul class="govuk-task-list">
-            <li asp-hide="@Model.ApprenticeshipType.IsFoundation()" class="govuk-task-list__item govuk-task-list__item--with-link">
-                <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths"
-                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                        What are your skills and strengths?
-                    </a>
-                </div>
-                <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.ApplicationQuestions.SkillsAndStrengths" />
-                </div>
-            </li>
-            <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.WhatInterestsYou"
-                        asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                        What interests you about this apprenticeship?
-                    </a>
-                </div>
-                <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.ApplicationQuestions.WhatInterestsYou" />
-                </div>
-            </li>
-            @if (Model.ApplicationQuestions.ShowAdditionalQuestion1)
+            @if (Model.ShowAccountCreatedBanner)
             {
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                    <div class="govuk-task-list__name-and-hint">
-                        <a id="additionalquestion1" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
-                            asp-route-applicationId="@Model.ApplicationId"
-                            asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1Id"
-                            asp-route-additionalQuestion="1" class="govuk-link govuk-task-list__link">
-                            @Model.ApplicationQuestions.AdditionalQuestion1Label
-                        </a>
+                <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+                     aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                    <div class="govuk-notification-banner__header">
+                        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                            Success
+                        </h2>
                     </div>
-                    <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1" />
+                    <div class="govuk-notification-banner__content">
+                        <h3 class="govuk-notification-banner__heading">
+                            Account created. You can now start your application for this apprenticeship.
+                        </h3>
+                        <p class="govuk-body">
+                            You can change your account details at any point in
+                            <a class="govuk-notification-banner__link" asp-route="@RouteNames.Settings">Settings</a>.
+                        </p>
                     </div>
-                </li>
+                </div>
             }
-            @if (Model.ApplicationQuestions.ShowAdditionalQuestion2)
+
+            @if (Model.ShowPreviousAnswersBanner)
             {
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                    <div class="govuk-task-list__name-and-hint">
-                        <a id="additionalquestion2" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
-                            asp-route-applicationId="@Model.ApplicationId"
-                            asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2Id"
-                            asp-route-additionalQuestion="2" class="govuk-link govuk-task-list__link">
-                            @Model.ApplicationQuestions.AdditionalQuestion2Label
-                        </a>
+                <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-import"
+                     data-module="govuk-notification-banner">
+                    <div class="govuk-notification-banner__header">
+                        <h2 class="govuk-notification-banner__title" id="govuk-notification-import">
+                            Important
+                        </h2>
                     </div>
-                    <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion2" />
+                    <div class="govuk-notification-banner__content">
+                        <p class="govuk-notification-banner__heading">
+                            We’ve imported your previous answers. Check they’re
+                            suitable for
+                            this application.
+                        </p>
+                        <p class="govuk-body">
+                            Answers from your application for <b>@Model.PreviousApplication.VacancyTitle</b>
+                            at <b>@Model.PreviousApplication.EmployerName</b> (submitted
+                            @Model.PreviousApplication.SubmissionDate.ToGdsDateString()).
+                        </p>
                     </div>
-                </li>
+                </div>
             }
-        </ul>
 
-        <h2 class="govuk-heading-m govuk-!-margin-top-8">Interview adjustments</h2>
-        <ul class="govuk-task-list">
-            <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                <div class="govuk-task-list__name-and-hint">
-                    <a asp-route="@RouteNames.ApplyApprenticeship.InterviewAdjustments"
-                        asp-route-applicationId="@Model.ApplicationId" asp-route-isEdit="false"
-                        class="govuk-link govuk-task-list__link">
-                        Request adjustments on your application
-                    </a>
-                </div>
-                <div class="govuk-task-list__status">
-                    <gov-uk-tag status="@Model.InterviewAdjustments.RequestAdjustments" />
-                </div>
-            </li>
-        </ul>
-
-        @if (Model.IsDisabilityConfident)
-        {
-            <h2 class="govuk-heading-m govuk-!-margin-top-8">Disability Confident</h2>
-            <p class="govuk-body">This company has joined the government's Disability Confident scheme</p>
-            <ul class="govuk-task-list">
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                    <div class="govuk-task-list__name-and-hint">
-                        <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident"
-                            asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                            Interview under the Disability Confident Scheme
-                        </a>
-                    </div>
-                    <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.DisabilityConfidence.InterviewUnderDisabilityConfident" />
-                    </div>
-                </li>
-            </ul>
-        }
-        @if (Model.ShowLocationSection)
-        {
-            <h2 class="govuk-heading-m govuk-!-margin-top-8">Locations</h2>
-            <p class="govuk-body">This apprenticeship is available in different locations</p>
-            <ul class="govuk-task-list">
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                    <div class="govuk-task-list__name-and-hint">
-                        <a asp-route="@RouteNames.ApplyApprenticeship.AddEmploymentLocations"
-                           asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
-                            Where do you want to apply for?
-                        </a>
-                    </div>
-                    <div class="govuk-task-list__status">
-                        <gov-uk-tag status="@Model.EmploymentLocation.EmploymentLocationStatus" />
-                    </div>
-                </li>
-            </ul>
-        }
-        <div class="govuk-button-group govuk-!-margin-top-8">
-            @if (Model.IsApplicationComplete)
-            {
-                <a class="govuk-button" data-module="govuk-button" asp-route="@RouteNames.ApplyApprenticeship.Preview"
-                    asp-route-applicationId="@Model.ApplicationId">
-                    Continue
+            <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-4" />
+            <h1 class="govuk-heading-l">Apply for @Model.VacancyTitle</h1>
+            <p class="govuk-body-l govuk-!-margin-bottom-0">@Model.EmployerName</p>
+            <p class="govuk-body-l faa-vacancy__location govuk-!-margin-bottom-4">@Model.WorkLocation</p>
+            <p class="govuk-body">@Model.ClosingDate</p>
+            <p class="govuk-body">
+                <a asp-route="@RouteNames.Vacancies" asp-route-vacancyReference="@Model.VacancyReference" class="govuk-link"
+                   target="_blank">
+                    View vacancy (opens in new tab)
                 </a>
+            </p>
+
+            <h2 class="govuk-heading-m">Education history</h2>
+            <ul class="govuk-task-list">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.Qualifications"
+                           asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                            School, college and university qualifications
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.EducationHistory.Qualifications" />
+                    </div>
+                </li>
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.TrainingCourses"
+                           asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                            Training courses
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.EducationHistory.TrainingCourses" />
+                    </div>
+                </li>
+            </ul>
+
+            <h2 class="govuk-heading-m govuk-!-margin-top-8">Work history</h2>
+            <ul class="govuk-task-list">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.Jobs" asp-route-applicationId="@Model.ApplicationId"
+                           class="govuk-link govuk-task-list__link">
+                            Jobs
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.WorkHistory.Jobs" />
+                    </div>
+                </li>
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience"
+                           asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                            Volunteering and work experience
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.WorkHistory.VolunteeringAndWorkExperience" />
+                    </div>
+                </li>
+            </ul>
+
+            <h2 class="govuk-heading-m govuk-!-margin-top-8">Application questions</h2>
+            <ul class="govuk-task-list">
+                <li asp-hide="@Model.ApprenticeshipType.IsFoundation()" class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths"
+                           asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                            What are your skills and strengths?
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.ApplicationQuestions.SkillsAndStrengths" />
+                    </div>
+                </li>
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.WhatInterestsYou"
+                           asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                            What interests you about this apprenticeship?
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.ApplicationQuestions.WhatInterestsYou" />
+                    </div>
+                </li>
+                @if (Model.ApplicationQuestions.ShowAdditionalQuestion1)
+                {
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                        <div class="govuk-task-list__name-and-hint">
+                            <a id="additionalquestion1" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
+                               asp-route-applicationId="@Model.ApplicationId"
+                               asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion1Id"
+                               asp-route-additionalQuestion="1" class="govuk-link govuk-task-list__link">
+                                @Model.ApplicationQuestions.AdditionalQuestion1Label
+                            </a>
+                        </div>
+                        <div class="govuk-task-list__status">
+                            <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion1" />
+                        </div>
+                    </li>
+                }
+                @if (Model.ApplicationQuestions.ShowAdditionalQuestion2)
+                {
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                        <div class="govuk-task-list__name-and-hint">
+                            <a id="additionalquestion2" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
+                               asp-route-applicationId="@Model.ApplicationId"
+                               asp-route-additionalQuestionId="@Model.ApplicationQuestions.AdditionalQuestion2Id"
+                               asp-route-additionalQuestion="2" class="govuk-link govuk-task-list__link">
+                                @Model.ApplicationQuestions.AdditionalQuestion2Label
+                            </a>
+                        </div>
+                        <div class="govuk-task-list__status">
+                            <gov-uk-tag status="@Model.ApplicationQuestions.AdditionalQuestion2" />
+                        </div>
+                    </li>
+                }
+            </ul>
+
+            <h2 class="govuk-heading-m govuk-!-margin-top-8">Interview adjustments</h2>
+            <ul class="govuk-task-list">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.InterviewAdjustments"
+                           asp-route-applicationId="@Model.ApplicationId" asp-route-isEdit="false"
+                           class="govuk-link govuk-task-list__link">
+                            Request adjustments on your application
+                        </a>
+                    </div>
+                    <div class="govuk-task-list__status">
+                        <gov-uk-tag status="@Model.InterviewAdjustments.RequestAdjustments" />
+                    </div>
+                </li>
+            </ul>
+
+            @if (Model.IsDisabilityConfident)
+            {
+                <h2 class="govuk-heading-m govuk-!-margin-top-8">Disability Confident</h2>
+                <p class="govuk-body">This company has joined the government's Disability Confident scheme</p>
+                <ul class="govuk-task-list">
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                        <div class="govuk-task-list__name-and-hint">
+                            <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident"
+                               asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                                Interview under the Disability Confident Scheme
+                            </a>
+                        </div>
+                        <div class="govuk-task-list__status">
+                            <gov-uk-tag status="@Model.DisabilityConfidence.InterviewUnderDisabilityConfident" />
+                        </div>
+                    </li>
+                </ul>
             }
-            <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">Save and finish
-                later</a>
+            @if (Model.ShowLocationSection)
+            {
+                <h2 class="govuk-heading-m govuk-!-margin-top-8">Locations</h2>
+                <p class="govuk-body">This apprenticeship is available in different locations</p>
+                <ul class="govuk-task-list">
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                        <div class="govuk-task-list__name-and-hint">
+                            <a asp-route="@RouteNames.ApplyApprenticeship.AddEmploymentLocations"
+                               asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
+                                Where do you want to apply for?
+                            </a>
+                        </div>
+                        <div class="govuk-task-list__status">
+                            <gov-uk-tag status="@Model.EmploymentLocation.EmploymentLocationStatus" />
+                        </div>
+                    </li>
+                </ul>
+            }
+            <div class="govuk-button-group govuk-!-margin-top-8">
+                @if (Model.IsApplicationComplete)
+                {
+                    <a class="govuk-button" data-module="govuk-button" asp-route="@RouteNames.ApplyApprenticeship.Preview"
+                       asp-route-applicationId="@Model.ApplicationId">
+                        Continue
+                    </a>
+                }
+                <a class="govuk-link" href="@Url.RouteUrl(RouteNames.Applications.ViewApplications)">
+                    Save and finish
+                    later
+                </a>
+            </div>
         </div>
     </div>
-</div>
+}
