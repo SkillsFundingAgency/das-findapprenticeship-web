@@ -53,16 +53,16 @@
   padding: 0;
   color: $govuk-link-colour;
   cursor: pointer;
-  @include govuk-font-size(16);
+  @include govuk-font-size(19);
   @include govuk-media-query(tablet) {
     margin-right: 15px;
   }
 }
 
 .faa-vacancy-actions__icon {
-  max-height: 1em;
-  min-width: 1em;
-  margin-right: 5px;
+  max-height: 1.5rem;
+  min-width: 1.5rem;
+  margin-right: .5rem;
 }
 
 .faa-save-vacancy {
@@ -96,11 +96,6 @@
     margin-left: auto;
     .faa-vacancy-actions__link {
       margin-right: 0;
-      .faa-vacancy-actions__icon {
-        margin: 0;
-        width: 20px;
-        max-height: none;
-      }
     }
   }
 }
