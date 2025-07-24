@@ -179,35 +179,49 @@
         <div class="govuk-grid-column-two-thirds">
             <section class="faa-vacancy__section faa-vacancy__section--first" id="summary">
                 <h2 class="govuk-heading-m">Summary</h2>
-                <div asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text">
+                <div asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text govuk-body">
                     @if (User.Identity is { IsAuthenticated: false })
                     {
                         <p>
-                            Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
+                            Foundation apprenticeships are introductory courses that help young people get started in an industry. You do not need to have any specific qualifications or experience to apply. 
                         </p>
+                        <p>Anyone between 16 and 21 can start a foundation apprenticeship.</p>
+                        <p>If you're between 22 and 24, you can start if you:</p>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>have an EHC plan</li>
+                            <li>are in care or have been in care</li>
+                            <li>are in prison or have been in prison</li>
+                        </ul>
                     }
                     @if (User.Identity is { IsAuthenticated: true })
                     {
                         if (Model.CandidateIs21OrUnderAtStartOfVacancy)
                         {
-                            <p>
-                                Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply.
-                            </p>
+                            <p>Foundation apprenticeships are introductory courses that help young people get started in an industry. You do not need to have any specific qualifications or experience to apply.</p>
+                            <p>Anyone between 16 and 21 can start a foundation apprenticeship.</p>
+                            <p>If you're between 22 and 24, you can start if you:</p>
+                            <ul class="govuk-list govuk-list--bullet">
+                                <li>have an EHC plan</li>
+                                <li>are in care or have been in care</li>
+                                <li>are in prison or have been in prison</li>
+                            </ul>
                         }
                         if (Model.CandidateIs22To24AtStartOfVacancy)
                         {
-                            <p>
-                                Foundation apprenticeships help young people get into an industry. You do not need any specific grades or qualifications to apply.
-                            </p>
-                            <p>
-                                Only some people aged between 22 and 24 years old can apply for a foundation apprenticeship. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
-                            </p>
+                            <p><strong>As you're between 22 and 24</strong>, you can start this foundation apprenticeship if you:</p>
+                            <ul class="govuk-list govuk-list--bullet">
+                                <li>have an EHC plan</li>
+                                <li>are in care or have been in care</li>
+                                <li>are in prison or have been in prison</li>
+                            </ul>
+                            <p>Foundation apprenticeships are introductory courses that help young people get started in an industry. You do not need to have any specific qualifications or experience to apply.</p>
+                            <p><a href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships" class="govuk-link" rel="noreferrer noopener" target="_blank">About foundation apprenticeships (opens in new tab)</a>.</p>
                         }
                         if (Model.CandidateIs25OrOverAtStartOfVacancy)
                         {
-                            <p>
-                                People aged 25 years old or over cannot apply for foundation apprenticeships. See <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
-                            </p>
+                            <p><strong>You cannot apply for a foundation apprenticeship if you’re 25 or over.</strong></p>
+                            <p>Foundation apprenticeships are introductory courses that help young people get started in an industry.</p>
+                            <p><a href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships" class="govuk-link" rel="noreferrer noopener" target="_blank">About foundation apprenticeships (opens in new tab)</a>.</p>
                         }
                     }
                 </div>
@@ -439,7 +453,7 @@
                 <h2 class="govuk-heading-m">Requirements</h2>
                 
                 <p asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-hint">
-                    You do not need any specific qualifications to apply for a foundation apprenticeship.
+                    You do not need to have any specific qualifications or experience to apply for a foundation apprenticeship.
                 </p>
                 
                 @if (!Model.ApprenticeshipType.IsFoundation())
@@ -534,9 +548,15 @@
                 {
                     <h2 class="govuk-heading-m">Apply now</h2>
                     
-                    <p asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text">
-                        Foundation apprenticeships help young people get into an industry. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
-                    </p>
+                    <div asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text govuk-body">
+                        <p>Anyone between 16 and 21 can start a foundation apprenticeship.</p>
+                        <p>If you're between 22 and 24, you can start if you:</p>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>have an EHC plan</li>
+                            <li>are in care or have been in care</li>
+                            <li>are in prison or have been in prison</li>
+                        </ul>
+                    </div>
                     
                     <p>@Model.ClosingDate</p>
                     <p class="govuk-body">
@@ -575,18 +595,29 @@
                     {
                         <h2 class="govuk-heading-m">Apply now</h2>
 
-                        <div asp-show="@Model.ApprenticeshipType.IsFoundation() && (Model.CandidateIs22To24AtStartOfVacancy || Model.CandidateIs25OrOverAtStartOfVacancy)" class="govuk-inset-text faa-foundation-inset-text">
+                        <div asp-show="@(Model.ApprenticeshipType.IsFoundation() && (Model.CandidateIs21OrUnderAtStartOfVacancy || Model.CandidateIs22To24AtStartOfVacancy || Model.CandidateIs25OrOverAtStartOfVacancy))" class="govuk-inset-text faa-foundation-inset-text">
+                            @if (Model.CandidateIs21OrUnderAtStartOfVacancy)
+                            {
+                                <p>Anyone between 16 and 21 can start a foundation apprenticeship.</p>
+                                <p>If you're between 22 and 24, you can start if you:</p>
+                                <ul class="govuk-list govuk-list--bullet">
+                                    <li>have an EHC plan</li>
+                                    <li>are in care or have been in care</li>
+                                    <li>are in prison or have been in prison</li>
+                                </ul>
+                            }
                             @if (Model.CandidateIs22To24AtStartOfVacancy)
                             {
-                                <p>
-                                    Only some people aged between 22 and 24 years old can apply for a foundation apprenticeship. Check <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
-                                </p>
+                                <p>If you're between 22 and 24, you can start if you:</p>
+                                <ul class="govuk-list govuk-list--bullet">
+                                    <li>have an EHC plan</li>
+                                    <li>are in care or have been in care</li>
+                                    <li>are in prison or have been in prison</li>
+                                </ul>
                             }
                             @if (Model.CandidateIs25OrOverAtStartOfVacancy)
                             {
-                                <p>
-                                    People aged 25 years old or over cannot apply for foundation apprenticeships. See <a href="@Model.FoundationRequirementsUrl" class="govuk-link" rel="noreferrer noopener" target="_blank">who can do a foundation (opens in a new tab)</a>.
-                                </p>
+                                <p>You cannot apply for a foundation apprenticeship if you’re 25 or over.</p>
                             }
                         </div>
 
