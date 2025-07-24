@@ -22,6 +22,7 @@ public class GetIndexQueryResult
     public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
     public PreviousApplicationDetails? PreviousApplication { get; set; }
+    public EmploymentLocationSection? EmploymentLocation { get; set; }
     public AvailableWhere? EmployerLocationOption { get; set; }
     public Address? Address { get; set; }
     public List<Address>? OtherAddresses { get; set; }
@@ -37,6 +38,25 @@ public class GetIndexQueryResult
             {
                 Qualifications = source.Qualifications,
                 TrainingCourses = source.TrainingCourses
+            };
+        }
+    }
+    
+    public record EmploymentLocationSection : LocationDto
+    {
+        public SectionStatus EmploymentLocationStatus { get; set; }
+
+        public static implicit operator EmploymentLocationSection?(GetIndexApiResponse.EmploymentLocationSection? source)
+        {
+            if (source is null) return null;
+
+            return new EmploymentLocationSection
+            {
+                Id = source.Id,
+                Addresses = source.Addresses,
+                EmploymentLocationInformation = source.EmploymentLocationInformation,
+                EmployerLocationOption = source.EmployerLocationOption,
+                EmploymentLocationStatus = source.EmploymentLocationStatus
             };
         }
     }
@@ -141,6 +161,7 @@ public class GetIndexQueryResult
             IsDisabilityConfident = source.IsDisabilityConfident,
             IsApplicationComplete = source.IsApplicationComplete,
             EducationHistory = source.EducationHistory,
+            EmploymentLocation = source.EmploymentLocation,
             WorkHistory = source.WorkHistory,
             ApplicationQuestions = source.ApplicationQuestions,
             InterviewAdjustments = source.InterviewAdjustments,

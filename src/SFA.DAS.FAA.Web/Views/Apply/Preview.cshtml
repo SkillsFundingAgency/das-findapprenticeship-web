@@ -374,6 +374,36 @@ else
                     </dl>
                 </div>
             }
+            @if (Model.ShowLocationSection)
+            {
+                <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+                <div class="faa-flex-row">
+                    <h2 class="govuk-heading-m">Locations</h2>
+                    <p class="govuk-body">
+                        <a asp-route="@RouteNames.ApplyApprenticeship.AddEmploymentLocations" asp-route-applicationId="@Model.ApplicationId"
+                           class="govuk-link">
+                            Change<span class="govuk-visually-hidden"> Locations</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="faa-flex-row">
+                    <dl class="govuk-summary-list govuk-summary-list--no-border">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Where do you want to apply for?
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @foreach (var locationAddress in Model.EmploymentLocation?.EmploymentAddress!)
+                                    {
+                                        <li>@locationAddress.FullAddress</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            }
             <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
             <form class="form" method="post">
                 <div class="govuk-form-group">

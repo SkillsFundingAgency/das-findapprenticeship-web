@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.FAA.Domain.Apply.GetApplicationSummary;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 
@@ -20,6 +21,7 @@ public class GetApplicationSummaryQueryResult
     public InterviewAdjustmentsSection InterviewAdjustments { get; init; }
     public DisabilityConfidenceSection DisabilityConfidence { get; init; }
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; }
+    public EmploymentLocationSection? EmploymentLocation { get; init; }
 
 
     public static implicit operator GetApplicationSummaryQueryResult(GetApplicationSummaryApiResponse source)
@@ -32,6 +34,7 @@ public class GetApplicationSummaryQueryResult
             InterviewAdjustments = source.InterviewAdjustments,
             DisabilityConfidence = source.DisabilityConfidence,
             EducationHistory = source.EducationHistory,
+            EmploymentLocation = source.EmploymentLocation,
             IsDisabilityConfident = source.IsDisabilityConfident,
             AboutYou = source.AboutYou,
             WhatIsYourInterest = source.WhatIsYourInterest,
@@ -89,6 +92,25 @@ public class GetApplicationSummaryQueryResult
                 Town = source.Town,
                 County = source.County,
                 Postcode = source.Postcode,
+            };
+        }
+    }
+
+    public record EmploymentLocationSection : LocationDto
+    {
+        public SectionStatus EmploymentLocationStatus { get; set; }
+
+        public static implicit operator EmploymentLocationSection?(GetApplicationSummaryApiResponse.EmploymentLocationSection? source)
+        {
+            if (source is null) return null;
+
+            return new EmploymentLocationSection
+            {
+                Id = source.Id,
+                Addresses = source.Addresses,
+                EmploymentLocationInformation = source.EmploymentLocationInformation,
+                EmployerLocationOption = source.EmployerLocationOption,
+                EmploymentLocationStatus = source.EmploymentLocationStatus
             };
         }
     }

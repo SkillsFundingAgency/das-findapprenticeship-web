@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Domain.Apply.GetApplicationSummary;
 
@@ -18,7 +19,8 @@ public record GetApplicationSummaryApiResponse
     public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
     public WhatIsYourInterestSection WhatIsYourInterest { get; set; }
-    
+    public EmploymentLocationSection? EmploymentLocation { get; set; }
+
 
     public record CandidateDetailsSection
     {
@@ -72,6 +74,11 @@ public record GetApplicationSummaryApiResponse
             public Guid Id { get; set; }
             public string? Name { get; set; }
         }
+    }
+
+    public record EmploymentLocationSection : LocationDto
+    {
+        public SectionStatus EmploymentLocationStatus { get; set; }
     }
 
     public record WorkHistorySection

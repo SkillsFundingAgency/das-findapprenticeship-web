@@ -25,11 +25,18 @@ public record GetIndexApiResponse
     public InterviewAdjustmentsSection InterviewAdjustments { get; set; }
     public DisabilityConfidenceSection DisabilityConfidence { get; set; }
     public PreviousApplicationDetails? PreviousApplication { get; set; }
+    
+    public EmploymentLocationSection? EmploymentLocation { get; set; }
 
     public class EducationHistorySection
     {
         public SectionStatus Qualifications { get; set; }
         public SectionStatus TrainingCourses { get; set; }
+    }
+    
+    public record EmploymentLocationSection : LocationDto
+    {
+        public SectionStatus EmploymentLocationStatus { get; set; }
     }
 
     public class WorkHistorySection
