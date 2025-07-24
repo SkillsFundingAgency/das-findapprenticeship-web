@@ -54,7 +54,7 @@ namespace SFA.DAS.FAA.Web.Services
             if(!closedDate.HasValue) return string.Empty;
             return isClosedEarly 
                 ? $"was closed at {closedDate?.ToGdsDateStringWithTimeZone()}" 
-                : $"closed at {closedDate?.ToGdsDateStringWithTime()}";
+                : $"closed at 11:59pm on {closedDate?.ToGdsDateStringWithDayOfWeek()}";
         }
 
         public static int GetDaysUntilExpiry(IDateTimeService dateTimeService, DateTime closingDate)
