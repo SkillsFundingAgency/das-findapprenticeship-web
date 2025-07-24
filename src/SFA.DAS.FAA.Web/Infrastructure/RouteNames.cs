@@ -84,6 +84,8 @@ public static class RouteNames
         public const string VolunteeringAndWorkExperienceSummary = nameof(VolunteeringAndWorkExperienceSummary);
         public const string EditVolunteeringAndWorkExperience = nameof(EditVolunteeringAndWorkExperience);
         public const string AddAdditionalQuestion = nameof(AddAdditionalQuestion);
+        public const string AddEmploymentLocations = nameof(AddEmploymentLocations);
+        public const string EmploymentLocationsSummary = nameof(EmploymentLocationsSummary);
         public const string InterviewAdjustments = nameof(InterviewAdjustments);
         public const string InterviewAdjustmentsSummary = nameof(InterviewAdjustmentsSummary);
         public const string WhatInterestsYou = nameof(WhatInterestsYou);
