@@ -25,6 +25,8 @@ namespace SFA.DAS.FAA.Web.Models.Apply
                 VacancyTitle = source.VacancyTitle,
                 EmployerName = source.EmployerName,
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate),
+                ClosedDate = VacancyDetailsHelperService.GetClosedDate(source.ClosedDate, source.IsVacancyClosedEarly),
+                IsVacancyClosedEarly = source.IsVacancyClosedEarly,
                 IsDisabilityConfident = source.IsDisabilityConfident,
                 IsApplicationComplete = source.IsApplicationComplete,
                 EducationHistory = source.EducationHistory,
@@ -48,7 +50,14 @@ namespace SFA.DAS.FAA.Web.Models.Apply
         public ApprenticeshipTypes ApprenticeshipType { get; set; }
         public string EmployerName { get; set; }
         public string ClosingDate { get; set; }
+        public bool IsVacancyClosed => !string.IsNullOrEmpty(ClosedDate);
+        public bool IsVacancyClosedEarly { get; set; }
+        public string? ClosedDate { get; set; }
         public bool IsDisabilityConfident { get; set; }
+        public string ClosedBannerHeaderText => "Sorry, you cannot continue this application";
+        public string? ClosedBannerText => IsVacancyClosedEarly
+            ? "This vacancy has been closed early."
+            : "This vacancy has now closed.";
 
         public bool HasAnyPreviousAnswers => EducationHistory.TrainingCourses == SectionStatus.PreviousAnswer ||
                                              EducationHistory.Qualifications == SectionStatus.PreviousAnswer ||

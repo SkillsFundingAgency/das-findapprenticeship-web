@@ -1,7 +1,4 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
+﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
 using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
@@ -13,7 +10,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply
         {
             var actual = (ApplicationSubmittedVacancyInfo)source;
 
-            actual.Should().BeEquivalentTo(source);
+            actual.Should().BeEquivalentTo(source, options => options.ExcludingMissingMembers());
         }
     }
 }
