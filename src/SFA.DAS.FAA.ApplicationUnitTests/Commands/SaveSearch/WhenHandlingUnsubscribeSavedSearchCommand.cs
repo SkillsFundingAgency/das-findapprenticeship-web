@@ -18,7 +18,7 @@ public class WhenHandlingUnsubscribeSavedSearchCommand
         
         // Assert
         apiClient
-            .Verify(client => client.PostWithResponseCode(
+            .Verify(client => client.Post(
                     It.Is<PostSavedSearchUnsubscribeApiRequest>(c =>
                         c.PostUrl.Equals("saved-searches/unsubscribe") &&
                         ((PostSavedSearchUnsubscribeApiRequestData)c.Data).SavedSearchId

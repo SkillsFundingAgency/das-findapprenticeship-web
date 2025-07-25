@@ -16,7 +16,7 @@ namespace SFA.DAS.FAA.Application.Commands.UpdateApplication.ApplicationStatus
                     Status = request.Status
                 });
 
-            var response = await ApiClient.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(postRequest);
+            var response = await ApiClient.Post<Domain.Apply.UpdateApplication.Application>(postRequest);
 
             return new UpdateApplicationStatusCommandResult
             {

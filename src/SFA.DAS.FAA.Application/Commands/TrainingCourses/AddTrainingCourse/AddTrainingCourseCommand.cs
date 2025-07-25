@@ -37,7 +37,7 @@ namespace SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse
 
             var apiRequest = new PostTrainingCourseApiRequest(request.ApplicationId, data);
 
-            var apiResponse = await _apiClient.PostWithResponseCode<PostTrainingCourseApiResponse>(apiRequest);
+            var apiResponse = await _apiClient.Post<PostTrainingCourseApiResponse>(apiRequest);
 
             return new AddTrainingCourseCommandResponse
             {

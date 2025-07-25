@@ -14,7 +14,7 @@ namespace SFA.DAS.FAA.Application.Commands.CreateAccount.CheckAnswers
     {
         public async Task Handle(UpdateCheckAnswersCommand request, CancellationToken cancellationToken)
         {
-            await apiClient.PostWithResponseCode<NullResponse>(new UpdateCheckAnswersApiRequest(request.CandidateId));
+            await apiClient.Post<NullResponse>(new UpdateCheckAnswersApiRequest(request.CandidateId));
         }
     }
 }

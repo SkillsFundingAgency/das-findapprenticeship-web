@@ -19,7 +19,7 @@ namespace SFA.DAS.FAA.Application.Commands.EqualityQuestions
                     OtherEthnicSubGroupAnswer = request.OtherEthnicSubGroupAnswer
                 });
 
-            var response = await apiClient.PostWithResponseCode<PostEqualityQuestionsApiResponse>(postUpdateApplicationRequest);
+            var response = await apiClient.Post<PostEqualityQuestionsApiResponse>(postUpdateApplicationRequest);
 
             return new CreateEqualityQuestionsCommandResult
             {

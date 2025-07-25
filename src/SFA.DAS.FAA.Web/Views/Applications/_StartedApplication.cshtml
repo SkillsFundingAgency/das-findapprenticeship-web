@@ -22,10 +22,14 @@
         {
             <li>
                 <a class="govuk-link govuk-link--no-visited-state"
-                    href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id })">
+                   href="@Url.RouteUrl(RouteNames.Apply, new { ApplicationId = Model.Id })">
                     Continue application<span class="govuk-visually-hidden"> for @Model.Title</span>
                 </a>
             </li>
         }
+        <li>
+            <a id="@($"{Model.VacancyReference}-delete")" class="govuk-link" asp-route="@RouteNames.Applications.DeleteApplicationGet"
+               asp-route-applicationId="@Model.Id">Delete application<span class="govuk-visually-hidden"> for @Model.Title</span></a>
+        </li>
     </ul>
 </li>

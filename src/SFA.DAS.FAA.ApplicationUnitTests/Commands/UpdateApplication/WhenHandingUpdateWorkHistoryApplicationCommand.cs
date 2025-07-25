@@ -27,7 +27,7 @@ public class WhenHandingUpdateWorkHistoryApplicationCommand
             });
 
         apiClientMock
-            .Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostRequest))
+            .Setup(client => client.Post<Domain.Apply.UpdateApplication.Application>(expectedPostRequest))
             .ReturnsAsync(apiResponse);
 
         var result = await handler.Handle(command, CancellationToken.None);
@@ -50,7 +50,7 @@ public class WhenHandingUpdateWorkHistoryApplicationCommand
             });
 
         apiClientMock
-            .Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostRequest))
+            .Setup(client => client.Post<Domain.Apply.UpdateApplication.Application>(expectedPostRequest))
             .ReturnsAsync((Domain.Apply.UpdateApplication.Application)null!);
 
         var result = await handler.Handle(command, CancellationToken.None);

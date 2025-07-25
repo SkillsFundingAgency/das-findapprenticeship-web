@@ -18,7 +18,7 @@ public class WhenHandlingWithdrawApplicationCommand
     {
         await handler.Handle(request, CancellationToken.None);
 
-        apiClient.Verify(x => x.PostWithResponseCode(
+        apiClient.Verify(x => x.Post(
             It.Is<PostWithdrawApplicationApiRequest>(c =>
                 c.PostUrl.Contains(request.ApplicationId.ToString()) &&
                 c.PostUrl.Contains(request.CandidateId.ToString()))), Times.Once());

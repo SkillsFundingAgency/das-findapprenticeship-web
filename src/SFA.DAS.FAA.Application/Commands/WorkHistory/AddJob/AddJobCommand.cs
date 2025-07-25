@@ -44,7 +44,7 @@ namespace SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob
 
             var apiRequest = new PostJobApiRequest(request.ApplicationId, data);
 
-            var apiResponse = await _apiClient.PostWithResponseCode<PostJobApiResponse>(apiRequest);
+            var apiResponse = await _apiClient.Post<PostJobApiResponse>(apiRequest);
 
             return new AddJobCommandResponse
             {

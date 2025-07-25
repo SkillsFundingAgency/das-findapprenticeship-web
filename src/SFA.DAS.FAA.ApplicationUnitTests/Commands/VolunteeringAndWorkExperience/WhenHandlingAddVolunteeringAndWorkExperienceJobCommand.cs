@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.VolunteeringAndWorkExperien
                 new PostVolunteeringAndWorkExperienceRequest(command.ApplicationId, new PostVolunteeringAndWorkExperienceRequest.PostVolunteeringAndWorkExperienceApiRequestData());
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode<PostVolunteeringAndWorkExperienceResponse>(
+                    x.Post<PostVolunteeringAndWorkExperienceResponse>(
                         It.Is<PostVolunteeringAndWorkExperienceRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                                                              && ((PostVolunteeringAndWorkExperienceRequest.PostVolunteeringAndWorkExperienceApiRequestData)r.Data).CandidateId == command.CandidateId
                                                                              && ((PostVolunteeringAndWorkExperienceRequest.PostVolunteeringAndWorkExperienceApiRequestData)r.Data).Description == command.Description

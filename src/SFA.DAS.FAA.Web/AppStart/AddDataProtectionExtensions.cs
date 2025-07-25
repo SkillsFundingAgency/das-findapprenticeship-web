@@ -6,9 +6,11 @@ namespace SFA.DAS.FAA.Web.AppStart;
 [ExcludeFromCodeCoverage]
 public static class AddDataProtectionExtensions
 {
+    private const string SectionName = "FindAnApprenticeship";
+    
     public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
     {
-        var config = configuration.GetSection(nameof(FindAnApprenticeship))
+        var config = configuration.GetSection(SectionName)
             .Get<Domain.Configuration.FindAnApprenticeship>();
 
         if (config != null 

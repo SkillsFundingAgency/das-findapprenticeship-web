@@ -20,7 +20,7 @@ public class WhenHandlingUpsertQualificationCommand
         await handler.Handle(command, CancellationToken.None);
 
         apiClient.Verify(x =>
-            x.PostWithResponseCode(
+            x.Post(
                 It.Is<PostUpsertQualificationsApiRequest>(c => 
                     c.PostUrl.Contains(command.ApplicationId.ToString())
                     && c.PostUrl.Contains(command.ApplicationId.ToString())

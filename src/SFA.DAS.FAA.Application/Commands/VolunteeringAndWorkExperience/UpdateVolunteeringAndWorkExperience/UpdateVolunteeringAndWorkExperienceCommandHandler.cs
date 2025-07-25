@@ -23,6 +23,6 @@ public record UpdateVolunteeringAndWorkExperienceCommandHandler : IRequestHandle
 
         var apiRequest = new PostUpdateVolunteeringOrWorkExperienceApiRequest(request.ApplicationId, request.VolunteeringOrWorkExperienceId, data);
 
-        await _apiClient.PostWithResponseCode(apiRequest);
+        await _apiClient.Post(apiRequest);
     }
 }

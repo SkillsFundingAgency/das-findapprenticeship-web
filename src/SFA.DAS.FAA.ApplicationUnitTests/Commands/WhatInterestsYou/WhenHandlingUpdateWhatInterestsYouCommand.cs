@@ -21,13 +21,13 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.WhatInterestsYou
                 new PostWhatInterestsYouApiRequest(command.ApplicationId, new PostWhatInterestsYouApiRequest.PostWhatInterestsYouRequestData());
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode(It.IsAny<PostWhatInterestsYouApiRequest>()))
+                    x.Post(It.IsAny<PostWhatInterestsYouApiRequest>()))
                 .Returns(()=> Task.CompletedTask);
 
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
             apiClient.Verify(x =>
-                    x.PostWithResponseCode(
+                    x.Post(
                         It.Is<PostWhatInterestsYouApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                && ((PostWhatInterestsYouApiRequest.PostWhatInterestsYouRequestData)r.Data).CandidateId == command.CandidateId
                                && ((PostWhatInterestsYouApiRequest.PostWhatInterestsYouRequestData)r.Data).AnswerText == command.AnswerText

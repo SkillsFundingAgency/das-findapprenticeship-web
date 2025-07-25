@@ -19,7 +19,7 @@ public class DeleteVolunteeringOrWorkExperienceCommandHandler : IRequestHandler<
             CandidateId = command.CandidateId,
         });
 
-        await _apiClient.PostWithResponseCode(request);
+        await _apiClient.Post(request);
         return Unit.Value;
     }
 }
