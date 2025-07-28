@@ -8,7 +8,7 @@ public class WithdrawApplicationCommandHandler(IApiClient apiClient) : IRequestH
 {
     public async Task<Unit> Handle(WithdrawApplicationCommand request, CancellationToken cancellationToken)
     {
-        await apiClient.PostWithResponseCode(new PostWithdrawApplicationApiRequest(request.ApplicationId, request.CandidateId));
+        await apiClient.Post(new PostWithdrawApplicationApiRequest(request.ApplicationId, request.CandidateId));
         
         return new Unit();
     }

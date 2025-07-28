@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.VolunteeringAndWorkExperien
                 new PostUpdateVolunteeringOrWorkExperienceApiRequest(command.ApplicationId, command.VolunteeringOrWorkExperienceId, new PostUpdateVolunteeringOrWorkExperienceApiRequest.PostUpdateVolunteeringOrWorkExperienceApiRequestData());
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode<PostVolunteeringAndWorkExperienceResponse>(
+                    x.Post<PostVolunteeringAndWorkExperienceResponse>(
                         It.Is<PostUpdateVolunteeringOrWorkExperienceApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                                                              && ((PostVolunteeringAndWorkExperienceRequest.PostVolunteeringAndWorkExperienceApiRequestData)r.Data).CandidateId == command.CandidateId
                                                                              && ((PostVolunteeringAndWorkExperienceRequest.PostVolunteeringAndWorkExperienceApiRequestData)r.Data).Description == command.Description
@@ -35,7 +35,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.VolunteeringAndWorkExperien
 
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
-            apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<IPostApiRequest>()), Times.Once);
+            apiClient.Verify(x => x.Post(It.IsAny<IPostApiRequest>()), Times.Once);
         }
     }
 }

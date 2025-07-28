@@ -20,10 +20,10 @@ public class WhenHandlingDeleteVolunteeringOrWorkExperience
             CandidateId = command.CandidateId,
         });
 
-        apiClient.Setup(client => client.PostWithResponseCode(It.Is<PostDeleteVolunteeringOrWorkExperienceApiRequest>(r => r.PostUrl == expectedRequest.PostUrl)));
+        apiClient.Setup(client => client.Post(It.Is<PostDeleteVolunteeringOrWorkExperienceApiRequest>(r => r.PostUrl == expectedRequest.PostUrl)));
 
         await handler.Handle(command, CancellationToken.None);
 
-        apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<PostDeleteVolunteeringOrWorkExperienceApiRequest>()), Times.Once);
+        apiClient.Verify(x => x.Post(It.IsAny<PostDeleteVolunteeringOrWorkExperienceApiRequest>()), Times.Once);
     }
 }

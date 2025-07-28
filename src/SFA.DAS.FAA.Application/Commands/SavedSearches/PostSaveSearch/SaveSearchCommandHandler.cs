@@ -22,7 +22,7 @@ public class SaveSearchCommandHandler(IApiClient apiClient) : IRequestHandler<Sa
             )
         );
 
-        await apiClient.PostWithResponseCode(apiRequest);
+        await apiClient.Post(apiRequest);
         return Unit.Value;
     }
 }

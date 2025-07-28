@@ -24,7 +24,7 @@ namespace SFA.DAS.FAA.Application.Commands.DeleteQualifications
                     Id = request.Id
                 });
 
-            await apiClient.PostWithResponseCode(apiRequest);
+            await apiClient.Post(apiRequest);
         }
     }
 }

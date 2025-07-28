@@ -22,7 +22,7 @@ public class WhenHandlingUpdateVolunteeringAndWorkExperienceApplicationCommand
         {
             VolunteeringAndWorkExperienceSectionStatus = command.VolunteeringAndWorkExperienceSectionStatus
         });
-        apiClientMock.Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostRequest)).ReturnsAsync(apiResponse);
+        apiClientMock.Setup(client => client.Post<Domain.Apply.UpdateApplication.Application>(expectedPostRequest)).ReturnsAsync(apiResponse);
 
         var result = await handler.Handle(command, CancellationToken.None);
 
@@ -43,7 +43,7 @@ public class WhenHandlingUpdateVolunteeringAndWorkExperienceApplicationCommand
         {
             VolunteeringAndWorkExperienceSectionStatus = command.VolunteeringAndWorkExperienceSectionStatus
         });
-        apiClientMock.Setup(client => client.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(expectedPostRequest)).ReturnsAsync(() => null);
+        apiClientMock.Setup(client => client.Post<Domain.Apply.UpdateApplication.Application>(expectedPostRequest)).ReturnsAsync(() => null);
 
         var result = await handler.Handle(command, CancellationToken.None);
 

@@ -49,11 +49,11 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.EmploymentLocations
                     EmploymentLocationSectionStatus = command.EmploymentLocationSectionStatus
                 });
 
-            apiClient.Setup(client => client.PostWithResponseCode<PostEqualityQuestionsApiResponse>(postUpdateApplicationRequest));
+            apiClient.Setup(client => client.Post<PostEqualityQuestionsApiResponse>(postUpdateApplicationRequest));
 
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
-            apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<PostEmploymentLocationsApiRequest>()), Times.Once);
+            apiClient.Verify(x => x.Post(It.IsAny<PostEmploymentLocationsApiRequest>()), Times.Once);
         }
     }
 }

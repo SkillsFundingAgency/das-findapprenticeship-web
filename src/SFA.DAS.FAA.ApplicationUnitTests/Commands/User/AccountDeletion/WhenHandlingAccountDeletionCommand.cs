@@ -18,7 +18,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.User.AccountDeletion
         {
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
-            apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<IPostApiRequest>()), Times.Once);
+            apiClient.Verify(x => x.Post(It.IsAny<IPostApiRequest>()), Times.Once);
         }
     }
 }
