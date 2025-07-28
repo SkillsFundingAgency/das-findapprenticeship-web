@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Web.Services;
 
 namespace SFA.DAS.FAA.Web.Models.Apply;
 
@@ -25,7 +26,11 @@ public class ApplicationSummaryViewModel
             WhatIsYourInterest = source.WhatIsYourInterest,
             EmploymentLocation = source.EmploymentLocation,
             AboutYou = source.AboutYou,
-            IsApplicationComplete = source.IsApplicationComplete
+            IsApplicationComplete = source.IsApplicationComplete,
+            EmployerName = source.EmployerName,
+            VacancyTitle = source.VacancyTitle,
+            ClosedDate = VacancyDetailsHelperService.GetClosedDate(source.ClosedDate, source.IsVacancyClosedEarly),
+            IsVacancyClosedEarly = source.IsVacancyClosedEarly,
         };
     }
 
@@ -41,6 +46,15 @@ public class ApplicationSummaryViewModel
     public WhatIsYourInterestSection WhatIsYourInterest { get; init; } = new();
     public EmploymentLocationSection? EmploymentLocation { get; init; } = new();
     public AboutYouSection AboutYou { get; init; } = new();
+    public bool IsVacancyClosed => !string.IsNullOrEmpty(ClosedDate);
+    public bool IsVacancyClosedEarly { get; set; }
+    public string? ClosedDate { get; set; }
+    public string? ClosedBannerHeaderText => "Sorry, you cannot continue this application";
+    public string? ClosedBannerText => IsVacancyClosedEarly
+        ? "This vacancy has been closed early."
+        : "This vacancy has now closed.";
+    public string? VacancyTitle { get; set; }
+    public string? EmployerName { get; set; }
 
 
     public class CandidateDetailsSection

@@ -3,13 +3,14 @@ using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Domain.Apply.GetIndex;
 
-public class GetIndexApiResponse
+public record GetIndexApiResponse
 {
     public string VacancyReference { get; set; }
     public string VacancyTitle { get; set; }
     public ApprenticeshipTypes ApprenticeshipType { get; set; }
     public string EmployerName { get; set; }
     public DateTime ClosingDate { get; set; }
+    public DateTime? ClosedDate { get; set; }
     public bool IsMigrated { get; set; }
     public bool IsDisabilityConfident { get; set; }
     public bool IsApplicationComplete { get; set; }
