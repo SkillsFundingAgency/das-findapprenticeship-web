@@ -262,7 +262,7 @@ else
             <h2 class="govuk-heading-m">Application questions</h2>
             @if (!Model.ApprenticeshipType.IsFoundation())
             {
-                <div asp-hide="@Model.ApprenticeshipType.IsFoundation()" class="faa-flex-row">
+                <div class="faa-flex-row">
                     <h3 class="govuk-heading-s">What are your skills and strengths?</h3>
                     <p class="govuk-body">
                         <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths" asp-route-applicationId="@Model.ApplicationId" class="govuk-link">
