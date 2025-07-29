@@ -5,6 +5,7 @@ namespace SFA.DAS.FAA.Domain.Apply.GetApplicationSummary;
 
 public record GetApplicationSummaryApiResponse
 {
+    public ApprenticeshipTypes ApprenticeshipType { get; set; }
     public bool IsDisabilityConfident { get; set; }
     public bool IsApplicationComplete { get; set; }
     public CandidateDetailsSection Candidate { get; set; }

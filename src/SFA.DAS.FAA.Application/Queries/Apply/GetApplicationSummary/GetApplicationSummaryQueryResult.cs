@@ -6,6 +6,7 @@ namespace SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSummary;
 
 public class GetApplicationSummaryQueryResult
 {
+    public ApprenticeshipTypes ApprenticeshipType { get; set; }
     public bool IsDisabilityConfident { get; set; }
     public bool IsApplicationComplete { get; set; }
     public CandidateDetailsSection Candidate { get; init; }
@@ -43,6 +44,7 @@ public class GetApplicationSummaryQueryResult
             ClosingDate = source.ClosingDate,
             EmployerName = source.EmployerName,
             VacancyTitle = source.VacancyTitle,
+            ApprenticeshipType = source.ApprenticeshipType,
         };
     }
 

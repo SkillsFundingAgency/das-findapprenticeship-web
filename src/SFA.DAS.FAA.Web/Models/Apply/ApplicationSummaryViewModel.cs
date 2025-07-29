@@ -31,9 +31,11 @@ public class ApplicationSummaryViewModel
             VacancyTitle = source.VacancyTitle,
             ClosedDate = VacancyDetailsHelperService.GetClosedDate(source.ClosedDate, source.IsVacancyClosedEarly),
             IsVacancyClosedEarly = source.IsVacancyClosedEarly,
+            ApprenticeshipType = source.ApprenticeshipType,
         };
     }
 
+    public ApprenticeshipTypes ApprenticeshipType { get; set; }
     public bool IsDisabilityConfident { get; init; }
     public bool IsApplicationComplete {get;init;}
     public bool ShowLocationSection => EmploymentLocation is {EmployerLocationOption: AvailableWhere.MultipleLocations, EmploymentAddress.Count: > 0};
