@@ -12,8 +12,8 @@ using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 using System;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.DeleteJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {

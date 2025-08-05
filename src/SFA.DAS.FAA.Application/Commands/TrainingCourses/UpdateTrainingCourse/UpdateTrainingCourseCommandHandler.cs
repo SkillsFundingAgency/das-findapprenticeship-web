@@ -16,6 +16,6 @@ public class UpdateTrainingCourseCommandHandler(IApiClient ApiClient) : IRequest
 
         var apiRequest = new PostUpdateTrainingCourseApiRequest(request.ApplicationId, request.TrainingCourseId, data);
 
-        await ApiClient.PostWithResponseCode(apiRequest);
+        await ApiClient.Post(apiRequest);
     }
 }

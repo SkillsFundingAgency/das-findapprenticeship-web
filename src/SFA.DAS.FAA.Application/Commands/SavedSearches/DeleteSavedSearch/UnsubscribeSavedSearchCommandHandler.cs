@@ -10,7 +10,7 @@ namespace SFA.DAS.FAA.Application.Commands.SavedSearches.DeleteSavedSearch
         {
             var apiRequest = new PostSavedSearchUnsubscribeApiRequest(request.SavedSearchId);
 
-            await apiClient.PostWithResponseCode(apiRequest);
+            await apiClient.Post(apiRequest);
             return Unit.Value;
         }
     }

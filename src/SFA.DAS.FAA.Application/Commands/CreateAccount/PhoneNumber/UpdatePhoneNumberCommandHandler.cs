@@ -16,7 +16,7 @@ public class UpdatePhoneNumberCommandHandler(IApiClient apiClient)
             Email = request.Email
         });
 
-        await apiClient.PostWithResponseCode<NullResponse>(postRequest);
+        await apiClient.Post<NullResponse>(postRequest);
 
         return Unit.Value;
     }

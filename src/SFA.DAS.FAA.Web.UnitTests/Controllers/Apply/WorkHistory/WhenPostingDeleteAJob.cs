@@ -6,12 +6,12 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAA.Web.Controllers.Apply;
-using SFA.DAS.FindAnApprenticeship.Application.Commands.Apply.DeleteJob;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using SFA.DAS.FAA.Web.AppStart;
 using System.Security.Claims;
+using SFA.DAS.FAA.Application.Commands.WorkHistory.DeleteJob;
 
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory;

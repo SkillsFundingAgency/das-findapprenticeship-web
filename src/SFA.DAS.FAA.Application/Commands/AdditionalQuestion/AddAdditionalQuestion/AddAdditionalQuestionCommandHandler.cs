@@ -20,7 +20,7 @@ public record AddAdditionalQuestionCommandHandler(IApiClient ApiClient)
 
         var apiRequest = new PostAdditionalQuestionApiRequest(request.ApplicationId, data);
 
-        var apiResponse = await ApiClient.PostWithResponseCode<PostAdditionalQuestionApiResponse>(apiRequest);
+        var apiResponse = await ApiClient.Post<PostAdditionalQuestionApiResponse>(apiRequest);
 
         if (apiResponse != null)
             return new AddAdditionalQuestionCommandHandlerResult

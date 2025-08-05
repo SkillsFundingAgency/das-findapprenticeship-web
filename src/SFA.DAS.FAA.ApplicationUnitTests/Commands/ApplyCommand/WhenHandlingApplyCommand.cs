@@ -23,7 +23,7 @@ public class WhenHandlingApplyCommand
         var expectedApiRequest = new PostApplicationDetailsApiRequest(command.VacancyReference, new PostApplicationDetailsApiRequest.RequestBody(command.CandidateId));
 
         apiClientMock
-            .Setup(x => x.PostWithResponseCode<PostApplicationDetailsApiResponse>(It.Is<PostApplicationDetailsApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl)))
+            .Setup(x => x.Post<PostApplicationDetailsApiResponse>(It.Is<PostApplicationDetailsApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl)))
             .ReturnsAsync(apiResponse);
 
         var result = await handler.Handle(command, CancellationToken.None);

@@ -17,7 +17,7 @@ namespace SFA.DAS.FAA.Application.Commands.Vacancy.DeleteSavedVacancy
                 VacancyId = request.VacancyId,
                 DeleteAllByVacancyReference = request.DeleteAllByVacancyReference
             });
-            await _apiClient.PostWithResponseCode(apiRequest);
+            await _apiClient.Post(apiRequest);
 
             return Unit.Value;
         }

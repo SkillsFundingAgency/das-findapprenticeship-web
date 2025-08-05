@@ -19,7 +19,7 @@ public class WhenHandlingUpdateTrainingCourseCommand
             new PostUpdateTrainingCourseApiRequest(command.ApplicationId, command.TrainingCourseId, new PostUpdateTrainingCourseApiRequest.PostUpdateTrainingCourseRequestData());
 
         apiClient.Setup(x =>
-                x.PostWithResponseCode(
+                x.Post(
                     It.Is<PostUpdateTrainingCourseApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                     && ((PostUpdateTrainingCourseApiRequest.PostUpdateTrainingCourseRequestData)r.Data).CandidateId == command.CandidateId
                                     && ((PostUpdateTrainingCourseApiRequest.PostUpdateTrainingCourseRequestData)r.Data).CourseName == command.CourseName
@@ -29,6 +29,6 @@ public class WhenHandlingUpdateTrainingCourseCommand
 
         await handler.Handle(command, It.IsAny<CancellationToken>());
 
-        apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<IPostApiRequest>()), Times.Once);
+        apiClient.Verify(x => x.Post(It.IsAny<IPostApiRequest>()), Times.Once);
     }
 }

@@ -18,7 +18,7 @@ public class WhenHandlingSaveSearchCommand
         command.ExcludeNational = true;
         PostSaveSearchApiRequest? request = null;
         apiClient
-            .Setup(client => client.PostWithResponseCode(It.IsAny<PostSaveSearchApiRequest>()))
+            .Setup(client => client.Post(It.IsAny<PostSaveSearchApiRequest>()))
             .Callback<IPostApiRequest>(cb => request = cb as PostSaveSearchApiRequest)
             .Returns(() => Task.CompletedTask);
 
