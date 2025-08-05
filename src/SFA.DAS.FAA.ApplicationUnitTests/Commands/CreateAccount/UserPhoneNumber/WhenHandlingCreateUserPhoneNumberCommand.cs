@@ -32,7 +32,7 @@ public class WhenHandlingCreateUserPhoneNumberCommand
             PhoneNumber = command.PhoneNumber
         });
         apiClientMock.Setup(x =>
-                x.PostWithResponseCode(It.Is<CreateUserPhoneNumberApiRequest>(c =>
+                x.Post(It.Is<CreateUserPhoneNumberApiRequest>(c =>
                 c.PostUrl.Equals(request.PostUrl)
                     && ((CreateUserPhoneNumberApiRequestData)c.Data).Email.Equals(command.Email)
                     && ((CreateUserPhoneNumberApiRequestData)c.Data).PhoneNumber.Equals(command.PhoneNumber)

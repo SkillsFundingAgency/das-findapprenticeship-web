@@ -23,7 +23,7 @@ public class WhenHandlingAddAdditionalQuestionCommand
             new PostAdditionalQuestionApiRequest(command.ApplicationId, new PostAdditionalQuestionApiRequest.PostAdditionalQuestionApiRequestData());
 
         apiClient.Setup(x =>
-                x.PostWithResponseCode<PostAdditionalQuestionApiResponse>(
+                x.Post<PostAdditionalQuestionApiResponse>(
                     It.Is<PostAdditionalQuestionApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                                   && ((PostAdditionalQuestionApiRequest.PostAdditionalQuestionApiRequestData)r.Data).CandidateId == command.CandidateId
                                                   && ((PostAdditionalQuestionApiRequest.PostAdditionalQuestionApiRequestData)r.Data).Answer == command.Answer

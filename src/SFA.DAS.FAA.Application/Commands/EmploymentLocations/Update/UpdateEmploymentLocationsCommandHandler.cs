@@ -42,7 +42,7 @@ namespace SFA.DAS.FAA.Application.Commands.EmploymentLocations.Update
                 });
 
             // Send the update request to the API
-            await apiClient.PostWithResponseCode(postUpdateApplicationRequest);
+            await apiClient.Post(postUpdateApplicationRequest);
         }
     }
 }

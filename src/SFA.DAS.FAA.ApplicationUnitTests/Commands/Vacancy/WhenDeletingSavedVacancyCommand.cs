@@ -25,7 +25,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Vacancy
                 new PostDeleteSavedVacancyApiRequest(command.CandidateId, new PostDeleteSavedVacancyApiRequestData { VacancyId = command.VacancyId, DeleteAllByVacancyReference = command.DeleteAllByVacancyReference });
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode(
+                    x.Post(
                         It.Is<PostDeleteSavedVacancyApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                                                      && ((PostDeleteSavedVacancyApiRequestData)r.Data).VacancyId == command.VacancyId
                                                                      && ((PostDeleteSavedVacancyApiRequestData)r.Data).DeleteAllByVacancyReference == command.DeleteAllByVacancyReference
@@ -35,7 +35,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Vacancy
 
             result.Should().Be(new Unit());
             apiClient.Verify(x =>
-                    x.PostWithResponseCode(It.Is<PostDeleteSavedVacancyApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
+                    x.Post(It.Is<PostDeleteSavedVacancyApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                                                     && ((PostDeleteSavedVacancyApiRequestData)r.Data).VacancyId == command.VacancyId
                                                                     && ((PostDeleteSavedVacancyApiRequestData)r.Data).DeleteAllByVacancyReference == command.DeleteAllByVacancyReference
                                                                     )), Times.Once);

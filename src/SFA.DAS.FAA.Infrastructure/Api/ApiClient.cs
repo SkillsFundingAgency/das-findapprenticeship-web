@@ -21,7 +21,6 @@ public class ApiClient : IApiClient
 
     public async Task<TResponse> Get<TResponse>(IGetApiRequest request)
     {
-
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, request.GetUrl);
         AddAuthenticationHeader(requestMessage);
 
@@ -41,6 +40,17 @@ public class ApiClient : IApiClient
         response.EnsureSuccessStatusCode();
 
         return default;
+    }
+
+    public async Task<ApiResponse<TResponse>> GetWithResponseCodeAsync<TResponse>(IGetApiRequest request, CancellationToken cancellationToken = default)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, request.GetUrl);
+        AddAuthenticationHeader(requestMessage);
+        var response = await _httpClient.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
+        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        return response.IsSuccessStatusCode
+            ? new ApiResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(responseContent), response.StatusCode, null)
+            : new ApiResponse<TResponse>(default, response.StatusCode, responseContent); 
     }
 
     public async Task<TResponse> Put<TResponse>(IPutApiRequest request)
@@ -85,7 +95,7 @@ public class ApiClient : IApiClient
         return apiResponse;
     }
 
-    public async Task<TResponse?> PostWithResponseCode<TResponse>(IPostApiRequest request)
+    public async Task<TResponse?> Post<TResponse>(IPostApiRequest request)
     {
         var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, request.PostUrl)
@@ -99,7 +109,7 @@ public class ApiClient : IApiClient
         return JsonConvert.DeserializeObject<TResponse>(responseContent) ?? default;
     }
 
-    public async Task PostWithResponseCode(IPostApiRequest request)
+    public async Task Post(IPostApiRequest request)
     {
         var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, request.PostUrl)
@@ -109,6 +119,22 @@ public class ApiClient : IApiClient
         AddAuthenticationHeader(requestMessage);
         var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
+    }
+
+    public async Task<ApiResponse<TResponse>> PostWithResponseCodeAsync<TResponse>(IPostApiRequest request, CancellationToken cancellationToken = default)
+    {
+        var stringContent = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, request.PostUrl)
+        {
+            Content = stringContent,
+        };
+        AddAuthenticationHeader(requestMessage);
+        var response = await _httpClient.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
+        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        
+        return response.IsSuccessStatusCode
+            ? new ApiResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(responseContent), response.StatusCode, null)
+            : new ApiResponse<TResponse>(default, response.StatusCode, responseContent); 
     }
 
     private void AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)

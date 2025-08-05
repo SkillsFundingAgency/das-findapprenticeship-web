@@ -21,13 +21,13 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.DisabilityConfident
                 new PostDisabilityConfidentApiRequest(command.ApplicationId, new PostDisabilityConfidentApiRequest.PostDisabilityConfidentApiRequestData());
 
             apiClient.Setup(x =>
-                    x.PostWithResponseCode(It.IsAny<PostDisabilityConfidentApiRequest>()))
+                    x.Post(It.IsAny<PostDisabilityConfidentApiRequest>()))
                 .Returns(()=> Task.CompletedTask);
 
             await handler.Handle(command, It.IsAny<CancellationToken>());
 
             apiClient.Verify(x =>
-                    x.PostWithResponseCode(
+                    x.Post(
                         It.Is<PostDisabilityConfidentApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                && ((PostDisabilityConfidentApiRequest.PostDisabilityConfidentApiRequestData)r.Data).CandidateId == command.CandidateId
                                && ((PostDisabilityConfidentApiRequest.PostDisabilityConfidentApiRequestData)r.Data).ApplyUnderDisabilityConfidentScheme == command.ApplyUnderDisabilityConfidentScheme

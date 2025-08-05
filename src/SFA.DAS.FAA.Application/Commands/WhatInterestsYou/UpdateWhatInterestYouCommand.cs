@@ -24,7 +24,7 @@ namespace SFA.DAS.FAA.Application.Commands.WhatInterestsYou
             };
             var apiRequest = new PostWhatInterestsYouApiRequest(request.ApplicationId, data);
 
-            await apiClient.PostWithResponseCode(apiRequest);
+            await apiClient.Post(apiRequest);
         }
     }
 }

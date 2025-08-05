@@ -29,7 +29,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.EqualityQuestions
                     OtherEthnicSubGroupAnswer = request.OtherEthnicSubGroupAnswer
                 });
 
-            apiClient.Setup(client => client.PostWithResponseCode<PostEqualityQuestionsApiResponse>(postUpdateApplicationRequest)).ReturnsAsync(apiResponse);
+            apiClient.Setup(client => client.Post<PostEqualityQuestionsApiResponse>(postUpdateApplicationRequest)).ReturnsAsync(apiResponse);
 
             var result = await handler.Handle(request, It.IsAny<CancellationToken>());
 

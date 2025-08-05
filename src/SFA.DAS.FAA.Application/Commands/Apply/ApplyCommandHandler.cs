@@ -11,7 +11,7 @@ public class ApplyCommandHandler(IApiClient apiClient) : IRequestHandler<ApplyCo
         var apiRequestBody = new PostApplicationDetailsApiRequest.RequestBody(request.CandidateId);
         var apiRequest = new PostApplicationDetailsApiRequest(request.VacancyReference, apiRequestBody);
 
-        var response = await apiClient.PostWithResponseCode<PostApplicationDetailsApiResponse>(apiRequest);
+        var response = await apiClient.Post<PostApplicationDetailsApiResponse>(apiRequest);
 
         return new ApplyCommandResponse
         {

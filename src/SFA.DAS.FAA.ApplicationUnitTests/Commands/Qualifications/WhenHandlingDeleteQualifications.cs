@@ -22,11 +22,11 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.Qualifications
                 CandidateId = command.CandidateId,
             });
 
-            apiClient.Setup(client => client.PostWithResponseCode(It.Is<PostDeleteQualificationsApiRequest>(r => r.PostUrl == expectedRequest.PostUrl)));
+            apiClient.Setup(client => client.Post(It.Is<PostDeleteQualificationsApiRequest>(r => r.PostUrl == expectedRequest.PostUrl)));
 
             await handler.Handle(command, CancellationToken.None);
 
-            apiClient.Verify(x => x.PostWithResponseCode(It.IsAny<PostDeleteQualificationsApiRequest>()), Times.Once);
+            apiClient.Verify(x => x.Post(It.IsAny<PostDeleteQualificationsApiRequest>()), Times.Once);
         }
     }
 }

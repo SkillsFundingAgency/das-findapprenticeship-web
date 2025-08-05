@@ -25,7 +25,7 @@ public class UpsertCandidatePreferencesCommandHandler(IApiClient apiClient) : IR
             ]
         }).ToList();
 
-        await apiClient.PostWithResponseCode<NullResponse>
+        await apiClient.Post<NullResponse>
             (new UpsertCandidatePreferencesApiRequest(request.CandidateId, new UpsertCandidatePreferencesData
             {
                 CandidatePreferences = requestData,

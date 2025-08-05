@@ -16,7 +16,7 @@ public record UpdateInterviewAdjustmentsCommandHandler(IApiClient ApiClient) : I
                         InterviewAdjustmentsSectionStatus = request.InterviewAdjustmentsSectionStatus
                     });
 
-        var updateApplicationResponse = await ApiClient.PostWithResponseCode<Domain.Apply.UpdateApplication.Application>(postUpdateApplicationRequest);
+        var updateApplicationResponse = await ApiClient.Post<Domain.Apply.UpdateApplication.Application>(postUpdateApplicationRequest);
 
         return new UpdateInterviewAdjustmentsCommandResult
         {

@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Application.Commands.DisabilityConfident
             };
             var apiRequest = new PostDisabilityConfidentApiRequest(request.ApplicationId, data);
 
-            await apiClient.PostWithResponseCode(apiRequest);
+            await apiClient.Post(apiRequest);
         }
     }
 }

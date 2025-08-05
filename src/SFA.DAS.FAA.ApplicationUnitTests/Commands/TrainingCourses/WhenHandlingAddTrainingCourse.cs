@@ -21,7 +21,7 @@ public class WhenHandlingAddTrainingCourse
             new PostTrainingCourseApiRequest(command.ApplicationId, new PostTrainingCourseApiRequest.PostTrainingCourseApiRequestData());
 
         apiClient.Setup(x =>
-                x.PostWithResponseCode<PostTrainingCourseApiResponse>(
+                x.Post<PostTrainingCourseApiResponse>(
                     It.Is<PostTrainingCourseApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                     && ((PostTrainingCourseApiRequest.PostTrainingCourseApiRequestData)r.Data).CandidateId == command.CandidateId
                                     && ((PostTrainingCourseApiRequest.PostTrainingCourseApiRequestData)r.Data).CourseName == command.CourseName

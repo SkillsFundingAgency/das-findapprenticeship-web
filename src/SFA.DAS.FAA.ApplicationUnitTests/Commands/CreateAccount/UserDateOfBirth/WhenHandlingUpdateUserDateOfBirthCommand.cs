@@ -32,7 +32,7 @@ public class WhenHandlingUpdateUserDateOfBirthCommand
             DateOfBirth = command.DateOfBirth
         });
         apiClientMock.Setup(x =>
-                x.PostWithResponseCode(It.Is<UpdateDateOfBirthApiRequest>(c =>
+                x.Post(It.Is<UpdateDateOfBirthApiRequest>(c =>
                 c.PostUrl.Equals(request.PostUrl)
                     && ((UpdateDateOfBirthRequestData)c.Data).Email.Equals(command.Email)
                     && ((UpdateDateOfBirthRequestData)c.Data).DateOfBirth.Equals(command.DateOfBirth)

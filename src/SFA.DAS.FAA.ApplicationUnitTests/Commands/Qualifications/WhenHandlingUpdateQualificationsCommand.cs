@@ -21,13 +21,13 @@ public class WhenHandlingUpdateQualificationsCommand
             new PostQualificationsApiRequest(command.ApplicationId, new PostQualificationsApiRequest.PostQualificationsApiRequestData());
 
         apiClient.Setup(x =>
-                x.PostWithResponseCode(It.IsAny<PostQualificationsApiRequest>()))
+                x.Post(It.IsAny<PostQualificationsApiRequest>()))
             .Returns(()=> Task.CompletedTask);
 
         await handler.Handle(command, It.IsAny<CancellationToken>());
 
         apiClient.Verify(x =>
-            x.PostWithResponseCode(
+            x.Post(
                 It.Is<PostQualificationsApiRequest>(r => r.PostUrl == expectedApiRequest.PostUrl
                                                          && ((PostQualificationsApiRequest.PostQualificationsApiRequestData)r.Data).CandidateId == command.CandidateId
                                                          && ((PostQualificationsApiRequest.PostQualificationsApiRequestData)r.Data).IsComplete == command.IsComplete

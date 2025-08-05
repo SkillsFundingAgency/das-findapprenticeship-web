@@ -41,7 +41,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.CreateAccount.CandidateStat
                 Status = UserStatus.Completed
             });
             apiClientMock.Setup(x =>
-                    x.PostWithResponseCode(It.Is<UpdateCandidateStatusApiRequest>(c =>
+                    x.Post(It.Is<UpdateCandidateStatusApiRequest>(c =>
                         c.PostUrl.Equals(request.PostUrl)
                         && ((UpdateCandidateStatusApiRequestData)c.Data).Email.Equals(command.CandidateEmail)
                     )))
@@ -56,7 +56,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.CreateAccount.CandidateStat
                 .Excluding(c => c.IsEmailAddressMigrated)
             );
             apiClientMock.Verify(x =>
-                x.PostWithResponseCode(It.Is<UpdateCandidateStatusApiRequest>(c =>
+                x.Post(It.Is<UpdateCandidateStatusApiRequest>(c =>
                     c.PostUrl.Equals(request.PostUrl)
                     && ((UpdateCandidateStatusApiRequestData)c.Data).Email.Equals(command.CandidateEmail)
                 )), Times.Once());
@@ -102,7 +102,7 @@ namespace SFA.DAS.FAA.Application.UnitTests.Commands.CreateAccount.CandidateStat
                 .Excluding(c => c.IsEmailAddressMigrated)
             );
             apiClientMock.Verify(x =>
-                x.PostWithResponseCode(It.Is<UpdateCandidateStatusApiRequest>(c =>
+                x.Post(It.Is<UpdateCandidateStatusApiRequest>(c =>
                     c.PostUrl.Equals(request.PostUrl)
                     && ((UpdateCandidateStatusApiRequestData)c.Data).Email.Equals(command.CandidateEmail)
                 )), Times.Never());

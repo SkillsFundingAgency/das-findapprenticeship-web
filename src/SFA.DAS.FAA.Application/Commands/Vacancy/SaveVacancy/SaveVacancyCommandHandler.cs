@@ -22,7 +22,7 @@ namespace SFA.DAS.FAA.Application.Commands.Vacancy.SaveVacancy
 
             var apiRequest = new PostSaveVacancyApiRequest(request.CandidateId, data);
 
-            var apiResponse = await _apiClient.PostWithResponseCode<PostSaveVacancyApiResponse>(apiRequest);
+            var apiResponse = await _apiClient.Post<PostSaveVacancyApiResponse>(apiRequest);
 
             if (apiResponse != null)
                 return new SaveVacancyCommandResult
