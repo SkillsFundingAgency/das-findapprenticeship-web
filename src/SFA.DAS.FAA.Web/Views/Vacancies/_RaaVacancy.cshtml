@@ -1,0 +1,704 @@
+﻿@using SFA.DAS.FAA.Web.Infrastructure
+@using SFA.DAS.FAA.Domain.Enums
+@using SFA.DAS.FAA.Domain.Extensions
+@using SFA.DAS.FAA.Web.Models.Applications
+@model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
+
+@if (Model.IsClosed && User.Identity is { IsAuthenticated: false })
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
+                <h1 class="govuk-heading-xl faa-vacancy__title govuk-!-margin-bottom-9"><span itemprop="title">You can no longer apply for this apprenticeship</span></h1>
+                <div class="das-highlight govuk-!-margin-bottom-6 govuk-!-padding-6">
+                    <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-4" />
+                    <h3 class="govuk-heading-m">@Model.Title</h3>
+                    <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
+                    <p class="govuk-body-l faa-vacancy__location">
+                        <span itemprop="jobLocation">
+                            @Model.EmploymentWorkLocation
+                        </span>
+                    </p>
+                    <p class="govuk-body faa-vacancy__closing-date">@Model.ClosedDate</p>
+                </div>
+                <p class="govuk-body">
+                    <a href="@Url.RouteUrl(RouteNames.ServiceStartDefault)" class="govuk-link govuk-link--no-visited-state">Find more apprenticeships</a>
+                </p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    @if (Model.ApplicationDetails is { Status: ApplicationStatus.Submitted } or { Status: ApplicationStatus.Successful } or
+        { Status: ApplicationStatus.Unsuccessful })
+    {
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
+                     data-module="govuk-notification-banner">
+                    <div class="govuk-notification-banner__header">
+                        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                            Important
+                        </h2>
+                    </div>
+                    <div class="govuk-notification-banner__content">
+                        <p class="govuk-notification-banner__heading">
+                            You submitted an application for this apprenticeship on @Model.ApplicationDetails.SubmittedDate.
+                        </p>
+                        <p class="govuk-body">
+                            Check its status in your
+                            <a class="govuk-notification-banner__link" asp-route="@RouteNames.Applications.ViewApplications"
+                               asp-route-tab="@ApplicationsTab.Submitted">submitted applications</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div asp-hide="Model.IsClosed">
+        @if (Model.ApplicationDetails is { Status: ApplicationStatus.Draft })
+        {
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
+                         data-module="govuk-notification-banner">
+                        <div class="govuk-notification-banner__header">
+                            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                                Important
+                            </h2>
+                        </div>
+                        <div class="govuk-notification-banner__content">
+                            <p class="govuk-notification-banner__heading">
+                                Application started.
+                                <a class="govuk-notification-banner__link" asp-route="@RouteNames.Apply"
+                                   asp-route-ApplicationId="@Model.ApplicationDetails.ApplicationId">Continue your application</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @if (Model.ApplicationDetails is { Status: ApplicationStatus.Withdrawn })
+    {
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title"
+                     data-module="govuk-notification-banner">
+                    <div class="govuk-notification-banner__header">
+                        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                            Important
+                        </h2>
+                    </div>
+                    <div class="govuk-notification-banner__content">
+                        <p class="govuk-notification-banner__heading">
+                            You withdrew your application for this apprenticeship on @Model.ApplicationDetails.WithdrawnDate.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div itemscope itemtype="https://schema.org/JobPosting" class="faa-vacancy-content">
+        <govuk-tag-foundation asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-!-margin-bottom-6" />
+        <h1 class="govuk-heading-l faa-vacancy__title"><span itemprop="title" id="vacancy-title">@Model.Title</span></h1>
+        <p class="govuk-body-l faa-vacancy__organisation"><span itemprop="hiringOrganization">@Model.EmployerName</span></p>
+        <p class="govuk-body-l faa-vacancy__location">
+            <span itemprop="jobLocation">
+                @Model.EmploymentWorkLocation
+            </span>
+        </p>
+        <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
+        <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">@Model.PostedDate</p>
+        <div class="faa-vacancy-actions">
+            <div asp-hide="Model.IsClosed">
+                @if (User.Identity is { IsAuthenticated: true })
+                {
+                    <div data-favourite="true" class="faa-save-vacancy @(Model.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
+                        <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromDetailsPage"
+                              asp-route-vacancyId="@Model.VacancyId">
+                            <button aria-describeby="Remove-@Model.VacancyReference"
+                                    aria-pressed="true"
+                                    aria-describedby="vacancy-title"
+                                    class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-save-vacancy__link--delete"
+                                    data-delete-favourite="true"
+                                    type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
+                                    <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
+                                </svg>
+                                Saved<span class="govuk-visually-hidden">, follow link to remove from saved vacancies</span>
+                            </button>
+                        </form>
+                        <form method="post" asp-route="@RouteNames.SaveVacancyFromDetailsPage"
+                              asp-route-vacancyId="@Model.VacancyId">
+                            <button aria-describeby="Save-@Model.VacancyReference"
+                                    aria-pressed="false"
+                                    aria-describedby="vacancy-title"
+                                    class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link  faa-save-vacancy__link--save"
+                                    data-add-favourite="true"
+                                    type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
+                                    <path fill="currentColor"
+                                          d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z" />
+                                </svg>
+                                <span class="govuk-visually-hidden">Follow the link to </span>
+                                <span>Save</span> <span class="govuk-visually-hidden">this vacancy</span>
+                            </button>
+                        </form>
+                    </div>
+                }
+
+            </div>
+            <a href="#print" class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-vacancy-actions__link--print">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="faa-vacancy-actions__icon">
+                    <path fill="currentColor"
+                          d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                </svg>Print
+            </a>
+        </div>
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-third faa-contents">
+                <h2 class="govuk-body-s faa-contents__heading">
+                    Contents
+                </h2>
+                <ul class="govuk-list govuk-!-font-size-16 faa-contents__list">
+                    <li class="faa-contents__list-item">
+                        <a class="govuk-link faa-contents__link" href="#summary">
+                            Summary
+                        </a>
+                    </li>
+                    <li class="faa-contents__list-item">
+                        <a class="govuk-link faa-contents__link" href="#work">
+                            Work
+                        </a>
+                    </li>
+                    <li class="faa-contents__list-item">
+                        <a class="govuk-link faa-contents__link" href="#training">
+                            Training
+                        </a>
+                    </li>
+                    <li class="faa-contents__list-item">
+                        <a class="govuk-link faa-contents__link" href="#requirements">
+                            Requirements
+                        </a>
+                    </li>
+                    <li class="faa-contents__list-item">
+                        <a class="govuk-link faa-contents__link" href="#company">
+                            About this employer
+                        </a>
+                    </li>
+                    <li class="faa-contents__list-item">
+                        <a class="govuk-link faa-contents__link" href="#after">
+                            After this apprenticeship
+                        </a>
+                    </li>
+                    <li class="faa-contents__list-item">
+                        <a class="govuk-link faa-contents__link" href="#question">
+                            Ask a question
+                        </a>
+                    </li>
+                    <div asp-hide="Model.IsClosed">
+                    <li class="faa-contents__list-item">
+                        <a class="govuk-link faa-contents__link" href="#apply">
+                            Apply now
+                        </a>
+                    </li>
+            </div>
+            </ul>
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+            <section class="faa-vacancy__section faa-vacancy__section--first" id="summary">
+                <h2 class="govuk-heading-m">Summary</h2>
+                <div asp-hide="Model.IsClosed">
+                    <div asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text govuk-body">
+                        @if (User.Identity is { IsAuthenticated: false })
+                        {
+                            <p>
+                                Foundation apprenticeships are introductory courses that help young people get started in an industry. You do not need to have any specific qualifications or experience to apply.
+                            </p>
+                            <p>Anyone between 16 and 21 can start a foundation apprenticeship.</p>
+                            <p>If you're between 22 and 24, you can start if you:</p>
+                            <ul class="govuk-list govuk-list--bullet">
+                                <li>have an EHC plan</li>
+                                <li>are in care or have been in care</li>
+                                <li>are in prison or have been in prison</li>
+                            </ul>
+                        }
+                        @if (User.Identity is { IsAuthenticated: true })
+                        {
+                            if (Model.CandidateIs21OrUnderAtStartOfVacancy)
+                            {
+                                <p>Foundation apprenticeships are introductory courses that help young people get started in an industry. You do not need to have any specific qualifications or experience to apply.</p>
+                                <p>Anyone between 16 and 21 can start a foundation apprenticeship.</p>
+                                <p>If you're between 22 and 24, you can start if you:</p>
+                                <ul class="govuk-list govuk-list--bullet">
+                                    <li>have an EHC plan</li>
+                                    <li>are in care or have been in care</li>
+                                    <li>are in prison or have been in prison</li>
+                                </ul>
+                            }
+                            if (Model.CandidateIs22To24AtStartOfVacancy)
+                            {
+                                <p><strong>As you're between 22 and 24</strong>, you can start this foundation apprenticeship if you:</p>
+                                <ul class="govuk-list govuk-list--bullet">
+                                    <li>have an EHC plan</li>
+                                    <li>are in care or have been in care</li>
+                                    <li>are in prison or have been in prison</li>
+                                </ul>
+                                <p>Foundation apprenticeships are introductory courses that help young people get started in an industry. You do not need to have any specific qualifications or experience to apply.</p>
+                                <p><a href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships" class="govuk-link" rel="noreferrer noopener" target="_blank">About foundation apprenticeships (opens in new tab)</a>.</p>
+                            }
+                            if (Model.CandidateIs25OrOverAtStartOfVacancy)
+                            {
+                                <p><strong>You cannot apply for a foundation apprenticeship if you’re 25 or over.</strong></p>
+                                <p>Foundation apprenticeships are introductory courses that help young people get started in an industry.</p>
+                                <p><a href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships" class="govuk-link" rel="noreferrer noopener" target="_blank">About foundation apprenticeships (opens in new tab)</a>.</p>
+                            }
+                        }
+                    </div>
+                </div>
+                <p>
+                    @Model.VacancySummary
+                </p>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Wage
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <p class="govuk-!-margin-bottom-1">@Model.AnnualWage</p>
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">@Model.WageDetailText</p>
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-1">
+                                <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
+                                   rel="noreferrer noopener" target="_blank">
+                                    Check minimum wage rates (opens in new tab)
+                                </a>
+                            </p>
+                            @if (!string.IsNullOrWhiteSpace(Model.WageAdditionalInformation))
+                            {
+                                <p class="govuk-body govuk-!-padding-top-3">
+                                    @Html.Raw(Model.WageAdditionalInformation)
+                                </p>
+                            }
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Training course
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.CourseTitle
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Hours
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.WorkingPattern
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0 govuk-!-padding-top-1">
+                                @Model.HoursPerWeek
+                            </p>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Start date
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <p class="govuk-body">@Model.StartDate</p>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Duration
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <p class="govuk-body">@Model.Duration</p>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Positions available
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <p class="govuk-body">@Model.PositionsAvailable</p>
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+            <section class="faa-vacancy__section" id="work">
+                <h2 class="govuk-heading-m">Work</h2>
+                <p class="govuk-hint">
+                    Most of your apprenticeship is spent working. You’ll learn on the job by getting hands-on experience.
+                </p>
+                <h3 class="govuk-heading-s">What you'll do at work</h3>
+                <p>@Html.Raw(Model.WorkDescription)</p>
+                <h3 class="govuk-heading-s">Where you'll work</h3>
+                @switch (Model.EmployerLocationOption)
+                {
+                    case AvailableWhere.MultipleLocations:
+                        {
+                            <p class="govuk-inset-text">You can select which locations you want to apply for in your application on Find an apprenticeship.</p>
+                            <p class="govuk-body">This apprenticeship is available in these locations:</p>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var address in Model.Addresses)
+                                {
+                                    <li>
+                                        <address value="@address" anonymised="Model.IsAnonymousEmployer" flat="true"></address>
+                                    </li>
+                                }
+                            </ul>
+                            break;
+                        }
+                    case AvailableWhere.AcrossEngland:
+                        <p class="govuk-body">@Model.EmploymentLocationInformation</p>
+                        break;
+                    default:
+                        <address class="govuk-body" value="Model.WorkLocation" anonymised="Model.IsAnonymousEmployer"></address>
+                        break;
+                }
+
+                @if (Model.EmployerLocationOption != AvailableWhere.AcrossEngland)
+                {
+                    if (Context.Request.Cookies.ContainsKey(CookieKeys.FunctionalConsent)
+                    && Context.Request.Cookies.TryGetValue(CookieKeys.FunctionalConsent, out var isConsentGiven)
+                    && bool.TryParse(isConsentGiven, out var consentResult) && consentResult && Model.ShowMap)
+                    {
+                        <details class="govuk-details govuk-!-margin-bottom-0">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">
+                                    Check your travel to work
+                                </span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                <form id="faa-directions-form" class="faa-do-not-disable">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                            Check your travel to work
+                                        </legend>
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="directions-postcode">
+                                                Postcode
+                                            </label>
+                                            <div id="directions-postcode-hint" class="govuk-hint">
+                                                For example SW1A 2AA <span id="faa-navigator-link"></span>
+                                            </div>
+                                            <p class="govuk-error-message"></p>
+                                            <input class="govuk-input govuk-input--width-10" id="directions-postcode"
+                                                   name="directions-postcode" type="text" autocomplete="postal-code"
+                                                   aria-describedby="directions-postcode-hint" value="@Model.CandidatePostcode">
+                                        </div>
+                                        <div class="govuk-form-group govuk-visually-hidden" id="directions-locations" aria-hidden="true">
+                                            <label class="govuk-label" for="directions-location">
+                                                Select location
+                                            </label>
+                                            <select class="govuk-select" id="directions-location" name="directions-location">
+                                            </select>
+                                        </div>
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="directions-travelMode">
+                                                Select a method of travelling
+                                            </label>
+                                            <select class="govuk-select" id="directions-travelMode"
+                                                    name="directions-travelMode">
+                                                <option value="DRIVING" selected>Car</option>
+                                                <option value="BICYCLING">Cycling</option>
+                                                <option value="WALKING">Walking</option>
+                                                <option value="TRANSIT">Public transport</option>
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                    <button type="submit" class="govuk-button govuk-button--secondary">Show route</button>
+                                </form>
+                                <p class="govuk-body govuk-!-font-size-16 govuk-!-padding-top-2" id="faa-journey-info"></p>
+                            </div>
+                            <div class="govuk-details govuk-!-margin-top-5">
+                                <div id="faa-directions-map" class="faa-directions-map"></div>
+                            </div>
+                        </details>
+                    }
+                }
+            </section>
+            <section class="faa-vacancy__section" id="training">
+                <h2 class="govuk-heading-m">Training</h2>
+                <p class="govuk-body  das-!-color-dark-grey">
+                    Apprenticeships include time away from working for specialist training. You’ll study to gain professional knowledge and skills.
+                </p>
+                <h3 class="govuk-heading-s">Training provider</h3>
+                <p>@Model.TrainingProviderName</p>
+                <h3 class="govuk-heading-s">Training course</h3>
+                <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
+                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-5">
+                    <a class="govuk-link govuk-link--no-visited-state"
+                       href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships#UnderstandingApprenticeshiplevelsandqualifications"
+                       target="_blank" rel="external">
+                        Understanding apprenticeship levels (opens in new tab)
+                    </a>
+                </p>
+                @if (Model.CourseSkills is { Count: > 0 } || Model.CourseCoreDuties is { Count: > 0 })
+                {
+                    <h3 class="govuk-heading-s">What you'll learn</h3>
+                    <details class="govuk-details govuk-!-margin-top-0" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Course contents
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            @{
+                                var courseItems = new List<string>();
+                                if (Model.CourseSkills is { Count: > 0 })
+                                {
+                                    courseItems.AddRange(Model.CourseSkills);
+                                }
+
+                                if (Model.CourseCoreDuties is { Count: > 0 })
+                                {
+                                    courseItems.AddRange(Model.CourseCoreDuties);
+                                }
+                            }
+                            <accessible-list class="govuk-list--spaced" items="@courseItems" />
+                        </div>
+                    </details>
+                }
+                <h3 class="govuk-heading-s">Training schedule</h3>
+                @if (string.IsNullOrEmpty(Model.TrainingPlan))
+                {
+                    <div class="govuk-inset-text">
+                        This training schedule has not been finalised. Check with this employer if you’ll need to travel to a college or training location for this apprenticeship.
+                    </div>
+                }
+                else
+                {
+                    <p>@Html.Raw(Model.TrainingPlan)</p>
+                }
+                @if (!string.IsNullOrEmpty(Model.AdditionalTrainingInformation))
+                {
+                    <h3 class="govuk-heading-s">More training information</h3>
+                    <p>@Html.Raw(@Model.AdditionalTrainingInformation)</p>
+                }
+            </section>
+            <section class="faa-vacancy__section" id="requirements">
+                <h2 class="govuk-heading-m">Requirements</h2>
+
+                <p asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-hint">
+                    You do not need to have any specific qualifications or experience to apply for a foundation apprenticeship.
+                </p>
+
+                @if (!Model.ApprenticeshipType.IsFoundation())
+                {
+                    if (Model.EssentialQualifications is { Count: > 0 })
+                    {
+                        <h3 class="govuk-heading-s">Essential qualifications</h3>
+                        foreach (var group in Model.EssentialQualifications.GroupBy(x => x.QualificationType))
+                        {
+                            <p>@group.Key in:</p>
+                            <accessible-list class="govuk-body govuk-!-margin-bottom-6" items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()" />
+                        }
+                    }
+                    if (Model.DesiredQualifications is { Count: > 0 })
+                    {
+                        <h3 class="govuk-heading-s">Desirable qualifications</h3>
+                        foreach (var group in Model.DesiredQualifications.GroupBy(x => x.QualificationType))
+                        {
+                            <p>@group.Key in:</p>
+                            <accessible-list class="govuk-body govuk-!-margin-bottom-6" items="@group.Select(x => $"{x.Subject} (grade {x.Grade})").ToList()" />
+                        }
+                    }
+                    <p class="govuk-body">
+                        Share if you have other relevant qualifications and industry experience. The apprenticeship can be adjusted to reflect what you already know.
+                    </p>
+                    <h3 class="govuk-heading-s">Skills</h3>
+                    <accessible-list class="govuk-body govuk-!-margin-bottom-6" items="@Model.Skills"></accessible-list>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
+                {
+                    <h3 class="govuk-heading-s">Other requirements</h3>
+                    <p>@Model.ThingsToConsider</p>
+                }
+            </section>
+            <section class="faa-vacancy__section" id="company">
+                <h2 class="govuk-heading-m">About this employer</h2>
+                <p>
+                    @Html.Raw(Model.EmployerDescription)
+                </p>
+                @if (!string.IsNullOrEmpty(Model.EmployerWebsite))
+                {
+                    <p class="govuk-body">
+                        <a href="@Model.EmployerWebsite" class="govuk-link" rel="noreferrer noopener"
+                           target="_blank">@Model.EmployerWebsite (opens in new tab)</a>
+                    </p>
+                }
+                @if (!string.IsNullOrEmpty(Model.CompanyBenefits))
+                {
+                    <h3 class="govuk-heading-s">Company benefits</h3>
+                    <p>
+                        @Html.Raw(Model.CompanyBenefits)
+                    </p>
+                }
+                @if (Model.IsDisabilityConfident)
+                {
+                    <h3 class="govuk-heading-s">Disability Confident</h3>
+                    <img src="/img/disability-confident.svg" class="faa-disability-confident--srp"
+                         alt="Disability Confident" width="150px" no-cdn />
+                    <p class="govuk-body">
+                        A fair proportion of interviews for this apprenticeship will be offered to applicants with a disability or long-term health condition.
+                        This includes non-visible disabilities and conditions.
+                    </p>
+                    <p class="govuk-body">
+                        You can choose to be considered for an interview under the Disability Confident scheme.
+                        You’ll need to meet the essential requirements to be considered for an interview.
+                    </p>
+                }
+            </section>
+            <section class="faa-vacancy__section" id="after">
+                <h2 class="govuk-heading-m">After this apprenticeship</h2>
+                <p>
+                    @Html.Raw(Model.OutcomeDescription)
+                </p>
+            </section>
+            <section class="faa-vacancy__section" id="question">
+                <h2 class="govuk-heading-m">Ask a question</h2>
+                <p>
+                    The contact for this apprenticeship is:
+                </p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.ContactOrganisationName</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.ContactName</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">@Model.ContactEmail</p>
+                <p class="govuk-body">@Model.ContactPhone</p>
+                <p class="govuk-body govuk-!-margin-top-4">
+                    The reference code for this apprenticeship is
+                    @Model.VacancyReference.
+                </p>
+            </section>
+            <div asp-hide="Model.IsClosed">
+                <section class="faa-vacancy__section faa-vacancy__section--last" id="apply">
+                    @if (User.Identity is { IsAuthenticated: false })
+                    {
+                        <h2 class="govuk-heading-m">Apply now</h2>
+
+                        <div asp-show="@Model.ApprenticeshipType.IsFoundation()" class="govuk-inset-text faa-foundation-inset-text govuk-body">
+                            <p>Anyone between 16 and 21 can start a foundation apprenticeship.</p>
+                            <p>If you're between 22 and 24, you can start if you:</p>
+                            <ul class="govuk-list govuk-list--bullet">
+                                <li>have an EHC plan</li>
+                                <li>are in care or have been in care</li>
+                                <li>are in prison or have been in prison</li>
+                            </ul>
+                        </div>
+
+                        <p>@Model.ClosingDate</p>
+                        <p class="govuk-body">
+                            Sign in with your GOV.UK One Login to apply.
+                        </p>
+                        if (!string.IsNullOrEmpty(Model.ApplicationUrl))
+                        {
+                            <p class="govuk-body">After signing in, you’ll apply for this apprenticeship on the company's website.</p>
+                        }
+
+                        <form class="form" method="post" asp-route="@RouteNames.Vacancies" asp-route-VacancyReference="@Model.VacancyReference">
+                            <div class="govuk-button-group">
+                                <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                    Sign in to apply
+                                </button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        if (Model.ApplicationDetails is
+                        {
+                            Status: ApplicationStatus.Submitted
+                        }
+                        or
+                        {
+                            Status: ApplicationStatus.Successful
+                        }
+                        or
+                        {
+                            Status: ApplicationStatus.Unsuccessful
+                        })
+                        {
+                        }
+                        else
+                        {
+                            <h2 class="govuk-heading-m">Apply now</h2>
+
+                            <div asp-show="@(Model.ApprenticeshipType.IsFoundation() && (Model.CandidateIs21OrUnderAtStartOfVacancy || Model.CandidateIs22To24AtStartOfVacancy || Model.CandidateIs25OrOverAtStartOfVacancy))" class="govuk-inset-text faa-foundation-inset-text">
+                                @if (Model.CandidateIs21OrUnderAtStartOfVacancy)
+                                {
+                                    <p>Anyone between 16 and 21 can start a foundation apprenticeship.</p>
+                                    <p>If you're between 22 and 24, you can start if you:</p>
+                                    <ul class="govuk-list govuk-list--bullet">
+                                        <li>have an EHC plan</li>
+                                        <li>are in care or have been in care</li>
+                                        <li>are in prison or have been in prison</li>
+                                    </ul>
+                                }
+                                @if (Model.CandidateIs22To24AtStartOfVacancy)
+                                {
+                                    <p>If you're between 22 and 24, you can start if you:</p>
+                                    <ul class="govuk-list govuk-list--bullet">
+                                        <li>have an EHC plan</li>
+                                        <li>are in care or have been in care</li>
+                                        <li>are in prison or have been in prison</li>
+                                    </ul>
+                                }
+                                @if (Model.CandidateIs25OrOverAtStartOfVacancy)
+                                {
+                                    <p>You cannot apply for a foundation apprenticeship if you’re 25 or over.</p>
+                                }
+                            </div>
+
+                            <p>@Model.ClosingDate</p>
+
+                            if (!string.IsNullOrEmpty(Model.ApplicationUrl))
+                            {
+                                if (!string.IsNullOrEmpty(Model.ApplicationInstructions))
+                                {
+                                    <h3>How to apply for this apprenticeship</h3>
+                                    <p>@Model.ApplicationInstructions</p>
+                                }
+
+                                if (Model.ApprenticeshipType.IsFoundation() && Model.CandidateIs25OrOverAtStartOfVacancy)
+                                {
+                                    <div class="govuk-button-group">
+                                        <button disabled aria-disabled="true" class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">Apply on company’s website</button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <a href="@Model.ApplicationUrl" class="govuk-button">Go to application website</a>
+                                }
+                            }
+                            else
+                            {
+                                if (Model.ApprenticeshipType.IsFoundation() && Model.CandidateIs25OrOverAtStartOfVacancy)
+                                {
+                                    <div class="govuk-button-group">
+                                        <button disabled aria-disabled="true" class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">Apply for apprenticeship</button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <form class="form" method="post" asp-route="@RouteNames.Vacancies" asp-route-VacancyReference="@Model.VacancyReference">
+                                        <div class="govuk-button-group">
+                                            <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
+                                                @(Model.ApplicationDetails is { Status: ApplicationStatus.Draft } ? "Continue your application" : "Apply for apprenticeship")
+                                            </button>
+                                        </div>
+                                    </form>
+                                }
+                            }
+                        }
+                    }
+                </section>
+            </div>
+        </div>
+        </div>
+    </div>
+}
