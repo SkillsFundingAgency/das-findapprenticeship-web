@@ -36,6 +36,7 @@ public class ApplicationsController(IMediator mediator, IDateTimeService dateTim
         return result;
     }
 
+    [HttpGet]
     [Route("applications", Name = RouteNames.Applications.ViewApplications)]
     public async Task<IActionResult> Index(ApplicationsTab tab = ApplicationsTab.Started, bool showEqualityQuestionsBanner = false)
     {
@@ -87,6 +88,7 @@ public class ApplicationsController(IMediator mediator, IDateTimeService dateTim
         return View(viewModel);
     }
 
+    [HttpGet]
     [Route("applications/{applicationId:guid}/withdraw", Name = RouteNames.Applications.WithdrawApplicationGet)]
     public async Task<IActionResult> Withdraw([FromRoute]Guid applicationId)
     {
@@ -129,6 +131,7 @@ public class ApplicationsController(IMediator mediator, IDateTimeService dateTim
             
         return RedirectToRoute(RouteNames.Applications.ViewApplications,new {tab = ApplicationsTab.Submitted});
     }
+    
     [HttpGet]
     [Route("applications/{applicationId}/view", Name = RouteNames.Applications.ViewApplication)]
     public async Task<IActionResult> View([FromRoute] Guid applicationId)
