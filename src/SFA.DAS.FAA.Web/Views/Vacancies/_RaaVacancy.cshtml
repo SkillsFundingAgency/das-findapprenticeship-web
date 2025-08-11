@@ -109,7 +109,14 @@ else
                 @Model.EmploymentWorkLocation
             </span>
         </p>
-        <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
+        @if (Model.IsClosed)
+        {
+            <p class="govuk-body faa-vacancy__closing-date">@Model.ClosedDate</p>
+        }
+        else
+        {
+            <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
+        }
         <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">@Model.PostedDate</p>
         <div class="faa-vacancy-actions">
             <div asp-hide="Model.IsClosed">
