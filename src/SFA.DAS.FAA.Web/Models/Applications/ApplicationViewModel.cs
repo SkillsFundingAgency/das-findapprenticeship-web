@@ -50,7 +50,7 @@ public class ApplicationViewModel
     public VacancyDetailsSection VacancyDetails { get; init; } = new();
     public EmploymentLocationSection? EmploymentLocation { get; init; } = new();
 
-    private ApprenticeshipTypes? ApprenticeshipType { get; init; } = ApprenticeshipTypes.Standard;
+    public ApprenticeshipTypes? ApprenticeshipType { get; init; } = ApprenticeshipTypes.Standard;
     public bool ShowFoundationTag => ApprenticeshipType == ApprenticeshipTypes.Foundation;
 
     public record VacancyDetailsSection
