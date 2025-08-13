@@ -22,7 +22,8 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                 .WithTrainingCoursesFiles()
                 .WithVolunteeringAndWorkExperienceFiles()
                 .WithDisabilityConfidentFiles()
-                .WithQualificationsFiles();
+                .WithQualificationsFiles()
+                .WithExpectedSkillsFiles();
 
             return server;
         }
@@ -297,6 +298,18 @@ namespace SFA.DAS.FAA.MockServer.MockServerBuilder
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile($"{BaseFilePath}/Qualifications/modify-qualification-single.json"));
             return server;
+        }
+
+        private static WireMockServer WithExpectedSkillsFiles(this WireMockServer server)
+        {
+             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, $"{BaseRoute}/skillsandstrengths/expected", RegexOptions.None, RegexMaxTimeOut))
+                     .UsingGet())
+                 .RespondWith(
+                     Response.Create()
+                         .WithStatusCode(200)
+                         .WithHeader("Content-Type", "application/json")
+                         .WithBodyFromFile($"{BaseFilePath}/SkillsAndStrengths\\get-expected-skills-and-strengths.json"));
+             return server;   
         }
         
         private static bool MatchQualificationIdParam(IDictionary<string, WireMockList<string>> arg)
