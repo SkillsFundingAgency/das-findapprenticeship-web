@@ -5,23 +5,53 @@
     "closingDate": "2025-03-23T00:00:00Z",
     "isDisabilityConfident": true,
     "educationHistory": {
-        "qualifications": "Completed",
-        "trainingCourses": "Completed"
+        "qualifications": [{
+            "showQualifications": true,
+            "qualificationGroups": [
+                {
+                    "displayName": "A levels",
+                    "qualifications" : [
+                        {
+                            "id": "20d1923f-25b4-4a37-8580-d04643cf1fba",
+                            "subject": "Linguistics MA (Hons)",
+                            "grade": "2:1",
+                            "gradeLabel": "",
+                            "isPredicted": false,
+                            "qualificationOrder": 1,
+                            "additionalInformation": "University of Edinburgh"
+                        }
+                    ]
+                }]
+        }],
+        "trainingCourses": []
     },
     "workHistory": {
-        "jobs": "Completed",
-        "volunteeringAndWorkExperience": "Completed"
+        "jobs": [],
+        "volunteeringAndWorkExperience": []
     },
     "applicationQuestions": {
-        "skillsAndStrengths": "Completed",
-        "whatInterestsYou": "Completed",
-        "additionalQuestion1": "Completed",
-        "additionalQuestion2": "Completed"
+        "skillsAndStrengths": [],
+        "whatInterestsYou": [],
+        "additionalQuestion1": {},
+        "additionalQuestion2": {}
     },
     "interviewAdjustments": {
-        "requestAdjustments": "Completed"
+        "requestAdjustments": []
     },
     "disabilityConfidence": {
-        "interviewUnderDisabilityConfident": "Completed"
+        "interviewUnderDisabilityConfident": []
+    },
+    "candidate": {
+        "fullName": "Steve Jones"
+    },
+    "aboutYou": {
+
+    },
+    "whatIsYourInterest": {
+
+    },
+    "vacancyDetails": {
+        "title": "Engineering and Manufacturing apprentice",
+        "employerName": "ABC Eng"
     }
 }
