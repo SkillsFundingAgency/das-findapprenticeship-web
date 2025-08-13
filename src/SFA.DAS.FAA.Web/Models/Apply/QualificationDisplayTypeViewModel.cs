@@ -11,7 +11,7 @@ public class QualificationDisplayTypeViewModel
         {
             case "apprenticeship":
                 Id = id;
-                GroupTitle = "Apprenticeships";
+                GroupTitle = "Apprenticeship";
                 Title = "Add an apprenticeship";
                 SubjectLabel = "Training course";
                 SubjectHintText = "For example, Network engineer (Level 4)";
@@ -60,7 +60,7 @@ public class QualificationDisplayTypeViewModel
                 break;
             case "t level":
                 Id = id;
-                GroupTitle = "T levels";
+                GroupTitle = "T level";
                 Title = "Add a T level";
                 ErrorSummary = "Enter your T level";
                 SubjectErrorMessage = "Enter the subject of your T level";
@@ -120,7 +120,7 @@ public class QualificationDisplayTypeViewModel
             default:
                 Id = id;
                 Title = "Add other qualification";
-                GroupTitle = "Other qualifications";
+                GroupTitle = "Other";
                 ErrorSummary = "Enter your other qualification";
                 AdditionalInformationLabel = "Subject (optional)";
                 SubjectLabel = "Name of qualification";

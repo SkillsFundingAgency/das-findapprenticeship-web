@@ -82,6 +82,9 @@
     <Content Include="Apply\ExistingApplication\Jobs\get-jobs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Apply\ExistingApplication\SkillsAndStrengths\get-expected-skills-and-strengths.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Apply\NewApplication\TrainingCourses\post-add-trainingcourse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
