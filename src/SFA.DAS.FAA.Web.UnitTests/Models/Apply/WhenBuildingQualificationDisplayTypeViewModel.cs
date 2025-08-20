@@ -15,7 +15,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
 
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add an apprenticeship");
-        actual.GroupTitle.Should().Be("Apprenticeships");
+        actual.GroupTitle.Should().Be("Apprenticeship");
         actual.SubjectLabel.Should().Be("Training course");
         actual.SubjectHintText.Should().Be("For example, Network engineer (Level 4)");
         actual.ErrorSummary.Should().Be("Enter your apprenticeship");
@@ -101,7 +101,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
 
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add a T level");
-        actual.GroupTitle.Should().Be("T levels");
+        actual.GroupTitle.Should().Be("T level");
         actual.ErrorSummary.Should().Be("Enter your T level");
         actual.SubjectErrorMessage.Should().Be("Enter the subject of your T level");
         actual.GradeErrorMessage.Should().Be("Select the grade of your T level");
@@ -160,7 +160,7 @@ public class WhenBuildingQualificationDisplayTypeViewModel
 
         actual.Id.Should().Be(id);
         actual.Title.Should().Be("Add other qualification");
-        actual.GroupTitle.Should().Be("Other qualifications");
+        actual.GroupTitle.Should().Be("Other");
         actual.ErrorSummary.Should().Be("Enter your other qualification");
         actual.SubjectErrorMessage.Should().Be("Enter the type of the qualification you want to add");
         actual.SubjectLabel.Should().Be("Name of qualification");

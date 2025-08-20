@@ -5,23 +5,40 @@
     "closingDate": "2025-03-23T00:00:00Z",
     "isDisabilityConfident": true,
     "educationHistory": {
-        "qualifications": "Completed",
-        "trainingCourses": "Completed"
+        "qualifications": "NotStarted",
+        "trainingCourses": "NotStarted"
     },
     "workHistory": {
-        "jobs": "Completed",
-        "volunteeringAndWorkExperience": "Completed"
+        "jobs": "NotStarted",
+        "volunteeringAndWorkExperience": "NotStarted"
     },
     "applicationQuestions": {
-        "skillsAndStrengths": "Completed",
-        "whatInterestsYou": "Completed",
-        "additionalQuestion1": "Completed",
-        "additionalQuestion2": "Completed"
+        "skillsAndStrengths": "NotStarted",
+        "whatInterestsYou": "NotStarted",
+        "additionalQuestion1": "NotStarted",
+        "additionalQuestion2": "NotStarted",
+        "additionalQuestion1Label" : "First Question",
+        "additionalQuestion2Label" : "Second Question",
+        "additionalQuestion1Id" : "30d1923f-25b4-4a37-8580-d04643cf1fba",
+        "additionalQuestion2Id" : "40d1923f-25b4-4a37-8580-d04643cf1fba"
     },
     "interviewAdjustments": {
-        "requestAdjustments": "Completed"
+        "requestAdjustments": "NotStarted"
     },
     "disabilityConfidence": {
-        "interviewUnderDisabilityConfident": "Completed"
+        "interviewUnderDisabilityConfident": "NotStarted"
+    },
+    "candidate": {
+        "fullName": "Steve Jones"
+    },
+    "aboutYou": {
+
+    },
+    "whatIsYourInterest": {
+
+    },
+    "vacancyDetails": {
+        "title": "Engineering and Manufacturing apprentice",
+        "employerName": "ABC Eng"
     }
 }

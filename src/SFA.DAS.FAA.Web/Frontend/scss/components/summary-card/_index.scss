@@ -1,0 +1,7 @@
+.faa-summary-card {
+  .govuk-summary-list__key {
+    @include govuk-media-query(tablet) {
+      width: 50%;
+    }
+  }
+}
