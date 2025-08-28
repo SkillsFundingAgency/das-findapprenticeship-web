@@ -29,7 +29,8 @@ public class GetSearchResultsQueryHandler(IApiClient apiClient)
             query.SkipWageType,
             query.DisabilityConfident,
             query.CandidateId,
-            query.ExcludeNational);
+            query.ExcludeNational,
+            query.ApprenticeshipTypes);
         var response = await apiClient.Get<GetSearchResultsApiResponse>(request);
 
         return new GetSearchResultsResult

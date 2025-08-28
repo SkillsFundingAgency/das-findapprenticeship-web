@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
@@ -341,6 +342,88 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
             filterThird.ClearFilterLink.Should().Be(SearchResultsUrl + expectedThird);
             filterThird.Order.Should().Be(3);
             filterThird.Value.Should().Be(parameterName);
+        }
+        
+        [TestCase(null, "", 0)]
+        [TestCase(ApprenticeshipTypes.Standard, "Apprenticeship type", 1)]
+        [TestCase(ApprenticeshipTypes.Foundation, "Apprenticeship type", 1)]
+        public void BuildJobTypeSearchFiltersForSingleLevelId(ApprenticeshipTypes? apprenticeshipType, string fieldName, int expectedNumberOfFilters)
+        {
+            const string parameterName = "apprenticeshipTypes";
+            var request = new GetSearchResultsRequest { ApprenticeshipTypes = [] };
+            var lookups = new List<ChecklistLookup>();
+            if (apprenticeshipType != null)
+            {
+                var lookup = new ChecklistLookup(parameterName, apprenticeshipType.ToString()!, null, true);
+                lookups.Add(lookup);
+                request.ApprenticeshipTypes.Add(apprenticeshipType.Value);
+            }
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(SearchResultsUrl);
+
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+                { ApprenticeshipTypesChecklistDetails = new ChecklistDetails { Lookups = lookups } });
+
+            if (expectedNumberOfFilters == 0)
+            {
+                actual.Count.Should().Be(0);
+                return;
+            }
+            var firstItem = actual.First();
+            firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
+            firstItem.FieldName.Should().Be(fieldName);
+            firstItem.FieldOrder.Should().Be(1);
+
+            var filter = firstItem.Filters.First();
+            filter.ClearFilterLink.Should().Be(SearchResultsUrl);
+            filter.Order.Should().Be(1);
+            filter.Value.Should().Be(parameterName);
+        }
+
+        [TestCase(ApprenticeshipTypes.Standard, ApprenticeshipTypes.Foundation, "?apprenticeshipTypes=Foundation", "?apprenticeshipTypes=Standard")]
+        public void BuildJobTypeSearchFiltersForTwoApprenticeshipTypes(ApprenticeshipTypes type1, ApprenticeshipTypes type2, string expectedFirst, string expectedSecond)
+        {
+            const string parameterName = "apprenticeshipTypes";
+            var request = new GetSearchResultsRequest { ApprenticeshipTypes = [] };
+            var lookups = new List<ChecklistLookup>
+            {
+                new(parameterName, type1.ToString())
+                {
+                    Checked = "Checked"
+                },
+                new(parameterName, type2.ToString())
+                {
+                    Checked = "Checked"
+                }
+            };
+        
+            request.ApprenticeshipTypes.Add(type1);
+            request.ApprenticeshipTypes.Add(type2);
+        
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+                .Returns(SearchResultsUrl);
+        
+            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+                { ApprenticeshipTypesChecklistDetails = new ChecklistDetails { Lookups = lookups } });
+        
+            var firstItem = actual.First();
+            firstItem.Filters.Count.Should().Be(2);
+            firstItem.FieldName.Should().Be("Apprenticeship type");
+            firstItem.FieldOrder.Should().Be(1);
+        
+            var filter = firstItem.Filters.First();
+            filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
+            filter.Order.Should().Be(1);
+            filter.Value.Should().Be(parameterName);
+        
+            var filterSecond = firstItem.Filters.Skip(1).First();
+            filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
+            filterSecond.Order.Should().Be(2);
+            filterSecond.Value.Should().Be(parameterName);
         }
 
         [Test]

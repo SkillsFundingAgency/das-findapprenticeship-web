@@ -72,6 +72,26 @@
                             </div>
                         </div>
                         <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
+                            @* Apprenticeship types *@
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                                        <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-apprenticeshipType">
+                                            Apprenticeship type
+                                            <span asp-show="@(Model.SelectedApprenticeshipTypesCount > 0)" class="govuk-hint faa-filter__selected-hint" aria-hidden="true">
+                                                @Model.SelectedApprenticeshipTypesCount.ToString() selected
+                                            </span>
+                                        </span>
+                                    </h2>
+                                </div>
+                                <div class="govuk-accordion__section-content">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-visually-hidden">Apprenticeship level</legend>
+                                        <partial name="_ApprenticeshipTypesFilterSection" Model="@Model.FilterChoices.ApprenticeshipTypesChecklistDetails" />
+                                    </fieldset>
+                                </div>
+                            </div>
+                            @* Apprenticeship level *@
                             <div class="govuk-accordion__section">
                                 <div class="govuk-accordion__section-header">
                                     <h2 class="govuk-accordion__section-heading">
@@ -98,17 +118,18 @@
                                             </a>
                                         </p>
                                         <partial name="_FilterDetails"
-                                                 Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
+                                                 Model="@Model.FilterChoices.CourseLevelsChecklistDetails"/>
                                     </fieldset>
-                                   
+
                                 </div>
                             </div>
+                            @* Job categories *@
                             <div class="govuk-accordion__section">
                                 <div class="govuk-accordion__section-header">
                                     <h2 class="govuk-accordion__section-heading">
                                         <span class="govuk-accordion__section-button"
                                               id="apprenticeship-filters-heading-categories">
-                                            Job categories
+                                            Job category
                                             @if (Model.SelectedRouteCount != 0)
                                             {
                                                 <span class="govuk-hint faa-filter__selected-hint"
@@ -121,7 +142,7 @@
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-visually-hidden">Job categories</legend>
                                         <partial name="_FilterDetails"
-                                                 Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
+                                                 Model="@Model.FilterChoices.JobCategoryChecklistDetails"/>
                                     </fieldset>
                                 </div>
                             </div>

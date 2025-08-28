@@ -22,13 +22,13 @@ namespace SFA.DAS.FAA.Web.Services
             var filters = new List<SelectedFilter>();
             var fullQueryParameters = BuildQueryParameters(request);
             
-            filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "What",
-                request.SearchTerm,[$"searchTerm={HttpUtility.UrlEncode(request.SearchTerm)}"]);
+            filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "What", request.SearchTerm, [$"searchTerm={HttpUtility.UrlEncode(request.SearchTerm)}"]);
             filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Where",
                 string.IsNullOrEmpty(request.Location) ? "" : $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "across England")})",
                 [$"location={HttpUtility.UrlEncode(request.Location)}", $"distance={(request.Distance == null ? "all" : request.Distance)}", $"sort={VacancySort.DistanceAsc}"]);
             
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.ApprenticeshipTypes?.Select(x => $"{x}").ToList(), "Apprenticeship type", "apprenticeshipTypes", filterChoices.ApprenticeshipTypesChecklistDetails.Lookups.ToList());
             filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
             
             if(request.DisabilityConfident)
@@ -42,7 +42,6 @@ namespace SFA.DAS.FAA.Web.Services
 
             return filters;
         }
-
         
         private static List<string> BuildQueryParameters(GetSearchResultsRequest request)
         {
@@ -80,6 +79,11 @@ namespace SFA.DAS.FAA.Web.Services
                 queryParameters.Add("IncludeCompetitiveSalaryVacancies=true");
             else
                 queryParameters.Remove("IncludeCompetitiveSalaryVacancies=false");
+
+            if (request.ApprenticeshipTypes is { Count: > 0 })
+            {
+                queryParameters.AddRange(request.ApprenticeshipTypes.Select(isActive => "apprenticeshipTypes=" + isActive));
+            }
 
             return queryParameters;
         }

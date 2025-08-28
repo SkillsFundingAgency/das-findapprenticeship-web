@@ -17,4 +17,5 @@ public class GetSearchResultsQuery : IRequest<GetSearchResultsResult>
     public string? CandidateId { get; set; }
     public WageType? SkipWageType { get; set; }
     public bool? ExcludeNational { get; set; }
+    public List<ApprenticeshipTypes>? ApprenticeshipTypes { get; set; }
 }

@@ -29,7 +29,8 @@ public class WhenGettingSearchResults
             query.SkipWageType,
             query.DisabilityConfident,
             query.CandidateId,
-            query.ExcludeNational);
+            query.ExcludeNational,
+            query.ApprenticeshipTypes);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
@@ -72,7 +73,8 @@ public class WhenGettingSearchResults
             query.SkipWageType, 
             query.DisabilityConfident,
             query.CandidateId,
-            query.ExcludeNational);
+            query.ExcludeNational,
+            query.ApprenticeshipTypes);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
@@ -117,7 +119,8 @@ public class WhenGettingSearchResults
             query.SkipWageType,
             query.DisabilityConfident,
             query.CandidateId,
-            query.ExcludeNational);
+            query.ExcludeNational,
+            query.ApprenticeshipTypes);
         apiClient.Setup(client => client.Get<GetSearchResultsApiResponse>(It.Is<GetSearchResultsApiRequest>(c=>c.GetUrl.Equals(expectedGetUrl.GetUrl))))
             .ReturnsAsync(expectedResponse);
 
