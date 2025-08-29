@@ -32,7 +32,8 @@ public class GetConfirmUnsubscribeQueryHandler(IApiClient apiClient)
                     response.SavedSearch.SearchParameters.DisabilityConfident,
                     response.SavedSearch.SearchParameters.ExcludeNational,
                     response.SavedSearch.SearchParameters.SelectedLevelIds,
-                    response.SavedSearch.SearchParameters.Location
+                    response.SavedSearch.SearchParameters.Location,
+                    response.SavedSearch.SearchParameters.SelectedApprenticeshipTypes
                 ))
         };
     }

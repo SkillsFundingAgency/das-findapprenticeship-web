@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.FAA.Domain.Models;
+﻿using SFA.DAS.FAA.Domain.Enums;
+
+namespace SFA.DAS.FAA.Domain.Models;
 
 public record SearchParameters(
     string? SearchTerm,
@@ -7,5 +9,6 @@ public record SearchParameters(
     bool DisabilityConfident,
     bool? ExcludeNational,
     List<int>? SelectedLevelIds,
-    string? Location
+    string? Location,
+    List<ApprenticeshipTypes>? SelectedApprenticeshipTypes
 );

@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.FAA.Domain.SavedSearches.Dto;
+﻿using SFA.DAS.FAA.Domain.Enums;
+
+namespace SFA.DAS.FAA.Domain.SavedSearches.Dto;
 
 public record SearchParametersDto(
     string? SearchTerm,
@@ -7,5 +9,6 @@ public record SearchParametersDto(
     bool DisabilityConfident,
     bool? ExcludeNational,
     List<int>? SelectedLevelIds,
-    string? Location
+    string? Location,
+    List<ApprenticeshipTypes>? SelectedApprenticeshipTypes
 );

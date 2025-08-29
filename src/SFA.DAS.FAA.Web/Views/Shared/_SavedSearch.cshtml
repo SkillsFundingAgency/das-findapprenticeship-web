@@ -53,16 +53,25 @@
             @if (Model.SelectedRoutes?.Count is > 0)
             {
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Categories</dt>
+                    <dt class="govuk-summary-list__key">Job category</dt>
                     <dd class="govuk-summary-list__value">
                         <accessible-list items="@Model.SelectedRoutes"></accessible-list>
+                    </dd>
+                </div>
+            }
+            @if (Model.SelectedApprenticeshipTypes is { Count: >0 })
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Apprenticeship type</dt>
+                    <dd class="govuk-summary-list__value">
+                        <accessible-list items="@Model.SelectedApprenticeshipTypes.Select(x => $"{x}").ToList()"></accessible-list>
                     </dd>
                 </div>
             }
             @if (Model.SelectedLevelIds?.Count is > 0)
             {
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Levels</dt>
+                    <dt class="govuk-summary-list__key">Apprenticeship level</dt>
                     <dd class="govuk-summary-list__value">
                         <accessible-list items="@Model.SelectedLevelIds.Select(id => $"Level {id}").ToList()"></accessible-list>
                     </dd>

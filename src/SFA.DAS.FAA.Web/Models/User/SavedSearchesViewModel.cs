@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
@@ -12,6 +13,7 @@ public record SavedSearchViewModel(
     decimal? Distance,
     List<string>? SelectedRoutes,
     List<int>? SelectedLevelIds,
+    List<ApprenticeshipTypes>? SelectedApprenticeshipTypes,
     bool DisabilityConfident,
     bool? ExcludeNational,
     string? Location,
@@ -23,9 +25,11 @@ public record SavedSearchViewModel(
         var definingCharacteristic = source.SearchParameters switch
         {
             { SearchTerm: not null } => source.SearchParameters.SearchTerm,
-            { SelectedRouteIds: { Count: 1 } } => routes.First(route => route.Id == source.SearchParameters.SelectedRouteIds.First()).Name,
+            { SelectedRouteIds: { Count: 1 } } => routes.First(route => route.Id == source.SearchParameters.SelectedRouteIds[0]).Name,
             { SelectedRouteIds: { Count: > 1 } } => $"{source.SearchParameters.SelectedRouteIds.Count} categories",
-            { SelectedLevelIds.Count: 1 } => $"Level {source.SearchParameters.SelectedLevelIds.First()}",
+            { SelectedApprenticeshipTypes: { Count: 1 } } => GetApprenticeshipTypeText(source.SearchParameters.SelectedApprenticeshipTypes[0]),
+            { SelectedApprenticeshipTypes: { Count: > 1 } } => $"{source.SearchParameters.SelectedApprenticeshipTypes.Count} apprenticeship types",
+            { SelectedLevelIds.Count: 1 } => $"Level {source.SearchParameters.SelectedLevelIds[0]}",
             { SelectedLevelIds.Count: > 1 } => $"{source.SearchParameters.SelectedLevelIds.Count} apprenticeship levels",
             { DisabilityConfident: true } => "Disability Confident",
             { ExcludeNational: true } => "Exclude National",
@@ -61,12 +65,23 @@ public record SavedSearchViewModel(
             source.SearchParameters.Distance,
             source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id == category)?.Name ?? string.Empty).ToList(),
             source.SearchParameters.SelectedLevelIds,
+            source.SearchParameters.SelectedApprenticeshipTypes,
             source.SearchParameters.DisabilityConfident,
             source.SearchParameters.ExcludeNational ?? false,
             location,
             url,
             readOnly
         );
+    }
+
+    private static string GetApprenticeshipTypeText(ApprenticeshipTypes apprenticeshipType)
+    {
+        return apprenticeshipType switch
+        {
+            ApprenticeshipTypes.Standard => "Apprenticeships",
+            ApprenticeshipTypes.Foundation => "Foundation apprenticeships",
+            _ => throw new ArgumentOutOfRangeException(nameof(apprenticeshipType), apprenticeshipType, null)
+        };
     }
 }
 

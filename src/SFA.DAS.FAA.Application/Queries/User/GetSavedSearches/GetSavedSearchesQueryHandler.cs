@@ -24,7 +24,8 @@ public class GetSavedSearchesQueryHandler(IApiClient apiClient) : IRequestHandle
                     x.SearchParameters.DisabilityConfident,
                     x.SearchParameters.ExcludeNational,
                     x.SearchParameters.SelectedLevelIds,
-                    x.SearchParameters.Location
+                    x.SearchParameters.Location,
+                    x.SearchParameters.SelectedApprenticeshipTypes
                 )
             )).ToList(),
             result.Routes.Select(x => new RouteInfo(x.Id, x.Name)).ToList());
