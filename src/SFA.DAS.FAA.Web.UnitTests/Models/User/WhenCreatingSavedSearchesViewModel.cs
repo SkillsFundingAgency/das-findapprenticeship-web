@@ -1,3 +1,4 @@
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Models.User;
 
@@ -16,20 +17,22 @@ public class WhenCreatingSavedSearchViewModel
     
     private static readonly object[] TitleTestCases =
     [
-        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, "Foo in all of England" },
-        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, "Hull", true, true, "Foo in Hull" },
-        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, "Foo in all of England" },
-        new object?[] { null, new [] {1, 2, 3}, new [] {1, 2}, null, true, true, "3 categories in all of England" },
-        new object?[] { null, new [] { 2 }, new [] {1, 2}, null, true, true, "Route Two in all of England" },
-        new object?[] { null, null, new [] {1, 2, 3, 4}, null, true, true, "4 apprenticeship levels in all of England" },
-        new object?[] { null, null, new [] { 4 }, null, true, true, "Level 4 in all of England" },
-        new object?[] { null, null, null, null, true, true, "Disability Confident in all of England" },
-        new object?[] { null, null, null, null, false, false, "All apprenticeships in all of England" },
-        new object?[] { null, null, null, "Hull", false, false, "All apprenticeships in Hull" },
+        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, null, "Foo in all of England" },
+        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, "Hull", true, true, null, "Foo in Hull" },
+        new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, null, "Foo in all of England" },
+        new object?[] { null, new [] {1, 2, 3}, new [] {1, 2}, null, true, true, null, "3 categories in all of England" },
+        new object?[] { null, new [] { 2 }, new [] {1, 2}, null, true, true, null, "Route Two in all of England" },
+        new object?[] { null, null, new [] {1, 2, 3, 4}, null, true, true, null, "4 apprenticeship levels in all of England" },
+        new object?[] { null, null, new [] { 4 }, null, true, true, null, "Level 4 in all of England" },
+        new object?[] { null, null, null, null, true, true, null, "Disability Confident in all of England" },
+        new object?[] { null, null, null, null, false, false, null, "All apprenticeships in all of England" },
+        new object?[] { null, null, null, "Hull", false, false, null, "All apprenticeships in Hull" },
+        new object?[] { null, null, null, null, false, false, new List<ApprenticeshipTypes> { ApprenticeshipTypes.Foundation }, "Foundation apprenticeships in all of England" },
+        new object?[] { null, null, null, null, false, false, new List<ApprenticeshipTypes> { ApprenticeshipTypes.Foundation, ApprenticeshipTypes.Standard }, "2 apprenticeship types in all of England" },
     ];
     
     [TestCaseSource(nameof(TitleTestCases))]
-    public void Then_The_Title_Is_Constructed_Correctly(string? searchTerm, int[]? routes, int[]? levels, string? location, bool disabilityConfident, bool excludeNational, string? expectedTitle)
+    public void Then_The_Title_Is_Constructed_Correctly(string? searchTerm, int[]? routes, int[]? levels, string? location, bool disabilityConfident, bool excludeNational, List<ApprenticeshipTypes>? apprenticeshipTypes, string? expectedTitle)
     {
         // arrange
         var savedSearch = new SavedSearch(
@@ -43,7 +46,8 @@ public class WhenCreatingSavedSearchViewModel
                 disabilityConfident,
                 excludeNational,
                 levels?.ToList(),
-                location
+                location,
+                apprenticeshipTypes
             )
         );
         
@@ -65,7 +69,7 @@ public class WhenCreatingSavedSearchViewModel
             Guid.NewGuid(),
             DateTime.UtcNow,
             null, null,
-            new SearchParameters("Foo", [1, 2], distance, true, true,[1, 2], location)
+            new SearchParameters("Foo", [1, 2], distance, true, true,[1, 2], location, null)
         );
         
         // act
