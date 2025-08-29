@@ -410,17 +410,18 @@ public class SearchApprenticeshipsController(
 
             await mediator.Send(new SaveSearchCommand
             {
-                Id = saveSearchId,
-                SearchTerm = criteria.SearchTerm,
+                ApprenticeshipTypes = criteria.ApprenticeshipTypes,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
                 DisabilityConfident = criteria.DisabilityConfident,
                 Distance = string.IsNullOrEmpty(criteria.Location) ? null : criteria.Distance,
+                ExcludeNational = criteria.ExcludeNational,
+                Id = saveSearchId,
                 Location = criteria.Location,
+                SearchTerm = criteria.SearchTerm,
                 SelectedLevelIds = criteria.LevelIds,
                 SelectedRouteIds = criteria.RouteIds,
                 SortOrder = criteria.Sort,
                 UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString()),
-                ExcludeNational = criteria.ExcludeNational
             });
         }
         catch (Exception e)

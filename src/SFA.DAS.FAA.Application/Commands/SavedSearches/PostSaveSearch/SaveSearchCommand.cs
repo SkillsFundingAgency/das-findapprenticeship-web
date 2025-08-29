@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
 
@@ -15,4 +16,5 @@ public class SaveSearchCommand : IRequest<Unit>
     public string? SortOrder { get; set; }
     public string UnSubscribeToken { get; set; } = null!;
     public bool? ExcludeNational { get; set; }
+    public List<ApprenticeshipTypes>? ApprenticeshipTypes { get; set; }
 }

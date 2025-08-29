@@ -35,7 +35,7 @@ namespace SFA.DAS.FAA.Web.Controllers
 
             var viewModel = new UnsubscribeSavedSearchesViewModel
             {
-                SavedSearch = SavedSearchViewModel.From(result.SavedSearch, result.Routes)
+                SavedSearch = SavedSearchViewModel.From(result.SavedSearch, result.Routes, readOnly: true)
             };
 
             return View(viewModel);

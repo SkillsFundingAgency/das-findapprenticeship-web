@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAA.Domain.Interfaces;
+﻿using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Domain.SearchResults;
 
@@ -16,6 +17,7 @@ public class PostSaveSearchApiRequest(Guid candidateId, Guid id, PostSaveSearchA
         List<string>? SelectedRouteIds,
         string? SortOrder,
         string UnSubscribeToken,
-        bool ExcludeNational
+        bool ExcludeNational,
+        List<ApprenticeshipTypes>? ApprenticeshipTypes
     );
 }

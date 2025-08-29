@@ -37,7 +37,6 @@
   padding: 15px;
   @include govuk-media-query(tablet) {
     padding: 20px;
-    margin-bottom: 20px;
   }
 }
 
@@ -136,7 +135,6 @@
 }
 
 .faa-filter-alert__link {
-  font-weight: $govuk-font-weight-bold;
   span {
     vertical-align: middle;
   }
