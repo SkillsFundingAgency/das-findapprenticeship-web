@@ -27,17 +27,18 @@ namespace SFA.DAS.FAA.Web.Services
                 string.IsNullOrEmpty(request.Location) ? "" : $"{request.Location} ({(request.Distance != null ? $"within {request.Distance} miles" : "across England")})",
                 [$"location={HttpUtility.UrlEncode(request.Location)}", $"distance={(request.Distance == null ? "all" : request.Distance)}", $"sort={VacancySort.DistanceAsc}"]);
             
-            filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
-            filters.AddFilterItems(urlHelper, fullQueryParameters, request.ApprenticeshipTypes?.Select(x => $"{x}").ToList(), "Apprenticeship type", "apprenticeshipTypes", filterChoices.ApprenticeshipTypesChecklistDetails.Lookups.ToList());
-            filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
-            
-            if(request.DisabilityConfident)
-            {
-                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Disability Confident", "Only show Disability Confident companies", [$"DisabilityConfident={request.DisabilityConfident}"]);
-            }
             if(request.ExcludeNational.HasValue && request.ExcludeNational.Value)
             {
                 filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Recruiting nationally", "Hide companies recruiting nationally", [$"ExcludeNational={request.ExcludeNational}"]);
+            }
+            
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.ApprenticeshipTypes?.Select(x => $"{x}").ToList(), "Apprenticeship type", "apprenticeshipTypes", filterChoices.ApprenticeshipTypesChecklistDetails.Lookups.ToList());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.LevelIds, "Apprenticeship level", "levelIds", filterChoices.CourseLevelsChecklistDetails.Lookups.ToList());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, request.RouteIds, "Job category", "routeIds", filterChoices.JobCategoryChecklistDetails.Lookups.ToList());
+            
+            if(request.DisabilityConfident)
+            {
+                filters.AddSingleFilterItem(urlHelper, fullQueryParameters, "Disability Confident", "Disability Confident employers only", [$"DisabilityConfident={request.DisabilityConfident}"], filters.Count+1);
             }
 
             return filters;
@@ -154,14 +155,15 @@ namespace SFA.DAS.FAA.Web.Services
             List<string> fullQueryParameters,
             string fieldName,
             string value,
-            List<string> filterToRemove)
+            List<string> filterToRemove,
+            int order = -1)
         {
             if (!string.IsNullOrEmpty(value))
             {
                 filters.Add(new SelectedFilter
                 {
                     FieldName = fieldName,
-                    FieldOrder = -1,
+                    FieldOrder = order,
                     Filters =
                     [
                         new()
