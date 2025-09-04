@@ -21,7 +21,7 @@
 		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.11.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
 		<PackageReference Include="Moq" Version="4.20.69" />
-		<PackageReference Include="NSwag.Core" Version="14.4.0" />
+		<PackageReference Include="NSwag.Core" Version="14.5.0" />
 		<PackageReference Include="NUnit" Version="4.4.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
 		<PackageReference Include="NUnit.Analyzers" Version="4.10.0">
@@ -32,8 +32,8 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Reqnroll" Version="2.4.1" />
-		<PackageReference Include="Reqnroll.NUnit" Version="2.4.1" />
+		<PackageReference Include="Reqnroll" Version="3.0.0" />
+		<PackageReference Include="Reqnroll.NUnit" Version="3.0.0" />
 		<PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.11.0" />
 	</ItemGroup>
