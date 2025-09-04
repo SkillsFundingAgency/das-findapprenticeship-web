@@ -1,6 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using SFA.DAS.FAA.Web.Extensions
 @using SFA.DAS.FAA.Web.Infrastructure
-@using SFA.DAS.FAA.Web.TagHelpers
 @model SFA.DAS.FAA.Web.Models.User.SavedSearchViewModel
 
 <div class="govuk-summary-card">
@@ -64,7 +63,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Apprenticeship type</dt>
                     <dd class="govuk-summary-list__value">
-                        <accessible-list items="@Model.SelectedApprenticeshipTypes.Select(x => $"{x}").ToList()"></accessible-list>
+                        <accessible-list items="@Model.SelectedApprenticeshipTypes.GetDisplayTexts()"></accessible-list>
                     </dd>
                 </div>
             }
