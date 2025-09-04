@@ -13,8 +13,8 @@ public static class ApprenticeshipTypesExtensions
     {
         return apprenticeshipType switch
         {
-            ApprenticeshipTypes.Standard => "Apprenticeships",
-            ApprenticeshipTypes.Foundation => "Foundation apprenticeships",
+            ApprenticeshipTypes.Standard => "Apprenticeship",
+            ApprenticeshipTypes.Foundation => "Foundation apprenticeship",
             _ => throw new ArgumentOutOfRangeException(nameof(apprenticeshipType), apprenticeshipType, null)
         };
     }

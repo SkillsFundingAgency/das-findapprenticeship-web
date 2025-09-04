@@ -5,8 +5,8 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions;
 
 public class WhenGettingApprenticeshipTypesText
 {
-    [TestCase(ApprenticeshipTypes.Standard, "Apprenticeships")]
-    [TestCase(ApprenticeshipTypes.Foundation, "Foundation apprenticeships")]
+    [TestCase(ApprenticeshipTypes.Standard, "Apprenticeship")]
+    [TestCase(ApprenticeshipTypes.Foundation, "Foundation apprenticeship")]
     public void GetDisplayText_Returns_The_Correct_Texts(ApprenticeshipTypes apprenticeshipType, string expectedText)
     {
         // act
@@ -29,7 +29,7 @@ public class WhenGettingApprenticeshipTypesText
         var result = list.GetDisplayTexts();
 
         // assert
-        result.Should().BeEquivalentTo(new List<string> { "Apprenticeships", "Foundation apprenticeships" });
+        result.Should().BeEquivalentTo(new List<string> { "Apprenticeship", "Foundation apprenticeship" });
     }
     
     [Test]
