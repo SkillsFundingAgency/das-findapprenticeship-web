@@ -5,6 +5,7 @@ using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Models;
+
 public class ApprenticeshipMapData
 {
     public MapPosition Position { get; set; }
@@ -28,6 +29,7 @@ public class ApprenticeshipMapData
                 ApplicationStatus = source.CandidateApplicationDetails?.Status,
                 IsClosingSoon = source.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
                 IsNew = source.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
+                IsFoundation = source.ApprenticeshipType == ApprenticeshipTypes.Foundation,
             },
             Position = new MapPosition
             {
@@ -58,4 +60,5 @@ public class ApprenticeshipMapJob
     public ApplicationStatus? ApplicationStatus { get; set; }
     public bool IsClosingSoon { get; set; }
     public bool IsNew { get; set; }
+    public bool IsFoundation { get; set; }
 }
