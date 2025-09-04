@@ -1,6 +1,5 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Web.TagHelpers
+@using SFA.DAS.FAA.Web.Extensions
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchApprenticeshipsViewModel
 @{
     ViewData["Title"] = "Search apprenticeship – Find an apprenticeship – GOV.UK";
@@ -130,16 +129,25 @@
                         @if (savedSearch.SelectedRoutes?.Count is > 0)
                         {
                             <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Categories</dt>
+                                <dt class="govuk-summary-list__key">Job category</dt>
                                 <dd class="govuk-summary-list__value">
                                     <accessible-list items="@savedSearch.SelectedRoutes" />
+                                </dd>
+                            </div>
+                        }
+                        @if (savedSearch.SelectedApprenticeshipTypes is { Count: >0 })
+                        {
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Apprenticeship type</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <accessible-list items="@savedSearch.SelectedApprenticeshipTypes.GetDisplayTexts()"></accessible-list>
                                 </dd>
                             </div>
                         }
                         @if (savedSearch.SelectedLevelIds?.Count is > 0)
                         {
                             <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Levels</dt>
+                                <dt class="govuk-summary-list__key">Apprenticeship level</dt>
                                 <dd class="govuk-summary-list__value">
                                     <accessible-list items="@savedSearch.SelectedLevelIds.Select(id => $"Level {id}").ToList()" />
                                 </dd>

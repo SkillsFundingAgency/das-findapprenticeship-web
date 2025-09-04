@@ -34,13 +34,14 @@
                 <partial name="_SelectedCategoriesFilter" />
                 <div class="faa-filter__body das-!-show--from-tablet" id="faa-filter-options">
                     <form asp-route="@RouteNames.SearchResults" method="GET">
-                        <input type="hidden" name="sort" value="@Model.Sort" />
+                        <button type="submit" class="govuk-button govuk-!-margin-bottom-4">Apply filters</button>
+                        <input type="hidden" name="sort" value="@Model.Sort"/>
                         <div class="govuk-form-group">
                             <label for="SearchTerm"
                                    class="govuk-label govuk-label--m govuk-!-margin-bottom-0">What</label>
                             <p class="govuk-hint">Enter a job or company</p>
                             <input asp-for="SearchTerm" type="text" class="govuk-input" id="SearchTerm"
-                                   name="searchTerm" autocomplete="off" />
+                                   name="searchTerm" autocomplete="off"/>
                         </div>
                         <div class="govuk-form-group">
                             <label for="location"
@@ -64,7 +65,7 @@
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input" id="ExcludeNational"
                                            name="ExcludeNational" type="checkbox" value="true"
-                                           checked="@Model.ExcludeNational" />
+                                           checked="@Model.ExcludeNational"/>
                                     <label class="govuk-label govuk-checkboxes__label" asp-for="ExcludeNational">
                                         Hide companies recruiting nationally
                                     </label>
@@ -72,6 +73,26 @@
                             </div>
                         </div>
                         <div class="govuk-accordion" data-module="govuk-accordion" id="apprenticeship-filters">
+                            @* Apprenticeship types *@
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                                        <span class="govuk-accordion__section-button" id="apprenticeship-filters-heading-apprenticeshipType">
+                                            Apprenticeship type
+                                            <span asp-show="@(Model.SelectedApprenticeshipTypesCount > 0)" class="govuk-hint faa-filter__selected-hint" aria-hidden="true">
+                                                @Model.SelectedApprenticeshipTypesCount.ToString() selected
+                                            </span>
+                                        </span>
+                                    </h2>
+                                </div>
+                                <div class="govuk-accordion__section-content">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-visually-hidden">Apprenticeship level</legend>
+                                        <partial name="_ApprenticeshipTypesFilterSection" Model="@Model.FilterChoices.ApprenticeshipTypesChecklistDetails"/>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            @* Apprenticeship level *@
                             <div class="govuk-accordion__section">
                                 <div class="govuk-accordion__section-header">
                                     <h2 class="govuk-accordion__section-heading">
@@ -98,17 +119,18 @@
                                             </a>
                                         </p>
                                         <partial name="_FilterDetails"
-                                                 Model="@Model.FilterChoices.CourseLevelsChecklistDetails" />
+                                                 Model="@Model.FilterChoices.CourseLevelsChecklistDetails"/>
                                     </fieldset>
-                                   
+
                                 </div>
                             </div>
+                            @* Job categories *@
                             <div class="govuk-accordion__section">
                                 <div class="govuk-accordion__section-header">
                                     <h2 class="govuk-accordion__section-heading">
                                         <span class="govuk-accordion__section-button"
                                               id="apprenticeship-filters-heading-categories">
-                                            Job categories
+                                            Job category
                                             @if (Model.SelectedRouteCount != 0)
                                             {
                                                 <span class="govuk-hint faa-filter__selected-hint"
@@ -121,7 +143,7 @@
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-visually-hidden">Job categories</legend>
                                         <partial name="_FilterDetails"
-                                                 Model="@Model.FilterChoices.JobCategoryChecklistDetails" />
+                                                 Model="@Model.FilterChoices.JobCategoryChecklistDetails"/>
                                     </fieldset>
                                 </div>
                             </div>
@@ -136,7 +158,7 @@
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input" id="DisabilityConfident"
                                            name="DisabilityConfident" type="checkbox" value="true"
-                                           checked="@Model.DisabilityConfident" />
+                                           checked="@Model.DisabilityConfident"/>
                                     <label class="govuk-label govuk-checkboxes__label" asp-for="DisabilityConfident">
                                         Only show Disability Confident companies
                                     </label>

@@ -94,6 +94,7 @@ public class WhenPostingSaveSearch
                 .Excluding(x => x.PageNumber)
                 .Excluding(x => x.IncludeCompetitiveSalaryVacancies)
                 .Excluding(x => x.ExcludeNational)
+                .Excluding(x => x.ApprenticeshipTypes)
             );
     }
     
@@ -136,6 +137,7 @@ public class WhenPostingSaveSearch
                 .Excluding(x => x.RoutePath)
                 .Excluding(x => x.PageNumber)
                 .Excluding(x => x.IncludeCompetitiveSalaryVacancies)
+                .Excluding(x => x.ApprenticeshipTypes)
         );
     }
     
@@ -237,6 +239,7 @@ public class WhenPostingSaveSearch
                 .Excluding(x => x.IncludeCompetitiveSalaryVacancies)
                 .Excluding(x => x.Distance)
                 .Excluding(x => x.ExcludeNational)
+                .Excluding(x => x.ApprenticeshipTypes)
         );
     }
 }

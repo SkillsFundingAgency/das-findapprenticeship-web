@@ -203,6 +203,7 @@ public class SearchApprenticeshipsController(
         var candidateId = User.Claims.CandidateId();
         var getSearchResultsQuery = new GetSearchResultsQuery
         {
+            ApprenticeshipTypes = request.ApprenticeshipTypes,
             CandidateId = candidateId == null ? null : candidateId.ToString(),
             DisabilityConfident = request.DisabilityConfident,
             Distance = request.Distance,
@@ -262,12 +263,31 @@ public class SearchApprenticeshipsController(
                 level.Selected = true;
             }
         }
+        List<ApprenticeshipTypesViewModel> apprenticeshipTypesModels = [
+            new()
+            {
+                HintText = "Introductory apprenticeships for young people, level 2",
+                Id = 1,
+                Name = "Foundation apprenticeship",
+                Selected = request.ApprenticeshipTypes?.Contains(ApprenticeshipTypes.Foundation) ?? false,
+                Value = nameof(ApprenticeshipTypes.Foundation)
+            },
+            new()
+            {
+                HintText = "Apprenticeships that qualify you for a job, levels 2 to 7",
+                Id = 2,
+                Name = "Apprenticeship",
+                Selected = request.ApprenticeshipTypes?.Contains(ApprenticeshipTypes.Standard) ?? false,
+                Value = nameof(ApprenticeshipTypes.Standard)
+            }
+        ];
 
         // Populate filter choices and selected filters
-        var filterChoices = PopulateFilterChoices(viewModel.Routes, viewModel.Levels);
+        var filterChoices = PopulateFilterChoices(viewModel.Routes, viewModel.Levels, apprenticeshipTypesModels);
         viewModel.FilterChoices = filterChoices;
         viewModel.SelectedLevelCount = request.LevelIds?.Count ?? 0;
         viewModel.SelectedRouteCount = request.RouteIds?.Count ?? 0;
+        viewModel.SelectedApprenticeshipTypesCount = request.ApprenticeshipTypes?.Count ?? 0;
         viewModel.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices);
         viewModel.ClearSelectedFiltersLink = Url.RouteUrl(RouteNames.SearchResults, new { sort = VacancySort.AgeAsc })!;
 
@@ -390,17 +410,18 @@ public class SearchApprenticeshipsController(
 
             await mediator.Send(new SaveSearchCommand
             {
-                Id = saveSearchId,
-                SearchTerm = criteria.SearchTerm,
+                ApprenticeshipTypes = criteria.ApprenticeshipTypes,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
                 DisabilityConfident = criteria.DisabilityConfident,
                 Distance = string.IsNullOrEmpty(criteria.Location) ? null : criteria.Distance,
+                ExcludeNational = criteria.ExcludeNational,
+                Id = saveSearchId,
                 Location = criteria.Location,
+                SearchTerm = criteria.SearchTerm,
                 SelectedLevelIds = criteria.LevelIds,
                 SelectedRouteIds = criteria.RouteIds,
                 SortOrder = criteria.Sort,
                 UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString()),
-                ExcludeNational = criteria.ExcludeNational
             });
         }
         catch (Exception e)
@@ -427,7 +448,10 @@ public class SearchApprenticeshipsController(
             : JsonConvert.DeserializeObject<GetSearchResultsRequest>(data);
     }
     
-    private static SearchApprenticeshipFilterChoices PopulateFilterChoices(IEnumerable<RouteViewModel> categories, IEnumerable<LevelViewModel> levels)
+    private static SearchApprenticeshipFilterChoices PopulateFilterChoices(
+        IEnumerable<RouteViewModel> categories,
+        IEnumerable<LevelViewModel> levels,
+        IEnumerable<ApprenticeshipTypesViewModel> apprenticeshipTypes)
         => new()
         {
             JobCategoryChecklistDetails = new ChecklistDetails
@@ -441,6 +465,12 @@ public class SearchApprenticeshipsController(
                 Title = "LevelIds",
                 QueryStringParameterName = "levelIds",
                 Lookups = levels.OrderBy(x => x.Id).Select(level => new ChecklistLookup($"Level {level.Id}", level.Id.ToString(), $"Equal to {level.Name}", level.Selected)).ToList()
+            },
+            ApprenticeshipTypesChecklistDetails = new ChecklistDetails
+            {
+                Title = "ApprenticeTypes",
+                QueryStringParameterName = "apprenticeshipTypes",
+                Lookups = apprenticeshipTypes.OrderBy(x => x.Id).Select(x => new ChecklistLookup(x.Name, x.Value, x.HintText, x.Selected))
             }
         };
 

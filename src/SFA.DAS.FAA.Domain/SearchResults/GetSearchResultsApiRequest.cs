@@ -1,4 +1,6 @@
 using System.Web;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Primitives;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Interfaces;
 
@@ -18,7 +20,8 @@ public class GetSearchResultsApiRequest : IGetApiRequest
     private readonly bool _disabilityConfident;
     private readonly string? _candidateId;
     private readonly bool? _excludeNational;
-
+    private readonly List<ApprenticeshipTypes>? _apprenticeshipTypes;
+    
     public GetSearchResultsApiRequest(string? location,
         IReadOnlyCollection<string>? routes,
         IReadOnlyCollection<string>? levels,
@@ -30,7 +33,8 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         WageType? skipWageType,
         bool disabilityConfident,
         string? candidateId,
-        bool? excludeNational)
+        bool? excludeNational,
+        List<ApprenticeshipTypes>? apprenticeshipTypes)
     {
         _location = location;
         _routes = routes != null ? string.Join("&routeIds=", routes) : null;
@@ -44,19 +48,28 @@ public class GetSearchResultsApiRequest : IGetApiRequest
         _disabilityConfident = disabilityConfident;
         _candidateId = candidateId;
         _excludeNational = excludeNational;
+        _apprenticeshipTypes = apprenticeshipTypes;
     }
 
-    public string GetUrl =>
-        $"searchapprenticeships/searchResults?location={HttpUtility.UrlEncode(_location)}" +
-        $"&distance={_distance}" +
-        $"&searchTerm={HttpUtility.UrlEncode(_searchTerm)}" +
-        $"&pageNumber={_pageNumber}" +
-        $"&pageSize={_pageSize}" +
-        $"&sort={_sort}" +
-        $"&disabilityConfident={_disabilityConfident}" +
-        $"&candidateId={_candidateId}" +
-        $"&skipWageType={_skipWageType}" +
-        (_routes is not null ? $"&routeIds={_routes}" : null) +
-        (_levels is not null ? $"&levelIds={_levels}" : null) +
-        $"&excludeNational={_excludeNational}";
+    public string GetUrl {
+        get
+        {
+            var url =
+                $"searchapprenticeships/searchResults?location={HttpUtility.UrlEncode(_location)}" +
+                $"&distance={_distance}" +
+                $"&searchTerm={HttpUtility.UrlEncode(_searchTerm)}" +
+                $"&pageNumber={_pageNumber}" +
+                $"&pageSize={_pageSize}" +
+                $"&sort={_sort}" +
+                $"&disabilityConfident={_disabilityConfident}" +
+                $"&candidateId={_candidateId}" +
+                $"&skipWageType={_skipWageType}" +
+                (_routes is not null ? $"&routeIds={_routes}" : null) +
+                (_levels is not null ? $"&levelIds={_levels}" : null) +
+                $"&excludeNational={_excludeNational}";
+
+            url = QueryHelpers.AddQueryString(url, [new KeyValuePair<string, StringValues>("apprenticeshipTypes", new StringValues(_apprenticeshipTypes?.Select(x => $"{x}").ToArray()))]);
+            return url;
+        }
+    }
 }

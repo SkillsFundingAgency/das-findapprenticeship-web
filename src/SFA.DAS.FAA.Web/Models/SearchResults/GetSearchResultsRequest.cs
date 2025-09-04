@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAA.Domain.Enums;
 
 namespace SFA.DAS.FAA.Web.Models.SearchResults
 {
@@ -15,5 +16,6 @@ namespace SFA.DAS.FAA.Web.Models.SearchResults
         [FromQuery] public string? RoutePath { get; set; }
         [FromQuery] public bool IncludeCompetitiveSalaryVacancies { get; set; } = false;
         [FromQuery] public bool? ExcludeNational { get; set; } = false;
+        [FromQuery] public List<ApprenticeshipTypes>? ApprenticeshipTypes { get; set; }
     }
 }

@@ -11,74 +11,7 @@
         <h1 class="govuk-heading-l">Do you want to delete this search alert?</h1>
 
         <p class="govuk-body">We’ll stop emailing you with new apprenticeships that match this search.</p>
-        <div class="govuk-summary-card">
-            <div class="govuk-summary-card__title-wrapper">
-                <h3 class="govuk-summary-card__title">
-                    @Model.SavedSearch.Title
-                </h3>
-            </div>
-            <div class="govuk-summary-card__content">
-                <dl class="govuk-summary-list">
-                    @if (Model.SavedSearch.SearchTerm is not null)
-                    {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                What
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @Model.SavedSearch.SearchTerm
-                            </dd>
-                        </div>
-                    }
-                    @if (Model.SavedSearch.Location is not null)
-                    {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Where
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @Model.SavedSearch.Location
-                                @if (Model.SavedSearch.ExcludeNational != null && (bool)Model.SavedSearch.ExcludeNational)
-                                {
-                                    <p class="govuk-hint govuk-!-font-size-16 govuk-!-margin-top-1 faa-search-alert-hint">
-                                        Hide companies recruiting nationally
-                                    </p>
-                                }
-                            </dd>
-                        </div>
-                    }
-                    @if (Model.SavedSearch.SelectedRoutes?.Count is > 0)
-                    {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Categories</dt>
-                            <dd class="govuk-summary-list__value">
-                                <accessible-list items="@Model.SavedSearch.SelectedRoutes"></accessible-list>
-                            </dd>
-                        </div>
-                    }
-                    @if (Model.SavedSearch.SelectedLevelIds?.Count is > 0)
-                    {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Levels</dt>
-                            <dd class="govuk-summary-list__value">
-                                <accessible-list items="@Model.SavedSearch.SelectedLevelIds.Select(id => $"Level {id}").ToList()"></accessible-list>
-                            </dd>
-                        </div>
-                    }
-                    @if (Model.SavedSearch.DisabilityConfident)
-                    {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Disability confident
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                Show disability confident employers
-                            </dd>
-                        </div>
-                    }
-                </dl>
-            </div>
-        </div>
+        <partial name="_SavedSearch" model="@Model.SavedSearch"></partial>
         <form class="form" method="post">
             <input asp-for="SavedSearch.Id" name="Id" type="hidden" />
             <input asp-for="SavedSearch.Title" name="Title" type="hidden" />

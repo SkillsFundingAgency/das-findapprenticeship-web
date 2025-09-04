@@ -1,7 +1,4 @@
 using System.Web;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 
@@ -10,7 +7,20 @@ namespace SFA.DAS.FAA.Domain.UnitTests.SearchResults;
 public class WhenBuildingTheRequest
 {
     [Test, AutoData]
-    public void Then_The_Url_Is_Correctly_Constructed(string location, List<string> routes, List<string> levels, int distance, string searchTerm, int pageNumber, int pageSize, VacancySort sort, WageType skipWageType, bool disabilityConfident, string candidateId, bool? excludeNational)
+    public void Then_The_Url_Is_Correctly_Constructed(
+        string location, 
+        List<string> routes, 
+        List<string> levels, 
+        int distance, 
+        string searchTerm, 
+        int pageNumber, 
+        int pageSize, 
+        VacancySort sort, 
+        WageType skipWageType, 
+        bool disabilityConfident, 
+        string candidateId, 
+        bool? excludeNational,
+        List<ApprenticeshipTypes> apprenticeshipTypes)
     {
         // arrange
         var expectedUrl = $"searchapprenticeships/searchResults?" +
@@ -25,9 +35,23 @@ public class WhenBuildingTheRequest
                           $"&skipWageType={skipWageType}" +
                           $"&routeIds={string.Join("&routeIds=", routes)}" +
                           $"&levelIds={string.Join("&levelIds=", levels)}" +
-                          $"&excludeNational={excludeNational}";
+                          $"&excludeNational={excludeNational}" +
+                          $"&apprenticeshipTypes={string.Join("&apprenticeshipTypes=", apprenticeshipTypes)}";
         
-        var actual = new GetSearchResultsApiRequest(location + "&" + location, routes, levels, distance, searchTerm + "&" + searchTerm, pageNumber, pageSize, sort, skipWageType, disabilityConfident, candidateId, excludeNational);
+        var actual = new GetSearchResultsApiRequest(
+            location + "&" + location,
+            routes,
+            levels,
+            distance,
+            searchTerm + "&" + searchTerm,
+            pageNumber,
+            pageSize,
+            sort,
+            skipWageType,
+            disabilityConfident,
+            candidateId,
+            excludeNational,
+            apprenticeshipTypes);
 
         actual.GetUrl.Should().Be(expectedUrl);
     }
@@ -35,7 +59,7 @@ public class WhenBuildingTheRequest
     [Test]
     public void Then_With_No_Params_The_Url_Is_Correctly_Built()
     {
-        var actual = new GetSearchResultsApiRequest(null, null, null, null, null, null, null, VacancySort.DistanceAsc, null, false, null, null);
+        var actual = new GetSearchResultsApiRequest(null, null, null, null, null, null, null, VacancySort.DistanceAsc, null, false, null, null, null);
 
         actual.GetUrl.Should().Be("searchapprenticeships/searchResults?location=&distance=&searchTerm=&pageNumber=&pageSize=&sort=DistanceAsc&disabilityConfident=False&candidateId=&skipWageType=&excludeNational=");
     }

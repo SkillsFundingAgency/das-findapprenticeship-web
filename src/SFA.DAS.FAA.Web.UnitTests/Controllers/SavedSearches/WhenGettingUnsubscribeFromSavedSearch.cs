@@ -29,7 +29,7 @@ public class WhenGettingUnsubscribeFromSavedSearch
         actual.Should().NotBeNull();
         var actualModel = actual!.Model as UnsubscribeSavedSearchesViewModel;
         actualModel.Should().NotBeNull();
-        actualModel!.SavedSearch.Should().BeEquivalentTo(SavedSearchViewModel.From(queryResult.SavedSearch!, queryResult.Routes));
+        actualModel!.SavedSearch.Should().BeEquivalentTo(SavedSearchViewModel.From(queryResult.SavedSearch!, queryResult.Routes, readOnly: true));
     }
 
     [Test, MoqAutoData]
