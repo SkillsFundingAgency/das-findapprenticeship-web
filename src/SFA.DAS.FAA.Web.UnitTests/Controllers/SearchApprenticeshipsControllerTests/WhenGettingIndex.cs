@@ -1,23 +1,22 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
+﻿using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
+using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Security.Claims;
-using Microsoft.Extensions.Logging;
-using SFA.DAS.FAA.Web.AppStart;
-using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -211,9 +210,8 @@ public class WhenGettingIndex
         var controller = new SearchApprenticeshipsController(
             mediator.Object,
             dateTimeService.Object,
-            Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(),
+            Mock.Of<IOptions<FindAnApprenticeship>>(),
             cacheStorageService.Object,
-            Mock.Of<GetSearchResultsRequestValidator>(),
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {

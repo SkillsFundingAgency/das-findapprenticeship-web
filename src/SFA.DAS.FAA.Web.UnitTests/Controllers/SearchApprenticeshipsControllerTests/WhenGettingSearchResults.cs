@@ -1,9 +1,12 @@
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
@@ -11,10 +14,6 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Security.Claims;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.Extensions.Logging;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -47,7 +46,7 @@ public class WhenGettingSearchResults
         Guid govIdentifier,
         bool showBanner,
         string routhPath,
-        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
         [Frozen] Mock<GetSearchResultsRequestValidator> validator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
@@ -62,7 +61,7 @@ public class WhenGettingSearchResults
             .Returns("https://baseUrl");
         
         
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -77,7 +76,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -106,7 +104,7 @@ public class WhenGettingSearchResults
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(new GetSearchResultsRequest
+        var actual = await controller.SearchResults(validator.Object, new GetSearchResultsRequest
         {
             Location = location,
             Distance = distance,
@@ -195,7 +193,7 @@ public class WhenGettingSearchResults
         bool disabilityConfident,
         Guid candidateId,
         GetSearchResultsResult queryResult,
-        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
         [Frozen] Mock<GetSearchResultsRequestValidator> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<IUrlHelper> mockUrlHelper,
@@ -209,13 +207,12 @@ public class WhenGettingSearchResults
             .ReturnsAsync(
                 new ValidationResult(new List<ValidationFailure>{new ValidationFailure("WhatSearchTerm","Error")})
             );
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         var controller = new SearchApprenticeshipsController(
             mediator.Object,
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -233,7 +230,7 @@ public class WhenGettingSearchResults
             }
         };
         
-        var actual = await controller.SearchResults(new GetSearchResultsRequest
+        var actual = await controller.SearchResults(validator.Object, new GetSearchResultsRequest
         {
             Location = location,
             Distance = distance,
@@ -282,8 +279,8 @@ public class WhenGettingSearchResults
                 && c.DisabilityConfident!.Equals(disabilityConfident)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -293,7 +290,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -312,7 +308,7 @@ public class WhenGettingSearchResults
         };
 
         // Act
-        var actual = await controller.SearchResults (new GetSearchResultsRequest
+        var actual = await controller.SearchResults (validator.Object, new GetSearchResultsRequest
         {
             Location = location,
             Distance = distance,
@@ -347,8 +343,8 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -358,7 +354,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -379,7 +374,7 @@ public class WhenGettingSearchResults
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(request) as ViewResult;
+        var actual = await controller.SearchResults(validator.Object, request) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;
@@ -409,8 +404,8 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -420,7 +415,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -441,7 +435,7 @@ public class WhenGettingSearchResults
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(request) as ViewResult;
+        var actual = await controller.SearchResults(validator.Object, request) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;
@@ -467,8 +461,8 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
                 .Returns("https://baseUrl");
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -478,7 +472,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -500,7 +493,7 @@ public class WhenGettingSearchResults
 
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(request) as ViewResult;
+        var actual = await controller.SearchResults(validator.Object, request) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;
@@ -527,8 +520,8 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -539,7 +532,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -560,7 +552,7 @@ public class WhenGettingSearchResults
 
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(request) as ViewResult;
+        var actual = await controller.SearchResults(validator.Object, request) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;
@@ -603,8 +595,8 @@ public class WhenGettingSearchResults
         cacheStorageService
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship { GoogleMapsId = mapId });
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -614,7 +606,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -643,7 +634,7 @@ public class WhenGettingSearchResults
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(new GetSearchResultsRequest
+        var actual = await controller.SearchResults(validator.Object, new GetSearchResultsRequest
         {
             Location = location,
             Distance = distance,
@@ -717,8 +708,8 @@ public class WhenGettingSearchResults
         cacheStorageService
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship { GoogleMapsId = mapId });
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -728,7 +719,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -758,7 +748,7 @@ public class WhenGettingSearchResults
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(new GetSearchResultsRequest
+        var actual = await controller.SearchResults(validator.Object, new GetSearchResultsRequest
         {
             Location = location,
             Distance = distance,
@@ -819,7 +809,7 @@ public class WhenGettingSearchResults
         Guid govIdentifier,
         bool showBanner,
         string routhPath,
-        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
         [Frozen] Mock<GetSearchResultsRequestValidator> validator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IDateTimeService> dateTimeService)
@@ -835,7 +825,7 @@ public class WhenGettingSearchResults
             .Returns("https://baseUrl");
 
 
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship { GoogleMapsId = mapId });
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -850,7 +840,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -878,7 +867,7 @@ public class WhenGettingSearchResults
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(new GetSearchResultsRequest
+        var actual = await controller.SearchResults(validator.Object, new GetSearchResultsRequest
         {
             Location = location,
             Distance = distance,
@@ -990,8 +979,8 @@ public class WhenGettingSearchResults
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns("https://baseUrl");
-        var faaConfig = new Mock<IOptions<Domain.Configuration.FindAnApprenticeship>>();
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship { GoogleMapsId = mapId });
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship { GoogleMapsId = mapId });
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
                 new ValidationResult()
@@ -1002,7 +991,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
@@ -1023,7 +1011,7 @@ public class WhenGettingSearchResults
 
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c => c.Sort == expectedSort.ToString()), CancellationToken.None)).ReturnsAsync(result);
 
-        var actual = await controller.SearchResults(request) as ViewResult;
+        var actual = await controller.SearchResults(validator.Object, request) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as SearchResultsViewModel;

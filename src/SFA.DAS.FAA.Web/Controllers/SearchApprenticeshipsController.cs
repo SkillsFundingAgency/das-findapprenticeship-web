@@ -11,6 +11,7 @@ using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Authentication;
@@ -20,7 +21,6 @@ using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Services;
-using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 using Constants = SFA.DAS.FAA.Application.Constants.Constants;
 using LocationViewModel = SFA.DAS.FAA.Web.Models.LocationViewModel;
@@ -30,9 +30,8 @@ namespace SFA.DAS.FAA.Web.Controllers;
 public class SearchApprenticeshipsController(
     IMediator mediator, 
     IDateTimeService dateTimeService, 
-    IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, 
+    IOptions<FindAnApprenticeship> faaConfiguration, 
     ICacheStorageService cacheStorageService, 
-    GetSearchResultsRequestValidator searchRequestValidator,
     IDataProtectorService dataProtectorService,
     ILogger<SearchApprenticeshipsController> logger) : Controller
 {
@@ -168,16 +167,13 @@ public class SearchApprenticeshipsController(
     }
 
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
+    public async Task<IActionResult> SearchResults(
+        [FromServices] IValidator<GetSearchResultsRequest> validator,
+        [FromQuery] GetSearchResultsRequest request)
     {
-        // Validate the incoming request
-        var validationResult = await searchRequestValidator.ValidateAsync(request);
-        if (!validationResult.IsValid)
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
+        if (!ModelState.IsValid)
         {
-            foreach (var validationFailure in validationResult.Errors)
-            {
-                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
-            }
             return View(new SearchResultsViewModel
             {
                 SearchTerm = request.SearchTerm,

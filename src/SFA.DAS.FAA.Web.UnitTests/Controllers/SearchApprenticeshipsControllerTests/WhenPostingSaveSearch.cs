@@ -8,10 +8,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
+using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
-using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
@@ -34,9 +34,8 @@ public class WhenPostingSaveSearch
         _sut = new SearchApprenticeshipsController(
             _mediator.Object,
             Mock.Of<IDateTimeService>(),
-            Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(),
+            Mock.Of<IOptions<FindAnApprenticeship>>(),
             Mock.Of<ICacheStorageService>(),
-            Mock.Of<GetSearchResultsRequestValidator>(),
             _dataProtectorService.Object,
             logger.Object
         );
