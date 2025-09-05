@@ -4,6 +4,7 @@ using CreateAccount.GetCandidateDateOfBirth;
 using CreateAccount.GetCandidateName;
 using CreateAccount.GetCandidatePhoneNumber;
 using CreateAccount.GetCandidatePostcodeAddress;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -541,11 +542,6 @@ namespace SFA.DAS.FAA.Web.Controllers
             return email;
         }
 
-        
-		
-
-       
-
         [HttpGet("finish-account-setup", Name = RouteNames.FinishAccountSetup)]
         public IActionResult FinishAccountSetup()
         {
@@ -593,8 +589,12 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("account-delete", Name = RouteNames.AccountDelete)]
-        public async Task<IActionResult> AccountDeletion(AccountDeletionViewModel model)
+        public async Task<IActionResult> AccountDeletion(
+            [FromServices] IValidator<AccountDeletionViewModel> validator, 
+            AccountDeletionViewModel model)
         {
+            await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
