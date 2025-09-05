@@ -139,8 +139,11 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("date-of-birth", Name = RouteNames.DateOfBirth)]
-        public async Task<IActionResult> DateOfBirth(DateOfBirthViewModel model)
+        public async Task<IActionResult> DateOfBirth(
+            [FromServices] IValidator<DateOfBirthViewModel> validator,
+            DateOfBirthViewModel model)
         {
+            await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
             if (!ModelState.IsValid)
             {
                 return View(model);
