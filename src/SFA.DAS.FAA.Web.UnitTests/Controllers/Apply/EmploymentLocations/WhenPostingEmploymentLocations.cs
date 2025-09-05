@@ -7,6 +7,8 @@ using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using System.Security.Claims;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EmploymentLocations
 {
@@ -19,6 +21,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EmploymentLocations
             Guid candidateId,
             Guid applicationId,
             AddEmploymentLocationsViewModel request,
+            Mock<IValidator<AddEmploymentLocationsViewModel>> validator,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] EmploymentLocationsController controller)
         {
@@ -38,9 +41,15 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EmploymentLocations
                         c.SelectedAddressIds == request.SelectedAddressIds),
                     It.IsAny<CancellationToken>()))
                 .Returns(() => Task.CompletedTask);
+            
+            validator
+                .Setup(x => x.ValidateAsync(It.IsAny<AddEmploymentLocationsViewModel>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ValidationResult());
 
-            var actual = await controller.AddEmploymentLocations(applicationId, request, isEdit) as RedirectToRouteResult;
+            // act
+            var actual = await controller.AddEmploymentLocations(validator.Object, applicationId, request, isEdit) as RedirectToRouteResult;
 
+            // assert
             using var scope = new AssertionScope();
             actual.Should().NotBeNull();
             actual?.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EmploymentLocationsSummary);

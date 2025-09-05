@@ -1,10 +1,10 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.EmploymentLocations.Update;
 using SFA.DAS.FAA.Application.Queries.Apply.GetEmploymentLocations;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Domain.Models;
 using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -37,15 +37,21 @@ public class EmploymentLocationsController(IMediator mediator) : Controller
 
     [HttpPost]
     [Route("apply/{applicationId:guid}/employmentLocations", Name = RouteNames.ApplyApprenticeship.AddEmploymentLocations)]
-    public async Task<IActionResult> AddEmploymentLocations([FromRoute] Guid applicationId, AddEmploymentLocationsViewModel viewModel, [FromQuery] bool isEdit = false)
+    public async Task<IActionResult> AddEmploymentLocations(
+        [FromServices] IValidator<AddEmploymentLocationsViewModel> validator,
+        [FromRoute] Guid applicationId,
+        AddEmploymentLocationsViewModel viewModel,
+        [FromQuery] bool isEdit = false)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
+        
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetEmploymentLocationsQuery(applicationId, (Guid)User.Claims.CandidateId()!));
             // Reset the selection for all addresses in one step
             result.EmploymentLocation.Addresses.ForEach(address => address.IsSelected = false);
 
-            viewModel = (AddEmploymentLocationsViewModel)result;
+            viewModel = result;
             viewModel.ApplicationId = applicationId;
             return View(ListViewPath, viewModel);
         }
