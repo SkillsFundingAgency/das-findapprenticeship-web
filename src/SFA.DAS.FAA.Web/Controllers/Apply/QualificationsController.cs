@@ -14,6 +14,7 @@ using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDeleteQualifications;
 using SFA.DAS.FAA.Application.Queries.Apply.GetModifyQualification;
 using System.Reflection;
+using FluentValidation;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
 {
@@ -169,8 +170,11 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         
         [HttpPost]
         [Route("apply/{applicationId}/qualifications/{qualificationReferenceId}/modify", Name = RouteNames.ApplyApprenticeship.AddQualification)]
-        public async Task<IActionResult> ModifyQualification(AddQualificationViewModel model)
+        public async Task<IActionResult> ModifyQualification(
+            IValidator<AddQualificationViewModel> validator,
+            AddQualificationViewModel model)
         {
+            await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetModifyQualificationQuery
