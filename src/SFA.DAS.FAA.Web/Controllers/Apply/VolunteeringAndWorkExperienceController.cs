@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
@@ -93,8 +94,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpPost]
     [Route("apply/{applicationId}/volunteering-and-work-experience/add", Name = RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience)]
-    public async Task<IActionResult> PostAddVolunteeringAndWorkExperience(AddVolunteeringAndWorkExperienceViewModel request)
+    public async Task<IActionResult> PostAddVolunteeringAndWorkExperience(
+        IValidator<AddVolunteeringAndWorkExperienceViewModel> validator,
+        AddVolunteeringAndWorkExperienceViewModel request)
     {
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
         if (!ModelState.IsValid)
         {
             return View(AddViewPath, request);

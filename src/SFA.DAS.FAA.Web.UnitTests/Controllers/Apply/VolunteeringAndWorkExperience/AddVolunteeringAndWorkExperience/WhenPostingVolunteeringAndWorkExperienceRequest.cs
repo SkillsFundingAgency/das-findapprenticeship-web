@@ -1,15 +1,12 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using FluentValidation;
+using FluentValidation.Results;
 using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.VolunteeringAndWorkExperience.AddVolunteeringAndWorkExperience;
@@ -22,9 +19,11 @@ public class WhenPostingVolunteeringAndWorkExperienceRequest
         Guid candidateId,
         AddVolunteeringAndWorkExperienceViewModel request,
         AddVolunteeringAndWorkExperienceCommandResult result,
+        Mock<IValidator<AddVolunteeringAndWorkExperienceViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] Web.Controllers.Apply.VolunteeringAndWorkExperienceController controller)
     {
+        // arrange
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -44,8 +43,15 @@ public class WhenPostingVolunteeringAndWorkExperienceRequest
             ), It.IsAny<CancellationToken>()))
 
             .ReturnsAsync(result);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<AddVolunteeringAndWorkExperienceViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.PostAddVolunteeringAndWorkExperience(request) as RedirectToRouteResult;
+        // act
+        var actual = await controller.PostAddVolunteeringAndWorkExperience(validator.Object, request) as RedirectToRouteResult;
+        
+        // assert
         actual.Should().NotBeNull();
         actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary);
     }
