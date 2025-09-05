@@ -1,12 +1,12 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Microsoft.OpenApi.Extensions;
-using NSwag;
+using Microsoft.OpenApi;
 using NUnit.Framework;
 using Reqnroll;
 using SFA.DAS.FAA.Domain;
 using SFA.DAS.FAA.Domain.Applications.GetApplications;
 using SFA.DAS.FAA.Web.AcceptanceTests.Infrastructure;
+using OpenApiDocument = NSwag.OpenApiDocument;
 
 namespace SFA.DAS.FAA.Web.AcceptanceTests.Steps;
 
