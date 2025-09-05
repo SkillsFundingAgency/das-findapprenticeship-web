@@ -104,8 +104,11 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests(BrowseByInterestViewModel model)
+    public async Task<IActionResult> BrowseByInterests(
+        [FromServices] IValidator<BrowseByInterestViewModel> validator,
+        BrowseByInterestViewModel model)
     {
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetBrowseByInterestsQuery());
