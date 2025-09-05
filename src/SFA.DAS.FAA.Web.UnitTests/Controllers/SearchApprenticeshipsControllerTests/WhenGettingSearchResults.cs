@@ -77,7 +77,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -216,7 +215,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -295,7 +293,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -361,7 +358,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -424,7 +420,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -483,7 +478,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -545,7 +539,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -621,7 +614,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -736,7 +728,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -859,7 +850,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -1012,7 +1002,6 @@ public class WhenGettingSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             validator.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())

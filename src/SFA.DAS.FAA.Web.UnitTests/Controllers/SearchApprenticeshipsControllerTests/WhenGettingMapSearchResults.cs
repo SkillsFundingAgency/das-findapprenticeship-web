@@ -44,7 +44,6 @@ public class WhenGettingMapSearchResults
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
             Mock.Of<GetSearchResultsRequestValidator>(),
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())

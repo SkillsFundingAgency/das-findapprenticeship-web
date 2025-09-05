@@ -1,6 +1,5 @@
 using System.Net;
 using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -37,7 +36,6 @@ public class WhenPostingSaveSearch
             Mock.Of<IDateTimeService>(),
             Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(),
             Mock.Of<ICacheStorageService>(),
-            Mock.Of<SearchModelValidator>(),
             Mock.Of<GetSearchResultsRequestValidator>(),
             _dataProtectorService.Object,
             logger.Object

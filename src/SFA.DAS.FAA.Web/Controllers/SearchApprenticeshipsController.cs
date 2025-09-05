@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,6 @@ public class SearchApprenticeshipsController(
     IDateTimeService dateTimeService, 
     IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, 
     ICacheStorageService cacheStorageService, 
-    SearchModelValidator searchModelValidator,
     GetSearchResultsRequestValidator searchRequestValidator,
     IDataProtectorService dataProtectorService,
     ILogger<SearchApprenticeshipsController> logger) : Controller
@@ -40,15 +40,14 @@ public class SearchApprenticeshipsController(
 
     [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
+    public async Task<IActionResult> Index(
+        [FromServices] IValidator<SearchModel> validator,
+        SearchModel model,
+        [FromQuery] int? search = null)
     {
-        var validationResult = await searchModelValidator.ValidateAsync(model);
-        if (!validationResult.IsValid)
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
+        if (!ModelState.IsValid)
         {
-            foreach (var validationFailure in validationResult.Errors)
-            {
-                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
-            }
             return View(new SearchApprenticeshipsViewModel
             {
                 WhatSearchTerm = model.WhatSearchTerm,

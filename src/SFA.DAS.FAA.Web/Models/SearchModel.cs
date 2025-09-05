@@ -1,9 +1,8 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.FAA.Web.Models;
 
-public class SearchModel : AbstractValidator<SearchModel>
+public class SearchModel
 {
     [FromQuery] 
     public string? WhereSearchTerm { get; set; } 

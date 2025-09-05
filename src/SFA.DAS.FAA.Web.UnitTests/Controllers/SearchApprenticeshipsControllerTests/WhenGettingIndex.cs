@@ -20,6 +20,7 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
+
 public class WhenGettingIndex
 {
     [Test, MoqAutoData]
@@ -67,7 +68,7 @@ public class WhenGettingIndex
         };
         controller.TempData = tempData;
 
-        var actual = await controller.Index(new SearchModel()) as ViewResult;
+        var actual = await controller.Index(validator.Object, new SearchModel()) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
@@ -127,7 +128,7 @@ public class WhenGettingIndex
         };
         controller.TempData = tempData;
 
-        var actual = await controller.Index(new SearchModel()) as ViewResult;
+        var actual = await controller.Index(validator.Object, new SearchModel()) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
@@ -174,7 +175,7 @@ public class WhenGettingIndex
             }
         };
         
-        var actual = await controller.Index(new SearchModel(),search:1) as RedirectToRouteResult;
+        var actual = await controller.Index(validator.Object, new SearchModel(),search:1) as RedirectToRouteResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.RouteName.Should().Be(RouteNames.SearchResults);
@@ -212,7 +213,6 @@ public class WhenGettingIndex
             dateTimeService.Object,
             Mock.Of<IOptions<Domain.Configuration.FindAnApprenticeship>>(),
             cacheStorageService.Object,
-            validator.Object,
             Mock.Of<GetSearchResultsRequestValidator>(),
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
@@ -234,7 +234,7 @@ public class WhenGettingIndex
             WhereSearchTerm = whereSearchTerm,
             WhatSearchTerm = whatSearchTerm
         };
-        var result = await controller.Index(model,1) as ViewResult;
+        var result = await controller.Index(validator.Object, model, 1) as ViewResult;
 
         result!.Model.Should().BeOfType<SearchApprenticeshipsViewModel>();
     }
@@ -287,7 +287,7 @@ public class WhenGettingIndex
             WhereSearchTerm = whereSearchTerm,
             WhatSearchTerm = whatSearchTerm
         };
-        var result = await controller.Index(model) as ViewResult;
+        var result = await controller.Index(validator.Object, model) as ViewResult;
 
         result!.Model.Should().BeOfType<SearchApprenticeshipsViewModel>();
     }
@@ -296,10 +296,12 @@ public class WhenGettingIndex
     public async Task And_ThereIsNoValidationError_SearchResultsReturned(
         string whereSearchTerm,
         GetSearchApprenticeshipsIndexResult queryResult,
+        Mock<IValidator<SearchModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] SearchApprenticeshipsController controller)
     {
+        // arrange
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext
@@ -314,8 +316,15 @@ public class WhenGettingIndex
         {
             WhereSearchTerm = whereSearchTerm
         };
-        var result = await controller.Index(model) as RedirectToRouteResult;
-
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.IsAny<SearchModel>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
+        
+        // act
+        var result = await controller.Index(validator.Object, model) as RedirectToRouteResult;
+        
+        // assert
         result!.RouteName.Should().Be(RouteNames.SearchResults);
         result.RouteValues!["location"].Should().Be(queryResult.Location?.LocationName);
         result.RouteValues!["sort"].Should().Be(VacancySort.DistanceAsc);
@@ -363,7 +372,7 @@ public class WhenGettingIndex
             [CacheKeys.AccountDeleted] = showAccountDeletedBanner.ToString().ToLower()
         };
 
-        var actual = await controller.Index(new SearchModel()) as ViewResult;
+        var actual = await controller.Index(validator.Object, new SearchModel()) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
@@ -419,7 +428,7 @@ public class WhenGettingIndex
             [CacheKeys.AccountDeleted] = showAccountDeletedBanner.ToString().ToLower()
         };
 
-        var actual = await controller.Index(new SearchModel()) as ViewResult;
+        var actual = await controller.Index(validator.Object, new SearchModel()) as ViewResult;
 
         Assert.That(actual, Is.Not.Null);
         actual!.Model.Should().BeEquivalentTo((SearchApprenticeshipsViewModel)result, options => options
