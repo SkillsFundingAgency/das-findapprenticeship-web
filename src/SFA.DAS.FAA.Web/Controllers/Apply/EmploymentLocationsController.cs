@@ -84,8 +84,13 @@ public class EmploymentLocationsController(IMediator mediator) : Controller
 
     [HttpPost]
     [Route("apply/{applicationId:guid}/employmentLocations/summary", Name = RouteNames.ApplyApprenticeship.EmploymentLocationsSummary)]
-    public async Task<IActionResult> Summary([FromRoute] Guid applicationId, EmploymentLocationsSummaryViewModel viewModel, [FromQuery] bool isEdit = false)
+    public async Task<IActionResult> Summary(
+        [FromServices] IValidator<EmploymentLocationsSummaryViewModel> validator,
+        [FromRoute] Guid applicationId,
+        EmploymentLocationsSummaryViewModel viewModel,
+        [FromQuery] bool isEdit = false)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetEmploymentLocationsQuery(applicationId, (Guid)User.Claims.CandidateId()!));

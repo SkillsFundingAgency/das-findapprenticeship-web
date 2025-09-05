@@ -20,6 +20,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EmploymentLocations
             Guid candidateId,
             Guid applicationId,
             EmploymentLocationsSummaryViewModel request,
+            Mock<IValidator<EmploymentLocationsSummaryViewModel>> validator,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] EmploymentLocationsController controller)
         {
@@ -39,9 +40,15 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.EmploymentLocations
                         c.EmploymentLocationSectionStatus == SectionStatus.Completed),
                     It.IsAny<CancellationToken>()))
                 .Returns(() => Task.CompletedTask);
+            
+            validator
+                .Setup(x => x.ValidateAsync(It.Is<EmploymentLocationsSummaryViewModel>(m => m == request), CancellationToken.None))
+                .ReturnsAsync(new ValidationResult());
 
-            var actual = await controller.Summary(applicationId, request, isEdit) as RedirectToRouteResult;
+            // act
+            var actual = await controller.Summary(validator.Object, applicationId, request, isEdit) as RedirectToRouteResult;
 
+            // assert
             using var scope = new AssertionScope();
             actual.Should().NotBeNull();
             actual?.RouteName.Should().Be(RouteNames.Apply);
