@@ -200,8 +200,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpPost]
     [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}", Name = RouteNames.ApplyApprenticeship.EditVolunteeringAndWorkExperience)]
-    public async Task<IActionResult> PostEditVolunteeringAndWorkExperience(EditVolunteeringAndWorkExperienceViewModel request)
+    public async Task<IActionResult> PostEditVolunteeringAndWorkExperience(
+        [FromServices] IValidator<EditVolunteeringAndWorkExperienceViewModel> validator,
+        EditVolunteeringAndWorkExperienceViewModel request)
     {
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
         if (!ModelState.IsValid)
         {
             return View(EditViewPath, request);
