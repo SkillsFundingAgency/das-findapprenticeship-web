@@ -13,9 +13,6 @@ public class AddQualificationViewModelValidator : AbstractValidator<AddQualifica
 }
 public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
 {
-    public SubjectViewModelValidator()
-    {
-    }
     public SubjectViewModelValidator(QualificationDisplayTypeViewModel model)
     {
         var isApprenticeship = model.GroupTitle.Equals("apprenticeship", StringComparison.CurrentCultureIgnoreCase);

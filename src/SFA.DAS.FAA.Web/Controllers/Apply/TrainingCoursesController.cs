@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
@@ -115,8 +116,11 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
     [HttpPost]
     [Route("apply/{applicationId}/trainingcourses/add", Name = RouteNames.ApplyApprenticeship.AddTrainingCourse)]
-    public async Task<IActionResult> PostAddATrainingCourse(AddTrainingCourseViewModel request)
+    public async Task<IActionResult> PostAddATrainingCourse(
+        [FromServices] IValidator<AddTrainingCourseViewModel> validator,
+        AddTrainingCourseViewModel request)
     {
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
         if (!ModelState.IsValid)
         {
             return View("~/Views/apply/trainingcourses/AddTrainingCourse.cshtml", request);
@@ -153,8 +157,11 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
     [HttpPost]
     [Route("apply/{applicationId}/trainingcourses/{trainingCourseId}", Name = RouteNames.ApplyApprenticeship.EditTrainingCourse)]
-    public async Task<IActionResult> PostEdit(EditTrainingCourseViewModel request)
+    public async Task<IActionResult> PostEdit(
+        [FromServices] IValidator<EditTrainingCourseViewModel> validator,
+        EditTrainingCourseViewModel request)
     {
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
         if (!ModelState.IsValid)
         {
             return View("~/Views/apply/trainingcourses/EditTrainingCourse.cshtml", request);
