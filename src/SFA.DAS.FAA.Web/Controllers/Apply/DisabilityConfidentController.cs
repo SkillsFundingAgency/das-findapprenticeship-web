@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.DisabilityConfident;
@@ -100,8 +101,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("apply/{applicationId}/disability-confident/confirm", Name = RouteNames.ApplyApprenticeship.DisabilityConfidentConfirmation)]
-        public async Task<IActionResult> PostSummary([FromRoute] Guid applicationId, DisabilityConfidentSummaryViewModel viewModel, [FromQuery] bool isEdit = false)
+        public async Task<IActionResult> PostSummary(
+            [FromServices] IValidator<DisabilityConfidentSummaryViewModel> validator,
+            [FromRoute] Guid applicationId,
+            DisabilityConfidentSummaryViewModel viewModel,
+            [FromQuery] bool isEdit = false)
         {
+            await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetDisabilityConfidentDetailsQuery

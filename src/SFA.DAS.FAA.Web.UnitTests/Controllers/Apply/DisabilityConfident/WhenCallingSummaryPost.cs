@@ -1,22 +1,15 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.DisabilityConfident;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.DisabilityConfident;
-
 
 [TestFixture]
 public class WhenCallingSummaryPost
@@ -26,9 +19,11 @@ public class WhenCallingSummaryPost
         Guid candidateId,
         bool isApplyUnderDisabilityConfidentSchemeRequired,
         UpdateDisabilityConfidenceApplicationCommandResult updateDisabilityConfidenceApplicationCommandResult,
+        Mock<IValidator<DisabilityConfidentSummaryViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] DisabilityConfidentController controller)
     {
+        // arrange
         var request = new DisabilityConfidentSummaryViewModel
         {
             ApplicationId = Guid.NewGuid(),
@@ -50,9 +45,15 @@ public class WhenCallingSummaryPost
                 c.CandidateId.Equals(candidateId) &&
                 c.IsSectionCompleted.Equals(SectionStatus.Completed)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(updateDisabilityConfidenceApplicationCommandResult);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<DisabilityConfidentSummaryViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.PostSummary(request.ApplicationId, request) as RedirectToRouteResult;
+        // act
+        var actual = await controller.PostSummary(validator.Object, request.ApplicationId, request) as RedirectToRouteResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
