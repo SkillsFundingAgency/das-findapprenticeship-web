@@ -1,15 +1,12 @@
 ﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.AddJob;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
 {
@@ -21,9 +18,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
             Guid candidateId,
             AddJobViewModel request,
             AddJobCommandResponse result,
+            Mock<IValidator<AddJobViewModel>> validator,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
         {
+            // arrange
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
@@ -43,10 +42,16 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
                     && c.JobTitle.Equals(request.JobTitle)
 
                     ), It.IsAny<CancellationToken>()))
-                
                 .ReturnsAsync(result);
+            
+            validator
+                .Setup(x => x.ValidateAsync(It.IsAny<AddJobViewModel>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ValidationResult());
 
-            var actual = await controller.PostAddAJob(request) as RedirectToRouteResult;
+            // act
+            var actual = await controller.PostAddAJob(validator.Object, request) as RedirectToRouteResult;
+            
+            // assert
             actual.Should().NotBeNull();
         }
     }

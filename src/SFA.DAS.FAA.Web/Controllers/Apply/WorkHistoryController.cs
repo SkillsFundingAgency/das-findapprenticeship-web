@@ -12,7 +12,7 @@ using SFA.DAS.FAA.Web.Authentication;
 using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using System;
+using FluentValidation;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.DeleteJob;
 
 namespace SFA.DAS.FAA.Web.Controllers.Apply
@@ -113,8 +113,11 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
-        public async Task<IActionResult> PostAddAJob(AddJobViewModel request)
+        public async Task<IActionResult> PostAddAJob(
+            [FromServices] IValidator<AddJobViewModel> validator,
+            AddJobViewModel request)
         {
+            await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
             if (!ModelState.IsValid)
             {
                 return View("~/Views/apply/workhistory/AddJob.cshtml", request);
@@ -154,8 +157,11 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
-        public async Task<IActionResult> PostEditAJob(EditJobViewModel request)
+        public async Task<IActionResult> PostEditAJob(
+            [FromServices] IValidator<EditJobViewModel> validator,
+            EditJobViewModel request)
         {
+            await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
             if (!ModelState.IsValid)
             {
                 return View("~/Views/apply/workhistory/EditJob.cshtml", request);
