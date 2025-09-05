@@ -15,6 +15,8 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.AdditionalQuestion;
 
@@ -27,10 +29,12 @@ public class WhenPostingAdditionalQuestionRequest
         Guid candidateId,
         Guid additionalQuestionId,
         int additionalQuestion,
+        Mock<IValidator<AddAdditionalQuestionViewModel>> validator,
         AddAdditionalQuestionViewModel model,
         AddAdditionalQuestionCommandHandlerResult result,
         [Frozen] Mock<IMediator> mediator)
     {
+        // arrange
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -58,8 +62,15 @@ public class WhenPostingAdditionalQuestionRequest
             },
             Url = mockUrlHelper.Object,
         };
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.IsAny<AddAdditionalQuestionViewModel>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.Post(applicationId, additionalQuestion, additionalQuestionId, model) as RedirectToRouteResult;
+        // act
+        var actual = await controller.Post(validator.Object, applicationId, additionalQuestion, additionalQuestionId, model) as RedirectToRouteResult;
+        
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
