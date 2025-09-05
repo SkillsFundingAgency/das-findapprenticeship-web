@@ -45,8 +45,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("apply/{applicationId}/disability-confident", Name = RouteNames.ApplyApprenticeship.DisabilityConfident)]
-        public async Task<IActionResult> Post(Guid applicationId, DisabilityConfidentViewModel viewModel, [FromQuery] bool isEdit = false)
+        public async Task<IActionResult> Post(
+            [FromServices] IValidator<DisabilityConfidentViewModel> validator,
+            Guid applicationId,
+            DisabilityConfidentViewModel viewModel,
+            [FromQuery] bool isEdit = false)
         {
+            await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetDisabilityConfidentQuery
