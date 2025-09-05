@@ -53,8 +53,12 @@ public class EqualityQuestionsController(IMediator mediator, ICacheStorageServic
 
     [HttpPost]
     [Route("gender", Name = EqualityQuestions.EqualityFlowGender)]
-    public async Task<IActionResult> Gender([FromQuery] Guid? applicationId, EqualityQuestionsGenderViewModel viewModel)
+    public async Task<IActionResult> Gender(
+        [FromServices] IValidator<EqualityQuestionsGenderViewModel> validator,
+        [FromQuery] Guid? applicationId,
+        EqualityQuestionsGenderViewModel viewModel)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
         if (!ModelState.IsValid)
         {
             return View(GenderQuestionsViewPath, viewModel);
