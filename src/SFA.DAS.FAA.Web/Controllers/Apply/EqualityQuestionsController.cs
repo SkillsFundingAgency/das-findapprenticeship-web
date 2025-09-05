@@ -232,8 +232,12 @@ public class EqualityQuestionsController(IMediator mediator, ICacheStorageServic
 
     [HttpPost]
     [Route("ethnic-group/other", Name = EqualityQuestions.EqualityFlowEthnicSubGroupOther)]
-    public async Task<IActionResult> EthnicGroupOther([FromQuery] Guid? applicationId, EqualityQuestionsEthnicSubGroupOtherViewModel viewModel)
+    public async Task<IActionResult> EthnicGroupOther(
+        [FromServices] IValidator<EqualityQuestionsEthnicSubGroupOtherViewModel> validator,
+        [FromQuery] Guid? applicationId,
+        EqualityQuestionsEthnicSubGroupOtherViewModel viewModel)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
         return !ModelState.IsValid
             ? View(EthnicSubGroupOtherQuestionsViewPath, viewModel)
             : await UpdateEqualityQuestionModel(applicationId, viewModel);
