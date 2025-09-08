@@ -186,8 +186,11 @@ public class UserController(
     }
 
     [HttpPost("postcode-address", Name = RouteNames.PostcodeAddress)]
-    public async Task<IActionResult> PostcodeAddress(PostcodeAddressViewModel model)
+    public async Task<IActionResult> PostcodeAddress(
+        [FromServices] IValidator<PostcodeAddressViewModel> validator,
+        PostcodeAddressViewModel model)
     {
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
         if (!ModelState.IsValid)
         {
             return View(model);
