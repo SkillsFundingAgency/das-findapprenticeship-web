@@ -131,10 +131,14 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Route("location", Name = RouteNames.Location)]
-    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds, LocationViewModel model)
+    public async Task<IActionResult> Location(
+        [FromServices] IValidator<LocationViewModel> validator,
+        [FromQuery] List<string>? routeIds,
+        LocationViewModel model)
     {
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
+        
         model.SelectedRouteIds = routeIds;
-
         if (model.NationalSearch == false)
         {
             if (string.IsNullOrEmpty(model.SearchTerm))
