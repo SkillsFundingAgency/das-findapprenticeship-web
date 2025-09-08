@@ -93,8 +93,11 @@ namespace SFA.DAS.FAA.Web.Controllers
 
         [HttpPost]
         [Route("user-name", Name = RouteNames.UserName)]
-        public async Task<IActionResult> Name(NameViewModel model)
+        public async Task<IActionResult> Name(
+            [FromServices] IValidator<NameViewModel> validator,
+            NameViewModel model)
         {
+            await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
             if (!ModelState.IsValid)
             {
                 return View(model);
