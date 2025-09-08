@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
@@ -32,8 +33,12 @@ public class SkillsAndStrengthsController(IMediator mediator) : Controller
 
     [HttpPost]
     [Route("apply/{applicationId}/skillsandstrengths/", Name = RouteNames.ApplyApprenticeship.SkillsAndStrengths)]
-    public async Task<IActionResult> Post([FromRoute] Guid applicationId, SkillsAndStrengthsViewModel viewModel)
+    public async Task<IActionResult> Post(
+        [FromServices] IValidator<SkillsAndStrengthsViewModel> validator,
+        [FromRoute] Guid applicationId,
+        SkillsAndStrengthsViewModel viewModel)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
         if (!ModelState.IsValid)
         {
             if (viewModel.AutoSave)

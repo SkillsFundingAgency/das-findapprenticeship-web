@@ -1,20 +1,15 @@
-﻿using AutoFixture.NUnit3;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Controllers.Apply;
-using SFA.DAS.Testing.AutoFixture;
 using Microsoft.AspNetCore.Http;
 using SFA.DAS.FAA.Web.AppStart;
 using System.Security.Claims;
-using FluentAssertions.Execution;
-using FluentAssertions;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.SkillsAndStrengths;
+
 public class WhenCallingGet
 {
     [Test, MoqAutoData]
