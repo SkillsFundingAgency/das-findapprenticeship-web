@@ -53,8 +53,13 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [HttpPost]
         [Route("apply/{applicationId}/interview-adjustments",
             Name = RouteNames.ApplyApprenticeship.InterviewAdjustments)]
-        public async Task<IActionResult> Post([FromRoute] Guid applicationId, InterviewAdjustmentsViewModel viewModel, [FromQuery] bool isEdit = false)
+        public async Task<IActionResult> Post(
+            [FromServices] IValidator<InterviewAdjustmentsViewModel> validator,
+            [FromRoute] Guid applicationId,
+            InterviewAdjustmentsViewModel viewModel,
+            [FromQuery] bool isEdit = false)
         {
+            await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetInterviewAdjustmentsQuery
