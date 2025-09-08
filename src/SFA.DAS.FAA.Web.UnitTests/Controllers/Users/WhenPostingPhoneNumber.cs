@@ -9,6 +9,7 @@ using SFA.DAS.FAA.Web.Models.User;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
+
 public class WhenPostingPhoneNumber
 {
     [Test]
@@ -23,9 +24,11 @@ public class WhenPostingPhoneNumber
         string phone,
         Guid candidateId,
         PhoneNumberViewModel model,
+        Mock<IValidator<PhoneNumberViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        // arrange
         model.JourneyPath = journeyPath;
         controller.ControllerContext = new ControllerContext
         {
@@ -40,9 +43,14 @@ public class WhenPostingPhoneNumber
                     }))
             }
         };
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<PhoneNumberViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var result = await controller.PhoneNumber(model) as RedirectToRouteResult;
+        // act
+        var result = await controller.PhoneNumber(validator.Object, model) as RedirectToRouteResult;
 
+        // assert
         result.Should().NotBeNull();
         result.RouteName.Should().Be(redirectRoute);
         result.RouteValues["journeyPath"].Should().Be(journeyPath);
@@ -57,6 +65,7 @@ public class WhenPostingPhoneNumber
         string email,
         string phone,
         PhoneNumberViewModel model,
+        Mock<IValidator<PhoneNumberViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
@@ -73,9 +82,11 @@ public class WhenPostingPhoneNumber
 
             }
         };
-        controller.ModelState.AddModelError("SomeProperty", "SomeError");
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<PhoneNumberViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult([new ValidationFailure("SomeProperty", "SomeError")]));
 
-        var result = await controller.PhoneNumber(model) as ViewResult;
+        var result = await controller.PhoneNumber(validator.Object, model) as ViewResult;
 
         result.Should().NotBeNull();
         result.Model.Should().Be(model);
