@@ -1,10 +1,7 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -35,15 +32,11 @@ public class WhenCallingPostEqualityGender
         var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(govIdentifier);
+        
         validator
             .Setup(x => x.ValidateAsync(It.Is<EqualityQuestionsGenderViewModel>(m => m == viewModel), CancellationToken.None))
             .ReturnsAsync(new ValidationResult([new ValidationFailure("test", "message")]));
@@ -83,15 +76,10 @@ public class WhenCallingPostEqualityGender
         var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, govIdentifier.ToString()) }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(govIdentifier);
         validator
             .Setup(x => x.ValidateAsync(It.Is<EqualityQuestionsGenderViewModel>(m => m == viewModel), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());

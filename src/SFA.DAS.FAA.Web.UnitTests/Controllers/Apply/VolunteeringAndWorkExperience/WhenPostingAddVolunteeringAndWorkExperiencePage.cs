@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -29,8 +28,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         };
         controller
             .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+            .WithUser(candidateId);
         mediator.Setup(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         mediator.Setup(x => x.Send(It.Is<GetVolunteeringAndWorkExperiencesQuery>(c =>
@@ -73,8 +71,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         
         controller
             .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+            .WithUser(candidateId);
         mediator.Setup(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         validator

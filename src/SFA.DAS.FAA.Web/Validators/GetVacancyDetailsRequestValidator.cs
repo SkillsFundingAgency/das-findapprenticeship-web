@@ -14,6 +14,5 @@ public class GetVacancyDetailsRequestValidator : AbstractValidator<GetVacancyDet
             .NotEmpty().WithMessage(VacancyReferenceEmpty)
             .NotNull()
             .MinimumLength(7).WithMessage(VacancyReferenceTooShort);
-
     }
 }

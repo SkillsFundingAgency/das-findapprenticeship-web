@@ -6,589 +6,588 @@ using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 
-namespace SFA.DAS.FAA.Web.UnitTests.Services
+namespace SFA.DAS.FAA.Web.UnitTests.Services;
+
+[TestFixture]
+public class FilterBuilderTests
 {
-    [TestFixture]
-    public class FilterBuilderTests
+    private const string SearchResultsUrl = "searchResults";
+
+    [Test]
+    public void BuildFilterChoicesForNoFilters()
     {
-        private const string SearchResultsUrl = "searchResults";
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
 
-        [Test]
-        public void BuildFilterChoicesForNoFilters()
+        var request = new GetSearchResultsRequest
         {
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+            SearchTerm = null,
+            PageNumber = null
+        };
 
-            var request = new GetSearchResultsRequest
-            {
-                SearchTerm = null,
-                PageNumber = null
-            };
+        var actual = FilterBuilder.BuildFullQueryString(request, mockUrlHelper.Object);
+        actual.Should().NotBeNull();
+    }
 
-            var actual = FilterBuilder.BuildFullQueryString(request, mockUrlHelper.Object);
-            actual.Should().NotBeNull();
+    [TestCase(null, "", 0)]
+    [TestCase("1", "Job category", 1)]
+    [TestCase("2", "Job category", 1)]
+    [TestCase("3", "Job category", 1)]
+    public void BuildJobCategorySearchFiltersForSingleRouteId(string? routeId, string fieldName, int expectedNumberOfFilters)
+    {
+        const string parameterName = "routeIds";
+        var request = new GetSearchResultsRequest { RouteIds = [] };
+        var categoriesLookups = new List<ChecklistLookup>();
+
+        var jobCategoryFilters = new SearchResultsViewModel
+        {
+            SelectedRouteIds = []
+        };
+
+
+        if (routeId != null)
+        {
+            var lookup = new ChecklistLookup(parameterName, routeId, null,true);
+
+            categoriesLookups.Add(lookup);
+
+            jobCategoryFilters.SelectedRouteIds.Add(routeId);
+            request.RouteIds.Add(routeId);
         }
 
-        [TestCase(null, "", 0)]
-        [TestCase("1", "Job category", 1)]
-        [TestCase("2", "Job category", 1)]
-        [TestCase("3", "Job category", 1)]
-        public void BuildJobCategorySearchFiltersForSingleRouteId(string? routeId, string fieldName, int expectedNumberOfFilters)
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
+
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+            { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
+
+        if (expectedNumberOfFilters == 0)
         {
-            const string parameterName = "routeIds";
-            var request = new GetSearchResultsRequest { RouteIds = [] };
-            var categoriesLookups = new List<ChecklistLookup>();
+            actual.Count.Should().Be(0);
+            return;
+        }
 
-            var jobCategoryFilters = new SearchResultsViewModel
-            {
-                SelectedRouteIds = []
-            };
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
+        firstItem.FieldName.Should().Be(fieldName);
+        firstItem.FieldOrder.Should().Be(1);
 
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(SearchResultsUrl);
+        filter.Order.Should().Be(1);
+        filter.Value.Should().Be(parameterName);
+    }
 
-            if (routeId != null)
-            {
-                var lookup = new ChecklistLookup(parameterName, routeId, null,true);
+    [TestCase("1", "2", "?routeIds=2", "?routeIds=1")]
+    [TestCase("1", "3", "?routeIds=3", "?routeIds=1")]
+    [TestCase("2", "3", "?routeIds=3", "?routeIds=2")]
+    public void BuildJobCategorySearchFiltersForTwoRouteIds(string routeIds1, string routeIds2, string expectedFirst, string expectedSecond)
+    {
+        const string parameterName = "routeIds";
+        var request = new GetSearchResultsRequest { RouteIds = [] };
+        var categoriesLookups = new List<ChecklistLookup>();
 
-                categoriesLookups.Add(lookup);
+        var jobCategoryFilters = new SearchResultsViewModel
+        {
+            SelectedRouteIds = []
+        };
 
-                jobCategoryFilters.SelectedRouteIds.Add(routeId);
-                request.RouteIds.Add(routeId);
-            }
+        var lookup = new ChecklistLookup(parameterName, routeIds1)
+        {
+            Checked = "Checked"
+        };
 
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+        categoriesLookups.Add(lookup);
 
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+        request.RouteIds.Add(routeIds1);
+        request.RouteIds.Add(routeIds2);
+        jobCategoryFilters.SelectedRouteIds.Add(routeIds1);
+        jobCategoryFilters.SelectedRouteIds.Add(routeIds2);
+
+        categoriesLookups.Add(new ChecklistLookup(parameterName, routeIds2));
+
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
+
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+            { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
+
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(2);
+        firstItem.FieldName.Should().Be("Job category");
+        firstItem.FieldOrder.Should().Be(1);
+
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
+        filter.Order.Should().Be(1);
+        filter.Value.Should().Be(parameterName);
+
+        var filterSecond = firstItem.Filters.Skip(1).First();
+        filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
+        filterSecond.Order.Should().Be(2);
+        filterSecond.Value.Should().Be(parameterName);
+    }
+
+    [TestCase("?routeIds=2&routeIds=3", "?routeIds=1&routeIds=3", "?routeIds=1&routeIds=2", 3, "checked")]
+    [TestCase("?routeIds=3", "?routeIds=2", "", 2, "")]
+    public void BuildJobCategorySearchFiltersForThreeRouteIdsCheckedAndUnchecked(
+        string expectedFirst, string expectedSecond, string expectedThird, int expectedNumberOfFilters, string routeId1Checked)
+    {
+        const string parameterName = "routeIds";
+        var request = new GetSearchResultsRequest { RouteIds = [] };
+        var categoriesLookups = new List<ChecklistLookup>();
+
+        var jobCategoryFilters = new SearchResultsViewModel
+        {
+            SelectedRouteIds = []
+        };
+
+        var lookup = new ChecklistLookup(parameterName, 1.ToString())
+        {
+            Checked = routeId1Checked
+        };
+
+        categoriesLookups.Add(lookup);
+
+        jobCategoryFilters.SelectedRouteIds.Add("1");
+
+        if (routeId1Checked == "checked")
+        {
+            request.RouteIds.Add("1");
+        }
+
+        categoriesLookups.Add(new ChecklistLookup(parameterName, 2.ToString()));
+        jobCategoryFilters.SelectedRouteIds.Add("2");
+        request.RouteIds.Add("2");
+
+        categoriesLookups.Add(new ChecklistLookup(parameterName, 3.ToString()));
+        jobCategoryFilters.SelectedRouteIds.Add("3");
+        request.RouteIds.Add("3");
+
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
+
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+            new SearchApprenticeshipFilterChoices
                 { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
 
-            if (expectedNumberOfFilters == 0)
-            {
-                actual.Count.Should().Be(0);
-                return;
-            }
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
+        firstItem.FieldName.Should().Be("Job category");
+        firstItem.FieldOrder.Should().Be(1);
 
-            var firstItem = actual.First();
-            firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-            firstItem.FieldName.Should().Be(fieldName);
-            firstItem.FieldOrder.Should().Be(1);
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
+        filter.Order.Should().Be(1);
+        filter.Value.Should().Be(parameterName);
 
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(SearchResultsUrl);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(parameterName);
-        }
+        var filterSecond = firstItem.Filters.Skip(1).First();
+        filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
+        filterSecond.Order.Should().Be(2);
+        filterSecond.Value.Should().Be(parameterName);
 
-        [TestCase("1", "2", "?routeIds=2", "?routeIds=1")]
-        [TestCase("1", "3", "?routeIds=3", "?routeIds=1")]
-        [TestCase("2", "3", "?routeIds=3", "?routeIds=2")]
-        public void BuildJobCategorySearchFiltersForTwoRouteIds(string routeIds1, string routeIds2, string expectedFirst, string expectedSecond)
+        if (firstItem.Filters.Count <= 2) return;
+        var filterThird = firstItem.Filters.Skip(2).First();
+        filterThird.ClearFilterLink.Should().Be(SearchResultsUrl + expectedThird);
+        filterThird.Order.Should().Be(3);
+        filterThird.Value.Should().Be(parameterName);
+    }
+
+    [TestCase(null, "", 0)]
+    [TestCase("1", "Apprenticeship level", 1)]
+    [TestCase("2", "Apprenticeship level", 1)]
+    [TestCase("3", "Apprenticeship level", 1)]
+    public void BuildJobLevelsSearchFiltersForSingleLevelId(string? levelId, string fieldName, int expectedNumberOfFilters)
+    {
+        const string parameterName = "levelIds";
+        var request = new GetSearchResultsRequest { LevelIds = [] };
+        var levelsLookups = new List<ChecklistLookup>();
+        if (levelId != null)
         {
-            const string parameterName = "routeIds";
-            var request = new GetSearchResultsRequest { RouteIds = [] };
-            var categoriesLookups = new List<ChecklistLookup>();
+            var lookup = new ChecklistLookup(parameterName, levelId, null, true);
+            levelsLookups.Add(lookup);
+            request.LevelIds.Add(levelId);
+        }
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
 
-            var jobCategoryFilters = new SearchResultsViewModel
-            {
-                SelectedRouteIds = []
-            };
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+            { CourseLevelsChecklistDetails = new ChecklistDetails { Lookups = levelsLookups } });
 
-            var lookup = new ChecklistLookup(parameterName, routeIds1)
+        if (expectedNumberOfFilters == 0)
+        {
+            actual.Count.Should().Be(0);
+            return;
+        }
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
+        firstItem.FieldName.Should().Be(fieldName);
+        firstItem.FieldOrder.Should().Be(1);
+
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(SearchResultsUrl);
+        filter.Order.Should().Be(1);
+        filter.Value.Should().Be(parameterName);
+    }
+
+    [TestCase("1", "2", "?levelIds=2", "?levelIds=1")]
+    [TestCase("1", "3", "?levelIds=3", "?levelIds=1")]
+    [TestCase("2", "3", "?levelIds=3", "?levelIds=2")]
+    public void BuildJobLevelSearchFiltersForTwoLevelIds(string levelIds1, string levelIds2, string expectedFirst, string expectedSecond)
+    {
+        const string parameterName = "levelIds";
+        var request = new GetSearchResultsRequest { LevelIds = [] };
+        var categoriesLookups = new List<ChecklistLookup>
+        {
+            new(parameterName, levelIds1)
             {
                 Checked = "Checked"
-            };
+            },
+            new(parameterName, levelIds2)
+            {
+                Checked = "Checked"
+            }
+        };
 
-            categoriesLookups.Add(lookup);
+        request.LevelIds.Add(levelIds1);
+        request.LevelIds.Add(levelIds2);
 
-            request.RouteIds.Add(routeIds1);
-            request.RouteIds.Add(routeIds2);
-            jobCategoryFilters.SelectedRouteIds.Add(routeIds1);
-            jobCategoryFilters.SelectedRouteIds.Add(routeIds2);
 
-            categoriesLookups.Add(new ChecklistLookup(parameterName, routeIds2));
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
 
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+            { CourseLevelsChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
 
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
-                { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(2);
+        firstItem.FieldName.Should().Be("Apprenticeship level");
+        firstItem.FieldOrder.Should().Be(1);
 
-            var firstItem = actual.First();
-            firstItem.Filters.Count.Should().Be(2);
-            firstItem.FieldName.Should().Be("Job category");
-            firstItem.FieldOrder.Should().Be(1);
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
+        filter.Order.Should().Be(1);
+        filter.Value.Should().Be(parameterName);
 
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(parameterName);
+        var filterSecond = firstItem.Filters.Skip(1).First();
+        filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
+        filterSecond.Order.Should().Be(2);
+        filterSecond.Value.Should().Be(parameterName);
+    }
 
-            var filterSecond = firstItem.Filters.Skip(1).First();
-            filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
-            filterSecond.Order.Should().Be(2);
-            filterSecond.Value.Should().Be(parameterName);
+    [TestCase("?levelIds=2&levelIds=3", "?levelIds=1&levelIds=3", "?levelIds=1&levelIds=2", 3, "checked")]
+    [TestCase("?levelIds=3", "?levelIds=2", "", 2, "")]
+    public void BuildJobLevelSearchFiltersForThreeLevelIdsCheckedAndUnchecked(
+        string expectedFirst, string expectedSecond, string expectedThird, int expectedNumberOfFilters, string levelId1Checked)
+    {
+        const string parameterName = "levelIds";
+        var request = new GetSearchResultsRequest { LevelIds = [] };
+        var categoriesLookups = new List<ChecklistLookup>
+        {
+            new (parameterName, 1.ToString())
+            {
+                Checked = levelId1Checked
+            }
+        };
+
+        if (levelId1Checked == "checked")
+        {
+            request.LevelIds.Add("1");
         }
 
-        [TestCase("?routeIds=2&routeIds=3", "?routeIds=1&routeIds=3", "?routeIds=1&routeIds=2", 3, "checked")]
-        [TestCase("?routeIds=3", "?routeIds=2", "", 2, "")]
-        public void BuildJobCategorySearchFiltersForThreeRouteIdsCheckedAndUnchecked(
-           string expectedFirst, string expectedSecond, string expectedThird, int expectedNumberOfFilters, string routeId1Checked)
-        {
-            const string parameterName = "routeIds";
-            var request = new GetSearchResultsRequest { RouteIds = [] };
-            var categoriesLookups = new List<ChecklistLookup>();
+        categoriesLookups.Add(new ChecklistLookup(parameterName, 2.ToString()));
+        request.LevelIds.Add("2");
 
-            var jobCategoryFilters = new SearchResultsViewModel
-            {
-                SelectedRouteIds = []
-            };
+        categoriesLookups.Add(new ChecklistLookup(parameterName, 3.ToString()));
+        request.LevelIds.Add("3");
 
-            var lookup = new ChecklistLookup(parameterName, 1.ToString())
-            {
-                Checked = routeId1Checked
-            };
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
 
-            categoriesLookups.Add(lookup);
-
-            jobCategoryFilters.SelectedRouteIds.Add("1");
-
-            if (routeId1Checked == "checked")
-            {
-                request.RouteIds.Add("1");
-            }
-
-            categoriesLookups.Add(new ChecklistLookup(parameterName, 2.ToString()));
-            jobCategoryFilters.SelectedRouteIds.Add("2");
-            request.RouteIds.Add("2");
-
-            categoriesLookups.Add(new ChecklistLookup(parameterName, 3.ToString()));
-            jobCategoryFilters.SelectedRouteIds.Add("3");
-            request.RouteIds.Add("3");
-
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
-
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
-                new SearchApprenticeshipFilterChoices
-                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
-
-            var firstItem = actual.First();
-            firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-            firstItem.FieldName.Should().Be("Job category");
-            firstItem.FieldOrder.Should().Be(1);
-
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(parameterName);
-
-            var filterSecond = firstItem.Filters.Skip(1).First();
-            filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
-            filterSecond.Order.Should().Be(2);
-            filterSecond.Value.Should().Be(parameterName);
-
-            if (firstItem.Filters.Count <= 2) return;
-            var filterThird = firstItem.Filters.Skip(2).First();
-            filterThird.ClearFilterLink.Should().Be(SearchResultsUrl + expectedThird);
-            filterThird.Order.Should().Be(3);
-            filterThird.Value.Should().Be(parameterName);
-        }
-
-        [TestCase(null, "", 0)]
-        [TestCase("1", "Apprenticeship level", 1)]
-        [TestCase("2", "Apprenticeship level", 1)]
-        [TestCase("3", "Apprenticeship level", 1)]
-        public void BuildJobLevelsSearchFiltersForSingleLevelId(string? levelId, string fieldName, int expectedNumberOfFilters)
-        {
-            const string parameterName = "levelIds";
-            var request = new GetSearchResultsRequest { LevelIds = [] };
-            var levelsLookups = new List<ChecklistLookup>();
-            if (levelId != null)
-            {
-                var lookup = new ChecklistLookup(parameterName, levelId, null, true);
-                levelsLookups.Add(lookup);
-                request.LevelIds.Add(levelId);
-            }
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
-
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
-                { CourseLevelsChecklistDetails = new ChecklistDetails { Lookups = levelsLookups } });
-
-            if (expectedNumberOfFilters == 0)
-            {
-                actual.Count.Should().Be(0);
-                return;
-            }
-            var firstItem = actual.First();
-            firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-            firstItem.FieldName.Should().Be(fieldName);
-            firstItem.FieldOrder.Should().Be(1);
-
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(SearchResultsUrl);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(parameterName);
-        }
-
-        [TestCase("1", "2", "?levelIds=2", "?levelIds=1")]
-        [TestCase("1", "3", "?levelIds=3", "?levelIds=1")]
-        [TestCase("2", "3", "?levelIds=3", "?levelIds=2")]
-        public void BuildJobLevelSearchFiltersForTwoLevelIds(string levelIds1, string levelIds2, string expectedFirst, string expectedSecond)
-        {
-            const string parameterName = "levelIds";
-            var request = new GetSearchResultsRequest { LevelIds = [] };
-            var categoriesLookups = new List<ChecklistLookup>
-            {
-                new(parameterName, levelIds1)
-                {
-                    Checked = "Checked"
-                },
-                new(parameterName, levelIds2)
-                {
-                    Checked = "Checked"
-                }
-            };
-
-            request.LevelIds.Add(levelIds1);
-            request.LevelIds.Add(levelIds2);
-
-
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
-
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+            new SearchApprenticeshipFilterChoices
                 { CourseLevelsChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
 
-            var firstItem = actual.First();
-            firstItem.Filters.Count.Should().Be(2);
-            firstItem.FieldName.Should().Be("Apprenticeship level");
-            firstItem.FieldOrder.Should().Be(1);
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
+        firstItem.FieldName.Should().Be("Apprenticeship level");
+        firstItem.FieldOrder.Should().Be(1);
 
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(parameterName);
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
+        filter.Order.Should().Be(1);
+        filter.Value.Should().Be(parameterName);
 
-            var filterSecond = firstItem.Filters.Skip(1).First();
-            filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
-            filterSecond.Order.Should().Be(2);
-            filterSecond.Value.Should().Be(parameterName);
-        }
+        var filterSecond = firstItem.Filters.Skip(1).First();
+        filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
+        filterSecond.Order.Should().Be(2);
+        filterSecond.Value.Should().Be(parameterName);
 
-        [TestCase("?levelIds=2&levelIds=3", "?levelIds=1&levelIds=3", "?levelIds=1&levelIds=2", 3, "checked")]
-        [TestCase("?levelIds=3", "?levelIds=2", "", 2, "")]
-        public void BuildJobLevelSearchFiltersForThreeLevelIdsCheckedAndUnchecked(
-           string expectedFirst, string expectedSecond, string expectedThird, int expectedNumberOfFilters, string levelId1Checked)
+        if (firstItem.Filters.Count <= 2) return;
+        var filterThird = firstItem.Filters.Skip(2).First();
+        filterThird.ClearFilterLink.Should().Be(SearchResultsUrl + expectedThird);
+        filterThird.Order.Should().Be(3);
+        filterThird.Value.Should().Be(parameterName);
+    }
+        
+    [TestCase(null, "", 0)]
+    [TestCase(ApprenticeshipTypes.Standard, "Apprenticeship type", 1)]
+    [TestCase(ApprenticeshipTypes.Foundation, "Apprenticeship type", 1)]
+    public void BuildJobTypeSearchFiltersForSingleLevelId(ApprenticeshipTypes? apprenticeshipType, string fieldName, int expectedNumberOfFilters)
+    {
+        const string parameterName = "apprenticeshipTypes";
+        var request = new GetSearchResultsRequest { ApprenticeshipTypes = [] };
+        var lookups = new List<ChecklistLookup>();
+        if (apprenticeshipType != null)
         {
-            const string parameterName = "levelIds";
-            var request = new GetSearchResultsRequest { LevelIds = [] };
-            var categoriesLookups = new List<ChecklistLookup>
-            {
-                new (parameterName, 1.ToString())
-                {
-                    Checked = levelId1Checked
-                }
-            };
+            var lookup = new ChecklistLookup(parameterName, apprenticeshipType.ToString()!, null, true);
+            lookups.Add(lookup);
+            request.ApprenticeshipTypes.Add(apprenticeshipType.Value);
+        }
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
 
-            if (levelId1Checked == "checked")
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+            { ApprenticeshipTypesChecklistDetails = new ChecklistDetails { Lookups = lookups } });
+
+        if (expectedNumberOfFilters == 0)
+        {
+            actual.Count.Should().Be(0);
+            return;
+        }
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
+        firstItem.FieldName.Should().Be(fieldName);
+        firstItem.FieldOrder.Should().Be(1);
+
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(SearchResultsUrl);
+        filter.Order.Should().Be(1);
+        filter.Value.Should().Be(parameterName);
+    }
+
+    [TestCase(ApprenticeshipTypes.Standard, ApprenticeshipTypes.Foundation, "?apprenticeshipTypes=Foundation", "?apprenticeshipTypes=Standard")]
+    public void BuildJobTypeSearchFiltersForTwoApprenticeshipTypes(ApprenticeshipTypes type1, ApprenticeshipTypes type2, string expectedFirst, string expectedSecond)
+    {
+        const string parameterName = "apprenticeshipTypes";
+        var request = new GetSearchResultsRequest { ApprenticeshipTypes = [] };
+        var lookups = new List<ChecklistLookup>
+        {
+            new(parameterName, type1.ToString())
             {
-                request.LevelIds.Add("1");
+                Checked = "Checked"
+            },
+            new(parameterName, type2.ToString())
+            {
+                Checked = "Checked"
             }
-
-            categoriesLookups.Add(new ChecklistLookup(parameterName, 2.ToString()));
-            request.LevelIds.Add("2");
-
-            categoriesLookups.Add(new ChecklistLookup(parameterName, 3.ToString()));
-            request.LevelIds.Add("3");
-
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
-
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
-                new SearchApprenticeshipFilterChoices
-                { CourseLevelsChecklistDetails = new ChecklistDetails { Lookups = categoriesLookups } });
-
-            var firstItem = actual.First();
-            firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-            firstItem.FieldName.Should().Be("Apprenticeship level");
-            firstItem.FieldOrder.Should().Be(1);
-
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(parameterName);
-
-            var filterSecond = firstItem.Filters.Skip(1).First();
-            filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
-            filterSecond.Order.Should().Be(2);
-            filterSecond.Value.Should().Be(parameterName);
-
-            if (firstItem.Filters.Count <= 2) return;
-            var filterThird = firstItem.Filters.Skip(2).First();
-            filterThird.ClearFilterLink.Should().Be(SearchResultsUrl + expectedThird);
-            filterThird.Order.Should().Be(3);
-            filterThird.Value.Should().Be(parameterName);
-        }
+        };
         
-        [TestCase(null, "", 0)]
-        [TestCase(ApprenticeshipTypes.Standard, "Apprenticeship type", 1)]
-        [TestCase(ApprenticeshipTypes.Foundation, "Apprenticeship type", 1)]
-        public void BuildJobTypeSearchFiltersForSingleLevelId(ApprenticeshipTypes? apprenticeshipType, string fieldName, int expectedNumberOfFilters)
-        {
-            const string parameterName = "apprenticeshipTypes";
-            var request = new GetSearchResultsRequest { ApprenticeshipTypes = [] };
-            var lookups = new List<ChecklistLookup>();
-            if (apprenticeshipType != null)
-            {
-                var lookup = new ChecklistLookup(parameterName, apprenticeshipType.ToString()!, null, true);
-                lookups.Add(lookup);
-                request.ApprenticeshipTypes.Add(apprenticeshipType.Value);
-            }
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+        request.ApprenticeshipTypes.Add(type1);
+        request.ApprenticeshipTypes.Add(type2);
+        
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
+        
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
+            { ApprenticeshipTypesChecklistDetails = new ChecklistDetails { Lookups = lookups } });
+        
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(2);
+        firstItem.FieldName.Should().Be("Apprenticeship type");
+        firstItem.FieldOrder.Should().Be(1);
+        
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
+        filter.Order.Should().Be(1);
+        filter.Value.Should().Be(parameterName);
+        
+        var filterSecond = firstItem.Filters.Skip(1).First();
+        filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
+        filterSecond.Order.Should().Be(2);
+        filterSecond.Value.Should().Be(parameterName);
+    }
 
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
-                { ApprenticeshipTypesChecklistDetails = new ChecklistDetails { Lookups = lookups } });
-
-            if (expectedNumberOfFilters == 0)
-            {
-                actual.Count.Should().Be(0);
-                return;
-            }
-            var firstItem = actual.First();
-            firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-            firstItem.FieldName.Should().Be(fieldName);
-            firstItem.FieldOrder.Should().Be(1);
-
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(SearchResultsUrl);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(parameterName);
-        }
-
-        [TestCase(ApprenticeshipTypes.Standard, ApprenticeshipTypes.Foundation, "?apprenticeshipTypes=Foundation", "?apprenticeshipTypes=Standard")]
-        public void BuildJobTypeSearchFiltersForTwoApprenticeshipTypes(ApprenticeshipTypes type1, ApprenticeshipTypes type2, string expectedFirst, string expectedSecond)
-        {
-            const string parameterName = "apprenticeshipTypes";
-            var request = new GetSearchResultsRequest { ApprenticeshipTypes = [] };
-            var lookups = new List<ChecklistLookup>
-            {
-                new(parameterName, type1.ToString())
-                {
-                    Checked = "Checked"
-                },
-                new(parameterName, type2.ToString())
-                {
-                    Checked = "Checked"
-                }
-            };
-        
-            request.ApprenticeshipTypes.Add(type1);
-            request.ApprenticeshipTypes.Add(type2);
-        
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
-        
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new SearchApprenticeshipFilterChoices
-                { ApprenticeshipTypesChecklistDetails = new ChecklistDetails { Lookups = lookups } });
-        
-            var firstItem = actual.First();
-            firstItem.Filters.Count.Should().Be(2);
-            firstItem.FieldName.Should().Be("Apprenticeship type");
-            firstItem.FieldOrder.Should().Be(1);
-        
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(SearchResultsUrl + expectedFirst);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(parameterName);
-        
-            var filterSecond = firstItem.Filters.Skip(1).First();
-            filterSecond.ClearFilterLink.Should().Be(SearchResultsUrl + expectedSecond);
-            filterSecond.Order.Should().Be(2);
-            filterSecond.Value.Should().Be(parameterName);
-        }
-
-        [Test]
-        public void Then_What_Search_Term_Is_Added_To_Filter_List()
-        {
-            var request = new GetSearchResultsRequest { RouteIds = [], SearchTerm = "Software & Developer"};
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+    [Test]
+    public void Then_What_Search_Term_Is_Added_To_Filter_List()
+    {
+        var request = new GetSearchResultsRequest { RouteIds = [], SearchTerm = "Software & Developer"};
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
             
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
-                new SearchApprenticeshipFilterChoices
-                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+            new SearchApprenticeshipFilterChoices
+                { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
 
-            actual.First().FieldName.Should().Be("What");
-            actual.First().Filters.First().Value.Should().Be("Software & Developer");
-            actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
+        actual.First().FieldName.Should().Be("What");
+        actual.First().Filters.First().Value.Should().Be("Software & Developer");
+        actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults");
 
-        }
+    }
         
-        [TestCase(true, "Recruiting nationally", "Hide companies recruiting nationally")]
-        [TestCase(false, "Recruiting nationally", null)]
-        public void Then_Exclude_National_Filter_Is_Added_To_Filter_List(bool excludeNational, string expectedFieldName, string expectedFilterValue)
+    [TestCase(true, "Recruiting nationally", "Hide companies recruiting nationally")]
+    [TestCase(false, "Recruiting nationally", null)]
+    public void Then_Exclude_National_Filter_Is_Added_To_Filter_List(bool excludeNational, string expectedFieldName, string expectedFilterValue)
+    {
+        // Arrange
+        var request = new GetSearchResultsRequest { ExcludeNational = excludeNational };
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
+
+        // Act
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+            new SearchApprenticeshipFilterChoices
+            {
+                JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() }
+            });
+
+        // Assert
+        if (excludeNational)
         {
-            // Arrange
-            var request = new GetSearchResultsRequest { ExcludeNational = excludeNational };
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+            actual.Should().ContainSingle();
+            var excludeNationalFilter = actual.Single();
 
-            // Act
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
-                new SearchApprenticeshipFilterChoices
-                {
-                    JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() }
-                });
+            excludeNationalFilter.FieldName.Should().Be(expectedFieldName);
+            actual.Should().ContainSingle();
 
-            // Assert
-            if (excludeNational)
-            {
-                actual.Should().ContainSingle();
-                var excludeNationalFilter = actual.Single();
-
-                excludeNationalFilter.FieldName.Should().Be(expectedFieldName);
-                actual.Should().ContainSingle();
-
-                excludeNationalFilter.FieldName.Should().Be(expectedFieldName);
-                excludeNationalFilter.Filters.Should().HaveCount(1);
-                var filter = excludeNationalFilter.Filters.Single();
-                filter.Value.Should().Be(expectedFilterValue);
-                filter.ClearFilterLink.Should().Be("searchResults");
-            }
-            else
-            {
-                actual.Should().BeEmpty();
-            }
+            excludeNationalFilter.FieldName.Should().Be(expectedFieldName);
+            excludeNationalFilter.Filters.Should().HaveCount(1);
+            var filter = excludeNationalFilter.Filters.Single();
+            filter.Value.Should().Be(expectedFilterValue);
+            filter.ClearFilterLink.Should().Be("searchResults");
         }
+        else
+        {
+            actual.Should().BeEmpty();
+        }
+    }
         
-        [Test]
-        public void Then_What_Search_Term_Is_Added_To_Filter_List_With_Sort()
-        {
-            var request = new GetSearchResultsRequest { RouteIds = [], SearchTerm = "Software Developer", Sort = VacancySort.AgeAsc.ToString()};
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+    [Test]
+    public void Then_What_Search_Term_Is_Added_To_Filter_List_With_Sort()
+    {
+        var request = new GetSearchResultsRequest { RouteIds = [], SearchTerm = "Software Developer", Sort = VacancySort.AgeAsc.ToString()};
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
             
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
-                new SearchApprenticeshipFilterChoices
-                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+            new SearchApprenticeshipFilterChoices
+                { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
 
-            actual.First().FieldName.Should().Be("What");
-            actual.First().Filters.First().Value.Should().Be("Software Developer");
-            actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults?sort=AgeAsc");
+        actual.First().FieldName.Should().Be("What");
+        actual.First().Filters.First().Value.Should().Be("Software Developer");
+        actual.First().Filters.First().ClearFilterLink.Should().Be("searchResults?sort=AgeAsc");
 
-        }
+    }
         
-        [Test]
-        public void Then_What_Search_Term_Is_Added_To_Filter_List_With_Sort_And_Location_Encoded()
-        {
-            var request = new GetSearchResultsRequest { RouteIds = [], Location = "Coventry & Coventry", SearchTerm = "Software & Developer", Sort = VacancySort.AgeAsc.ToString()};
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+    [Test]
+    public void Then_What_Search_Term_Is_Added_To_Filter_List_With_Sort_And_Location_Encoded()
+    {
+        var request = new GetSearchResultsRequest { RouteIds = [], Location = "Coventry & Coventry", SearchTerm = "Software & Developer", Sort = VacancySort.AgeAsc.ToString()};
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
             
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
-                new SearchApprenticeshipFilterChoices
-                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+            new SearchApprenticeshipFilterChoices
+                { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
 
-            actual.First().FieldName.Should().Be("What");
-            actual.First().Filters.First().Value.Should().Be("Software & Developer");
-            actual.First().Filters.First().ClearFilterLink.Should().Be($"searchResults?location={HttpUtility.UrlEncode("Coventry & Coventry")}&distance=all&sort=AgeAsc");
-            actual.Skip(1).First().FieldName.Should().Be("Where");
-            actual.Skip(1).First().Filters.First().Value.Should().Be("Coventry & Coventry (across England)");
-            actual.Skip(1).First().Filters.First().ClearFilterLink.Should().Be($"searchResults?searchTerm={HttpUtility.UrlEncode("Software & Developer")}&sort=AgeAsc");
-        }
+        actual.First().FieldName.Should().Be("What");
+        actual.First().Filters.First().Value.Should().Be("Software & Developer");
+        actual.First().Filters.First().ClearFilterLink.Should().Be($"searchResults?location={HttpUtility.UrlEncode("Coventry & Coventry")}&distance=all&sort=AgeAsc");
+        actual.Skip(1).First().FieldName.Should().Be("Where");
+        actual.Skip(1).First().Filters.First().Value.Should().Be("Coventry & Coventry (across England)");
+        actual.Skip(1).First().Filters.First().ClearFilterLink.Should().Be($"searchResults?searchTerm={HttpUtility.UrlEncode("Software & Developer")}&sort=AgeAsc");
+    }
 
-        [TestCase(null, VacancySort.AgeAsc,"Coventry (across England)","searchResults?sort=AgeAsc")]
-        [TestCase(10, VacancySort.DistanceAsc,"Coventry (within 10 miles)","searchResults")]
-        public void Then_Where_With_Distance_Search_Term_Is_Added_To_Filter_List(int? distance, VacancySort sort, string expected, string expectedClearFilter)
-        {
-            var request = new GetSearchResultsRequest { RouteIds = [], Location = "Coventry", Distance = distance, Sort = sort.ToString()};
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+    [TestCase(null, VacancySort.AgeAsc,"Coventry (across England)","searchResults?sort=AgeAsc")]
+    [TestCase(10, VacancySort.DistanceAsc,"Coventry (within 10 miles)","searchResults")]
+    public void Then_Where_With_Distance_Search_Term_Is_Added_To_Filter_List(int? distance, VacancySort sort, string expected, string expectedClearFilter)
+    {
+        var request = new GetSearchResultsRequest { RouteIds = [], Location = "Coventry", Distance = distance, Sort = sort.ToString()};
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
             
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
-                new SearchApprenticeshipFilterChoices
-                    { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+            new SearchApprenticeshipFilterChoices
+                { JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() } });
 
-            actual.First().FieldName.Should().Be("Where");
-            actual.First().Filters.First().Value.Should().Be(expected);
-            actual.First().Filters.First().ClearFilterLink.Should().Be(expectedClearFilter);
-        }
+        actual.First().FieldName.Should().Be("Where");
+        actual.First().Filters.First().Value.Should().Be(expected);
+        actual.First().Filters.First().ClearFilterLink.Should().Be(expectedClearFilter);
+    }
 
-        [TestCase(true, "Disability Confident", "Only show Disability Confident companies")]
-        [TestCase(false, "Disability Confident", null)]
-        public void Then_DisabilityConfident_Filter_Is_Added_To_Filter_List(bool disabilityConfident, string expectedFieldName, string expectedFilterValue)
-        {
-            // Arrange
-            var request = new GetSearchResultsRequest { DisabilityConfident = disabilityConfident };
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns(SearchResultsUrl);
+    [TestCase(true, "Disability Confident", "Only show Disability Confident companies")]
+    [TestCase(false, "Disability Confident", null)]
+    public void Then_DisabilityConfident_Filter_Is_Added_To_Filter_List(bool disabilityConfident, string expectedFieldName, string expectedFilterValue)
+    {
+        // Arrange
+        var request = new GetSearchResultsRequest { DisabilityConfident = disabilityConfident };
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
 
-            // Act
-            var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
-                new SearchApprenticeshipFilterChoices
-                {
-                    JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() }
-                });
-
-            // Assert
-            if (disabilityConfident)
+        // Act
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object,
+            new SearchApprenticeshipFilterChoices
             {
-                actual.Should().ContainSingle();
-                var disabilityConfidentFilter = actual.Single();
+                JobCategoryChecklistDetails = new ChecklistDetails { Lookups = new List<ChecklistLookup>() }
+            });
 
-                disabilityConfidentFilter.FieldName.Should().Be(expectedFieldName);
-                actual.Should().ContainSingle();
-
-                disabilityConfidentFilter.FieldName.Should().Be(expectedFieldName);
-                disabilityConfidentFilter.Filters.Should().HaveCount(1);
-                var filter = disabilityConfidentFilter.Filters.Single();
-                filter.Value.Should().Be(expectedFilterValue);
-                filter.ClearFilterLink.Should().Be("searchResults");
-            }
-            else
-            {
-                actual.Should().BeEmpty();
-            }
-        }
-
-        [TestCase("https://baseUrl.com?searchTerm=something", "searchTerm", "newValue", "https://baseUrl.com?searchTerm=newValue")]
-        [TestCase("https://baseUrl.com?searchTerm=something&RouteId=10", "RouteId", "20", "https://baseUrl.com?searchTerm=something&RouteId=20")]
-        public void Then_The_Query_Already_Exist_And_The_Value_Gets_Replace_To_Filter_List(string url, string paramToReplace, string newValue, string expected)
+        // Assert
+        if (disabilityConfident)
         {
-            var actual = FilterBuilder.ReplaceQueryStringParam(url, paramToReplace, newValue);
+            actual.Should().ContainSingle();
+            var disabilityConfidentFilter = actual.Single();
 
-            actual.Should().Be(expected);
+            disabilityConfidentFilter.FieldName.Should().Be(expectedFieldName);
+            actual.Should().ContainSingle();
+
+            disabilityConfidentFilter.FieldName.Should().Be(expectedFieldName);
+            disabilityConfidentFilter.Filters.Should().HaveCount(1);
+            var filter = disabilityConfidentFilter.Filters.Single();
+            filter.Value.Should().Be(expectedFilterValue);
+            filter.ClearFilterLink.Should().Be("searchResults");
         }
+        else
+        {
+            actual.Should().BeEmpty();
+        }
+    }
+
+    [TestCase("https://baseUrl.com?searchTerm=something", "searchTerm", "newValue", "https://baseUrl.com?searchTerm=newValue")]
+    [TestCase("https://baseUrl.com?searchTerm=something&RouteId=10", "RouteId", "20", "https://baseUrl.com?searchTerm=something&RouteId=20")]
+    public void Then_The_Query_Already_Exist_And_The_Value_Gets_Replace_To_Filter_List(string url, string paramToReplace, string newValue, string expected)
+    {
+        var actual = FilterBuilder.ReplaceQueryStringParam(url, paramToReplace, newValue);
+
+        actual.Should().Be(expected);
     }
 }

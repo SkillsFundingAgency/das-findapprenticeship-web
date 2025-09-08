@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.TrainingCourses;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -27,8 +26,7 @@ public class WhenPostingRequest
         };
         controller
             .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+            .WithUser(candidateId);
         mediator.Setup(x => x.Send(It.IsAny<UpdateTrainingCoursesApplicationCommandResult>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         validator
@@ -64,8 +62,7 @@ public class WhenPostingRequest
         };
         controller
             .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+            .WithUser(candidateId);
         mediator.Setup(x => x.Send(It.IsAny<UpdateTrainingCoursesApplicationCommandResult>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         validator

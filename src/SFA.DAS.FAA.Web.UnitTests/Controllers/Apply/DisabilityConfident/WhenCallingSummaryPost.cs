@@ -1,13 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.DisabilityConfident;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.DisabilityConfident;
 
@@ -31,14 +28,9 @@ public class WhenCallingSummaryPost
             IsSectionCompleted = true
         };
 
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         mediator.Setup(x => x.Send(It.Is<UpdateDisabilityConfidenceApplicationCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId) &&

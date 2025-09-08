@@ -1,14 +1,12 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Services;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply;
+
 public class WhenGettingApplicationSubmitted
 {
     [Test]
@@ -28,13 +26,9 @@ public class WhenGettingApplicationSubmitted
                 c.CandidateId.Equals(candidateId)
                 && c.ApplicationId.Equals(applicationId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-        var user = new ClaimsPrincipal(new ClaimsIdentity([
-            new Claim(CustomClaims.CandidateId, candidateId.ToString())
-        ]));
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext { User = user }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         var actual = await controller.ApplicationSubmitted(applicationId) as ViewResult;
         var isVacancyClosedEarly = result.ClosedDate.HasValue && result.ClosedDate < result.ClosingDate;

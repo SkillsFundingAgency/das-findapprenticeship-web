@@ -1,10 +1,10 @@
-﻿using FluentAssertions;
-using FluentValidation.TestHelper;
-using NUnit.Framework;
+﻿using FluentValidation.TestHelper;
+using SFA.DAS.FAA.Web.Models.Custom;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Validators;
+
 public class WhenValidatingUserDateOfBirth
 {
     private const string UserIsTooYoung = "You must be older than 13 to use Find an apprenticeship";
@@ -20,7 +20,7 @@ public class WhenValidatingUserDateOfBirth
 
         var model = new DateOfBirthViewModel
         {
-            DateOfBirth = new Web.Models.Custom.DayMonthYearDate(new DateTime(year, month, day))
+            DateOfBirth = new DayMonthYearDate(new DateTime(year, month, day))
         };
 
         var validator = new DateOfBirthViewModelValidator();
@@ -40,7 +40,7 @@ public class WhenValidatingUserDateOfBirth
 
         var model = new DateOfBirthViewModel
         {
-            DateOfBirth = new Web.Models.Custom.DayMonthYearDate(new DateTime(year, month, day))
+            DateOfBirth = new DayMonthYearDate(new DateTime(year, month, day))
         };
 
         var validator = new DateOfBirthViewModelValidator();

@@ -1,9 +1,6 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.VolunteeringAndWorkExperience.UpdateVolunteeringAndWorkExperience;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -22,14 +19,9 @@ public class WhenPostingEditVolunteeringAndWorkExperienceRequest
         [Greedy] VolunteeringAndWorkExperienceController controller)
     {
         // arrange
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         mediator.Setup(x => x.Send(It.Is<UpdateVolunteeringAndWorkExperienceCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)

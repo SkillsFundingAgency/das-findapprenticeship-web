@@ -1,9 +1,7 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.UpdateJob;
-using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory;
@@ -17,17 +15,12 @@ public class WhenPostingUpdateJobRequest
         EditJobViewModel request,
         Mock<IValidator<EditJobViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
-        [Greedy] Web.Controllers.Apply.WorkHistoryController controller)
+        [Greedy] WorkHistoryController controller)
     {
         // arrange
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         mediator.Setup(x => x.Send(It.Is<UpdateJobCommand>(c=>
                 c.JobId.Equals(request.JobId)

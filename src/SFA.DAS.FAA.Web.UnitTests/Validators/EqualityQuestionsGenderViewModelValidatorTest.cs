@@ -1,9 +1,9 @@
 ﻿using FluentValidation.TestHelper;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Validators;
+
 public class EqualityQuestionsGenderViewModelValidatorTest
 {
     private const string NoSexSelectionErrorMessage = "Select a sex or 'Prefer not to say'";

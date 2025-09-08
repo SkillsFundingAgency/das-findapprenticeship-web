@@ -1,10 +1,7 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Application.Queries.Apply.GetDisabilityConfident;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Models.Apply;
 
@@ -20,6 +17,7 @@ public class WhenCallingSummaryGet
         GetDisabilityConfidentDetailsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
+        // arrange
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -29,22 +27,16 @@ public class WhenCallingSummaryGet
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var controller = new DisabilityConfidentController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-                }
-            }
-        };
+        var controller = new DisabilityConfidentController(mediator.Object) { Url = mockUrlHelper.Object, };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
+        // act
         var actual = await controller.GetSummary(applicationId) as ViewResult;
         var actualModel = actual!.Model.As<DisabilityConfidentSummaryViewModel>();
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();

@@ -1,21 +1,13 @@
-﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Routing;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
+using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Application.Queries.Apply.GetInterviewAdjustments;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
-using SFA.DAS.Testing.AutoFixture;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.InterviewAdjustments;
+
 public class WhenCallingGet
 {
     [Test, MoqAutoData]
@@ -25,6 +17,7 @@ public class WhenCallingGet
         GetInterviewAdjustmentsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
+        // arrange
         queryResult.Status = null;
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
@@ -37,19 +30,16 @@ public class WhenCallingGet
         var controller = new InterviewAdjustmentsController(mediator.Object)
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
+        // act
         var actual = await controller.Index(applicationId) as ViewResult;
         var actualModel = actual!.Model.As<InterviewAdjustmentsViewModel>();
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
@@ -65,6 +55,7 @@ public class WhenCallingGet
         GetInterviewAdjustmentsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
+        // arrange
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
         .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -76,18 +67,15 @@ public class WhenCallingGet
         var controller = new InterviewAdjustmentsController(mediator.Object)
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
+        // act
         var actual = await controller.Index(applicationId) as RedirectToRouteResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();

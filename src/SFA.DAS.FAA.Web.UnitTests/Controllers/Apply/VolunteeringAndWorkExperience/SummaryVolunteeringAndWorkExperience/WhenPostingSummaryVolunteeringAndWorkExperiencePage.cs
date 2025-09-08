@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -33,8 +32,7 @@ public class WhenPostingSummaryVolunteeringAndWorkExperiencePage
         
         controller
             .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+            .WithUser(candidateId);
 
         mediator.Setup(x => x.Send(It.Is<UpdateVolunteeringAndWorkExperienceApplicationCommand>(c =>
                 c.ApplicationId.Equals(viewModel.ApplicationId)

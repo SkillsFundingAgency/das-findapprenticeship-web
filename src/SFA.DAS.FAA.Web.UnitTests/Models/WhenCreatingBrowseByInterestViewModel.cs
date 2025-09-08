@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
+﻿using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
@@ -61,17 +59,6 @@ public class WhenCreatingBrowseByInterestViewModel
         var actualRouteObject = viewModel.AgricultureEnvironmentalAndAnimalCareDictionary[routeId.ToString()];
 
         actualRouteObject.Should().BeEquivalentTo(expectedRouteObject1);
-        
-        // Assert.Multiple(() =>
-        // {
-        //     Assert.That(actual.Routes[i].Name, Is.EqualTo(routeList[i]));
-        //     Assert.AreEqual(expectedRouteObject1.RouteId, actualRouteObject.RouteId);
-        //     Assert.AreEqual(expectedRouteObject1.RouteName, actualRouteObject.RouteName);
-        //     Assert.AreEqual(expectedRouteObject1.DisplayText, actualRouteObject.DisplayText);
-        //     Assert.AreEqual(expectedRouteObject1.HintText, actualRouteObject.HintText);
-        //     Assert.AreEqual(expectedRouteObject1.PreviouslySelected, actualRouteObject.PreviouslySelected);
-        // });
-
     }
 
     [Test, TestCase(15, "Transport and logistics")]
@@ -103,14 +90,6 @@ public class WhenCreatingBrowseByInterestViewModel
         var actualRouteObject = viewModel.TransportAndLogisticsDictionary[routeId.ToString()];
 
         actualRouteObject.Should().BeEquivalentTo(expectedRouteObject);
-        // Assert.Multiple(() =>
-        // {
-        //     Assert.AreEqual(expectedRouteObject.RouteId, actualRouteObject.RouteId);
-        //     Assert.AreEqual(expectedRouteObject.RouteName, actualRouteObject.RouteName);
-        //     Assert.AreEqual(expectedRouteObject.DisplayText, actualRouteObject.DisplayText);
-        //     Assert.AreEqual(expectedRouteObject.HintText, actualRouteObject.HintText);
-        //     Assert.AreEqual(expectedRouteObject.PreviouslySelected, actualRouteObject.PreviouslySelected);
-        // });
     }
 
     [Test]
@@ -140,5 +119,4 @@ public class WhenCreatingBrowseByInterestViewModel
         Assert.That(viewModel.BusinessSalesAndLegalDictionary["14"].RouteName, Is.EqualTo("Sales and Marketing"));
         Assert.That(viewModel.BusinessSalesAndLegalDictionary["12"].RouteName, Is.EqualTo("Legal, Finance, Accounting"));
     }
-
 }

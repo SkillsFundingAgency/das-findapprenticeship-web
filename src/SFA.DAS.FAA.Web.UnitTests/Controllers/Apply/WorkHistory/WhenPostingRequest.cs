@@ -1,10 +1,7 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -28,14 +25,9 @@ public class WhenPostingRequest
             ApplicationId = Guid.NewGuid(),
             DoYouWantToAddAnyJobs = true
         };
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)
@@ -67,14 +59,9 @@ public class WhenPostingRequest
             ApplicationId = Guid.NewGuid(),
             DoYouWantToAddAnyJobs = false
         };
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
         mediator.Setup(x => x.Send(It.IsAny<UpdateWorkHistoryApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         
@@ -113,17 +100,10 @@ public class WhenPostingRequest
         var controller = new WorkHistoryController(mediator.Object)
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-                    {
-                        new(CustomClaims.CandidateId, candidateId.ToString()),
-                    }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)

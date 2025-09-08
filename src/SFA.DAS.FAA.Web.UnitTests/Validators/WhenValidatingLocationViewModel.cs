@@ -1,8 +1,6 @@
 ﻿using FluentValidation.TestHelper;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Validators;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Validators
 {

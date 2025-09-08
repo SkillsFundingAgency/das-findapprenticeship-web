@@ -1,12 +1,7 @@
-using System.Security.Claims;
-using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpsertQualification;
 using SFA.DAS.FAA.Application.Queries.Apply.GetModifyQualification;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -27,15 +22,9 @@ public class WhenPostingAddQualification
         // arrange
         model.IsApprenticeship = false;
         model.Subjects = [subject, new SubjectViewModel()];
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
-        
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
         validator
             .Setup(x => x.ValidateAsync(It.Is<AddQualificationViewModel>(m => m == model), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
@@ -63,14 +52,9 @@ public class WhenPostingAddQualification
         [Greedy] QualificationsController controller)
     {
         // arrange
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
         controller.ControllerContext.ModelState.AddModelError("error","error");
         queryResult.QualificationType!.Name = "BTec";
         mediator.Setup(x => x.Send(It.Is<GetModifyQualificationQuery>(c =>

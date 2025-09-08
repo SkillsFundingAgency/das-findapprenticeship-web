@@ -15,26 +15,54 @@ using SFA.DAS.FAA.Web.Models.Apply;
 using FluentValidation;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.DeleteJob;
 
-namespace SFA.DAS.FAA.Web.Controllers.Apply
-{
-    [Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
-    public class WorkHistoryController(IMediator mediator) : Controller
-    {
-        private const string ViewPath = "~/Views/apply/workhistory/Index.cshtml";
+namespace SFA.DAS.FAA.Web.Controllers.Apply;
 
-        [HttpGet]
-        [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
-        public async Task<IActionResult> Get([FromRoute] Guid applicationId)
+[Authorize(Policy = nameof(PolicyNames.IsFaaUser))]
+public class WorkHistoryController(IMediator mediator) : Controller
+{
+    private const string ViewPath = "~/Views/apply/workhistory/Index.cshtml";
+
+    [HttpGet]
+    [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
+    public async Task<IActionResult> Get([FromRoute] Guid applicationId)
+    {
+        var result = await mediator.Send(new GetJobsQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = (Guid)User.Claims.CandidateId()!
+        });
+
+        var viewModel = new JobsViewModel
+        {
+            ApplicationId = applicationId,
+            DoYouWantToAddAnyJobs = result.Jobs.Count == 0 && result.IsSectionCompleted is true ? false : null,
+            IsSectionCompleted = result.IsSectionCompleted,
+            JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
+            ShowJobHistory = result.Jobs.Count != 0
+        };
+
+        return View(ViewPath, viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
+    public async Task<IActionResult> Post(
+        [FromServices] IValidator<JobsViewModel> validator,
+        JobsViewModel viewModel)
+    {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
+            
+        if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetJobsQuery
             {
-                ApplicationId = applicationId,
+                ApplicationId = viewModel.ApplicationId,
                 CandidateId = (Guid)User.Claims.CandidateId()!
             });
 
-            var viewModel = new JobsViewModel
+            viewModel = new JobsViewModel
             {
-                ApplicationId = applicationId,
+                ApplicationId = viewModel.ApplicationId,
                 DoYouWantToAddAnyJobs = result.Jobs.Count == 0 && result.IsSectionCompleted is true ? false : null,
                 IsSectionCompleted = result.IsSectionCompleted,
                 JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
@@ -44,188 +72,159 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
             return View(ViewPath, viewModel);
         }
 
-        [HttpPost]
-        [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
-        public async Task<IActionResult> Post(
-            [FromServices] IValidator<JobsViewModel> validator,
-            JobsViewModel viewModel)
+        if (viewModel.ShowJobHistory)
         {
-            await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
-            
-            if (!ModelState.IsValid)
+            var completeSectionCommand = new UpdateWorkHistoryApplicationCommand
             {
-                var result = await mediator.Send(new GetJobsQuery
-                {
-                    ApplicationId = viewModel.ApplicationId,
-                    CandidateId = (Guid)User.Claims.CandidateId()!
-                });
-
-                viewModel = new JobsViewModel
-                {
-                    ApplicationId = viewModel.ApplicationId,
-                    DoYouWantToAddAnyJobs = result.Jobs.Count == 0 && result.IsSectionCompleted is true ? false : null,
-                    IsSectionCompleted = result.IsSectionCompleted,
-                    JobHistory = result.Jobs.Select(x => (JobsViewModel.Job)x).ToList(),
-                    ShowJobHistory = result.Jobs.Count != 0
-                };
-
-                return View(ViewPath, viewModel);
-            }
-
-            if (viewModel.ShowJobHistory)
-            {
-                var completeSectionCommand = new UpdateWorkHistoryApplicationCommand
-                {
-                    CandidateId = (Guid)User.Claims.CandidateId()!,
-                    ApplicationId = viewModel.ApplicationId,
-                    WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.Incomplete
-                };
-
-                await mediator.Send(completeSectionCommand);
-
-                return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
-            }
-
-            if (viewModel.DoYouWantToAddAnyJobs is false)
-            {
-                var command = new UpdateWorkHistoryApplicationCommand
-                {
-                    CandidateId = (Guid)User.Claims.CandidateId()!,
-                    ApplicationId = viewModel.ApplicationId,
-                    WorkHistorySectionStatus = SectionStatus.Completed
-                };
-
-                await mediator.Send(command);
-            }
-
-            return viewModel.DoYouWantToAddAnyJobs.Value
-                ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId })
-                : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
-        }
-
-        [HttpGet]
-        [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
-        public IActionResult GetAddAJob([FromRoute] Guid applicationId)
-        {
-            var viewModel = new AddJobViewModel
-            {
-                ApplicationId = applicationId
+                CandidateId = (Guid)User.Claims.CandidateId()!,
+                ApplicationId = viewModel.ApplicationId,
+                WorkHistorySectionStatus = viewModel.IsSectionCompleted.Value ? SectionStatus.Completed : SectionStatus.Incomplete
             };
 
-            return View("~/Views/apply/workhistory/AddJob.cshtml", viewModel);
+            await mediator.Send(completeSectionCommand);
+
+            return RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
         }
 
-        [HttpPost]
-        [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
-        public async Task<IActionResult> PostAddAJob(
-            [FromServices] IValidator<AddJobViewModel> validator,
-            AddJobViewModel request)
+        if (viewModel.DoYouWantToAddAnyJobs is false)
         {
-            await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
-            if (!ModelState.IsValid)
+            var command = new UpdateWorkHistoryApplicationCommand
             {
-                return View("~/Views/apply/workhistory/AddJob.cshtml", request);
-            }
-
-            var command = new AddJobCommand
-            {
-                ApplicationId = request.ApplicationId,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                EmployerName = request.EmployerName,
-                JobDescription = request.JobDescription,
-                JobTitle = request.JobTitle,
-                StartDate = request.StartDate.DateTimeValue.Value,
-                EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+                ApplicationId = viewModel.ApplicationId,
+                WorkHistorySectionStatus = SectionStatus.Completed
             };
 
             await mediator.Send(command);
-
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
 
-        [HttpGet]
-        [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
-        public async Task<IActionResult> Edit([FromRoute] Guid applicationId, Guid jobId)
+        return viewModel.DoYouWantToAddAnyJobs.Value
+            ? RedirectToRoute(RouteNames.ApplyApprenticeship.AddJob, new { viewModel.ApplicationId })
+            : RedirectToRoute(RouteNames.Apply, new { viewModel.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
+    public IActionResult GetAddAJob([FromRoute] Guid applicationId)
+    {
+        var viewModel = new AddJobViewModel
         {
-            var result = await mediator.Send(new GetJobQuery
-            {
-                ApplicationId = applicationId,
-                CandidateId = (Guid)User.Claims.CandidateId()!,
-                JobId = jobId
-            });
+            ApplicationId = applicationId
+        };
 
-            var viewModel = (EditJobViewModel)result;
+        return View("~/Views/apply/workhistory/AddJob.cshtml", viewModel);
+    }
 
-            return View("~/Views/apply/workhistory/EditJob.cshtml", viewModel);
+    [HttpPost]
+    [Route("apply/{applicationId}/jobs/add", Name = RouteNames.ApplyApprenticeship.AddJob)]
+    public async Task<IActionResult> PostAddAJob(
+        [FromServices] IValidator<AddJobViewModel> validator,
+        AddJobViewModel request)
+    {
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
+        if (!ModelState.IsValid)
+        {
+            return View("~/Views/apply/workhistory/AddJob.cshtml", request);
         }
 
-        [HttpPost]
-        [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
-        public async Task<IActionResult> PostEditAJob(
-            [FromServices] IValidator<EditJobViewModel> validator,
-            EditJobViewModel request)
+        var command = new AddJobCommand
         {
-            await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
-            if (!ModelState.IsValid)
-            {
-                return View("~/Views/apply/workhistory/EditJob.cshtml", request);
-            }
+            ApplicationId = request.ApplicationId,
+            CandidateId = (Guid)User.Claims.CandidateId()!,
+            EmployerName = request.EmployerName,
+            JobDescription = request.JobDescription,
+            JobTitle = request.JobTitle,
+            StartDate = request.StartDate.DateTimeValue.Value,
+            EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+        };
 
-            var command = new UpdateJobCommand
+        await mediator.Send(command);
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
+    public async Task<IActionResult> Edit([FromRoute] Guid applicationId, Guid jobId)
+    {
+        var result = await mediator.Send(new GetJobQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = (Guid)User.Claims.CandidateId()!,
+            JobId = jobId
+        });
+
+        var viewModel = (EditJobViewModel)result;
+
+        return View("~/Views/apply/workhistory/EditJob.cshtml", viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/jobs/{jobId}", Name = RouteNames.ApplyApprenticeship.EditJob)]
+    public async Task<IActionResult> PostEditAJob(
+        [FromServices] IValidator<EditJobViewModel> validator,
+        EditJobViewModel request)
+    {
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
+        if (!ModelState.IsValid)
+        {
+            return View("~/Views/apply/workhistory/EditJob.cshtml", request);
+        }
+
+        var command = new UpdateJobCommand
+        {
+            JobId = request.JobId,
+            ApplicationId = request.ApplicationId,
+            CandidateId = (Guid)User.Claims.CandidateId()!,
+            EmployerName = request.EmployerName,
+            JobDescription = request.JobDescription,
+            JobTitle = request.JobTitle,
+            StartDate = request.StartDate.DateTimeValue.Value,
+            EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+        };
+
+        await mediator.Send(command);
+
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
+    }
+
+    [HttpGet]
+    [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
+    public async Task<IActionResult> GetDeleteJob([FromRoute] Guid applicationId, Guid jobId)
+    {
+        var result = await mediator.Send(new GetDeleteJobQuery
+        {
+            ApplicationId = applicationId,
+            CandidateId = (Guid)User.Claims.CandidateId()!,
+            JobId = jobId
+        });
+
+        var viewModel = (DeleteJobViewModel)result;
+
+        return View("~/Views/apply/workhistory/DeleteJob.cshtml", viewModel);
+    }
+
+    [HttpPost]
+    [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
+    public async Task<IActionResult> PostDeleteJob(DeleteJobViewModel model)
+    {
+        try
+        {
+            var command = new PostDeleteJobCommand
             {
-                JobId = request.JobId,
-                ApplicationId = request.ApplicationId,
                 CandidateId = (Guid)User.Claims.CandidateId()!,
-                EmployerName = request.EmployerName,
-                JobDescription = request.JobDescription,
-                JobTitle = request.JobTitle,
-                StartDate = request.StartDate.DateTimeValue.Value,
-                EndDate = request.IsCurrentRole is true ? null : request.EndDate?.DateTimeValue
+                ApplicationId = model.ApplicationId,
+                JobId = model.JobId
             };
-
             await mediator.Send(command);
-
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { request.ApplicationId });
         }
-
-        [HttpGet]
-        [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
-        public async Task<IActionResult> GetDeleteJob([FromRoute] Guid applicationId, Guid jobId)
+        catch
         {
-            var result = await mediator.Send(new GetDeleteJobQuery
-            {
-                ApplicationId = applicationId,
-                CandidateId = (Guid)User.Claims.CandidateId()!,
-                JobId = jobId
-            });
-
-            var viewModel = (DeleteJobViewModel)result;
-
-            return View("~/Views/apply/workhistory/DeleteJob.cshtml", viewModel);
+            ModelState.AddModelError(nameof(DeleteJobViewModel), "There's been a problem");
+            return View("~/Views/apply/workhistory/DeleteJob.cshtml");
         }
 
-        [HttpPost]
-        [Route("apply/{applicationId}/jobs/{jobId}/delete", Name = RouteNames.ApplyApprenticeship.DeleteJob)]
-        public async Task<IActionResult> PostDeleteJob(DeleteJobViewModel model)
-        {
-            try
-            {
-                var command = new PostDeleteJobCommand
-                {
-                    CandidateId = (Guid)User.Claims.CandidateId()!,
-                    ApplicationId = model.ApplicationId,
-                    JobId = model.JobId
-                };
-                await mediator.Send(command);
-            }
-            catch
-            {
-                ModelState.AddModelError(nameof(DeleteJobViewModel), "There's been a problem");
-                return View("~/Views/apply/workhistory/DeleteJob.cshtml");
-            }
+        return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { model.ApplicationId });
 
-            return RedirectToRoute(RouteNames.ApplyApprenticeship.Jobs, new { model.ApplicationId });
-
-        }
     }
 }

@@ -1,13 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
-using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using System.Security.Claims;
-using FluentValidation;
-using FluentValidation.Results;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
 
@@ -21,18 +17,13 @@ public class WhenPostingAddATrainingCourseRequest
     AddTrainingCourseCommandResponse result,
     Mock<IValidator<AddTrainingCourseViewModel>> validator,
     [Frozen] Mock<IMediator> mediator,
-    [Greedy] Web.Controllers.Apply.TrainingCoursesController controller)
+    [Greedy] TrainingCoursesController controller)
     {
+        // arrange
         request.YearAchieved = yearAchieved.ToString();
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         mediator.Setup(x => x.Send(It.Is<AddTrainingCourseCommand>(c =>
         c.ApplicationId == request.ApplicationId
@@ -46,8 +37,10 @@ public class WhenPostingAddATrainingCourseRequest
             .Setup(x => x.ValidateAsync(It.Is<AddTrainingCourseViewModel>(m => m == request), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
 
+        // act
         var actual = await controller.PostAddATrainingCourse(validator.Object, request) as RedirectToRouteResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();

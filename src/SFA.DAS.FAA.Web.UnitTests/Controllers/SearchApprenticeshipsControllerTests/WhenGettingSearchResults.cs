@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.SearchResults;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
@@ -60,7 +58,6 @@ public class WhenGettingSearchResults
             .Setup(x => x.RouteUrl(It.Is<UrlRouteContext>(c=>c.RouteName!.Equals(RouteNames.SearchResults))))
             .Returns("https://baseUrl");
         
-        
         faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         validator.Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
             .ReturnsAsync(
@@ -80,18 +77,11 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                    }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
         routeIds = [result.Routes.First().Id.ToString()];
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
                 c.SearchTerm!.Equals(searchTerm)
@@ -217,18 +207,11 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                    }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
         
         var actual = await controller.SearchResults(validator.Object, new GetSearchResultsRequest
         {
@@ -294,18 +277,10 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         // Act
         var actual = await controller.SearchResults (validator.Object, new GetSearchResultsRequest
@@ -358,18 +333,10 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
@@ -419,18 +386,10 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
@@ -476,18 +435,10 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
 
         result.VacancyReference = null;
 
@@ -536,18 +487,10 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
         result.VacancyReference = null;
 
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
@@ -610,18 +553,11 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                    }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
         routeIds = [result.Routes.First().Id.ToString()];
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
@@ -723,19 +659,11 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                    }))
-
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
         routeIds = [result.Routes.First().Id.ToString()];
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
@@ -844,18 +772,11 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                    }))
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
         routeIds = [result.Routes.First().Id.ToString()];
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
                 c.SearchTerm!.Equals(searchTerm)
@@ -995,18 +916,10 @@ public class WhenGettingSearchResults
             Mock.Of<ILogger<SearchApprenticeshipsController>>())
         {
             Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-                }
-            }
         };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId);
         result.VacancyReference = null;
 
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c => c.Sort == expectedSort.ToString()), CancellationToken.None)).ReturnsAsync(result);

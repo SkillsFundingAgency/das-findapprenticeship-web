@@ -1,18 +1,18 @@
+using System.Net;
 using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using SFA.DAS.FAA.Application.Queries.GetApprenticeshipVacancy;
-using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Domain.Configuration;
+using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Applications;
 using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
-using System.Net;
-using Microsoft.Extensions.Options;
-using SFA.DAS.FAA.Web.Models.Applications;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Primitives;
-using SFA.DAS.FAA.Web.Controllers;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Vacancies;
 
@@ -32,7 +32,7 @@ public class WhenGettingVacancyDetails
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
         Mock<IValidator<GetVacancyDetailsRequest>> validator,
-        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
         [Frozen] Mock<IUrlHelper> mockUrlHelper,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
@@ -45,21 +45,12 @@ public class WhenGettingVacancyDetails
         cacheStorageService
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship{GoogleMapsId = mapId});
-
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
         controller.Url = mockUrlHelper.Object;
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
-                    new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                }))
-
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
 
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
@@ -105,7 +96,8 @@ public class WhenGettingVacancyDetails
             VacancyReference = vacancyReference
         };
 
-        validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
+        validator
+            .Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
         // act
@@ -130,18 +122,10 @@ public class WhenGettingVacancyDetails
     {
         // arrange
         result.Vacancy = null;
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
-                    new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                }))
-
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
         mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
@@ -174,7 +158,7 @@ public class WhenGettingVacancyDetails
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
         Mock<IValidator<GetVacancyDetailsRequest>> validator,
-        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] VacanciesController controller)
@@ -195,20 +179,13 @@ public class WhenGettingVacancyDetails
         cacheStorageService
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
-        faaConfig.Setup(x => x.Value).Returns(new Domain.Configuration.FindAnApprenticeship {GoogleMapsId = mapId});
+        faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship {GoogleMapsId = mapId});
 
         controller.Url = mockUrlHelper.Object;
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
-                    new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, govIdentifier.ToString())
-                }))
-            },
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
 
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult { });

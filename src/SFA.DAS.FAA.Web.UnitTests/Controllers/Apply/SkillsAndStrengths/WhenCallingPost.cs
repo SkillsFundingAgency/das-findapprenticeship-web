@@ -1,10 +1,7 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -32,8 +29,7 @@ public class WhenCallingPost
 
         controller
             .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+            .WithUser(candidateId);
 
         mediator.Setup(x => x.Send(It.Is<UpdateSkillsAndStrengthsCommand>(c =>
         c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
@@ -74,8 +70,7 @@ public class WhenCallingPost
 
         controller
             .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+            .WithUser(candidateId);
         
         mediator.Setup(x => x.Send(It.Is<UpdateSkillsAndStrengthsCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))

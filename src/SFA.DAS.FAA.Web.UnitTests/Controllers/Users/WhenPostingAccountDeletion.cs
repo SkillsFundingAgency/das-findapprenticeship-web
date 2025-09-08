@@ -1,15 +1,13 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using SFA.DAS.FAA.Application.Commands.User.PostAccountDeletion;
+using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using System.Security.Claims;
-using FluentValidation;
-using FluentValidation.Results;
-using SFA.DAS.FAA.Application.Commands.User.PostAccountDeletion;
-using SFA.DAS.FAA.Web.AppStart;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 

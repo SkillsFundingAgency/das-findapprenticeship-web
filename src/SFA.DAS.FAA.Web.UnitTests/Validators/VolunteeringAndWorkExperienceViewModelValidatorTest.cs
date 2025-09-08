@@ -1,9 +1,9 @@
 ﻿using FluentValidation.TestHelper;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Validators;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Validators;
+
 public class VolunteeringAndWorkExperienceViewModelValidatorTest
 {
     private const string NoSelectionErrorMessage = "Select if you want to add any volunteering or work experience";

@@ -1,12 +1,11 @@
-﻿using CreateAccount.GetAddressesByPostcode;
+﻿using System.Security.Claims;
+using CreateAccount.GetAddressesByPostcode;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 
@@ -34,10 +33,9 @@ public class WhenPostingSelectAddress
         model.SelectedAddress = addressesByPostcodeQueryResult.Addresses.First().Uprn;
         controller
             .AddControllerContext()
-            .WithUser(Guid.NewGuid())
+            .WithUser(candidateId)
             .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
-            .WithClaim(ClaimTypes.Email, email)
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+            .WithClaim(ClaimTypes.Email, email);
         
         mediator.Setup(x => x.Send(It.IsAny<GetAddressesByPostcodeQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(addressesByPostcodeQueryResult);

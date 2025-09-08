@@ -1,12 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.UserDateOfBirth;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 
@@ -29,18 +27,11 @@ public class WhenPostingDateOfBirth
     {
         // arrange
         model.JourneyPath = journeyPath; 
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(ClaimTypes.Email, email),
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.Email, email)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
         
         validator
             .Setup(x => x.ValidateAsync(It.Is<DateOfBirthViewModel>(m => m == model), CancellationToken.None))
@@ -90,18 +81,12 @@ public class WhenPostingDateOfBirth
          [Greedy] UserController controller)
     {
         // arrange
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(ClaimTypes.Email, email),
-                    }))
-
-            }
-        };
+        controller
+            .AddControllerContext()
+            .WithUser(Guid.NewGuid())
+            .WithClaim(ClaimTypes.Email, email)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+        
         mediator.Setup(x => x.Send(It.IsAny<UpdateDateOfBirthCommand>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new InvalidOperationException());
         
