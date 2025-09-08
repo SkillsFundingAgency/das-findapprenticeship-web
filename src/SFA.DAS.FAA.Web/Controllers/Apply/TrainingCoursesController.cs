@@ -47,8 +47,12 @@ public class TrainingCoursesController(IMediator mediator) : Controller
 
     [HttpPost]
     [Route("apply/{applicationId}/training-courses/", Name = RouteNames.ApplyApprenticeship.TrainingCourses)]
-    public async Task<IActionResult> Post([FromRoute] Guid applicationId, TrainingCoursesViewModel viewModel)
+    public async Task<IActionResult> Post(
+        [FromServices] IValidator<TrainingCoursesViewModel> validator,
+        [FromRoute] Guid applicationId,
+        TrainingCoursesViewModel viewModel)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetTrainingCoursesQuery
