@@ -1,127 +1,110 @@
-﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.WorkHistory;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory
+namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory;
+
+[TestFixture]
+public class WhenPostingRequest
 {
-    [TestFixture]
-    public class WhenPostingRequest
+    [Test, MoqAutoData]
+    public async Task Then_The_Mediator_Command_Is_Called_And_RedirectRoute_Returned(
+        Guid candidateId,
+        UpdateWorkHistoryApplicationCommandResult result,
+        Mock<IValidator<JobsViewModel>> validator,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] WorkHistoryController controller)
     {
-        [Test, MoqAutoData]
-        public async Task Then_The_Mediator_Command_Is_Called_And_RedirectRoute_Returned(
-            Guid candidateId,
-            UpdateWorkHistoryApplicationCommandResult result,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] WorkHistoryController controller)
+        // arrange
+        var request = new JobsViewModel
         {
-            //arrange
-            var request = new JobsViewModel
-            {
-                ApplicationId = Guid.NewGuid(),
-                DoYouWantToAddAnyJobs = true
-            };
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-                }
-            };
+            ApplicationId = Guid.NewGuid(),
+            DoYouWantToAddAnyJobs = true
+        };
+        controller.WithContext(x => x.WithUser(candidateId));
+        mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
+                c.ApplicationId.Equals(request.ApplicationId)
+                && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<JobsViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-            mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
-                    c.ApplicationId.Equals(request.ApplicationId)
-                    && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(result);
+        // act
+        var actual = await controller.Post(validator.Object, request) as RedirectToRouteResult;
+        
+        // arrange
+        actual.Should().NotBeNull();
+    }
 
-            var actual = await controller.Post(request) as RedirectToRouteResult;
-            actual.Should().NotBeNull();
-        }
-
-        [Test, MoqAutoData]
-        public async Task Then_The_Mediator_Command_Is_Called_And_RedirectRoute_Returned_TaskList(
-            Guid candidateId,
-            UpdateWorkHistoryApplicationCommandResult result,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] WorkHistoryController controller)
+    [Test, MoqAutoData]
+    public async Task Then_The_Mediator_Command_Is_Called_And_RedirectRoute_Returned_TaskList(
+        Guid candidateId,
+        UpdateWorkHistoryApplicationCommandResult result,
+        Mock<IValidator<JobsViewModel>> validator,
+        [Frozen] Mock<IMediator> mediator,
+        [Greedy] WorkHistoryController controller)
+    {
+        // arrange
+        var request = new JobsViewModel
         {
-            //arrange
-            var request = new JobsViewModel
-            {
-                ApplicationId = Guid.NewGuid(),
-                DoYouWantToAddAnyJobs = false
-            };
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-                }
-            };
-            mediator.Setup(x => x.Send(It.IsAny<UpdateWorkHistoryApplicationCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(result);
+            ApplicationId = Guid.NewGuid(),
+            DoYouWantToAddAnyJobs = false
+        };
+        controller.WithContext(x => x.WithUser(candidateId));
+        mediator
+            .Setup(x => x.Send(It.IsAny<UpdateWorkHistoryApplicationCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<JobsViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-            var actual = await controller.Post(request) as RedirectToRouteResult;
+        // act
+        var actual = await controller.Post(validator.Object, request) as RedirectToRouteResult;
 
-            using var scope = new AssertionScope();
-            actual.Should().NotBeNull();
-            actual?.RouteName.Should().Be(RouteNames.Apply);
-            actual?.RouteValues.Should().NotBeEmpty();
-        }
+        // assert
+        using var scope = new AssertionScope();
+        actual.Should().NotBeNull();
+        actual?.RouteName.Should().Be(RouteNames.Apply);
+        actual?.RouteValues.Should().NotBeEmpty();
+    }
 
-        [Test, MoqAutoData]
-        public async Task Then_When_Section_Is_Completed_The_Section_Status_Is_Updated_RedirectRoute_Returned(
-            Guid candidateId,
-            UpdateWorkHistoryApplicationCommandResult result,
-            [Frozen] Mock<IMediator> mediator)
+    [Test, MoqAutoData]
+    public async Task Then_When_Section_Is_Completed_The_Section_Status_Is_Updated_RedirectRoute_Returned(
+        Guid candidateId,
+        UpdateWorkHistoryApplicationCommandResult result,
+        Mock<IValidator<JobsViewModel>> validator,
+        [Frozen] Mock<IMediator> mediator)
+    {
+        // arrange
+        var request = new JobsViewModel
         {
-            //arrange
-            var request = new JobsViewModel
-            {
-                ApplicationId = Guid.NewGuid(),
-                ShowJobHistory = true,
-                IsSectionCompleted = true
-            };
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper
-                .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-                .Returns("https://baseUrl");
-            var controller = new WorkHistoryController(mediator.Object)
-            {
-                Url = mockUrlHelper.Object,
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = new DefaultHttpContext
-                    {
-                        User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-                        {
-                            new(CustomClaims.CandidateId, candidateId.ToString()),
-                        }))
-                    }
-                }
-            };
+            ApplicationId = Guid.NewGuid(),
+            ShowJobHistory = true,
+            IsSectionCompleted = true
+        };
+        var controller = new WorkHistoryController(mediator.Object);
+        controller
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
-            mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
-                    c.ApplicationId.Equals(request.ApplicationId)
-                    && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(result);
+        mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
+                c.ApplicationId.Equals(request.ApplicationId)
+                && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(result);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<JobsViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-            var actual = await controller.Post(request) as RedirectToRouteResult;
-            actual.Should().NotBeNull();
-        }
+        // act
+        var actual = await controller.Post(validator.Object,  request) as RedirectToRouteResult;
+        
+        // assert
+        actual.Should().NotBeNull();
     }
 }

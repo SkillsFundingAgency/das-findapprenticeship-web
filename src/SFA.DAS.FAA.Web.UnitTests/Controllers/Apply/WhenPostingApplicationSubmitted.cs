@@ -7,8 +7,11 @@ using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
 using System.Security.Claims;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply;
+
 public class WhenPostingApplicationSubmitted
 {
     [Test, MoqAutoData]
@@ -19,10 +22,12 @@ public class WhenPostingApplicationSubmitted
         Guid candidateId,
         Guid applicationId,
         GetApplicationSubmittedQueryResponse response,
+        Mock<IValidator<ApplicationSubmittedViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] ApplyController controller)
     {
+        // arrange
         mediator.Setup(x => x.Send(It.Is<GetApplicationSubmittedQuery>(c =>
                 c.CandidateId.Equals(candidateId)
                 && c.ApplicationId.Equals(applicationId)), It.IsAny<CancellationToken>()))
@@ -39,9 +44,15 @@ public class WhenPostingApplicationSubmitted
         model.AnswerEqualityQuestions = true;
         cacheStorageService.Setup(x => x.Get<string>($"{govIdentifier}-ApplicationSubmitted"))
             .ReturnsAsync(bannerMessage);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<ApplicationSubmittedViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var result = await controller.ApplicationSubmitted(model) as RedirectToRouteResult;
+        // act
+        var result = await controller.ApplicationSubmitted(validator.Object, model) as RedirectToRouteResult;
 
+        // assert
         result.Should().NotBeNull();
         result!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowGender);
         cacheStorageService.Verify(x => x.Set($"{govIdentifier}-ApplicationSubmitted", It.IsAny<object>(), 1, 1), Times.Never);
@@ -55,10 +66,12 @@ public class WhenPostingApplicationSubmitted
         Guid candidateId,
         Guid applicationId,
         GetApplicationSubmittedQueryResponse response,
+        Mock<IValidator<ApplicationSubmittedViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] ApplyController controller)
     {
+        // arrange
         mediator.Setup(x => x.Send(It.Is<GetApplicationSubmittedQuery>(c =>
                 c.CandidateId.Equals(candidateId)
                 && c.ApplicationId.Equals(applicationId)), It.IsAny<CancellationToken>()))
@@ -76,8 +89,14 @@ public class WhenPostingApplicationSubmitted
         cacheStorageService.Setup(x => x.Get<string>($"{govIdentifier}-ApplicationSubmitted"))
             .ReturnsAsync(bannerMessage);
 
-        var result = await controller.ApplicationSubmitted(model) as RedirectToRouteResult;
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<ApplicationSubmittedViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
+        
+        // act
+        var result = await controller.ApplicationSubmitted(validator.Object, model) as RedirectToRouteResult;
 
+        // assert
         result.Should().NotBeNull();
         result!.RouteName.Should().Be(RouteNames.Applications.ViewApplications);
         cacheStorageService.Verify(x => x.Set($"{govIdentifier}-ApplicationSubmitted", It.IsAny<object>(), 1, 1), Times.Once);
@@ -89,9 +108,11 @@ public class WhenPostingApplicationSubmitted
         Guid candidateId,
         Guid applicationId,
         GetApplicationSubmittedQueryResponse response,
+        Mock<IValidator<ApplicationSubmittedViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] ApplyController controller)
     {
+        // arrange
         mediator.Setup(x => x.Send(It.Is<GetApplicationSubmittedQuery>(c =>
                 c.CandidateId.Equals(candidateId)
                 && c.ApplicationId.Equals(applicationId)), It.IsAny<CancellationToken>()))
@@ -107,9 +128,15 @@ public class WhenPostingApplicationSubmitted
         };
 
         controller.ModelState.AddModelError("Error", "Error");
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<ApplicationSubmittedViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.ApplicationSubmitted(model) as ViewResult;
-
+        // act
+        var actual = await controller.ApplicationSubmitted(validator.Object, model) as ViewResult;
+        
+        // assert
         actual.Should().NotBeNull();
         var actualModel = actual!.Model as ApplicationSubmittedViewModel;
         actualModel!.ApplicationId.Should().Be(model.ApplicationId);

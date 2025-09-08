@@ -1,11 +1,9 @@
-﻿using FluentAssertions;
-using FluentValidation.TestHelper;
-using NUnit.Framework;
+﻿using FluentValidation.TestHelper;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Validators;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Validators;
+
 public class WhenValidatingPhoneNumberViewModel
 {
     [Test, MoqInlineAutoData("07806 172382")]

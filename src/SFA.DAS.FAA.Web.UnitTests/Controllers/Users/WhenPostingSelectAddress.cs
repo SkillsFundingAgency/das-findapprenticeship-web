@@ -1,15 +1,14 @@
-﻿using CreateAccount.GetAddressesByPostcode;
+﻿using System.Security.Claims;
+using CreateAccount.GetAddressesByPostcode;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
+
 public class WhenPostingSelectAddress
 {
     [Test]
@@ -25,31 +24,30 @@ public class WhenPostingSelectAddress
         Guid candidateId,
         GetAddressesByPostcodeQueryResult addressesByPostcodeQueryResult,
         SelectAddressViewModel model,
+        Mock<IValidator<SelectAddressViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        // arrange
         model.JourneyPath = journeyPath;
         model.SelectedAddress = addressesByPostcodeQueryResult.Addresses.First().Uprn;
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(ClaimTypes.Email, email),
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-
-            }
-        };
-
+        controller.WithContext(x => x
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.Email, email)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
+        
         mediator.Setup(x => x.Send(It.IsAny<GetAddressesByPostcodeQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(addressesByPostcodeQueryResult);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<SelectAddressViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var result = await controller.SelectAddress(model) as RedirectToRouteResult;
+        // act
+        var result = await controller.SelectAddress(validator.Object, model) as RedirectToRouteResult;
 
+        // assert
         result.Should().NotBeNull();
         result!.RouteName.Should().Be(redirectRoute);
         mediator.Verify(x => x.Send(It.IsAny<UpdateAddressCommand>(), CancellationToken.None
@@ -60,18 +58,22 @@ public class WhenPostingSelectAddress
     public async Task And_Model_State_Is_Invalid_Should_Return_View_With_Model(
         GetAddressesByPostcodeQueryResult addressesByPostcodeQueryResult,
         SelectAddressViewModel model,
+        Mock<IValidator<SelectAddressViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        // arrange
         model.SelectedAddress = "1";
-
-        controller.ModelState.AddModelError("SomeProperty", "SomeError");
-
         mediator.Setup(x => x.Send(It.IsAny<GetAddressesByPostcodeQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(addressesByPostcodeQueryResult);
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<SelectAddressViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult([new ValidationFailure("SomeProperty", "SomeError")]));
 
-        var result = await controller.SelectAddress(model) as ViewResult;
+        // act
+        var result = await controller.SelectAddress(validator.Object, model) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         result.Model.As<SelectAddressViewModel>().Addresses.Should()
             .BeEquivalentTo(addressesByPostcodeQueryResult.Addresses.Select(x => (AddressViewModel)x).ToList());

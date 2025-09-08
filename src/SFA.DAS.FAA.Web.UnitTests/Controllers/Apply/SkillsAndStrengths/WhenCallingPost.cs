@@ -1,21 +1,13 @@
-﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.SkillsAndStrengths;
+
 public class WhenCallingPost
 {
     [Test, MoqAutoData]
@@ -24,30 +16,31 @@ public class WhenCallingPost
         Guid applicationId,
         GetExpectedSkillsAndStrengthsQueryResult expectedSkills,
         UpdateSkillsAndStrengthsCommandResult createSkillsAndStrengthsCommandResult,
+        Mock<IValidator<SkillsAndStrengthsViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SkillsAndStrengthsController controller)
     {
+        // arrange
         var request = new SkillsAndStrengthsViewModel(expectedSkills, applicationId)
         {
             ApplicationId = Guid.NewGuid(),
             IsSectionComplete = true
         };
 
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateSkillsAndStrengthsCommand>(c =>
         c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(createSkillsAndStrengthsCommandResult);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<SkillsAndStrengthsViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.Post(request.ApplicationId, request) as RedirectToRouteResult;
+        // act
+        var actual = await controller.Post(validator.Object, request.ApplicationId, request) as RedirectToRouteResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
@@ -61,6 +54,7 @@ public class WhenCallingPost
         Guid applicationId,
         GetExpectedSkillsAndStrengthsQueryResult expectedSkills,
         UpdateSkillsAndStrengthsCommandResult createSkillsAndStrengthsCommandResult,
+        Mock<IValidator<SkillsAndStrengthsViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SkillsAndStrengthsController controller)
     {
@@ -72,21 +66,18 @@ public class WhenCallingPost
             AutoSave = true
         };
 
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
-
+        controller.WithContext(x => x.WithUser(candidateId));
+        
         mediator.Setup(x => x.Send(It.Is<UpdateSkillsAndStrengthsCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(createSkillsAndStrengthsCommandResult);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<SkillsAndStrengthsViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
         // act
-        var actual = await controller.Post(request.ApplicationId, request) as JsonResult;
+        var actual = await controller.Post(validator.Object, request.ApplicationId, request) as JsonResult;
 
         // assert
         actual.Should().NotBeNull();

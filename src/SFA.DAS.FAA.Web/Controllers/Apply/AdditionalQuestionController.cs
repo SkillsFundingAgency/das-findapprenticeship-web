@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.AdditionalQuestion.AddAdditionalQuestion;
@@ -39,8 +40,14 @@ public class AdditionalQuestionController(IMediator mediator) : Controller
 
     [HttpPost]
     [Route("apply/{applicationId}/additional-question/{additionalQuestion}/{additionalQuestionId}", Name = RouteNames.ApplyApprenticeship.AddAdditionalQuestion)]
-    public async Task<IActionResult> Post([FromRoute] Guid applicationId, [FromRoute] int additionalQuestion, [FromRoute] Guid additionalQuestionId, AddAdditionalQuestionViewModel viewModel)
+    public async Task<IActionResult> Post(
+        [FromServices] IValidator<AddAdditionalQuestionViewModel> validator,
+        [FromRoute] Guid applicationId,
+        [FromRoute] int additionalQuestion,
+        [FromRoute] Guid additionalQuestionId,
+        AddAdditionalQuestionViewModel viewModel)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
         if (!ModelState.IsValid)
         {
             return View(AddViewPath, viewModel);

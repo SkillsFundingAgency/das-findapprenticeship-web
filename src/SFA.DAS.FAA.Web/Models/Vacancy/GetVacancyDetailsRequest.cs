@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SFA.DAS.FAA.Web.Models.Vacancy
+namespace SFA.DAS.FAA.Web.Models.Vacancy;
+
+public class GetVacancyDetailsRequest
 {
-    public class GetVacancyDetailsRequest
-    {
-        [FromRoute] public required string VacancyReference { get; set; }
-    }
+    [FromRoute] public required string VacancyReference { get; set; }
 }

@@ -1,21 +1,13 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
-using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
-using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.VolunteeringAndWorkExperience;
+
 public class WhenPostingAddVolunteeringAndWorkExperiencePage
 {
     [Test, MoqAutoData]
@@ -24,33 +16,32 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         Guid applicationId,
         GetVolunteeringAndWorkExperiencesQueryResult queryResult,
         UpdateVolunteeringAndWorkExperienceApplicationCommandResult result,
+        Mock<IValidator<VolunteeringAndWorkExperienceViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] VolunteeringAndWorkExperienceController controller)
     {
+        // arrange
         var request = new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
             DoYouWantToAddAnyVolunteeringOrWorkExperience = false,
         };
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller.WithContext(x => x.WithUser(candidateId));
         mediator.Setup(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-
         mediator.Setup(x => x.Send(It.Is<GetVolunteeringAndWorkExperiencesQuery>(c =>
                 c.ApplicationId.Equals(applicationId)
                 && c.CandidateId.Equals(candidateId)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<VolunteeringAndWorkExperienceViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.Post(request) as RedirectToRouteResult;
+        // act
+        var actual = await controller.Post(validator.Object, request) as RedirectToRouteResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
@@ -65,27 +56,28 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
         Guid candidateId,
         Guid applicationId,
         UpdateVolunteeringAndWorkExperienceApplicationCommandResult result,
+        Mock<IValidator<VolunteeringAndWorkExperienceViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] VolunteeringAndWorkExperienceController controller)
     {
+        // arrange
         var request = new VolunteeringAndWorkExperienceViewModel
         {
             ApplicationId = applicationId,
             DoYouWantToAddAnyVolunteeringOrWorkExperience = true,
         };
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new Claim(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        
+        controller.WithContext(x => x.WithUser(candidateId));
         mediator.Setup(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<VolunteeringAndWorkExperienceViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.Post(request) as RedirectToRouteResult;
+        // act
+        var actual = await controller.Post(validator.Object, request) as RedirectToRouteResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();

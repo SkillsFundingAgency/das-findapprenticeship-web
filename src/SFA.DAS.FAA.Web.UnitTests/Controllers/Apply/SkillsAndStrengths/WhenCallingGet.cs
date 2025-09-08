@@ -1,20 +1,12 @@
-﻿using AutoFixture.NUnit3;
-using MediatR;
-using Microsoft.AspNetCore.Mvc.Routing;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Web.Controllers.Apply;
-using SFA.DAS.Testing.AutoFixture;
-using Microsoft.AspNetCore.Http;
-using SFA.DAS.FAA.Web.AppStart;
-using System.Security.Claims;
-using FluentAssertions.Execution;
-using FluentAssertions;
-using SFA.DAS.FAA.Web.Models.Apply;
+using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
+using SFA.DAS.FAA.Web.Controllers.Apply;
+using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.SkillsAndStrengths;
+
 public class WhenCallingGet
 {
     [Test, MoqAutoData]
@@ -24,32 +16,21 @@ public class WhenCallingGet
         GetExpectedSkillsAndStrengthsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-        .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-        .Returns("https://baseUrl");
-
-        var controller = new SkillsAndStrengthsController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object
-        };
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        // arrange
+        var controller = new SkillsAndStrengthsController(mediator.Object);
+        controller
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetExpectedSkillsAndStrengthsQuery>
             (x => x.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
+        // act
         var actual = await controller.Get(applicationId);
         var actualViewResult = actual as ViewResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().BeOfType<ViewResult>();

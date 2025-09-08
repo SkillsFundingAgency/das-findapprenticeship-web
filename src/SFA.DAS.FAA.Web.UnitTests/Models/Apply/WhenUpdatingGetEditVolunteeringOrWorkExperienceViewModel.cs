@@ -1,12 +1,9 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
+﻿using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringOrWorkExperienceItem;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Models.Custom;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply;
+
 public class WhenUpdatingGetEditVolunteeringOrWorkExperienceViewModel
 {
     [Test, MoqAutoData]

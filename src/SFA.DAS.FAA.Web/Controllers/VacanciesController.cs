@@ -21,13 +21,16 @@ public class VacanciesController(
     IMediator mediator,
     IDateTimeService dateTimeService,
     ICacheStorageService cacheStorageService,
-    IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration,
-    IValidator<GetVacancyDetailsRequest> validator) : Controller
+    IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration) : Controller
 {
     [Route("apprenticeship/{vacancyReference}", Name = RouteNames.Vacancies, Order = 1)]
     [Route("apprenticeship/reference/{vacancyReference}", Name = RouteNames.VacanciesReference, Order = 2)]
     [Route("apprenticeship/nhs/{vacancyReference}", Name = RouteNames.NhsVacanciesReference, Order = 3)]
-    public async Task<IActionResult> Vacancy([FromRoute] GetVacancyDetailsRequest request, NavigationSource source = NavigationSource.None, ApplicationsTab tab = ApplicationsTab.None)
+    public async Task<IActionResult> Vacancy(
+        [FromServices] IValidator<GetVacancyDetailsRequest> validator,
+        [FromRoute] GetVacancyDetailsRequest request,
+        NavigationSource source = NavigationSource.None,
+        ApplicationsTab tab = ApplicationsTab.None)
     {
         var validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)

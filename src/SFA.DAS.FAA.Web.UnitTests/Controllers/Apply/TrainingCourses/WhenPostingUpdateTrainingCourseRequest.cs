@@ -1,26 +1,26 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.UpdateTrainingCourse;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
+
 public class WhenPostingUpdateTrainingCourseRequest
 {
     [Test, MoqAutoData]
     public async Task Then_RedirectRoute_Returned(
             Guid candidateId,
             EditTrainingCourseViewModel request,
+            Mock<IValidator<EditTrainingCourseViewModel>> validator,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] Web.Controllers.Apply.TrainingCoursesController controller)
     {
+        // arrange
         request.YearAchieved = "2023";
         controller.ControllerContext = new ControllerContext
         {
@@ -39,8 +39,15 @@ public class WhenPostingUpdateTrainingCourseRequest
                 && c.YearAchieved.Equals(request.YearAchieved)
                 ), It.IsAny<CancellationToken>()))
             .Returns(() => Task.CompletedTask);
-
-        var actual = await controller.PostEdit(request) as RedirectToRouteResult;
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<EditTrainingCourseViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
+        
+        // act
+        var actual = await controller.PostEdit(validator.Object, request) as RedirectToRouteResult;
+        
+        // assert
         actual.Should().NotBeNull();
     }
 }

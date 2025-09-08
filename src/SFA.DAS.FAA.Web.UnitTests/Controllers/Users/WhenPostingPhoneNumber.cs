@@ -1,14 +1,13 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.PhoneNumber;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
+
 public class WhenPostingPhoneNumber
 {
     [Test]
@@ -23,26 +22,26 @@ public class WhenPostingPhoneNumber
         string phone,
         Guid candidateId,
         PhoneNumberViewModel model,
+        Mock<IValidator<PhoneNumberViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        // arrange
         model.JourneyPath = journeyPath;
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(ClaimTypes.Email, email),
-                        new Claim(ClaimTypes.MobilePhone, phone),
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-            }
-        };
+        controller.WithContext(x => x
+            .WithUser(candidateId)
+            .WithClaim(ClaimTypes.Email, email)
+            .WithClaim(ClaimTypes.MobilePhone, phone)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<PhoneNumberViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var result = await controller.PhoneNumber(model) as RedirectToRouteResult;
+        // act
+        var result = await controller.PhoneNumber(validator.Object, model) as RedirectToRouteResult;
 
+        // assert
         result.Should().NotBeNull();
         result.RouteName.Should().Be(redirectRoute);
         result.RouteValues["journeyPath"].Should().Be(journeyPath);
@@ -57,26 +56,25 @@ public class WhenPostingPhoneNumber
         string email,
         string phone,
         PhoneNumberViewModel model,
+        Mock<IValidator<PhoneNumberViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(ClaimTypes.Email, email),
-                        new Claim(ClaimTypes.MobilePhone, phone)
-                    }))
+        // arrange
+        controller.WithContext(x => x
+            .WithUser(Guid.NewGuid())
+            .WithClaim(ClaimTypes.Email, email)
+            .WithClaim(ClaimTypes.MobilePhone, phone)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<PhoneNumberViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult([new ValidationFailure("SomeProperty", "SomeError")]));
 
-            }
-        };
-        controller.ModelState.AddModelError("SomeProperty", "SomeError");
+        // act
+        var result = await controller.PhoneNumber(validator.Object, model) as ViewResult;
 
-        var result = await controller.PhoneNumber(model) as ViewResult;
-
+        // assert
         result.Should().NotBeNull();
         result.Model.Should().Be(model);
     }

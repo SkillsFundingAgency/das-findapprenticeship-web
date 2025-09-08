@@ -1,17 +1,15 @@
 using System.Security.Claims;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
-using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
@@ -30,7 +28,7 @@ public class WhenGettingMapSearchResults
         List<ApprenticeshipTypes>? apprenticeshipTypes,
         GetSearchResultsResult result,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
-        [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
         [Frozen] Mock<IDateTimeService> dateTimeService,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<IUrlHelper> mockUrlHelper)
@@ -40,30 +38,18 @@ public class WhenGettingMapSearchResults
         mediator
             .Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-        
+
         var controller = new SearchApprenticeshipsController(
             mediator.Object,
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
-            Mock.Of<SearchModelValidator>(),
-            Mock.Of<GetSearchResultsRequestValidator>(),
             Mock.Of<IDataProtectorService>(),
-            Mock.Of<ILogger<SearchApprenticeshipsController>>())
-        {
-            Url = mockUrlHelper.Object,
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString()),
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier)
-                    }))
-                }
-            }
-        };
+            Mock.Of<ILogger<SearchApprenticeshipsController>>());
+        
+        controller
+            .WithUrlHelper()
+            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier));
         
         var actual = await controller.MapSearchResults(new GetSearchResultsRequest
         {
@@ -102,7 +88,7 @@ public class WhenGettingMapSearchResults
         [Greedy] SearchApprenticeshipsController sut)
     {
         // arrange
-        sut.AddControllerContext().WithUser(Guid.NewGuid());
+        sut.WithContext(x => x.WithUser(Guid.NewGuid()));
         mediator
             .Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(getSearchResultsResult);

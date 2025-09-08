@@ -1,11 +1,8 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourses;
+﻿using SFA.DAS.FAA.Application.Queries.Apply.GetTrainingCourses;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models.Apply;
+
 public class TrainingCoursesViewModelTests
 {
     [Test, MoqAutoData]

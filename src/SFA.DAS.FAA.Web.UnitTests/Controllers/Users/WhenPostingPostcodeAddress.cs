@@ -1,6 +1,5 @@
 ﻿using CreateAccount.GetCandidatePostcodeAddress;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -8,6 +7,7 @@ using SFA.DAS.FAA.Web.Models.User;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
+
 public class WhenPostingPostcodeAddress
 {
     [Test]
@@ -21,29 +21,28 @@ public class WhenPostingPostcodeAddress
         string email,
         GetCandidatePostcodeAddressQueryResult queryResult,
         PostcodeAddressViewModel model,
+        Mock<IValidator<PostcodeAddressViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        // arrange
         queryResult.PostcodeExists = true;
         model.JourneyPath = journeyPath;
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(ClaimTypes.Email, email),
-                    }))
-            }
-        };
-
+        controller.WithContext(x => x
+            .WithUser(Guid.NewGuid())
+            .WithClaim(ClaimTypes.Email, email)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         mediator.Setup(x => x.Send(It.IsAny<GetCandidatePostcodeAddressQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<PostcodeAddressViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var result = await controller.PostcodeAddress(model) as RedirectToRouteResult;
+        // act
+        var result = await controller.PostcodeAddress(validator.Object, model) as RedirectToRouteResult;
 
+        // assert
         result.Should().NotBeNull();
         result!.RouteName.Should().Be(RouteNames.SelectAddress);
         result.RouteValues["journeyPath"].Should().Be(journeyPath);
@@ -55,13 +54,19 @@ public class WhenPostingPostcodeAddress
     [Test, MoqAutoData]
     public async Task And_Model_State_Is_Invalid_Should_Return_View_With_Model(
         PostcodeAddressViewModel model,
+        Mock<IValidator<PostcodeAddressViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller.ModelState.AddModelError("SomeProperty", "SomeError");
+        // arrange
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<PostcodeAddressViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult([new ValidationFailure("SomeProperty", "SomeError")]));
 
-        var result = await controller.PostcodeAddress(model) as ViewResult;
+        // act
+        var result = await controller.PostcodeAddress(validator.Object, model) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         result!.Model.Should().Be(model);
     }
@@ -71,26 +76,26 @@ public class WhenPostingPostcodeAddress
         string govIdentifier,
         string email,
         PostcodeAddressViewModel model,
+        Mock<IValidator<PostcodeAddressViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(ClaimTypes.Email, email),
-                    }))
-
-            }
-        };
+        // arrange
+        controller.WithContext(x => x
+            .WithUser(Guid.NewGuid())
+            .WithClaim(ClaimTypes.Email, email)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         mediator.Setup(x => x.Send(It.IsAny<GetCandidatePostcodeAddressQuery>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new InvalidOperationException());
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<PostcodeAddressViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var result = await controller.PostcodeAddress(model) as ViewResult;
+        // act
+        var result = await controller.PostcodeAddress(validator.Object, model) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         result!.Model.Should().Be(model);
         controller.ModelState.Count.Should().BeGreaterThan(0);
@@ -102,29 +107,27 @@ public class WhenPostingPostcodeAddress
         string email,
         GetCandidatePostcodeAddressQueryResult queryResult,
         PostcodeAddressViewModel model,
+        Mock<IValidator<PostcodeAddressViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        // arrange
         queryResult.PostcodeExists = false;
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, govIdentifier),
-                        new Claim(ClaimTypes.Email, email),
-                    }))
-
-            }
-        };
-
+        controller.WithContext(x => x
+            .WithUser(Guid.NewGuid())
+            .WithClaim(ClaimTypes.Email, email)
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         mediator.Setup(x => x.Send(It.IsAny<GetCandidatePostcodeAddressQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<PostcodeAddressViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var result = await controller.PostcodeAddress(model) as ViewResult;
+        // act
+        var result = await controller.PostcodeAddress(validator.Object, model) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         mediator.Verify(x => x.Send(It.Is<GetCandidatePostcodeAddressQuery>(c =>
             c.Postcode.Equals(model.Postcode)

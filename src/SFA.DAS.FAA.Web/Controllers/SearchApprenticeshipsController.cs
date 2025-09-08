@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
+using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Authentication;
@@ -19,7 +21,6 @@ using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Models.User;
 using SFA.DAS.FAA.Web.Services;
-using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
 using Constants = SFA.DAS.FAA.Application.Constants.Constants;
 using LocationViewModel = SFA.DAS.FAA.Web.Models.LocationViewModel;
@@ -29,10 +30,8 @@ namespace SFA.DAS.FAA.Web.Controllers;
 public class SearchApprenticeshipsController(
     IMediator mediator, 
     IDateTimeService dateTimeService, 
-    IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration, 
+    IOptions<FindAnApprenticeship> faaConfiguration, 
     ICacheStorageService cacheStorageService, 
-    SearchModelValidator searchModelValidator,
-    GetSearchResultsRequestValidator searchRequestValidator,
     IDataProtectorService dataProtectorService,
     ILogger<SearchApprenticeshipsController> logger) : Controller
 {
@@ -40,15 +39,14 @@ public class SearchApprenticeshipsController(
 
     [Route("")]
     [Route("apprenticeshipsearch", Name = RouteNames.ServiceStartDefault, Order = 0)]
-    public async Task<IActionResult> Index(SearchModel model, [FromQuery] int? search = null)
+    public async Task<IActionResult> Index(
+        [FromServices] IValidator<SearchModel> validator,
+        SearchModel model,
+        [FromQuery] int? search = null)
     {
-        var validationResult = await searchModelValidator.ValidateAsync(model);
-        if (!validationResult.IsValid)
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
+        if (!ModelState.IsValid)
         {
-            foreach (var validationFailure in validationResult.Errors)
-            {
-                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
-            }
             return View(new SearchApprenticeshipsViewModel
             {
                 WhatSearchTerm = model.WhatSearchTerm,
@@ -105,8 +103,11 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Route("browse-by-interests", Name = RouteNames.BrowseByInterests)]
-    public async Task<IActionResult> BrowseByInterests(BrowseByInterestViewModel model)
+    public async Task<IActionResult> BrowseByInterests(
+        [FromServices] IValidator<BrowseByInterestViewModel> validator,
+        BrowseByInterestViewModel model)
     {
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetBrowseByInterestsQuery());
@@ -130,10 +131,14 @@ public class SearchApprenticeshipsController(
 
     [HttpPost]
     [Route("location", Name = RouteNames.Location)]
-    public async Task<IActionResult> Location([FromQuery] List<string>? routeIds, LocationViewModel model)
+    public async Task<IActionResult> Location(
+        [FromServices] IValidator<LocationViewModel> validator,
+        [FromQuery] List<string>? routeIds,
+        LocationViewModel model)
     {
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
+        
         model.SelectedRouteIds = routeIds;
-
         if (model.NationalSearch == false)
         {
             if (string.IsNullOrEmpty(model.SearchTerm))
@@ -166,16 +171,13 @@ public class SearchApprenticeshipsController(
     }
 
     [Route("apprenticeships", Name = RouteNames.SearchResults)]
-    public async Task<IActionResult> SearchResults([FromQuery] GetSearchResultsRequest request)
+    public async Task<IActionResult> SearchResults(
+        [FromServices] IValidator<GetSearchResultsRequest> validator,
+        [FromQuery] GetSearchResultsRequest request)
     {
-        // Validate the incoming request
-        var validationResult = await searchRequestValidator.ValidateAsync(request);
-        if (!validationResult.IsValid)
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
+        if (!ModelState.IsValid)
         {
-            foreach (var validationFailure in validationResult.Errors)
-            {
-                ModelState.AddModelError(validationFailure.PropertyName, validationFailure.ErrorMessage);
-            }
             return View(new SearchResultsViewModel
             {
                 SearchTerm = request.SearchTerm,

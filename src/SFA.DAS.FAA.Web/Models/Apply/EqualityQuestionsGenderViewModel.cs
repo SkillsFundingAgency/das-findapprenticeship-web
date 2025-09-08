@@ -1,30 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Web.Extensions;
+﻿using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Infrastructure;
-using System.Reflection;
-using System.Security.Policy;
-using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace SFA.DAS.FAA.Web.Models.Apply
+namespace SFA.DAS.FAA.Web.Models.Apply;
+
+public class EqualityQuestionsGenderViewModel : ViewModelBase
 {
-    public class EqualityQuestionsGenderViewModel : ViewModelBase
-    {
-        public Guid? ApplicationId { get; init; }
-        public bool IsEdit { get; set; }
-        public string? Sex { get; set; }
-        public string? IsGenderIdentifySameSexAtBirth { get; set; }
-        public string BackLinkRoute => IsEdit || !ApplicationId.HasValue
-            ? RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary
-            : RouteNames.ApplyApprenticeship.ApplicationSubmitted;
+    public Guid? ApplicationId { get; init; }
+    public bool IsEdit { get; set; }
+    public string? Sex { get; set; }
+    public string? IsGenderIdentifySameSexAtBirth { get; set; }
+    public string BackLinkRoute => IsEdit || !ApplicationId.HasValue
+        ? RouteNames.ApplyApprenticeship.EqualityQuestions.EqualityFlowSummary
+        : RouteNames.ApplyApprenticeship.ApplicationSubmitted;
 
-        public static implicit operator EqualityQuestionsGenderViewModel(EqualityQuestionsModel source)
+    public static implicit operator EqualityQuestionsGenderViewModel(EqualityQuestionsModel source)
+    {
+        return new EqualityQuestionsGenderViewModel
         {
-            return new EqualityQuestionsGenderViewModel
-            {
-                ApplicationId = source.ApplicationId,
-                Sex = source.Sex.StringValue(),
-                IsGenderIdentifySameSexAtBirth = source.IsGenderIdentifySameSexAtBirth
-            };
-        }
+            ApplicationId = source.ApplicationId,
+            Sex = source.Sex.StringValue(),
+            IsGenderIdentifySameSexAtBirth = source.IsGenderIdentifySameSexAtBirth
+        };
     }
 }

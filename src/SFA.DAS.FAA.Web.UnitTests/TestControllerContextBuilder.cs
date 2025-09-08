@@ -39,13 +39,34 @@ public class TestUserClaimBuilder(ClaimsPrincipal claimsPrincipal)
 
 public static class ControllerExtensions
 {
-    public static TestControllerContextBuilder AddControllerContext(this Controller controller)
+    public static Controller WithUrlHelper(this Controller controller, Action<Mock<IUrlHelper>>? action = null)
     {
+        ArgumentNullException.ThrowIfNull(controller);
+        var urlHelper = new Mock<IUrlHelper>();
+        controller.Url = urlHelper.Object; 
+        action?.Invoke(urlHelper);
+        return controller;
+    }
+    
+    public static Controller WithContext(this Controller controller, Action<ControllerContext>? action = null)
+    {
+        ArgumentNullException.ThrowIfNull(controller);
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
         };
-        
-        return new TestControllerContextBuilder(controller.ControllerContext);
+        action?.Invoke(controller.ControllerContext);
+        return controller;
+    }
+}
+
+public static class ControllerContextExtensions
+{
+    public static TestUserClaimBuilder WithUser(this ControllerContext controllerContext, Guid userId)
+    {
+        controllerContext.HttpContext.User = new ClaimsPrincipal();
+        var builder = new TestUserClaimBuilder(controllerContext.HttpContext.User);
+        builder.WithClaim(CustomClaims.CandidateId, userId.ToString());
+        return builder;
     }
 }

@@ -1,19 +1,12 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.TrainingCourses.AddTrainingCourse;
-using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.TrainingCourses;
+
 public class WhenPostingAddATrainingCourseRequest
 {
     [Test, MoqAutoData]
@@ -22,19 +15,13 @@ public class WhenPostingAddATrainingCourseRequest
     int yearAchieved,
     AddTrainingCourseViewModel request,
     AddTrainingCourseCommandResponse result,
+    Mock<IValidator<AddTrainingCourseViewModel>> validator,
     [Frozen] Mock<IMediator> mediator,
-    [Greedy] Web.Controllers.Apply.TrainingCoursesController controller)
+    [Greedy] TrainingCoursesController controller)
     {
+        // arrange
         request.YearAchieved = yearAchieved.ToString();
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                        { new(CustomClaims.CandidateId, candidateId.ToString()) }))
-            }
-        };
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<AddTrainingCourseCommand>(c =>
         c.ApplicationId == request.ApplicationId
@@ -43,9 +30,15 @@ public class WhenPostingAddATrainingCourseRequest
         && c.YearAchieved == int.Parse(request.YearAchieved)
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<AddTrainingCourseViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.PostAddATrainingCourse(request) as RedirectToRouteResult;
+        // act
+        var actual = await controller.PostAddATrainingCourse(validator.Object, request) as RedirectToRouteResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();

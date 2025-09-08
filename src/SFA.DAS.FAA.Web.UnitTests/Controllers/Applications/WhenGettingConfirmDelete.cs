@@ -22,7 +22,7 @@ public class WhenGettingConfirmDelete
     {
         // arrange
         GetDeleteApplicationQuery? capturedQuery = null;
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
         mediator
             .Setup(x => x.Send(It.IsAny<GetDeleteApplicationQuery>(), It.IsAny<CancellationToken>()))
             .Callback<IRequest<GetDeleteApplicationQueryResult>, CancellationToken>((query, _) => { capturedQuery = query as GetDeleteApplicationQuery; })
@@ -53,7 +53,7 @@ public class WhenGettingConfirmDelete
         // arrange
         getDeleteApplicationQueryResult.EmployerLocationOption = AvailableWhere.MultipleLocations;
         GetDeleteApplicationQuery? capturedQuery = null;
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
         mediator
             .Setup(x => x.Send(It.IsAny<GetDeleteApplicationQuery>(), It.IsAny<CancellationToken>()))
             .Callback<IRequest<GetDeleteApplicationQueryResult>, CancellationToken>((query, _) => { capturedQuery = query as GetDeleteApplicationQuery; })

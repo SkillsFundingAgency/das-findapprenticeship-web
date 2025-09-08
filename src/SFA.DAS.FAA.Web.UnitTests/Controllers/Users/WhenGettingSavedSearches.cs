@@ -1,9 +1,6 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.User.GetSavedSearches;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
@@ -21,7 +18,7 @@ public class WhenGettingSavedSearches
         )
     {
         // arrange
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
         
         mediator
             .Setup(x => x.Send(It.IsAny<GetSavedSearchesQuery>(), It.IsAny<CancellationToken>()))
@@ -49,7 +46,7 @@ public class WhenGettingSavedSearches
     )
     {
         // arrange
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
         mediator
             .Setup(x => x.Send(It.IsAny<GetSavedSearchesQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(savedSearchesQueryResult);
@@ -80,7 +77,7 @@ public class WhenGettingSavedSearches
     )
     {
         // arrange
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
         mediator
             .Setup(x => x.Send(It.IsAny<GetSavedSearchesQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(savedSearchesQueryResult);

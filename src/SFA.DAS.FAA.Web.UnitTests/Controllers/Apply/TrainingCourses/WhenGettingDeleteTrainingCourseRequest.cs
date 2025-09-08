@@ -16,7 +16,7 @@ public class WhenGettingDeleteTrainingCourseRequest
         [Greedy] TrainingCoursesController controller)
     {
         result.ApplicationId = query.ApplicationId;
-        controller.AddControllerContext().WithUser(query.CandidateId);
+        controller.WithContext(x => x.WithUser(query.CandidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetDeleteTrainingCourseQuery>(c =>
                 c.ApplicationId == query.ApplicationId
@@ -42,14 +42,17 @@ public class WhenGettingDeleteTrainingCourseRequest
         [Frozen] Mock<IMediator> mediator,
         [Greedy] TrainingCoursesController controller)
     {
-        controller.AddControllerContext().WithUser(query.CandidateId);
+        // arrange
+        controller.WithContext(x => x.WithUser(query.CandidateId));
 
         mediator
             .Setup(x => x.Send(It.IsAny<GetDeleteTrainingCourseQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((GetDeleteTrainingCourseQueryResult)null);
 
+        // act
         var actual = await controller.Delete(query.ApplicationId, query.TrainingCourseId) as RedirectToRouteResult;
 
+        // assert
         actual.Should().NotBeNull();
         actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.TrainingCourses);
     }

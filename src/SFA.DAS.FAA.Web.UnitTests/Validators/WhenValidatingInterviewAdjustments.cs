@@ -1,12 +1,9 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using FluentValidation.TestHelper;
-using NUnit.Framework;
+﻿using FluentValidation.TestHelper;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Validators;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Validators;
+
 public class WhenValidatingInterviewAdjustments
 {
     private readonly string IsSectionCompleteErrorMessage = "Select if you want to request interview support";
