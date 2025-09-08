@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,6 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Vacancy;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Net;
-using FluentValidation.Results;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Web.Models.Applications;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -33,13 +31,14 @@ public class WhenGettingVacancyDetails
         GetApprenticeshipVacancyQueryResult result,
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
+        Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
         [Frozen] Mock<IUrlHelper> mockUrlHelper,
-        [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] VacanciesController controller)
     {
+        // arrange
         request.VacancyReference = vacancyReference;
         mediator.Setup(x => x.Send(It.Is<GetApprenticeshipVacancyQuery>(c=>c.VacancyReference == queryVal), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
@@ -63,10 +62,12 @@ public class WhenGettingVacancyDetails
         };
 
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult { });
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.Vacancy(request, NavigationSource.None, ApplicationsTab.Started) as ViewResult;
+        // act
+        var actual = await controller.Vacancy(validator.Object, request, NavigationSource.None, ApplicationsTab.Started) as ViewResult;
 
+        // assert
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as VacancyDetailsViewModel;
 
@@ -94,10 +95,11 @@ public class WhenGettingVacancyDetails
         string vacancyReference,
         IDateTimeService dateTimeService,
         ValidationResult result,
-        [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
+        Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] VacanciesController controller)
     {
+        // arrange
         var request = new GetVacancyDetailsRequest
         {
             VacancyReference = vacancyReference
@@ -106,8 +108,10 @@ public class WhenGettingVacancyDetails
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var actual = await controller.Vacancy(request) as NotFoundResult;
+        // act
+        var actual = await controller.Vacancy(validator.Object, request) as NotFoundResult;
 
+        // assert
         actual!.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
     }
 
@@ -119,11 +123,12 @@ public class WhenGettingVacancyDetails
         GetApprenticeshipVacancyQueryResult result,
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
-        [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
+        Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] VacanciesController controller)
     {
+        // arrange
         result.Vacancy = null;
         controller.ControllerContext = new ControllerContext
         {
@@ -141,10 +146,12 @@ public class WhenGettingVacancyDetails
             .ReturnsAsync(result);
 
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult { });
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.Vacancy(request) as NotFoundResult;
+        // act
+        var actual = await controller.Vacancy(validator.Object, request) as NotFoundResult;
 
+        // assert
         actual!.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
     }
 
@@ -166,12 +173,13 @@ public class WhenGettingVacancyDetails
         GetApprenticeshipVacancyQueryResult result,
         GetVacancyDetailsRequest request,
         IDateTimeService dateTimeService,
+        Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IOptions<Domain.Configuration.FindAnApprenticeship>> faaConfig,
-        [Frozen] Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] VacanciesController controller)
     {
+        // arrange
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
@@ -205,8 +213,10 @@ public class WhenGettingVacancyDetails
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult { });
 
-        var actual = await controller.Vacancy(request, source, ApplicationsTab.Started) as ViewResult;
+        // act
+        var actual = await controller.Vacancy(validator.Object, request, source, ApplicationsTab.Started) as ViewResult;
 
+        // assert
         actual.Should().NotBeNull();
         var actualModel = actual!.Model as VacancyDetailsViewModel;
 
