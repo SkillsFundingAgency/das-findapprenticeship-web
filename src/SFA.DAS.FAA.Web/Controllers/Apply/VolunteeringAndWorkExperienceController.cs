@@ -148,8 +148,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpPost]
     [Route("apply/{applicationId}/volunteering-and-work-experience/summary", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary)]
-    public async Task<IActionResult> Summary(VolunteeringAndWorkExperienceSummaryViewModel viewModel)
+    public async Task<IActionResult> Summary(
+        [FromServices] IValidator<VolunteeringAndWorkExperienceSummaryViewModel> validator,
+        VolunteeringAndWorkExperienceSummaryViewModel viewModel)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetVolunteeringAndWorkExperiencesQuery
