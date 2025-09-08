@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
@@ -24,6 +25,7 @@ public class WhenGettingMapSearchResults
         bool disabilityConfident,
         List<string>? routeIds,
         List<string>? levelIds,
+        List<ApprenticeshipTypes>? apprenticeshipTypes,
         GetSearchResultsResult result,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
@@ -59,7 +61,8 @@ public class WhenGettingMapSearchResults
             RouteIds = routeIds,
             SearchTerm = searchTerm,
             LevelIds = levelIds,
-            DisabilityConfident = disabilityConfident
+            DisabilityConfident = disabilityConfident,
+            ApprenticeshipTypes = apprenticeshipTypes,
         }) as JsonResult;
 
         // assert
@@ -69,7 +72,8 @@ public class WhenGettingMapSearchResults
             && c.SelectedRouteIds!.Equals(routeIds)
             && c.PageSize!.Value == 300
             && c.DisabilityConfident!.Equals(disabilityConfident)
-            && c.Distance.Equals(distance)), CancellationToken.None), Times.Once);
+            && c.Distance.Equals(distance)
+            && c.ApprenticeshipTypes!.Equals(apprenticeshipTypes)), CancellationToken.None), Times.Once);
         
         actual.Should().NotBeNull();
         var actualValue = actual!.Value as MapSearchResultsViewModel;

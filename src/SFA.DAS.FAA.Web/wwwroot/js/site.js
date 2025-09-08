@@ -1122,6 +1122,10 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     }
     return "";
   }
+  
+  function showFoundationTag(isFoundation) {
+    return isFoundation === true ? `<strong class="govuk-tag--pink govuk-tag govuk-!-margin-bottom-2">Foundation</strong>` : ""
+  }
 
   panel.innerHTML = `
       ${statusTag(role.job)}
@@ -1130,6 +1134,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
       }" class="govuk-link govuk-link--no-visited-state das-breakable faa-role-panel-heading">${
     role.job.title
   }</a></h2>
+      ${showFoundationTag(role.job.isFoundation)}
       <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">${
         role.job.company
       }</p>

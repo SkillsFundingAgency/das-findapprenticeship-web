@@ -328,6 +328,7 @@ public class SearchApprenticeshipsController(
 
         var result = await mediator.Send(new GetSearchResultsQuery
         {
+            ApprenticeshipTypes = request.ApprenticeshipTypes,
             CandidateId = User.Claims.CandidateId().Equals(null) ? null : User.Claims.CandidateId()!.ToString(),
             DisabilityConfident = request.DisabilityConfident,
             Distance = request.Distance,

@@ -543,7 +543,7 @@ public class FilterBuilderTests
         actual.First().Filters.First().ClearFilterLink.Should().Be(expectedClearFilter);
     }
 
-    [TestCase(true, "Disability Confident", "Only show Disability Confident companies")]
+    [TestCase(true, "Disability Confident", "Disability Confident employers only")]
     [TestCase(false, "Disability Confident", null)]
     public void Then_DisabilityConfident_Filter_Is_Added_To_Filter_List(bool disabilityConfident, string expectedFieldName, string expectedFilterValue)
     {
@@ -589,5 +589,55 @@ public class FilterBuilderTests
         var actual = FilterBuilder.ReplaceQueryStringParam(url, paramToReplace, newValue);
 
         actual.Should().Be(expected);
+    }
+        
+    [Test]
+    public void Then_The_Order_Of_The_Filters_Is_Correct()
+    {
+        // arrange
+        var request = new GetSearchResultsRequest
+        {
+            ApprenticeshipTypes = [ApprenticeshipTypes.Foundation],
+            DisabilityConfident = true,
+            Distance = 10,
+            ExcludeNational = true,
+            LevelIds = ["1"],
+            Location = "London",
+            RouteIds = ["1"],
+            SearchTerm = "Something",
+        };
+        
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(SearchResultsUrl);
+
+        var filterChoices = new SearchApprenticeshipFilterChoices
+        {
+            ApprenticeshipTypesChecklistDetails = new ChecklistDetails
+            {
+                Lookups = [new ChecklistLookup("", "", "", true)]
+            },
+            CourseLevelsChecklistDetails = new ChecklistDetails
+            {
+                Lookups = [new ChecklistLookup("", "", "", true)]
+            },
+            JobCategoryChecklistDetails = new ChecklistDetails
+            {
+                Lookups = [new ChecklistLookup("", "", "", true)]
+            }
+        };
+
+        // act
+        var result = FilterBuilder.Build(request, mockUrlHelper.Object, filterChoices);
+
+        // assert
+        result[0].FieldName.Should().Be("What");
+        result[1].FieldName.Should().Be("Where");
+        result[2].FieldName.Should().Be("Recruiting nationally");
+        result[3].FieldName.Should().Be("Apprenticeship type");
+        result[4].FieldName.Should().Be("Apprenticeship level");
+        result[5].FieldName.Should().Be("Job category");
+        result[6].FieldName.Should().Be("Disability Confident");
     }
 }
