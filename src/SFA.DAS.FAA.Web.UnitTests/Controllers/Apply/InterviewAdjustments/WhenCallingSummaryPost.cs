@@ -1,18 +1,12 @@
 ﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.InterviewAdjustments;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.InterviewAdjustments;
 
@@ -24,9 +18,11 @@ public class WhenCallingSummaryPost
         Guid candidateId,
         string adjustmentsInput,
         UpdateInterviewAdjustmentsCommandResult updateInterviewAdjustmentsCommandResult,
+        Mock<IValidator<InterviewAdjustmentSummaryViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] InterviewAdjustmentsController controller)
     {
+        // arrange
         var request = new InterviewAdjustmentSummaryViewModel
         {
             ApplicationId = Guid.NewGuid(),
@@ -47,9 +43,15 @@ public class WhenCallingSummaryPost
         mediator.Setup(x => x.Send(It.Is<UpdateInterviewAdjustmentsCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(updateInterviewAdjustmentsCommandResult);
+        
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<InterviewAdjustmentSummaryViewModel>(m => m == request), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var actual = await controller.PostSummary(request.ApplicationId, request) as RedirectToRouteResult;
+        // act
+        var actual = await controller.PostSummary(validator.Object, request.ApplicationId, request) as RedirectToRouteResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.InterviewAdjustments;
@@ -117,8 +118,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
         [HttpPost]
         [Route("apply/{applicationId}/interview-adjustments/summary",
             Name = RouteNames.ApplyApprenticeship.InterviewAdjustmentsSummary)]
-        public async Task<IActionResult> PostSummary([FromRoute] Guid applicationId, InterviewAdjustmentSummaryViewModel viewModel)
+        public async Task<IActionResult> PostSummary(
+            [FromServices] IValidator<InterviewAdjustmentSummaryViewModel> validator,
+            [FromRoute] Guid applicationId,
+            InterviewAdjustmentSummaryViewModel viewModel)
         {
+            await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetInterviewAdjustmentsQuery
