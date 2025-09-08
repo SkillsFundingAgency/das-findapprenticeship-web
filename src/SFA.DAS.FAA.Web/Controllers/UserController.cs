@@ -236,8 +236,11 @@ public class UserController(
     }
 
     [HttpPost("select-address", Name = RouteNames.SelectAddress)]
-    public async Task<IActionResult> SelectAddress(SelectAddressViewModel model)
+    public async Task<IActionResult> SelectAddress(
+        [FromServices] IValidator<SelectAddressViewModel> validator,
+        SelectAddressViewModel model)
     {
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetAddressesByPostcodeQuery { Postcode = model.Postcode });
