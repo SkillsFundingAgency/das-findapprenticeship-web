@@ -46,8 +46,12 @@ namespace SFA.DAS.FAA.Web.Controllers.Apply
 
         [HttpPost]
         [Route("apply/{applicationId}/jobs", Name = RouteNames.ApplyApprenticeship.Jobs)]
-        public async Task<IActionResult> Post(JobsViewModel viewModel)
+        public async Task<IActionResult> Post(
+            [FromServices] IValidator<JobsViewModel> validator,
+            JobsViewModel viewModel)
         {
+            await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
+            
             if (!ModelState.IsValid)
             {
                 var result = await mediator.Send(new GetJobsQuery
