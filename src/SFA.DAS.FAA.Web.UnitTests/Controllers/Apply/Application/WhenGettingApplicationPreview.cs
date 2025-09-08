@@ -26,20 +26,15 @@ public class WhenGettingApplicationPreview
         queryResult.IsDisabilityConfident = true;
         queryResult.IsApplicationComplete = true;
             
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
         mediator.Setup(x => x.Send(It.Is<GetApplicationSummaryQuery>(c =>
                 c.ApplicationId.Equals(applicationId) &&
                 c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
-
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
+        
         var actual = await controller.Preview(applicationId) as ViewResult;
         var isVacancyClosedEarly = queryResult.ClosedDate.HasValue && queryResult.ClosedDate < queryResult.ClosingDate;
         using (new AssertionScope())
@@ -66,19 +61,14 @@ public class WhenGettingApplicationPreview
         [Greedy] ApplyController controller)
     {
         queryResult.EducationHistory.TrainingCoursesStatus = SectionStatus.InProgress;
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
         mediator.Setup(x => x.Send(It.Is<GetApplicationSummaryQuery>(c =>
                 c.ApplicationId.Equals(applicationId) && 
                 c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         var actual = await controller.Preview(applicationId) as RedirectToRouteResult;
         using (new AssertionScope())

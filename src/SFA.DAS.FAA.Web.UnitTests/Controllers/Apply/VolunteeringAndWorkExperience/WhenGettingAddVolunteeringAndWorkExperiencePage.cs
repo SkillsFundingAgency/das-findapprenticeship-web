@@ -17,20 +17,12 @@ public class WhenGettingAddVolunteeringAndWorkExperiencePage
         GetVolunteeringAndWorkExperiencesQueryResult result,
         [Frozen] Mock<IMediator> mediator)
     {
-        result.VolunteeringAndWorkExperiences =
-            new List<GetVolunteeringAndWorkExperiencesQueryResult.VolunteeringAndWorkExperience>();
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-        .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-        .Returns("https://baseUrl");
-
-        var controller = new VolunteeringAndWorkExperienceController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object
-        };
+         // arrange
+        result.VolunteeringAndWorkExperiences = new List<GetVolunteeringAndWorkExperiencesQueryResult.VolunteeringAndWorkExperience>();
+        var controller = new VolunteeringAndWorkExperienceController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetVolunteeringAndWorkExperiencesQuery>(c =>
                 c.ApplicationId.Equals(applicationId)
@@ -38,9 +30,11 @@ public class WhenGettingAddVolunteeringAndWorkExperiencePage
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
+        // act
         var actual = await controller.Get(applicationId) as ViewResult;
         var actualModel = actual?.Model as VolunteeringAndWorkExperienceViewModel;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();
@@ -56,19 +50,11 @@ public class WhenGettingAddVolunteeringAndWorkExperiencePage
         GetVolunteeringAndWorkExperiencesQueryResult result,
         [Frozen] Mock<IMediator> mediator)
     {
-        //arrange
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
-        var controller = new VolunteeringAndWorkExperienceController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object
-        };
+        // arrange
+        var controller = new VolunteeringAndWorkExperienceController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetVolunteeringAndWorkExperiencesQuery>(c =>
                 c.ApplicationId.Equals(applicationId)
@@ -76,7 +62,10 @@ public class WhenGettingAddVolunteeringAndWorkExperiencePage
             ), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
+        // act
         var actual = await controller.Get(applicationId) as RedirectToRouteResult;
+
+        // assert
         actual!.RouteName.Should().NotBeNull();
         actual.RouteName.Should().Be(RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary);
     }

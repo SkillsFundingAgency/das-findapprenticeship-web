@@ -19,9 +19,7 @@ public class WhenPostingEditVolunteeringAndWorkExperienceRequest
         [Greedy] VolunteeringAndWorkExperienceController controller)
     {
         // arrange
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateVolunteeringAndWorkExperienceCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)

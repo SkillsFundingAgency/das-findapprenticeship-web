@@ -27,11 +27,11 @@ public class WhenPuttingUserName
     {
         // Arrange
         model.JourneyPath = journeyPath;
-        controller
-            .AddControllerContext()
+        controller.WithContext(x => x
             .WithUser(candidateId)
             .WithClaim(ClaimTypes.Email, email)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
             
         validator
             .Setup(x => x.ValidateAsync(It.Is<NameViewModel>(m => m == model), CancellationToken.None))
@@ -82,11 +82,11 @@ public class WhenPuttingUserName
         [Greedy] UserController controller)
     {
         // Arrange
-        controller
-            .AddControllerContext()
+        controller.WithContext(x => x
             .WithUser(Guid.NewGuid())
             .WithClaim(ClaimTypes.Email, email)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         mediator.Setup(x => x.Send(It.IsAny<UpdateNameCommand>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new InvalidOperationException());
         validator

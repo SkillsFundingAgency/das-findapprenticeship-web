@@ -28,12 +28,11 @@ public class WhenPostingPostcodeAddress
         // arrange
         queryResult.PostcodeExists = true;
         model.JourneyPath = journeyPath;
-        controller
-            .AddControllerContext()
+        controller.WithContext(x => x
             .WithUser(Guid.NewGuid())
             .WithClaim(ClaimTypes.Email, email)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
-
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         mediator.Setup(x => x.Send(It.IsAny<GetCandidatePostcodeAddressQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
         validator
@@ -82,11 +81,11 @@ public class WhenPostingPostcodeAddress
         [Greedy] UserController controller)
     {
         // arrange
-        controller
-            .AddControllerContext()
+        controller.WithContext(x => x
             .WithUser(Guid.NewGuid())
             .WithClaim(ClaimTypes.Email, email)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         mediator.Setup(x => x.Send(It.IsAny<GetCandidatePostcodeAddressQuery>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new InvalidOperationException());
         validator
@@ -114,11 +113,11 @@ public class WhenPostingPostcodeAddress
     {
         // arrange
         queryResult.PostcodeExists = false;
-        controller
-            .AddControllerContext()
+        controller.WithContext(x => x
             .WithUser(Guid.NewGuid())
             .WithClaim(ClaimTypes.Email, email)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         mediator.Setup(x => x.Send(It.IsAny<GetCandidatePostcodeAddressQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
         validator

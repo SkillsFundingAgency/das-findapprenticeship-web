@@ -28,12 +28,12 @@ public class WhenPostingPhoneNumber
     {
         // arrange
         model.JourneyPath = journeyPath;
-        controller
-            .AddControllerContext()
+        controller.WithContext(x => x
             .WithUser(candidateId)
             .WithClaim(ClaimTypes.Email, email)
             .WithClaim(ClaimTypes.MobilePhone, phone)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         validator
             .Setup(x => x.ValidateAsync(It.Is<PhoneNumberViewModel>(m => m == model), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
@@ -60,18 +60,21 @@ public class WhenPostingPhoneNumber
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller
-            .AddControllerContext()
+        // arrange
+        controller.WithContext(x => x
             .WithUser(Guid.NewGuid())
             .WithClaim(ClaimTypes.Email, email)
             .WithClaim(ClaimTypes.MobilePhone, phone)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
         validator
             .Setup(x => x.ValidateAsync(It.Is<PhoneNumberViewModel>(m => m == model), CancellationToken.None))
             .ReturnsAsync(new ValidationResult([new ValidationFailure("SomeProperty", "SomeError")]));
 
+        // act
         var result = await controller.PhoneNumber(validator.Object, model) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         result.Model.Should().Be(model);
     }

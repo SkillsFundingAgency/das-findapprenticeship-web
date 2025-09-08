@@ -27,9 +27,7 @@ public class WhenCallingPost
             IsSectionComplete = true
         };
 
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateSkillsAndStrengthsCommand>(c =>
         c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))
@@ -68,9 +66,7 @@ public class WhenCallingPost
             AutoSave = true
         };
 
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
         
         mediator.Setup(x => x.Send(It.Is<UpdateSkillsAndStrengthsCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))

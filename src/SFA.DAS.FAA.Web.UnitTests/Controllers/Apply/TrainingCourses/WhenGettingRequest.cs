@@ -15,28 +15,23 @@ public class WhenGettingRequest
         Guid candidateId,
         [Frozen] Mock<IMediator> mediator)
     {
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
+        // arrange
         mediator.Setup(x => x.Send(It.Is<GetTrainingCoursesQuery>(q =>
             q.ApplicationId == applicationId
             && q.CandidateId == candidateId)
             , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GetTrainingCoursesQueryResult { TrainingCourses = [] });
 
-        var controller = new TrainingCoursesController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object
-        };
+        var controller = new TrainingCoursesController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
+        // act
         var actual = await controller.Get(applicationId) as ViewResult;
         var actualModel = actual?.Model as TrainingCoursesViewModel;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().NotBeNull();

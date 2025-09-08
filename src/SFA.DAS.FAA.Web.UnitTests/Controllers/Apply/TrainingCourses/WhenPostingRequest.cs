@@ -24,9 +24,7 @@ public class WhenPostingRequest
             ApplicationId = applicationId,
             DoYouWantToAddAnyTrainingCourses = false,
         };
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
         mediator.Setup(x => x.Send(It.IsAny<UpdateTrainingCoursesApplicationCommandResult>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         validator
@@ -60,9 +58,7 @@ public class WhenPostingRequest
             ApplicationId = applicationId,
             DoYouWantToAddAnyTrainingCourses = true,
         };
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
         mediator.Setup(x => x.Send(It.IsAny<UpdateTrainingCoursesApplicationCommandResult>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         validator

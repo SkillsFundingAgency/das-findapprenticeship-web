@@ -19,11 +19,6 @@ public class WhenGettingAdditionalQuestionRequest
         GetAdditionalQuestionQueryResult result,
         [Frozen] Mock<IMediator> mediator)
     {
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
         mediator.Setup(x => x.Send(It.Is<GetAdditionalQuestionQuery>(q =>
                     q.ApplicationId == applicationId
                     && q.CandidateId == candidateId
@@ -32,10 +27,10 @@ public class WhenGettingAdditionalQuestionRequest
                 , It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
-        var controller = new AdditionalQuestionController(mediator.Object) { Url = mockUrlHelper.Object, };
+        var controller = new AdditionalQuestionController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         var actual = await controller.Get(applicationId, additionalQuestion, additionalQuestionId) as ViewResult;
         var actualModel = actual?.Model as AddAdditionalQuestionViewModel;

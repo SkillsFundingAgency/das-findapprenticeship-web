@@ -1,8 +1,5 @@
-﻿using System.Security.Claims;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 
@@ -19,7 +16,7 @@ public class WhenPostingDeleteSavedSearch
     )
     {
         // arrange
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
         
         // act
         var response = await sut.DeleteSavedSearch(savedSearchId, default) as RedirectToRouteResult;

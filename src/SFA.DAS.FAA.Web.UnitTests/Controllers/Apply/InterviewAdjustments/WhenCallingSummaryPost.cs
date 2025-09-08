@@ -28,9 +28,7 @@ public class WhenCallingSummaryPost
             IsSectionCompleted = true
         };
 
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateInterviewAdjustmentsCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)), It.IsAny<CancellationToken>()))

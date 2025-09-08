@@ -24,19 +24,11 @@ public class WhenCallingPostEqualityGender
         viewModel.IsGenderIdentifySameSexAtBirth = null;
         viewModel.Sex = null;
 
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
-        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
-        {
-            Url = mockUrlHelper.Object,
-        };
+        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object);
         controller
-            .AddControllerContext()
-            .WithUser(govIdentifier);
-        
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(govIdentifier));
+
         validator
             .Setup(x => x.ValidateAsync(It.Is<EqualityQuestionsGenderViewModel>(m => m == viewModel), CancellationToken.None))
             .ReturnsAsync(new ValidationResult([new ValidationFailure("test", "message")]));
@@ -68,18 +60,12 @@ public class WhenCallingPostEqualityGender
         // arrange
         viewModel.Sex = gender.ToString();
         viewModel.IsEdit = false;
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
-        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object)
-        {
-            Url = mockUrlHelper.Object,
-        };
+        
+        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object);
         controller
-            .AddControllerContext()
-            .WithUser(govIdentifier);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(govIdentifier));
+        
         validator
             .Setup(x => x.ValidateAsync(It.Is<EqualityQuestionsGenderViewModel>(m => m == viewModel), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());

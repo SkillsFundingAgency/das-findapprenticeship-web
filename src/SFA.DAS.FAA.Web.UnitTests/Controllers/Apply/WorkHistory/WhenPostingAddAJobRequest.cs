@@ -20,10 +20,9 @@ public class WhenPostingAddAJobRequest
         [Greedy] WorkHistoryController controller)
     {
         // arrange
-        controller
-            .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+        controller.WithContext(x => x
+            .WithUser(candidateId)
+            .WithClaim(CustomClaims.CandidateId, candidateId.ToString()));
         
         mediator.Setup(x => x.Send(It.Is<AddJobCommand>(c=>
                 c.ApplicationId.Equals(request.ApplicationId)

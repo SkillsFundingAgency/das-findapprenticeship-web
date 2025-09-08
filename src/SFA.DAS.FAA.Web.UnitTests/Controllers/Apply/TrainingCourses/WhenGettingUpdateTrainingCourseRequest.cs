@@ -16,9 +16,7 @@ public class WhenGettingUpdateTrainingCourseRequest
         [Greedy] TrainingCoursesController controller)
     {
         result.ApplicationId = query.ApplicationId;
-        controller
-            .AddControllerContext()
-            .WithUser(query.CandidateId);
+        controller.WithContext(x => x.WithUser(query.CandidateId));
         mediator.Setup(x => x.Send(It.Is<GetTrainingCourseQuery>(c =>
                 c.ApplicationId == query.ApplicationId
                 && c.CandidateId == query.CandidateId

@@ -23,17 +23,20 @@ public class WhenGettingPostcodeAddress
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller
-            .AddControllerContext()
+        // arrange
+        controller.WithContext(x => x
             .WithUser(candidateId)
             .WithClaim(ClaimTypes.Email, email)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
-
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
+        
         mediator.Setup(x => x.Send(It.Is<GetCandidatePostcodeQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
+        // act
         var result = await controller.PostcodeAddress((string)null!, journeyPath) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         var actualModel = result.Model as PostcodeAddressViewModel;
         actualModel.Postcode.Should().Be(queryResult.Postcode);
@@ -54,17 +57,20 @@ public class WhenGettingPostcodeAddress
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller
-            .AddControllerContext()
+        // arrange
+        controller.WithContext(x => x
             .WithUser(candidateId)
             .WithClaim(ClaimTypes.Email, email)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
-
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
+        
         mediator.Setup(x => x.Send(It.Is<GetCandidatePostcodeQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
+        // act
         var result = await controller.PostcodeAddress(postcode, journeyPath) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         var actualModel = result.Model as PostcodeAddressViewModel;
         actualModel.Postcode.Should().Be(postcode);

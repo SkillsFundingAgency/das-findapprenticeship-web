@@ -23,15 +23,11 @@ public class WhenCallingPostEthnicSubGroupWhite
     {
         // arrange
         viewModel.EthnicSubGroup = null;
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
 
-        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object) { Url = mockUrlHelper.Object, };
+        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object);
         controller
-            .AddControllerContext()
-            .WithUser(govIdentifier);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(govIdentifier));
         
         validator
             .Setup(x => x.ValidateAsync(It.Is<EqualityQuestionsEthnicSubGroupWhiteViewModel>(m => m == viewModel), CancellationToken.None))
@@ -65,20 +61,18 @@ public class WhenCallingPostEthnicSubGroupWhite
         [Frozen] Mock<ICacheStorageService> cacheStorageService)
     {
         // arrange
-        var cacheKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}", govIdentifier);
         viewModel.EthnicSubGroup = ethnicSubGroup.ToString();
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
-        cacheStorageService.Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
+        
+        var cacheKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}", govIdentifier);
+        cacheStorageService
+            .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
             .ReturnsAsync((EqualityQuestionsModel?)null);
 
-        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object) { Url = mockUrlHelper.Object, };
+        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object);
         controller
-            .AddControllerContext()
-            .WithUser(govIdentifier);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(govIdentifier));
+        
         validator
             .Setup(x => x.ValidateAsync(It.Is<EqualityQuestionsEthnicSubGroupWhiteViewModel>(m => m == viewModel), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
@@ -107,20 +101,18 @@ public class WhenCallingPostEthnicSubGroupWhite
         [Frozen] Mock<ICacheStorageService> cacheStorageService)
     {
         // arrange
-        var cacheKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}", govIdentifier);
         viewModel.EthnicSubGroup = ethnicSubGroup.ToString();
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
-        cacheStorageService.Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
+        
+        var cacheKey = string.Format($"{CacheKeys.EqualityQuestionsDataProtectionKey}-{CacheKeys.EqualityQuestions}", govIdentifier);
+        cacheStorageService
+            .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
             .ReturnsAsync(equalityQuestionsModel);
 
-        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object) { Url = mockUrlHelper.Object, };
+        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object);
         controller
-            .AddControllerContext()
-            .WithUser(govIdentifier);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(govIdentifier));
+        
         validator
             .Setup(x => x.ValidateAsync(It.Is<EqualityQuestionsEthnicSubGroupWhiteViewModel>(m => m == viewModel), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());

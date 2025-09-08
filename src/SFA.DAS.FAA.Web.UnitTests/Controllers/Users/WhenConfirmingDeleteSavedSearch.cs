@@ -18,7 +18,7 @@ public class WhenConfirmingDeleteSavedSearch
     )
     {
         // arrange
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
 
         GetSavedSearchQuery? passedQuery = null;
         mediator
@@ -46,7 +46,7 @@ public class WhenConfirmingDeleteSavedSearch
     )
     {
         // arrange
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
 
         mediator
             .Setup(x => x.Send(It.IsAny<GetSavedSearchQuery>(), It.IsAny<CancellationToken>()))

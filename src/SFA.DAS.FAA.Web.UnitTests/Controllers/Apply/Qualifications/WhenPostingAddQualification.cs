@@ -22,9 +22,7 @@ public class WhenPostingAddQualification
         // arrange
         model.IsApprenticeship = false;
         model.Subjects = [subject, new SubjectViewModel()];
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
         validator
             .Setup(x => x.ValidateAsync(It.Is<AddQualificationViewModel>(m => m == model), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
@@ -52,10 +50,7 @@ public class WhenPostingAddQualification
         [Greedy] QualificationsController controller)
     {
         // arrange
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
-        controller.ControllerContext.ModelState.AddModelError("error","error");
+        controller.WithContext(x => x.WithUser(candidateId));
         queryResult.QualificationType!.Name = "BTec";
         mediator.Setup(x => x.Send(It.Is<GetModifyQualificationQuery>(c =>
                 c.QualificationReferenceId == model.QualificationReferenceId
@@ -65,7 +60,7 @@ public class WhenPostingAddQualification
         
         validator
             .Setup(x => x.ValidateAsync(It.Is<AddQualificationViewModel>(m => m == model), CancellationToken.None))
-            .ReturnsAsync(new ValidationResult());
+            .ReturnsAsync(new ValidationResult([new ValidationFailure("error", "error")]));
         
         // act
         var actual = await controller.ModifyQualification(validator.Object, model) as ViewResult;

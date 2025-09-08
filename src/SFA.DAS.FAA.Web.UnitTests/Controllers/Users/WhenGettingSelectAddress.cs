@@ -21,16 +21,17 @@ public class WhenGettingSelectAddress
         [Frozen] Mock<IMediator> mediator, 
         [Greedy] UserController controller)
     {
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        // arrange
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetAddressesByPostcodeQuery>(x => x.Postcode == postcode && x.CandidateId == candidateId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
+        // act
         var result = await controller.SelectAddress(postcode, journeyPath) as ViewResult;
         var resultModel = result.Model as SelectAddressViewModel;
 
+        // assert
         resultModel.Addresses.Count.Should().Be(queryResult.Addresses.Count());
         resultModel.JourneyPath.Should().Be(journeyPath);
     }
@@ -45,12 +46,13 @@ public class WhenGettingSelectAddress
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        // arrange
+        controller.WithContext(x => x.WithUser(candidateId));
 
+        // act
         var result = await controller.SelectAddress(postcode) as RedirectToRouteResult;
 
+        // assert
         result!.RouteName.Should().Be(RouteNames.PostcodeAddress);
         mediator.Verify(x => x.Send(It.IsAny<GetAddressesByPostcodeQuery>(), CancellationToken.None), Times.Never);
     }

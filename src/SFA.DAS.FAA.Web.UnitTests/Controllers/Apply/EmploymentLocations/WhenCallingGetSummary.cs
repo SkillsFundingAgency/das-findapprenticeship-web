@@ -26,19 +26,15 @@ public class WhenCallingGetSummary
             employmentLocationAddress.IsSelected = true;
             employmentLocationAddress.FullAddress = JsonConvert.SerializeObject(mockAddress);
         }
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
 
         mediator.Setup(x => x.Send(It.Is<GetEmploymentLocationsQuery>(q => q.ApplicationId == applicationId && q.CandidateId == candidateId),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var controller = new EmploymentLocationsController(mediator.Object) { Url = mockUrlHelper.Object, };
+        var controller = new EmploymentLocationsController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         var actual = await controller.Summary(applicationId, isEdit) as ViewResult;
         var actualModel = actual!.Model.As<EmploymentLocationsSummaryViewModel>();
@@ -66,19 +62,15 @@ public class WhenCallingGetSummary
             employmentLocationAddress.IsSelected = true;
             employmentLocationAddress.FullAddress = string.Empty;
         }
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
 
         mediator.Setup(x => x.Send(It.Is<GetEmploymentLocationsQuery>(q => q.ApplicationId == applicationId && q.CandidateId == candidateId),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var controller = new EmploymentLocationsController(mediator.Object) { Url = mockUrlHelper.Object };
+        var controller = new EmploymentLocationsController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         var actual = await controller.Summary(applicationId, isEdit) as ViewResult;
         var actualModel = actual!.Model.As<EmploymentLocationsSummaryViewModel>();
@@ -107,18 +99,14 @@ public class WhenCallingGetSummary
             employmentLocationAddress.FullAddress = JsonConvert.SerializeObject(new Address("", "", "", "", ""));
         }
         var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
         mediator.Setup(x => x.Send(It.Is<GetEmploymentLocationsQuery>(q => q.ApplicationId == applicationId && q.CandidateId == candidateId),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
-        var controller = new EmploymentLocationsController(mediator.Object) { Url = mockUrlHelper.Object, };
+        var controller = new EmploymentLocationsController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         var actual = await controller.Summary(applicationId, isEdit) as ViewResult;
         var actualModel = actual!.Model.As<EmploymentLocationsSummaryViewModel>();

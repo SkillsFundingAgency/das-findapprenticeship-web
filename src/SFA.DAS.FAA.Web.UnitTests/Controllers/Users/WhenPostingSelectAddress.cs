@@ -31,11 +31,11 @@ public class WhenPostingSelectAddress
         // arrange
         model.JourneyPath = journeyPath;
         model.SelectedAddress = addressesByPostcodeQueryResult.Addresses.First().Uprn;
-        controller
-            .AddControllerContext()
+        controller.WithContext(x => x
             .WithUser(candidateId)
+            .WithClaim(ClaimTypes.Email, email)
             .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
-            .WithClaim(ClaimTypes.Email, email);
+        );
         
         mediator.Setup(x => x.Send(It.IsAny<GetAddressesByPostcodeQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(addressesByPostcodeQueryResult);

@@ -23,8 +23,7 @@ public class WhenPostingSummary
     {
         //arrange
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateEmploymentLocationsCommand>(c =>
                     c.ApplicationId == applicationId &&

@@ -21,19 +21,14 @@ public class WhenCallingGetEthnicGroup
         [Frozen] Mock<ICacheStorageService> cacheStorageService)
     {
         var cacheKey = string.Format($"{Key}", candidateId);
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
         cacheStorageService
             .Setup(x => x.Get<EqualityQuestionsModel>(cacheKey))
             .ReturnsAsync(model);
 
-        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object) { Url = mockUrlHelper.Object, };
+        var controller = new EqualityQuestionsController(mediator.Object, cacheStorageService.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         var actual = await controller.EthnicGroup(applicationId) as ViewResult;
         var actualModel = actual!.Model.As<EqualityQuestionsEthnicGroupViewModel>();

@@ -29,15 +29,10 @@ public class WhenPostingApplicationPreview
             IsConsentProvided = true,
         };
 
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
-        var controller = new ApplyController(mediator.Object, cacheStorageService.Object, dateTimeService.Object) { Url = mockUrlHelper.Object, };
+        var controller = new ApplyController(mediator.Object, cacheStorageService.Object, dateTimeService.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
             
         validator
             .Setup(x => x.ValidateAsync(It.Is<ApplicationSummaryViewModel>(m => m == request), CancellationToken.None))

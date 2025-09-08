@@ -20,19 +20,10 @@ public class WhenPostingSummaryVolunteeringAndWorkExperiencePage
         [Frozen] Mock<IMediator> mediator)
     {
         // arrange
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-
-        var controller = new VolunteeringAndWorkExperienceController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object
-        };
-        
+        var controller = new VolunteeringAndWorkExperienceController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateVolunteeringAndWorkExperienceApplicationCommand>(c =>
                 c.ApplicationId.Equals(viewModel.ApplicationId)

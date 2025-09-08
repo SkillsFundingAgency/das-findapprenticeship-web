@@ -21,9 +21,7 @@ public class WhenPostingAddATrainingCourseRequest
     {
         // arrange
         request.YearAchieved = yearAchieved.ToString();
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<AddTrainingCourseCommand>(c =>
         c.ApplicationId == request.ApplicationId

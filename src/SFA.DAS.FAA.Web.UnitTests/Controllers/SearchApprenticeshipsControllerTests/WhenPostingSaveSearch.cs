@@ -49,7 +49,7 @@ public class WhenPostingSaveSearch
         httpContextMock.Setup(ctx => ctx.Request.Headers.Referer).Returns(new StringValues(RedirectUrl));
 
         _sut.Url = mockUrlHelper.Object;
-        _sut.AddControllerContext().WithUser(CandidateId);
+        _sut.WithContext(x => x.WithUser(CandidateId));
     }
     
     [Test, MoqAutoData]

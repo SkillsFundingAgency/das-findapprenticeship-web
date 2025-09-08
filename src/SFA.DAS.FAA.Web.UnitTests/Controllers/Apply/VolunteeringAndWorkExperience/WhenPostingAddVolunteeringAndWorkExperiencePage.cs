@@ -26,9 +26,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
             ApplicationId = applicationId,
             DoYouWantToAddAnyVolunteeringOrWorkExperience = false,
         };
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
         mediator.Setup(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         mediator.Setup(x => x.Send(It.Is<GetVolunteeringAndWorkExperiencesQuery>(c =>
@@ -69,9 +67,7 @@ public class WhenPostingAddVolunteeringAndWorkExperiencePage
             DoYouWantToAddAnyVolunteeringOrWorkExperience = true,
         };
         
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
         mediator.Setup(x => x.Send(It.IsAny<UpdateVolunteeringAndWorkExperienceApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         validator

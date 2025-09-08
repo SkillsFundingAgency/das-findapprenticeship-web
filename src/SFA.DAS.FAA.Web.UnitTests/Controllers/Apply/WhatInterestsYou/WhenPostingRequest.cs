@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.WhatInterestsYou;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
@@ -21,10 +20,7 @@ public class WhenPostingRequest
         [Greedy] WhatInterestsYouController controller)
     {
         // arrange
-        controller
-            .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.IsAny<UpdateWhatInterestsYouCommand>(), It.IsAny<CancellationToken>()))
             .Returns(() => Task.CompletedTask);
@@ -53,10 +49,7 @@ public class WhenPostingRequest
         [Greedy] WhatInterestsYouController controller)
     {
         //arrange
-        controller
-            .AddControllerContext()
-            .WithUser(Guid.NewGuid())
-            .WithClaim(CustomClaims.CandidateId, candidateId.ToString());
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator
             .Setup(x => x.Send(It.IsAny<UpdateWhatInterestsYouCommand>(), It.IsAny<CancellationToken>()))

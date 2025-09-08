@@ -26,16 +26,17 @@ public class WhenGettingNotificationPreferences
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        // arrange
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetCandidatePreferencesQuery>(x => x.CandidateId == candidateId)
             , It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
+        // act
         var result = await controller.NotificationPreferences(journeyPath) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         var actualModel = result!.Model as NotificationPreferencesViewModel;
 

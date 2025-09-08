@@ -18,15 +18,12 @@ public class WhenGettingAddQualification
         GetModifyQualificationQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
-	    var mockUrlHelper = new Mock<IUrlHelper>();
-	    mockUrlHelper
-		    .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-		    .Returns("https://baseUrl");
-
-	    var controller = new QualificationsController(mediator.Object) { Url = mockUrlHelper.Object };
+        // arrange
+        var controller = new QualificationsController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
+        
         queryResult.QualificationType!.Name = "BTec";
         mediator.Setup(x => x.Send(It.Is<GetModifyQualificationQuery>(c=>
                 c.QualificationReferenceId == qualificationReferenceId
@@ -34,8 +31,10 @@ public class WhenGettingAddQualification
                 && c.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
+        // act
         var actual = await controller.ModifyQualification(applicationId, qualificationReferenceId) as ViewResult;
 
+        // assert
         Assert.That(actual, Is.Not.Null);
         actual!.ViewName.Should().Be("~/Views/apply/Qualifications/AddQualification.cshtml");
         var actualModel = actual.Model as AddQualificationViewModel;
@@ -51,18 +50,11 @@ public class WhenGettingAddQualification
         GetModifyQualificationQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
-	    var mockUrlHelper = new Mock<IUrlHelper>();
-	    mockUrlHelper
-		    .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-		    .Returns("https://baseUrl");
-
-	    var controller = new QualificationsController(mediator.Object)
-	    {
-		    Url = mockUrlHelper.Object
-	    };
+        // arrange
+        var controller = new QualificationsController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
         queryResult.QualificationType!.Name = "BTec";
         mediator.Setup(x => x.Send(It.Is<GetModifyQualificationQuery>(c=>
                 c.QualificationReferenceId == qualificationReferenceId
@@ -70,8 +62,10 @@ public class WhenGettingAddQualification
                 && c.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
+        // act
         var actual = await controller.ModifyQualification(applicationId, qualificationReferenceId) as ViewResult;
 
+        // assert
         Assert.That(actual, Is.Not.Null);
         actual!.ViewName.Should().Be("~/Views/apply/Qualifications/AddQualification.cshtml");
         var actualModel = actual.Model as AddQualificationViewModel;
@@ -89,15 +83,16 @@ public class WhenGettingAddQualification
         [Frozen] Mock<IMediator> mediator,
         [Greedy] QualificationsController controller)
     {
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        // arrange
+        controller.WithContext(x => x.WithUser(candidateId));
         queryResult.QualificationType = null;
         mediator.Setup(x => x.Send(It.Is<GetModifyQualificationQuery>(c=>c.QualificationReferenceId == qualificationReferenceId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
+        // act
         var actual = await controller.ModifyQualification(applicationId, qualificationReferenceId) as RedirectToRouteResult;
 
+        // assert
         Assert.That(actual, Is.Not.Null);
         actual!.RouteName.Should().Be(RouteNames.ApplyApprenticeship.AddQualificationSelectType);
         actual.RouteValues["applicationId"].Should().Be(applicationId);

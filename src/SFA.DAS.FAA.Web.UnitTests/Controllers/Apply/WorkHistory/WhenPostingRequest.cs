@@ -25,15 +25,11 @@ public class WhenPostingRequest
             ApplicationId = Guid.NewGuid(),
             DoYouWantToAddAnyJobs = true
         };
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
-
+        controller.WithContext(x => x.WithUser(candidateId));
         mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)
                 && c.CandidateId.Equals(candidateId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-        
         validator
             .Setup(x => x.ValidateAsync(It.Is<JobsViewModel>(m => m == request), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
@@ -59,12 +55,10 @@ public class WhenPostingRequest
             ApplicationId = Guid.NewGuid(),
             DoYouWantToAddAnyJobs = false
         };
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
-        mediator.Setup(x => x.Send(It.IsAny<UpdateWorkHistoryApplicationCommand>(), It.IsAny<CancellationToken>()))
+        controller.WithContext(x => x.WithUser(candidateId));
+        mediator
+            .Setup(x => x.Send(It.IsAny<UpdateWorkHistoryApplicationCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-        
         validator
             .Setup(x => x.ValidateAsync(It.Is<JobsViewModel>(m => m == request), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
@@ -93,17 +87,10 @@ public class WhenPostingRequest
             ShowJobHistory = true,
             IsSectionCompleted = true
         };
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns("https://baseUrl");
-        var controller = new WorkHistoryController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object,
-        };
+        var controller = new WorkHistoryController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateWorkHistoryApplicationCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId)

@@ -33,7 +33,6 @@ public class WhenGettingVacancyDetails
         IDateTimeService dateTimeService,
         Mock<IValidator<GetVacancyDetailsRequest>> validator,
         [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
-        [Frozen] Mock<IUrlHelper> mockUrlHelper,
         [Frozen] Mock<IMediator> mediator,
         [Frozen] Mock<ICacheStorageService> cacheStorageService,
         [Greedy] VacanciesController controller)
@@ -46,12 +45,13 @@ public class WhenGettingVacancyDetails
             .Setup(x => x.Get<bool>($"{govIdentifier}-{CacheKeys.AccountCreated}"))
             .ReturnsAsync(showBanner);
         faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship{GoogleMapsId = mapId});
-        controller.Url = mockUrlHelper.Object;
+        
         controller
-            .AddControllerContext()
+            .WithUrlHelper()
+            .WithContext(x => x
             .WithUser(candidateId)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
-
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
+        
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
 
@@ -122,10 +122,9 @@ public class WhenGettingVacancyDetails
     {
         // arrange
         result.Vacancy = null;
-        controller
-            .AddControllerContext()
+        controller.WithContext(x => x
             .WithUser(candidateId)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
         mediator.Setup(x => x.Send(It.IsAny<GetApprenticeshipVacancyQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
 
@@ -164,11 +163,6 @@ public class WhenGettingVacancyDetails
         [Greedy] VacanciesController controller)
     {
         // arrange
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(expectedUrl);
-
         var httpContextMock = new Mock<HttpContext>();
         httpContextMock.Setup(ctx => ctx.Request.Headers.Referer).Returns(new StringValues(previousPageUrl));
 
@@ -181,11 +175,11 @@ public class WhenGettingVacancyDetails
             .ReturnsAsync(showBanner);
         faaConfig.Setup(x => x.Value).Returns(new FindAnApprenticeship {GoogleMapsId = mapId});
 
-        controller.Url = mockUrlHelper.Object;
         controller
-            .AddControllerContext()
-            .WithUser(candidateId)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString());
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns(expectedUrl))
+            .WithContext(x => x
+                    .WithUser(candidateId)
+                    .WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
 
         validator.Setup(x => x.ValidateAsync(request, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult { });

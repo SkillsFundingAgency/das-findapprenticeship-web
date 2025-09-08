@@ -21,18 +21,19 @@ public class WhenGettingApplicationSubmitted
         [Frozen] Mock<IMediator> mediator,
         [Greedy] ApplyController controller)
     {
+        // arrange
         result.HasAnsweredEqualityQuestions = hasAnsweredEqualityQuestions;
         mediator.Setup(x => x.Send(It.Is<GetApplicationSubmittedQuery>(c =>
                 c.CandidateId.Equals(candidateId)
                 && c.ApplicationId.Equals(applicationId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
 
+        // act
         var actual = await controller.ApplicationSubmitted(applicationId) as ViewResult;
         var isVacancyClosedEarly = result.ClosedDate.HasValue && result.ClosedDate < result.ClosingDate;
 
+        // assert
         actual?.Should().NotBeNull();
         var actualModel = actual!.Model as ApplicationSubmittedViewModel;
         actualModel?.ApplicationId.Should().Be(applicationId);

@@ -31,7 +31,7 @@ public class WhenPostingDelete
     {
         // arrange
         DeleteApplicationCommand? capturedQuery = null;
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
         mediator
             .Setup(x => x.Send(It.IsAny<DeleteApplicationCommand>(), It.IsAny<CancellationToken>()))
             .Callback<IRequest<DeleteApplicationCommandResult>, CancellationToken>((query, _) => { capturedQuery = query as DeleteApplicationCommand; })
@@ -62,7 +62,7 @@ public class WhenPostingDelete
     {
         // arrange
         DeleteApplicationCommand? capturedQuery = null;
-        sut.AddControllerContext().WithUser(candidateId);
+        sut.WithContext(x => x.WithUser(candidateId));
         mediator
             .Setup(x => x.Send(It.IsAny<DeleteApplicationCommand>(), It.IsAny<CancellationToken>()))
             .Callback<IRequest<DeleteApplicationCommandResult>, CancellationToken>((query, _) => { capturedQuery = query as DeleteApplicationCommand; })

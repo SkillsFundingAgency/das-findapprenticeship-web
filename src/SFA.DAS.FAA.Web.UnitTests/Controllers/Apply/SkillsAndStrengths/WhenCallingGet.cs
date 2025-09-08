@@ -16,27 +16,21 @@ public class WhenCallingGet
         GetExpectedSkillsAndStrengthsQueryResult queryResult,
         [Frozen] Mock<IMediator> mediator)
     {
-        var mockUrlHelper = new Mock<IUrlHelper>();
-        mockUrlHelper
-        .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-        .Returns("https://baseUrl");
-
-        var controller = new SkillsAndStrengthsController(mediator.Object)
-        {
-            Url = mockUrlHelper.Object
-        };
-
+        // arrange
+        var controller = new SkillsAndStrengthsController(mediator.Object);
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetExpectedSkillsAndStrengthsQuery>
             (x => x.ApplicationId == applicationId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
+        // act
         var actual = await controller.Get(applicationId);
         var actualViewResult = actual as ViewResult;
 
+        // assert
         using (new AssertionScope())
         {
             actual.Should().BeOfType<ViewResult>();

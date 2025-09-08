@@ -30,15 +30,18 @@ public class WhenGettingPhoneNumber
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller
-            .AddControllerContext()
+        // arrange
+        controller.WithContext(x => x
             .WithUser(candidateId)
             .WithClaim(ClaimTypes.Email, email)
             .WithClaim(ClaimTypes.MobilePhone, phone)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier)
+        );
 
+        // act
         var result = await controller.PhoneNumber(journeyPath) as ViewResult;
-        
+
+        // assert
         result.Should().NotBeNull();
         var actualModel = result!.Model as PhoneNumberViewModel;
 

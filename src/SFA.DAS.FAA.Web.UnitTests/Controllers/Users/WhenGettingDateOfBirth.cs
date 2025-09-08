@@ -27,10 +27,8 @@ public class WhenGettingDateOfBirth
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+        // arrange
+        controller.WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier));
         mediator.Setup(x => x.Send(It.IsAny<GetCandidateDateOfBirthQuery>(), CancellationToken.None))
             .ReturnsAsync(new GetCandidateDateOfBirthQueryResult { DateOfBirth = null });
 
@@ -38,8 +36,10 @@ public class WhenGettingDateOfBirth
 
         result.Should().NotBeNull();
 
+        // act
         var actualModel = result!.Model as DateOfBirthViewModel;
 
+        // assert
         actualModel!.PageTitle.Should().Be(pageTitle);
         actualModel.PageCaption.Should().Be(pageCaption);
         actualModel.PageHeading.Should().Be(pageHeading);

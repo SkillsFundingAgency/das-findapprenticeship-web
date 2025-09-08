@@ -26,10 +26,7 @@ public class WhenPostingNotificationPreferences
     {
         // arrange
         model.JourneyPath = journeyPath;
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId)
-            .WithClaim(ClaimTypes.Email, email);
+        controller.WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.Email, email));
         validator
             .Setup(x => x.ValidateAsync(It.Is<NotificationPreferencesViewModel>(m => m == model), CancellationToken.None))
             .ReturnsAsync(new ValidationResult());
@@ -58,10 +55,7 @@ public class WhenPostingNotificationPreferences
         // arrange
         model.JourneyPath = journeyPath;
         model.UnfinishedApplicationReminders = null;
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId)
-            .WithClaim(ClaimTypes.Email, email);
+        controller.WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.Email, email));
         validator
             .Setup(x => x.ValidateAsync(It.Is<NotificationPreferencesViewModel>(m => m == model), CancellationToken.None))
             .ReturnsAsync(new ValidationResult([new ValidationFailure("SomeProperty", "SomeError")]));

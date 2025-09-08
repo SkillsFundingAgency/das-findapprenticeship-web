@@ -18,9 +18,7 @@ public class WhenPostingUpdateJobRequest
         [Greedy] WorkHistoryController controller)
     {
         // arrange
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateJobCommand>(c=>
                 c.JobId.Equals(request.JobId)

@@ -29,8 +29,7 @@ public class WhenCallingSummaryPost
         };
 
         controller
-            .AddControllerContext()
-            .WithUser(candidateId);
+            .WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<UpdateDisabilityConfidenceApplicationCommand>(c =>
                 c.ApplicationId.Equals(request.ApplicationId) &&

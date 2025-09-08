@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
-using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Configuration;
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
@@ -38,21 +38,18 @@ public class WhenGettingMapSearchResults
         mediator
             .Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
-        
+
         var controller = new SearchApprenticeshipsController(
             mediator.Object,
             dateTimeService.Object,
             faaConfig.Object,
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
-            Mock.Of<ILogger<SearchApprenticeshipsController>>())
-        {
-            Url = mockUrlHelper.Object,
-        };
+            Mock.Of<ILogger<SearchApprenticeshipsController>>());
+        
         controller
-            .AddControllerContext()
-            .WithUser(candidateId)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+            .WithUrlHelper()
+            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier));
         
         var actual = await controller.MapSearchResults(new GetSearchResultsRequest
         {
@@ -91,9 +88,7 @@ public class WhenGettingMapSearchResults
         [Greedy] SearchApprenticeshipsController sut)
     {
         // arrange
-        sut
-            .AddControllerContext()
-            .WithUser(Guid.NewGuid());
+        sut.WithContext(x => x.WithUser(Guid.NewGuid()));
         mediator
             .Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(getSearchResultsResult);

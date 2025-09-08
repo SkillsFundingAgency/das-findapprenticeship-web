@@ -29,10 +29,7 @@ public class WhenGettingName
         [Greedy] UserController controller)
     {
         // arrange
-        controller
-            .AddControllerContext()
-            .WithUser(candidateId)
-            .WithClaim(ClaimTypes.NameIdentifier, govIdentifier);
+        controller.WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier));
         mediator.Setup(x => x.Send(It.Is<GetCandidateNameQuery>(x => x.CandidateId == candidateId), It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
