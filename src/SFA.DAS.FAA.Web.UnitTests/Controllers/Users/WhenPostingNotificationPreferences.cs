@@ -9,6 +9,7 @@ using SFA.DAS.FAA.Web.Models.User;
 using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
+
 public class WhenPostingNotificationPreferences
 {
     [Test]
@@ -21,9 +22,11 @@ public class WhenPostingNotificationPreferences
         Guid candidateId,
         string email,
         NotificationPreferencesViewModel model,
+        Mock<IValidator<NotificationPreferencesViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        // arrange
         model.JourneyPath = journeyPath;
         controller.ControllerContext = new ControllerContext
         {
@@ -36,9 +39,14 @@ public class WhenPostingNotificationPreferences
                     }))
             }
         };
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<NotificationPreferencesViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
 
-        var result = await controller.NotificationPreferences(model) as RedirectToRouteResult;
+        // act
+        var result = await controller.NotificationPreferences(validator.Object, model) as RedirectToRouteResult;
 
+        // assert
         result.Should().NotBeNull();
         mediator.Verify(x => x.Send(It.Is<UpsertCandidatePreferencesCommand>(c =>
             c.UnfinishedApplicationReminders == model.UnfinishedApplicationReminders), It.IsAny<CancellationToken>()), Times.Once);
@@ -52,9 +60,11 @@ public class WhenPostingNotificationPreferences
         Guid candidateId,
         string email,
         NotificationPreferencesViewModel model,
+        Mock<IValidator<NotificationPreferencesViewModel>> validator,
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
+        // arrange
         model.JourneyPath = journeyPath;
         model.UnfinishedApplicationReminders = null;
         controller.ControllerContext = new ControllerContext
@@ -68,10 +78,14 @@ public class WhenPostingNotificationPreferences
                 }))
             }
         };
-        controller.ModelState.AddModelError("SomeProperty", "SomeError");
+        validator
+            .Setup(x => x.ValidateAsync(It.Is<NotificationPreferencesViewModel>(m => m == model), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult([new ValidationFailure("SomeProperty", "SomeError")]));
 
-        var result = await controller.NotificationPreferences(model) as ViewResult;
+        // act
+        var result = await controller.NotificationPreferences(validator.Object, model) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         result!.Model.Should().Be(model);
     }

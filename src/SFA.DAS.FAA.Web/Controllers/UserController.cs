@@ -376,8 +376,11 @@ namespace SFA.DAS.FAA.Web.Controllers
         }
 
         [HttpPost("notification-preferences", Name = RouteNames.NotificationPreferences)]
-        public async Task<IActionResult> NotificationPreferences(NotificationPreferencesViewModel model)
+        public async Task<IActionResult> NotificationPreferences(
+            [FromServices] IValidator<NotificationPreferencesViewModel> validator,
+            NotificationPreferencesViewModel model)
         {
+            await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
             if (!ModelState.IsValid)
             {
                 return View(model);
