@@ -20,7 +20,7 @@ public class WhenCreatingSavedSearchViewModel
         new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, null, "Foo in all of England" },
         new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, "Hull", true, true, null, "Foo in Hull" },
         new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, null, "Foo in all of England" },
-        new object?[] { null, new [] {1, 2, 3}, new [] {1, 2}, null, true, true, null, "3 categories in all of England" },
+        new object?[] { null, new [] {1, 2, 3}, new [] {1, 2}, null, true, true, null, "3 job categories in all of England" },
         new object?[] { null, new [] { 2 }, new [] {1, 2}, null, true, true, null, "Route Two in all of England" },
         new object?[] { null, null, new [] {1, 2, 3, 4}, null, true, true, null, "4 apprenticeship levels in all of England" },
         new object?[] { null, null, new [] { 4 }, null, true, true, null, "Level 4 in all of England" },
