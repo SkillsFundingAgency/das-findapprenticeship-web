@@ -50,6 +50,7 @@ public record SavedSearchViewModel(
             ? string.Empty
             : FilterBuilder.BuildFullQueryString(new GetSearchResultsRequest
             {
+                ApprenticeshipTypes = source.SearchParameters.SelectedApprenticeshipTypes != null ? source.SearchParameters.SelectedApprenticeshipTypes.Select(x => x).ToList() : [],
                 Location = source.SearchParameters.Location,
                 SearchTerm = source.SearchParameters.SearchTerm,
                 Distance = source.SearchParameters.Distance,

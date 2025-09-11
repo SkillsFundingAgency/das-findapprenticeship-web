@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Models.User;
+using SFA.DAS.FAA.Web.Services;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models.User;
 
@@ -50,12 +54,30 @@ public class WhenCreatingSavedSearchViewModel
                 apprenticeshipTypes
             )
         );
-        
+
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns("https://baseUrl");
+
+        var url = FilterBuilder.BuildFullQueryString(new GetSearchResultsRequest
+            {
+                ApprenticeshipTypes = savedSearch.SearchParameters.SelectedApprenticeshipTypes != null ? savedSearch.SearchParameters.SelectedApprenticeshipTypes.Select(x => x).ToList() : [],
+                Location = savedSearch.SearchParameters.Location,
+                SearchTerm = savedSearch.SearchParameters.SearchTerm,
+                Distance = savedSearch.SearchParameters.Distance,
+                DisabilityConfident = savedSearch.SearchParameters.DisabilityConfident,
+                ExcludeNational = savedSearch.SearchParameters.ExcludeNational,
+                LevelIds = savedSearch.SearchParameters.SelectedLevelIds != null ? savedSearch.SearchParameters.SelectedLevelIds.Select(x => x.ToString()).ToList() : [],
+                RouteIds = savedSearch.SearchParameters.SelectedRouteIds != null ? savedSearch.SearchParameters.SelectedRouteIds.Select(x => x.ToString()).ToList() : [],
+            }, mockUrlHelper.Object);
+
         // act
-        var result = SavedSearchViewModel.From(savedSearch, RouteInfos);
+        var result = SavedSearchViewModel.From(savedSearch, RouteInfos, mockUrlHelper.Object);
 
         // assert
         result.Title.Should().Be(expectedTitle);
+        result.SearchUrl.Should().Be(url);
     }
     
     [TestCase(null, null, "All of England")]
