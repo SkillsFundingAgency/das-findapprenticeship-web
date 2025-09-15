@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Models;
-using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAA.Web.Services;
 
@@ -27,7 +26,7 @@ public record SavedSearchViewModel(
         {
             { SearchTerm: not null } => source.SearchParameters.SearchTerm,
             { SelectedRouteIds: { Count: 1 } } => routes.First(route => route.Id == source.SearchParameters.SelectedRouteIds[0]).Name,
-            { SelectedRouteIds: { Count: > 1 } } => $"{source.SearchParameters.SelectedRouteIds.Count} categories",
+            { SelectedRouteIds: { Count: > 1 } } => $"{source.SearchParameters.SelectedRouteIds.Count} job categories",
             { SelectedApprenticeshipTypes: { Count: 1 } } => GetApprenticeshipTypeText(source.SearchParameters.SelectedApprenticeshipTypes[0]),
             { SelectedApprenticeshipTypes: { Count: > 1 } } => $"{source.SearchParameters.SelectedApprenticeshipTypes.Count} apprenticeship types",
             { SelectedLevelIds.Count: 1 } => $"Level {source.SearchParameters.SelectedLevelIds[0]}",
