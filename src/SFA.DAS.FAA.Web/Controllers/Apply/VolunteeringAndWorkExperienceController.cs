@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.UpdateApplication.VolunteeringAndWorkExperience;
@@ -50,8 +51,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpPost]
     [Route("apply/{applicationId}/volunteering-and-work-experience", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience)]
-    public async Task<IActionResult> Post(VolunteeringAndWorkExperienceViewModel model)
+    public async Task<IActionResult> Post(
+        [FromServices] IValidator<VolunteeringAndWorkExperienceViewModel> validator,
+        VolunteeringAndWorkExperienceViewModel model)
     {
+        await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
         if (!ModelState.IsValid)
         {
             model = new VolunteeringAndWorkExperienceViewModel
@@ -93,8 +97,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpPost]
     [Route("apply/{applicationId}/volunteering-and-work-experience/add", Name = RouteNames.ApplyApprenticeship.AddVolunteeringAndWorkExperience)]
-    public async Task<IActionResult> PostAddVolunteeringAndWorkExperience(AddVolunteeringAndWorkExperienceViewModel request)
+    public async Task<IActionResult> PostAddVolunteeringAndWorkExperience(
+        IValidator<AddVolunteeringAndWorkExperienceViewModel> validator,
+        AddVolunteeringAndWorkExperienceViewModel request)
     {
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
         if (!ModelState.IsValid)
         {
             return View(AddViewPath, request);
@@ -144,8 +151,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpPost]
     [Route("apply/{applicationId}/volunteering-and-work-experience/summary", Name = RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperienceSummary)]
-    public async Task<IActionResult> Summary(VolunteeringAndWorkExperienceSummaryViewModel viewModel)
+    public async Task<IActionResult> Summary(
+        [FromServices] IValidator<VolunteeringAndWorkExperienceSummaryViewModel> validator,
+        VolunteeringAndWorkExperienceSummaryViewModel viewModel)
     {
+        await validator.ValidateAndUpdateModelStateAsync(viewModel, ModelState);
         if (!ModelState.IsValid)
         {
             var result = await mediator.Send(new GetVolunteeringAndWorkExperiencesQuery
@@ -196,8 +206,11 @@ public class VolunteeringAndWorkExperienceController(IMediator mediator) : Contr
 
     [HttpPost]
     [Route("apply/{applicationId}/volunteering-and-work-experience/{volunteeringWorkExperienceId}", Name = RouteNames.ApplyApprenticeship.EditVolunteeringAndWorkExperience)]
-    public async Task<IActionResult> PostEditVolunteeringAndWorkExperience(EditVolunteeringAndWorkExperienceViewModel request)
+    public async Task<IActionResult> PostEditVolunteeringAndWorkExperience(
+        [FromServices] IValidator<EditVolunteeringAndWorkExperienceViewModel> validator,
+        EditVolunteeringAndWorkExperienceViewModel request)
     {
+        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
         if (!ModelState.IsValid)
         {
             return View(EditViewPath, request);

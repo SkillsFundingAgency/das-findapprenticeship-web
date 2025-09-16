@@ -3,7 +3,6 @@ using System.Security.Cryptography.X509Certificates;
 using Azure;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.SearchApprenticeshipsIndex;
 using SFA.DAS.FAA.Domain.Configuration;
@@ -67,7 +66,6 @@ public static class AddServiceRegistrationExtension
         services.AddTransient<IDateTimeService, DateTimeService>();
         services.AddTransient<INotificationCountService, NotificationCountService>();
 
-        services.AddFluentValidationAutoValidation();
         if (devDecrypt)
         {
             services.AddTransient<IDataProtectorService, DevDataProtectorService>();

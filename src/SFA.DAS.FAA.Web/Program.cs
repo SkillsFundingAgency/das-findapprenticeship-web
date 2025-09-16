@@ -5,7 +5,6 @@ using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.ModelBinding;
 using SFA.DAS.FAA.Web.Filters;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.GovUK.Auth.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +14,7 @@ var rootConfiguration = builder.Configuration.LoadConfiguration(isIntegrationTes
 builder.Services
     .AddOptions()
     .AddMemoryCache()
-.AddValidatorsFromAssembly(typeof(Program).Assembly)
+    .AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true)
     .AddControllers(options =>
     {
         options.ModelBinderProviders.Insert(0, new MonthYearDateModelBinderProvider());

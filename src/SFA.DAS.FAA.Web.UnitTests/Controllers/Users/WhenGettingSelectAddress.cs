@@ -1,14 +1,12 @@
 ﻿using CreateAccount.GetAddressesByPostcode;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
-using SFA.DAS.FAA.Web.Models.User;
-using System.Security.Claims;
 using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.User;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
+
 public class WhenGettingSelectAddress
 {
     [Test]
@@ -23,23 +21,17 @@ public class WhenGettingSelectAddress
         [Frozen] Mock<IMediator> mediator, 
         [Greedy] UserController controller)
     {
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
-                    new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                }))
-            }
-        };
+        // arrange
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetAddressesByPostcodeQuery>(x => x.Postcode == postcode && x.CandidateId == candidateId), CancellationToken.None))
             .ReturnsAsync(queryResult);
 
+        // act
         var result = await controller.SelectAddress(postcode, journeyPath) as ViewResult;
         var resultModel = result.Model as SelectAddressViewModel;
 
+        // assert
         resultModel.Addresses.Count.Should().Be(queryResult.Addresses.Count());
         resultModel.JourneyPath.Should().Be(journeyPath);
     }
@@ -54,10 +46,13 @@ public class WhenGettingSelectAddress
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller.AddControllerContext().WithUser(candidateId);
+        // arrange
+        controller.WithContext(x => x.WithUser(candidateId));
 
+        // act
         var result = await controller.SelectAddress(postcode) as RedirectToRouteResult;
 
+        // assert
         result!.RouteName.Should().Be(RouteNames.PostcodeAddress);
         mediator.Verify(x => x.Send(It.IsAny<GetAddressesByPostcodeQuery>(), CancellationToken.None), Times.Never);
     }

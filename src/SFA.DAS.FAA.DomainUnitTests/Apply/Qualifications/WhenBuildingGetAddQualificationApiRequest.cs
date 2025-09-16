@@ -1,6 +1,3 @@
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.Qualifications;
@@ -14,8 +11,9 @@ public class WhenBuildingGetAddQualificationApiRequest
 
         actual.GetUrl.Should().Be($"applications/{applicationId}/qualifications/{qualificationReferenceId}/modify?candidateId={candidateId}&id={qualificationId}");
     }
+    
     [Test, AutoData]
-    public void Then_The_Url_Is_Correctly_Built(Guid qualificationReferenceId, Guid applicationId, Guid candidateId)
+    public void Then_The_Url_Is_Correctly_Built_With_Null_Qualification_Id(Guid qualificationReferenceId, Guid applicationId, Guid candidateId)
     {
         var actual = new GetModifyQualificationApiRequest(qualificationReferenceId, applicationId, candidateId, null);
 

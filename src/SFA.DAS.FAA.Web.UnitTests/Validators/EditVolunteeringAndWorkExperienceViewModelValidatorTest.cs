@@ -1,12 +1,8 @@
-﻿using AutoFixture.NUnit3;
-using FluentValidation.TestHelper;
-using Moq;
-using NUnit.Framework;
+﻿using FluentValidation.TestHelper;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Models.Custom;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Validators;
 

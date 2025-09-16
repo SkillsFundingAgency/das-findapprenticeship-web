@@ -1,14 +1,12 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePreferences;
-using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
+
 public class WhenGettingNotificationPreferences
 {
     [Test]
@@ -28,23 +26,17 @@ public class WhenGettingNotificationPreferences
         [Frozen] Mock<IMediator> mediator,
         [Greedy] UserController controller)
     {
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                    {
-                        new Claim(CustomClaims.CandidateId, candidateId.ToString())
-                    }))
-            }
-        };
+        // arrange
+        controller.WithContext(x => x.WithUser(candidateId));
 
         mediator.Setup(x => x.Send(It.Is<GetCandidatePreferencesQuery>(x => x.CandidateId == candidateId)
             , It.IsAny<CancellationToken>()))
             .ReturnsAsync(queryResult);
 
+        // act
         var result = await controller.NotificationPreferences(journeyPath) as ViewResult;
 
+        // assert
         result.Should().NotBeNull();
         var actualModel = result!.Model as NotificationPreferencesViewModel;
 

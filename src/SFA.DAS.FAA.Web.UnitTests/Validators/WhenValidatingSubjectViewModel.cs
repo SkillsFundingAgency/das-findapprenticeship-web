@@ -1,5 +1,3 @@
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Validators;
 

@@ -1,12 +1,10 @@
 ﻿using FluentValidation.TestHelper;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Models.Apply;
 using SFA.DAS.FAA.Web.Validators;
 using SFA.DAS.FAT.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Validators;
+
 public class WhenValidatingAddTrainingCourse
 {
     private const string CourseNameErrorMessage = "Enter the name of this training course";

@@ -1,10 +1,8 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using CreateAccount.GetAddressesByPostcode;
+﻿using CreateAccount.GetAddressesByPostcode;
 using SFA.DAS.FAA.Web.Models.User;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
+
 public class WhenCreatingSelectAddressViewModel
 {
     [Test, MoqAutoData]
