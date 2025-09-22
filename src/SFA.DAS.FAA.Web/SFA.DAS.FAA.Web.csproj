@@ -59,5 +59,8 @@
   <Target Name="NpmRunBuild" DependsOnTargets="NpmInstall" BeforeTargets="BeforeBuild">
     <Exec Command="npm run build" />
   </Target>
-
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="SFA.DAS.FAA.Web.UnitTests" />
+    </ItemGroup>
 </Project>
