@@ -175,8 +175,8 @@ public class SearchApprenticeshipsController(
         [FromServices] IValidator<GetSearchResultsRequest> validator,
         [FromQuery] GetSearchResultsRequest request)
     {
-        await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
-        if (!ModelState.IsValid)
+        var validationResult = await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
+        if (!validationResult.IsValid)
         {
             return View(new SearchResultsViewModel
             {

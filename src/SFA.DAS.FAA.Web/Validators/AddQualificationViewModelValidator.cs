@@ -11,14 +11,13 @@ public class AddQualificationViewModelValidator : AbstractValidator<AddQualifica
         RuleForEach(x => x.Subjects).SetValidator(x=> new SubjectViewModelValidator(new QualificationDisplayTypeViewModel(x.QualificationType,x.QualificationReferenceId)));
     }
 }
-public class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
+internal class SubjectViewModelValidator : AbstractValidator<SubjectViewModel>
 {
     public SubjectViewModelValidator(QualificationDisplayTypeViewModel model)
     {
         var isApprenticeship = model.GroupTitle.Equals("apprenticeship", StringComparison.CurrentCultureIgnoreCase);
         var isDegree = model.GroupTitle.Equals("degree", StringComparison.CurrentCultureIgnoreCase);
         var isOther = model.GroupTitle.Equals("Other", StringComparison.CurrentCultureIgnoreCase);
-        
         
         if (!isApprenticeship)
         {
