@@ -173,7 +173,7 @@ public class QualificationsController(IMediator mediator) : Controller
     [HttpPost]
     [Route("apply/{applicationId}/qualifications/{qualificationReferenceId}/modify", Name = RouteNames.ApplyApprenticeship.AddQualification)]
     public async Task<IActionResult> ModifyQualification(
-        IValidator<AddQualificationViewModel> validator,
+        [FromServices] IValidator<AddQualificationViewModel> validator,
         AddQualificationViewModel model)
     {
         await validator.ValidateAndUpdateModelStateAsync(model, ModelState);
