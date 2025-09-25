@@ -1097,7 +1097,7 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
             </strong>`;
     }
     if (vacancy.applicationStatus != null) {
-      return `<strong class="govuk-tag govuk-!-margin-bottom-2">
+      return `<strong class="${vacancy.applicationStatusCssClass}">
                 ${vacancy.applicationStatus}
             </strong>`;
     }

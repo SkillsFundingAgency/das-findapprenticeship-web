@@ -26,7 +26,8 @@ public class ApprenticeshipMapData
                 Wage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source, candidateDateOfBirth),
                 ClosingDate = VacancyDetailsHelperService.GetClosingDate(dateTimeService, source.ClosingDate, !string.IsNullOrEmpty(source.ApplicationUrl)),
                 PostedDate = source.PostedDate.GetMapsPostedDate(),
-                ApplicationStatus = source.CandidateApplicationDetails?.Status,
+                ApplicationStatus =  source.CandidateApplicationDetails?.Status?.GetLabel(),
+                ApplicationStatusCssClass =  source.CandidateApplicationDetails?.Status?.GetCssClass(),
                 IsClosingSoon = source.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
                 IsNew = source.PostedDate >= dateTimeService.GetDateTime().AddDays(-7),
                 IsFoundation = source.ApprenticeshipType == ApprenticeshipTypes.Foundation,
@@ -57,7 +58,8 @@ public class ApprenticeshipMapJob
     public string? Wage { get; set; }
     public string? ClosingDate { get; set; }
     public string? PostedDate { get; set; }
-    public ApplicationStatus? ApplicationStatus { get; set; }
+    public string? ApplicationStatus { get; set; }
+    public string? ApplicationStatusCssClass { get; set; }
     public bool IsClosingSoon { get; set; }
     public bool IsNew { get; set; }
     public bool IsFoundation { get; set; }

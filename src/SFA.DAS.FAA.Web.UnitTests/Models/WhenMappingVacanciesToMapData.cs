@@ -1,4 +1,6 @@
+using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.SearchResults;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -13,6 +15,7 @@ public class WhenMappingVacanciesToMapData
         [Frozen]Mock<IDateTimeService> dateTimeService)
     {
         source.ApplicationUrl = string.Empty;
+        source.ApplicationStatus = nameof(ApplicationStatus.Draft);
         dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow);
         
         var actual = ApprenticeshipMapData.MapToViewModel(dateTimeService.Object, source, null);
@@ -24,6 +27,8 @@ public class WhenMappingVacanciesToMapData
         actual.Job.Company.Should().Be(source.EmployerName);
         actual.Job.Wage.Should().Be(VacancyDetailsHelperService.GetVacancyAdvertWageText(source, null));
         actual.Job.ClosingDate.Should().Be(VacancyDetailsHelperService.GetClosingDate(dateTimeService.Object, source.ClosingDate));
+        actual.Job.ApplicationStatusCssClass.Should().Be(ApplicationStatus.Draft.GetCssClass());
+        actual.Job.ApplicationStatus.Should().Be(ApplicationStatus.Draft.GetLabel());
     }
     
     [Test]
@@ -45,6 +50,7 @@ public class WhenMappingVacanciesToMapData
     )
     {
         // arrange
+        vacancyAdvert.ApplicationStatus = null!;
         vacancyAdvert.OtherAddresses = [];
         vacancyAdvert.AddressLine1 = addressLine1;
         vacancyAdvert.AddressLine2 = addressLine2;
@@ -77,6 +83,7 @@ public class WhenMappingVacanciesToMapData
     )
     {
         // arrange
+        vacancyAdvert.ApplicationStatus = null!;
         vacancyAdvert.AddressLine1 = addressLine1;
         vacancyAdvert.AddressLine2 = addressLine2;
         vacancyAdvert.AddressLine3 = addressLine3;
@@ -94,6 +101,7 @@ public class WhenMappingVacanciesToMapData
     public void The_The_Location_Is_Set_To_Recruiting_Nationally(VacancyAdvert vacancyAdvert, Mock<IDateTimeService> dateTimeService)
     {
         // arrange
+        vacancyAdvert.ApplicationStatus = nameof(ApplicationStatus.Successful);
         vacancyAdvert.OtherAddresses = [];
         vacancyAdvert.EmploymentLocationInformation = "Some text";
         vacancyAdvert.Postcode = string.Empty;
