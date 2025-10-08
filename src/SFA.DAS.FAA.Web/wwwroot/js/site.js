@@ -555,8 +555,6 @@ FaaMapDirections.prototype.init = async function () {
   const directionsService = new google.maps.DirectionsService();
   const directionsRenderer = new google.maps.DirectionsRenderer();
 
-  console.log(this.location)
-
   if (this.multiLocations.length > 0) {
     this.multiLocationsDropdown();
   }
