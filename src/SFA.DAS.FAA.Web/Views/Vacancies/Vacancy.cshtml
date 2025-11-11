@@ -6,35 +6,45 @@
         <a class="govuk-back-link" href="@Model.BackLinkUrl">Back</a>
     }
 }
-@if (Model.VacancySource == VacancyDataSource.Raa)
+@switch (Model.VacancySource)
 {
-    @if (Model.ShowAccountCreatedBanner)
+    case VacancyDataSource.Raa:
     {
-        <partial name="_AccountCreatedBanner" />
-    }
-    ViewData["Title"] = !Model.IsClosed
-        ? $"{Model.Title!} – Find an apprenticeship – GOV.UK"
-        : "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
-
-    <partial name="_RaaVacancy" model="Model" />
-
-    if (@Model.EmployerLocationOption is not AvailableWhere.AcrossEngland && Model.ShowMap)
-    {
-        @section AfterJSScripts {
-            <script>
-                const directionsForm = document.getElementById('faa-directions-form')
-                const directionsMap = document.getElementById('faa-directions-map')
-                if (directionsForm && directionsMap) {
-                    let mapLocations = @Html.Raw(Json.Serialize(Model.MapLocations)) ?? [];
-                    mapLocations = mapLocations.length > 1 ? mapLocations : [];
-                    new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", mapLocations,  directionsForm, directionsMap).init()
-                }
-            </script>
+        if (Model.ShowAccountCreatedBanner)
+        {
+            <partial name="_AccountCreatedBanner" />
         }
+        ViewData["Title"] = !Model.IsClosed
+            ? $"{Model.Title!} – Find an apprenticeship – GOV.UK"
+            : "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
+
+        <partial name="_RaaVacancy" model="Model" />
+
+        if (@Model.EmployerLocationOption is not AvailableWhere.AcrossEngland && Model.ShowMap)
+        {
+            <text>
+                @section AfterJSScripts
+                  {
+                      <script>
+                        const directionsForm = document.getElementById('faa-directions-form')
+                        const directionsMap = document.getElementById('faa-directions-map')
+                        if (directionsForm && directionsMap) {
+                            let mapLocations = @Html.Raw(Json.Serialize(Model.MapLocations)) ?? [];
+                            mapLocations = mapLocations.length > 1 ? mapLocations : [];
+                            new FaaMapDirections("@Model.GoogleMapsId", @Model.Longitude, @Model.Latitude, "@Model.WorkLocation.Postcode", mapLocations,  directionsForm, directionsMap).init()
+                        }       
+                       </script>
+                  }
+            </text>
+        }
+        break;
     }
-}
-else
-{
-    ViewData["Title"] = "See more details about this apprenticeship on NHS Jobs - Find an apprenticeship - GOV.UK";
-    <partial name="_NhsVacancy" model="Model" />
+    case VacancyDataSource.Nhs:
+        ViewData["Title"] = "See more details about this apprenticeship on NHS Jobs - Find an apprenticeship - GOV.UK";
+        <partial name="_NhsVacancy" model="Model" />
+        break;
+    case VacancyDataSource.Csj:
+        ViewData["Title"] = "See more details about this apprenticeship on CSJ Jobs - Find an apprenticeship - GOV.UK";
+        <partial name="_CsjVacancy" model="Model" />
+        break;
 }
