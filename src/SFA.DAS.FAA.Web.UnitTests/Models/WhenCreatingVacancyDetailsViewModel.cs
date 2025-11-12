@@ -11,9 +11,17 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
 public class WhenCreatingVacancyDetailsViewModel
 {
-    [Test, MoqAutoData]
-    public void Then_The_Fields_Are_Mapped(GetApprenticeshipVacancyQueryResult source, string mapsId, [Frozen] Mock<IDateTimeService> dateTimeService)
+    [Test]
+    [MoqInlineAutoData(WageType.CompetitiveSalary)]
+    [MoqInlineAutoData(WageType.Unknown)]
+    [MoqInlineAutoData(WageType.FixedWage)]
+    public void Then_The_Fields_Are_Mapped(
+        WageType wageType,
+        GetApprenticeshipVacancyQueryResult source,
+        string mapsId,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
     {
+        source.Vacancy!.WageType = (int)wageType;
         var expected = new {
             Title = source.Vacancy!.Title,
             VacancyReference = source.Vacancy?.VacancyReference,
@@ -64,7 +72,7 @@ public class WhenCreatingVacancyDetailsViewModel
         };
 
         var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, source, mapsId);
-
+        actual.AnnualWage.Should().Be(source.Vacancy.WageText);
         actual.Should().BeEquivalentTo(expected);
     }
 
