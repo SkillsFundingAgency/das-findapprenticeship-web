@@ -267,7 +267,7 @@ else
                     </div>
                 </div>
                 <p>
-                    @Model.VacancySummary
+                    @Html.Raw(Model.VacancySummary)
                 </p>
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
@@ -361,7 +361,9 @@ else
                             break;
                         }
                     case AvailableWhere.AcrossEngland:
-                        <p class="govuk-body">@Model.EmploymentLocationInformation</p>
+                        <p class="govuk-body">
+                            @Html.Raw(Model.EmploymentLocationInformation)
+                        </p>
                         break;
                     default:
                         <address class="govuk-body" value="Model.WorkLocation" anonymised="Model.IsAnonymousEmployer"></address>
@@ -485,7 +487,9 @@ else
                 @if (!string.IsNullOrEmpty(Model.AdditionalTrainingInformation))
                 {
                     <h3 class="govuk-heading-s">More training information</h3>
-                    <p>@Html.Raw(@Model.AdditionalTrainingInformation)</p>
+                    <p>
+                        @Html.Raw(@Model.AdditionalTrainingInformation)
+                    </p>
                 }
             </section>
             <section class="faa-vacancy__section" id="requirements">
@@ -525,7 +529,9 @@ else
                 @if (!string.IsNullOrEmpty(Model.ThingsToConsider))
                 {
                     <h3 class="govuk-heading-s">Other requirements</h3>
-                    <p>@Model.ThingsToConsider</p>
+                    <p>
+                        @Html.Raw(Model.ThingsToConsider)
+                    </p>
                 }
             </section>
             <section class="faa-vacancy__section" id="company">
