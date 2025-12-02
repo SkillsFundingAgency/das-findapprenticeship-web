@@ -605,18 +605,15 @@ else
                         </div>
 
                         <p>@Model.ClosingDate</p>
-                        <p class="govuk-body">
-                            Sign in with your GOV.UK One Login to apply.
-                        </p>
                         if (!string.IsNullOrEmpty(Model.ApplicationUrl))
                         {
                             <p class="govuk-body">After signing in, you’ll apply for this apprenticeship on the company's website.</p>
                         }
 
-                        <form class="form" method="post" asp-route="@RouteNames.Vacancies" asp-route-VacancyReference="@Model.VacancyReference">
+                        <form class="form" method="post" asp-route="@RouteNames.Vacancies" asp-route-VacancyReference="@Model.VacancyReference" asp-route-signedin="true">
                             <div class="govuk-button-group">
                                 <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">
-                                    Sign in to apply
+                                    Sign in or create an account
                                 </button>
                             </div>
                         </form>

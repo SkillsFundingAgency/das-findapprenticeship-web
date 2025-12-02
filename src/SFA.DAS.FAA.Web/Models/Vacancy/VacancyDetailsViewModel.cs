@@ -79,6 +79,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
         public bool CandidateIs22To24AtStartOfVacancy => CandidateAgeAtStartOfVacancy is >= 22 and <= 24;
         public bool CandidateIs25OrOverAtStartOfVacancy => CandidateAgeAtStartOfVacancy >= 25;
         public string FoundationRequirementsUrl { get; set; } = string.Empty;
+        public bool ShowSignedInBanner { get; set; } = false;
 
         public string? EmploymentWorkLocation => EmployerLocationOption switch
         {
