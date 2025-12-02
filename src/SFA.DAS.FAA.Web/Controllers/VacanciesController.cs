@@ -29,6 +29,7 @@ public class VacanciesController(
     public async Task<IActionResult> Vacancy(
         [FromServices] IValidator<GetVacancyDetailsRequest> validator,
         [FromRoute] GetVacancyDetailsRequest request,
+        [FromQuery] string? signedIn = null,
         NavigationSource source = NavigationSource.None,
         ApplicationsTab tab = ApplicationsTab.None)
     {
@@ -58,6 +59,7 @@ public class VacanciesController(
             await NotificationBannerService.ShowAccountBanner(cacheStorageService,
                 $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
         viewModel.FoundationRequirementsUrl = "#";
+        viewModel.ShowSignedInBanner = string.Equals("true", signedIn, StringComparison.CurrentCultureIgnoreCase);
 
         return View(viewModel);
     }

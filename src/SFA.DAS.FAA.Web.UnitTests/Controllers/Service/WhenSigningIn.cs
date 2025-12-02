@@ -59,13 +59,17 @@ public class WhenSigningIn
         [Frozen] Mock<IDataProtectorService> dataProtectorService,
         [Greedy]ServiceController controller)
     {
+        // arrange
         var decryptedValue = $"{controllerName}|{actionName}|{uniqueId}|";
         dataProtectorService.Setup(x => x.DecodeData(urlParam)).Returns(decryptedValue);
 
+        // act
         var actual = await controller.SignIn(urlParam) as RedirectToActionResult;
 
-        actual.RouteValues?.Count.Should().Be(1);
+        // assert
+        actual.RouteValues?.Count.Should().Be(2);
         actual.RouteValues?.Should().ContainEquivalentOf(new KeyValuePair<string, string>("vacancyReference", uniqueId.ToString()));
+        actual.RouteValues?.Should().ContainEquivalentOf(new KeyValuePair<string, bool>("signedin", true));
     }
     
     [Test, MoqAutoData]
