@@ -135,7 +135,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleNullOrEmptyInput(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -148,7 +148,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleHourlyWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -160,7 +160,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleAnnualWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -177,7 +177,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void Then_WageAmount_With_Lower_Higher_Limit_GetWageText_ShouldHandleAnnualWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -191,7 +191,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldReturnOriginalTextForOtherCases(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
