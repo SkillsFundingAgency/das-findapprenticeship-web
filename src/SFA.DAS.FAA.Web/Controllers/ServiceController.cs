@@ -65,7 +65,7 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
         var vacancyReference = values[2];
         var queryString = values[3];
         
-        var queryObject = new ExpandoObject()  as IDictionary<string, object>;
+        var queryObject = new ExpandoObject() as IDictionary<string, object>;
         
         if (!string.IsNullOrEmpty(queryString))
         {
@@ -79,6 +79,7 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
         if (!string.IsNullOrEmpty(vacancyReference))
         {
             queryObject.Add("vacancyReference", vacancyReference);
+            queryObject.Add("signedin", true);
         }
 
         return RedirectToAction(actionName, controllerName, queryObject);

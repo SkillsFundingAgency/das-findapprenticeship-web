@@ -1,29 +1,9 @@
-﻿using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using SFA.DAS.FAA.Web.TagHelpers;
+﻿using SFA.DAS.FAA.Web.TagHelpers;
 
 namespace SFA.DAS.FAA.Web.UnitTests.TagHelpers;
 
-public class AccessibleListTagHelperTests
+public class AccessibleListTagHelperTests: TagHelperTestsBase
 {
-    private TagHelperContext _tagHelperContext;
-    private TagHelperOutput _tagHelperOutput;
-    
-    [SetUp]
-    public void SetUp()
-    {
-        _tagHelperContext = new TagHelperContext([], new Dictionary<object, object>(), "id");
-        _tagHelperOutput = new TagHelperOutput(string.Empty, [], Func);
-        return;
-
-        static Task<TagHelperContent> Func(bool result, HtmlEncoder encoder)
-        {
-            var tagHelperContent = new DefaultTagHelperContent();
-            tagHelperContent.SetHtmlContent(string.Empty);
-            return Task.FromResult<TagHelperContent>(tagHelperContent);
-        }
-    }
-    
     [Test]
     public async Task Output_Is_Suppressed_When_Items_Are_Null()
     {
@@ -31,10 +11,10 @@ public class AccessibleListTagHelperTests
         var sut = new AccessibleListTagHelper();
 
         // act
-        await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+        await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
         // assert
-        _tagHelperOutput.AsString().Should().BeEmpty();
+        TagHelperOutput.AsString().Should().BeEmpty();
     }
     
     [Test]
@@ -48,10 +28,10 @@ public class AccessibleListTagHelperTests
         };
 
         // act
-        await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+        await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
         // assert
-        _tagHelperOutput.AsString().Should().Contain("class=\"class1 class2\"");
+        TagHelperOutput.AsString().Should().Contain("class=\"class1 class2\"");
     }
     
     [Test]
@@ -65,10 +45,10 @@ public class AccessibleListTagHelperTests
         };
 
         // act
-        await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+        await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
         // assert
-        _tagHelperOutput.AsString().Should().Contain("class=\"govuk-list govuk-list--bullet class1 class2\"");
+        TagHelperOutput.AsString().Should().Contain("class=\"govuk-list govuk-list--bullet class1 class2\"");
     }
     
     [Test]
@@ -81,10 +61,10 @@ public class AccessibleListTagHelperTests
         };
 
         // act
-        await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+        await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
         // assert
-        _tagHelperOutput.AsString().Should().Be("<div>HtmlEncode[[item 1]]</div>");
+        TagHelperOutput.AsString().Should().Be("<div>HtmlEncode[[item 1]]</div>");
     }
     
     [Test]
@@ -97,9 +77,9 @@ public class AccessibleListTagHelperTests
         };
 
         // act
-        await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+        await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
         // assert
-        _tagHelperOutput.AsString().Should().Be("""<ul class="govuk-list govuk-list--bullet"><li>HtmlEncode[[item 1]]</li><li>HtmlEncode[[item 2]]</li></ul>""");
+        TagHelperOutput.AsString().Should().Be("""<ul class="govuk-list govuk-list--bullet"><li>HtmlEncode[[item 1]]</li><li>HtmlEncode[[item 2]]</li></ul>""");
     }
 }

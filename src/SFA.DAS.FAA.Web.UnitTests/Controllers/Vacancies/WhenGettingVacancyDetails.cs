@@ -56,7 +56,7 @@ public class WhenGettingVacancyDetails
             .ReturnsAsync(new ValidationResult());
 
         // act
-        var actual = await controller.Vacancy(validator.Object, request, NavigationSource.None, ApplicationsTab.Started) as ViewResult;
+        var actual = await controller.Vacancy(validator.Object, request, null, NavigationSource.None, ApplicationsTab.Started) as ViewResult;
 
         // assert
         Assert.That(actual, Is.Not.Null);
@@ -185,7 +185,7 @@ public class WhenGettingVacancyDetails
             .ReturnsAsync(new ValidationResult { });
 
         // act
-        var actual = await controller.Vacancy(validator.Object, request, source, ApplicationsTab.Started) as ViewResult;
+        var actual = await controller.Vacancy(validator.Object, request, null, source, ApplicationsTab.Started) as ViewResult;
 
         // assert
         actual.Should().NotBeNull();
