@@ -297,4 +297,46 @@ public class WhenCreatingVacancyAdvertsViewModel
         actual.Title.Should().Be($"{vacancyAdvert.Title} (from NHS Jobs)");
     }
 
+    [Test, MoqAutoData]
+    public void Then_The_Csj_Vacancies_Fields_Are_Mapped_Returned_As_Expected(VacancyAdvert vacancyAdvert, [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        vacancyAdvert.VacancySource = VacancyDataSource.Csj;
+        var actual = VacancyAdvertViewModel.MapToViewModel(dateTimeService.Object, vacancyAdvert, null);
+
+        actual.Should().BeEquivalentTo(vacancyAdvert, options => options
+            .Excluding(c => c.ClosingDate)
+            .Excluding(c => c.PostedDate)
+            .Excluding(c => c.Id)
+            .Excluding(c => c.CourseTitle)
+            .Excluding(c => c.Title)
+            .Excluding(c => c.Postcode)
+            .Excluding(c => c.CandidateApplicationDetails)
+            .Excluding(c => c.ApplicationStatus)
+            .Excluding(c => c.Lat)
+            .Excluding(c => c.Lon)
+            .Excluding(c => c.IsNew)
+            .Excluding(c => c.IsClosingSoon)
+            .Excluding(c => c.ApplicationUrl)
+            .Excluding(c => c.WageType)
+            .Excluding(c => c.WageAmount)
+            .Excluding(c => c.ApprenticeshipLevel)
+            .Excluding(c => c.CourseId)
+            .Excluding(c => c.CourseLevel)
+            .Excluding(c => c.OtherAddresses)
+            .Excluding(c => c.AddressLine1)
+            .Excluding(c => c.AddressLine2)
+            .Excluding(c => c.AddressLine3)
+            .Excluding(c => c.AddressLine4)
+            .Excluding(c => c.Postcode)
+            .Excluding(c => c.EmploymentLocationInformation)
+            .Excluding(c => c.StartDate)
+            .Excluding(c => c.Over25NationalMinimumWage)
+            .Excluding(c => c.Under18NationalMinimumWage)
+            .Excluding(c => c.Between18AndUnder21NationalMinimumWage)
+            .Excluding(c => c.Between21AndUnder25NationalMinimumWage)
+            .Excluding(c => c.ApprenticeMinimumWage)
+        );
+        actual.CourseTitle.Should().Be("See more details on Civil Service Jobs");
+        actual.Title.Should().Be($"{vacancyAdvert.Title} (from Civil Service Jobs)");
+    }
 }
