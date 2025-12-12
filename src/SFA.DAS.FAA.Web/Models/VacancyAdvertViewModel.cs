@@ -39,7 +39,7 @@ public class VacancyAdvertViewModel
             ApplicationStatus = vacancyAdvert.CandidateApplicationDetails?.Status,
             ApprenticeshipType = vacancyAdvert.ApprenticeshipType,
             ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancyAdvert.ClosingDate,!string.IsNullOrEmpty(vacancyAdvert.ApplicationUrl)),
-            CourseTitle = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? "See more details on NHS Jobs" : $"{vacancyAdvert.CourseTitle} (level {vacancyAdvert.CourseLevel})",
+            CourseTitle = GetCourseTitle(vacancyAdvert),
             Distance = vacancyAdvert.Distance.HasValue ? Math.Round(vacancyAdvert.Distance.Value, 1) : null,
             EmployerName = vacancyAdvert.EmployerName,
             IsClosingSoon = vacancyAdvert.ClosingDate <= dateTimeService.GetDateTime().AddDays(7),
@@ -49,13 +49,14 @@ public class VacancyAdvertViewModel
             IsSavedVacancy = vacancyAdvert.IsSavedVacancy,
             PostedDate = vacancyAdvert.PostedDate.GetSearchResultsPostedDate(),
             StartDate = vacancyAdvert.StartDate.ToFullDateString(),
-            Title = vacancyAdvert.VacancySource == VacancyDataSource.Nhs ? $"{vacancyAdvert.Title} (from NHS Jobs)" : vacancyAdvert.Title,
+            Title = GetTitle(vacancyAdvert),
             VacancyLocation = vacancyAdvert.GetLocationDescription(),
             VacancyReference = vacancyAdvert.VacancyReference,
             VacancyId = vacancyAdvert.Id,
             VacancySource = vacancyAdvert.VacancySource,
-            WageText = vacancyAdvert.VacancySource == VacancyDataSource.Nhs 
-                ? VacancyDetailsHelperService.GetNhsWageText(vacancyAdvert.WageText) : VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, candidateDateOfBirth),
+            WageText = vacancyAdvert.VacancySource == VacancyDataSource.Raa 
+                ? VacancyDetailsHelperService.GetVacancyAdvertWageText(vacancyAdvert, candidateDateOfBirth)
+                : VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(vacancyAdvert.WageText),
             WageType = (WageType)vacancyAdvert.WageType,
         };
     }
@@ -67,5 +68,28 @@ public class VacancyAdvertViewModel
         var currentDate = dateTimeService.GetDateTime();
         var timeUntilClosing = closingDate.Value.Date - currentDate;
         return (int)Math.Ceiling(timeUntilClosing.TotalDays);
+    }
+
+
+    private static string GetTitle(VacancyAdvert advert)
+    {
+        return advert.VacancySource switch
+        {
+            VacancyDataSource.Raa => advert.Title,
+            VacancyDataSource.Nhs => $"{advert.Title} (from NHS Jobs)",
+            VacancyDataSource.Csj => $"{advert.Title} (from Civil Service Jobs)",
+            _ => string.Empty
+        };
+    }
+
+    private static string GetCourseTitle(VacancyAdvert advert)
+    {
+        return advert.VacancySource switch
+        {
+            VacancyDataSource.Raa => $"{advert.CourseTitle} (level {advert.CourseLevel})",
+            VacancyDataSource.Nhs => "See more details on NHS Jobs",
+            VacancyDataSource.Csj => "See more details on Civil Service Jobs",
+            _ => string.Empty
+        };
     }
 }
