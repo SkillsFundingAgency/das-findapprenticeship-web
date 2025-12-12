@@ -86,7 +86,7 @@ public class VacancyAdvertViewModel
     {
         return advert.VacancySource switch
         {
-            VacancyDataSource.Raa => $"{advert.CourseTitle} (level {advert.CourseLevel})",
+            VacancyDataSource.Raa => VacancyDetailsHelperService.GetCourseTitle(advert.CourseTitle, advert.CourseLevel),
             VacancyDataSource.Nhs => "See more details on NHS Jobs",
             VacancyDataSource.Csj => "See more details on Civil Service Jobs",
             _ => string.Empty
