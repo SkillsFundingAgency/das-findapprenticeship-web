@@ -1,4 +1,5 @@
 @using SFA.DAS.FAA.Domain.Enums
+@using SFA.DAS.FAA.Web.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
 @if (Model is { IsClosed: false })
 {
@@ -8,10 +9,24 @@
 }
 @if (Model.VacancySource == VacancyDataSource.Raa)
 {
-    @if (Model.ShowAccountCreatedBanner)
-    {
-        <partial name="_AccountCreatedBanner" />
-    }
+    <div asp-show="@Model.ShowAccountCreatedBanner" class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-banner style="@BannerStyle.Success">
+                <govuk-banner-heading>Find an apprenticeship account created.</govuk-banner-heading>
+                <p class="govuk-body">You can now apply for this apprenticeship.</p>
+            </govuk-banner>
+        </div>
+    </div>
+    
+    <div asp-show="@Model.ShowSignedInBanner" class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-banner style="@BannerStyle.Important">
+                <govuk-banner-heading>You are signed in.</govuk-banner-heading>
+                <p class="govuk-body">You can now apply for this apprenticeship.</p>
+            </govuk-banner>
+        </div>
+    </div>
+    
     ViewData["Title"] = !Model.IsClosed
         ? $"{Model.Title!} – Find an apprenticeship – GOV.UK"
         : "You can no longer apply for this apprenticeship – Find an apprenticeship – GOV.UK";
