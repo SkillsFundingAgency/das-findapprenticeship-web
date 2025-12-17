@@ -226,5 +226,12 @@ namespace SFA.DAS.FAA.Web.Services
             var city = address.GetLastNonEmptyField();
             return string.IsNullOrWhiteSpace(city) ? address.Postcode! : $"{city} ({address.Postcode})";
         }
+
+        public static string GetCourseTitle(string? courseTitle, string? courseLevel)
+        {
+            return string.IsNullOrEmpty(courseTitle) 
+                ? "To be confirmed" 
+                : $"{courseTitle} (level {courseLevel})";
+        }
     }
 }
