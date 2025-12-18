@@ -7,10 +7,10 @@ namespace SFA.DAS.FAA.Web.UnitTests.Validators;
 public class GetVacancyDetailsRequestValidatorTest
 {
     private const string VacancyReferenceEmpty = "You must include a vacancy reference.";
-    private const string VacancyReferenceTooShort = "The vacancy reference must be atleast 7 characters or more.";
+    private const string VacancyReferenceTooShort = "The vacancy reference must be at least 6 characters or more.";
 
     [TestCase("0", VacancyReferenceTooShort, false)]
-    [TestCase("123456", VacancyReferenceTooShort, false)]
+    [TestCase("12345", VacancyReferenceTooShort, false)]
     [TestCase(null, VacancyReferenceEmpty, false)]
     [TestCase("01234567", "", true)]
     [TestCase("VAC0123456789", "", true)]
