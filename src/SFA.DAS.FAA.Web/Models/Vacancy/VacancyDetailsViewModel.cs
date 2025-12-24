@@ -135,7 +135,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 CourseLevels = source.Vacancy?.Levels,
                 CourseOverviewOfRole = source.Vacancy?.CourseOverviewOfRole,
                 CourseSkills = source.Vacancy?.CourseSkills,
-                CourseTitle = $"{source.Vacancy?.CourseTitle} (level {source.Vacancy?.CourseLevel})",
+                CourseTitle = VacancyDetailsHelperService.GetCourseTitle(source.Vacancy?.CourseTitle, source.Vacancy?.CourseLevel),
                 DesiredQualifications = source.Vacancy?.Qualifications?.Where(fil => fil.Weighting == Weighting.Desired).Select(l => (Qualification) l).ToList(),
                 Duration = source.Vacancy?.ExpectedDuration?.ToLower(),
                 EmployerDescription = source.Vacancy?.EmployerDescription,

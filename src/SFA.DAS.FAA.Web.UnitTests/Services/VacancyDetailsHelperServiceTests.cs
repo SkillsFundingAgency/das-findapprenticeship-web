@@ -135,7 +135,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleNullOrEmptyInput(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -148,7 +148,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleHourlyWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -160,7 +160,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldHandleAnnualWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -177,7 +177,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void Then_WageAmount_With_Lower_Higher_Limit_GetWageText_ShouldHandleAnnualWages(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -191,7 +191,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
         public void GetWageText_ShouldReturnOriginalTextForOtherCases(string input, string expected)
         {
             // Act
-            var result = VacancyDetailsHelperService.GetNhsWageText(input);
+            var result = VacancyDetailsHelperService.GetExternalVacancyAdvertWageText(input);
 
             // Assert
             result.Should().Be(expected);
@@ -537,6 +537,72 @@ namespace SFA.DAS.FAA.Web.UnitTests.Services
 
             // Assert
             result.Should().Be(string.Empty);
+        }
+
+        [Test]
+        public void GetCourseTitle_WhenCourseTitleIsNull_ReturnsToBeConfirmed()
+        {
+            // Arrange
+            string? courseTitle = null;
+            const string? courseLevel = "3";
+
+            // Act
+            var result = VacancyDetailsHelperService.GetCourseTitle(courseTitle, courseLevel);
+
+            // Assert
+            result.Should().Be("To be confirmed");
+        }
+
+        [Test]
+        public void GetCourseTitle_WhenCourseTitleIsEmpty_ReturnsToBeConfirmed()
+        {
+            // Arrange
+            const string? courseTitle = "";
+            const string? courseLevel = "5";
+
+            // Act
+            var result = VacancyDetailsHelperService.GetCourseTitle(courseTitle, courseLevel);
+
+            // Assert
+            result.Should().Be("To be confirmed");
+        }
+
+        [Test, MoqAutoData]
+        public void GetCourseTitle_WhenCourseTitleIsNotEmpty_ReturnsFormattedTitle(string courseTitle, string courseLevel)
+        {
+            // Act
+            var result = VacancyDetailsHelperService.GetCourseTitle(courseTitle, courseLevel);
+
+            // Assert
+            result.Should().Be($"{courseTitle} (level {courseLevel})");
+        }
+
+        [Test]
+        public void GetCourseTitle_WhenCourseLevelIsNull_StillFormatsCorrectly()
+        {
+            // Arrange
+            const string? courseTitle = "Software Developer";
+            string? courseLevel = null;
+
+            // Act
+            var result = VacancyDetailsHelperService.GetCourseTitle(courseTitle, courseLevel);
+
+            // Assert
+            result.Should().Be("Software Developer (level )");
+        }
+
+        [Test]
+        public void GetCourseTitle_WhenCourseLevelIsEmpty_StillFormatsCorrectly()
+        {
+            // Arrange
+            const string? courseTitle = "Cyber Security";
+            const string? courseLevel = "";
+
+            // Act
+            var result = VacancyDetailsHelperService.GetCourseTitle(courseTitle, courseLevel);
+
+            // Assert
+            result.Should().Be("Cyber Security (level )");
         }
     }
 }
