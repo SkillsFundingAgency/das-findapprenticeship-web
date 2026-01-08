@@ -48,7 +48,12 @@
         }
     }
 }
-else
+else if (Model.VacancySource == VacancyDataSource.Csj)
+{
+    ViewData["Title"] = "See more details about this apprenticeship on Civil Service Jobs - Find an apprenticeship - GOV.UK";
+    <partial name="_CsjVacancy" model="Model" />
+    }
+else if (Model.VacancySource == VacancyDataSource.Nhs)
 {
     ViewData["Title"] = "See more details about this apprenticeship on NHS Jobs - Find an apprenticeship - GOV.UK";
     <partial name="_NhsVacancy" model="Model" />
