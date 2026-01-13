@@ -329,7 +329,7 @@ public class WhenGettingIndex
     }
 
     [Test, MoqAutoData]
-    public async Task Then_Apprenticeship_Week_Banner_Shown_If_Before_Feb152025(
+    public async Task Then_Apprenticeship_Week_Banner_Shown_If_Before_Feb162026(
         GetSearchApprenticeshipsIndexResult result,
         Guid govIdentifier,
         bool showBanner,
@@ -340,7 +340,7 @@ public class WhenGettingIndex
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SearchApprenticeshipsController controller)
     {
-        dateTimeService.Setup(x=>x.GetDateTime()).Returns(new DateTime(2025, 02, 16));
+        dateTimeService.Setup(x=>x.GetDateTime()).Returns(new DateTime(2026, 02, 15));
         result.LocationSearched = false;
         result.SavedSearches = [];
         var httpContext = new DefaultHttpContext
@@ -385,7 +385,7 @@ public class WhenGettingIndex
     }
     
     [Test, MoqAutoData]
-    public async Task Then_Apprenticeship_Week_Banner_Not_Shown_If_After_Feb152025(
+    public async Task Then_Apprenticeship_Week_Banner_Not_Shown_If_After_Feb162026(
         GetSearchApprenticeshipsIndexResult result,
         Guid govIdentifier,
         bool showBanner,
@@ -396,7 +396,7 @@ public class WhenGettingIndex
         [Frozen] Mock<IMediator> mediator,
         [Greedy] SearchApprenticeshipsController controller)
     {
-        dateTimeService.Setup(x=>x.GetDateTime()).Returns(new DateTime(2025, 02, 17));
+        dateTimeService.Setup(x=>x.GetDateTime()).Returns(new DateTime(2026, 02, 16));
         result.LocationSearched = false;
         result.SavedSearches = [];
         var httpContext = new DefaultHttpContext
