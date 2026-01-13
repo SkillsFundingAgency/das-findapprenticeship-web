@@ -394,6 +394,32 @@
       "vacancySource": 1,
       "application": null,
       "applicationUrl": "https://beta.jobs.nhs.uk/candidate/jobadvert/C9335-24-0218"
+    },
+    {
+      "id": "198082",
+      "title": "Senior Policy Adviser",
+      "vacancyReference": "198082",
+      "employerName": "HM Revenue and Customs",
+      "isDisabilityConfident": true,
+      "closingDate": "2025-01-12T23:55:00Z",
+      "postedDate": "2024-12-02T09:00:00Z",
+      "wageText": "£55,760 - £62,000",
+      "hoursPerWeek": 37,
+      "workingWeek": "Monday to Friday",
+      "numberOfPositions": 1,
+      "location": {
+        "lat": 52.4068,
+        "lon": -1.5197
+      },
+      "address": {
+        "addressLine1": null,
+        "addressLine2": null,
+        "addressLine3": null,
+        "addressLine4": "Coventry",
+        "postcode": "CV1 3BH"
+      },
+      "applicationUrl": "https://www.civilservicejobs.service.gov.uk/csr/index.cgi?SID=...",
+      "vacancySource": 2
     }
   ]
 }

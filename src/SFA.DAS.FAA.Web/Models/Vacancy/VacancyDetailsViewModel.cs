@@ -11,7 +11,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAA.Web.Models.Vacancy
 {
-    public class VacancyDetailsViewModel : NhsVacancyDetailsViewModel
+    public class VacancyDetailsViewModel : ExternalVacancyDetailsViewModel
     {
         public string BackLinkUrl { get; set; }
         public string? Title { get; init; }
@@ -115,6 +115,12 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
             {
                 AdditionalTrainingInformation = source.Vacancy?.AdditionalTrainingDescription.MakeSingleItemListsAccessible(),
                 Address = source.Vacancy.Address?.ToSingleLineAbridgedAddress(),
+                EmploymentWorkLocationWithPostCode = source.Vacancy.EmployerLocationOption switch
+                {
+                    AvailableWhere.MultipleLocations => VacancyDetailsHelperService.GetEmploymentLocationCityNamesWithPostCode(addresses.OrderByCity().ToList()),
+                    AvailableWhere.AcrossEngland => "Recruiting nationally",
+                    _ => VacancyDetailsHelperService.GetOneLocationCityName(source.Vacancy.Address)
+                },
                 Addresses = addresses.OrderByCity().ToList(),
                 AnnualWage = VacancyDetailsHelperService.GetVacancyAdvertWageText(source.Vacancy, source.Vacancy.CandidateDateOfBirth, true),
                 ApplicationDetails = source.Vacancy?.Application,

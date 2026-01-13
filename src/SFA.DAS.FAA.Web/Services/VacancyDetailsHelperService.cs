@@ -217,6 +217,20 @@ namespace SFA.DAS.FAA.Web.Services
                 : string.Join(", ", cityNames);
         }
 
+        public static string GetEmploymentLocationCityNamesWithPostCode(List<Address> addresses)
+        {
+            var cityNames = addresses
+                .Select(address => $"{address.GetLastNonEmptyField()}({address.Postcode})")
+                .OfType<string>()
+                .Distinct()
+                .OrderBy(city => city)
+                .ToList();
+
+            return cityNames.Count == 1 && addresses.Count > 1
+                ? $"{cityNames.First()} ({addresses.Count} available locations)"
+                : string.Join(", ", cityNames);
+        }
+
         public static string? GetOneLocationCityName(Address? address)
         {
             if (address is null)
