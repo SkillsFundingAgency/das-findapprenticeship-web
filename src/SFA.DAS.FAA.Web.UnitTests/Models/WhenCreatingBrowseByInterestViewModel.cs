@@ -2,7 +2,6 @@
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
-using static SFA.DAS.FAA.Web.Models.BrowseByInterestViewModel;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
@@ -20,7 +19,7 @@ public class WhenCreatingBrowseByInterestViewModel
             Routes = routeList.Select(route => new RouteResponse { Name = route }).ToList()
         };
 
-        var actual = (BrowseByInterestViewModel)source;
+        var actual = BrowseByInterestViewModel.ToViewModel(source);
 
         Assert.That(actual.Routes.Count, Is.EqualTo(routeList.Count));
         
@@ -34,12 +33,12 @@ public class WhenCreatingBrowseByInterestViewModel
     [TestCase(1, "Agriculture, environmental and animal care")]
     public void And_There_Are_PreviousRouteIds_Then_The_Route_Object_Is_Built_Correctly(int routeId, string route)
     {
-        var expectedRouteObject1 = new RouteObject
+        var expectedRouteObject1 = new BrowseByInterestViewModel.RouteObject
         {
             RouteId = "1",
             RouteName = "Agriculture, environmental and animal care",
             DisplayText = "Agriculture, environmental and animal care",
-            HintText = "Farmer, horticulture, vet and similar",
+            HintText = "e.g. farmer, gardener, vet",
             PreviouslySelected = true
         };
         var previouslySelectedRouteIds = new List<string> { "1", "5" };
@@ -47,7 +46,7 @@ public class WhenCreatingBrowseByInterestViewModel
         var viewModel = new BrowseByInterestViewModel();
         viewModel.Routes = new List<RouteViewModel>
         {
-            new RouteViewModel
+            new()
             {
                 Id = routeId,
                 Name = route
@@ -56,7 +55,7 @@ public class WhenCreatingBrowseByInterestViewModel
         
         viewModel.AllocateRouteGroup(previouslySelectedRouteIds);
 
-        var actualRouteObject = viewModel.AgricultureEnvironmentalAndAnimalCareDictionary[routeId.ToString()];
+        var actualRouteObject = viewModel.EnvironmentAndAgricultureDictionary[routeId.ToString()];
 
         actualRouteObject.Should().BeEquivalentTo(expectedRouteObject1);
     }
@@ -64,16 +63,16 @@ public class WhenCreatingBrowseByInterestViewModel
     [Test, TestCase(15, "Transport and logistics")]
     public void And_There_Are_No_PreviousRouteIds_Then_The_Route_Object_Is_Built_Correctly(int routeId, string route)
     {
-        var expectedRouteObject = new RouteObject
+        var expectedRouteObject = new BrowseByInterestViewModel.RouteObject
         {
             RouteId = "15",
             RouteName = "Transport and logistics",
             DisplayText = "Transport and logistics",
-            HintText = "Aviation ground handler, train driver, fleet manager and similar",
+            HintText = "e.g. aviation ground handler, train driver, fleet manager",
             PreviouslySelected = false
         };
         var previouslySelectedRouteIds = new List<string> { "1", "2", "12" };
-
+    
         var viewModel = new BrowseByInterestViewModel
         {
             Routes = new List<RouteViewModel>
@@ -85,13 +84,13 @@ public class WhenCreatingBrowseByInterestViewModel
                 }
             }
         };
-
+    
         viewModel.AllocateRouteGroup(previouslySelectedRouteIds);
-        var actualRouteObject = viewModel.TransportAndLogisticsDictionary[routeId.ToString()];
-
+        var actualRouteObject = viewModel.BusinessFinanceAndPublicServicesDictionary[routeId.ToString()];
+    
         actualRouteObject.Should().BeEquivalentTo(expectedRouteObject);
     }
-
+    
     [Test]
     public void Then_The_Route_Object_Is_Added_To_A_Dictionary()
     {
@@ -105,18 +104,18 @@ public class WhenCreatingBrowseByInterestViewModel
                 new() { Id = 12, Name = "Legal, Finance, Accounting" }
             }
         };
-
+    
         // Act
         viewModel.AllocateRouteGroup();                     
-
+    
         // Assert
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary.ContainsKey("2"), Is.True);
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary.ContainsKey("14"), Is.True);
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary.ContainsKey("12"), Is.True);
-
+        Assert.That(viewModel.BusinessFinanceAndPublicServicesDictionary.ContainsKey("2"), Is.True);
+        Assert.That(viewModel.BusinessFinanceAndPublicServicesDictionary.ContainsKey("14"), Is.True);
+        Assert.That(viewModel.BusinessFinanceAndPublicServicesDictionary.ContainsKey("12"), Is.True);
+    
         // You can also assert the values if needed
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary["2"].RouteName, Is.EqualTo("Business Administration"));
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary["14"].RouteName, Is.EqualTo("Sales and Marketing"));
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary["12"].RouteName, Is.EqualTo("Legal, Finance, Accounting"));
+        Assert.That(viewModel.BusinessFinanceAndPublicServicesDictionary["2"].RouteName, Is.EqualTo("Business Administration"));
+        Assert.That(viewModel.BusinessFinanceAndPublicServicesDictionary["14"].RouteName, Is.EqualTo("Sales and Marketing"));
+        Assert.That(viewModel.BusinessFinanceAndPublicServicesDictionary["12"].RouteName, Is.EqualTo("Legal, Finance, Accounting"));
     }
 }

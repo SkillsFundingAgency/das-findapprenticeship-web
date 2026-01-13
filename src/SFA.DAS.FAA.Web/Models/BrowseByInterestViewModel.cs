@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
+﻿using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 
 namespace SFA.DAS.FAA.Web.Models;
@@ -8,25 +7,20 @@ public class BrowseByInterestViewModel
 {
     public List<int>? SelectedRouteIds { get; set; }
     public List<RouteViewModel> Routes { get; set; } = new();
-    public Dictionary<string, RouteObject> AgricultureEnvironmentalAndAnimalCareDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> BusinessSalesAndLegalDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> CareHealthAndScienceDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> CateringAndHospitalityDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> ConstructionEngineeringAndBuildingsDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> CreativeAndDesignDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> DigitalDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> EducationAndEarlyYearsDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> ProtectiveServicesDictionary { get; set; } = new();
-    public Dictionary<string, RouteObject> TransportAndLogisticsDictionary { get; set; } = new();
+    
+    public Dictionary<string, RouteObject> BusinessFinanceAndPublicServicesDictionary { get; set; } = new();
+    public Dictionary<string, RouteObject> CreativeAndServiceIndustriesDictionary { get; set; } = new();
+    public Dictionary<string, RouteObject> EnvironmentAndAgricultureDictionary { get; set; } = new();
+    public Dictionary<string, RouteObject> PeopleAndCareDictionary { get; set; } = new();
+    public Dictionary<string, RouteObject> TechnicalAndEngineeringDictionary { get; set; } = new();
 
-    public static implicit operator BrowseByInterestViewModel(GetBrowseByInterestsResult source)
+    public static BrowseByInterestViewModel ToViewModel(GetBrowseByInterestsResult source)
     {
         return new BrowseByInterestViewModel
         {
-            Routes = source.Routes.Select(r => (RouteViewModel)r).ToList()
+            Routes = source.Routes.Select(RouteViewModel.ToViewModel).ToList()
         };
     }
-    
 
     public class RouteObject
     {
@@ -41,186 +35,90 @@ public class BrowseByInterestViewModel
     {
         foreach (var route in Routes)
         {
+            var routeObject = new RouteObject()
+            {
+                RouteId = route.Id.ToString(),
+                RouteName = route.Name,
+                DisplayText = route.Name,
+                PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
+            };
+            
             switch (route.Id.ToString())
             {
                 case "1":
-                    var agriculture = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Farmer, horticulture, vet and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    AgricultureEnvironmentalAndAnimalCareDictionary.Add(route.Id.ToString(), agriculture);
+                    routeObject.HintText = "e.g. farmer, gardener, vet";
+                    EnvironmentAndAgricultureDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "2":
-                    var businessAdministration = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Administrator, project manager, human resources and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    BusinessSalesAndLegalDictionary.Add(route.Id.ToString(), businessAdministration);
-                    break;
-
-                case "14":
-                    var salesMarketing = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = "Sales and marketing",
-                        HintText = "Sales manager, digital marketer and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    BusinessSalesAndLegalDictionary.Add(route.Id.ToString(), salesMarketing);
-                    break;
-
-                case "12":
-                    var legalFinanceAccounting = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Financial advisor, payroll assistant, solicitor and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    BusinessSalesAndLegalDictionary.Add(route.Id.ToString(), legalFinanceAccounting);
-                    break;
-
-                case "10":
-                    var hairBeauty = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Hairdresser, barber, holistic therapist and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    CareHealthAndScienceDictionary.Add(route.Id.ToString(), hairBeauty);
+                    routeObject.HintText = "e.g. administrator, project manager, human resources";
+                    BusinessFinanceAndPublicServicesDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "3":
-                    var careServices = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Social worker, play therapist, adult carer and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    CareHealthAndScienceDictionary.Add(route.Id.ToString(), careServices);
-                    break;
-
-                case "11":
-                    var healthScience = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Ambulance worker, sports coach, clinical scientist and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    CareHealthAndScienceDictionary.Add(route.Id.ToString(), healthScience);
+                    routeObject.HintText = "e.g. social worker, play therapist, adult carer";
+                    PeopleAndCareDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "4":
-                    var cateringHospitality = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Chef, baker, hospitality team member and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    CateringAndHospitalityDictionary.Add(route.Id.ToString(), cateringHospitality);
+                    routeObject.HintText = "e.g. chef, baker, hospitality staff";
+                    CreativeAndServiceIndustriesDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "5":
-                    var construction = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Bricklayer, smart home technician, architect and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    ConstructionEngineeringAndBuildingsDictionary.Add(route.Id.ToString(), construction);
-                    break;
-
-                case "9":
-                    var engineeringManufacturing = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Autocare technician, welder, rail engineer and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    ConstructionEngineeringAndBuildingsDictionary.Add(route.Id.ToString(), engineeringManufacturing);
+                    routeObject.DisplayText = "Construction and building";
+                    routeObject.HintText = "e.g. bricklayer, carpenter, architect";
+                    TechnicalAndEngineeringDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "6":
-                    var creativeDesign = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Music technologist, camera technician, graphic designer and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    CreativeAndDesignDictionary.Add(route.Id.ToString(), creativeDesign);
+                    routeObject.HintText = "e.g. graphic designer, photographer, animator";
+                    CreativeAndServiceIndustriesDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "7":
-                    var digital = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Cyber security officer, software engineer, data scientist and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    DigitalDictionary.Add(route.Id.ToString(), digital);
+                    routeObject.HintText = "e.g. software engineer, data scientist, cloud engineer";
+                    TechnicalAndEngineeringDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "8":
-                    var education = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = "Education and early years",
-                        HintText = "Teaching assistant, early years educator and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    EducationAndEarlyYearsDictionary.Add(route.Id.ToString(), education);
+                    routeObject.HintText = "e.g. teaching assistant, early years educator";
+                    PeopleAndCareDictionary.Add(route.Id.ToString(), routeObject);
+                    break;
+
+                case "9":
+                    routeObject.HintText = "e.g. autocare technician, welder, rail engineer";
+                    TechnicalAndEngineeringDictionary.Add(route.Id.ToString(), routeObject);
+                    break;
+
+                case "10":
+                    routeObject.HintText = "e.g. hairdresser, barber, holistic therapist";
+                    CreativeAndServiceIndustriesDictionary.Add(route.Id.ToString(), routeObject);
+                    break;
+
+                case "11":
+                    routeObject.HintText = "e.g. ambulance worker, sports coach, clinical scientist";
+                    PeopleAndCareDictionary.Add(route.Id.ToString(), routeObject);
+                    break;
+
+                case "12":
+                    routeObject.HintText = "e.g. financial advisor, payroll assistant, solicitor";
+                    BusinessFinanceAndPublicServicesDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "13":
-                    var protectiveServices = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = "Protective services (emergency and uniformed services)",
-                        HintText = "Security, firefighter, coastguard and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    ProtectiveServicesDictionary.Add(route.Id.ToString(), protectiveServices);
+                    routeObject.HintText = "e.g. security, firefighter, coastguard";
+                    BusinessFinanceAndPublicServicesDictionary.Add(route.Id.ToString(), routeObject);
+                    break;
+
+                case "14":
+                    routeObject.HintText = "e.g. sales manager, digital marketer";
+                    BusinessFinanceAndPublicServicesDictionary.Add(route.Id.ToString(), routeObject);
                     break;
 
                 case "15":
-                    var transportLogistics = new RouteObject
-                    {
-                        RouteId = route.Id.ToString(),
-                        RouteName = route.Name,
-                        DisplayText = route.Name,
-                        HintText = "Aviation ground handler, train driver, fleet manager and similar",
-                        PreviouslySelected = SetPreviouslySelected(previouslySelectedValues, route.Id)
-                    };
-                    TransportAndLogisticsDictionary.Add(route.Id.ToString(), transportLogistics);
+                    routeObject.HintText = "e.g. aviation ground handler, train driver, fleet manager";
+                    BusinessFinanceAndPublicServicesDictionary.Add(route.Id.ToString(), routeObject);
                     break;
             }
         }
