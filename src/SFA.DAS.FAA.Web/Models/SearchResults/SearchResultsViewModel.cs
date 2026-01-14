@@ -56,8 +56,8 @@ public class SearchResultsViewModel : ViewModelBase
     public bool SavedSearchLimitReached  { get; set; }
 
     public bool ShowCompetitiveSalaryBanner => TotalCompetitiveVacanciesCount > 0 
-        && (string.Equals(Sort, VacancySort.SalaryAsc.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-            string.Equals(Sort, VacancySort.SalaryDesc.ToString(), StringComparison.CurrentCultureIgnoreCase));
+        && (string.Equals(Sort, nameof(VacancySort.SalaryAsc), StringComparison.CurrentCultureIgnoreCase) ||
+            string.Equals(Sort, nameof(VacancySort.SalaryDesc), StringComparison.CurrentCultureIgnoreCase));
 
     public static implicit operator SearchResultsViewModel(GetSearchResultsResult source)
     {
@@ -67,7 +67,7 @@ public class SearchResultsViewModel : ViewModelBase
                 ? source.Total
                 : source.Total + source.TotalCompetitiveVacanciesCount,
             TotalCompetitiveVacanciesCount = source.TotalCompetitiveVacanciesCount,
-            Routes = source.Routes.Select(c => (RouteViewModel)c).ToList(),
+            Routes = source.Routes.Select(RouteViewModel.ToViewModel).ToList(),
             Location = source.Location?.LocationName,
             PageNumber = source.PageNumber,
             TotalPages = source.TotalPages,

@@ -2,7 +2,6 @@
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.FAA.Web.Models.SearchResults;
-using static SFA.DAS.FAA.Web.Models.BrowseByInterestViewModel;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
@@ -20,7 +19,7 @@ public class WhenCreatingBrowseByInterestViewModel
             Routes = routeList.Select(route => new RouteResponse { Name = route }).ToList()
         };
 
-        var actual = (BrowseByInterestViewModel)source;
+        var actual = BrowseByInterestViewModel.ToViewModel(source);
 
         Assert.That(actual.Routes.Count, Is.EqualTo(routeList.Count));
         
@@ -29,94 +28,145 @@ public class WhenCreatingBrowseByInterestViewModel
             Assert.That(actual.Routes[i].Name, Is.EqualTo(routeList[i]));
         }
     }
-
+    
     [Test]
-    [TestCase(1, "Agriculture, environmental and animal care")]
-    public void And_There_Are_PreviousRouteIds_Then_The_Route_Object_Is_Built_Correctly(int routeId, string route)
+    [TestCase(2, "e.g. administrator, project manager, human resources")]
+    [TestCase(12, "e.g. financial advisor, payroll assistant, solicitor")]
+    [TestCase(13, "e.g. security, firefighter, coastguard")]
+    [TestCase(14, "e.g. sales manager, digital marketer")]
+    [TestCase(15, "e.g. aviation ground handler, train driver, fleet manager")]
+    public void Then_The_Business_Category_Is_Built_Correctly(int routeId, string expectedHintText)
     {
-        var expectedRouteObject1 = new RouteObject
+        // arrange
+        var expectedRouteObject = new BrowseByInterestViewModel.RouteObject
         {
-            RouteId = "1",
-            RouteName = "Agriculture, environmental and animal care",
-            DisplayText = "Agriculture, environmental and animal care",
-            HintText = "Farmer, horticulture, vet and similar",
+            RouteId = routeId.ToString(),
+            RouteName = "Route name text",
+            DisplayText = "Route name text",
+            HintText = expectedHintText,
             PreviouslySelected = true
         };
-        var previouslySelectedRouteIds = new List<string> { "1", "5" };
 
-        var viewModel = new BrowseByInterestViewModel();
-        viewModel.Routes = new List<RouteViewModel>
+        var viewModel = new BrowseByInterestViewModel
         {
-            new RouteViewModel
-            {
-                Id = routeId,
-                Name = route
-            }
+            Routes = [ new RouteViewModel { Id = routeId, Name = "Route name text" } ]
         };
         
-        viewModel.AllocateRouteGroup(previouslySelectedRouteIds);
+        // act
+        viewModel.AllocateRouteGroup([routeId.ToString()]);
 
-        var actualRouteObject = viewModel.AgricultureEnvironmentalAndAnimalCareDictionary[routeId.ToString()];
-
-        actualRouteObject.Should().BeEquivalentTo(expectedRouteObject1);
+        // assert
+        viewModel.BusinessFinanceAndPublicServicesDictionary[routeId.ToString()].Should().BeEquivalentTo(expectedRouteObject);
     }
-
-    [Test, TestCase(15, "Transport and logistics")]
-    public void And_There_Are_No_PreviousRouteIds_Then_The_Route_Object_Is_Built_Correctly(int routeId, string route)
+    
+    [Test]
+    [TestCase(4, "e.g. chef, baker, hospitality staff")]
+    [TestCase(6, "e.g. graphic designer, photographer, animator")]
+    [TestCase(10, "e.g. hairdresser, barber, holistic therapist")]
+    public void Then_The_Creative_Category_Is_Built_Correctly(int routeId, string expectedHintText)
     {
-        var expectedRouteObject = new RouteObject
+        // arrange
+        var expectedRouteObject = new BrowseByInterestViewModel.RouteObject
         {
-            RouteId = "15",
-            RouteName = "Transport and logistics",
-            DisplayText = "Transport and logistics",
-            HintText = "Aviation ground handler, train driver, fleet manager and similar",
+            RouteId = routeId.ToString(),
+            RouteName = "Route name text",
+            DisplayText = "Route name text",
+            HintText = expectedHintText,
             PreviouslySelected = false
         };
-        var previouslySelectedRouteIds = new List<string> { "1", "2", "12" };
 
         var viewModel = new BrowseByInterestViewModel
         {
-            Routes = new List<RouteViewModel>
-            {
-                new()
-                {
-                    Id = routeId,
-                    Name = route
-                }
-            }
+            Routes = [ new RouteViewModel { Id = routeId, Name = "Route name text" } ]
         };
+        
+        // act
+        viewModel.AllocateRouteGroup([]);
 
-        viewModel.AllocateRouteGroup(previouslySelectedRouteIds);
-        var actualRouteObject = viewModel.TransportAndLogisticsDictionary[routeId.ToString()];
-
-        actualRouteObject.Should().BeEquivalentTo(expectedRouteObject);
+        // assert
+        viewModel.CreativeAndServiceIndustriesDictionary[routeId.ToString()].Should().BeEquivalentTo(expectedRouteObject);
     }
-
+    
     [Test]
-    public void Then_The_Route_Object_Is_Added_To_A_Dictionary()
+    [TestCase(1, "e.g. farmer, gardener, vet")]
+    public void Then_The_Environment_Category_Is_Built_Correctly(int routeId, string expectedHintText)
     {
-        // Arrange
-        var viewModel = new BrowseByInterestViewModel
+        // arrange
+        var expectedRouteObject = new BrowseByInterestViewModel.RouteObject
         {
-            Routes = new List<RouteViewModel>
-            {
-                new() { Id = 2, Name = "Business Administration" },
-                new() { Id = 14, Name = "Sales and Marketing" },
-                new() { Id = 12, Name = "Legal, Finance, Accounting" }
-            }
+            RouteId = routeId.ToString(),
+            RouteName = "Route name text",
+            DisplayText = "Route name text",
+            HintText = expectedHintText,
+            PreviouslySelected = false
         };
 
-        // Act
-        viewModel.AllocateRouteGroup();                     
+        var viewModel = new BrowseByInterestViewModel
+        {
+            Routes = [ new RouteViewModel { Id = routeId, Name = "Route name text" } ]
+        };
+        
+        // act
+        viewModel.AllocateRouteGroup([]);
 
-        // Assert
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary.ContainsKey("2"), Is.True);
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary.ContainsKey("14"), Is.True);
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary.ContainsKey("12"), Is.True);
+        // assert
+        viewModel.EnvironmentAndAgricultureDictionary[routeId.ToString()].Should().BeEquivalentTo(expectedRouteObject);
+    }
+    
+    [Test]
+    [TestCase(3, "e.g. social worker, play therapist, adult carer")]
+    [TestCase(8, "e.g. teaching assistant, early years educator")]
+    [TestCase(11, "e.g. ambulance worker, sports coach, clinical scientist")]
+    public void Then_The_People_Category_Is_Built_Correctly(int routeId, string expectedHintText)
+    {
+        // arrange
+        var expectedRouteObject = new BrowseByInterestViewModel.RouteObject
+        {
+            RouteId = routeId.ToString(),
+            RouteName = "Route name text",
+            DisplayText = "Route name text",
+            HintText = expectedHintText,
+            PreviouslySelected = false
+        };
 
-        // You can also assert the values if needed
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary["2"].RouteName, Is.EqualTo("Business Administration"));
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary["14"].RouteName, Is.EqualTo("Sales and Marketing"));
-        Assert.That(viewModel.BusinessSalesAndLegalDictionary["12"].RouteName, Is.EqualTo("Legal, Finance, Accounting"));
+        var viewModel = new BrowseByInterestViewModel
+        {
+            Routes = [ new RouteViewModel { Id = routeId, Name = "Route name text" } ]
+        };
+        
+        // act
+        viewModel.AllocateRouteGroup([]);
+
+        // assert
+        viewModel.PeopleAndCareDictionary[routeId.ToString()].Should().BeEquivalentTo(expectedRouteObject);
+    }
+    
+    
+    [Test]
+    [TestCase(5, "Construction and building", "e.g. bricklayer, carpenter, architect")]
+    [TestCase(7, "Route name text", "e.g. software engineer, data scientist, cloud engineer")]
+    [TestCase(9, "Route name text", "e.g. autocare technician, welder, rail engineer")]
+    public void Then_The_Technical_Category_Is_Built_Correctly(int routeId, string expectedDisplayText, string expectedHintText)
+    {
+        // arrange
+        var expectedRouteObject = new BrowseByInterestViewModel.RouteObject
+        {
+            RouteId = routeId.ToString(),
+            RouteName = "Route name text",
+            DisplayText = expectedDisplayText,
+            HintText = expectedHintText,
+            PreviouslySelected = false
+        };
+
+        var viewModel = new BrowseByInterestViewModel
+        {
+            Routes = [ new RouteViewModel { Id = routeId, Name = "Route name text" } ]
+        };
+        
+        // act
+        viewModel.AllocateRouteGroup([]);
+
+        // assert
+        viewModel.TechnicalAndEngineeringDictionary[routeId.ToString()].Should().BeEquivalentTo(expectedRouteObject);
     }
 }

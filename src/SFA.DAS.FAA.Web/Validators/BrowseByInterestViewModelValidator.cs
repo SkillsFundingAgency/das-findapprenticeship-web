@@ -9,6 +9,6 @@ public class BrowseByInterestViewModelValidator : AbstractValidator<BrowseByInte
     {
         RuleFor(x => x.SelectedRouteIds)
             .NotEmpty()
-            .WithMessage("Select at least one job category you're interested in");
+            .WithMessage("Select at least one job category");
     }
 }
