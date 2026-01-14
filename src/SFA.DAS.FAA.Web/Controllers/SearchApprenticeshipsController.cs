@@ -78,7 +78,10 @@ public class SearchApprenticeshipsController(
             ? result.SavedSearches.Select(c => SavedSearchViewModel.From(c, result.Routes!, Url)).ToList()
             : [];
         viewModel.ShowAccountCreatedBanner = await NotificationBannerService.ShowAccountBanner(cacheStorageService, $"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}");
-        viewModel.ShowApprenticeshipWeekBanner = dateTimeService.GetDateTime() < new DateTime(2025, 02, 17);
+        var today = dateTimeService.GetDateTime().Date;
+        viewModel.ShowApprenticeshipWeekBanner =
+            today >= new DateTime(2026, 1, 9) &&
+            today < new DateTime(2026, 2, 16);
         var isAccountDeleted = TempData[CacheKeys.AccountDeleted] as string;
         if (isAccountDeleted is "true")
         {
