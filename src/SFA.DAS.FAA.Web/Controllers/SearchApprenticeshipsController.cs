@@ -311,6 +311,8 @@ public class SearchApprenticeshipsController(
         viewModel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
         viewModel.SearchAlreadySaved = result.SearchAlreadySaved;
         viewModel.ExcludeNational = request.ExcludeNational ?? false;
+        viewModel.ShowSavedSearchCreatedBanner = TempData["SavedSearchCreated"] as string == "true";
+        TempData.Remove("SavedSearchCreated");
 
         return View(viewModel);
     }
@@ -429,6 +431,8 @@ public class SearchApprenticeshipsController(
                 SortOrder = criteria.Sort,
                 UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString()),
             });
+
+            if (redirect) TempData["SavedSearchCreated"] = "true";
         }
         catch (Exception e)
         {
@@ -483,7 +487,7 @@ public class SearchApprenticeshipsController(
     private static string GetPageTitle(SearchResultsViewModel model)
     {
         if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
-            return "No results found";
+            return "0 results found";
 
         return model.Total switch
         {

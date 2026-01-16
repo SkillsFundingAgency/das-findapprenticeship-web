@@ -10,7 +10,7 @@ public class WhenCreatingSearchResultsViewModel
 {
 
     [Test]
-    [InlineAutoData(0, 0, "No results found")]
+    [InlineAutoData(0, 0, "0 results found")]
     [InlineAutoData(1, 0, "1 result found")]
     [InlineAutoData(2, 0, "2 results found")]
     [InlineAutoData(2034, 20,"2,054 results found")]

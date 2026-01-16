@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
@@ -17,6 +19,11 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerT
 
 public class WhenGettingSearchResults
 {
+    private static void InitTempData(Controller controller)
+    {
+        controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+    }
+
     [Test]
     [MoqInlineAutoData(2, true)]
     [MoqInlineAutoData(5, true)]
@@ -71,6 +78,8 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        InitTempData(controller);
         
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName!.Equals(RouteNames.SearchResults)))).Returns("https://baseUrl"))
@@ -132,7 +141,7 @@ public class WhenGettingSearchResults
             {
                 case 0:
                     actualModel.PageTitle.Should()
-                        .Be("No results found");
+                        .Be("0 results found");
                     break;
                 case > 10:
                     actualModel.PageTitle.Should()
@@ -198,6 +207,8 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        InitTempData(controller);
         
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
@@ -261,6 +272,8 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        InitTempData(controller);
         
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
@@ -313,6 +326,8 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        InitTempData(controller);
         
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
@@ -365,6 +380,8 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        InitTempData(controller);
         
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
@@ -413,6 +430,8 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        InitTempData(controller);
         
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
@@ -462,6 +481,8 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        InitTempData(controller);
         
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
@@ -527,6 +548,8 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        InitTempData(controller);
         
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
@@ -582,7 +605,7 @@ public class WhenGettingSearchResults
             actualModel?.DisabilityConfident.Should().Be(disabilityConfident);
             actualModel?.NoSearchResultsByUnknownLocation.Should().BeFalse();
             actualModel?.Distance.Should().Be(10);
-            actualModel?.PageTitle.Should().Be("No results found");
+            actualModel?.PageTitle.Should().Be("0 results found");
         }
     }
 
@@ -631,6 +654,7 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+        InitTempData(controller);
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
             .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
@@ -684,7 +708,7 @@ public class WhenGettingSearchResults
             actualModel?.DisabilityConfident.Should().Be(disabilityConfident);
             actualModel?.NoSearchResultsByUnknownLocation.Should().BeTrue();
             actualModel?.Distance.Should().Be(10);
-            actualModel?.PageTitle.Should().Be("No results found");
+            actualModel?.PageTitle.Should().Be("0 results found");
         }
     }
 
@@ -740,6 +764,7 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+        InitTempData(controller);
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName!.Equals(RouteNames.SearchResults)))).Returns("https://baseUrl"))
             .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
@@ -801,7 +826,7 @@ public class WhenGettingSearchResults
             {
                 case 0:
                     actualModel.PageTitle.Should()
-                        .Be("No results found");
+                        .Be("0 results found");
                     break;
                 case > 10:
                     actualModel.PageTitle.Should()
@@ -881,6 +906,7 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
+        InitTempData(controller);
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
             .WithContext(x => x.WithUser(candidateId));

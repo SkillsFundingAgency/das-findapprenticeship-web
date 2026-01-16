@@ -230,7 +230,7 @@ function Alerts(container) {
   this.container = container;
   this.createForm = this.container.querySelector("[data-alert-create]");
   this.confirmation = this.container.querySelector("[data-alert-confirmation]");
-  this.noResults = !!document.getElementById("faa-no-results-alert");
+  this.noResults = !!this.container.querySelector("#faa-no-results-alert");
 }
 
 Alerts.prototype.init = function () {
@@ -245,15 +245,23 @@ Alerts.prototype.init = function () {
 };
 
 Alerts.prototype.extraEvents = function () {
-  this.nrContainer = document.getElementById("faa-no-results-alert");
-  this.nrCreateForm = document.getElementById("faa-no-results-alert--create");
-  this.nrConfirmation = document.getElementById(
-    "faa-no-results-alert--created"
-  );
-  this.nrCreateForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    await this.submitForm();
-  });
+  this.nrContainer = document.querySelector("#faa-no-results-alert");
+    if (!this.nrContainer) return;
+
+  this.nrCreateForm = document.querySelector("#faa-no-results-alert--create");
+  this.nrConfirmation = document.querySelector(
+    "#faa-no-results-alert--created"
+    );
+    if (this.nrCreateForm) {
+        // Guard: avoid double-binding by checking a flag on the element
+        if (!this.nrCreateForm.dataset.alertBound) {
+            this.nrCreateForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                await this.submitForm();
+            });
+            this.nrCreateForm.dataset.alertBound = "true";
+        }
+    }
 };
 
 Alerts.prototype.submitForm = async function (button) {
@@ -299,15 +307,48 @@ Alerts.prototype.updateUI = function () {
     this.nrContainer.classList.add("faa-filter-alert--saved");
     this.nrCreateForm.ariaHidden = true;
     this.nrConfirmation.ariaHidden = false;
-  }
+    }
+
+    // Inject a success banner for client-side saves (AJAX)
+    try {
+        var bannerId = "faa-saved-search-banner";
+        if (!document.getElementById(bannerId)) {
+            var banner = document.createElement("div");
+            banner.id = bannerId;
+            banner.className = "govuk-notification-banner govuk-notification-banner--success";
+            banner.setAttribute("role", "alert");
+            banner.setAttribute("aria-labelledby", "faa-saved-search-banner-title");
+            banner.setAttribute("data-module", "govuk-notification-banner");
+            banner.innerHTML = `
+        <div class="govuk-notification-banner__header">
+          <h2 class="govuk-notification-banner__title" id="faa-saved-search-banner-title">Success</h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+          <h3 class="govuk-notification-banner__heading">Search alert created.</h3>
+        </div>`;
+
+            var main = document.querySelector("main") || document.querySelector(".govuk-grid-row") || document.body;
+            if (main && main.parentNode) {
+                main.parentNode.insertBefore(banner, main);
+
+                window.scrollTo({ top: 0, behavior: "instant" });
+            } else {
+                document.body.insertBefore(banner, document.body.firstChild);
+            }
+        }
+    } catch (e) {
+        console.error("Failed to insert saved-search banner", e);
+    }
 };
 
 const createAlert = document.querySelectorAll("[data-alert]");
 
 if (createAlert) {
-  createAlert.forEach(function (container) {
-    new Alerts(container).init();
-  });
+    createAlert.forEach(function (container) {
+        if (container.querySelector("[data-alert-create]") && container.querySelector("[data-alert-confirmation]")) {
+            new Alerts(container).init();
+        }
+    });
 }
 
 // Show/Hide Extra Form Fields

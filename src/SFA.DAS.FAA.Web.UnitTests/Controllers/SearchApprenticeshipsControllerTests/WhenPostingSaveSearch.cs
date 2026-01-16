@@ -1,18 +1,22 @@
-using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using SFA.DAS.FAA.Application.Commands.SavedSearches.PostSaveSearch;
+using SFA.DAS.FAA.Application.Queries.GetSearchResults;
+using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Configuration;
+using SFA.DAS.FAA.Domain.SearchResults;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 using SFA.DAS.FAT.Domain.Interfaces;
+using System.Net;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerTests;
 
@@ -50,6 +54,7 @@ public class WhenPostingSaveSearch
 
         _sut.Url = mockUrlHelper.Object;
         _sut.WithContext(x => x.WithUser(CandidateId));
+        _sut.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
     }
     
     [Test, MoqAutoData]
@@ -73,7 +78,8 @@ public class WhenPostingSaveSearch
         SaveSearchCommand? passedCommand = null;
         _mediator
             .Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
-            .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand);
+            .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand)
+            .ReturnsAsync(Unit.Value);
         
         // act
         var result = await _sut.SaveSearch(saveSearchRequest, false) as JsonResult;
@@ -93,6 +99,7 @@ public class WhenPostingSaveSearch
                 .Excluding(x => x.ExcludeNational)
                 .Excluding(x => x.ApprenticeshipTypes)
             );
+        _sut.TempData.ContainsKey("SavedSearchCreated").Should().BeFalse();
     }
     
     [Test, MoqAutoData]
@@ -114,7 +121,8 @@ public class WhenPostingSaveSearch
         SaveSearchCommand? passedCommand = null;
         _mediator
             .Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
-            .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand);
+            .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand)
+            .ReturnsAsync(Unit.Value);
 
         _dataProtectorService.Setup(x => x.EncodedData(saveSearchId.ToString()))
             .Returns(encodedString);
@@ -136,6 +144,8 @@ public class WhenPostingSaveSearch
                 .Excluding(x => x.IncludeCompetitiveSalaryVacancies)
                 .Excluding(x => x.ApprenticeshipTypes)
         );
+        _sut.TempData.ContainsKey("SavedSearchCreated").Should().BeTrue();
+        _sut.TempData["SavedSearchCreated" as string].Should().Be("true");
     }
     
     [Test, MoqAutoData]
@@ -211,7 +221,8 @@ public class WhenPostingSaveSearch
         SaveSearchCommand? passedCommand = null;
         _mediator
             .Setup(x => x.Send(It.IsAny<SaveSearchCommand>(), It.IsAny<CancellationToken>()))
-            .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand);
+            .Callback<IRequest<Unit>, CancellationToken>((cmd, _) => passedCommand = cmd as SaveSearchCommand)
+            .ReturnsAsync(Unit.Value);
 
         _dataProtectorService.Setup(x => x.EncodedData(saveSearchId.ToString()))
             .Returns(encodedString);

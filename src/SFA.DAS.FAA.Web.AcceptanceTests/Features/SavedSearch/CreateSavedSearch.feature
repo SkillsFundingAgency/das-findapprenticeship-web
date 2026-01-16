@@ -9,7 +9,7 @@ Feature: Create Saved Searches
   Scenario: Sign in to create a saved search
     When I navigate to the following url: /apprenticeships?sort=DistanceAsc&location=Manchester%2C+Greater+Manchester&distance=2
     Then the page is successfully returned
-    And the page content includes the following: No results found
+    And the page content includes the following: 0 results found
     And the page content includes the following: Sign in to create an alert for this search</a>
     
   @AuthenticatedUser
@@ -18,7 +18,7 @@ Feature: Create Saved Searches
   Scenario: Can save a search
     When I navigate to the following url: /apprenticeships?sort=DistanceAsc&location=Manchester%2C+Greater+Manchester&distance=2
     Then the page is successfully returned
-    And the page content includes the following: No results found
+    And the page content includes the following: 0 results found
     And the page content includes the following: Create an alert for this search</button>
   
   @AuthenticatedUser
