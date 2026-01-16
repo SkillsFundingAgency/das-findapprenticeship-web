@@ -339,6 +339,38 @@ Alerts.prototype.updateUI = function () {
     } catch (e) {
         console.error("Failed to insert saved-search banner", e);
     }
+
+    try {
+        var savedDataInput = this.createForm.querySelector("input[name=Data]");
+        var savedDataValue = savedDataInput ? savedDataInput.value : null;
+        if (savedDataValue) {
+            var allAlertContainers = document.querySelectorAll("[data-alert]");
+            allAlertContainers.forEach(function (container) {
+                if (container === this.container) return;
+                var otherCreateForm = container.querySelector("[data-alert-create]");
+                var otherConfirmation = container.querySelector("[data-alert-confirmation]");
+                if (!otherCreateForm || !otherConfirmation) return;
+
+                var otherDataInput = otherCreateForm.querySelector("input[name=Data]");
+                if (!otherDataInput || otherDataInput.value !== savedDataValue) return;
+
+                container.classList.add("faa-filter-alert--saved");
+                otherCreateForm.ariaHidden = true;
+                otherConfirmation.ariaHidden = false;
+
+                var nrCreate = container.querySelector("#faa-no-results-alert--create");
+                var nrCreated = container.querySelector("#faa-no-results-alert--created");
+                var nrContainer = container.querySelector("#faa-no-results-alert");
+                if (nrContainer && nrCreate && nrCreated) {
+                    nrContainer.classList.add("faa-filter-alert--saved");
+                    nrCreate.ariaHidden = true;
+                    nrCreated.ariaHidden = false;
+                }
+            }.bind(this));
+        }
+    } catch (e) {
+        console.error("Failed to synchronise saved-search state across alert containers", e);
+    }
 };
 
 const createAlert = document.querySelectorAll("[data-alert]");

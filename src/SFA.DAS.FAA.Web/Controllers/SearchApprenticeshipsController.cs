@@ -181,11 +181,18 @@ public class SearchApprenticeshipsController(
         var validationResult = await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
         if (!validationResult.IsValid)
         {
-            return View(new SearchResultsViewModel
+            var earlyViewModel = new SearchResultsViewModel
             {
                 SearchTerm = request.SearchTerm,
-                Location = request.Location
-            });
+                Location = request.Location,
+                ShowSavedSearchCreatedBanner = TempData["SavedSearchCreated"] as string == "true"
+            };
+            if (earlyViewModel.ShowSavedSearchCreatedBanner)
+            {
+                TempData.Remove("SavedSearchCreated");
+            }
+
+            return View(earlyViewModel);
         }
 
         // Normalize distance and page number
@@ -432,7 +439,10 @@ public class SearchApprenticeshipsController(
                 UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString()),
             });
 
-            if (redirect) TempData["SavedSearchCreated"] = "true";
+            if (redirect)
+            {
+                TempData["SavedSearchCreated"] = "true";
+            }
         }
         catch (Exception e)
         {
