@@ -1,20 +1,19 @@
+using SFA.DAS.FAA.Domain;
+using SFA.DAS.FAA.Domain.Enums;
+using SFA.DAS.FAA.Domain.Extensions;
 using SFA.DAS.FAA.Domain.Models;
+using SFA.DAS.FAA.Web.Extensions;
 using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using SFA.DAS.FAA.Domain;
-using SFA.DAS.FAA.Domain.Enums;
-using SFA.DAS.FAA.Domain.SearchResults;
-using SFA.DAS.FAA.Domain.Extensions;
-using SFA.DAS.FAA.Web.Extensions;
 
 namespace SFA.DAS.FAA.Web.Services
 {
     public static class VacancyDetailsHelperService
     {
-        private const decimal NhsLowerWageAmountLimit = 100.00M;
-        private const decimal NhsUpperWageAmountLimit = 5000.00M;
+        private const decimal LowerWageAmountLimit = 100.00M;
+        private const decimal UpperWageAmountLimit = 5000.00M;
         
         public static string GetWorkingHours(this string? duration)
         {
@@ -92,7 +91,7 @@ namespace SFA.DAS.FAA.Web.Services
             return $"Posted on {postedDate.ToGdsDateString()}";
         }
 
-        public static string GetNhsWageText(string wageAmountText)
+        public static string GetExternalVacancyAdvertWageText(string wageAmountText)
         {
             if (string.IsNullOrEmpty(wageAmountText)) return $"{wageAmountText}";
 
@@ -123,8 +122,8 @@ namespace SFA.DAS.FAA.Web.Services
 
                 return upperBound switch
                 {
-                    > NhsUpperWageAmountLimit => $"{lowerBoundText} to {upperBoundText} a year",
-                    < NhsLowerWageAmountLimit => $"{lowerBoundText} to {upperBoundText} an hour",
+                    > UpperWageAmountLimit => $"{lowerBoundText} to {upperBoundText} a year",
+                    < LowerWageAmountLimit => $"{lowerBoundText} to {upperBoundText} an hour",
                     _ => $"{lowerBoundText} to {upperBoundText}",
                 };
             }
@@ -133,8 +132,8 @@ namespace SFA.DAS.FAA.Web.Services
 
             return wageAmount switch
             {
-                < NhsLowerWageAmountLimit => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} an hour", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} an hour", wageAmount),
-                > NhsUpperWageAmountLimit => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} a year", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} a year", wageAmount),
+                < LowerWageAmountLimit => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} an hour", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} an hour", wageAmount),
+                > UpperWageAmountLimit => wageAmount % 1 == 0 ? string.Format(CultureInfo.InvariantCulture, "£{0:#,##} a year", wageAmount) : string.Format(CultureInfo.InvariantCulture, "£{0:#,##.00} a year", wageAmount),
                 _ => wageAmountText
             };
          }
@@ -218,6 +217,20 @@ namespace SFA.DAS.FAA.Web.Services
                 : string.Join(", ", cityNames);
         }
 
+        public static string GetEmploymentLocationCityNamesWithPostCode(List<Address> addresses)
+        {
+            var cityNames = addresses
+                .Select(address => $"{address.GetLastNonEmptyField()}({address.Postcode})")
+                .OfType<string>()
+                .Distinct()
+                .OrderBy(city => city)
+                .ToList();
+
+            return cityNames.Count == 1 && addresses.Count > 1
+                ? $"{cityNames.First()} ({addresses.Count} available locations)"
+                : string.Join(", ", cityNames);
+        }
+
         public static string? GetOneLocationCityName(Address? address)
         {
             if (address is null)
@@ -226,6 +239,13 @@ namespace SFA.DAS.FAA.Web.Services
             }
             var city = address.GetLastNonEmptyField();
             return string.IsNullOrWhiteSpace(city) ? address.Postcode! : $"{city} ({address.Postcode})";
+        }
+
+        public static string GetCourseTitle(string? courseTitle, string? courseLevel)
+        {
+            return string.IsNullOrEmpty(courseTitle) 
+                ? "To be confirmed" 
+                : $"{courseTitle} (level {courseLevel})";
         }
     }
 }
