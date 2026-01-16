@@ -18,6 +18,7 @@
         </p>
         <partial name="_SavedSearch" model="@Model"></partial>
         <form method="post" asp-route="@RouteNames.DeleteSavedSearch" asp-route-savedSearchId="@Model.Id">
+            @Html.AntiForgeryToken()
             <div class="govuk-button-group">
                 <button type="submit" class="govuk-button govuk-button--warning">Delete
                     <span class="govuk-visually-hidden">
