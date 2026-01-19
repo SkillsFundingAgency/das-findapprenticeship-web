@@ -1,0 +1,25 @@
+﻿@model SFA.DAS.FAA.Web.Models.Vacancy.VacancyDetailsViewModel
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-8">
+            See more details about this apprenticeship on Civil Service Jobs
+        </h1>
+        <h1 class="govuk-heading-m govuk-!-margin-bottom-1">
+            @Model.Title
+        </h1>
+        <p class="govuk-caption-m govuk-!-margin-bottom-1 govuk-body-l faa-vacancy__organisation">
+            @Model.EmployerName
+        </p>
+        <p class="govuk-caption-m govuk-!-margin-bottom-3 govuk-body-l faa-vacancy__location">
+            @Model.EmploymentWorkLocationWithPostCode
+        </p>
+        <div class="govuk-!-padding-bottom-8"></div>
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="@Model.ApplicationUrl" class="govuk-button" data-module="govuk-button">
+            Continue to Civil Service Jobs
+        </a>
+    </div>
+</div>
