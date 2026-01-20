@@ -15,71 +15,31 @@
                 <span class="govuk-caption-l">Question 1 of 2</span>
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-heading-l govuk-!-margin-bottom-2" id="SelectedRouteIds">Browse by your interests</h1>
+                        <h1 class="govuk-fieldset__heading" id="SelectedRouteIds">What interests you?</h1>
                     </legend>
-                    <span asp-validation-for="SelectedRouteIds" class="govuk-error-message"></span>
-                    <p class="govuk-hint">Select all the job categories that interest you.</p>
+                    <div class="govuk-hint govuk-!-margin-bottom-4">Select all that apply</div>
                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                         <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Agriculture, environment
-                                and animal care</legend>
-                            <partial model="@Model.AgricultureEnvironmentalAndAnimalCareDictionary"
-                                name="_BrowseByInterestsPartial" />
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Business, finance and public services</legend>
+                            <partial model="@Model.BusinessFinanceAndPublicServicesDictionary" name="_BrowseByInterestsPartial" />
                         </fieldset>
-
                         <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Business, sales and legal
-                            </legend>
-                            <partial model="@Model.BusinessSalesAndLegalDictionary" name="_BrowseByInterestsPartial" />
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Creative and service industries</legend>
+                            <partial model="@Model.CreativeAndServiceIndustriesDictionary" name="_BrowseByInterestsPartial" />
                         </fieldset>
-
                         <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Care, health and science
-                            </legend>
-                            <partial model="@Model.CareHealthAndScienceDictionary" name="_BrowseByInterestsPartial" />
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Environment and agriculture</legend>
+                            <partial model="@Model.EnvironmentAndAgricultureDictionary" name="_BrowseByInterestsPartial" />
                         </fieldset>
-
                         <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Catering and hospitality
-                            </legend>
-                            <partial model="@Model.CateringAndHospitalityDictionary" name="_BrowseByInterestsPartial" />
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">People and care</legend>
+                            <partial model="@Model.PeopleAndCareDictionary" name="_BrowseByInterestsPartial" />
                         </fieldset>
-
                         <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Construction, engineering
-                                and buildings</legend>
-                            <partial model="@Model.ConstructionEngineeringAndBuildingsDictionary"
-                                name="_BrowseByInterestsPartial" />
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Technical and engineering</legend>
+                            <partial model="@Model.TechnicalAndEngineeringDictionary" name="_BrowseByInterestsPartial" />
                         </fieldset>
-
-                        <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Creative and design
-                            </legend>
-                            <partial model="@Model.CreativeAndDesignDictionary" name="_BrowseByInterestsPartial" />
-                        </fieldset>
-
-                        <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Digital</legend>
-                            <partial model="@Model.DigitalDictionary" name="_BrowseByInterestsPartial" />
-                        </fieldset>
-
-                        <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Education and early years
-                            </legend>
-                            <partial model="@Model.EducationAndEarlyYearsDictionary" name="_BrowseByInterestsPartial" />
-                        </fieldset>
-
-                        <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Protective services
-                                (emergency and uniformed services)</legend>
-                            <partial model="@Model.ProtectiveServicesDictionary" name="_BrowseByInterestsPartial" />
-                        </fieldset>
-
-                        <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Transport and logistics
-                            </legend>
-                            <partial model="@Model.TransportAndLogisticsDictionary" name="_BrowseByInterestsPartial" />
-                        </fieldset>
+                        
                     </div>
                 </fieldset>
             </div>
