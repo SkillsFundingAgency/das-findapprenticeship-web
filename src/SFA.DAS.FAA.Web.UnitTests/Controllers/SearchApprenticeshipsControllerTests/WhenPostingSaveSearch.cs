@@ -53,8 +53,7 @@ public class WhenPostingSaveSearch
         httpContextMock.Setup(ctx => ctx.Request.Headers.Referer).Returns(new StringValues(RedirectUrl));
 
         _sut.Url = mockUrlHelper.Object;
-        _sut.WithContext(x => x.WithUser(CandidateId));
-        _sut.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+        _sut.WithContext(x => x.WithUser(CandidateId)).WithTempData();
     }
     
     [Test, MoqAutoData]

@@ -1,6 +1,7 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Domain.Enums
 @using SFA.DAS.FAA.Domain.Extensions
+@using SFA.DAS.FAA.Web.TagHelpers
 
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @{
@@ -25,18 +26,9 @@
 
 @if (Model.ShowSavedSearchCreatedBanner)
 {
-    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                Success
-            </h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                Search alert created.
-            </h3>
-        </div>
-    </div>
+    <govuk-banner style="@BannerStyle.Success">
+        <govuk-banner-heading>Search alert created.</govuk-banner-heading>
+    </govuk-banner>
 }
 
 <h1 class="govuk-heading-l govuk-!-margin-bottom-8"> @Model.TotalMessage </h1>
