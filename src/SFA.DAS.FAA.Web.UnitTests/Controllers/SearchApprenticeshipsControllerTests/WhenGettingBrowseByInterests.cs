@@ -24,6 +24,6 @@ public class WhenGettingBrowseByInterests
         // assert
         Assert.That(actual, Is.Not.Null);
         var actualModel = actual!.Model as BrowseByInterestViewModel;
-        actualModel!.Routes.Should().BeEquivalentTo(((BrowseByInterestViewModel)result).Routes);
+        actualModel!.Routes.Should().BeEquivalentTo(BrowseByInterestViewModel.ToViewModel(result).Routes);
     }
 }

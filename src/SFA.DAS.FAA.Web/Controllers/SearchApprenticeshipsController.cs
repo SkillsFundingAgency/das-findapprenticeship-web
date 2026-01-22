@@ -97,7 +97,7 @@ public class SearchApprenticeshipsController(
     {
         var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
-        var viewModel = (BrowseByInterestViewModel)result;
+        var viewModel = BrowseByInterestViewModel.ToViewModel(result);
 
         viewModel.AllocateRouteGroup(routeIds);
 
@@ -115,7 +115,7 @@ public class SearchApprenticeshipsController(
         {
             var result = await mediator.Send(new GetBrowseByInterestsQuery());
 
-            var viewModel = (BrowseByInterestViewModel)result;
+            var viewModel = BrowseByInterestViewModel.ToViewModel(result);
             
             viewModel.AllocateRouteGroup();
 
