@@ -162,7 +162,7 @@ namespace SFA.DAS.FAA.Web.Models.Vacancy
                 OutcomeDescription = source.Vacancy?.OutcomeDescription,
                 PositionsAvailable = source.Vacancy?.NumberOfPositions,
                 PostedDate = source.Vacancy?.PostedDate.GetPostedDate(),
-                ShowMap = mapLocations.Length > 0,
+                ShowMap = mapLocations.Length > 0 && source.Vacancy?.Location?.Lat != null && source.Vacancy?.Location?.Lon != null,
                 Skills = source.Vacancy?.Skills?.ToList(),
                 StandardPageUrl = source.Vacancy?.StandardPageUrl,
                 StartDate = source.Vacancy?.StartDate.ToGdsDateStringWithDayOfWeek(),
