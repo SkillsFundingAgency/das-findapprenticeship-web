@@ -60,9 +60,14 @@ public static class ControllerExtensions
         return controller;
     }
 
-    public static void WithTempData(this Controller controller)
+    public static void WithTempData(this Controller controller, string? key = null, object? value = null)
     {
         controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+        if (!string.IsNullOrEmpty(key))
+        {
+            controller.TempData[key] = value;
+        }
     }
 }
 

@@ -221,6 +221,67 @@ public class WhenGettingSearchResults
         actual.Should().NotBeNull();
         
         mediator.Verify(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()), Times.Never);
+        var model = actual.Model as SearchResultsViewModel;
+        model!.ShowSavedSearchCreatedBanner.Should().BeFalse();
+    }
+    
+    [Test, MoqAutoData]
+    public async Task Then_If_The_Validator_Fails_And_SearchBanner_In_TempData_View_Is_Returned_With_Banner_And_Search_Does_Not_Happen(
+        List<string>? routeIds,
+        List<string>? levelIds,
+        string mapId,
+        string govIdentifier,
+        string? location,
+        string? searchTerm,
+        int pageNumber,
+        int pageSize,
+        int distance,
+        bool disabilityConfident,
+        Guid candidateId,
+        GetSearchResultsResult queryResult,
+        [Frozen] Mock<IOptions<FindAnApprenticeship>> faaConfig,
+        [Frozen] Mock<GetSearchResultsRequestValidator> validator,
+        [Frozen] Mock<IMediator> mediator,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Frozen] Mock<IDateTimeService> dateTimeService)
+    {
+        validator
+            .Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult([new ValidationFailure("WhatSearchTerm","Error")]));
+        
+        faaConfig
+            .Setup(x => x.Value)
+            .Returns(new FindAnApprenticeship{ GoogleMapsId = mapId });
+        
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>());
+
+        controller
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier))
+            .WithTempData("SavedSearchCreated", true);
+        
+        var actual = await controller.SearchResults(validator.Object, new GetSearchResultsRequest
+        {
+            Location = location,
+            Distance = distance,
+            RouteIds = routeIds,
+            SearchTerm = searchTerm,
+            PageNumber = pageNumber,
+            LevelIds = levelIds,
+            DisabilityConfident = disabilityConfident
+        }) as ViewResult;
+
+        actual.Should().NotBeNull();
+        
+        mediator.Verify(x => x.Send(It.IsAny<GetSearchResultsQuery>(), It.IsAny<CancellationToken>()), Times.Never);
+        var model = actual.Model as SearchResultsViewModel;
+        model!.ShowSavedSearchCreatedBanner.Should().BeTrue();
     }
 
     [Test, MoqAutoData]
@@ -941,5 +1002,63 @@ public class WhenGettingSearchResults
 
         // assert
         viewModel.ShowCompetitiveSalaryBanner.Should().Be(expected);
+    }
+    
+    [Test, MoqAutoData]
+    public async Task Then_Show_Save_Search_Banner_Is_Shown_If_TempData_Populated(
+        string location,
+        string searchTem,
+        string? level,
+        string? route,
+        bool? disabilityConfident,
+        VacancySort expectedSort,
+        GetSearchResultsRequest request,
+        GetSearchResultsResult result,
+        string mapId,
+        List<string>? routeIds,
+        Guid candidateId,
+        [Frozen] Mock<ICacheStorageService> cacheStorageService,
+        [Frozen] Mock<IDateTimeService> dateTimeService,
+        [Frozen] Mock<GetSearchResultsRequestValidator> validator)
+    {
+        // arrange
+        request.Location = location;
+        request.SearchTerm = searchTem;
+        request.Sort = expectedSort.ToString();
+        request.LevelIds = !string.IsNullOrEmpty(level) ? [level] : [];
+        request.RouteIds = !string.IsNullOrEmpty(route) ? [route] : [];
+        request.DisabilityConfident = disabilityConfident ?? false;
+        result.PageNumber = 1;
+        var mediator = new Mock<IMediator>();
+        var faaConfig = new Mock<IOptions<FindAnApprenticeship>>();
+        faaConfig
+            .Setup(x => x.Value)
+            .Returns(new FindAnApprenticeship { GoogleMapsId = mapId });
+        validator
+            .Setup(x => x.ValidateAsync(It.IsAny<ValidationContext<GetSearchResultsRequest>>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
+
+        var controller = new SearchApprenticeshipsController(
+            mediator.Object,
+            dateTimeService.Object,
+            faaConfig.Object,
+            cacheStorageService.Object,
+            Mock.Of<IDataProtectorService>(),
+            Mock.Of<ILogger<SearchApprenticeshipsController>>());
+        
+        controller
+            .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
+            .WithContext(x => x.WithUser(candidateId))
+            .WithTempData("SavedSearchCreated", true);
+        result.VacancyReference = null;
+        mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c => c.Sort == expectedSort.ToString()), CancellationToken.None)).ReturnsAsync(result);
+
+        // act
+        var actual = await controller.SearchResults(validator.Object, request) as ViewResult;
+
+        // assert
+        Assert.That(actual, Is.Not.Null);
+        var actualModel = actual!.Model as SearchResultsViewModel;
+        actualModel!.ShowSavedSearchCreatedBanner.Should().BeTrue();
     }
 }
