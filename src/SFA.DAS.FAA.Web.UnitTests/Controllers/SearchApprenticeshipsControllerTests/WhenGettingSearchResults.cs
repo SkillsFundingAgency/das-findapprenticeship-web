@@ -19,11 +19,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Controllers.SearchApprenticeshipsControllerT
 
 public class WhenGettingSearchResults
 {
-    private static void InitTempData(Controller controller)
-    {
-        controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
-    }
-
     [Test]
     [MoqInlineAutoData(2, true)]
     [MoqInlineAutoData(5, true)]
@@ -79,11 +74,10 @@ public class WhenGettingSearchResults
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
 
-        InitTempData(controller);
-        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName!.Equals(RouteNames.SearchResults)))).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
+            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()))
+            .WithTempData();
         
         routeIds = [result.Routes.First().Id.ToString()];
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
@@ -208,12 +202,10 @@ public class WhenGettingSearchResults
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
 
-        InitTempData(controller);
-        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier));
-        
+            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier))
+            .WithTempData();
         
         var actual = await controller.SearchResults(validator.Object, new GetSearchResultsRequest
         {
@@ -273,11 +265,10 @@ public class WhenGettingSearchResults
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
 
-        InitTempData(controller);
-        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId));
+            .WithContext(x => x.WithUser(candidateId))
+            .WithTempData();;
 
         // Act
         var actual = await controller.SearchResults (validator.Object, new GetSearchResultsRequest
@@ -327,11 +318,10 @@ public class WhenGettingSearchResults
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
 
-        InitTempData(controller);
-        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId));
+            .WithContext(x => x.WithUser(candidateId))
+            .WithTempData();;
 
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
@@ -381,11 +371,10 @@ public class WhenGettingSearchResults
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
 
-        InitTempData(controller);
-        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId));
+            .WithContext(x => x.WithUser(candidateId))
+            .WithTempData();;
 
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
@@ -431,11 +420,10 @@ public class WhenGettingSearchResults
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
 
-        InitTempData(controller);
-        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId));
+            .WithContext(x => x.WithUser(candidateId))
+            .WithTempData();;
 
         result.VacancyReference = null;
 
@@ -482,11 +470,10 @@ public class WhenGettingSearchResults
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
 
-        InitTempData(controller);
-        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId));
+            .WithContext(x => x.WithUser(candidateId))
+            .WithTempData();;
         
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.IsAny<GetSearchResultsQuery>(), CancellationToken.None)).ReturnsAsync(result);
@@ -549,11 +536,10 @@ public class WhenGettingSearchResults
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
 
-        InitTempData(controller);
-        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
+            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()))
+            .WithTempData();;
         
         routeIds = [result.Routes.First().Id.ToString()];
         result.VacancyReference = null;
@@ -654,10 +640,11 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
-        InitTempData(controller);
+        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
+            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()))
+            .WithTempData();;
         
         routeIds = [result.Routes.First().Id.ToString()];
         result.VacancyReference = null;
@@ -764,10 +751,11 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
-        InitTempData(controller);
+        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName!.Equals(RouteNames.SearchResults)))).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()));
+            .WithContext(x => x.WithUser(candidateId).WithClaim(ClaimTypes.NameIdentifier, govIdentifier.ToString()))
+            .WithTempData();
         
         routeIds = [result.Routes.First().Id.ToString()];
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c =>
@@ -906,10 +894,11 @@ public class WhenGettingSearchResults
             cacheStorageService.Object,
             Mock.Of<IDataProtectorService>(),
             Mock.Of<ILogger<SearchApprenticeshipsController>>());
-        InitTempData(controller);
+        
         controller
             .WithUrlHelper(x => x.Setup(h => h.RouteUrl(It.IsAny<UrlRouteContext>())).Returns("https://baseUrl"))
-            .WithContext(x => x.WithUser(candidateId));
+            .WithContext(x => x.WithUser(candidateId))
+            .WithTempData();
         result.VacancyReference = null;
         mediator.Setup(x => x.Send(It.Is<GetSearchResultsQuery>(c => c.Sort == expectedSort.ToString()), CancellationToken.None)).ReturnsAsync(result);
 

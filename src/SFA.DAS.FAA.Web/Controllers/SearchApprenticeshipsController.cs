@@ -185,12 +185,8 @@ public class SearchApprenticeshipsController(
             {
                 SearchTerm = request.SearchTerm,
                 Location = request.Location,
-                ShowSavedSearchCreatedBanner = TempData["SavedSearchCreated"] as string == "true"
+                ShowSavedSearchCreatedBanner = TempData.Remove("SavedSearchCreated")
             };
-            if (earlyViewModel.ShowSavedSearchCreatedBanner)
-            {
-                TempData.Remove("SavedSearchCreated");
-            }
 
             return View(earlyViewModel);
         }
@@ -318,8 +314,7 @@ public class SearchApprenticeshipsController(
         viewModel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
         viewModel.SearchAlreadySaved = result.SearchAlreadySaved;
         viewModel.ExcludeNational = request.ExcludeNational ?? false;
-        viewModel.ShowSavedSearchCreatedBanner = TempData["SavedSearchCreated"] as string == "true";
-        TempData.Remove("SavedSearchCreated");
+        viewModel.ShowSavedSearchCreatedBanner = TempData.Remove("SavedSearchCreated");
 
         return View(viewModel);
     }
@@ -441,7 +436,7 @@ public class SearchApprenticeshipsController(
 
             if (redirect)
             {
-                TempData["SavedSearchCreated"] = "true";
+                TempData["SavedSearchCreated"] = true;
             }
         }
         catch (Exception e)

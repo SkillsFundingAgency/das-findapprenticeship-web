@@ -145,7 +145,7 @@ public class WhenPostingSaveSearch
                 .Excluding(x => x.ApprenticeshipTypes)
         );
         _sut.TempData.ContainsKey("SavedSearchCreated").Should().BeTrue();
-        _sut.TempData["SavedSearchCreated" as string].Should().Be("true");
+        ((bool)_sut.TempData["SavedSearchCreated"]!).Should().BeTrue();
     }
     
     [Test, MoqAutoData]
