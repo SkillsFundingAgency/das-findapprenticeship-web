@@ -39,6 +39,7 @@ public class WhenGettingVacancyDetails
     {
         // arrange
         request.VacancyReference = vacancyReference;
+        result.Vacancy.OtherAddresses = [];
         mediator.Setup(x => x.Send(It.Is<GetApprenticeshipVacancyQuery>(c=>c.VacancyReference == queryVal), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
         cacheStorageService
@@ -72,8 +73,8 @@ public class WhenGettingVacancyDetails
             .Excluding(x => x.ShowAccountCreatedBanner));
         actualModel!.ShowAccountCreatedBanner.Should().Be(showBanner);
         actualModel.GoogleMapsId.Should().Be(mapId);
-        actualModel.Latitude.Should().Be(result.Vacancy!.Location.Lat);
-        actualModel.Longitude.Should().Be(result.Vacancy!.Location.Lon);
+        actualModel.Latitude.Should().Be(result.Vacancy!.Address.Latitude);
+        actualModel.Longitude.Should().Be(result.Vacancy!.Address.Longitude);
         actualModel.FoundationRequirementsUrl.Should().Be("#");
     }
 

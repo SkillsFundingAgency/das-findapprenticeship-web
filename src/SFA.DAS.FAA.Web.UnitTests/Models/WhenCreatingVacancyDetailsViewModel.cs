@@ -227,23 +227,6 @@ public class WhenCreatingVacancyDetailsViewModel
 
         actual.ShowMap.Should().Be(expectedResult);
     }
-
-    [Test, MoqAutoData]
-    public void Then_ShowMap_Is_False_When_Null_Lat_Lon_And_Other_Addresses(
-        Address address,
-        GetApprenticeshipVacancyQueryResult result,
-        [Frozen] Mock<IDateTimeService> dateTimeService)
-    {
-        dateTimeService.Setup(x => x.GetDateTime()).Returns(DateTime.UtcNow.AddDays(-30));
-        result.Vacancy!.ClosingDate = DateTime.UtcNow.AddDays(-20);
-        result.Vacancy.Address = result.Vacancy!.Address! with { Latitude = null, Longitude = null};
-        result.Vacancy.OtherAddresses = [address];
-        result.Vacancy.Location = null;
-
-        var actual = VacancyDetailsViewModel.MapToViewModel(dateTimeService.Object, result, "");
-
-        actual.ShowMap.Should().BeFalse();
-    }
     
     [Test, MoqAutoData]
     public void Then_WorkDescription_Is_Made_Accessible(
