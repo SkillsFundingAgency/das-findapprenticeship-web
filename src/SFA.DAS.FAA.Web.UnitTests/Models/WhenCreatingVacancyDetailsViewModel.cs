@@ -6,6 +6,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using System.Globalization;
 using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Domain.Extensions;
+using SFA.DAS.FAA.Domain.Models;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
