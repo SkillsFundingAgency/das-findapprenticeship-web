@@ -98,10 +98,10 @@ Scenario: Navigate to search results page with no filters
 	And the page content includes the following: 351 results found
 
 @WireMockServer
-Scenario: Navigate to search results page with no results found
+Scenario: Navigate to search results page with 0 results found
 	When I navigate to the following url: /apprenticeships?location=manchester
 	Then the page is successfully returned
-	And the page content includes the following: No results found
+	And the page content includes the following: 0 results found
 
 @WireMockServer @AuthenticatedUser
 Scenario: Navigate to search results page with signed in with age based wage

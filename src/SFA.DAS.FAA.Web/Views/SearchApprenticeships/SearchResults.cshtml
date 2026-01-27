@@ -1,6 +1,7 @@
 @using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Domain.Enums
 @using SFA.DAS.FAA.Domain.Extensions
+@using SFA.DAS.FAA.Web.TagHelpers
 
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchResultsViewModel
 @{
@@ -21,6 +22,13 @@
 @if (Model.ShowAccountCreatedBanner)
 {
     <partial name="_AccountCreatedBanner" />
+}
+
+@if (Model.ShowSavedSearchCreatedBanner)
+{
+    <govuk-banner style="@BannerStyle.Success">
+        <govuk-banner-heading>Search alert created.</govuk-banner-heading>
+    </govuk-banner>
 }
 
 <h1 class="govuk-heading-l govuk-!-margin-bottom-8"> @Model.TotalMessage </h1>

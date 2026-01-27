@@ -181,11 +181,14 @@ public class SearchApprenticeshipsController(
         var validationResult = await validator.ValidateAndUpdateModelStateAsync(request, ModelState);
         if (!validationResult.IsValid)
         {
-            return View(new SearchResultsViewModel
+            var earlyViewModel = new SearchResultsViewModel
             {
                 SearchTerm = request.SearchTerm,
-                Location = request.Location
-            });
+                Location = request.Location,
+                ShowSavedSearchCreatedBanner = TempData.Remove("SavedSearchCreated")
+            };
+
+            return View(earlyViewModel);
         }
 
         // Normalize distance and page number
@@ -311,6 +314,7 @@ public class SearchApprenticeshipsController(
         viewModel.EncodedRequestData = dataProtectorService.EncodedData(JsonConvert.SerializeObject(request));
         viewModel.SearchAlreadySaved = result.SearchAlreadySaved;
         viewModel.ExcludeNational = request.ExcludeNational ?? false;
+        viewModel.ShowSavedSearchCreatedBanner = TempData.Remove("SavedSearchCreated");
 
         return View(viewModel);
     }
@@ -429,6 +433,11 @@ public class SearchApprenticeshipsController(
                 SortOrder = criteria.Sort,
                 UnSubscribeToken = dataProtectorService.EncodedData(saveSearchId.ToString()),
             });
+
+            if (redirect)
+            {
+                TempData["SavedSearchCreated"] = true;
+            }
         }
         catch (Exception e)
         {
@@ -483,7 +492,7 @@ public class SearchApprenticeshipsController(
     private static string GetPageTitle(SearchResultsViewModel model)
     {
         if (model.Total == 0 || model.NoSearchResultsByUnknownLocation)
-            return "No results found";
+            return "0 results found";
 
         return model.Total switch
         {

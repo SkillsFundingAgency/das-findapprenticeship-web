@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using SFA.DAS.FAA.Web.AppStart;
 
 namespace SFA.DAS.FAA.Web.UnitTests;
@@ -57,6 +58,16 @@ public static class ControllerExtensions
         };
         action?.Invoke(controller.ControllerContext);
         return controller;
+    }
+
+    public static void WithTempData(this Controller controller, string? key = null, object? value = null)
+    {
+        controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+        if (!string.IsNullOrEmpty(key))
+        {
+            controller.TempData[key] = value;
+        }
     }
 }
 
