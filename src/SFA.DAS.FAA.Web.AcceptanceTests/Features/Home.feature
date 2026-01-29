@@ -89,7 +89,7 @@ Scenario: Location search option selected no postcode
 	When I post to the following url: /location
 	  | Field          | Value |
 	  | NationalSearch | false |
-	Then the page content includes the following error: Enter a city or postcode 
+	Then the page content includes the following error: Enter a valid city or postcode 
 
 @WireMockServer
 Scenario: Navigate to search results page with no filters

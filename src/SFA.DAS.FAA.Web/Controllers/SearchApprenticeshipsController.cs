@@ -146,7 +146,7 @@ public class SearchApprenticeshipsController(
         {
             if (string.IsNullOrEmpty(model.SearchTerm))
             {
-                ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a city or postcode");
+                ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a valid city or postcode");
             }
             else
             {
