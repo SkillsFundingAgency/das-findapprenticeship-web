@@ -25,7 +25,7 @@ Scenario: Navigate to home page as an authenticated user with saved searches sho
 	  | Field           | Value    |
 	  | whereSearchTerm | Coventry |	
 	Then the page is successfully returned
-	And the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
+	And the page content includes the following error: Enter a valid city or postcode
 
 @WireMockServer
 	Scenario: Location search from home page no option selected
@@ -76,13 +76,13 @@ Scenario: Location search no location found
 	  | SearchTerm                | Coventry |
 	  | Distance                  | 10       |
 	  | SuggestedLocationSelected | true     |
-	Then the page content includes the following error: We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby
+	Then the page content includes the following error: Enter a valid city or postcode
 
 	
 @WireMockServer
 Scenario: Location search no option selected
 	When I post an empty form to the following url: /location
-	Then the page content includes the following error: Select if you want to enter a city or postcode
+	Then the page content includes the following error: Select a search location
 	
 @WireMockServer @RunOnEnvironment
 Scenario: Location search option selected no postcode
