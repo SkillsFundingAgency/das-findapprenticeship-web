@@ -2,7 +2,7 @@
 @using SFA.DAS.FAA.Web.Models;
 @model LocationViewModel
 @{
-    ViewData["Title"] = "What is your location? – Find an apprenticeship – GOV.UK";
+    ViewData["Title"] = "Where would you like to search? – Find an apprenticeship – GOV.UK";
 }
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.BrowseByInterests" asp-all-route-data="@Model.RouteData">Back</a>
@@ -18,7 +18,7 @@
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <span class="govuk-caption-l">Question 2 of 2</span>
-                            <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What is your location?</h1>
+                            <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Where would you like to search?</h1>
                         </legend>
                         <span asp-validation-for="NationalSearch" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">

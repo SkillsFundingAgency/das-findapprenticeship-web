@@ -101,7 +101,7 @@ public class WhenPostingLocations
         actual!.ViewData.ModelState.IsValid.Should().BeFalse();
         actual.ViewData.ModelState.ErrorCount.Should().Be(1);
         actual.ViewData.ModelState["CityOrPostcode"]?.ValidationState.Should().Be(Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
-        actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+        actual.ViewData.ModelState["CityOrPostcode"]?.Errors[0].ErrorMessage.Should().BeEquivalentTo("Enter a valid city or postcode");
         mediator.Verify(x=>x.Send(It.IsAny<GetBrowseByInterestsLocationQuery>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
