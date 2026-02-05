@@ -62,7 +62,7 @@ public class SearchApprenticeshipsController(
 
         if (result is { LocationSearched: true, Location: null })
         {
-            ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+            ModelState.AddModelError(nameof(SearchApprenticeshipsViewModel.WhereSearchTerm), "Enter a valid city or postcode");
         }
         else if (result is {LocationSearched: true, Location: not null})
         {
@@ -146,7 +146,7 @@ public class SearchApprenticeshipsController(
         {
             if (string.IsNullOrEmpty(model.SearchTerm))
             {
-                ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a city or postcode");
+                ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a valid city or postcode");
             }
             else
             {
@@ -154,7 +154,7 @@ public class SearchApprenticeshipsController(
 
                 if (locationResult.Location == null)
                 {
-                    ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "We don't recognise this city or postcode. Check what you've entered or enter a different location that's nearby");
+                    ModelState.AddModelError(nameof(LocationViewModel.SearchTerm), "Enter a valid city or postcode");
                 }
             }
         }
