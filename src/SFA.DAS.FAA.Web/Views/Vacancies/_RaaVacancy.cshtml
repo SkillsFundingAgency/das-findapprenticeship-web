@@ -125,7 +125,7 @@ else
                     <div data-favourite="true" class="faa-save-vacancy @(Model.IsSavedVacancy ? "faa-save-vacancy--saved" : "")">
                         <form method="post" asp-route="@RouteNames.DeleteSavedVacancyFromDetailsPage"
                               asp-route-vacancyId="@Model.VacancyId">
-                            <button aria-describeby="Remove-@Model.VacancyReference"
+                            <button 
                                     aria-pressed="true"
                                     aria-describedby="vacancy-title"
                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link faa-save-vacancy__link--delete"
@@ -139,7 +139,7 @@ else
                         </form>
                         <form method="post" asp-route="@RouteNames.SaveVacancyFromDetailsPage"
                               asp-route-vacancyId="@Model.VacancyId">
-                            <button aria-describeby="Save-@Model.VacancyReference"
+                            <button 
                                     aria-pressed="false"
                                     aria-describedby="vacancy-title"
                                     class="govuk-link govuk-link--no-visited-state faa-vacancy-actions__link  faa-save-vacancy__link--save"
@@ -206,13 +206,12 @@ else
                             Ask a question
                         </a>
                     </li>
-                    <div asp-hide="Model.IsClosed">
-                    <li class="faa-contents__list-item">
+   
+                    <li class="faa-contents__list-item"  asp-hide="Model.IsClosed">
                         <a class="govuk-link faa-contents__link" href="#apply">
                             Apply now
                         </a>
                     </li>
-            </div>
             </ul>
         </div>
         <div class="govuk-grid-column-two-thirds">
@@ -400,7 +399,7 @@ else
                                                    name="directions-postcode" type="text" autocomplete="postal-code"
                                                    aria-describedby="directions-postcode-hint" value="@Model.CandidatePostcode">
                                         </div>
-                                        <div class="govuk-form-group govuk-visually-hidden" id="directions-locations" aria-hidden="true">
+                                        <div class="govuk-form-group govuk-visually-hidden" id="directions-locations" aria-hidden="true" tabindex="-1">
                                             <label class="govuk-label" for="directions-location">
                                                 Select location
                                             </label>
