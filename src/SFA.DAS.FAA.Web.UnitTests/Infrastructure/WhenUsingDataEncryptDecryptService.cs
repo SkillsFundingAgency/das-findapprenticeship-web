@@ -64,49 +64,47 @@ public class WhenUsingDataEncryptDecryptService
     
     [Test, MoqAutoData]
     public void Then_If_Valid_Then_Id_Returned(
-        string id,
+        string data,
+        string secret,
         [Frozen] Mock<IDataProtector> mockProtector,
         [Frozen] Mock<IDataProtectionProvider> mockProvider,
         DataProtectorService service)
     {
-        var encodedData = Encoding.UTF8.GetBytes(id);
-        var data = WebEncoders.Base64UrlEncode(encodedData);
-        var toEncode = WebEncoders.Base64UrlDecode(id);
-        mockProtector.Setup(c => c.Protect(It.Is<byte[]>(
-            x => x[0].Equals(Encoding.UTF8.GetBytes($"{id}")[0])))).Returns(toEncode);
+        // arrange
         mockProtector
-            .Setup(sut => sut.Unprotect(It.IsAny<byte[]>()))
-            .Returns(encodedData);
+            .Setup(sut => sut.Unprotect(Encoding.UTF8.GetBytes(data)))
+            .Returns(Encoding.UTF8.GetBytes(secret));
         mockProvider
             .Setup(x => x.CreateProtector("FindAnApprenticeship"))
             .Returns(mockProtector.Object);
         
-        //Act
-        var actual = service.DecodeData(data);
+        // act
+        var actual = service.DecodeData(WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(data)));
         
-        //Assert
-        actual.Should().Be(id);
+        // assert
+        actual.Should().Be(secret);
     }
 
     [Test, MoqAutoData]
     public void Then_The_Data_Is_Protected(
         string id,
+        byte[] fakeEncodedId,
         [Frozen] Mock<IDataProtector> mockProtector,
         [Frozen] Mock<IDataProtectionProvider> mockProvider,
         DataProtectorService service)
     {
-        //Arrange
-        var toEncode = WebEncoders.Base64UrlDecode(id.ToString());
-        mockProtector.Setup(c => c.Protect(It.Is<byte[]>(
-            x => x[0].Equals(Encoding.UTF8.GetBytes($"{id}")[0])))).Returns(toEncode);
+        // arrange
+        mockProtector
+            .Setup(c => c.Protect(Encoding.UTF8.GetBytes(id)))
+            .Returns(fakeEncodedId);
         mockProvider
             .Setup(x => x.CreateProtector("FindAnApprenticeship"))
             .Returns(mockProtector.Object);
         
-        //Act
+        // act
         var actual = service.EncodedData(id);
         
-        //Assert
-        Assert.That(WebEncoders.Base64UrlEncode(toEncode), Is.EqualTo(actual));
+        // assert
+        actual.Should().Be(WebEncoders.Base64UrlEncode(fakeEncodedId));
     }
 }
