@@ -6,9 +6,7 @@ parameters:
 jobs:
 - deployment: DeployWebApp
   pool:
-    name: DAS - Continuous Deployment Beta
-    demands:
-    - Agent.OS -equals Linux
+    name: DAS - Continuous Deployment Agents
   environment: ${{ parameters.Environment }}
   strategy:
     runOnce:
