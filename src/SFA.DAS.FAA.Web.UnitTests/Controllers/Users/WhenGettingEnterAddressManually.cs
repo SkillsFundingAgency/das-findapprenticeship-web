@@ -1,19 +1,15 @@
 ﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.User.GetCandidatePostcode;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.User;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
+
 public class WhenGettingEnterAddressManually
 {
     [Test(Description = "This scenario covers the user opting to manually enter an address from either Enter Postcode or Select Address The back link should return them to the Enter Postcode page.")]

@@ -1,9 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.VolunteeringOrWorkExperience;
+﻿using SFA.DAS.FAA.Domain.Apply.VolunteeringOrWorkExperience;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.VolunteeringOrWorkExperience;
+
 public class WhenBuildingPostDeleteVolunteeringOrWorkExperienceApiRequest
 {
     [Test, AutoData]

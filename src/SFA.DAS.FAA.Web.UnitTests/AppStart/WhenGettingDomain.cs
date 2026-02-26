@@ -1,12 +1,9 @@
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.AppStart;
 
 namespace SFA.DAS.FAA.Web.UnitTests.AppStart;
 
 public class WhenGettingDomain
 {
-    
     [TestCase("LocAL","")]
     [TestCase("TEST","test-findapprenticeship.apprenticeships.education.gov.uk")]
     [TestCase("PRD","findapprenticeship.service.gov.uk")]
@@ -17,6 +14,4 @@ public class WhenGettingDomain
 
         actual.Should().Be(expectedDomain);
     }
-
-    
 }

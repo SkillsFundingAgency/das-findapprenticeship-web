@@ -1,9 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.CreateSkillsAndStrengths;
+﻿using SFA.DAS.FAA.Domain.Apply.CreateSkillsAndStrengths;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.SkillsAndStrengths;
+
 public class WhenBuildingPostSkillsAndStrengthsApiRequest
 {
     [Test, AutoData]

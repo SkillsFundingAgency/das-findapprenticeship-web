@@ -1,7 +1,4 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.SearchResults;
+﻿using SFA.DAS.FAA.Domain.SearchResults;
 using static SFA.DAS.FAA.Domain.SearchResults.PostSaveSearchApiRequest;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.SavedSearch

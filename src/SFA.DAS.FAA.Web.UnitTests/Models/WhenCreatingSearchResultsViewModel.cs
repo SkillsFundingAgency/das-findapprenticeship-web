@@ -1,6 +1,3 @@
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.GetSearchResults;
 using SFA.DAS.FAA.Web.Models.SearchResults;
 
@@ -8,7 +5,6 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models;
 
 public class WhenCreatingSearchResultsViewModel
 {
-
     [Test]
     [InlineAutoData(0, 0, "0 results found")]
     [InlineAutoData(1, 0, "1 result found")]
@@ -32,6 +28,5 @@ public class WhenCreatingSearchResultsViewModel
         actual.Location.Should().BeEquivalentTo(source.Location!.LocationName);
         actual.Routes.Should().BeEquivalentTo(source.Routes);
         actual.Levels.Should().BeEquivalentTo(source.Levels, opts => opts.Excluding(c =>c.Code));
-
     }
 }

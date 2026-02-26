@@ -1,9 +1,8 @@
 using System.Reflection;
-using AutoFixture;
 using AutoFixture.Kernel;
-using AutoFixture.NUnit3;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Customisations;
 
@@ -32,7 +31,7 @@ public class ArrangeActionContextCustomisation<T> : ICustomization where T : Con
     {
         fixture.Customizations.Add(new ActionExecutingContextBuilder<T>());
 
-        fixture.Customize<Microsoft.AspNetCore.Mvc.ModelBinding.BindingInfo>(c => c.OmitAutoProperties());
+        fixture.Customize<BindingInfo>(c => c.OmitAutoProperties());
         fixture.Customize<ActionExecutingContext>(composer => composer
             .Without(context => context.Result));
 

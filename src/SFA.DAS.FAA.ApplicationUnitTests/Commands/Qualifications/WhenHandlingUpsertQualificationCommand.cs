@@ -1,10 +1,6 @@
-using AutoFixture.NUnit3;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.UpsertQualification;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.Qualifications;
 

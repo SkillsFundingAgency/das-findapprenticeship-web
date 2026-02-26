@@ -1,13 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
-using AutoFixture.NUnit3;
-using FluentAssertions;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.WebUtilities;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Infrastructure;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Infrastructure;
 

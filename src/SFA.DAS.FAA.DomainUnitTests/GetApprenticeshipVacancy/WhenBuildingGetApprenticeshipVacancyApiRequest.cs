@@ -1,7 +1,4 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
+﻿using SFA.DAS.FAA.Domain.GetApprenticeshipVacancy;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.GetApprenticeshipVacancy
 {

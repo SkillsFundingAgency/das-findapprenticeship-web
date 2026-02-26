@@ -1,19 +1,15 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.EqualityQuestions;
+﻿using SFA.DAS.FAA.Domain.Apply.EqualityQuestions;
 
-namespace SFA.DAS.FAA.Domain.UnitTests.Apply.EqualityQuestions
+namespace SFA.DAS.FAA.Domain.UnitTests.Apply.EqualityQuestions;
+
+public class WhenBuildingPostEqualityQuestionsApiRequest
 {
-    public class WhenBuildingPostEqualityQuestionsApiRequest
+    [Test, AutoData]
+    public void Then_The_Url_Is_Correctly_Constructed(Guid candidateId, UpdateEqualityQuestionsModel data)
     {
-        [Test, AutoData]
-        public void Then_The_Url_Is_Correctly_Constructed(Guid candidateId, UpdateEqualityQuestionsModel data)
-        {
-            var actual = new PostEqualityQuestionsApiRequest(candidateId, data);
+        var actual = new PostEqualityQuestionsApiRequest(candidateId, data);
 
-            actual.PostUrl.Should().Be($"equalityQuestions?candidateId={candidateId}");
-            ((UpdateEqualityQuestionsModel)actual.Data).Should().BeEquivalentTo(data);
-        }
+        actual.PostUrl.Should().Be($"equalityQuestions?candidateId={candidateId}");
+        ((UpdateEqualityQuestionsModel)actual.Data).Should().BeEquivalentTo(data);
     }
 }

@@ -6,29 +6,29 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.15.0" />
+    <PackageReference Include="Azure.Identity" Version="1.17.1" />
     <PackageReference Include="Azure.Security.KeyVault.Certificates" Version="4.8.0" />
-    <PackageReference Include="FluentValidation" Version="12.0.0" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-    <PackageReference Include="HtmlTextWriter" Version="3.0.1" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="HtmlTextWriter" Version="3.0.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="10.0.3" />
     <PackageReference Include="MediatR" Version="12.5.0" />
-    <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.138" />
-	<PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.141" />
+    <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.165-prerelease-4" />
+	<PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.165-prerelease-9" />
     <PackageReference Include="SFA.DAS.InputValidation" Version="17.1.100" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.37" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.15" />
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.11.0" />
-    <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.11.0" />
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    <PackageReference Include="StackExchange.Redis" Version="2.11.3" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.16.0" />
+    <PackageReference Include="System.Formats.Asn1" Version="10.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
+    <PackageReference Include="System.Text.Json" Version="10.0.3" />
     <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.15" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.3" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.3" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="8.0.1" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>

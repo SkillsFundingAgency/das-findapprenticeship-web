@@ -1,10 +1,5 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Web.Infrastructure;
+﻿using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Services;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Services
 {

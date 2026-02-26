@@ -1,10 +1,6 @@
-using AutoFixture.NUnit3;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Commands.Applications.Withdraw;
 using SFA.DAS.FAA.Domain.Applications.WithdrawApplication;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.Applications;
 
