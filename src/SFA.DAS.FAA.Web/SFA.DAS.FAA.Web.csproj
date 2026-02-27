@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.17.1" />
+    <PackageReference Include="Azure.Identity" Version="1.18.0" />
     <PackageReference Include="Azure.Security.KeyVault.Certificates" Version="4.8.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
@@ -15,9 +15,9 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="10.0.3" />
     <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.165-prerelease-4" />
-	<PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.165-prerelease-9" />
+	<PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.165" />
     <PackageReference Include="SFA.DAS.InputValidation" Version="17.1.100" />
-    <PackageReference Include="StackExchange.Redis" Version="2.11.3" />
+    <PackageReference Include="StackExchange.Redis" Version="2.11.8" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.3" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.16.0" />
     <PackageReference Include="System.Formats.Asn1" Version="10.0.3" />

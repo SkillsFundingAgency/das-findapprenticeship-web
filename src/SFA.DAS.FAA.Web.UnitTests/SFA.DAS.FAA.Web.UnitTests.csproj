@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.17.1" />
+    <PackageReference Include="Azure.Identity" Version="1.18.0" />
     <PackageReference Include="coverlet.collector" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,7 +21,7 @@
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="NUnit" Version="4.5.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="6.1.0" />
-    <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="17.1.165-prerelease-11" />
+    <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="17.1.165" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
   </ItemGroup>
 
