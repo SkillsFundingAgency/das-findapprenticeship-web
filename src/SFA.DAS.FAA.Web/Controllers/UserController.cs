@@ -47,7 +47,7 @@ public class UserController(
     ICacheStorageService cacheStorageService,
     IConfiguration configuration,
     IOptions<Domain.Configuration.FindAnApprenticeship> faaConfiguration,
-    IOidcService oidcService)
+    IGovUkAuthenticationService govUkAuthenticationService)
     : Controller
 {
     [HttpGet]
@@ -555,7 +555,7 @@ public class UserController(
             return null;
         }
         var token = await HttpContext.GetTokenAsync("access_token");
-        var email = await oidcService.GetAccountDetails(token);
+        var email = await govUkAuthenticationService.GetAccountDetails(token);
         return email;
     }
 

@@ -1,13 +1,9 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
+﻿using SFA.DAS.FAA.Application.Commands.SkillsAndStrengths;
 using SFA.DAS.FAA.Domain.Apply.UpdateApplication;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.SkillsAndStrengths;
+
 public class WhenHandlingUpdateSkillsAndStrengthsCommand
 {
     [Test, MoqAutoData]
@@ -17,7 +13,7 @@ public class WhenHandlingUpdateSkillsAndStrengthsCommand
         [Frozen] Mock<IApiClient> apiClient,
         [Greedy] UpdateSkillsAndStrengthsCommandHandler handler)
     {
-        var expectedPostUpdateApplicationRequest = new Domain.Apply.UpdateApplication.PostSkillsAndStrengthsApiRequest(command.ApplicationId, new PostSkillsAndStrengthsModel
+        var expectedPostUpdateApplicationRequest = new PostSkillsAndStrengthsApiRequest(command.ApplicationId, new PostSkillsAndStrengthsModel
         {
             CandidateId = command.CandidateId,
             SkillsAndStrengths = command.SkillsAndStrengths,

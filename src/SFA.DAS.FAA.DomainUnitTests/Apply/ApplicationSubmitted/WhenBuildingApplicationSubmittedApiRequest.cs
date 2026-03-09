@@ -1,9 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.GetApplicationSubmitted;
+﻿using SFA.DAS.FAA.Domain.Apply.GetApplicationSubmitted;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.ApplicationSubmitted;
+
 public class WhenBuildingApplicationSubmittedApiRequest
 {
     [Test, AutoData]

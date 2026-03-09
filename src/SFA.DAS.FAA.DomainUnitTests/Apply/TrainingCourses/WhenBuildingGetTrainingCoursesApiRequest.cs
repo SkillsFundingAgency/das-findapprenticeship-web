@@ -1,9 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.GetTrainingCourses;
+﻿using SFA.DAS.FAA.Domain.Apply.GetTrainingCourses;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.TrainingCourses;
+
 public class WhenBuildingGetTrainingCoursesApiRequest
 {
     [Test, AutoData]

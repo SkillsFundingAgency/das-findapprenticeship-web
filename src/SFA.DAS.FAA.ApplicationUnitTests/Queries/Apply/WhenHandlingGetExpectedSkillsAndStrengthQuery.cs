@@ -1,14 +1,9 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
+﻿using SFA.DAS.FAA.Application.Queries.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.FAA.Domain.Apply.GetExpectedSkillsAndStrengths;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply;
+
 public class WhenHandlingGetExpectedSkillsAndStrengthQuery
 {
     [Test, MoqAutoData]

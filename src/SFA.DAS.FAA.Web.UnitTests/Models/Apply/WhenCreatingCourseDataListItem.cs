@@ -1,6 +1,3 @@
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Apply.Qualifications;
 using SFA.DAS.FAA.Web.Models.Apply;
 
@@ -18,5 +15,4 @@ public class WhenCreatingCourseDataListItem
         actual.Id.Should().Be(source.Id);
         actual.Title.Should().Be(source.Title);
     }
-    
 }

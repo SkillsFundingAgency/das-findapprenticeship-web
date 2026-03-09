@@ -1,12 +1,9 @@
-﻿using AutoFixture.NUnit3;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Commands.VolunteeringOrWorkExperience.DeleteVolunteeringOrWorkExperience;
+﻿using SFA.DAS.FAA.Application.Commands.VolunteeringOrWorkExperience.DeleteVolunteeringOrWorkExperience;
 using SFA.DAS.FAA.Domain.Apply.VolunteeringOrWorkExperience;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.VolunteeringOrWorkExperience;
+
 public class WhenHandlingDeleteVolunteeringOrWorkExperience
 {
     [Test, MoqAutoData]

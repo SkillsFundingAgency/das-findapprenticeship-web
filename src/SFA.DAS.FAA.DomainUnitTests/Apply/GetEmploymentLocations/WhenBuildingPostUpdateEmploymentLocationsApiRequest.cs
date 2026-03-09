@@ -1,5 +1,4 @@
-﻿using AutoFixture.NUnit3;
-using SFA.DAS.FAA.Domain.Apply.UpdateEmploymentLocations;
+﻿using SFA.DAS.FAA.Domain.Apply.UpdateEmploymentLocations;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.GetEmploymentLocations
 {

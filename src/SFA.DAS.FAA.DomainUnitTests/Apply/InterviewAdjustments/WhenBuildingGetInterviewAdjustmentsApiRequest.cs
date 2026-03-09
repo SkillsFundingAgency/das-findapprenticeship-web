@@ -1,9 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.GetInterviewAdjustments;
+﻿using SFA.DAS.FAA.Domain.Apply.GetInterviewAdjustments;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.InterviewAdjustments;
+
 public class WhenBuildingGetInterviewAdjustmentsApiRequest
 {
     [Test, AutoData]
