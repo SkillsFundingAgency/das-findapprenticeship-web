@@ -12,7 +12,6 @@ using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.UnitTests.Customisations;
 using System.Security.Claims;
 using SFA.DAS.FAA.Domain.Enums;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Filters;
 

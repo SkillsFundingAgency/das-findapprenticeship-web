@@ -1,14 +1,9 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
+﻿using SFA.DAS.FAA.Application.Queries.Apply.GetApplicationSubmitted;
 using SFA.DAS.FAA.Domain.Apply.GetApplicationSubmitted;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.Apply;
+
 public class WhenHandlingGetApplicationSubmittedQuery
 {
     [Test, MoqAutoData]

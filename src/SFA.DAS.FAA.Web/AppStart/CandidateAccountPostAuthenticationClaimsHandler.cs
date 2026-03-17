@@ -15,10 +15,10 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
     {
         _apiClient = apiClient;
     }
-    public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext ctx)
+    public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext tokenValidatedContext)
     {
         // Access the HttpContext from the TokenValidatedContext
-        var httpContext = ctx.HttpContext;
+        var httpContext = tokenValidatedContext.HttpContext;
 
         // Extract the route information (path)
         if (!string.IsNullOrEmpty(httpContext.Request.Path.Value))
@@ -31,11 +31,16 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
             }
         }
 
-        var userId = ctx.Principal.Claims
+        return await GetClaims(tokenValidatedContext.Principal);
+    }
+
+    public async Task<IEnumerable<Claim>> GetClaims(ClaimsPrincipal principal)
+    {
+        var userId = principal.Claims
             .First(c => c.Type.Equals(ClaimTypes.NameIdentifier))
             .Value;
-        
-        var email = ctx.Principal.Claims
+
+        var email = principal.Claims
             .First(c => c.Type.Equals(ClaimTypes.Email))
             .Value;
 
@@ -44,10 +49,9 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
             Email = email
         };
         var candidate = await _apiClient.Put<PutCandidateApiResponse>(new PutCandidateApiRequest(userId, requestData));
-        
-        // add claims
 
-        var claims = new List<Claim>{new Claim(CustomClaims.CandidateId, candidate.Id.ToString())};
+        // add claims
+        var claims = new List<Claim>{new(CustomClaims.CandidateId, candidate.Id.ToString())};
 
         if (!string.IsNullOrEmpty(candidate.FirstName) && !string.IsNullOrEmpty(candidate.LastName))
         {
@@ -65,7 +69,7 @@ public class CandidateAccountPostAuthenticationClaimsHandler : ICustomClaims
                 claims.Add(new Claim(ClaimTypes.MobilePhone, candidate.PhoneNumber));
             }
         }
-        
+
         return claims;
     }
 }

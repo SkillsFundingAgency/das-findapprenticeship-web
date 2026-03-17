@@ -1,11 +1,6 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
+﻿using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Domain.BrowseByInterests;
 using SFA.DAS.FAA.Domain.Interfaces;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries;
 

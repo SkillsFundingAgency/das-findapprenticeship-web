@@ -1,10 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.DeleteTrainingCourse;
-using SFA.DAS.FAA.Domain.Apply.GetTrainingCourse;
+﻿using SFA.DAS.FAA.Domain.Apply.DeleteTrainingCourse;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.TrainingCourses;
+
 public class WhenBuildingGetDeleteTrainingCourseApiRequest
 {
     [Test, AutoData]

@@ -1,14 +1,10 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using MediatR;
-using Moq;
-using NUnit.Framework;
+﻿using MediatR;
 using SFA.DAS.FAA.Application.Commands.CreateAccount.SelectedAddress;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Commands.CreateAccount.UserAddress;
+
 public class WhenHandlingCreateUserAddressCommand
 {
     [Test, MoqAutoData]

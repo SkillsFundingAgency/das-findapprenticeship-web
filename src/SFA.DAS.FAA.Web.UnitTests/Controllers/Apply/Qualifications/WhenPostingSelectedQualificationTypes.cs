@@ -1,17 +1,12 @@
-using AutoFixture.NUnit3;
-using FluentAssertions;
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetQualificationTypes;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.Qualifications;
 

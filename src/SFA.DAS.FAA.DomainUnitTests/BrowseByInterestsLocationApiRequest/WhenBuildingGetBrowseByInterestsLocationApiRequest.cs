@@ -1,7 +1,4 @@
 using System.Web;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Domain.BrowseByInterestsLocation;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.BrowseByInterestsLocationApiRequest;

@@ -1,10 +1,6 @@
-using FluentAssertions;
 using System.Net;
-using AutoFixture.NUnit3;
 using Microsoft.Extensions.Options;
-using Moq;
 using Newtonsoft.Json;
-using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Infrastructure.Api;

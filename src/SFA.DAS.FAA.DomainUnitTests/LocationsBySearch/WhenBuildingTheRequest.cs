@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.LocationsBySearch;
+﻿using SFA.DAS.FAA.Domain.LocationsBySearch;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.LocationsBySearch;
