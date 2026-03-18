@@ -1,13 +1,9 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using CreateAccount.GetCandidateDateOfBirth;
+﻿using CreateAccount.GetCandidateDateOfBirth;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Domain.User;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Application.UnitTests.Queries.CreateAccount;
+
 public class WhenHandlingGetCandidateDateOfBirthQuery
 {
     [Test, MoqAutoData]

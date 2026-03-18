@@ -1,16 +1,11 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
+﻿using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.Apply.GetVolunteeringAndWorkExperiences;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers.Apply;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
 using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.VolunteeringAndWorkExperience.SummaryVolunteeringAndWorkExperience;

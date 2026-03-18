@@ -1,7 +1,4 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.UpdateApplication;
+﻿using SFA.DAS.FAA.Domain.Apply.UpdateApplication;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.UpdateApplication;
 

@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterests;
 using SFA.DAS.FAA.Application.Queries.BrowseByInterestsLocation;
 using SFA.DAS.FAA.Application.Queries.GetLocationsBySearch;
@@ -13,6 +11,7 @@ using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAT.Domain.Interfaces;
+
 namespace SFA.DAS.FAA.Web.UnitTests.AppStart;
 
 public class WhenAddingServicesToTheContainer

@@ -1,10 +1,6 @@
 using System.Security.Claims;
-using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Extensions;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Extensions;
 

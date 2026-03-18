@@ -1,18 +1,12 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
+﻿using System.Security.Claims;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.Testing.AutoFixture;
-using SFA.DAS.FAA.Web.Controllers.Apply;
-using SFA.DAS.FAA.Web.Models.Apply;
-using SFA.DAS.FAA.Web.Infrastructure;
 using Microsoft.AspNetCore.Http;
-using SFA.DAS.FAA.Web.AppStart;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAA.Application.Commands.WorkHistory.DeleteJob;
-
+using SFA.DAS.FAA.Web.AppStart;
+using SFA.DAS.FAA.Web.Controllers.Apply;
+using SFA.DAS.FAA.Web.Infrastructure;
+using SFA.DAS.FAA.Web.Models.Apply;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Apply.WorkHistory;
 

@@ -1,16 +1,11 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.GovUK.Auth.Services;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Service;
+
 public class WhenGettingAccountDetails
 {
     [Test, MoqAutoData]

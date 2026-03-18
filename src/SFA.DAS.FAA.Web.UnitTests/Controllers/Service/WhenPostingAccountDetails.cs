@@ -1,22 +1,17 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Models;
 using SFA.DAS.GovUK.Auth.Services;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
-using Microsoft.Extensions.Configuration;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Service;
+
 public class WhenPostingAccountDetails
 {
     [Test, MoqAutoData]

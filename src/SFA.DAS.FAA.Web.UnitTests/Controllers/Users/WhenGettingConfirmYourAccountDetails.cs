@@ -1,17 +1,11 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
+﻿using System.Security.Claims;
+using CreateAccount.GetCandidateAccountDetails;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
-using CreateAccount.GetCandidateAccountDetails;
 using SFA.DAS.FAA.Web.AppStart;
 using SFA.DAS.FAA.Web.Controllers;
 using SFA.DAS.FAA.Web.Models.User;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
-using SFA.DAS.FAA.Web.Infrastructure;
 
 namespace SFA.DAS.FAA.Web.UnitTests.Controllers.Users;
 public class WhenGettingConfirmYourAccountDetails

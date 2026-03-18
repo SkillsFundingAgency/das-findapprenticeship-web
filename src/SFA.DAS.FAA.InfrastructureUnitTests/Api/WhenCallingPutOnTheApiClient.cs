@@ -1,15 +1,11 @@
-﻿using FluentAssertions;
+﻿using System.Net;
 using Microsoft.Extensions.Options;
-using Moq;
 using Newtonsoft.Json;
-using NUnit.Framework;
 using SFA.DAS.FAA.Domain.Candidates;
 using SFA.DAS.FAA.Domain.Configuration;
 using SFA.DAS.FAA.Domain.Interfaces;
 using SFA.DAS.FAA.Infrastructure.Api;
 using SFA.DAS.FAA.Infrastructure.UnitTests.HttpMessageHandlerMock;
-using SFA.DAS.Testing.AutoFixture;
-using System.Net;
 
 namespace SFA.DAS.FAA.Infrastructure.UnitTests.Api;
 public class WhenCallingPutOnTheApiClient

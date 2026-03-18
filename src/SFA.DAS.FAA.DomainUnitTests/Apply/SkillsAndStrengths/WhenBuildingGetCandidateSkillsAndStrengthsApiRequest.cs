@@ -1,9 +1,8 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Apply.GetCandidateSkillsAndStrengths;
+﻿using SFA.DAS.FAA.Domain.Apply.GetCandidateSkillsAndStrengths;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Apply.SkillsAndStrengths;
+
 public class WhenBuildingGetCandidateSkillsAndStrengthsApiRequest
 {
     [Test, MoqAutoData]

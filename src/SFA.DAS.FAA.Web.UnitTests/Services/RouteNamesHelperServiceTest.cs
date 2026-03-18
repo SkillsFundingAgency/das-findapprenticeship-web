@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.Enums;
+﻿using SFA.DAS.FAA.Domain.Enums;
 using SFA.DAS.FAA.Web.Infrastructure;
 using SFA.DAS.FAA.Web.Services;
 

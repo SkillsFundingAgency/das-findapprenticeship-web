@@ -1,7 +1,4 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.FAA.Domain.SavedVacancies;
+﻿using SFA.DAS.FAA.Domain.SavedVacancies;
 
 namespace SFA.DAS.FAA.Domain.UnitTests.Vacancy
 {
