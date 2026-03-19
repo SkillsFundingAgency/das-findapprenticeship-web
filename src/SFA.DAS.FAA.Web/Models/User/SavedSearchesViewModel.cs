@@ -64,7 +64,7 @@ public record SavedSearchViewModel(
             source.Id,
             source.SearchParameters.SearchTerm,
             source.SearchParameters.Distance,
-            source.SearchParameters.SelectedRouteIds?.Select(category => routes.FirstOrDefault(route => route.Id == category)?.Name ?? string.Empty).ToList(),
+            source.SearchParameters.SelectedRouteIds?.Select(category => GetRouteDisplayText(routes, category)).ToList(),
             source.SearchParameters.SelectedLevelIds,
             source.SearchParameters.SelectedApprenticeshipTypes,
             source.SearchParameters.DisabilityConfident,
@@ -82,6 +82,17 @@ public record SavedSearchViewModel(
             ApprenticeshipTypes.Standard => "Apprenticeships",
             ApprenticeshipTypes.Foundation => "Foundation apprenticeships",
             _ => throw new ArgumentOutOfRangeException(nameof(apprenticeshipType), apprenticeshipType, null)
+        };
+    }
+
+    private static string GetRouteDisplayText(List<RouteInfo> routes, int routeId)
+    {
+        var route = routes.FirstOrDefault(route => route.Id == routeId);
+        return route?.Id switch
+        {
+            5 => "Construction and building",
+            14 => "Sales and marketing",
+            _ => route?.Name ?? string.Empty
         };
     }
 }

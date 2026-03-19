@@ -10,14 +10,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Models.User;
 
 public class WhenCreatingSavedSearchViewModel
 {
-    private static readonly List<RouteInfo> RouteInfos =
-    [
-        new(1, "Route One"),
-        new(2, "Route Two"),
-        new(3, "Route Three"),
-        new(4, "Route Four"),
-        new(5, "Route Five")
-    ];
+    private static readonly List<RouteInfo> RouteInfos = Enumerable.Range(1, 15).Select(x => new RouteInfo(x, $"Route {x}")).ToList();
     
     private static readonly object[] TitleTestCases =
     [
@@ -25,7 +18,7 @@ public class WhenCreatingSavedSearchViewModel
         new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, "Hull", true, true, null, "Foo in Hull" },
         new object?[] { "Foo", new [] {1, 2}, new [] {1, 2}, null, true, true, null, "Foo in all of England" },
         new object?[] { null, new [] {1, 2, 3}, new [] {1, 2}, null, true, true, null, "3 job categories in all of England" },
-        new object?[] { null, new [] { 2 }, new [] {1, 2}, null, true, true, null, "Route Two in all of England" },
+        new object?[] { null, new [] { 2 }, new [] {1, 2}, null, true, true, null, "Route 2 in all of England" },
         new object?[] { null, null, new [] {1, 2, 3, 4}, null, true, true, null, "4 apprenticeship levels in all of England" },
         new object?[] { null, null, new [] { 4 }, null, true, true, null, "Level 4 in all of England" },
         new object?[] { null, null, null, null, true, true, null, "Disability Confident in all of England" },
@@ -91,7 +84,7 @@ public class WhenCreatingSavedSearchViewModel
             Guid.NewGuid(),
             DateTime.UtcNow,
             null, null,
-            new SearchParameters("Foo", [1, 2], distance, true, true,[1, 2], location, null)
+            new SearchParameters("Foo", [1, 2], distance, true, true, [1, 2], location, null)
         );
         
         // act
@@ -99,5 +92,39 @@ public class WhenCreatingSavedSearchViewModel
 
         // assert
         result.Location.Should().Be(expectedLocation);
+    }
+    
+    [TestCase(1, "Route 1")]
+    [TestCase(2, "Route 2")]
+    [TestCase(3, "Route 3")]
+    [TestCase(4, "Route 4")]
+    [TestCase(5, "Construction and building")]
+    [TestCase(6, "Route 6")]
+    [TestCase(7, "Route 7")]
+    [TestCase(8, "Route 8")]
+    [TestCase(9, "Route 9")]
+    [TestCase(10, "Route 10")]
+    [TestCase(11, "Route 11")]
+    [TestCase(12, "Route 12")]
+    [TestCase(13, "Route 13")]
+    [TestCase(14, "Sales and marketing")]
+    [TestCase(15, "Route 15")]
+    public void Then_The_Route_Display_Text_Is_Mapped_Correctly(int routeId, string expectedDisplayText)
+    {
+        // arrange
+        var savedSearch = new SavedSearch(
+            Guid.NewGuid(),
+            DateTime.UtcNow,
+            null,
+            null,
+            new SearchParameters("Foo", [routeId], null, true, true, [1, 2], "Hull", null)
+        );
+        
+        // act
+        var result = SavedSearchViewModel.From(savedSearch, RouteInfos);
+
+        // assert
+        result.SelectedRoutes.Should().HaveCount(1);
+        result.SelectedRoutes.Should().Contain(expectedDisplayText);
     }
 }
