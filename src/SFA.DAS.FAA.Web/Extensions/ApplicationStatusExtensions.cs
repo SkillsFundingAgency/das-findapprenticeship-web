@@ -23,7 +23,7 @@ namespace SFA.DAS.FAA.Web.Extensions
             {
                 ApplicationStatus.Draft => "govuk-tag govuk-tag--yellow govuk-!-margin-bottom-2",
                 ApplicationStatus.Submitted => "govuk-tag govuk-tag--green govuk-!-margin-bottom-2",
-                ApplicationStatus.Withdrawn => "govuk-tag govuk-tag--green govuk-!-margin-bottom-2",
+                ApplicationStatus.Withdrawn => "govuk-tag govuk-tag--grey govuk-!-margin-bottom-2",
                 ApplicationStatus.Successful => "govuk-tag govuk-tag--green govuk-!-margin-bottom-2",
                 ApplicationStatus.Unsuccessful => "govuk-tag govuk-tag--green govuk-!-margin-bottom-2",
                 _ => string.Empty

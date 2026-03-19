@@ -18,7 +18,7 @@ namespace SFA.DAS.FAA.Web.UnitTests.Extensions
 
         [TestCase(ApplicationStatus.Draft, "govuk-tag govuk-tag--yellow govuk-!-margin-bottom-2")]
         [TestCase(ApplicationStatus.Submitted, "govuk-tag govuk-tag--green govuk-!-margin-bottom-2")]
-        [TestCase(ApplicationStatus.Withdrawn, "govuk-tag govuk-tag--green govuk-!-margin-bottom-2")]
+        [TestCase(ApplicationStatus.Withdrawn, "govuk-tag govuk-tag--grey govuk-!-margin-bottom-2")]
         [TestCase(ApplicationStatus.Successful, "govuk-tag govuk-tag--green govuk-!-margin-bottom-2")]
         [TestCase(ApplicationStatus.Unsuccessful, "govuk-tag govuk-tag--green govuk-!-margin-bottom-2")]
         public void GetCss_Returns_Expected_Value(ApplicationStatus status, string expected)
