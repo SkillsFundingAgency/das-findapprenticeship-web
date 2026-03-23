@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Web.Extensions
+@using SFA.DAS.FAA.Web.TagHelpers
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchApprenticeshipsViewModel
 @{
     ViewData["Title"] = "Search apprenticeship – Find an apprenticeship – GOV.UK";
@@ -17,6 +18,15 @@
     {
         <partial name="_NationalApprenticeshipWeekBanner" />
     }
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-banner style="@BannerStyle.Important">
+                <govuk-banner-heading>Your future pay as an apprentice.</govuk-banner-heading>
+                <a class="govuk-link" href="https://www.apprenticeships.gov.uk/apprentices/apprentice-pay-and-future-salary">Find out what you could earn</a> after you complete your apprenticeship.
+            </govuk-banner>
+        </div>
+    </div>
+    
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @if (!ViewData.ModelState.IsValid)
