@@ -1,3 +1,5 @@
+@use "../../govuk-tools" as *;
+
 $govuk-header-link-underline-thickness: 3px;
 
 @mixin toggle-button-focus($default-text-colour) {
@@ -339,8 +341,8 @@ $govuk-header-link-underline-thickness: 3px;
 
 // start service navigation styles
 .service-header {
-  background-color: govuk-colour("light-grey");
-  border-bottom: 1px solid govuk-colour("mid-grey");
+  background-color: govuk-colour("black", $variant: "tint-95");
+  border-bottom: 1px solid govuk-colour("black", $variant: "tint-80");
 }
 
 .service-header__container {

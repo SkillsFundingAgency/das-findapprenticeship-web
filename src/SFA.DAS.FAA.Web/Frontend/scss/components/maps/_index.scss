@@ -1,3 +1,5 @@
+@use "../../govuk-tools" as *;
+
 .faa-map__container {
   display: none;
   position: fixed !important;

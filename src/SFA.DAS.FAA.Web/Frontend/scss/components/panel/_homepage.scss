@@ -1,5 +1,7 @@
+@use "../../govuk-tools" as *;
+
 .faa-home-panel {
-  background: govuk-colour("light-grey");
+  background: govuk-colour("black", $variant: "tint-95");
   margin: 30px -15px 0;
   padding: 15px;
 }

@@ -165,10 +165,18 @@
                         <li
                             class="@(Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships"
                                      || Context.Request.RouteValues["controller"]?.ToString() == "Vacancies" ? "govuk-service-navigation__item--active":"") govuk-service-navigation__item">
-                            <a class="govuk-service-navigation__link"
-                               asp-route="@RouteNames.ServiceStartDefault">
-                                Search
-                            </a>
+                            @if (Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships"
+                                 || Context.Request.RouteValues["controller"]?.ToString() == "Vacancies")
+                            {
+                                <span>Search</span>
+                            }
+                            else
+                            {
+                                <a class="govuk-service-navigation__link"
+                                   asp-route="@RouteNames.ServiceStartDefault">
+                                    Search
+                                </a>
+                            }
                         </li>
                         @if (User.Identity is { IsAuthenticated: true } && ViewData["IsAccountStatusCompleted"] != null &&
                              ViewData["IsAccountStatusCompleted"]!.Equals(true))
@@ -209,7 +217,7 @@
         @RenderBody()
     </main>
 </div>
-<footer class="govuk-footer">
+<footer class="govuk-footer faa-footer">
     <div class="govuk-width-container">
         <svg
             focusable="false"

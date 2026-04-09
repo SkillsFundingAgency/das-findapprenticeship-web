@@ -1,3 +1,5 @@
+@use "../../govuk-tools" as *;
+
 .faa-tab-nav {
   @include govuk-font($size: 19);
   border-bottom: 1px solid $govuk-border-colour;

@@ -1,3 +1,5 @@
+@use "../../govuk-tools" as *;
+
 .faa-filter {
   border: 1px solid $govuk-border-colour;
   .govuk-select {
@@ -32,7 +34,7 @@
 }
 
 .faa-filter__selected {
-  background: govuk-colour("light-grey");
+  background: govuk-colour("black", $variant: "tint-95");
   border-bottom: 1px solid $govuk-border-colour;
   padding: 15px;
   @include govuk-media-query(tablet) {

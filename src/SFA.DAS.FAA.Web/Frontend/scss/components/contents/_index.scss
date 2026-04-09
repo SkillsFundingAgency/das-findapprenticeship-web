@@ -1,3 +1,5 @@
+@use "../../govuk-tools" as *;
+
 .faa-contents {
   @include govuk-media-query(tablet) {
     position: sticky;

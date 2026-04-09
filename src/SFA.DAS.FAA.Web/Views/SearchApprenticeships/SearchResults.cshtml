@@ -338,16 +338,22 @@
                             }
                             <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancyAdvert.CourseTitle</p>
                             <p class="govuk-body"><b>Wage</b> @vacancyAdvert.WageText</p>
-                            <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">
-                                @vacancyAdvert.ClosingDateDescription
-                            </p>
-                            <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">
-                                @vacancyAdvert.PostedDate
-                            </p>
                             
-                            <govuk-tag-foundation asp-show="@vacancyAdvert.ApprenticeshipType.IsFoundation()" />
-                            <div asp-show="@vacancyAdvert.IsDisabilityConfident" class="faa-search_results__disability-wrapper">
-                                <img src="/img/disability-confident.svg" class="faa-disability-confident--srp govuk-!-margin-bottom-0" alt="Disability Confident" no-cdn />
+                            <div class="faa-search-result-footer">
+                                <div>
+                                    <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">
+                                        @vacancyAdvert.ClosingDateDescription
+                                    </p>
+                                    <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-font-size-16 das-!-color-dark-grey">
+                                        @vacancyAdvert.PostedDate
+                                    </p>
+                                </div>
+                                <div>
+                                    <govuk-tag-foundation asp-show="@vacancyAdvert.ApprenticeshipType.IsFoundation()"/>
+                                    <div asp-show="@vacancyAdvert.IsDisabilityConfident" class="faa-search_results__disability-wrapper">
+                                        <img src="/img/disability-confident.svg" class="faa-disability-confident--srp govuk-!-margin-bottom-0" alt="Disability Confident" no-cdn/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </li>

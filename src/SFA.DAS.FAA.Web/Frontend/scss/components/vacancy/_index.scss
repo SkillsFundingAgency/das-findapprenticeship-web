@@ -1,3 +1,7 @@
+@use "../../govuk-tools" as *;
+@use "govuk/core/typography";
+@use "govuk/core/lists";
+
 .faa-vacancy__title {
   margin-bottom: 10px;
 }
@@ -100,6 +104,14 @@
   }
 }
 
+.faa-search-result-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
 .faa-vacancy__section > h2:not([class]) {
   @extend .govuk-heading-l;
 }
@@ -156,7 +168,5 @@
 
 .faa-search_results__disability-wrapper
 {
-  position: absolute;
-  right: 0;
-  bottom: 4px
+
 }
