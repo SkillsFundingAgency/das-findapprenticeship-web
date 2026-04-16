@@ -58,7 +58,7 @@
                             <input class="govuk-input faa-location-autocomplete" value="@Model.Location" name="location"
                                    id="location" type="search" spellcheck="false" autocomplete="postal-code"
                                    aria-describedby="where-hint">
-                            <label for="within" class="govuk-label govuk-!-margin-top-2">Within</label>
+                            <label for="within" class="govuk-label govuk-!-margin-top-4 das-!-color-dark-grey">Within</label>
                             <select class="govuk-select" id="within" name="distance">
                                 <option selected="@(Model.Distance == 2)" value="2">2 miles</option>
                                 <option value="5" selected="@(Model.Distance == 5)">5 miles</option>
@@ -119,15 +119,16 @@
                                 <div class="govuk-accordion__section-content">
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-visually-hidden">Apprenticeship level</legend>
-                                        <p class="govuk-body govuk-!-font-size-16">
+                                        <partial name="_FilterDetails"
+                                                 Model="@Model.FilterChoices.CourseLevelsChecklistDetails"/>
+
+                                        <p class="govuk-body">
                                             <a class="govuk-link govuk-link--no-visited-state"
                                                href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships?#Apprenticeships"
                                                target="_blank" rel="external">
-                                                Understanding apprenticeship levels (opens in new tab)
+                                                Learn more about levels (opens in new tab)
                                             </a>
                                         </p>
-                                        <partial name="_FilterDetails"
-                                                 Model="@Model.FilterChoices.CourseLevelsChecklistDetails"/>
                                     </fieldset>
 
                                 </div>
@@ -174,13 +175,6 @@
                     </form>
                 </div>
             </div>
-            <button class="govuk-button govuk-button--secondary das-filter__toggle das-show-hide__button"
-                    data-aria-controls="faa-filter@(Model.ShowFilterOptions ? "-options" : "")"
-                    data-button-string="filters @(Model.ShowFilterOptions ? " options" : "")"
-                    data-focus-id="SearchTerm">
-                Show/hide
-            </button>
-
         </div>
     </div>
     <div class="govuk-grid-column-two-thirds">

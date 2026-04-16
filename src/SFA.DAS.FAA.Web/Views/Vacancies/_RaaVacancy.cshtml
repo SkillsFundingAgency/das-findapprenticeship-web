@@ -276,11 +276,11 @@ else
                         </dt>
                         <dd class="govuk-summary-list__value">
                             <p class="govuk-!-margin-bottom-1">@Model.AnnualWage</p>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">@Model.WageDetailText</p>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-1">
+                            <p class="govuk-body govuk-hint govuk-!-margin-0">@Model.WageDetailText</p>
+                            <p class="govuk-body  govuk-!-margin-top-1 govuk-!-margin-bottom-1">
                                 <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
                                    rel="noreferrer noopener" target="_blank">
-                                    Check minimum wage rates (opens in new tab)
+                                    Minimum wage rates (opens in new tab)
                                 </a>
                             </p>
                             @if (!string.IsNullOrWhiteSpace(Model.WageAdditionalInformation))
@@ -305,7 +305,7 @@ else
                         </dt>
                         <dd class="govuk-summary-list__value">
                             @Model.WorkingPattern
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0 govuk-!-padding-top-1">
+                            <p class="govuk-body govuk-hint govuk-!-margin-0 govuk-!-padding-top-1">
                                 @Model.HoursPerWeek
                             </p>
                         </dd>

@@ -20,7 +20,7 @@ public class SearchApprenticeshipsViewModel
         return new SearchApprenticeshipsViewModel
         {
             
-            TotalText = $"{source.Total:N0} {(source.Total == 1 ? "apprenticeship" : "apprenticeships")} currently listed"
+            TotalText = $"{source.Total:N0} {(source.Total == 1 ? "apprenticeship" : "apprenticeships")} listed"
         };
     }
 }
