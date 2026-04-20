@@ -9,7 +9,7 @@ So that it is clear what actions I can take
 	When I navigate to the Home page
 	Then the page is successfully returned
 	And the page content includes the following: Search apprenticeships
-	And the page content includes the following: 1,034 apprenticeships currently listed
+	And the page content includes the following: 1,034 apprenticeships listed
 	
 @AuthenticatedUser
 @WireMockServer
