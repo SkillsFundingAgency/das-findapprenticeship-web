@@ -3,20 +3,20 @@
 @use "govuk/core/lists";
 
 .faa-vacancy__title {
-  margin-bottom: 10px;
+  margin-bottom: 1.5rem;
 }
 
 .faa-vacancy__organisation {
-  margin-bottom: 0;
+  margin-bottom: .3rem;
 }
 
 .faa-vacancy__location {
-  margin-bottom: 30px;
+  margin-bottom: 1.5rem;
   color: $govuk-secondary-text-colour;
 }
 
 .faa-vacancy__closing-date {
-  margin: 0;
+  margin-bottom: .2rem;
 }
 
 .faa-vacancy__section {
@@ -41,10 +41,8 @@
 .faa-vacancy-actions {
   margin: 20px 0;
   display: flex;
-  flex-direction: column;
-  @include govuk-media-query(tablet) {
-    flex-direction: row;
-  }
+  flex-direction: row;
+  gap: 1.5rem;
 }
 
 .faa-vacancy-actions__link {
@@ -58,9 +56,6 @@
   color: $govuk-link-colour;
   cursor: pointer;
   @include govuk-font-size(19);
-  @include govuk-media-query(tablet) {
-    margin-right: 15px;
-  }
 }
 
 .faa-vacancy-actions__icon {
@@ -108,8 +103,9 @@
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
+  margin-top: .3rem;
 }
 
 .faa-vacancy__section > h2:not([class]) {

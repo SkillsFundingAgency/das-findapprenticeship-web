@@ -152,61 +152,59 @@
              data-module="govuk-service-navigation">
         <div class="govuk-width-container">
             <div class="govuk-service-navigation__container">
-                  <span class="govuk-service-navigation__service-name">
-                  <a href="/" class="govuk-service-navigation__link">
-                    Find an apprenticeship
-                  </a>
-                  </span>
-                <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
-                    <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="faa-navigation" hidden>
-                        Menu
-                    </button>
-                    <ul class="govuk-service-navigation__list" id="faa-navigation">
-                        <li
-                            class="@(Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships"
-                                     || Context.Request.RouteValues["controller"]?.ToString() == "Vacancies" ? "govuk-service-navigation__item--active":"") govuk-service-navigation__item">
-                            @if (Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships"
-                                 || Context.Request.RouteValues["controller"]?.ToString() == "Vacancies")
-                            {
-                                <span>Search</span>
-                            }
-                            else
-                            {
+                <span class="govuk-service-navigation__service-name">
+                    <a href="/" class="govuk-service-navigation__link">
+                        Find an apprenticeship
+                    </a>
+                </span>
+                @if (User.Identity is { IsAuthenticated: true })
+                {
+                    <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+                        <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="faa-navigation" hidden>
+                            Menu
+                        </button>
+                        <ul class="govuk-service-navigation__list" id="faa-navigation">
+                            <li
+                                class="@(Context.Request.RouteValues["controller"]?.ToString() == "SearchApprenticeships"
+                                         || Context.Request.RouteValues["controller"]?.ToString() == "Vacancies"
+                                           ? "govuk-service-navigation__item--active"
+                                           : "") govuk-service-navigation__item">
                                 <a class="govuk-service-navigation__link"
                                    asp-route="@RouteNames.ServiceStartDefault">
                                     Search
                                 </a>
+                            </li>
+                            @if (User.Identity is { IsAuthenticated: true } && ViewData["IsAccountStatusCompleted"] != null &&
+                                 ViewData["IsAccountStatusCompleted"]!.Equals(true))
+                            {
+                                <li
+                                    class="@(Context.Request.RouteValues["controller"]?.ToString() == "SavedVacancies" ? "govuk-service-navigation__item--active" : "") govuk-service-navigation__item ">
+                                    <a class="govuk-service-navigation__link"
+                                       asp-route="@RouteNames.SavedVacancies">
+                                        Saved vacancies
+                                    </a>
+                                </li>
+                                <li
+                                    class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/"))
+                                             || Context.Request.RouteValues["controller"]?.ToString() == "Applications"
+                                             || Context.Request.RouteValues["controller"]?.ToString() == "Apply"
+                                               ? "govuk-service-navigation__item--active"
+                                               : "") govuk-service-navigation__item">
+                                    <a class="govuk-service-navigation__link"
+                                       asp-route="@RouteNames.Applications.ViewApplications">
+                                        Your applications
+                                        <notification-badge class="faa-badge" count="@ViewData[ViewDataKeys.ApplicationsCount]"></notification-badge>
+                                    </a>
+                                </li>
+                                <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "govuk-service-navigation__item--active" : "") govuk-service-navigation__item">
+                                    <a class="govuk-service-navigation__link" asp-route="@RouteNames.Settings">
+                                        Settings
+                                    </a>
+                                </li>
                             }
-                        </li>
-                        @if (User.Identity is { IsAuthenticated: true } && ViewData["IsAccountStatusCompleted"] != null &&
-                             ViewData["IsAccountStatusCompleted"]!.Equals(true))
-                        {
-                            <li
-                                class="@(Context.Request.RouteValues["controller"]?.ToString() == "SavedVacancies" ? "govuk-service-navigation__item--active":"") govuk-service-navigation__item ">
-                                <a class="govuk-service-navigation__link"
-                                   asp-route="@RouteNames.SavedVacancies">
-                                    Saved vacancies
-                                </a>
-                            </li>
-                            <li
-                                class="@((Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/apply/"))
-                                         || Context.Request.RouteValues["controller"]?.ToString() == "Applications"
-                                         || Context.Request.RouteValues["controller"]?.ToString() == "Apply"
-                                           ? "govuk-service-navigation__item--active":"") govuk-service-navigation__item">
-                                <a class="govuk-service-navigation__link"
-                                   asp-route="@RouteNames.Applications.ViewApplications">
-                                    Your applications
-                                    <notification-badge class="faa-badge" count="@ViewData[ViewDataKeys.ApplicationsCount]"></notification-badge>
-                                </a>
-                            </li>
-                            <li class="@(Context.Request.RouteValues["controller"]?.ToString() == "User" ? "govuk-service-navigation__item--active":"") govuk-service-navigation__item">
-                                <a class="govuk-service-navigation__link" asp-route="@RouteNames.Settings">
-                                    Settings
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </nav>
+                        </ul>
+                    </nav>
+                }
             </div>
         </div>
     </section>
