@@ -1,3 +1,5 @@
+@use "../govuk-tools" as *;
+
 .faa-page-heading {
   margin-top: 0;
   @include govuk-media-query(tablet) {

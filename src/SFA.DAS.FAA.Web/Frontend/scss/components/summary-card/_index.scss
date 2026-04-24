@@ -1,3 +1,5 @@
+@use "../../govuk-tools" as *;
+
 .faa-summary-card {
   .govuk-summary-list__key {
     @include govuk-media-query(tablet) {

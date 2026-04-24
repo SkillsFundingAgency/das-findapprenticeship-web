@@ -1,7 +1,7 @@
-﻿$foundations-pink: govuk-tint(govuk-colour("pink"), 85%);
+﻿$foundations-pink: #F9DCE8;
 
 .faa-foundation-inset-text {
-  border-left: 10px solid $foundations-pink !important;
+  border-left: 10px solid $foundations-pink;
 }
 
 .faa-flex-title {

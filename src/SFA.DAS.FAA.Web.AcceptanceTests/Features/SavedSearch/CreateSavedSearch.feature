@@ -10,7 +10,7 @@ Feature: Create Saved Searches
     When I navigate to the following url: /apprenticeships?sort=DistanceAsc&location=Manchester%2C+Greater+Manchester&distance=2
     Then the page is successfully returned
     And the page content includes the following: 0 results found
-    And the page content includes the following: Sign in to create an alert for this search</a>
+    And the page content includes the following: Create an alert to get a weekly email with new apprenticeships that match this search.
     
   @AuthenticatedUser
   @WireMockServer

@@ -117,7 +117,7 @@ else
         {
             <p class="govuk-body faa-vacancy__closing-date">@Model.ClosingDate</p>
         }
-        <p class="govuk-body govuk-!-font-size-16 das-!-color-dark-grey">@Model.PostedDate</p>
+        <p class="govuk-body das-!-color-dark-grey">@Model.PostedDate</p>
         <div class="faa-vacancy-actions">
             <div asp-hide="Model.IsClosed">
                 @if (User.Identity is { IsAuthenticated: true })
@@ -167,7 +167,7 @@ else
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-third faa-contents">
-                <h2 class="govuk-body-s faa-contents__heading">
+                <h2 class="govuk-heading-m faa-contents__heading">
                     Contents
                 </h2>
                 <ul class="govuk-list govuk-!-font-size-16 faa-contents__list">
@@ -276,11 +276,11 @@ else
                         </dt>
                         <dd class="govuk-summary-list__value">
                             <p class="govuk-!-margin-bottom-1">@Model.AnnualWage</p>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0">@Model.WageDetailText</p>
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-1">
+                            <p class="govuk-body govuk-hint govuk-!-margin-0">@Model.WageDetailText</p>
+                            <p class="govuk-body  govuk-!-margin-top-1 govuk-!-margin-bottom-1">
                                 <a href="https://www.gov.uk/national-minimum-wage-rates" class="govuk-link"
                                    rel="noreferrer noopener" target="_blank">
-                                    Check minimum wage rates (opens in new tab)
+                                    Minimum wage rates (opens in new tab)
                                 </a>
                             </p>
                             @if (!string.IsNullOrWhiteSpace(Model.WageAdditionalInformation))
@@ -305,7 +305,7 @@ else
                         </dt>
                         <dd class="govuk-summary-list__value">
                             @Model.WorkingPattern
-                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-0 govuk-!-padding-top-1">
+                            <p class="govuk-body govuk-hint govuk-!-margin-0 govuk-!-padding-top-1">
                                 @Model.HoursPerWeek
                             </p>
                         </dd>
@@ -440,7 +440,7 @@ else
                 <p>@Model.TrainingProviderName</p>
                 <h3 class="govuk-heading-s">Training course</h3>
                 <p class="govuk-body govuk-!-margin-bottom-1">@Model.CourseTitle</p>
-                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-5">
+                <p class="govuk-body govuk-!-margin-bottom-5">
                     <a class="govuk-link govuk-link--no-visited-state"
                        href="https://www.apprenticeships.gov.uk/apprentices/about-apprenticeships?#Apprenticeships"
                        target="_blank" rel="external">

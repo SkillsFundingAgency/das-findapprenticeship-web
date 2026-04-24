@@ -1,12 +1,20 @@
-$govuk-include-default-font-face: false;
-@import "govuk/base";
-@import "govuk/core/lists";
-@import "govuk/core/typography";
-@import "core/all";
-@import "components/all";
-@import "libs/all";
+@use "govuk/base" with ($govuk-include-default-font-face: false);
+@use "govuk/core/lists" as govuk-lists;
+@use "govuk/core/typography" as govuk-typography;
+@use "core/all" as core;
+@use "components/all" as components;
+@use "libs/all" as libs;
 
 .faa-search-listing--highlight {
   border-left: 10px solid #b1b4b6;
   padding-left: 15px;
+}
+
+.faa-footer {
+  margin-top: 6rem;
+}
+
+
+.autocomplete__input {
+  height: 2.5rem;
 }

@@ -1,3 +1,5 @@
+@use "../../govuk-tools" as *;
+
 .autocomplete__menu {
   border-top: 2px solid $govuk-input-border-colour;
   margin-top: -2px;

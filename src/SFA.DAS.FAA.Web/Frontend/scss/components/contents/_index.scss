@@ -1,8 +1,14 @@
+@use "../../govuk-tools" as *;
+
 .faa-contents {
   @include govuk-media-query(tablet) {
     position: sticky;
     top: 10px;
   }
+}
+
+.faa-contents__heading {
+  margin-bottom: 1.5rem;
 }
 
 .faa-contents__list {
