@@ -34,9 +34,8 @@ builder.Services.AddServiceRegistration(isIntegrationTest);
 builder.Services.AddAuthenticationServices(rootConfiguration);
 builder.Services.AddCacheServices(rootConfiguration);
 builder.Services.AddHealthChecks()
-    .AddCheck<AzureKeyVaultSecretHealthCheck>(
-    "KeyVaultSecret", 
-    failureStatus: HealthStatus.Unhealthy);
+    .AddCheck<AzureKeyVaultSecretHealthCheck>("KeyVaultSecret", failureStatus: HealthStatus.Unhealthy)
+    .AddCheck<SearchIndexStatisticsHealthCheck>("AzureSearchIndex", failureStatus: HealthStatus.Unhealthy);
 
 builder.Services.AddControllersWithViews()
     .AddSessionStateTempDataProvider();
