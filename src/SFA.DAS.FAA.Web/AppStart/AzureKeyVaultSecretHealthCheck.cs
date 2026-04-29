@@ -37,9 +37,3 @@ public class AzureKeyVaultSecretHealthCheck(IOptions<FindAnApprenticeshipOuterAp
         }
     }
 }
-
-
-
-
-
-
