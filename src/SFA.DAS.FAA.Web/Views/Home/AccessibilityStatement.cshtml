@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.FAA.Web.Infrastructure
+﻿@using SFA.DAS.FAA.Web.Infrastructure
 @{
     Layout = "_Layout";
     ViewBag.Title = "Accessibility statement for Find an apprenticeship – Find an apprenticeship – GOV.UK";
@@ -12,6 +11,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <!-------------------------------------------------------------------------------------------->
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-8">
             Accessibility statement for Find an apprenticeship
         </h1>
@@ -19,15 +19,21 @@
             This accessibility statement applies to Find an apprenticeship.
         </p>
         <p class="govuk-body">
-            This website is run by the Department for Education (DfE). We want as many people as possible to be able to
-            use this website.
+            This website is run by the Department for Education (DfE). We want as many people as possible to be able to use this website.
         </p>
+        <p class="govuk-body">For example, that means you should be able to:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>change colours, contrast levels and fonts using browser or device settings</li>
+            <li>zoom in up to 400% without the text spilling off the screen</li>
+            <li>navigate most of the website using a keyboard or speech recognition software</li>
+            <li>listen to most of the website using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)</li>
+        </ul>
         <p class="govuk-body">We've also made the website text as simple as possible to understand.</p>
         <p class="govuk-body">
             <a href="https://mcmw.abilitynet.org.uk" class="govuk-link">AbilityNet</a> has advice on making your device
             easier to use if you have a disability.
         </p>
-
+        <!-------------------------------------------------------------------------------------------->
         <h2 class="govuk-heading-l">
             How accessible this website is
         </h2>
@@ -35,59 +41,46 @@
             We know that some parts of this website are not fully accessible:
         </p>
         <ul class="govuk-list govuk-list--bullet">
-            <li>
-
-                screen readers may not work correctly when selecting a button reveals text
-
-            </li>
-            <li>maps do not work with keyboard control</li>
+            <li>focus is not always managed correctly when interacting with controls on the page, which can make it difficult to use the website with a keyboard or screen reader</li>
+            <li>some page content, including headings, labels, and grouped information, is not structured in a way that clearly conveys relationships to screen reader users</li>
+            <li>some interactive map controls are difficult to use with a keyboard or assistive technologies</li>
+            <li>when browser zoom is increased to 400%, some content overlaps, is cut off, or requires horizontal scrolling</li>
+            <li>some visual indicators (such as icons or styling that show state or action) are not always conveyed clearly to users of assistive technologies</li>
+            <li>some elements that function as buttons are announced to screen reader users as links</li>
         </ul>
-
-
+        <!-------------------------------------------------------------------------------------------->
         <h2 class="govuk-heading-l">
             Feedback and contact information
         </h2>
         <p class="govuk-body">
-            If you find any problems not listed on this page or think we’re not meeting accessibility requirements,
-            contact:
+            If you find any problems not listed on this page or think we’re not meeting accessibility requirements, contact:
         </p>
         <ul class="govuk-list govuk-list--bullet">
-            <li>
-
-                email <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk"
-                    class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>
-
-            </li>
+            <li>email <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk" class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a></li>
             <li>call 08000 150 600</li>
         </ul>
         <p class="govuk-body">
-            If you need information on this website in a different format like accessible PDF, large print, easy read,
-            audio recording or braille:
+            If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille:
         </p>
         <ul class="govuk-list govuk-list--bullet">
-            <li>
-
-                email <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk"
-                    class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>
-
-            </li>
+            <li>email <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk" class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a></li>
             <li>call 08000 150 600</li>
         </ul>
         <p class="govuk-body">
             We’ll consider your request and get back to you in 5 days.
         </p>
-
-
+        <!-------------------------------------------------------------------------------------------->
         <h2 class="govuk-heading-l">
             Enforcement procedure
         </h2>
         <p class="govuk-body">
             The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies
             (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the 'accessibility regulations').
-            If you're not happy with how we respond to your complaint, <a href="https://www.equalityadvisoryservice.com"
-                class="govuk-link">contact the Equality Advisory and Support Service (EASS)</a>.
+            If you're not happy with how we respond to your complaint,
+            <a href="https://www.equalityadvisoryservice.com"
+               class="govuk-link">contact the Equality Advisory and Support Service (EASS)</a>.
         </p>
-
+        <!-------------------------------------------------------------------------------------------->
         <h2 class="govuk-heading-l">
             Technical information about this website’s accessibility
         </h2>
@@ -95,67 +88,74 @@
             DfE is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and
             Mobile Applications) (No. 2) Accessibility Regulations 2018.
         </p>
-
+        <!-------------------------------------------------------------------------------------------->
         <h3 class="govuk-heading-m">Compliance status</h3>
         <p class="govuk-body">
-            The website has been tested against the Web Content Accessibility Guidelines (WCAG) 2.1 AA standard.
+            The website has been tested against the Web Content Accessibility Guidelines (WCAG) 2.2 AA standard.
         </p>
         <p class="govuk-body">
-            This website is partially compliant with the <a href="https://www.w3.org/TR/WCAG21/" class="govuk-link">Web
-                Content
-                Accessibility Guidelines version 2.1</a> AA standard, due to the non-compliances listed below.
+            This website is partially compliant with the 
+            <a href="https://www.w3.org/TR/WCAG22/" class="govuk-link">Web Content Accessibility Guidelines version 2.2</a>
+            AA standard, due to the non-compliances listed below. 
         </p>
-
-        <h2 class="govuk-heading-l">
-            Non-accessible content
-        </h2>
+        <!-------------------------------------------------------------------------------------------->
+        <h2 class="govuk-heading-l">Non-accessible content</h2>
         <p class="govuk-body">
             The content listed below is non-accessible for the following reasons.
         </p>
+        <!-------------------------------------------------------------------------------------------->
         <h3 class="govuk-heading-m">
             Non-compliance with the accessibility regulations
         </h3>
+        <p class="govuk-body">We aim to resolve all accessibility issues identified in this statement within 6 months of the review date listed. Where this is not possible, we will share an updated timeline in this statement.</p>
+        <ul class="govuk-list govuk-list--number">
+            <li>Selecting an option from the ‘Sort by’ dropdown menu causes focus to reset to the start of the page (3.2.2: On Input)</li>
+            <li>On some pages, focus is not managed appropriately when elements are removed from the page by users (2.4.3: Focus Order)</li>
+            <li>Creating an alert causes focus to move to an illogical location on the page (2.4.3: Focus Order)</li>
+            <li>Elements within the interactive map are reachable using the keyboard in an order that is not logical (2.4.3: Focus Order)</li>
+            <li>When browser zoom is increased, it is not always possible to determine which map marker is in keyboard focus (2.4.11: Focus Not Obscured)</li>
+            <li>Content behind the interactive map can be reached and interacted with using the keyboard and screen reader (2.4.3: Focus Order and 1.3.1: Info and Relationships)</li>
+            <li>When browser zoom is increased to 400%, some pages require horizontal scrolling to read content and interact with controls (1.4.10: Reflow)</li>
+            <li>Some content within the interactive map is cut off and cannot be reached when browser zoom is increased to 400% (1.4.10: Reflow)</li>
+            <li>On the ‘Search results’ page, some content overlaps at 400% zoom, making text difficult to read (1.4.10: Reflow)</li>
+            <li>The dropdown on the ‘Select your address’ page has an accessible name that does not match the visible label (2.5.3: Label in Name)</li>
+            <li>On some pages, programmatic grouping does not include the main question or hint text, meaning some screen reader users may not understand relationships between page content (1.3.1: Info and Relationships)</li>
+            <li>On some pages, there is no method to programmatically convey relationships between elements that are visually grouped (1.3.1: Info and Relationships)</li>
+            <li>Hint and error text that is visually associated with interactive elements is not always announced by screen readers when the relevant element or group receives focus (1.3.1: Info and Relationships)</li>
+            <li>The secondary navigation on some pages is contained within a navigation landmark that has no accessible name, making its purpose unclear to some users (1.3.1: Info and Relationships)</li>
+            <li>The main navigation visually indicates the currently active page, but this state is not conveyed programmatically (4.1.2: Name, Role, Value)</li>
+            <li>On some pages, heading levels are not structured correctly. This includes headings being marked up at the same level as their parent and other examples where the heading structure does not reflect the visual hierarchy of the page. (1.3.1: Info and Relationships)</li>
+            <li>HTML lists are used to group content on some pages; however, due to a known VoiceOver issue, list semantics are not always announced when using Safari (1.3.1: Info and Relationships)</li>
+            <li>Action controls such as ‘Delete’, ‘Remove’, or ‘Change’ appear multiple times on some pages and are not easily distinguishable via the screen reader, increasing the risk of error (1.3.1: Info and Relationships)</li>
+            <li>On some pages, there is no mechanism to notify screen reader users when new content appears on the screen (4.1.3: Status Messages)</li>
+            <li>The error summary on the ‘Add subject’ pages contains multiple errors with identical text, making the errors difficult to distinguish using a screen reader (1.3.1: Info and Relationships)</li>
+            <li>Some controls that perform actions are marked up as links, even though they function as buttons (4.1.2: Name, Role, Value)</li>
+            <li>Some text that visually functions as a heading is not marked up programmatically as a heading (1.3.1: Info and Relationships)</li>
+            <li>Active filters include a visible ‘X’ icon indicating the filter can be removed; however, this meaning is not conveyed programmatically (1.1.1: Non-Text Content)</li>
+            <li>Some programmatically grouped content does not have a group label that describes its purpose (1.3.1: Info and Relationships)</li>
+            <li>Several interactive controls within the map interface do not have meaningful accessible names (4.1.2: Name, Role, Value and 2.4.6: Headings and Labels)</li>
+            <li>Interactive controls within the map do not convey their current state to assistive technologies (4.1.2: Name, Role, Value)</li>
+        </ul>
+        <!-------------------------------------------------------------------------------------------->
         <h4 class="govuk-heading-s">
-            Screen readers may not work correctly when selecting a button reveals text
+            Disproportionate burden
         </h4>
         <p class="govuk-body">
-            If you use a screen reader, you might not be notified when selecting a button reveals content on a page.
-            This fails <a href="https://www.w3.org/WAI/WCAG21/Understanding/name-role-value.html"
-                class="govuk-link">WCAG 2.1 success
-                criterion 4.1.2 Name, Role Value</a>.
+            We have determined that there is no disproportionate burden to meet all the requirements.
         </p>
-        <p class="govuk-body">
-            This is an issue with part of the GOV.UK design system. We will follow guidance if this part of the design
-            system changes.
-        </p>
-
-        <h4 class="govuk-heading-s">
-            Maps do not work with keyboard control
-        </h4>
-        <p class="govuk-body">
-            Maps within our service do not work with keyboard control. This fails <a
-                href="https://www.w3.org/WAI/WCAG20/Understanding/keyboard" class="govuk-link">WCAG 2.1 success
-                criterion 2.1.1
-                Keyboard</a>.
-        </p>
-        <p class="govuk-body">
-            We will review if it’s possible to add keyboard control input to our service’s maps. We will do this before
-            publishing our next accessibility statement in 12 months.
-        </p>
-
+        
 
         <h2 class="govuk-heading-l">
             Preparation of this accessibility statement
         </h2>
         <p class="govuk-body">
-            This statement was prepared on 22 August 2024.
+            This statement was prepared on 24 April 2026.
         </p>
         <p class="govuk-body">
-            This website was last tested on 16 August 2024 against the WCAG 2.1 AA standard.
+            This website was last tested on 14 March 2026. The test was carried out by accessibility specialists within the Department for Education.
         </p>
         <p class="govuk-body">
-            The test was carried out by DfE. The most viewed pages were tested using automated testing tools by our
-            website team. We also did some manual testing on our maps.
+            A total of 36 pages were tested. Pages were selected based on common user journeys and to cover a range of components.
         </p>
     </div>
 </div>
