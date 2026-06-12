@@ -274,7 +274,7 @@ public class SearchApprenticeshipsController(
         List<ApprenticeshipTypesViewModel> apprenticeshipTypesModels = [
             new()
             {
-                HintText = "Introductory apprenticeships for young people, level 2",
+                HintText = "Introductory apprenticeships, level 2",
                 Id = 1,
                 Name = "Foundation apprenticeship",
                 Selected = request.ApprenticeshipTypes?.Contains(ApprenticeshipTypes.Foundation) ?? false,
@@ -282,7 +282,7 @@ public class SearchApprenticeshipsController(
             },
             new()
             {
-                HintText = "Apprenticeships that qualify you for a job, levels 2 to 7",
+                HintText = "Qualifications from levels 2 to 7",
                 Id = 2,
                 Name = "Apprenticeship",
                 Selected = request.ApprenticeshipTypes?.Contains(ApprenticeshipTypes.Standard) ?? false,
