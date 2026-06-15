@@ -1,6 +1,6 @@
 @using SFA.DAS.FAA.Web.Infrastructure
-@using WebEssentials.AspNetCore.CdnTagHelpers
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject IConfiguration Configuration
 <!DOCTYPE html>
 <html lang="en" class="govuk-template govuk-template--rebranded faa-template">
 <head>
