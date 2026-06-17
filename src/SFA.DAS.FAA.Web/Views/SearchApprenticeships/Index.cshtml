@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
 @using SFA.DAS.FAA.Web.Extensions
+@using SFA.DAS.FAA.Web.TagHelpers
 @model SFA.DAS.FAA.Web.Models.SearchResults.SearchApprenticeshipsViewModel
 @{
     ViewData["Title"] = "Search apprenticeship – Find an apprenticeship – GOV.UK";
@@ -17,6 +18,14 @@
     {
         <partial name="_NationalApprenticeshipWeekBanner" />
     }
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-banner style="@BannerStyle.Important">
+                <govuk-banner-heading>Your future pay as an apprentice.</govuk-banner-heading>
+                <a class="govuk-link" href="https://www.apprenticeships.gov.uk/apprentices/apprentice-pay-and-future-salary">Find out what you could earn</a> after you complete your apprenticeship.
+            </govuk-banner>
+        </div>
+    </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @if (!ViewData.ModelState.IsValid)
@@ -46,11 +55,8 @@
         <form class="form" method="get">
             <input type="hidden" name="search" value="1" />
             <div class="govuk-grid-row">
-
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                    <div
-                    class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhatSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
-
+                    <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhatSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                         <label class="govuk-label govuk-label--m" for="WhatSearchTerm">
                             What
                         </label>
@@ -63,9 +69,7 @@
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                    <div
-                    class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
-
+                    <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.WhereSearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                         <label class="govuk-label govuk-label--m" for="WhereSearchTerm">
                             Where
                         </label>
