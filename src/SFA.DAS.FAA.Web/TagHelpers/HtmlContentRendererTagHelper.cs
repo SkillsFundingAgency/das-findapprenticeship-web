@@ -14,12 +14,10 @@ public class HtmlContentRendererTagHelper : TagHelper
     private const string TagName = "html-content-renderer";
 
     // Matches an opening or closing HTML tag, e.g. <p>, </p>, <br/>, <a href="...">
-    private static readonly Regex HtmlTagRegex = new(
-        @"<\s*/?\s*[a-zA-Z][a-zA-Z0-9]*(\s[^<>]*)?\s*/?\s*>",
-        RegexOptions.Compiled);
+    private static readonly Regex HtmlTagRegex = new(@"<\s*/?\s*[a-zA-Z][a-zA-Z0-9]*(\s[^<>]*)?\s*/?\s*>", RegexOptions.None, TimeSpan.FromMilliseconds(100));
 
     [HtmlAttributeName("content")]
-    public string? Content { get; set; }
+    public string? Content { get; init; }
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
