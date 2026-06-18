@@ -265,7 +265,7 @@
                         "value": "[parameters('sharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[variables('sharedEnvResourceGroup')]"
+                        "value": "[parameters('sharedEnvResourceGroup')]"
                     },
                     "subnetResourceId": {
                         "value": "[parameters('sharedFrontEndSubnetResourceId')]"
