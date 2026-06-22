@@ -35,6 +35,7 @@ jobs:
     displayName: Publish WebAcceptanceTests
     inputs:
       command: publish
+      publishWebProjects: false
       projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
       arguments: '--configuration ${{ parameters.BuildConfiguration }} -o $(build.artifactstagingdirectory)/acceptance-tests/output'
 
