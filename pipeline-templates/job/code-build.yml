@@ -5,7 +5,7 @@ parameters:
 jobs:
 - job: CodeBuild
   pool:
-    name: DAS - Continuous Integration Agents
+    vmImage: ubuntu-22.04
   workspace:
     clean: all
   variables:
