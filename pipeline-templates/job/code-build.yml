@@ -5,9 +5,9 @@ parameters:
 jobs:
 - job: CodeBuild
   pool:
-    pool: ubuntu-22.04
-    workspace:
-      clean: all
+    name: DAS - Continuous Integration Agents
+  workspace:
+    clean: all
   variables:
   - group: BUILD Management Resources
 
