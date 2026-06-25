@@ -19,19 +19,6 @@ jobs:
       ContinueOnVulnerablePackageScanError: true
 
   - task: DotNetCoreCLI@2
-    displayName: Restore Dependencies for WebAcceptanceTests
-    inputs:
-      command: restore
-      projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
-
-  - task: DotNetCoreCLI@2
-    displayName: Build WebAcceptanceTests
-    inputs:
-      command: build
-      projects: src/SFA.DAS.FAA.Web.AcceptanceTests/SFA.DAS.FAA.Web.AcceptanceTests.csproj
-      arguments: '--configuration ${{ parameters.BuildConfiguration }} --no-restore --output $(build.artifactstagingdirectory)/acceptance-tests'
-
-  - task: DotNetCoreCLI@2
     displayName: Publish WebAcceptanceTests
     inputs:
       command: publish
