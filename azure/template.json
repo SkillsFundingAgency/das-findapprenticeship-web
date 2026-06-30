@@ -14,6 +14,9 @@
         "sharedEnvResourceGroup": {
             "type": "string"
         },
+        "appServicePlanResourceGroup": {
+            "type": "string"
+        }
         "configurationStorageConnectionString": {
             "type": "securestring"
         },
@@ -265,7 +268,7 @@
                         "value": "[parameters('sharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('sharedEnvResourceGroup')]"
+                        "value": "[parameters('appServicePlanResourceGroup')]"
                     },
                     "subnetResourceId": {
                         "value": "[parameters('sharedFrontEndSubnetResourceId')]"
