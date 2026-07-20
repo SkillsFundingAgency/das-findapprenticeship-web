@@ -6,8 +6,8 @@ jobs:
 - job: CodeBuild
   pool:
     name: DAS - Continuous Integration Agents
-  workspace:
-    clean: all
+    workspace:
+      clean: all
   variables:
   - group: BUILD Management Resources
 
