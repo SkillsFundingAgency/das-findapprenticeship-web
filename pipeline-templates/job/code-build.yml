@@ -5,6 +5,8 @@ parameters:
 jobs:
 - job: CodeBuild
   pool:
+    # DASD-15463: temporarily targeting the Beta pool to validate the Ubuntu 24.04
+    # build agent image. Revert to "DAS - Continuous Integration Agents" before merge.
     name: DAS - Continuous Integration Beta
     demands: Agent.OS -equals Linux
   workspace:
