@@ -15,7 +15,7 @@
             <h4 class="govuk-heading-s faa-filter__selected-sub-heading">@filters.FieldName</h4>
             @foreach (var filter in filters.Filters.OrderBy(x => x.Order))
             {
-                <a href="@filter.ClearFilterLink" title="@filter.Value" class="faa-filter__tag das-breakable">@filter.Value</a>
+                <a href="@filter.ClearFilterLink" title="@filter.Value" class="faa-filter__tag das-breakable">@filter.Value <span class="govuk-visually-hidden">Remove filter</span></a>
             }
         }
         <div class="faa-filter-alert">
