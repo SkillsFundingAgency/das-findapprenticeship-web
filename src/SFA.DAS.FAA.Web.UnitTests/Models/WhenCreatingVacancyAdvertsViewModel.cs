@@ -293,8 +293,8 @@ public class WhenCreatingVacancyAdvertsViewModel
             .Excluding(c => c.Between21AndUnder25NationalMinimumWage)
             .Excluding(c => c.ApprenticeMinimumWage)
         );
-        actual.CourseTitle.Should().Be("See more details on NHS Jobs");
-        actual.Title.Should().Be($"{vacancyAdvert.Title} (from NHS Jobs)");
+        actual.CourseTitle.Should().Be("Apply on NHS Jobs");
+        actual.Title.Should().Be($"{vacancyAdvert.Title} (opens in new tab)");
     }
 
     [Test, MoqAutoData]
@@ -336,7 +336,7 @@ public class WhenCreatingVacancyAdvertsViewModel
             .Excluding(c => c.Between21AndUnder25NationalMinimumWage)
             .Excluding(c => c.ApprenticeMinimumWage)
         );
-        actual.CourseTitle.Should().Be("See more details on Civil Service Jobs");
-        actual.Title.Should().Be($"{vacancyAdvert.Title} (from Civil Service Jobs)");
+        actual.CourseTitle.Should().Be("Apply on Civil Service Jobs");
+        actual.Title.Should().Be($"{vacancyAdvert.Title} (opens in new tab)");
     }
 }
