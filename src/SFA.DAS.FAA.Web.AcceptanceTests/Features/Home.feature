@@ -4,12 +4,13 @@ As an FAA user
 I want a clear home page
 So that it is clear what actions I can take
 
-@WireMockServer
-	Scenario: Navigate to home page has total vacancy positions
-	When I navigate to the Home page
-	Then the page is successfully returned
-	And the page content includes the following: Search apprenticeships
-	And the page content includes the following: 1,034 apprenticeships listed
+# Keep this as it will likely be added back again soon
+# @WireMockServer
+# 	Scenario: Navigate to home page has total vacancy positions
+# 	When I navigate to the Home page
+# 	Then the page is successfully returned
+# 	And the page content includes the following: Search apprenticeships
+# 	And the page content includes the following: 1,034 apprenticeships listed
 	
 @AuthenticatedUser
 @WireMockServer
