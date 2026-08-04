@@ -11,9 +11,6 @@
         "serviceName": {
             "type": "string"
         },
-        "sharedEnvResourceGroup": {
-            "type": "string"
-        },
         "appServicePlanResourceGroup": {
             "type": "string"
         },
