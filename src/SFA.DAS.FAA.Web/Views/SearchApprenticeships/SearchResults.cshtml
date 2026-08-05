@@ -271,11 +271,20 @@
                                         <application-status-badge status="@vacancyAdvert.ApplicationStatus"></application-status-badge>
                                     }
                                     <h2 class="govuk-heading-m das-search-results__heading govuk-!-margin-bottom-2">
-                                        <a asp-route="@RouteNames.Vacancies"
-                                           asp-route-vacancyReference="@vacancyAdvert.VacancyReference"
-                                           class="das-search-results__link das-breakable">
-                                            <span id="@vacancyAdvert.VacancyReference-vacancy-title">@vacancyAdvert.Title</span>
-                                        </a>
+                                        @if (vacancyAdvert.VacancySource is VacancyDataSource.Csj or VacancyDataSource.Nhs)
+                                        {
+                                            <a class="das-search-results__link das-breakable" href="@vacancyAdvert.ApplicationUrl" target="_blank">
+                                                <span id="@vacancyAdvert.VacancyReference-vacancy-title">@vacancyAdvert.Title</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-route="@RouteNames.Vacancies"
+                                               asp-route-vacancyReference="@vacancyAdvert.VacancyReference"
+                                               class="das-search-results__link das-breakable">
+                                                <span id="@vacancyAdvert.VacancyReference-vacancy-title">@vacancyAdvert.Title</span>
+                                            </a>
+                                        }
                                     </h2>
                                 </div>
                                 @if (User.Identity is { IsAuthenticated: true } && vacancyAdvert.VacancySource == VacancyDataSource.Raa)
@@ -319,9 +328,18 @@
                                 }
                             </div>
                             <p class="govuk-body govuk-!-margin-bottom-0">@vacancyAdvert.EmployerName</p>
-                            <p class="govuk-body das-!-color-dark-grey">
-                                @vacancyAdvert.VacancyLocation
-                            </p>
+                            
+                            
+                            @if (vacancyAdvert.VacancySource is VacancyDataSource.Csj or VacancyDataSource.Nhs)
+                            {
+                                <p class="govuk-body das-!-color-dark-grey govuk-!-margin-bottom-0">@vacancyAdvert.VacancyLocation</p>
+                                <p class="govuk-body">@vacancyAdvert.CourseTitle</p>
+                            }
+                            else
+                            {
+                                <p class="govuk-body das-!-color-dark-grey">@vacancyAdvert.VacancyLocation</p>    
+                            }
+
                             @if (Model.NationalSearch is false && vacancyAdvert.IsRecruitingNationally is false)
                             {
                                 <p class="govuk-body govuk-!-margin-bottom-1"><b>Distance</b> @vacancyAdvert.Distance miles</p>
@@ -330,7 +348,7 @@
                             {
                                 <p class="govuk-body govuk-!-margin-bottom-1"><b>Start date</b> @vacancyAdvert.StartDate</p>
                             }
-                            <p class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancyAdvert.CourseTitle</p>
+                            <p asp-show="vacancyAdvert.VacancySource is VacancyDataSource.Raa" class="govuk-body govuk-!-margin-bottom-1"><b>Training course</b> @vacancyAdvert.CourseTitle</p>
                             <p class="govuk-body"><b>Wage</b> @vacancyAdvert.WageText</p>
                             <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-1">
                                 @vacancyAdvert.ClosingDateDescription

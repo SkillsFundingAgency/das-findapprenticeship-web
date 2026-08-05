@@ -31,12 +31,14 @@ public class VacancyAdvertViewModel
 
     public bool IsRecruitingNationally { get; private set; }
     public ApprenticeshipTypes ApprenticeshipType { get; init; }
+    public string? ApplicationUrl { get; set; }
 
     public static VacancyAdvertViewModel MapToViewModel(IDateTimeService dateTimeService, VacancyAdvert vacancyAdvert, DateTime? candidateDateOfBirth)
     {
         return new VacancyAdvertViewModel
         {
             ApplicationStatus = vacancyAdvert.CandidateApplicationDetails?.Status,
+            ApplicationUrl = vacancyAdvert.ApplicationUrl,
             ApprenticeshipType = vacancyAdvert.ApprenticeshipType,
             ClosingDateDescription = VacancyDetailsHelperService.GetClosingDate(dateTimeService, vacancyAdvert.ClosingDate,!string.IsNullOrEmpty(vacancyAdvert.ApplicationUrl)),
             CourseTitle = GetCourseTitle(vacancyAdvert),
@@ -76,8 +78,8 @@ public class VacancyAdvertViewModel
         return advert.VacancySource switch
         {
             VacancyDataSource.Raa => advert.Title,
-            VacancyDataSource.Nhs => $"{advert.Title} (from NHS Jobs)",
-            VacancyDataSource.Csj => $"{advert.Title} (from Civil Service Jobs)",
+            VacancyDataSource.Nhs => $"{advert.Title} (opens in new tab)",
+            VacancyDataSource.Csj => $"{advert.Title} (opens in new tab)",
             _ => string.Empty
         };
     }
@@ -87,8 +89,8 @@ public class VacancyAdvertViewModel
         return advert.VacancySource switch
         {
             VacancyDataSource.Raa => VacancyDetailsHelperService.GetCourseTitle(advert.CourseTitle, advert.CourseLevel),
-            VacancyDataSource.Nhs => "See more details on NHS Jobs",
-            VacancyDataSource.Csj => "See more details on Civil Service Jobs",
+            VacancyDataSource.Nhs => "Apply on NHS Jobs",
+            VacancyDataSource.Csj => "Apply on Civil Service Jobs",
             _ => string.Empty
         };
     }
