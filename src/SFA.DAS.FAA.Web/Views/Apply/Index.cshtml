@@ -73,8 +73,8 @@ else
             </p>
 
             <h2 class="govuk-heading-m">Education history</h2>
-            <ul class="govuk-task-list">
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <ul class="govuk-task-list" role="list">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                     <div class="govuk-task-list__name-and-hint">
                         <a asp-route="@RouteNames.ApplyApprenticeship.Qualifications"
                            asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
@@ -85,7 +85,7 @@ else
                         <gov-uk-tag status="@Model.EducationHistory.Qualifications" />
                     </div>
                 </li>
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                     <div class="govuk-task-list__name-and-hint">
                         <a asp-route="@RouteNames.ApplyApprenticeship.TrainingCourses"
                            asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
@@ -99,8 +99,8 @@ else
             </ul>
 
             <h2 class="govuk-heading-m govuk-!-margin-top-8">Work history</h2>
-            <ul class="govuk-task-list">
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <ul class="govuk-task-list" role="list">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                     <div class="govuk-task-list__name-and-hint">
                         <a asp-route="@RouteNames.ApplyApprenticeship.Jobs" asp-route-applicationId="@Model.ApplicationId"
                            class="govuk-link govuk-task-list__link">
@@ -111,7 +111,7 @@ else
                         <gov-uk-tag status="@Model.WorkHistory.Jobs" />
                     </div>
                 </li>
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                     <div class="govuk-task-list__name-and-hint">
                         <a asp-route="@RouteNames.ApplyApprenticeship.VolunteeringAndWorkExperience"
                            asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
@@ -125,8 +125,8 @@ else
             </ul>
 
             <h2 class="govuk-heading-m govuk-!-margin-top-8">Application questions</h2>
-            <ul class="govuk-task-list">
-                <li asp-hide="@Model.ApprenticeshipType.IsFoundation()" class="govuk-task-list__item govuk-task-list__item--with-link">
+            <ul class="govuk-task-list" role="list">
+                <li asp-hide="@Model.ApprenticeshipType.IsFoundation()" class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                     <div class="govuk-task-list__name-and-hint">
                         <a asp-route="@RouteNames.ApplyApprenticeship.SkillsAndStrengths"
                            asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
@@ -137,7 +137,7 @@ else
                         <gov-uk-tag status="@Model.ApplicationQuestions.SkillsAndStrengths" />
                     </div>
                 </li>
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                     <div class="govuk-task-list__name-and-hint">
                         <a asp-route="@RouteNames.ApplyApprenticeship.WhatInterestsYou"
                            asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
@@ -150,7 +150,7 @@ else
                 </li>
                 @if (Model.ApplicationQuestions.ShowAdditionalQuestion1)
                 {
-                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                         <div class="govuk-task-list__name-and-hint">
                             <a id="additionalquestion1" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
                                asp-route-applicationId="@Model.ApplicationId"
@@ -166,7 +166,7 @@ else
                 }
                 @if (Model.ApplicationQuestions.ShowAdditionalQuestion2)
                 {
-                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                         <div class="govuk-task-list__name-and-hint">
                             <a id="additionalquestion2" asp-route="@RouteNames.ApplyApprenticeship.AddAdditionalQuestion"
                                asp-route-applicationId="@Model.ApplicationId"
@@ -183,8 +183,8 @@ else
             </ul>
 
             <h2 class="govuk-heading-m govuk-!-margin-top-8">Interview adjustments</h2>
-            <ul class="govuk-task-list">
-                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <ul class="govuk-task-list" role="list">
+                <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                     <div class="govuk-task-list__name-and-hint">
                         <a asp-route="@RouteNames.ApplyApprenticeship.InterviewAdjustments"
                            asp-route-applicationId="@Model.ApplicationId" asp-route-isEdit="false"
@@ -202,8 +202,8 @@ else
             {
                 <h2 class="govuk-heading-m govuk-!-margin-top-8">Disability Confident</h2>
                 <p class="govuk-body">This company has joined the government's Disability Confident scheme</p>
-                <ul class="govuk-task-list">
-                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <ul class="govuk-task-list" role="list">
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                         <div class="govuk-task-list__name-and-hint">
                             <a asp-route="@RouteNames.ApplyApprenticeship.DisabilityConfident"
                                asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
@@ -220,8 +220,8 @@ else
             {
                 <h2 class="govuk-heading-m govuk-!-margin-top-8">Locations</h2>
                 <p class="govuk-body">This apprenticeship is available in different locations</p>
-                <ul class="govuk-task-list">
-                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <ul class="govuk-task-list" role="list">
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link" role="listitem">
                         <div class="govuk-task-list__name-and-hint">
                             <a asp-route="@RouteNames.ApplyApprenticeship.AddEmploymentLocations"
                                asp-route-applicationId="@Model.ApplicationId" class="govuk-link govuk-task-list__link">
