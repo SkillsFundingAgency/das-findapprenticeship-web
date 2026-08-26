@@ -41,7 +41,7 @@ public class HtmlContentRendererTagHelper : TagHelper
                 text,
                 @"<p(?![\w])",
                 "<p class='govuk-body'",
-                RegexOptions.IgnoreCase);
+                RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
 
             output.Content.SetHtmlContent(styled);
         }
