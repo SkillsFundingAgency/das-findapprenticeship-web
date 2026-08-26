@@ -12,19 +12,19 @@ if (locationInputs.length > 0) {
     input.parentNode.replaceChild(container, input);
 
     const getSuggestions = async (query, updateResults) => {
-      const results = [];
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          let results = JSON.parse(xhr.responseText);
-          results = results.locations.locations.map(function (r) {
-            return r.name;
-          });
-          updateResults(results);
+      try {
+        const response = await fetch(
+          `${apiUrl}?searchTerm=${encodeURIComponent(query)}`
+        );
+        if (!response.ok) {
+          throw new Error(`Location lookup failed: ${response.status}`);
         }
-      };
-      xhr.open("GET", `${apiUrl}?searchTerm=${query}`, true);
-      xhr.send();
+        const data = await response.json();
+        updateResults(data.locations.locations.map((r) => r.name));
+      } catch (error) {
+        console.error("Error: ", error);
+        updateResults([]);
+      }
     };
 
     accessibleAutocomplete({
@@ -218,7 +218,7 @@ Favourites.prototype.updateUI = function (action) {
 
 const addToFavourites = document.querySelectorAll("[data-favourite]");
 
-if (addToFavourites) {
+if (addToFavourites.length > 0) {
   addToFavourites.forEach(function (container) {
     new Favourites(container).init();
   });
@@ -375,7 +375,7 @@ Alerts.prototype.updateUI = function () {
 
 const createAlert = document.querySelectorAll("[data-alert]");
 
-if (createAlert) {
+if (createAlert.length > 0) {
     createAlert.forEach(function (container) {
         if (container.querySelector("[data-alert-create]") && container.querySelector("[data-alert-confirmation]")) {
             new Alerts(container).init();
@@ -478,14 +478,11 @@ ExtraFieldRows.prototype.appendRemoveLink = function (row, index) {
     that.addLink.classList.remove(that.hiddenClass);
     that.maxMessage.classList.add(that.hiddenClass);
     that.hideRow(row);
-    that.updateRowOrder();
   });
 
   removeLinkWrap.append(removeLink);
   row.append(removeLinkWrap);
 };
-
-ExtraFieldRows.prototype.updateRowOrder = function () {};
 
 ExtraFieldRows.prototype.showFirstAvailableRow = function (e) {
   let hiddenRowCount = 0;
@@ -544,26 +541,10 @@ ExtraFieldRows.prototype.showRow = function (row, focus = false) {
   }
 };
 
-ExtraFieldRows.prototype.areAllRowsHidden = function () {
-  let hiddenRowCount = 0;
-  for (let f = 0; f < this.extraFieldRows.length; f++) {
-    const extraFieldRow = this.extraFieldRows[f];
-    if (extraFieldRow.classList.contains(this.hiddenClass)) {
-      hiddenRowCount++;
-    }
-  }
-  return hiddenRowCount === this.extraFieldRows.length;
-};
-
 function Autocomplete(select) {
   this.select = select;
   this.selectId = this.select.id;
 }
-
-Autocomplete.prototype.convertId = function (id) {
-  const replaceSqL = id.replace(/[[]/g, "\\[");
-  return `#${replaceSqL.replace(/]/g, "\\]")}`;
-};
 
 Autocomplete.prototype.init = function () {
   accessibleAutocomplete.enhanceSelectElement({
@@ -594,7 +575,7 @@ Autocomplete.prototype.init = function () {
 
 const extraFieldRows = document.querySelectorAll("[data-extra-field-rows]");
 
-if (extraFieldRows) {
+if (extraFieldRows.length > 0) {
   extraFieldRows.forEach(function (extraFieldRows) {
     new ExtraFieldRows(extraFieldRows).init();
   });
@@ -603,7 +584,7 @@ if (extraFieldRows) {
 // Autocomplete
 const autocompleteSelects = document.querySelectorAll("[data-autocomplete]");
 
-if (autocompleteSelects) {
+if (autocompleteSelects.length > 0) {
   autocompleteSelects.forEach(function (select) {
     new Autocomplete(select).init();
   });
@@ -621,10 +602,8 @@ function FaaMapDirections(mapId, lng, lat, ptcd, mapLocations, form, container) 
 }
 
 FaaMapDirections.prototype.init = async function () {
-  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
-    "marker"
-  );
+  await google.maps.importLibrary("maps");
+  await google.maps.importLibrary("marker");
   const directionsService = new google.maps.DirectionsService();
   const directionsRenderer = new google.maps.DirectionsRenderer();
 
@@ -645,7 +624,7 @@ FaaMapDirections.prototype.init = async function () {
     document.getElementById("faa-navigator-link").append(useLocationLink);
   }
 
-  if (this.centerLat === 0 && this.centerLng === 0) {
+  if (this.location.lat === 0 && this.location.lng === 0) {
     await this.updateLonLatFromPostcode();
   }
 
@@ -779,31 +758,34 @@ FaaMapDirections.prototype.getCurrentPostcode = function () {
   const options = {
     maximumAge: 600000,
   };
-
-  function success(position) {
-    const url = `https://api.postcodes.io/postcodes?lon=${position.coords.longitude}&lat=${position.coords.latitude}&wideSearch=true`;
-    try {
-      fetch(url)
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          postcodeField.value = data.result[0].postcode;
-          postcodeField.placeholder = "";
-        });
-    } catch (error) {
-      this.updatePostcodeRow("Location could not be found");
-      postcodeField.placeholder = "";
-    }
-  }
-
-  function error() {
+  
+  const failed = () => {
     this.updatePostcodeRow("Location could not be found");
     postcodeField.placeholder = "";
-  }
+  };
+
+  const success = async (position) => {
+    const url = `https://api.postcodes.io/postcodes?lon=${position.coords.longitude}&lat=${position.coords.latitude}&wideSearch=true`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Postcode lookup failed: ${response.status}`);
+      }
+      const data = await response.json();
+      if (!data.result || data.result.length === 0) {
+        throw new Error("No postcode found for this location");
+      }
+      postcodeField.value = data.result[0].postcode;
+      postcodeField.placeholder = "";
+    } catch (error) {
+      console.error("Error: ", error);
+      failed();
+    }
+  };
+
   this.updatePostcodeRow();
   postcodeField.placeholder = "Locating...";
-  navigator.geolocation.getCurrentPosition(success, error, options);
+  navigator.geolocation.getCurrentPosition(success, failed, options);
 };
 
 FaaMapDirections.prototype.calculateAndDisplayRoute = function (
@@ -841,15 +823,21 @@ FaaMapDirections.prototype.calculateAndDisplayRoute = function (
     });
 };
 
-function FaaMap(mapId, link, linkLoading, container, radius) {
+function FaaMap(mapId, link, linkLoading, container, radius, statusRegion) {
   this.container = container;
+  this.dialog = container.closest("dialog");
   this.radius = radius;
   this.link = link;
   this.linkLoading = linkLoading;
+  this.statusRegion = statusRegion;
   this.mapId = mapId;
   this.centerLat;
   this.centerLng;
   this.mapData = [];
+  this.isOpen = false;
+  this.lastFocusedElement = null;
+  this.rolePanel = null;
+  this.activeMarker = null;
 }
 
 FaaMap.prototype.init = function () {
@@ -863,12 +851,23 @@ FaaMap.prototype.setUpEvents = async function () {
   } else {
     this.hideMap();
   }
-  var that = this;
-  document.body.addEventListener("keydown", (e) => {
-    if (e.code === "Escape") {
-      that.hideMap();
-    }
-  });
+  if (this.dialog) {
+    this.dialog.addEventListener("close", () => {
+      this.onMapClosed();
+    });
+    this.dialog.addEventListener("cancel", (e) => {
+      if (this.isRolePanelOpen()) {
+        e.preventDefault();
+        this.hideRoleOverLay(this.rolePanel);
+      }
+    });
+  } else {
+    document.body.addEventListener("keydown", (e) => {
+      if (e.code === "Escape") {
+        this.hideMap();
+      }
+    });
+  }
   window.addEventListener(
     "hashchange",
     async () => {
@@ -886,12 +885,26 @@ FaaMap.prototype.setUpEvents = async function () {
 FaaMap.prototype.checkIfMapIsCachedOrGetData = async function () {
   if (this.mapData.length > 0) {
     this.showMap();
-  } else {
-    this.link.classList.add("govuk-visually-hidden");
-    this.linkLoading.classList.remove("govuk-visually-hidden");
+    return;
+  }
+  this.link.classList.add("govuk-visually-hidden");
+  this.linkLoading.classList.remove("govuk-visually-hidden");
+  this.announce("Loading map");
+  try {
     await this.getMapData();
+    this.announce("");
+  } catch (e) {
+    this.announce("Sorry, there is a problem loading the map. Try again later.");
+    throw e;
+  } finally {
     this.link.classList.remove("govuk-visually-hidden");
     this.linkLoading.classList.add("govuk-visually-hidden");
+  }
+};
+
+FaaMap.prototype.announce = function (message) {
+  if (this.statusRegion) {
+    this.statusRegion.textContent = message;
   }
 };
 
@@ -926,28 +939,71 @@ FaaMap.prototype.getMapData = async function () {
 };
 
 FaaMap.prototype.showMap = function () {
+  if (this.dialog && !this.dialog.open) {
+    this.lastFocusedElement = document.activeElement;
+    if (typeof this.dialog.showModal === "function") {
+      this.dialog.showModal();
+    } else {
+      this.dialog.setAttribute("open", "");
+    }
+  }
+  this.isOpen = true;
   document.documentElement.classList.add("faa-map__body--open");
   document.body.classList.add("faa-map__body--open");
   window.location.hash = "#showMap";
   if (!this.map) {
     this.loadMap();
   }
+  if (this.dialog) {
+    // Move focus to the dialog itself rather than the first control inside it,
+    // so screen readers announce the map's name before its contents.
+    this.dialog.focus();
+  }
 };
 
 FaaMap.prototype.hideMap = function () {
+  if (this.dialog && this.dialog.open) {
+    if (typeof this.dialog.close === "function") {
+      this.dialog.close();
+      return;
+    }
+    this.dialog.removeAttribute("open");
+  }
+  this.onMapClosed();
+};
+
+FaaMap.prototype.onMapClosed = function () {
+  const wasOpen = this.isOpen;
+  this.isOpen = false;
   document.documentElement.classList.remove("faa-map__body--open");
   document.body.classList.remove("faa-map__body--open");
-  window.location.hash = "";
+  if (window.location.hash === "#showMap") {
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search
+    );
+  }
   localStorage.removeItem("faaMapActiveRole");
+
+  if (!wasOpen) {
+    return;
+  }
+  const returnFocusTo =
+    this.lastFocusedElement && this.lastFocusedElement !== document.body
+      ? this.lastFocusedElement
+      : this.link;
+  this.lastFocusedElement = null;
+  if (returnFocusTo) {
+    returnFocusTo.focus();
+  }
 };
 
 FaaMap.prototype.loadMap = async function () {
-  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
-    "marker"
-  );
+  await google.maps.importLibrary("maps");
+  await google.maps.importLibrary("marker");
   const mapCloseButtonWrap = document.createElement("div");
-  const mapCloseButton = document.createElement("a");
+  const mapCloseButton = document.createElement("button");
   const mapRoleDetailsWrap = document.createElement("div");
   const bounds = new google.maps.LatLngBounds();
 
@@ -981,9 +1037,12 @@ FaaMap.prototype.loadMap = async function () {
 
   mapCloseButton.classList.add("govuk-link");
   mapCloseButton.classList.add("govuk-link--no-visited-state");
+  mapCloseButton.classList.add("faa-map__close-button");
+  mapCloseButton.setAttribute("type", "button");
+  // The label is hidden below tablet, so the button needs a name of its own.
+  mapCloseButton.setAttribute("aria-label", "Close map");
   mapCloseButton.innerHTML =
-    '<span class="faa-map__close-label">Close map</span><span class="faa-map__close-icon" />';
-  mapCloseButton.setAttribute("href", "#");
+    '<span class="faa-map__close-label">Close map</span><span class="faa-map__close-icon"></span>';
 
   mapCloseButton.addEventListener("click", (e) => {
     e.preventDefault();
@@ -995,6 +1054,11 @@ FaaMap.prototype.loadMap = async function () {
   mapRoleDetailsWrap.classList.add("faa-map__panel");
   mapRoleDetailsWrap.classList.add("faa-map__panel--role");
   mapRoleDetailsWrap.classList.add("faa-map__panel--hidden");
+  // Focused when a pin is activated, which is also what announces the panel.
+  mapRoleDetailsWrap.setAttribute("tabindex", "-1");
+  mapRoleDetailsWrap.setAttribute("role", "region");
+  mapRoleDetailsWrap.setAttribute("aria-label", "Apprenticeship details");
+  this.rolePanel = mapRoleDetailsWrap;
 
   this.map.markers = [];
 
@@ -1041,7 +1105,12 @@ FaaMap.prototype.loadMap = async function () {
       map: this.map,
       position: role.position,
       content: this.markerHtml(),
+      // gmpClickable puts the pin in the tab order and gives it a button role;
+      // title becomes its accessible name.
+      gmpClickable: true,
+      title: this.markerTitle(role),
     });
+    Marker.faaVacancyId = role.job.id;
     Marker.addListener("click", () => {
       this.toggleMarker(Marker, role, mapRoleDetailsWrap);
       this.map.panTo(role.position);
@@ -1049,7 +1118,7 @@ FaaMap.prototype.loadMap = async function () {
     this.map.markers.push(Marker);
 
     if (activeMapMarker === role.job.id.toString()) {
-      this.toggleMarker(Marker, role, mapRoleDetailsWrap);
+      this.toggleMarker(Marker, role, mapRoleDetailsWrap, false);
       this.map.panTo(role.position);
     }
 
@@ -1061,6 +1130,8 @@ FaaMap.prototype.loadMap = async function () {
       map: this.map,
       position: group[0].position,
       content: this.plusMarkerHtml(),
+      gmpClickable: true,
+      title: `${group.length} apprenticeships at this location`,
     });
     Marker.addListener("click", () => {
       this.handlePlusMarkerClick(Marker, group, mapRoleDetailsWrap);
@@ -1069,7 +1140,8 @@ FaaMap.prototype.loadMap = async function () {
     this.map.markers.push(Marker);
 
     if (activeMapMarker === group[0].job.id.toString()) {
-      this.toggleMarker(Marker, group, mapRoleDetailsWrap);
+      // group is an array; the panel renders a single role.
+      this.toggleMarker(Marker, group[0], mapRoleDetailsWrap, false);
       this.map.panTo(group[0].position);
     }
 
@@ -1093,7 +1165,7 @@ FaaMap.prototype.handlePlusMarkerClick = function (
 ) {
   if (markerElement.content.classList.contains("expanded")) {
     group.forEach((role) => {
-      this.removeMarkersWithTitle(`VAC${role.job.id}`);
+      this.removeMarkersForVacancy(role.job.id);
     });
     markerElement.content.classList.remove("expanded");
     return;
@@ -1109,10 +1181,12 @@ FaaMap.prototype.handlePlusMarkerClick = function (
     const y = Math.round(100 * Math.sin(a * (Math.PI / 180)));
     const Marker = new google.maps.marker.AdvancedMarkerElement({
       map: this.map,
-      title: `VAC${role.job.id}`,
       position: group[0].position,
       content: this.markerHtml(x, y, a),
+      gmpClickable: true,
+      title: this.markerTitle(role),
     });
+    Marker.faaVacancyId = role.job.id;
     Marker.addListener("click", () => {
       this.toggleMarker(Marker, role, mapRoleDetailsWrap);
       this.map.panTo(role.position);
@@ -1121,12 +1195,23 @@ FaaMap.prototype.handlePlusMarkerClick = function (
   });
 };
 
-FaaMap.prototype.removeMarkersWithTitle = function (title) {
+FaaMap.prototype.removeMarkersForVacancy = function (vacancyId) {
   for (let i = 0; i < this.map.markers.length; i++) {
-    if (this.map.markers[i].title === title) {
+    if (this.map.markers[i].faaVacancyId === vacancyId) {
       this.map.markers[i].setMap(null);
     }
   }
+};
+
+FaaMap.prototype.markerTitle = function (role) {
+  return `${role.job.title} at ${role.job.company}`;
+};
+
+FaaMap.prototype.isRolePanelOpen = function () {
+  return (
+    !!this.rolePanel &&
+    !this.rolePanel.classList.contains("faa-map__panel--hidden")
+  );
 };
 
 FaaMap.prototype.markerHtml = function (
@@ -1155,7 +1240,7 @@ FaaMap.prototype.markerHtml = function (
   return content;
 };
 
-FaaMap.prototype.showRoleOverLay = function (role, panel) {
+FaaMap.prototype.showRoleOverLay = function (role, panel, moveFocus = true) {
   function statusTag(vacancy) {
     if (vacancy.isClosingSoon) {
       return `<strong class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
@@ -1179,6 +1264,8 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
     const that = t;
     const closeButton = document.createElement("button");
     closeButton.classList.add("faa-map__panel-close");
+    closeButton.setAttribute("type", "button");
+    closeButton.setAttribute("aria-label", "Close apprenticeship details");
     closeButton.innerHTML = `<span class="faa-map__close-icon"></span>`;
     closeButton.addEventListener("click", (e) => {
       e.preventDefault();
@@ -1224,16 +1311,32 @@ FaaMap.prototype.showRoleOverLay = function (role, panel) {
   `;
   panel.append(closePanelButton(this));
   panel.classList.remove("faa-map__panel--hidden");
+  if (moveFocus) {
+    panel.focus();
+  }
 };
 
 FaaMap.prototype.hideRoleOverLay = function (panel) {
+  const markerToRefocus = this.activeMarker;
+  this.activeMarker = null;
   panel.classList.add("faa-map__panel--hidden");
   this.map.markers.forEach((mrk) => {
     mrk.content.classList.remove("highlight");
   });
+  if (markerToRefocus) {
+    markerToRefocus.focus();
+  }
+  if (document.activeElement === document.body && this.dialog) {
+    this.dialog.focus();
+  }
 };
 
-FaaMap.prototype.toggleMarker = function (markerElement, role, panel) {
+FaaMap.prototype.toggleMarker = function (
+  markerElement,
+  role,
+  panel,
+  moveFocus = true
+) {
   this.map.markers.forEach((mrk) => {
     mrk.content.classList.remove("highlight");
   });
@@ -1241,7 +1344,8 @@ FaaMap.prototype.toggleMarker = function (markerElement, role, panel) {
   markerElement.content.classList.add("highlight");
   markerElement.zIndex = 1;
   localStorage.setItem("faaMapActiveRole", role.job.id);
-  this.showRoleOverLay(role, panel);
+  this.activeMarker = markerElement;
+  this.showRoleOverLay(role, panel, moveFocus);
 };
 
 FaaMap.prototype.plusMarkerHtml = function () {

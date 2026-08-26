@@ -1,33 +1,58 @@
 @use "../../govuk-tools" as *;
 
-.faa-map__container {
-  display: none;
-  position: fixed !important;
+.faa-map__dialog {
+  position: fixed;
   z-index: 999;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
   background-color: #b1c7ee;
 }
 
-.faa-map__body--open .faa-map__container {
-  display: block;
+.faa-map__dialog:focus {
+  outline: none;
+}
+
+.faa-map__dialog::backdrop {
+  background-color: rgba(11, 12, 12, 0.5);
+}
+
+.faa-map__container {
+  width: 100%;
+  height: 100%;
 }
 
 .faa-map__close {
   margin-top: 10px;
   margin-right: 10px;
-  padding: 20px;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
   border-radius: 2px;
 }
 
-.faa-map__close a {
+.faa-map__close .faa-map__close-button {
   display: flex;
   align-items: center;
   color: $govuk-text-colour !important;
+  background: none;
+  border: 0;
+  padding: 20px;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  &:focus {
+    background: #fd0;
+    color: #000;
+  }
 }
 
 .faa-map__close-label {

@@ -4,8 +4,10 @@
   margin-top: 1em;
   padding-bottom: 1.5em;
   border-bottom: 1px solid $govuk-border-colour;
+  display: flex;
+  flex-direction: column;
   @include govuk-media-query(tablet) {
-    display: flex;
+    justify-content: space-between;
     flex-direction: row;
     border-top: 1px solid $govuk-border-colour;
     margin-top: 0;
@@ -15,7 +17,6 @@
 }
 
 .faa-search-results-header__map {
-  flex: 1;
   align-content: center;
   margin-bottom: 1em;
   @include govuk-media-query(tablet) {
@@ -38,7 +39,7 @@
 }
 
 .faa-search-results-header__sort {
-  flex: 1;
+
 }
 
 .faa-search-results-sort {

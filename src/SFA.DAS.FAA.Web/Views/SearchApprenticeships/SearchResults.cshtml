@@ -206,6 +206,7 @@
                                 <p class="faa-loading__wrap govuk-visually-hidden" aria-hidden="true" id="map-link__loading">
                                     <span class="faa-loading"></span>Loading map
                                 </p>
+                                <p class="govuk-visually-hidden" role="status" id="map-link__status"></p>
                             </div>
                         }
                         else
@@ -377,7 +378,10 @@
         }
     </div>
 </div>
-<div id="map" class="faa-map__container"></div>
+<dialog id="map-dialog" class="faa-map__dialog" tabindex="-1" aria-labelledby="map-dialog__title">
+    <h2 id="map-dialog__title" class="govuk-visually-hidden">Map of apprenticeship search results</h2>
+    <div id="map" class="faa-map__container"></div>
+</dialog>
 
 
 @if (Model.Total != 0 && !Model.NoSearchResultsByUnknownLocation)
@@ -388,9 +392,10 @@
     <script>
         const mapLink = document.getElementById('map-link')
         const mapLinkLoading = document.getElementById('map-link__loading')
+        const mapLinkStatus = document.getElementById('map-link__status')
         const mapContainer = document.getElementById('map')
         if (mapLink && mapContainer) {
-            new FaaMap("@Model.MapId", mapLink, mapLinkLoading, mapContainer, @(Model.Distance == null ? 0 : Model.Distance)).init()
+            new FaaMap("@Model.MapId", mapLink, mapLinkLoading, mapContainer, @(Model.Distance == null ? 0 : Model.Distance), mapLinkStatus).init()
         }
     </script>
 }
