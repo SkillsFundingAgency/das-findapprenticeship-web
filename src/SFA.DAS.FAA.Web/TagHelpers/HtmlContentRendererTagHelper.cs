@@ -15,6 +15,7 @@ public class HtmlContentRendererTagHelper : TagHelper
 
     // Matches an opening or closing HTML tag, e.g. <p>, </p>, <br/>, <a href="...">
     private static readonly Regex HtmlTagRegex = new(@"<\s*/?\s*[a-zA-Z][a-zA-Z0-9]*(\s[^<>]*)?\s*/?\s*>", RegexOptions.None, TimeSpan.FromMilliseconds(100));
+    private static readonly Regex BlockLevelTagRegex = new(@"<\s*/?\s*(p|div|ul|ol|li|h[1-6])\b", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
 
     [HtmlAttributeName("content")]
     public string? Content { get; set; }
@@ -33,10 +34,21 @@ public class HtmlContentRendererTagHelper : TagHelper
 
         var text = Content.Trim();
 
-        if (HtmlTagRegex.IsMatch(text))
+        if (BlockLevelTagRegex.IsMatch(text))
         {
-            // Already contains markup - trust it and render as-is.
-            output.Content.SetHtmlContent(text);
+            // Has <p> tags — restyle them, no wrapping needed
+            var styled = Regex.Replace(
+                text,
+                @"<p(?![\w])",
+                "<p class='govuk-body'",
+                RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
+
+            output.Content.SetHtmlContent(styled);
+        }
+        else if (HtmlTagRegex.IsMatch(text))
+        {
+            // Has inline markup only e.g. <br> — convert to paragraphs
+            output.Content.SetHtmlContent($"<p class='govuk-body govuk-!-margin-bottom-0'>{text}</p>");
         }
         else
         {
