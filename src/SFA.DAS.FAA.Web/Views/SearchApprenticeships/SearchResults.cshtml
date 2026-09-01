@@ -232,10 +232,10 @@
                 </div>
             </div>
             <div class="das-search-results">
-                <ol class="das-search-results__list">
+                <ol class="das-search-results__list" role="list">
                 @if (Model.ShowCompetitiveSalaryBanner)
                 {
-                    <li class="das-search-results__list-item govuk-!-padding-top-6 govuk-!-margin-bottom-6">
+                    <li class="das-search-results__list-item govuk-!-padding-top-6 govuk-!-margin-bottom-6" role="listitem">
                         <div class="faa-search-result-banner">
                             <h3 class="govuk-heading-s das-search-results__heading">
                                 @Model.CompetitiveSalaryBannerHeaderText cannot be shown in this list
@@ -251,7 +251,7 @@
                 }
                 @foreach (var vacancyAdvert in Model.VacancyAdverts)
                 {
-                    <li class="das-search-results__list-item govuk-!-padding-top-6 @(Model.ShowCompetitiveSalaryBanner && vacancyAdvert.ShowInsertTextCssClass ? "faa-search-listing--highlight" : string.Empty)">
+                    <li class="das-search-results__list-item govuk-!-padding-top-6 @(Model.ShowCompetitiveSalaryBanner && vacancyAdvert.ShowInsertTextCssClass ? "faa-search-listing--highlight" : string.Empty)" role="listitem">
                         <div class="faa-search_results__content">
                             <div class="faa-search-result-header">
                                 <div>
