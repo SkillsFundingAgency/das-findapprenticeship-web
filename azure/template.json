@@ -320,10 +320,7 @@
                     },
                     "resourceName": {
                         "value": "[parameters('apimKeyVaultName')]"
-                    },
-                    "dependsOn": [
-                        "[concat(variables('appServiceName'), '-', parameters('utcValue'))]"
-                    ]
+                    }
                 }
             },
             "dependsOn": [
