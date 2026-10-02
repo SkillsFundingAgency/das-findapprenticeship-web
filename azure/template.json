@@ -109,10 +109,12 @@
             "defaultValue": false
         },
         "govukOneLoginKeyVaultName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         },
         "govukOneLoginKeyVaultResourceGroup": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -276,7 +278,7 @@
             }
         },
         {
-            "condition": "[equals(parameters('enableFailedRequestAlert'), true())]",
+            "condition": "[not(empty(parameters('enableFailedRequestAlert')))]",
             "apiVersion": "2021-04-01",
             "name": "[concat('application-insights-', variables('appServiceName'), '-alert-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
