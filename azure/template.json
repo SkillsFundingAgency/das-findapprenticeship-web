@@ -107,6 +107,14 @@
         "vnetRouteAllEnabled": {
             "type": "bool",
             "defaultValue": false
+        },
+        "govukOneLoginKeyVaultName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "govukOneLoginKeyVaultResourceGroup": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -314,6 +322,34 @@
                     },
                     "resourceName": {
                         "value": "[parameters('apimKeyVaultName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('appServiceName'), '-', parameters('utcValue'))]"
+            ]
+        },
+        {
+            "condition": "[not(empty(parameters('govukOneLoginKeyVaultName')))]",
+            "apiVersion": "2022-09-01",
+            "name": "[concat('role-assignment-', variables('appServiceName'),'-', parameters('govukOneLoginKeyVaultName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('govukOneLoginKeyVaultResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[uri(variables('deploymentUrlBase'),'role-assignments/role-assignment-key-vault.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "principalId": {
+                        "value": "[reference(concat(variables('appServiceName'), '-', parameters('utcValue'))).outputs.managedServiceIdentityId.value]"
+                    },
+                    "assignmentType": {
+                        "value": "Key Vault Crypto User"
+                    },
+                    "resourceName": {
+                        "value": "[parameters('govukOneLoginKeyVaultName')]"
                     }
                 }
             },
