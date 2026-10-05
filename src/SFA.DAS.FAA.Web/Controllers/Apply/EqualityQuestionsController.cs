@@ -276,7 +276,10 @@ public class EqualityQuestionsController(IMediator mediator, ICacheStorageServic
         var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
         var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
 
-        if (equalityQuestions is null) return RedirectToStart(applicationId);
+        if (equalityQuestions is null)
+        {
+            return RedirectToStart(applicationId);
+        }
 
         return View(SummaryViewPath, (EqualityQuestionsSummaryViewModel)equalityQuestions);
     }
@@ -288,13 +291,18 @@ public class EqualityQuestionsController(IMediator mediator, ICacheStorageServic
         var cacheKey = string.Format($"{Key}", User.Claims.CandidateId());
         var equalityQuestions = await cacheStorageService.Get<EqualityQuestionsModel>(cacheKey);
 
-        if (equalityQuestions is null) return RedirectToStart(applicationId);
+        if (equalityQuestions is null)
+        {
+            return RedirectToStart(applicationId);
+        }
             
         await mediator.Send(new CreateEqualityQuestionsCommand
         {
             CandidateId = (Guid)User.Claims.CandidateId()!,
             EthnicGroup = equalityQuestions.EthnicGroup,
-            EthnicSubGroup = equalityQuestions.EthnicSubGroup,
+            EthnicSubGroup = equalityQuestions.EthnicGroup == Domain.Enums.EthnicGroup.PreferNotToSay 
+                ? null 
+                : equalityQuestions.EthnicSubGroup,
             Sex = equalityQuestions.Sex,
             IsGenderIdentifySameSexAtBirth = equalityQuestions.IsGenderIdentifySameSexAtBirth,
             OtherEthnicSubGroupAnswer = equalityQuestions.OtherEthnicSubGroupAnswer,
