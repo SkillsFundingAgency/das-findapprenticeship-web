@@ -14,7 +14,6 @@ public class AzureKeyVaultSecretHealthCheck(IOptions<FindAnApprenticeshipOuterAp
     {
         try
         {
-            
             var credential = new DefaultAzureCredential();
             var secretClient = new SecretClient(new Uri(findAnApprenticeshipOuterApiConfiguration.Value.SecretClientUrl!), credential);
             

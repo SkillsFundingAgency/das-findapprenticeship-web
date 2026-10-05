@@ -80,7 +80,7 @@ public static class AddServiceRegistrationExtension
     public static void AddCacheServices(this IServiceCollection services,  IConfiguration configuration)
     {
         var config = configuration.GetSection(nameof(FindAnApprenticeship))
-            .Get<Domain.Configuration.FindAnApprenticeship>();
+            .Get<FindAnApprenticeship>();
         
         if (string.IsNullOrEmpty(config.RedisConnectionString))
         {
