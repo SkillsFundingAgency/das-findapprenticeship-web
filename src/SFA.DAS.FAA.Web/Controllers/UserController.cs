@@ -64,7 +64,7 @@ public class UserController(
             return RedirectToRoute(RouteNames.ServiceStartDefault);
         }
             
-        if (!string.IsNullOrWhiteSpace(returnUrl))
+        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
         {
             cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.CreateAccountReturnUrl}", returnUrl);
         }
@@ -454,9 +454,9 @@ public class UserController(
 
         if (model.JourneyPath == UserJourneyPath.CreateAccount) await cacheStorageService.Set($"{User.Claims.GovIdentifier()}-{CacheKeys.AccountCreated}", true);
 
-        if (returnUrl != null)
+        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
         {
-            return Redirect(returnUrl);
+            return LocalRedirect(returnUrl);
         }
 
         return RedirectToRoute(RouteNames.ServiceStartDefault);
