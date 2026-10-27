@@ -45,6 +45,26 @@ public class WhenSigningIn
     }
     
     [Test, MoqAutoData]
+    public async Task Then_The_QueryString_Is_Included_In_The_RouteValues_And_Repeated_Values_Do_Not_Cause_An_Error(
+        string controllerName,
+        string actionName,
+        string urlParam,
+        [Frozen] Mock<IDataProtectorService> dataProtectorService,
+        [Greedy]ServiceController controller)
+    {
+        var decryptedValue = $"{controllerName}|{actionName}|123|values=1&values=2&foo=yes&signedin=true&vacancyReference=123";
+        dataProtectorService.Setup(x => x.DecodeData(urlParam)).Returns(decryptedValue);
+
+        var actual = await controller.SignIn(urlParam) as RedirectToActionResult;
+
+        actual.RouteValues?.Count.Should().Be(4);
+        actual.RouteValues?.Should().ContainEquivalentOf(new KeyValuePair<string, object>("values", new StringValues([ "1", "2" ])));
+        actual.RouteValues?.Should().ContainEquivalentOf(new KeyValuePair<string, object>("foo", new StringValues([ "yes" ])));
+        actual.RouteValues?.Should().ContainEquivalentOf(new KeyValuePair<string, object>("signedin", new StringValues([ "true" ])));
+        actual.RouteValues?.Should().ContainEquivalentOf(new KeyValuePair<string, object>("vacancyReference", new StringValues([ "123" ])));
+    }
+    
+    [Test, MoqAutoData]
     public async Task Then_The_VacancyRef_Is_Included_In_The_RouteValues(
         string controllerName,
         string actionName,

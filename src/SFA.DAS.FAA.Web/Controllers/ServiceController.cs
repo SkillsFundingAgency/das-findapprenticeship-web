@@ -72,14 +72,14 @@ public class ServiceController(IStubAuthenticationService stubAuthenticationServ
             var qs = QueryHelpers.ParseQuery(queryString);
             foreach (var kvp in qs)
             {
-                queryObject.Add(kvp.Key, kvp.Value);
+                queryObject.TryAdd(kvp.Key, kvp.Value);
             }
         }
 
         if (!string.IsNullOrEmpty(vacancyReference))
         {
-            queryObject.Add("vacancyReference", vacancyReference);
-            queryObject.Add("signedin", true);
+            queryObject.TryAdd("vacancyReference", vacancyReference);
+            queryObject.TryAdd("signedin", true);
         }
 
         return RedirectToAction(actionName, controllerName, queryObject);
