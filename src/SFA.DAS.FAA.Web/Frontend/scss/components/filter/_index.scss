@@ -2,6 +2,16 @@
 
 .faa-filter {
   border: 1px solid $govuk-border-colour;
+  min-width: 0;
+
+  .govuk-checkboxes__item,
+  .govuk-checkboxes__label,
+  .govuk-accordion__section-heading,
+  .govuk-accordion__section-button {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .govuk-select {
     min-width: 0;
     width: 100%;
