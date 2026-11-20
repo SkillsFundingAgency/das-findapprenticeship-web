@@ -10,7 +10,7 @@
             {
                 var subject = Model.Subjects[index];
 
-                <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
+                <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group faa-multi-qualification">
                     <input type="hidden" id="subjects[@index][id]" value="@subject.Id" name="subjects[@index][id]">
                     <input type="hidden" id="subjects[@index][isDeleted]" name="subjects[@index][isDeleted]"
                         data-type-remove="remove" value="" />
@@ -63,7 +63,7 @@
             }
             else
             {
-                <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group">
+                <div class="govuk-grid-row faa-grid-row--flex-from-tablet faa-extra-fields__form-group faa-multi-qualification">
 
                     <input type="hidden" id="subjects[@index][isDeleted]" name="subjects[@index][isDeleted]"
                         data-type-remove="remove" value="" />
