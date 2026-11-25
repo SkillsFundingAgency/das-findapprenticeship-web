@@ -15,37 +15,39 @@
         {
             @if (Model.TrainingCourses != null)
             {
-                <div class="govuk-summary-card faa-summary-card">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
-                        <ul class="govuk-summary-card__actions">
-                            <li class="govuk-summary-card__action">
-                                <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trainingCourseId="@trainingCourse.Id">
-                                    Delete <span class="govuk-visually-hidden">@trainingCourse.CourseName, @trainingCourse.YearAchieved</span>
-                                </a>
-                            </li>
-                            <li class="govuk-summary-card__action">
-                                <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.EditTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trainingCourseId="@trainingCourse.Id">
-                                    Change <span class="govuk-visually-hidden">@trainingCourse.CourseName, @trainingCourse.YearAchieved</span>
-                                </a>
-                            </li>
-                        </ul>
+                @foreach (var trainingCourse in Model.TrainingCourses)
+                {
+                    <div class="govuk-summary-card faa-summary-card">
+                        <div class="govuk-summary-card__title-wrapper">
+                            <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
+                            <ul class="govuk-summary-card__actions">
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trainingCourseId="@trainingCourse.Id">
+                                        Delete <span class="govuk-visually-hidden">@trainingCourse.CourseName, @trainingCourse.YearAchieved</span>
+                                    </a>
+                                </li>
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.EditTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trainingCourseId="@trainingCourse.Id">
+                                        Change <span class="govuk-visually-hidden">@trainingCourse.CourseName, @trainingCourse.YearAchieved</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="govuk-summary-card__content">
+                            <dl class="govuk-summary-list">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Year
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @trainingCourse.YearAchieved
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
-                    <div class="govuk-summary-card__content">
-                        <dl class="govuk-summary-list">
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Year
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @trainingCourse.YearAchieved
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
+                }
             }
-
             @if (Model.MaximumItemsReached)
             {
                 <div class="govuk-inset-text">
