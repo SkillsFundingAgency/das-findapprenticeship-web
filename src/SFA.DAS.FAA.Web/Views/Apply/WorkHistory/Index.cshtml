@@ -1,5 +1,4 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.JobsViewModel
 @{
     ViewData["Title"] = "Jobs - Find an apprenticeship – GOV.UK";
@@ -17,7 +16,7 @@
 
         @if (Model.ShowJobHistory)
         {
-            @foreach (var job in Model.JobHistory)
+            foreach (var job in Model.JobHistory)
             {
                 <div class="govuk-summary-card faa-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
@@ -25,14 +24,14 @@
                         <ul class="govuk-summary-card__actions">
                             <li class="govuk-summary-card__action">
                                 <a class="govuk-link"
-                                href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteJob, new {Model.ApplicationId, JobId = job.Id})">
-                                    Delete<span class="govuk-visually-hidden"> jobs and work experience</span>
+                                   href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteJob, new {Model.ApplicationId, JobId = job.Id})">
+                                    Delete <span class="govuk-visually-hidden">@job.JobHeader</span>
                                 </a>
                             </li>
                             <li class="govuk-summary-card__action">
                                 <a class="govuk-link"
-                                    href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EditJob, new {Model.ApplicationId, JobId = job.Id})">
-                                    Change<span class="govuk-visually-hidden"> jobs and work experience</span>
+                                   href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EditJob, new {Model.ApplicationId, JobId = job.Id})">
+                                    Change <span class="govuk-visually-hidden">@job.JobHeader</span>
                                 </a>
                             </li>
                         </ul>

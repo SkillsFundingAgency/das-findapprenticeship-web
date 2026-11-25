@@ -1,5 +1,4 @@
 ﻿@using SFA.DAS.FAA.Web.Infrastructure
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.FAA.Web.Models.Apply.QualificationsViewModel
 @{
     ViewData["Title"] = "School, college and university qualifications – Find an apprenticeship – GOV.UK ";
@@ -28,13 +27,13 @@
                                 {
                                     <li class="govuk-summary-card__action">
                                         <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteQualifications, new { Model.ApplicationId, group.QualificationReferenceId })">
-                                            Delete<span class="govuk-visually-hidden"> qualification</span>
+                                            Delete <span class="govuk-visually-hidden">@group.DisplayName</span>
                                         </a>
                                     </li>
 
                                     <li class="govuk-summary-card__action">
                                         <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualification, new { Model.ApplicationId,group.QualificationReferenceId })">
-                                            Change<span class="govuk-visually-hidden"> qualification</span>
+                                            Change <span class="govuk-visually-hidden">@group.DisplayName</span>
                                         </a>
                                     </li>    
                                 }
@@ -42,13 +41,13 @@
                                 {
                                     <li class="govuk-summary-card__action">
                                         <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteQualifications, new { Model.ApplicationId, group.QualificationReferenceId, group.Qualifications.First().Id })">
-                                            Delete<span class="govuk-visually-hidden"> qualification</span>
+                                            Delete <span class="govuk-visually-hidden">@group.DisplayName</span>
                                         </a>
                                     </li>
 
                                     <li class="govuk-summary-card__action">
                                     <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.AddQualification, new { Model.ApplicationId,group.QualificationReferenceId, group.Qualifications.First().Id })">
-                                            Change<span class="govuk-visually-hidden"> qualification</span>
+                                            Change <span class="govuk-visually-hidden">@group.DisplayName</span>
                                         </a>
                                     </li>
 
