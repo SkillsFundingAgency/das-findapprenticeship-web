@@ -26,6 +26,41 @@
   }
 }
 
+.faa-multi-qualification {
+  min-width: 0;
+
+  > .govuk-grid-column-one-third,
+  > .govuk-grid-column-one-quarter,
+  .govuk-form-group,
+  .govuk-input,
+  .govuk-select,
+  .govuk-checkboxes__item,
+  .govuk-checkboxes__label {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .govuk-checkboxes__label {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 64rem) {
+  .js-enabled .faa-extra-fields__form-group--loaded
+    > .faa-multi-qualification:not(.faa-extra-field__form-group--hidden) {
+    display: block !important;
+  }
+
+  .faa-multi-qualification {
+    > .govuk-grid-column-one-third,
+    > .govuk-grid-column-one-quarter {
+      float: none !important;
+      width: 100% !important;
+    }
+  }
+}
+
 .faa-flex-row {
   @include govuk-media-query(tablet) {
     gap: 30px;
