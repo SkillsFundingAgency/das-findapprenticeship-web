@@ -7,7 +7,6 @@
 @section BackLink {
     <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-journeyPath="@Model.JourneyPath">Back</a>
 }
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
@@ -20,8 +19,6 @@
         {
             <h1 class="govuk-heading-l">Change your address?</h1>
         }
-
-
         <p class="govuk-body">Use the address you want to appear on your applications</p>
         <form class="form" method="post">
             <input type="hidden" asp-for="JourneyPath" />
@@ -35,7 +32,8 @@
                     For example, SW1A 2AA
                 </div>
                 <span asp-validation-for="Postcode" class="govuk-error-message"></span>
-                <input asp-for="Postcode" class="govuk-input govuk-!-width-one-quarter" autocomplete="postal-code" />
+                <input asp-for="Postcode" class="govuk-input govuk-!-width-one-quarter" autocomplete="postal-code"
+                    aria-describedby="postcode-address-hint Postcode-error" />
             </div>
 
             <div class="govuk-button-group">

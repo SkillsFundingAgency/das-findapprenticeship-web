@@ -7,7 +7,6 @@
 @section BackLink {
     <a class="govuk-back-link" asp-route="@RouteNames.BrowseByInterests" asp-all-route-data="@Model.RouteData">Back</a>
 }
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
@@ -15,7 +14,7 @@
             <form class="form" method="post">
                 <div
                     class="govuk-form-group @(ViewData.ModelState[nameof(Model.NationalSearch)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "govuk-form-group--error" : "")">
-                    <fieldset class="govuk-fieldset">
+                    <fieldset class="govuk-fieldset" aria-describedby="NationalSearch-error">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <span class="govuk-caption-l">Question 2 of 2</span>
                             <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Where would you like to search?</h1>
@@ -23,15 +22,13 @@
                         <span asp-validation-for="NationalSearch" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="false"
-                                    aria-controls="conditional-location" aria-expanded="false" id="NationalSearch">
+                                <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="false" data-aria-controls="conditional-location" id="NationalSearch">
                                 <label class="govuk-label govuk-radios__label" asp-for="NationalSearch">
                                     Enter a city or postcode
                                 </label>
                             </div>
                             <div class="govuk-radios__conditional" id="conditional-location">
-                                <div
-                                    class="govuk-form-group @((ViewData.ModelState[nameof(Model.SearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
+                                <div class="govuk-form-group @((ViewData.ModelState[nameof(Model.SearchTerm)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) ? "govuk-form-group--error" : "")">
                                     <input type="hidden" asp-for="SuggestedLocationSelected" value="false">
                                     <label class="govuk-label" for="SearchTerm">
                                         City or postcode
@@ -39,7 +36,8 @@
                                     <span asp-validation-for="SearchTerm" class="govuk-error-message"></span>
                                     <input class="govuk-input govuk-input--width-10 faa-location-autocomplete"
                                         asp-for="SearchTerm" id="SearchTerm" type="search" spellcheck="false"
-                                        autocomplete="postal-code" data-track-user-selected="SuggestedLocationSelected">
+                                        autocomplete="postal-code" data-track-user-selected="SuggestedLocationSelected"
+                                        aria-describedby="SearchTerm-error">
                                 </div>
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" asp-for="@Model.Distance">
@@ -56,7 +54,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="true"
                                     id="NationalSearch-National">

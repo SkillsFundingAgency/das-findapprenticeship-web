@@ -35,6 +35,7 @@ namespace SFA.DAS.FAA.Web.TagHelpers
 
             //fieldset
             writer.AddAttribute("class", "govuk-fieldset");
+            writer.AddAttribute("aria-describedby", GetDescribedBy());
             writer.RenderBeginTag("fieldset");
 
             //legend
@@ -54,6 +55,7 @@ namespace SFA.DAS.FAA.Web.TagHelpers
             if (!string.IsNullOrWhiteSpace(errorMessage))
             {
                 writer.AddAttribute("class", "govuk-error-message");
+                writer.AddAttribute("id", $"{Property.Name}-error");
                 writer.RenderBeginTag("span");
                 writer.Write(errorMessage);
                 writer.RenderEndTag();
@@ -78,6 +80,14 @@ namespace SFA.DAS.FAA.Web.TagHelpers
 
             base.Process(context, output);
        }
+
+        private string GetDescribedBy()
+        {
+            var describedBy = $"{Property.Name}Hint";
+            return string.IsNullOrWhiteSpace(GetErrorMessage())
+                ? describedBy
+                : $"{describedBy} {Property.Name}-error";
+        }
 
         private void WriteInput(HtmlTextWriter writer, string id, string value, string label, int width)
         {

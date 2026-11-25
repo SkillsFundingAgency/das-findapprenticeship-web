@@ -39,7 +39,7 @@
 
             <div class="govuk-form-group" das-highlight-error-for="DoYouWantInterviewAdjustments"
                 error-class="govuk-form-group--error">
-                <fieldset class="govuk-fieldset">
+                <fieldset class="govuk-fieldset" aria-describedby="DoYouWantInterviewAdjustments-error">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h1 class="govuk-fieldset__heading">
                             Do you want to request support at an interview?
@@ -71,7 +71,8 @@
                                             class="govuk-error-message"></span>
                                         <textarea class="govuk-textarea govuk-js-character-count"
                                             asp-for="InterviewAdjustmentsDescription" rows="5"
-                                            aria-describedby="InterviewAdjustmentsDescription-info" spellcheck="false"
+                                            aria-describedby="InterviewAdjustmentsDescription-info InterviewAdjustmentsDescription-error"
+                                            spellcheck="false"
                                             value="@Model.InterviewAdjustmentsDescription"></textarea>
                                     </div>
                                     <div id="InterviewAdjustmentsDescription-info"

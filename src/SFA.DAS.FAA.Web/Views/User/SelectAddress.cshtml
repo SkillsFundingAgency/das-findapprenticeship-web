@@ -13,9 +13,8 @@
     {
         <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.Postcode">Back</a>
     }
-    }
-
-    <div class="govuk-grid-row">
+}
+<div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <partial name="_ValidationSummary" />
             <span class="govuk-caption-l">
@@ -30,8 +29,7 @@
             <form class="form" method="post">
                 <input type="hidden" asp-for="Postcode" />
                 <input type="hidden" asp-for="JourneyPath" />
-                <div
-                    class="govuk-form-group @(ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "govuk-form-group--error" : "")">
+                <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.SelectedAddress)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "govuk-form-group--error" : "")">
                     <label for="SelectedAddress" class="govuk-visually-hidden">Select an address from the list</label>
                     @if (Model.Addresses.Count == 1)
                 {
@@ -46,7 +44,8 @@
                     </div>
                 }
                 <span asp-validation-for="SelectedAddress" class="govuk-error-message"></span>
-                <select class="govuk-select" asp-for="SelectedAddress" aria-describedby="addresses-found">
+                <select class="govuk-select" asp-for="SelectedAddress"
+                    aria-describedby="addresses-found SelectedAddress-error">
                     <option value="choose" selected>Select address</option>
                     @foreach (var address in Model.Addresses)
                     {

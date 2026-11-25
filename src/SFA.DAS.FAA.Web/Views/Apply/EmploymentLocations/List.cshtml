@@ -13,7 +13,7 @@
         <partial name="_ValidationSummary" />
         <form class="form" method="post">
             <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.SelectedAddressIds)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")">
-                <fieldset class="govuk-fieldset" aria-describedby="location-preference">
+                <fieldset class="govuk-fieldset" aria-describedby="location-preference SelectedAddressIds-error">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             Where do you want to apply for?

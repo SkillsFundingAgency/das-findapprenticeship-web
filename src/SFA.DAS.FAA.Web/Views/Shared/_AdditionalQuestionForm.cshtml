@@ -5,14 +5,14 @@
         error-class="govuk-form-group--error">
         <span das-validation-for="AdditionalQuestionAnswer" class="govuk-error-message"></span>
         <textarea class="govuk-textarea govuk-js-character-count" asp-for="AdditionalQuestionAnswer" rows="5"
-            aria-describedby="AdditionalQuestionAnswer-info"></textarea>
+            aria-describedby="AdditionalQuestionAnswer-info AdditionalQuestionAnswer-error"></textarea>
     </div>
     <div id="AdditionalQuestionAnswer-info" class="govuk-hint govuk-character-count__message">
         You have 300 words remaining
     </div>
 </div>
 <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted" error-class="govuk-form-group--error">
-    <fieldset class="govuk-fieldset">
+    <fieldset class="govuk-fieldset" aria-describedby="IsSectionCompleted-error">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             Have you completed this section?
         </legend>

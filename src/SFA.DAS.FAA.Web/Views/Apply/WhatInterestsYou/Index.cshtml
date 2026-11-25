@@ -28,7 +28,7 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Application questions</span>
-        <h1 class="govuk-heading-l">What interests you about this apprenticeship?</h1>
+        <h1 class="govuk-heading-l">/stWhat interests you about this apprenticeship?</h1>
         
         <p class="govuk-body">Explain to the company why you want to do this apprenticeship.</p>
         <p class="govuk-body">You could write about:</p>
@@ -45,7 +45,8 @@
                         Your interest in this apprenticeship
                     </label>
                     <span das-validation-for="AnswerText" class="govuk-error-message"></span>
-                    <textarea class="govuk-textarea govuk-js-character-count" asp-for="AnswerText" rows="5" aria-describedby="AnswerText-info"></textarea>
+                    <textarea class="govuk-textarea govuk-js-character-count" asp-for="AnswerText" rows="5"
+                        aria-describedby="AnswerText-info AnswerText-error"></textarea>
                 </div>
                 <div id="AnswerText-info" class="govuk-hint govuk-character-count__message">
                     You can enter up to 300 words
@@ -54,7 +55,7 @@
             
             <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted"
                  error-class="govuk-form-group--error">
-                <fieldset class="govuk-fieldset">
+                <fieldset class="govuk-fieldset" aria-describedby="IsSectionCompleted-error">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Have you completed this section?
                     </legend>

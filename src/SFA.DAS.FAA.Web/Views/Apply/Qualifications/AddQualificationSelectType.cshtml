@@ -14,7 +14,7 @@
       <form class="form" method="post" asp-route="@RouteNames.ApplyApprenticeship.AddQualificationSelectType" asp-route-applicationId="@Model.ApplicationId">
          <partial name="_ValidationSummary" />
          <span class="govuk-caption-l">Education history</span>
-         <fieldset class="govuk-fieldset">
+         <fieldset class="govuk-fieldset" aria-describedby="QualificationReferenceId-error">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                <h1 class="govuk-fieldset__heading">
                   @Model.PageTitle
