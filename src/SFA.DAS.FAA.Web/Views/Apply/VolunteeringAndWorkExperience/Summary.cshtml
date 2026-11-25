@@ -19,12 +19,12 @@
                     <ul class="govuk-summary-card__actions">
                         <li class="govuk-summary-card__action">
                             <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.DeleteVolunteeringOrWorkExperience, new {Model.ApplicationId, volunteeringWorkExperienceId = work.Id})">
-                                Delete<span class="govuk-visually-hidden"> jobs and work experience</span>
+                                Delete <span class="govuk-visually-hidden">@work.Employer, @work.JobDates</span>
                             </a>
                         </li>
                         <li class="govuk-summary-card__action">
                             <a class="govuk-link" href="@Url.RouteUrl(RouteNames.ApplyApprenticeship.EditVolunteeringAndWorkExperience, new {Model.ApplicationId, volunteeringWorkExperienceId = work.Id})">
-                                Change<span class="govuk-visually-hidden"> jobs and work experience</span>
+                                Change <span class="govuk-visually-hidden">@work.Employer, @work.JobDates</span>
                             </a>
                         </li>
                     </ul>
