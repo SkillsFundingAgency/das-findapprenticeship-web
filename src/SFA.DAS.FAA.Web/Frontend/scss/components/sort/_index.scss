@@ -39,10 +39,11 @@
 }
 
 .faa-search-results-header__sort {
-
+  min-width: 0;
 }
 
 .faa-search-results-sort {
+  width: 100%;
   @include govuk-media-query(desktop) {
     display: flex;
     align-items: center;
@@ -63,9 +64,12 @@
 
 .faa-search-results-sort__select {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   @include govuk-media-query(tablet) {
     width: auto;
-    min-width: 1em;
+    min-width: 0;
   }
 }
 

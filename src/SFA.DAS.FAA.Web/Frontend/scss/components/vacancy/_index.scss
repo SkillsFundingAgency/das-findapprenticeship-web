@@ -42,12 +42,19 @@
   margin: 20px 0;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 1.5rem;
+
+  @include govuk-media-query(tablet) {
+    flex-wrap: nowrap;
+  }
 }
 
 .faa-vacancy-actions__link {
   margin-bottom: 10px;
   display: flex;
+  max-width: 100%;
+  min-width: 0;
   align-items: center;
   flex-direction: row;
   background: none;
@@ -65,6 +72,9 @@
 }
 
 .faa-save-vacancy {
+  max-width: 100%;
+  min-width: 0;
+
   .faa-save-vacancy__link--save {
     display: flex;
     pointer-events: auto;
@@ -88,11 +98,29 @@
 
 .faa-search-result-header {
   display: flex;
+  flex-wrap: wrap;
   gap: 15px;
   flex-direction: row;
+
+  @include govuk-media-query(tablet) {
+    flex-wrap: nowrap;
+  }
+
+  > div:first-child {
+    min-width: 0;
+  }
+
   .faa-save-vacancy {
-    flex-basis: 20px;
-    margin-left: auto;
+    flex-basis: auto;
+    width: 100%;
+    margin-left: 0;
+
+    @include govuk-media-query(tablet) {
+      flex-basis: 20px;
+      width: auto;
+      margin-left: auto;
+    }
+
     .faa-vacancy-actions__link {
       margin-right: 0;
     }
@@ -101,11 +129,16 @@
 
 .faa-search-result-footer {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   gap: 1rem;
   align-items: flex-start;
   justify-content: space-between;
   margin-top: .3rem;
+
+  @include govuk-media-query(tablet) {
+    flex-wrap: nowrap;
+  }
 }
 
 .faa-vacancy__section > h2:not([class]) {
@@ -152,6 +185,8 @@
 
 .faa-disability-confident--srp {
   width: 130px;
+  max-width: 100%;
+  height: auto;
   display: block;
   margin-bottom: 20px;
 }
