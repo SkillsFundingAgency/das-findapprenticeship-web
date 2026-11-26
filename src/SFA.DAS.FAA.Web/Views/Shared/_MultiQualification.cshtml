@@ -16,12 +16,12 @@
                         data-type-remove="remove" value="" />
 
                     <div class="govuk-grid-column-one-third">
-                        <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Name"
+                        <div class="govuk-form-group" das-highlight-error-for="Subjects[@index].Name"
                             error-class="govuk-form-group--error">
                             <label class="govuk-label" for="Subjects[@index].Name">
                                 Subject
                             </label>
-                            <span das-validation-for="Subjects[index].Name" class="govuk-error-message"></span>
+                            <span das-validation-for="Subjects[@index].Name" id="Subjects[@index].Name-error" class="govuk-error-message"></span>
                             <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text"
                                 value="@subject.Name" autocomplete="off"
                                 aria-describedby="Subjects[@index].Name-error">
@@ -30,12 +30,12 @@
 
 
                     <div class="govuk-grid-column-one-quarter">
-                        <div class="govuk-form-group" das-highlight-error-for="Subjects[index].Grade"
+                        <div class="govuk-form-group" das-highlight-error-for="Subjects[@index].Grade"
                             error-class="govuk-form-group--error">
                             <label class="govuk-label" for="Subjects[@index].Grade">
                                 Grade
                             </label>
-                            <span das-validation-for="Subjects[index].Grade" class="govuk-error-message"></span>
+                            <span das-validation-for="Subjects[@index].Grade" id="Subjects[@index].Grade-error" class="govuk-error-message"></span>
                             <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text"
                                 value="@subject.Grade" autocomplete="off"
                                 aria-describedby="Subjects[@index].Grade-error">

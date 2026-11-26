@@ -90,7 +90,7 @@
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                             Have you completed this section?
                         </legend>
-                        <span das-validation-for="IsSectionCompleted" class="govuk-error-message"></span>
+                        <span das-validation-for="IsSectionCompleted" id="IsSectionCompleted-error" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" type="radio" asp-for="IsSectionCompleted" value="true"
@@ -118,7 +118,7 @@
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                             Do you want to add any jobs?
                         </legend>
-                        <span das-validation-for="DoYouWantToAddAnyJobs" class="govuk-error-message"></span>
+                        <span das-validation-for="DoYouWantToAddAnyJobs" id="DoYouWantToAddAnyJobs-error" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios" id="AddJob">
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyJobs" value="true"

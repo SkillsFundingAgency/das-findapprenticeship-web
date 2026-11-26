@@ -31,7 +31,7 @@
                 <div id="postcode-address-hint" class="govuk-hint">
                     For example, SW1A 2AA
                 </div>
-                <span asp-validation-for="Postcode" class="govuk-error-message"></span>
+                <span asp-validation-for="Postcode" id="Postcode-error" class="govuk-error-message"></span>
                 <input asp-for="Postcode" class="govuk-input govuk-!-width-one-quarter" autocomplete="postal-code"
                     aria-describedby="postcode-address-hint Postcode-error" />
             </div>

@@ -19,7 +19,7 @@
                             <span class="govuk-caption-l">Question 2 of 2</span>
                             <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Where would you like to search?</h1>
                         </legend>
-                        <span asp-validation-for="NationalSearch" class="govuk-error-message"></span>
+                        <span asp-validation-for="NationalSearch" id="NationalSearch-error" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" asp-for="NationalSearch" type="radio" value="false" data-aria-controls="conditional-location" id="NationalSearch">
@@ -33,7 +33,7 @@
                                     <label class="govuk-label" for="SearchTerm">
                                         City or postcode
                                     </label>
-                                    <span asp-validation-for="SearchTerm" class="govuk-error-message"></span>
+                                    <span asp-validation-for="SearchTerm" id="SearchTerm-error" class="govuk-error-message"></span>
                                     <input class="govuk-input govuk-input--width-10 faa-location-autocomplete"
                                         asp-for="SearchTerm" id="SearchTerm" type="search" spellcheck="false"
                                         autocomplete="postal-code" data-track-user-selected="SuggestedLocationSelected"

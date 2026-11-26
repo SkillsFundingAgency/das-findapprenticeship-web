@@ -43,7 +43,7 @@
                         @Model.Addresses.Count addresses found
                     </div>
                 }
-                <span asp-validation-for="SelectedAddress" class="govuk-error-message"></span>
+                <span asp-validation-for="SelectedAddress" id="SelectedAddress-error" class="govuk-error-message"></span>
                 <select class="govuk-select" asp-for="SelectedAddress"
                     aria-describedby="addresses-found SelectedAddress-error">
                     <option value="choose" selected>Select address</option>

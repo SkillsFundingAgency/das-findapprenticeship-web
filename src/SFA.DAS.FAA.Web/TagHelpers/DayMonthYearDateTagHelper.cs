@@ -56,13 +56,11 @@ public class DayMonthYearDateTagHelper : TagHelper
         writer.RenderEndTag();
 
         //error message
-        if (!string.IsNullOrWhiteSpace(errorMessage))
-        {
-            writer.AddAttribute("class", "govuk-error-message");
-            writer.RenderBeginTag("span");
-            writer.Write(errorMessage);
-            writer.RenderEndTag();
-        }
+        writer.AddAttribute("class", "govuk-error-message");
+        writer.AddAttribute("id", $"{Property.Name}-error");
+        writer.RenderBeginTag("span");
+        writer.Write(errorMessage);
+        writer.RenderEndTag();
 
         //date inputs
         writer.AddAttribute("class", "govuk-date-input");

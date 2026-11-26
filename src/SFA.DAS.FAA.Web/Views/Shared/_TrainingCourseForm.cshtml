@@ -4,7 +4,7 @@
     <label class="govuk-label govuk-label--m" for="CourseName">
         Course name
     </label>
-    <span das-validation-for="CourseName" class="govuk-error-message"></span>
+    <span das-validation-for="CourseName" id="CourseName-error" class="govuk-error-message"></span>
     <input class="govuk-input" id="CourseName" asp-for="CourseName" type="text" autocomplete="off" aria-describedby="CourseName-error">
 </div>
 <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="YearAchieved" error-class="govuk-form-group--error">
@@ -14,6 +14,6 @@
     <div id="YearAchieved-hint" class="govuk-hint">
         Year you finished studying this training course
     </div>
-    <span das-validation-for="YearAchieved" class="govuk-error-message"></span>
+    <span das-validation-for="YearAchieved" id="YearAchieved-error" class="govuk-error-message"></span>
     <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="YearAchieved" maxlength="4" asp-for="YearAchieved" type="text" inputmode="numeric" autocomplete="off" aria-describedby="YearAchieved-hint YearAchieved-error">
 </div>

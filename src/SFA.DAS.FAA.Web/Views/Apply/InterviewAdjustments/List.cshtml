@@ -45,7 +45,7 @@
                             Do you want to request support at an interview?
                         </h1>
                     </legend>
-                    <span das-validation-for="DoYouWantInterviewAdjustments" class="govuk-error-message"></span>
+                <span das-validation-for="DoYouWantInterviewAdjustments" id="DoYouWantInterviewAdjustments-error" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" type="radio" asp-for="DoYouWantInterviewAdjustments"
@@ -68,7 +68,7 @@
                                         das-highlight-error-for="InterviewAdjustmentsDescription"
                                         error-class="govuk-form-group--error">
                                         <span das-validation-for="InterviewAdjustmentsDescription"
-                                            class="govuk-error-message"></span>
+                                            id="InterviewAdjustmentsDescription-error" class="govuk-error-message"></span>
                                         <textarea class="govuk-textarea govuk-js-character-count"
                                             asp-for="InterviewAdjustmentsDescription" rows="5"
                                             aria-describedby="InterviewAdjustmentsDescription-info InterviewAdjustmentsDescription-error"
