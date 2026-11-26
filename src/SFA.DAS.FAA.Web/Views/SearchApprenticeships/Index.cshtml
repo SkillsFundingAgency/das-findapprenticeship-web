@@ -64,7 +64,7 @@
                         <div id="what-hint" class="govuk-hint">
                             Enter a job or company
                         </div>
-                        <input asp-for="WhatSearchTerm" type="text" aria-describedby="what-hint" class="govuk-input"
+                        <input asp-for="WhatSearchTerm" type="text" aria-describedby="what-hint WhatSearchTerm-error" class="govuk-input"
                         id="WhatSearchTerm" autocomplete="off" />
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                             Enter a city or postcode
                         </div>
                         <input asp-for="WhereSearchTerm" type="text" type="search" spellcheck="false"
-                        autocomplete="postal-code" aria-describedby="where-hint"
+                        autocomplete="postal-code" aria-describedby="where-hint WhereSearchTerm-error"
                         class="govuk-input faa-location-autocomplete" id="WhereSearchTerm" />
                     </div>
                 </div>

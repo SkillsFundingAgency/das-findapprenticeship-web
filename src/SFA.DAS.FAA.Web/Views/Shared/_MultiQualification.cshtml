@@ -23,7 +23,8 @@
                             </label>
                             <span das-validation-for="Subjects[index].Name" class="govuk-error-message"></span>
                             <input class="govuk-input" id="Subjects[@index].Name" name="subjects[@index][name]" type="text"
-                                value="@subject.Name" autocomplete="off">
+                                value="@subject.Name" autocomplete="off"
+                                aria-describedby="Subjects[@index].Name-error">
                         </div>
                     </div>
 
@@ -36,7 +37,8 @@
                             </label>
                             <span das-validation-for="Subjects[index].Grade" class="govuk-error-message"></span>
                             <input class="govuk-input" id="Subjects[@index].Grade" name="subjects[@index][grade]" type="text"
-                                value="@subject.Grade" autocomplete="off">
+                                value="@subject.Grade" autocomplete="off"
+                                aria-describedby="Subjects[@index].Grade-error">
                         </div>
                     </div>
 

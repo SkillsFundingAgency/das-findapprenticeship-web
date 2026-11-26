@@ -55,7 +55,7 @@
                     </label>
                     <span das-validation-for="SkillsAndStrengths" class="govuk-error-message"></span>
                     <textarea class="govuk-textarea govuk-js-character-count" asp-for="SkillsAndStrengths" rows="5"
-                        aria-describedby="SkillsAndStrengths-info"></textarea>
+                        aria-describedby="SkillsAndStrengths-info SkillsAndStrengths-error"></textarea>
                 </div>
                 <div id="SkillsAndStrengths-info" class="govuk-hint govuk-character-count__message">
                     You have 300 words remaining
@@ -64,7 +64,7 @@
 
             <div class="govuk-form-group" das-highlight-error-for="IsSectionComplete"
                 error-class="govuk-form-group--error">
-                <fieldset class="govuk-fieldset">
+                <fieldset class="govuk-fieldset" aria-describedby="IsSectionComplete-error">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Have you completed this section?
                     </legend>

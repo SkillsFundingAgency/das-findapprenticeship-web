@@ -6,7 +6,8 @@
         Job title
     </label>
     <span das-validation-for="JobTitle" class="govuk-error-message"></span>
-    <input class="govuk-input" asp-for="JobTitle" type="text" autocomplete="off">
+    <input class="govuk-input" asp-for="JobTitle" type="text" autocomplete="off"
+        aria-describedby="JobTitle-error">
 </div>
 <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="EmployerName"
     error-class="govuk-form-group--error">
@@ -14,7 +15,8 @@
         Company
     </label>
     <span das-validation-for="EmployerName" class="govuk-error-message"></span>
-    <input class="govuk-input" asp-for="EmployerName" type="text" autocomplete="off">
+    <input class="govuk-input" asp-for="EmployerName" type="text" autocomplete="off"
+        aria-describedby="EmployerName-error">
 </div>
 <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="100">
     <div class="govuk-form-group govuk-!-margin-bottom-7" das-highlight-error-for="JobDescription"
@@ -27,7 +29,7 @@
         </div>
         <span das-validation-for="JobDescription" class="govuk-error-message"></span>
         <textarea class="govuk-textarea govuk-js-character-count" asp-for="JobDescription" rows="5"
-            aria-describedby="JobDescription-info"></textarea>
+            aria-describedby="JobDescription-info JobDescription-error"></textarea>
     </div>
     <div id="JobDescription-info" class="govuk-hint govuk-character-count__message">
         You can enter up to 100 words
@@ -38,7 +40,7 @@
     error-class="govuk-form-group--error" />
 
 <div class="govuk-form-group" das-highlight-error-for="IsCurrentRole" error-class="govuk-form-group--error">
-    <fieldset class="govuk-fieldset">
+    <fieldset class="govuk-fieldset" aria-describedby="IsCurrentRole-error">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             Is this your current job?
         </legend>

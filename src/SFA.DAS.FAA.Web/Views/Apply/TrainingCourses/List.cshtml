@@ -3,52 +3,51 @@
 @{
     ViewData["Title"] = "Training courses - Find an apprenticeship - GOV.UK";
 }
-
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Education history</span>
         <h1 class="govuk-heading-l">Training courses</h1>
-
         @if (Model.ShowTrainingCoursesAchieved)
         {
-            @foreach (var trainingCourse in Model.TrainingCourses)
+            @if (Model.TrainingCourses != null)
             {
-                <div class="govuk-summary-card faa-summary-card">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
-                        <ul class="govuk-summary-card__actions">
-                            <li class="govuk-summary-card__action">
-                                <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trainingCourseId="@trainingCourse.Id">
-                                    Delete <span class="govuk-visually-hidden">@trainingCourse.CourseName, @trainingCourse.YearAchieved</span>
-                                </a>
-                            </li>
-                            <li class="govuk-summary-card__action">
-                                <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.EditTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trainingCourseId="@trainingCourse.Id">
-                                    Change <span class="govuk-visually-hidden">@trainingCourse.CourseName, @trainingCourse.YearAchieved</span>
-                                </a>
-                            </li>
-                        </ul>
+                @foreach (var trainingCourse in Model.TrainingCourses)
+                {
+                    <div class="govuk-summary-card faa-summary-card">
+                        <div class="govuk-summary-card__title-wrapper">
+                            <h2 class="govuk-summary-card__title">@trainingCourse.CourseName</h2>
+                            <ul class="govuk-summary-card__actions">
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.DeleteTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trainingCourseId="@trainingCourse.Id">
+                                        Delete <span class="govuk-visually-hidden">@trainingCourse.CourseName, @trainingCourse.YearAchieved</span>
+                                    </a>
+                                </li>
+                                <li class="govuk-summary-card__action">
+                                    <a class="govuk-link" asp-route="@RouteNames.ApplyApprenticeship.EditTrainingCourse" asp-route-applicationId="@Model.ApplicationId" asp-route-trainingCourseId="@trainingCourse.Id">
+                                        Change <span class="govuk-visually-hidden">@trainingCourse.CourseName, @trainingCourse.YearAchieved</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="govuk-summary-card__content">
+                            <dl class="govuk-summary-list">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Year
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @trainingCourse.YearAchieved
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
-                    <div class="govuk-summary-card__content">
-                        <dl class="govuk-summary-list">
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Year
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @trainingCourse.YearAchieved
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
+                }
             }
-
             @if (Model.MaximumItemsReached)
             {
                 <div class="govuk-inset-text">
@@ -73,16 +72,12 @@
             <h2 class="govuk-heading-m">If you have not done any training courses</h2>
             <p class="govuk-body govuk-!-padding-bottom-5">If you’re new to an area of work, it’s normal to have not done any training courses.</p>
         }
-
         <form class="form" method="post">
-
             @Html.HiddenFor(x => x.ShowTrainingCoursesAchieved)
-
-
             @if (Model.ShowTrainingCoursesAchieved)
             {
                 <div class="govuk-form-group" das-highlight-error-for="IsSectionComplete" error-class="govuk-form-group--error">
-                    <fieldset class="govuk-fieldset">
+                    <fieldset class="govuk-fieldset" aria-describedby="IsSectionComplete-error">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                             <h1 class="govuk-fieldset__heading">
                                 Have you completed this section?
@@ -109,7 +104,7 @@
             else
             {
             <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyTrainingCourses" error-class="govuk-form-group--error">
-                    <fieldset class="govuk-fieldset">
+                    <fieldset class="govuk-fieldset" aria-describedby="DoYouWantToAddAnyTrainingCourses-error">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                             <h1 class="govuk-fieldset__heading">
                                 Do you want to add any training courses?
@@ -118,7 +113,7 @@
                         <span das-validation-for="DoYouWantToAddAnyTrainingCourses" class="govuk-error-message"></span>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyTrainingCourses" value="true" type="radio" />
+                                <input class="govuk-radios__input" type="radio" asp-for="DoYouWantToAddAnyTrainingCourses" id="DoYouWantToAddAnyTrainingCourses" value="true" type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="DoYouWantToAddAnyTrainingCourses">
                                     Yes
                                 </label>
@@ -133,7 +128,6 @@
                     </fieldset>
                 </div>
             }
-
             <div class="govuk-button-group">
                 <button class="govuk-button" type="submit" data-module="govuk-button">
                     Continue

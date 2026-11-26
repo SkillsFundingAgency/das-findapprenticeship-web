@@ -13,7 +13,6 @@
         <a class="govuk-back-link" asp-route="@Model.BackLink" asp-route-postcode="@Model.Postcode">Back</a>
     }
 }
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
@@ -32,7 +31,7 @@
                     Telephone number
                 </label>
                 <span asp-validation-for="PhoneNumber" class="govuk-error-message"></span>
-                <input asp-for="PhoneNumber" class="govuk-input govuk-input--width-20" autocomplete="tel"/>
+                <input asp-for="PhoneNumber" class="govuk-input govuk-input--width-20" autocomplete="tel" aria-describedby="PhoneNumber-error" />
             </div>
             <div class="govuk-button-group">
                 <button class="govuk-button" data-module="govuk-button">

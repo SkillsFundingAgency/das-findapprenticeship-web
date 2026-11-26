@@ -3,18 +3,16 @@
 @{
     ViewData["Title"] = "Jobs - Find an apprenticeship – GOV.UK";
 }
-
 @section BackLink {
     <a class="govuk-back-link" href="@Url.RouteUrl(RouteNames.Apply, new { Model.ApplicationId })">Back</a>
 }
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" />
         <span class="govuk-caption-l">Work history</span>
         <h1 class="govuk-heading-l">Jobs</h1>
 
-        @if (Model.ShowJobHistory)
+        @if (Model is {ShowJobHistory: true, JobHistory: not null})
         {
             foreach (var job in Model.JobHistory)
             {
@@ -58,7 +56,6 @@
                     </div>
                 </div>
             }
-
             @if (Model.MaximumItemsReached)
             {
                 <div class="govuk-inset-text">
@@ -83,15 +80,13 @@
             <h2 class="govuk-heading-m">If this would be your first job </h2>
             <p class="govuk-body govuk-!-padding-bottom-5">Most apprenticeships do not require workplace experience. An apprenticeship can often be your first job.</p>
         }
-
         <form class="form" method="post">
             @Html.HiddenFor(x => x.ShowJobHistory)
-
             @if (Model.ShowJobHistory)
             {
                 <div class="govuk-form-group" das-highlight-error-for="IsSectionCompleted"
                     error-class="govuk-form-group--error">
-                    <fieldset class="govuk-fieldset">
+                    <fieldset class="govuk-fieldset" aria-describedby="IsSectionCompleted-error">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                             Have you completed this section?
                         </legend>
@@ -119,7 +114,7 @@
             {
                 <div class="govuk-form-group" das-highlight-error-for="DoYouWantToAddAnyJobs"
                     error-class="govuk-form-group--error">
-                    <fieldset class="govuk-fieldset">
+                    <fieldset class="govuk-fieldset" aria-describedby="DoYouWantToAddAnyJobs-error">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                             Do you want to add any jobs?
                         </legend>
@@ -143,8 +138,6 @@
                     </fieldset>
                 </div>
             }
-
-
             <div class="govuk-button-group">
                 <button class="govuk-button" type="submit" data-module="govuk-button">
                     Continue
