@@ -1,12 +1,20 @@
 @use "../govuk-tools" as *;
 
 .faa-page-heading {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   margin-top: 0;
+
   @include govuk-media-query(tablet) {
     margin-top: 20px;
   }
   @include govuk-media-query(desktop) {
     margin-top: 40px;
+  }
+
+  @media (max-width: 64rem) {
+    margin-top: 0 !important;
   }
 }
 
