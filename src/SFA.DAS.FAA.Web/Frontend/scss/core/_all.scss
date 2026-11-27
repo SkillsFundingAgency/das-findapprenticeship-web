@@ -70,6 +70,40 @@
   }
 }
 
+.faa-application-index {
+  min-width: 0;
+  overflow-wrap: anywhere;
+
+  .govuk-task-list__item,
+  .govuk-task-list__name-and-hint,
+  .govuk-task-list__status {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 64rem) {
+  .faa-application-index {
+    .govuk-task-list__item {
+      display: block;
+    }
+
+    .govuk-task-list__name-and-hint,
+    .govuk-task-list__status {
+      display: block;
+      width: 100%;
+    }
+
+    .govuk-task-list__status {
+      margin-top: 10px;
+      padding-left: 0;
+      text-align: left;
+    }
+  }
+}
+
 .faa-visibly-hidden {
   visibility: hidden;
   pointer-events: none;

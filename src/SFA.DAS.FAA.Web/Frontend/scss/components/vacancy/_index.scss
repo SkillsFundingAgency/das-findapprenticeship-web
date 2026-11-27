@@ -6,6 +6,25 @@
   margin-bottom: 1.5rem;
 }
 
+.faa-vacancy-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+
+  img,
+  svg,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .govuk-summary-list__row,
+  .govuk-summary-list__key,
+  .govuk-summary-list__value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
 .faa-vacancy__organisation {
   margin-bottom: .3rem;
 }
