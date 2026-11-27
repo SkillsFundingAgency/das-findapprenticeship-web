@@ -30,7 +30,7 @@
                 <label class="govuk-label" asp-for="PhoneNumber">
                     Telephone number
                 </label>
-                <span asp-validation-for="PhoneNumber" class="govuk-error-message"></span>
+                <span asp-validation-for="PhoneNumber" id="PhoneNumber-error" class="govuk-error-message"></span>
                 <input asp-for="PhoneNumber" class="govuk-input govuk-input--width-20" autocomplete="tel" aria-describedby="PhoneNumber-error" />
             </div>
             <div class="govuk-button-group">

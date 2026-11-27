@@ -53,7 +53,7 @@
                     <label class="govuk-label govuk-label--m" for="SkillsAndStrengths">
                         Your skills and strengths
                     </label>
-                    <span das-validation-for="SkillsAndStrengths" class="govuk-error-message"></span>
+                    <span das-validation-for="SkillsAndStrengths" id="SkillsAndStrengths-error" class="govuk-error-message"></span>
                     <textarea class="govuk-textarea govuk-js-character-count" asp-for="SkillsAndStrengths" rows="5"
                         aria-describedby="SkillsAndStrengths-info SkillsAndStrengths-error"></textarea>
                 </div>
@@ -68,7 +68,7 @@
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Have you completed this section?
                     </legend>
-                    <span das-validation-for="IsSectionComplete" class="govuk-error-message"></span>
+                        <span das-validation-for="IsSectionComplete" id="IsSectionComplete-error" class="govuk-error-message"></span>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" asp-for="IsSectionComplete" type="radio" value="true"

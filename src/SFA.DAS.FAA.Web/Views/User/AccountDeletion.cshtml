@@ -38,7 +38,7 @@
                 <label class="govuk-label @(ViewData.ModelState[nameof(Model.Email)]?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid  ? "govuk-form-group--error" : "")" for="Email">
                     Your email address
                 </label>
-                <span asp-validation-for="Email" class="govuk-error-message"></span>
+                <span asp-validation-for="Email" id="Email-error" class="govuk-error-message"></span>
                 <input asp-for="Email" class="govuk-input govuk-!-width-two-thirds" type="text"
                     aria-describedby="Email-error" />
             </div>

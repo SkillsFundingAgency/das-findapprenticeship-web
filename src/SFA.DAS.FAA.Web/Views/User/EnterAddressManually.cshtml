@@ -30,7 +30,7 @@
                     <label class="govuk-label" asp-for="AddressLine1">
                         Address line 1
                     </label>
-                    <span asp-validation-for="AddressLine1" class="govuk-error-message"></span>
+                    <span asp-validation-for="AddressLine1" id="AddressLine1-error" class="govuk-error-message"></span>
                     <input class="govuk-input" asp-for="AddressLine1" type="text" autocomplete="address-line1"
                         aria-describedby="AddressLine1-error">
                 </div>
@@ -47,7 +47,7 @@
                     <label class="govuk-label" asp-for="TownOrCity">
                         Town or city
                     </label>
-                    <span asp-validation-for="TownOrCity" class="govuk-error-message"></span>
+                    <span asp-validation-for="TownOrCity" id="TownOrCity-error" class="govuk-error-message"></span>
                     <input class="govuk-input govuk-!-width-two-thirds" asp-for="TownOrCity" type="text"
                         autocomplete="address-level2" aria-describedby="TownOrCity-error">
                 </div>
@@ -65,7 +65,7 @@
                     <label class="govuk-label" asp-for="Postcode">
                         Postcode
                     </label>
-                    <span asp-validation-for="Postcode" class="govuk-error-message"></span>
+                    <span asp-validation-for="Postcode" id="Postcode-error" class="govuk-error-message"></span>
                     <input class="govuk-input govuk-input--width-10" asp-for="Postcode" type="text"
                         autocomplete="postal-code" aria-describedby="Postcode-error">
                 </div>

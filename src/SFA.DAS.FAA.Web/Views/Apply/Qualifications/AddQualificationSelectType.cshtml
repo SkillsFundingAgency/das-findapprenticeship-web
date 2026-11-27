@@ -26,7 +26,7 @@
             }
             <div class="govuk-form-group" das-highlight-error-for="QualificationReferenceId"
                error-class="govuk-form-group--error">
-               <span das-validation-for="QualificationReferenceId" class="govuk-error-message"></span>
+               <span das-validation-for="QualificationReferenceId" id="QualificationReferenceId-error" class="govuk-error-message"></span>
                <div class="govuk-radios" data-module="govuk-radios" id="QualificationReferenceId">
                   @foreach (var qualificationType in Model.Qualifications.OrderBy(c=>c.QualificationDisplayTypeViewModel.AddOrder))
                   {

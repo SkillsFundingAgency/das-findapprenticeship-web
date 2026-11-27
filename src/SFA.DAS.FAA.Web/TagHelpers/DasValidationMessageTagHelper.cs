@@ -25,7 +25,7 @@ namespace SFA.DAS.FAA.Web.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            output.Attributes.Add("id", $"{Property.Name}-error");
+            output.Attributes.SetAttribute("id", $"{Property.Name}-error");
 
             var tagBuilder = Generator.GenerateValidationMessage(
                 ViewContext,
